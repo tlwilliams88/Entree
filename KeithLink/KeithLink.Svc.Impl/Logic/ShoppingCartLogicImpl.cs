@@ -355,12 +355,15 @@ namespace KeithLink.Svc.Impl.Logic
 			var shoppingCart = new ShoppingCart();
 			shoppingCart.Items = new List<ShoppingCartItem>();
 			shoppingCart.BranchId = catalogInfo.BranchId;
-			shoppingCart.Name = string.Format("Quick Add - {0}", DateTime.Now.ToShortDateString());
+			shoppingCart.Name = string.Format("Quick Add - {0} - {1} {2}", catalogInfo.CustomerId, DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
 
 			var itemErrorMessage = new StringBuilder();
 
 			foreach (var item in items)
 			{
+				if (item == null || string.IsNullOrEmpty(item.ItemNumber))
+					continue;
+
 				//Verify they have access to item, if the item is invalid, log then return error
 				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
 

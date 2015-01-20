@@ -2,29 +2,32 @@
     <h3 class="modal-title">Cart Quick Add</h3>
 </div>
 <div class="modal-body">
+  <p class="text-red" ng-if="quickAddForm.itemNumber.$error.fcsaNumber">Cart has some invalid item numbers. These items will be excluded when the order is submitted.</p>
 
-  <table class="table table-border" navigate-quick-add>
-    <thead>
-      <tr>
-        <th>Item #</th>
-        <th>Qty</th>
-        <th>Each</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr ng-repeat="item in items">
-        <td class="input-col">
-          <input focus-me="true" type="text" ng-model="item.itemnumber">
-        </td>
-        <td class="input-col">
-          <input type="text" ng-model="item.quantity" class="input-number">
-        </td>
-        <td class="input-col">
-          <input type="checkbox" ng-model="item.each">
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <form name="quickAddForm" class="style-validation-errors">
+    <table class="table table-border" navigate-quick-add>
+      <thead>
+        <tr>
+          <th>Item #</th>
+          <th>Qty</th>
+          <th>Each</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in items">
+          <td class="input-col">
+            <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" ng-model-options="{ debounce: 300 }" fcsa-number="{ 'minDigits': 6, 'maxDigits': 6 }">
+          </td>
+          <td class="input-col">
+            <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
+          </td>
+          <td class="input-col">
+            <input name="each" type="checkbox" ng-model="item.each">
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
   
   <div class="text-right">
     <button type="button" class="btn btn-primary btn-lg" ng-click="addRow()">Add Row</button>

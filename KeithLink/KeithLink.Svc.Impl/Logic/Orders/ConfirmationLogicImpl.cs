@@ -286,7 +286,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 po.OrderForms[0].LineItems.CopyTo(origLineItems, 0);
                 string originalStatus = po.Status;
 
-                SetCsLineInfo(currLineItems, confirmation);
+                if (confirmation.Header.ConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE, StringComparison.InvariantCultureIgnoreCase)) {
+                    // do not update the line items if the order is rejected
+                } else {
+                    SetCsLineInfo(currLineItems, confirmation);
+                }
 
                 SetCsHeaderInfo(confirmation, po, currLineItems);
 
@@ -347,22 +351,32 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private string SetCsHeaderInfo(ConfirmationFile confirmation, PurchaseOrder po, LineItem[] lineItems) {
             string trimmedConfirmationStatus = confirmation.Header.ConfirmationStatus.Trim().ToUpper();
-            if (trimmedConfirmationStatus == Constants.CONFIRMATION_HEADER_CONFIRMED_CODE) { // if confirmation status is blank, then look for exceptions across all line items, not just those in the change order
-                string origOrderNumber = (string)po[Constants.CS_PURCHASE_ORDER_ORIGINAL_ORDER_NUMBER];
-                string currOrderNumber = po.TrackingNumber;
-                bool isChangeOrder = origOrderNumber != currOrderNumber;
-                SetCsPoStatusFromLineItems(po, lineItems, isChangeOrder);
-            } else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_IN_PROCESS_CODE)) {
-                po.Status = Constants.CONFIRMATION_HEADER_IN_PROCESS_STATUS;
-            } else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_INVOICED_CODE)) {
-                po.Status = Constants.CONFIRMATION_HEADER_INVOICED_STATUS;
-            } else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_DELETED_CODE)) {
-                po.Status = Constants.CONFIRMATION_HEADER_DELETED_STATUS;
-            } else if (trimmedConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE)) {
-                po.Status = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
+            switch (trimmedConfirmationStatus) {
+                case Constants.CONFIRMATION_HEADER_CONFIRMED_CODE:
+                    string origOrderNumber = (string)po[Constants.CS_PURCHASE_ORDER_ORIGINAL_ORDER_NUMBER];
+                    string currOrderNumber = po.TrackingNumber;
+                    bool isChangeOrder = origOrderNumber != currOrderNumber;
+                    SetCsPoStatusFromLineItems(po, lineItems, isChangeOrder);
+                    break;
+                case Constants.CONFIRMATION_HEADER_IN_PROCESS_CODE:
+                    po.Status = Constants.CONFIRMATION_HEADER_IN_PROCESS_STATUS;
+                    break;
+                case Constants.CONFIRMATION_HEADER_INVOICED_CODE:
+                    po.Status = Constants.CONFIRMATION_HEADER_INVOICED_STATUS;
+                    break;
+                case Constants.CONFIRMATION_HEADER_DELETED_CODE:
+                    po.Status = Constants.CONFIRMATION_HEADER_DELETED_STATUS;
+                    break;
+                case Constants.CONFIRMATION_HEADER_REJECTED_CODE:
+                    po.Status = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
+                    break;
             }
 
-            po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
+            if (confirmation.Header.ConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE, StringComparison.InvariantCultureIgnoreCase)){
+                po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
+            } else {
+                po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
+            }
 
             _log.WriteInformationLog("Updating purchase order status with: " + po.Status + ", for confirmation status: _" + trimmedConfirmationStatus + "_");
 

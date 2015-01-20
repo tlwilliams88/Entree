@@ -1,27 +1,49 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', 'UserProfileService', '$state', 'CustomerService', 'CustomerGroupService', 'BroadcastService',
-    function ($scope, UserProfileService, $state, CustomerService, CustomerGroupService, BroadcastService) {
+  .controller('CustomerGroupDashboardController', ['$scope', '$stateParams', '$state', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService',
+    function (
+      $scope, // angular
+      $stateParams, $state, // ui router
+      UserProfileService, CustomerService, CustomerGroupService, BroadcastService // custom bek services
+    ) {
+
+  function getUsers(customerGroup) {
+   if (customerGroup) {
+      $scope.groupName = customerGroup.name;
       
+      UserProfileService.getUsersForGroup(customerGroup.id).then(function(data) {
+        $scope.loadingUsers = false;
+        $scope.adminUsers = data.accountUsers;
+        $scope.customerUsers = data.customerUsers;
+      });
+    } else {
+      $scope.loadingUsers = false;
+      $scope.adminUsers = [];
+      $scope.customerUsers = [];
+    }
+  }
+
   function init() {
     loadCustomers(customersConfig).then(setCustomers);
 
     $scope.loadingUsers = true;
-    CustomerGroupService.getGroupByUser($scope.userProfile.userid).then(function (customerGroup) {
-      if (customerGroup) {
-        $scope.groupName = customerGroup.name;
-        UserProfileService.getUsersForGroup(customerGroup.id).then(function(data) {
-          $scope.loadingUsers = false;
-          $scope.adminUsers = data.accountUsers;
-          $scope.customerUsers = data.customerUsers;
-        });
-      } else {
-        $scope.loadingUsers = false;
-        $scope.adminUsers = [];
-        $scope.customerUsers = [];
-      }
-    });
+
+    if ($stateParams.customerGroupId) {
+      // internal bek admins
+      CustomerGroupService.getGroupDetails($stateParams.customerGroupId).then(
+        getUsers, 
+        function(error) {
+          // request failed, invalid customer group id
+          $scope.displayMessage('error', 'An error occured loading the page with Customer Group ID # ' + $stateParams.customerGroupId);
+          $scope.goToAdminLandingPage(); // inherited from MenuController
+      });
+    
+    } else {
+      // get group for external admin using the customer group associated with their user id
+      CustomerGroupService.getGroupByUser($scope.userProfile.userid).then(getUsers);
+    }
+
   }
 
   /**********
@@ -34,8 +56,13 @@ angular.module('bekApp')
     size: 30,
     from: 0,
     sortField: $scope.customersSortField,
-    sortOrder: 'asc'
+    sortOrder: 'asc',
+    customerGroupId: ''
   };
+
+  if ($stateParams.customerGroupId) {
+    customersConfig.customerGroupId = $stateParams.customerGroupId;
+  }
 
   function loadCustomers(customersConfig) {
     $scope.loadingCustomers = true;
@@ -44,7 +71,8 @@ angular.module('bekApp')
        customersConfig.size,
        customersConfig.from,
        customersConfig.sortField,
-       customersConfig.sortOrder
+       customersConfig.sortOrder,
+       customersConfig.customerGroupId
     ).then(function(data) {
       $scope.loadingCustomers = false;
       $scope.totalCustomers = data.totalResults;

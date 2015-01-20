@@ -96,16 +96,16 @@ namespace KeithLink.Svc.Core
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS = "Item Subbed";
 
         public const string CONFIRMATION_HEADER_IN_PROCESS_CODE = "P";
-        public const string CONFIRMATION_HEADER_IN_PROCESS_STATUS = "InProcess";
+        public const string CONFIRMATION_HEADER_IN_PROCESS_STATUS = "In Process";
         public const string CONFIRMATION_HEADER_INVOICED_CODE = "I";
         public const string CONFIRMATION_HEADER_INVOICED_STATUS = "Shipped";
         public const string CONFIRMATION_HEADER_DELETED_CODE = "D";
         public const string CONFIRMATION_HEADER_DELETED_STATUS = "Cancelled";
         public const string CONFIRMATION_HEADER_REJECTED_CODE = "R";
         public const string CONFIRMATION_HEADER_REJECTED_STATUS = "Rejected";
-        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_EXCEPTIONS_STATUS = "ConfirmedWithChangesAndExceptions";
-        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_EXCEPTIONS_STATUS = "ConfirmedWithExceptions";
-        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_STATUS = "ConfirmedWithChanges";
+        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_EXCEPTIONS_STATUS = "Confirmed With Changes And Exceptions";
+        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_EXCEPTIONS_STATUS = "Confirmed With Exceptions";
+        public const string CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_STATUS = "Confirmed With Changes";
         public const string CONFIRMATION_HEADER_CONFIRMED_CODE = "";
         public const string CONFIRMATION_HEADER_CONFIRMED_STATUS = "Confirmed";
 

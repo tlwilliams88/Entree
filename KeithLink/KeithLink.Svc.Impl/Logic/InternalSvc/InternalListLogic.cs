@@ -360,7 +360,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId);
+				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
 				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 												
 				return cachedList;
@@ -395,7 +395,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
         public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
 		{
-			var list = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(type) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).ToList();
+			var list = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(type) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
 			if (list == null)
 				return null;

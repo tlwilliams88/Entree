@@ -19,20 +19,20 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			if(headerOnly)
 				return this.Entities.Include(t => t.Shares).Where(l => (l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId)) || 
-					(l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)) || 
-					(l.Shares.Any(s => s.CustomerId.Equals(catalogInfo.CustomerId) && s.BranchId.Equals(catalogInfo.BranchId))));
+					(l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)) || 
+					(l.Shares.Any(s => s.CustomerId.Equals(catalogInfo.CustomerId) && s.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase))));
 			else
 				return this.Entities.Include(i => i.Items).Include(t => t.Shares).Where(l => (l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId)) || 
-					(l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)) ||
-					(l.Shares.Any(s => s.CustomerId.Equals(catalogInfo.CustomerId) && s.BranchId.Equals(catalogInfo.BranchId))));
+					(l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)) ||
+					(l.Shares.Any(s => s.CustomerId.Equals(catalogInfo.CustomerId) && s.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase))));
 		}
         
 		public IEnumerable<List> ReadListForUser(Core.Models.Profile.UserProfile user, Core.Models.SiteCatalog.UserSelectedContext catalogInfo,  bool headerOnly)
 		{
 			if (headerOnly)
-				return this.Entities.Where(l => l.UserId.Equals(user.UserId) && (l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)));
+				return this.Entities.Where(l => l.UserId.Equals(user.UserId) && (l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)));
 			else
-				return this.Entities.Include(i => i.Items).Where(l => l.UserId.Equals(user.UserId) && (l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)));
+				return this.Entities.Include(i => i.Items).Where(l => l.UserId.Equals(user.UserId) && (l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)));
 		}
 	}
 }

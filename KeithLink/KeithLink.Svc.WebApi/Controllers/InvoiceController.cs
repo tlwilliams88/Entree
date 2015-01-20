@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Serialization;
 using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
@@ -42,13 +43,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 		
 		[HttpPost]
 		[ApiKeyedRoute("invoice/export/")]
-		public HttpResponseMessage ExportInvoices(ExportRequestModel exportRequest)
+		public HttpResponseMessage ExportInvoices(InvoiceExportRequestModel request, bool forAllCustomers = false)
 		{
-			var list = _repo.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, new PagingModel() { Size = 500, From = 0}, false);
+			var list = _repo.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, request.paging, forAllCustomers);
 
-			if (exportRequest.Fields != null)
-				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, exportRequest.Fields, exportRequest.SelectedType);
-			return ExportModel<InvoiceModel>(list.PagedResults.Results, exportRequest);
+			if (request.export.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
+			return ExportModel<InvoiceModel>(list.PagedResults.Results, request.export);
 		}
 
 		[HttpGet]

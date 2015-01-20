@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Common;
+﻿using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
@@ -23,7 +24,7 @@ namespace KeithLink.Svc.Test.Logic
         public void ConfirmationFileShouldParseAndSendToRabbitMQ()
         {
             UnitOfWork uow = new UnitOfWork();
-            OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow); 
+            OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, new EventLogRepositoryImpl("Unit Tests")); 
 
             ConfirmationLogicImpl logic = new ConfirmationLogicImpl(new EventLogRepositoryImpl("Entree Tests"),
                                                                     new SocketListenerRepositoryImpl(),
