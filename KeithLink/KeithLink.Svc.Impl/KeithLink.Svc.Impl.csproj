@@ -438,9 +438,9 @@
     <Compile Include="Repository\EF\Migrations\201501092201560_Add indexes to improve item usage report query.Designer.cs">
       <DependentUpon>201501092201560_Add indexes to improve item usage report query.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201501142314465_add order delivery info fields to order history header.cs" />
-    <Compile Include="Repository\EF\Migrations\201501142314465_add order delivery info fields to order history header.Designer.cs">
-      <DependentUpon>201501142314465_add order delivery info fields to order history header.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201501201656099_Add order ETA fields to order history header.cs" />
+    <Compile Include="Repository\EF\Migrations\201501201656099_Add order ETA fields to order history header.Designer.cs">
+      <DependentUpon>201501201656099_Add order ETA fields to order history header.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -924,8 +924,8 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201501092201560_Add indexes to improve item usage report query.resx">
       <DependentUpon>201501092201560_Add indexes to improve item usage report query.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201501142314465_add order delivery info fields to order history header.resx">
-      <DependentUpon>201501142314465_add order delivery info fields to order history header.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201501201656099_Add order ETA fields to order history header.resx">
+      <DependentUpon>201501201656099_Add order ETA fields to order history header.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

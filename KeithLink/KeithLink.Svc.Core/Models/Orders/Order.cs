@@ -66,7 +66,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "actualdeliverytime")]
         public DateTime? ActualDeliveryTime { get; set; }
 
-        [DataMember(Name = "outofsequence")]
+        [DataMember(Name = "deliveryoutofsequence")]
         public bool? DeliveryOutOfSequence { get; set; }
 
 		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
