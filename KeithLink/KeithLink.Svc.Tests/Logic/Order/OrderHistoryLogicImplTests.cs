@@ -12,6 +12,7 @@ using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using KeithLink.Svc.Impl.Repository.Queue;
 
 namespace KeithLink.Svc.Test.Logic.Order {
     [TestClass]
@@ -23,7 +24,7 @@ namespace KeithLink.Svc.Test.Logic.Order {
         private IOrderHistoryDetailRepository _detailRepo;
         private IOrderHistoryHeaderRepsitory _headerRepo;
         private OrderHistoryLogicImpl _logic;
-        private OrderUpdateQueueRepositoryImpl _queue;
+        private GenericQueueRepositoryImpl _queue;
         private NoCachePriceCacheRepositoryImpl _priceCache;
         private PriceLogicImpl _priceLogic;
         private PriceRepositoryImpl _priceRepo;
@@ -52,7 +53,7 @@ namespace KeithLink.Svc.Test.Logic.Order {
             _poRepo = new PurchaseOrderRepositoryImpl();
 
             _socket = new SocketListenerRepositoryImpl();
-            _queue = new OrderUpdateQueueRepositoryImpl();
+            _queue = new GenericQueueRepositoryImpl();
 
             //_confLogic = new ConfirmationLogicImpl(_log, _socket, new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl());
 

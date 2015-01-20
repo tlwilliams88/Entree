@@ -137,8 +137,44 @@ namespace KeithLink.Svc.Impl.Migrations
                     Type = MessageTemplateType.Email,
                     Body = newUserPasswordBody.ToString()
                 } );
+
+            /**** Build ETA notification main template ****/
+            System.Text.StringBuilder etaNotificationBody = new System.Text.StringBuilder();
+            etaNotificationBody.AppendLine("The following orders have been shipped or estimated for shipment.");
+            etaNotificationBody.AppendLine();
+            etaNotificationBody.AppendLine("{EtaOrderLines}");
+            etaNotificationBody.AppendLine("All times shown in {TimeZoneName}.");
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate
+                {
+                    TemplateKey = "OrderEtaMain",
+                    Subject = "Estimated Delivery Information for {CustomerName}",
+                    IsBodyHtml = false,
+                    Type = MessageTemplateType.Email,
+                    Body = etaNotificationBody.ToString()
+                });
+
+            /**** Build ETA line template ****/
+            System.Text.StringBuilder etaOrderLine = new System.Text.StringBuilder();
+            etaOrderLine.Append("Order #: {InvoiceNumber} ");
+            etaOrderLine.AppendLine(" is scheduled for delivery on {ScheduledDeliveryDate} at {ScheduledDeliveryTime}.");
+            etaOrderLine.AppendLine("    It is currently estimated for delievery on {EstimatedDeliveryDate} at {EstimatedDeliveryTime}.");
+            etaOrderLine.AppendLine("    This order contains {ProductCount} products (total quantity: {ShippedQuantity})");
+            etaOrderLine.AppendLine();
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate
+                {
+                    TemplateKey = "OrderEtaLine",
+                    Subject = "",
+                    IsBodyHtml = false,
+                    Type = MessageTemplateType.Email,
+                    Body = etaOrderLine.ToString()
+                });
         }
     }
+
 	internal class CustomSqlServerMigrationSqlGenerator : SqlServerMigrationSqlGenerator
 	{
 		protected override void Generate(AddColumnOperation addColumnOperation)

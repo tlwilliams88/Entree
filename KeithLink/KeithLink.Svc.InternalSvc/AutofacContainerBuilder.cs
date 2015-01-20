@@ -54,7 +54,6 @@ using KeithLink.Svc.Impl.Repository.OnlinePayments;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
 using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Orders.Confirmations;
 using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
@@ -109,7 +108,6 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoCacheCustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
             builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
             builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
-            builder.RegisterType<OrderUpdateQueueRepositoryImpl>().As<IOrderHistoryQueueRepository>();
 
             builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
             builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();

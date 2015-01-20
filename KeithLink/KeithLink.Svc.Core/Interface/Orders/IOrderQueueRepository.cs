@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Orders {
-    public interface IOrderQueueRepository : IQueueRepository {
-        void SetQueuePath(int pathEnum);
-    }
+	//public interface IOrderQueueRepository : IQueueRepository {
+	//	void SetQueuePath(int pathEnum);
+	//}
 }

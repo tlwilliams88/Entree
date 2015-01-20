@@ -54,18 +54,18 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("order/")]
 		public List<Order> Orders()
 		{
-            //return _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
-            return _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext);
+            return _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
+                _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext));
 		}
 
 		[HttpGet]
 		[ApiKeyedRoute("order/date")]
 		public List<Order> OrdersIndate(DateTime from, DateTime to)
 		{
-			return _orderServiceRepository.GetOrderHeaderInDateRange(this.AuthenticatedUser.UserId, this.SelectedUserContext, from, to);
+			return _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
+                _orderServiceRepository.GetOrderHeaderInDateRange(this.AuthenticatedUser.UserId, this.SelectedUserContext, from, to));
 		}
-
-
+        
 		[HttpPost]
 		[ApiKeyedRoute("order/export/")]
 		public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest)
@@ -91,7 +91,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			//return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
             try {
-                return _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber);
+                return _orderLogic.UpdateOrderForEta(this.AuthenticatedUser,
+                    _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber));
             } catch (Exception ex) {
                 return null;
             }
