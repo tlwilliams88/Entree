@@ -73,7 +73,7 @@ namespace KeithLink.Svc.Impl.ETL
                     prof.Properties["GeneralInfo.credit_limit"].Value = org.CreditLimit;
                     prof.Properties["GeneralInfo.credit_hold_flag"].Value = org.CreditHoldFlag;
                     prof.Properties["GeneralInfo.date_of_last_payment"].Value = org.DateOfLastPayment;
-                    prof.Properties["GeneralInfo.current_balance"].Value = org.AmountDue; //changed from currentBalance per Tom B.'s reccommendation
+                    prof.Properties["GeneralInfo.current_balance"].Value = org.CurrentBalance;
                     prof.Properties["GeneralInfo.balance_age_1"].Value = org.BalanceAge1;
                     prof.Properties["GeneralInfo.balance_age_2"].Value = org.BalanceAge2;
                     prof.Properties["GeneralInfo.balance_age_3"].Value = org.BalanceAge3;
