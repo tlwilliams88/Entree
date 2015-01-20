@@ -121,6 +121,7 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_SMTP_PASSWORD = "SMTPPassword";
 
 		private const string KEY_CONTACT_EMAIL_FORMAT = "{0}_ContactEmail";
+		private const string KEY_ADD_SERVERNAME_TO_HEADER = "AddServerNameToHeaderResponse";
         #endregion
 
         #region methods
@@ -719,6 +720,15 @@ namespace KeithLink.Svc.Impl
 			get
 			{
 				var value = GetValue(KEY_REQUIRE_HTTPS, "false");
+				return ValueParsingUtil.ParseBool(value, "false");
+			}
+		}
+
+		public static bool AddServerNameToHeader
+		{
+			get
+			{
+				var value = GetValue(KEY_ADD_SERVERNAME_TO_HEADER, "false");
 				return ValueParsingUtil.ParseBool(value, "false");
 			}
 		}
