@@ -64,6 +64,24 @@
     <script src="lib/moment-js/moment-timezone-with-data.js"></script>
     <script src="lib/moment-js/jstz-1.0.4.min.js"></script>
     <!-- endbuild -->
+<<<<<<< HEAD
+=======
+
+    
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script>
+        angular.element(document).ready(function() {
+            app.initialize();
+            document.addEventListener('deviceready', function onDeviceReady() {
+                angular.bootstrap(document, ['bekApp']);
+            }, false);
+            // jQuery(document).ready(function() {
+            //     angular.bootstrap(document, ['bekApp']);
+            // });
+        });
+    </script>
+>>>>>>> 1199270747403d434d230fb61b127bed91e83642
 
      <script id="template/carousel/carousel.html" type="text/ng-template">
       <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
@@ -177,6 +195,15 @@
     <script type="text/javascript" src="scripts/filters/StyleOrdersFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/LocalTimeZoneTimeFilter.js"></script>
     <script type="text/javascript" src="scripts/animations/SlideAnimation.js"></script>
+<<<<<<< HEAD
+=======
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapPushService.js"></script>
+
+>>>>>>> 1199270747403d434d230fb61b127bed91e83642
     <!-- endbuild -->
 
     <!-- Google Analytics -->

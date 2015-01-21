@@ -1,15 +1,14 @@
 ----------------------------app.js--------------------------------
 
-add (using Dependency Injection) PhonegapServices and PhonegapPushService to .run block
-add PhonegapPushService.register(); under toState.name === 'register' line
+1. add PhonegapServices to .run block using Dependency Injection
 
 -----------------------------index.html-------------------------------
 
-Change "styles/main.css" to "css/main.css" at top
+1. Change "styles/main.css" to "css/main.css" at top
 
-Remove "ng-app=bekapp" from <body>
+2. Remove "ng-app=bekapp" from <body>
 
-Add these below lib scripts:
+3. Add these below lib scripts:
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
     <script>
@@ -21,28 +20,10 @@ Add these below lib scripts:
         });
     </script>
 
-add these Below resources:
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
-    <script type="text/javascript" src="scripts/phonegapServices/PhonegapPushService.js"></script>
-
---------------------------configenv.js----------------------------------
-
-replace line 5 with:
-.constant('ENV', {name:'dev',apiKey:'web_test_v1',apiEndpoint:'https://shopqa.benekeith.com/api',loggingEnabled:true,username:'qauser@qa.com',password:'Ab12345',googleAnalytics:'UA-58495462-2'})
-
-
---------------------------RegisterController.js-------------------------
-
-add PhonegapPushService to .controller
-add PhonegapPushService.register(); under AuthenticationService.login line 27
-
 
 -------------------------TERMINAL-----------------------------------
 
-then run in terminal:
+1. then run in terminal:
 compass compile www/scss/main.scss
 
 ------------------------------------------------------------

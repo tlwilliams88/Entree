@@ -9,10 +9,18 @@
  */
 
 angular.module('bekApp')
+<<<<<<< HEAD
   .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
     function ($scope, $state, $modal, $window, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
 
   $scope.$state = $state;
+=======
+  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
+    function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+
+  $scope.$state = $state;
+  $scope.isMobileApp = ENV.mobileApp;
+>>>>>>> 1199270747403d434d230fb61b127bed91e83642
 
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
@@ -157,6 +165,23 @@ angular.module('bekApp')
       }
     });
   };
+<<<<<<< HEAD
+=======
+
+  $scope.scanBarcode = function() {
+    cordova.plugins.barcodeScanner.scan(
+      function (result) {
+          console.log('We got a barcode\n' +
+                'Result: ' + result.text + '\n' +
+                'Format: ' + result.format + '\n' +
+                'Cancelled: ' + result.cancelled);
+      }, 
+      function (error) {
+          console.log('Scanning failed: ' + error);
+      }
+   );
+  };
+>>>>>>> 1199270747403d434d230fb61b127bed91e83642
 
   /**********
   SET USER PERMISSIONS
