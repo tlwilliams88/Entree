@@ -16,7 +16,7 @@
       <tbody>
         <tr ng-repeat="item in items">
           <td class="input-col">
-            <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" ng-model-options="{ debounce: 300 }" fcsa-number="{ 'minDigits': 6, 'maxDigits': 6 }">
+            <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" ng-model-options="{ debounce: 300 }" fcsa-number="{ 'noFormat': true, 'minDigits': 6, 'maxDigits': 6 }">
           </td>
           <td class="input-col">
             <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
