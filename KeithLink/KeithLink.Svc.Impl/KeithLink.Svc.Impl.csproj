@@ -232,6 +232,9 @@
     <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
+    <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
+    <Compile Include="Repository\Cache\CacheRepositoryImpl.cs" />
+    <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />

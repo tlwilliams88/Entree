@@ -140,6 +140,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="CacheService.svc" />
     <Content Include="ContentManagementService.svc" />
     <Content Include="ReportService.svc" />
     <Content Include="DivisionService.svc" />
@@ -159,10 +160,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacContainerBuilder.cs" />
+    <Compile Include="CacheService.svc.cs">
+      <DependentUpon>CacheService.svc</DependentUpon>
+    </Compile>
     <Compile Include="ContentManagementService.svc.cs">
       <DependentUpon>ContentManagementService.svc</DependentUpon>
     </Compile>
     <Compile Include="GlobalErrorBehaviorAttribute.cs" />
+    <Compile Include="Interfaces\ICacheService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
     <Compile Include="ReportService.svc.cs">
       <DependentUpon>ReportService.svc</DependentUpon>

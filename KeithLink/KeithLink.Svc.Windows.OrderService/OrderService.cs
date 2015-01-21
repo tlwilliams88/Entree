@@ -21,6 +21,7 @@ using System.Text;
 using System.Threading;
 using KeithLink.Svc.Impl.Repository.Queue;
 using Newtonsoft.Json;
+using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Windows.OrderService {
     partial class OrderService : ServiceBase {
@@ -257,12 +258,12 @@ namespace KeithLink.Svc.Windows.OrderService {
                 KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic =
                 new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(),
                                                                               new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
-                                                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCachePriceCacheRepositoryImpl()),
+																														  new NoCacheRepositoryImpl()),
                                                                               new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(),
                                                                               new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
                                                                               divRepo,
                                                                               new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
-                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCacheCatalogCacheRepositoryImpl(),
+																			  new NoCacheRepositoryImpl(),
                                                                               new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo,
                                                                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
                                                                               new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
@@ -276,7 +277,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        new PurchaseOrderRepositoryImpl(),
                                                                        catLogic,
                                                                        new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-                                                                       new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl()),
+																	   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl()),
                                                                        conversionLogic);
 
                 logic.ListenForMainFrameCalls();
@@ -354,13 +355,13 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                             KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic = 
                             new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(), 
-                                                                                          new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(), 
-                                                                                                                                      new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCachePriceCacheRepositoryImpl()),
+                                                                                          new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
+																																	  new NoCacheRepositoryImpl()),
                                                                                           new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(), 
                                                                                           new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
                                                                                           divRepo,
-                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log), 
-                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.NoCacheCatalogCacheRepositoryImpl(),
+                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
+																						  new NoCacheRepositoryImpl(),
                                                                                           new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo, 
                                                                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
                                                                                           new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
@@ -373,7 +374,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                    new PurchaseOrderRepositoryImpl(),
                                                                                    catLogic,
                                                                                    new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-                                                                                   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new KeithLink.Svc.Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl()),
+																				   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl()),
                                                                                    conversionLogic);
 
                             if (CanOpenFile(filePath)) {

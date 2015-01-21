@@ -14,12 +14,12 @@ using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.WebApi.Repository.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Test.Repositories.Order
     {
@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
     public class OrderNotificationTests {
 
         #region attrbitues
-        private NoCacheUserProfileCacheRepository _cache;
+		private NoCacheRepositoryImpl _cache;
         private UserProfileRepository _csProfileRepo;
         private CustomerContainerRepository _custRepo;
         private ExternalUserDomainRepository _extAd;
@@ -42,8 +42,8 @@ namespace KeithLink.Svc.Test.Repositories.Order
         public OrderNotificationTests()
         {
             _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
-            _cache = new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository();
-            var _custCach = new Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl();
+			_cache = new NoCacheRepositoryImpl();
+			var _custCach = new NoCacheRepositoryImpl();
 
             _custRepo = new CustomerContainerRepository(_log);
 
@@ -52,7 +52,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
 
             _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);
 
-            _acct = new AccountRepository(_log, _custCach);
+            _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach);
             _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(new TokenReplacer()), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
             //_orderHistoryRepo = new OrderHistoryHeaderRepositoryImpl(

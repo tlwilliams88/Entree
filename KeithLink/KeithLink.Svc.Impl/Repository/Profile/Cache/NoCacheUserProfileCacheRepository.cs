@@ -7,26 +7,26 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Repository.Profile.Cache
 {
-    public class NoCacheUserProfileCacheRepository : IUserProfileCacheRepository
-    {
-        public Core.Models.Profile.UserProfile GetProfile(string emailAddress)
-        {
-            return null; // do nothing
-        }
+	//public class NoCacheUserProfileCacheRepository : IUserProfileCacheRepository
+	//{
+	//	public Core.Models.Profile.UserProfile GetProfile(string emailAddress)
+	//	{
+	//		return null; // do nothing
+	//	}
 
-        public void AddProfile(Core.Models.Profile.UserProfile userProfile)
-        {
-            // do nothing
-        }
+	//	public void AddProfile(Core.Models.Profile.UserProfile userProfile)
+	//	{
+	//		// do nothing
+	//	}
 
-        public void ResetAllItems()
-        {
-            // do nothing
-        }
+	//	public void ResetAllItems()
+	//	{
+	//		// do nothing
+	//	}
 
-        public void RemoveItem(string emailAddress)
-        {
-            // do nothing
-        }
-    }
+	//	public void RemoveItem(string emailAddress)
+	//	{
+	//		// do nothing
+	//	}
+	//}
 }

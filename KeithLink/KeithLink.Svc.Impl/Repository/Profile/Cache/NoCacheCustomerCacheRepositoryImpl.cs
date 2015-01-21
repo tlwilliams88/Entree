@@ -8,24 +8,24 @@ using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Impl.Repository.Profile.Cache
 {
-    public class NoCacheCustomerCacheRepositoryImpl : ICustomerCacheRepository
-    {
-        public void AddItem<T>(string key, T item)
-        {
-                    }
+	//public class NoCacheCustomerCacheRepositoryImpl : ICustomerCacheRepository
+	//{
+	//	public void AddItem<T>(string key, T item)
+	//	{
+	//	}
 
-        public void ResetAllItems()
-        {
-            throw new NotImplementedException();
-        }
+	//	public void ResetAllItems()
+	//	{
+	//		throw new NotImplementedException();
+	//	}
 
-        public void RemoveItem(string key)
-        {
-        }
+	//	public void RemoveItem(string key)
+	//	{
+	//	}
 
-        public T GetItem<T>(string key)
-        {
-            return default(T);
-        }
-    }
+	//	public T GetItem<T>(string key)
+	//	{
+	//		return default(T);
+	//	}
+	//}
 }

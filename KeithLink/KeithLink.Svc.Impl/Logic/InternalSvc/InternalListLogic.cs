@@ -13,6 +13,7 @@ using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -22,18 +23,22 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IListRepository listRepository;
 		private readonly IListItemRepository listItemRepository;
 		private readonly ICatalogLogic catalogLogic;
-		private readonly IListCacheRepository listCacheRepository;
+		private readonly ICacheRepository listCacheRepository;
 		private readonly IPriceLogic priceLogic;
 		private readonly IProductImageRepository productImageRepository;
 		private readonly IListShareRepository listShareRepository;
 		private readonly IUserActiveCartRepository userActiveCartRepository;
 		private readonly IBasketRepository basketRepository;
+
+		private const string CACHE_GROUPNAME = "UserList";
+		private const string CACHE_NAME = "UserList";
+		private const string CACHE_PREFIX = "Default";
         #endregion
 
         #region ctor
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository,
-			ICatalogLogic catalogLogic, IListCacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
+			ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
 			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository)
 		{
 			this.listRepository = listRepository;
@@ -74,7 +79,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			list.Items.Add(item);
 			listRepository.CreateOrUpdate(list);
 			unitOfWork.SaveChanges();
-			listCacheRepository.RemoveItem(string.Format("UserList_{0}", list.Id)); //Invalidate cache
+			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
 			return item.Id;
 		}
 
@@ -94,7 +99,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			listRepository.CreateOrUpdate(list);
 			unitOfWork.SaveChanges();
-			listCacheRepository.RemoveItem(string.Format("UserList_{0}", list.Id)); //Invalidate cache
+			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
 			return ReadList(user, catalogInfo, listId);
 		}
         
@@ -193,7 +198,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var listId = item.ParentList.Id;
 			listItemRepository.Delete(item);
 			unitOfWork.SaveChanges();
-			listCacheRepository.RemoveItem(string.Format("UserList_{0}", listId)); //Invalidate cache
+			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listId)); //Invalidate cache
 		}
 
 		public void DeleteList(long Id)
@@ -352,8 +357,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 
 			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
-						
-			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", Id));
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
 			if (cachedList != null)
 			{
 				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
@@ -374,7 +379,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var returnList = list.ToListModel(catalogInfo);
 			
 			LookupProductDetails(user, returnList, catalogInfo);
-			listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", Id), returnList);
+			listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), returnList);
 	
 			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
 			return returnList;
@@ -483,7 +488,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 var processedList = new List<ListModel>();
                 //Lookup product details for each item
                 returnList.ForEach(delegate(ListModel listItem) {
-                    var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listItem.ListId));
+					var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId));
                     if (cachedList != null) {
                         processedList.Add(cachedList);
                         return;
@@ -491,7 +496,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
                     LookupProductDetails(user, listItem, catalogInfo);
                     processedList.Add(listItem);
-                    listCacheRepository.AddItem<ListModel>(string.Format("UserList_{0}", listItem.ListId), listItem);
+					listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId), TimeSpan.FromHours(2), listItem);
 
                 });
                 //Mark favorites and add notes
@@ -522,7 +527,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var updatedItem = listItemRepository.Read(i => i.Id.Equals(item.ListItemId), l => l.ParentList).FirstOrDefault();
 
 			if (updatedItem != null && updatedItem.ParentList != null)
-				listCacheRepository.RemoveItem(string.Format("UserList_{0}", updatedItem.ParentList.Id)); //Invalidate cache
+				listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", updatedItem.ParentList.Id)); //Invalidate cache
 
 		}
 
@@ -568,7 +573,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 
 			unitOfWork.SaveChanges();
-			listCacheRepository.RemoveItem(string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
+			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
 		}
 
 		public void CopyList(ListCopyShareModel copyListModel)
@@ -609,11 +614,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			listRepository.Update(listToShare);
 			unitOfWork.SaveChanges();
 
-			var cachedList = listCacheRepository.GetItem<ListModel>(string.Format("UserList_{0}", listToShare.Id));
+			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listToShare.Id));
 			if (cachedList != null)
 			{
 				cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
-				listCacheRepository.AddItem(string.Format("UserList_{0}", listToShare.Id), cachedList);
+				listCacheRepository.AddItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listToShare.Id), TimeSpan.FromHours(2), cachedList);
 			}
 		}
         
