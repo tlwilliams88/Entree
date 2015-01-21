@@ -462,7 +462,8 @@ module.exports = function (grunt) {
                       loggingEnabled: true,
                       username: 'sabroussard@somecompany.com',
                       password: 'L1ttleStev1e',
-                      googleAnalytics: 'UA-58495462-2'
+                      googleAnalytics: 'UA-58495462-2',
+                      mobileApp: false
                   }
               }
           },
@@ -475,7 +476,8 @@ module.exports = function (grunt) {
                       loggingEnabled: true,
                       username: 'sabroussard@somecompany.com',
                       password: 'L1ttleStev1e',
-                      googleAnalytics: 'UA-58495462-2'
+                      googleAnalytics: 'UA-58495462-2',
+                      mobileApp: false
                   }
               }
           },
@@ -486,7 +488,8 @@ module.exports = function (grunt) {
                       apiKey: 'web_test_v1',
                       apiEndpoint: 'https://shopqa.benekeith.com/api',
                       loggingEnabled: true,
-                      googleAnalytics: 'UA-58495462-2'
+                      googleAnalytics: 'UA-58495462-2',
+                      mobileApp: false
                   }
               }
           },
@@ -497,7 +500,8 @@ module.exports = function (grunt) {
                       apiKey: 'web_prod_v1',
                       apiEndpoint: 'https://shop.benekeith.com/api',
                       loggingEnabled: false,
-                      googleAnalytics: 'UA-58495462-1'
+                      googleAnalytics: 'UA-58495462-1',
+                      mobileApp: false
                   }
               }
           },

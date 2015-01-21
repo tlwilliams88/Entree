@@ -4,13 +4,15 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       phonegap: {
         config: {
-          plugins: ['https://github.com/apache/cordova-plugin-network-information.git',
+          plugins: [
+              'https://github.com/apache/cordova-plugin-network-information.git',
               'https://github.com/phonegap-build/PushPlugin.git',
               'org.apache.cordova.device',
               'org.apache.cordova.dialogs',
               'org.apache.cordova.vibration',
               'org.apache.cordova.statusbar',
-              'org.apache.cordova.console'
+              'org.apache.cordova.console',
+              'https://github.com/wildabeast/BarcodeScanner.git'
           ],
           maxBuffer: 500,
           platforms: ['ios', 'android'],
@@ -37,7 +39,7 @@ module.exports = function(grunt) {
       "www/lib/{,*/}*",
       "www/scripts/app.js",
       "www/scripts/state.js",
-      "www/scripts/configenv.js",
+      // "www/scripts/configenv.js",
       "www/index.html",
       "www/scripts/controllers/{,*/}*",
       "www/scripts/directives/{,*/}*",

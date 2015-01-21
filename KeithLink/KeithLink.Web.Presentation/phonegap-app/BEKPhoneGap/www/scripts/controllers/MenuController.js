@@ -119,6 +119,20 @@ angular.module('bekApp')
       });
     };
 
+    $scope.scanBarcode = function() {
+      cordova.plugins.barcodeScanner.scan(
+        function (result) {
+            cosole.log("We got a barcode\n" +
+                  "Result: " + result.text + "\n" +
+                  "Format: " + result.format + "\n" +
+                  "Cancelled: " + result.cancelled);
+        }, 
+        function (error) {
+            console.log("Scanning failed: " + error);
+        }
+     );
+    };
+
     function refreshAccessPermissions() {
       $scope.isLoggedIn = AccessService.isLoggedIn();
       $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
