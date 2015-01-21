@@ -2,15 +2,20 @@
 /* https://github.com/FCSAmericaDev/angular-fcsa-number */
 
 /*
-OPTIONS
-addMissingDecimals (requires maxDecimals to be set)
-maxDecimals
-min
-max
-preventInvalidInput
-maxDigits
-prepend
-append
+using the directive, !!!properties must be strings
+fcsa-number="{ 'minDigits': 6 }"
+
+AVAILABLE OPTIONS
+addMissingDecimals  boolean (requires maxDecimals to be set)
+maxDecimals         number
+min                 number
+max                 number
+preventInvalidInput boolean
+maxDigits           number
+minDigits           number
+prepend             string
+append              string
+noFormat            boolean
 */
 
 (function() {
@@ -21,7 +26,7 @@ append
 
   fcsaNumberModule.directive('fcsaNumber', [
     'fcsaNumberConfig', function(fcsaNumberConfig) {
-      var addCommasToInteger, addTrailingDecimals, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMaxDigits, makeMaxNumber, makeMinNumber, unformatNumber;
+      var addCommasToInteger, addTrailingDecimals, controlKeys, defaultOptions, getOptions, hasMultipleDecimals, isNotControlKey, isNotValidOptionKey, isNotDigit, isNumber, makeIsValid, makeMaxDecimals, makeMinDigits, makeMaxDigits, makeMaxNumber, makeMinNumber, unformatNumber;
       defaultOptions = fcsaNumberConfig.defaultOptions;
       getOptions = function(attrs) {
         var option, options, value, _ref;
@@ -92,6 +97,11 @@ append
           return validRegex.test(val);
         };
       };
+      makeMinDigits = function(minDigits) {
+        return function(val) {
+          return (val + '').length >= minDigits;
+        };
+      };
       makeIsValid = function(options) {
         var validations;
         validations = [];
@@ -106,6 +116,9 @@ append
         }
         if (options.maxDigits != null) {
           validations.push(makeMaxDigits(options.maxDigits));
+        }
+        if (options.minDigits != null) {
+          validations.push(makeMinDigits(options.minDigits));
         }
         return function(val) {
           var i, number, _i, _ref;
@@ -193,7 +206,9 @@ append
               return val;
             }
             ngModelCtrl.$setValidity('fcsaNumber', true);
-            val = addCommasToInteger(val.toString());
+            if (!options.noFormat) {
+              val = addCommasToInteger(val.toString());
+            }
             val = addTrailingDecimals(val.toString(), options);
             // add leading zero for decimals
             if (val.indexOf('.') === 0) {

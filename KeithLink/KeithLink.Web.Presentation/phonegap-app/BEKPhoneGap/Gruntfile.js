@@ -103,12 +103,12 @@ cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
     dest: 'www/scripts/',    // destination folder
     expand: true           // required when using cwd
   },
-      {
-cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
-    src: 'configenv.js',           // copy configenv.js
-    dest: 'www/scripts/',    // destination folder
-    expand: true           // required when using cwd
-  },
+//       {
+// cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
+//     src: 'configenv.js',           // copy configenv.js
+//     dest: 'www/scripts/',    // destination folder
+//     expand: true           // required when using cwd
+//   },
       {
 cwd: '../../angular-app/app/',  // set working folder / root to copy
     src: 'index.html',           // copy index.html
@@ -119,6 +119,12 @@ cwd: '../../angular-app/app/',  // set working folder / root to copy
 cwd: '../../angular-app/app/scripts/controllers/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/scripts/controllers/',    // destination folder
+    expand: true           // required when using cwd
+  },
+   {
+cwd: '../../angular-app/app/scripts/phonegapServices/',  // set working folder / root to copy
+    src: '**/*',           // copy all files and subfolders
+    dest: 'www/scripts/phonegapServices/',    // destination folder
     expand: true           // required when using cwd
   },
   {

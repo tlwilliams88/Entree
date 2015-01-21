@@ -38,8 +38,8 @@
             <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{item.upc}}</span>
           </div>
         </div>
-        <div ng-if="canManageLists || canCreateOrders || canSubmitOrders" class="hidden-print sub-content">
-          <div class="btn-primary btn btn-lg" context-menu context-menu-template>
+        <div ng-if="canManageLists || canCreateOrders || canSubmitOrders && item.caseprice !== '$0.00'" class="hidden-print sub-content">
+          <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template>
             Add To...
             <span class="icon-arrow-down6"></span>
           </div>
@@ -55,7 +55,7 @@
           {{key}} - {{value}}
         </div>
       </div>
-      <div ng-if="!item.orderhistory">
+      <div ng-if="item.orderHistoryKeys.length === 0">
         No order history.
       </div>
       <hr class="hidden-sm">

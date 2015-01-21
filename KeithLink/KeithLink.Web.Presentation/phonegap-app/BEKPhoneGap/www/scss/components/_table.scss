@@ -60,11 +60,19 @@ ng-class="{ odd : $odd, even: $even }"
     }
   }
 
+  // always hide mobile details row on md and lg devices
+  .mobile-details-row {
+    @extend .hidden-md;
+    @extend .hidden-lg;
+  }
+
   > tbody > tr.mobile-details-row > td {
     border-top: none;
   }
 
-  > tfoot > tr > td, .filter-row > td {
+  // filter and footer have white background
+  > tfoot > tr > td, 
+  .filter-row > td {
     background-color: $color-white;
   }
 

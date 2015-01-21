@@ -11,6 +11,7 @@ angular.module('bekApp')
   .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
     function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
 
+    // gets prepopulated login info for dev environment
     $scope.loginInfo = {
       username: ENV.username,
       password: ENV.password
@@ -24,14 +25,12 @@ angular.module('bekApp')
       $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
-        PhonegapPushService.register();
-        if ( AccessService.isOrderEntryCustomer() || AccessService.isInternalUser() ) {
-          $state.transitionTo('menu.home');  
-        } else {
-          $state.transitionTo('menu.catalog.home');
+        if (ENV.mobileApp) { // ask to allow push notifications
+          PhonegapPushService.register();
         }
-      }, function(error) {
-        $scope.loginErrorMessage = error.data.error_description;
+        $scope.redirectUserToCorrectHomepage();
+      }, function(errorMessage) {
+        $scope.loginErrorMessage = errorMessage;
       });
 
     };
@@ -44,7 +43,7 @@ angular.module('bekApp')
         // log user in
         AuthenticationService.login(userProfile.email, userProfile.password).then(function(profile) {
           // redirect to account details page
-          $state.go('menu.accountdetails');
+          $state.go('menu.userprofile');
         }, function(error) {
           $scope.loginErrorMessage = error.data.error_description;
           $scope.clearForm();
