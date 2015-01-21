@@ -15,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -23,11 +24,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #region attributes
         private IEventLogRepository _log;
         private ISocketConnectionRepository _mfConnection;
-        private IOrderQueueRepository _orderQueue;
+        private IGenericQueueRepository _orderQueue;
         #endregion
 
         #region ctor
-        public OrderQueueLogicImpl(IEventLogRepository eventLog, IOrderQueueRepository orderQueue, ISocketConnectionRepository mfCon)
+		public OrderQueueLogicImpl(IEventLogRepository eventLog, IGenericQueueRepository orderQueue, ISocketConnectionRepository mfCon)
         {
             _log = eventLog;
             _mfConnection = mfCon;
@@ -38,15 +39,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region methods
-        public OrderFile DeserializeOrder(string rawOrder) {
-            OrderFile order = new OrderFile();
-
-            StringReader xmlReader = new StringReader(rawOrder);
-            XmlSerializer xs = new XmlSerializer(order.GetType());
-
-            return (OrderFile)xs.Deserialize(xmlReader);
-        }
-
+        
         public void ProcessOrders() {
             WorkOrderQueue(OrderQueueLocation.Normal);
             WorkOrderQueue(OrderQueueLocation.Reprocess);            
@@ -130,23 +123,46 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
         }
 
-        private void SendToError(string errorOrder) {
-            _orderQueue.SetQueuePath((int)OrderQueueLocation.Error);
+		private string GetSelectedExchange(OrderQueueLocation exchangeLocation) {
+			switch (exchangeLocation)
+			{
+				case OrderQueueLocation.Normal:
+					return Configuration.RabbitMQExchangeOrdersCreated;
+				case OrderQueueLocation.History:
+					return Configuration.RabbitMQExchangeOrdersHistory;
+				case OrderQueueLocation.Error:
+					return Configuration.RabbitMQExchangeOrdersError;
+				default:
+					return Configuration.RabbitMQExchangeOrdersCreated;
+			}
+		}
 
-            _orderQueue.PublishToQueue(errorOrder);
+		private string GetSelectedQueue(OrderQueueLocation queueLocation)
+		{
+			switch (queueLocation)
+			{
+				case OrderQueueLocation.Normal:
+					return Configuration.RabbitMQQueueOrderCreated;
+				case OrderQueueLocation.History:
+					return Configuration.RabbitMQQueueOrderHistory;
+				case OrderQueueLocation.Error:
+					return Configuration.RabbitMQQueueOrderError;
+				default:
+					return Configuration.RabbitMQQueueOrderCreated;
+			}
+		}
+
+        private void SendToError(string errorOrder) {
+            _orderQueue.PublishToQueue(errorOrder, Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Error));
         }
 
         private void SendToHistory(string historyOrder)
         {
-            _orderQueue.SetQueuePath((int)OrderQueueLocation.History);
-
-            _orderQueue.PublishToQueue(historyOrder);
+			_orderQueue.PublishToQueue(historyOrder, Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.History));
         }
 
         private void SendToReprocess(string errorOrder) {
-            _orderQueue.SetQueuePath((int)OrderQueueLocation.Reprocess);
-
-            _orderQueue.PublishToQueue(errorOrder);
+			_orderQueue.PublishToQueue(errorOrder, Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Reprocess));
         }
 
         private void SendToHost(OrderFile order)
@@ -168,22 +184,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             _mfConnection.Close();
         }
-
-        private string SerializeOrder(OrderFile order) {
-            StringWriter xmlWriter = new StringWriter();
-            XmlSerializer xs = new XmlSerializer(order.GetType());
-
-            xs.Serialize(xmlWriter, order);
-
-            return xmlWriter.ToString();
-        }
-
+		
         private void WorkOrderQueue(OrderQueueLocation queue) {
-            _orderQueue.SetQueuePath((int)queue);
-            string rawOrder = _orderQueue.ConsumeFromQueue();
 
-            while (rawOrder != null) {
-                OrderFile order = DeserializeOrder(rawOrder);
+            string rawOrder = _orderQueue.ConsumeFromQueue(Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,Configuration.RabbitMQVHostOrder, GetSelectedQueue(queue));
+
+            while (!string.IsNullOrEmpty(rawOrder)) {
+				
+				OrderFile order = JsonConvert.DeserializeObject<OrderFile>(rawOrder);
 
                 try {
                     _log.WriteInformationLog(string.Format("Sending order to mainframe({0})", order.Header.ControlNumber));
@@ -204,8 +212,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     throw;
                 }
 
-                _orderQueue.SetQueuePath((int)queue);
-                rawOrder = _orderQueue.ConsumeFromQueue();
+				rawOrder = _orderQueue.ConsumeFromQueue(Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostOrder, GetSelectedQueue(queue));
+
             } 
         }
 
@@ -269,13 +277,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                 newOrderFile.Details.Add(detail);
             }
-
-            System.IO.StringWriter sw = new System.IO.StringWriter();
-            System.Xml.Serialization.XmlSerializer xs = new System.Xml.Serialization.XmlSerializer(newOrderFile.GetType());
-
-            xs.Serialize(sw, newOrderFile);
-
-            _orderQueue.PublishToQueue(sw.ToString());
+			
+			_orderQueue.PublishToQueue(JsonConvert.SerializeObject(newOrderFile), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Normal));
+      
         }
         #endregion
 

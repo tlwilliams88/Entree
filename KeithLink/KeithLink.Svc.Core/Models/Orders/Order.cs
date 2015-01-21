@@ -57,6 +57,18 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "commerceid")]
         public Guid CommerceId { get; set; }
 
+        [DataMember(Name = "estimateddeliverytime")]
+        public DateTime? EstimatedDeliveryTime { get; set; }
+
+        [DataMember(Name = "scheduleddeliverytime")]
+        public DateTime? ScheduledDeliveryTime { get; set; }
+
+        [DataMember(Name = "actualdeliverytime")]
+        public DateTime? ActualDeliveryTime { get; set; }
+
+        [DataMember(Name = "deliveryoutofsequence")]
+        public bool? DeliveryOutOfSequence { get; set; }
+
 		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();

@@ -42,6 +42,15 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         #endregion
 
         #region methods
+
+        private static void FillEtaInformation(EF.OrderHistoryHeader orderHistory, Order order)
+        {
+            order.ScheduledDeliveryTime = orderHistory.ScheduledDeliveryTime;
+            order.EstimatedDeliveryTime = orderHistory.EstimatedDeliveryTime;
+            order.ActualDeliveryTime = orderHistory.ActualDeliveryTime;
+            order.DeliveryOutOfSequence = orderHistory.DeliveryOutOfSequence;
+        }
+
         public static void Parse(this OrderHistoryHeader value, string record) {
             if (record.Length >= HEADER_STARTPOS_ORDSYS + HEADER_LENGTH_ORDSYS) {
                 OrderSource tempOrderSource = new OrderSource();
@@ -81,7 +90,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.FutureItems = value.FutureItems;
             entity.ErrorStatus = value.ErrorStatus;
             entity.RouteNumber = value.RouteNumber;
-            entity.StropNumber = value.StopNumber;
+            entity.StopNumber = value.StopNumber;
         }
 
         public static EF.OrderHistoryHeader ToEntityFrameworkModel(this OrderHistoryHeader value) {
@@ -98,7 +107,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.FutureItems = value.FutureItems;
             retVal.ErrorStatus = value.ErrorStatus;
             retVal.RouteNumber = value.RouteNumber;
-            retVal.StropNumber = value.StopNumber;
+            retVal.StopNumber = value.StopNumber;
 
             return retVal;
         }
@@ -133,6 +142,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
+            FillEtaInformation(value, retVal);
 
 			if (value.OrderDetails != null && value.OrderDetails.Count > 0)
 			{
@@ -175,10 +185,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
 			retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);
 			retVal.CreatedDate = value.CreatedUtc;
-			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
+            retVal.RequestedShipDate = (DateTime)(value.DeliveryDate.HasValue ? value.DeliveryDate : DateTime.Now);
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
-			
+            FillEtaInformation(value, retVal);
+
 			return retVal;
 		}
 
@@ -197,7 +208,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.FutureItems = value.FutureItems;
             retVal.ErrorStatus = value.ErrorStatus;
             retVal.RouteNumber = value.RouteNumber;
-            retVal.StopNumber = value.StropNumber;
+            retVal.StopNumber = value.StopNumber;
 			
             return retVal;
         }

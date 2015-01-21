@@ -6,6 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Orders.Confirmations {
-    public interface IConfirmationQueueRepository : IQueueRepository {
-    }
+	//public interface IConfirmationQueueRepository : IQueueRepository {
+	//}
 }

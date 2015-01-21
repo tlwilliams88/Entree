@@ -1,19 +1,18 @@
-﻿using KeithLink.Svc.Core.Interface.Orders;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CS = KeithLink.Svc.Core.Models.Generated;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Enumerations.Order;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -26,9 +25,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		private readonly IOrderQueueLogic orderQueueLogic;
         private IPriceLogic priceLogic;
         private IEventLogRepository eventLogRepository;
+        private IUserProfileLogic userProfileLogic;
 
 		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, IOrderServiceRepository orderServiceRepository,
-            IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository)
+            IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository,
+            IUserProfileLogic userProfileLogic)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogLogic = catalogLogic;
@@ -37,6 +38,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             this.orderQueueLogic = orderQueueLogic;
             this.priceLogic = priceLogic;
             this.eventLogRepository = eventLogRepository;
+            this.userProfileLogic = userProfileLogic;
 		}
 
 		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true)
@@ -291,5 +293,27 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
+        public Order UpdateOrderForEta(UserProfile user, Order order)
+        {
+            if (Configuration.EnableEtaForUsers.Equals("none", StringComparison.InvariantCultureIgnoreCase)
+                || (Configuration.EnableEtaForUsers.Equals("internal_only", StringComparison.InvariantCultureIgnoreCase)
+                    && !userProfileLogic.IsInternalAddress(user.EmailAddress))
+                )
+            {
+                ClearEtaInformation(order);
+            }
+            return order;
+        }
+        
+        public List<Order> UpdateOrdersForSecurity(UserProfile user, List<Order> orders)
+        {
+            Parallel.ForEach(orders, o => { this.UpdateOrderForEta(user, o); });
+            return orders;
+        }
+
+        private static void ClearEtaInformation(Order order)
+        {
+            order.EstimatedDeliveryTime = null;
+        }
     }
 }
