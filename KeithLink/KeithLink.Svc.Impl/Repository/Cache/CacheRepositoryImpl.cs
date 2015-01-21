@@ -44,8 +44,11 @@ namespace KeithLink.Svc.Impl.Repository.Cache
 			{
 				using (HttpClient client = new HttpClient())
 				{
-					var r = client.GetAsync(string.Format("{0}/Cache/RefreshCache?cacheGroupName={1}&cachePrefix={2}&cacheName={3}", server, cacheGroupName, cachePrefix, cacheName)).Result;
-
+					try
+					{
+						var r = client.GetAsync(string.Format("{0}/Cache/RefreshCache?cacheGroupName={1}&cachePrefix={2}&cacheName={3}", server, cacheGroupName, cachePrefix, cacheName)).Result;
+					}
+					catch (Exception ex) { }
 				}
 			}
 		}
@@ -59,8 +62,11 @@ namespace KeithLink.Svc.Impl.Repository.Cache
 			{
 				using (HttpClient client = new HttpClient())
 				{
-					var r = client.GetAsync(string.Format("http://{0}/Cache/RefreshCacheItem?cacheGroupName={1}&cachePrefix={2}&cacheName={3}&key={4}", server, cacheGroupName, cachePrefix, cacheName, key)).Result;					
-					
+					try
+					{
+						var r = client.GetAsync(string.Format("{0}/Cache/RefreshCacheItem?cacheGroupName={1}&cachePrefix={2}&cacheName={3}&key={4}", server, cacheGroupName, cachePrefix, cacheName, key)).Result;
+					}
+					catch (Exception ex) {  }//Log?
 				}
 			}
 		}
