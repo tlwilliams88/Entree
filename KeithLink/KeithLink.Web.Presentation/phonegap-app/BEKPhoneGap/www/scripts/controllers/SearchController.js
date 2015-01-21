@@ -9,7 +9,11 @@
  */
 angular.module('bekApp')
   .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', 'ProductService', 'CategoryService', 'Constants',
-    function($scope, $state, $stateParams, $modal, ProductService, CategoryService, Constants) {
+    function(
+      $scope, $state, $stateParams, // angular dependencies
+      $modal, // ui bootstrap library
+      ProductService, CategoryService, Constants // bek custom services
+    ) {
     
     // clear keyword search term at top of the page
     if ($scope.userBar) {
@@ -40,7 +44,12 @@ angular.module('bekApp')
       brands: {
         available: [],
         selected: [],
-        showMore: true
+        showMore: true // display Show More button for this facet
+      },
+      mfrname:{
+          available: [],
+          selected: [],
+          showMore: true // display Show More button for this facet
       },
       itemspecs: {
         available: [],
@@ -126,6 +135,21 @@ angular.module('bekApp')
         filterCount += $scope.facets.brands.selected.length;
       }
 
+      // manufacturers
+      if ($scope.facets.mfrname.selected.length > 0) {
+          breadcrumbs.push({
+              click: function (data) {
+                  $scope.facets.mfrname.selected = data;
+                  $scope.facets.dietary.selected = [];
+                  $scope.facets.itemspecs.selected = [];
+                  loadProducts().then(refreshFacets);
+              },
+              clickData: $scope.facets.brands.selected,
+              displayText: 'Manufacturers: ' + $scope.facets.mfrname.selected.join(breadcrumbSeparator)
+          });
+          filterCount += $scope.facets.mfrname.selected.length;
+      }
+
       // dietary
       if ($scope.facets.dietary.selected.length > 0) {
         breadcrumbs.push({
@@ -177,7 +201,8 @@ angular.module('bekApp')
     function getData() {
       var facets = ProductService.getFacets(
         $scope.facets.categories.selected, 
-        $scope.facets.brands.selected, 
+        $scope.facets.brands.selected,
+        $scope.facets.mfrname.selected,
         $scope.facets.dietary.selected, 
         $scope.facets.itemspecs.selected 
       );
@@ -218,14 +243,17 @@ angular.module('bekApp')
     function clearFacets() {
       $scope.facets.categories.selected = [];
       $scope.facets.brands.selected = [];
+      $scope.facets.mfrname.selected = [];
       $scope.facets.dietary.selected = [];
       $scope.facets.itemspecs.selected = [];
       loadProducts().then(refreshFacets);
     }
 
     function refreshFacets(facets) {
+      // set the $scope.facets object using the response data 
       $scope.facets.categories.available = facets.categories;
       $scope.facets.brands.available = facets.brands;
+      $scope.facets.mfrname.available = facets.mfrname;
       $scope.facets.dietary.available = facets.dietary;
       $scope.facets.itemspecs.available = addIcons(facets.itemspecs);
     }
@@ -236,7 +264,7 @@ angular.module('bekApp')
     function getIconDisplayInfo(name) {
       var itemSpec = {};
       switch (name) {
-        case 'itembeingreplaced':
+        case 'itembeingreplac':
           itemSpec.displayname = 'Item Being Replaced';
           itemSpec.iconclass = 'text-red icon-cycle';
           break;
@@ -244,7 +272,7 @@ angular.module('bekApp')
           itemSpec.displayname = 'Replacement Item';
           itemSpec.iconclass = 'text-green icon-cycle';
           break;
-        case 'childnutrition':
+        case 'childnutrit':
           itemSpec.displayname = 'Child Nutrition Sheet';
           itemSpec.iconclass = 'text-regular icon-apple';
           break;
@@ -262,11 +290,10 @@ angular.module('bekApp')
         //   itemSpec.iconclass = 'text-regular icon-dollar';
         //   break;
 
-        // TODO: fitler by and display MSDS info
-        case 'materialsafety':
-          itemSpec.displayname = 'Material Safety Data Sheet';
-          itemSpec.iconclass = 'text-regular icon-safety';
-          break;
+        // case 'materialsafety':
+        //   itemSpec.displayname = 'Material Safety Data Sheet';
+        //   itemSpec.iconclass = 'text-regular icon-safety';
+        //   break;
       }
       return itemSpec;
     }
@@ -349,7 +376,8 @@ angular.module('bekApp')
             var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
             var facets = ProductService.getFacets(
               $scope.facets.categories.selected, 
-              $scope.facets.brands.selected, 
+              $scope.facets.brands.selected,
+              $scope.facets.mfrname.selected,
               $scope.facets.dietary.selected, 
               $scope.facets.itemspecs.selected 
             );

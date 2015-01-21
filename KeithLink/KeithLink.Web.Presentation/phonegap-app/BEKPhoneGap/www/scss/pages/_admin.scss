@@ -1,38 +1,19 @@
 .top-buffer {
-    margin-top: 20px;
-}
-
-.control-label.userMessage {
-    color: green;
-    text-align: left;
-}
-
-.glyphicon.blue {
-  color: rgb(72, 158, 207);
-}
-
-.filterInputLeft {
-  padding-left: 2px !important;
-}
-
-.filterInputLeft .no-margin {
-  margin: 0;
+  margin-top: 20px;
 }
 
 .preferencesTable {
 
-}
+  th {
+    padding: 5px 7px;
+  }
+  td {
+    padding: 7px 7px;
 
-.preferencesTable th {
-  padding: 5px 7px;
-}
-
-.preferencesTable td {
-  padding: 7px 7px;
-}
-
-.preferencesTable td.checkboxCenter {
-  text-align: center;
+    &.checkboxCenter {
+      text-align: center;
+    }
+  }
 }
 
 .smallerHeaderLinkText {
@@ -43,8 +24,8 @@
   @include scroll-div-vertical(300px);
 }
 
-.inlineOverride {
-  display: inline-block;
-  width: auto;
-  vertical-align: middle;
+
+.search-form {
+  margin-bottom: $gutter-size;
+  display: block;
 }
