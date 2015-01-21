@@ -16,13 +16,18 @@ angular.module('bekApp')
         initialFromDate.setMonth(initialFromDate.getMonth() - 6);
         $scope.itemusagequery.fromDate = initialFromDate;
         $scope.itemusagequery.toDate = new Date();
-        $scope.getItemUsage = ReportService.getItemUsageReport;
         $scope.sortField = 'TotalQuantityOrdered';
         $scope.sortReverse = true;
 
+
         function loadItemUsage() {
             $scope.loadingResults = true;
-            $scope.getItemUsage($scope.itemusagequery.fromDate, $scope.itemusagequery.toDate,
+            ReportService.itemUsageParams = {
+             from: $scope.itemusagequery.fromDate,
+             to: $scope.itemusagequery.toDate
+            };
+
+           ReportService.getItemUsageReport($scope.itemusagequery.fromDate, $scope.itemusagequery.toDate,
                                                          $scope.sortField, $scope.sortReverse === true ? 'desc' : 'asc')
                 .then(function (items) {
                     $scope.itemusages = items;
@@ -92,5 +97,9 @@ angular.module('bekApp')
     };
 
         // INIT
+        if(ReportService.itemUsageParams){
+        $scope.itemusagequery.fromDate = ReportService.itemUsageParams.from;
+        $scope.itemusagequery.toDate = ReportService.itemUsageParams.to;
+      }
         loadItemUsage();
   }]);
