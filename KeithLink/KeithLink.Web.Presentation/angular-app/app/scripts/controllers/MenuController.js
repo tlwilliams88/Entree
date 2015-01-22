@@ -9,10 +9,11 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
-    function ($scope, $state, $modal, $window, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
+    function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService) {
 
   $scope.$state = $state;
+  $scope.isMobileApp = ENV.mobileApp;
 
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
@@ -54,7 +55,7 @@ angular.module('bekApp')
     query: function (query){
       $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
 
-      if (query.page === 1 && firstPageCustomers) { // use cache if getting first page
+      if (query.page === 1 && firstPageCustomers && !query.term) { // use cache if getting first page
         query.callback(firstPageCustomers);
       } else {
         CustomerService.getCustomers(
@@ -76,7 +77,9 @@ angular.module('bekApp')
             });
           });
 
-          firstPageCustomers = customerList;
+          if (query.page === 1 && !query.term) {
+            firstPageCustomers = customerList;
+          }
           query.callback(customerList);
         });
       }
@@ -155,6 +158,24 @@ angular.module('bekApp')
           return branchFound;
         }
       }
+    });
+  };
+
+  $scope.scanBarcode = function() {
+    cordova.plugins.barcodeScanner.scan(
+      function (result) {
+        // console.log('We got a barcode\n' +
+        //   'Result: ' + result.text + '\n' +
+        //   'Format: ' + result.format + '\n' +
+        //   'Cancelled: ' + result.cancelled);
+
+        ProductService.scanProduct(result.text).then(function(item) {
+          $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+        }, function (error) {
+          $scope.displayMessage('error', error)
+        });
+    }, function (error) {
+      console.log('Scanning failed: ' + error);
     });
   };
 

@@ -3,10 +3,21 @@
     Welcome Back {{::userProfile.displayname}}!
   </div>
   <div header-buttons>
+    <!-- <a ng-click="openQuickAdd()">Quick Add</a>
     <button class="btn btn-primary btn-lg" 
 		ng-disabled="!canCreateOrders"
         ui-sref="menu.addtoorder.items({ })"
-        ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button>
+        ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button> -->
+    <div class="btn-group" dropdown is-open="status.isopen">
+      <button type="button" class="btn btn-lg btn-default dropdown-toggle">
+        Create An Order <span class="icon-arrow-down6"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li><a ui-sref="menu.addtoorder.items({ listId: 0 })">From List</a></li>
+        <li><a ng-click="openQuickAddModal()">From Quick Add</a></li>
+        <li><a ng-click="openOrderImportModal()">From Import</a></li>
+      </ul>
+    </div>
   </div>
 </div>
 
@@ -47,8 +58,8 @@
           </div>
         </div>
       </div>
-      <div class="info-box account-summary__graph">
-        <h4><strong>Order Summary Last 6 Months</strong></h4>
+      <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">
+        <h4 style="margin-left: 15px; margin-top: 0;"><strong>Order Summary Last 6 Months</strong></h4>
         <span class="text-red" ng-show="ordersMessage">{{ordersMessage}}</span>
         <div id="chart_div" style="height:140px;width:100%;"></div>
       </div>
@@ -77,19 +88,35 @@
       <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4 | styleOrders" ng-class="order.highlightClass">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
-            <span>ORDER #</span>
-            <a ui-sref="menu.orderitems({ orderNumber: order.ordernumber})" class="order-col__number">{{order.ordernumber}}</a>
+            <span>INVOICE #</span>
+            <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
+            <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            {{order.deliveryDate || 'TBD'}}
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy'}}</span>
+            <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">
             {{order.ordertotal | currency}}
           </div>
-          <div class="nowrap col-md-3 table-col highlight-col">
-            {{order.status}}
-          </div>
+          <!-- Order Status -->
+          <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
+              {{order.status}}
+          </div><!-- Display order status before ETA info is available -->
+          <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null || order.estimateddeliverytime != null 
+                                                                      || order.actualdeliverytime != null" style="padding:24px 0">
+            <span ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null && order.deliveryoutofsequence != true" class="small-icon icon-truck">
+                <span style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | LocalTimeZoneTime}}</span>
+            </span>
+            <span ng-if="order.actualdeliverytime != null">
+              Delivered<span style="white-space: nowrap;"><br />{{order.actualdeliverytime | LocalTimeZoneTimeWithDate}}</span>
+            </span>
+            <span ng-if="(order.actualdeliverytime == null && order.estimateddeliverytime == null) || order.deliveryoutofsequence == true" class="small-icon icon-truck">
+              <span style="white-space: nowrap;"><br />Out For Delivery</span>
+            </span>
+          </div> <!-- Display ETA info once it s available -->
+          <!-- Order Status -->
           <div class="col-md-2 table-col highlight-col">
             {{order.invoicestatus || 'N/A'}}
           </div>
@@ -109,8 +136,9 @@
         <div class="order-col">
           <div class="row">
             <div class="col-xs-6">
-              <span>ORDER #</span>
-              <a ui-sref="menu.orderitems({ orderNumber: order.ordernumber})" class="order-col__number">{{order.ordernumber}}</a>
+              <span>INVOICE #</span>
+              <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
+              <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
             </div>
             <div class="col-xs-6 order-col__date">
               <span class="icon-calendar"></span> {{order.createddate | date:'MM/dd/yyyy h:mma'}}

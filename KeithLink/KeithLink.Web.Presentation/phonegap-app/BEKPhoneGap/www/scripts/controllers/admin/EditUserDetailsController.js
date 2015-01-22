@@ -1,123 +1,176 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$stateParams', 'UserProfileService', 'LocalStorage', 'returnedProfile',
-    function ($scope, $stateParams, UserProfileService, LocalStorage, returnedProfile) {
-      /*---convenience functions---*/
-      var processProfile = function(newProfile){
-        //rename email <----- NEEDS FIX ON RESPONSE TYPE
-        newProfile.email = newProfile.emailaddress;
-        delete newProfile.emailaddress;
+  .controller('EditUserDetailsController', ['$scope', '$q', 'UserProfileService', 'userProfile', 'CustomerService',
+    function ($scope, $q, UserProfileService, userProfile, CustomerService) {
 
-        //rename role <----- NEEDS FIX ON RESPONSE TYPE
-        newProfile.role = newProfile.rolename;
-        delete newProfile.rolename;
+  /*---convenience functions---*/
+  var processProfile = function(newProfile){
+    // rename email <----- NEEDS FIX ON RESPONSE TYPE
+    newProfile.email = newProfile.emailaddress;
+    delete newProfile.emailaddress;
 
-        //rename customers <----- NEEDS FIX ON RESPONSE TYPE
-        newProfile.customers = newProfile.user_customers;
-        delete newProfile.user_customers;
+    // rename role <----- NEEDS FIX ON RESPONSE TYPE
+    newProfile.role = newProfile.rolename;
+    delete newProfile.rolename;
 
-        $scope.profile = newProfile;
+    // rename customers <----- NEEDS FIX ON RESPONSE TYPE
+    newProfile.customers = newProfile.user_customers;
+    delete newProfile.user_customers;
 
-        //if the user has customers assigned to them, go through the account customers and set matching
-        //ones to true, otherwise set to false
-        if($scope.profile.customers){
-          $scope.profile.customers.forEach(function(profileCustomer){
-            $scope.customers.forEach(function(accountCustomer){
-              if(accountCustomer.customerNumber === profileCustomer.customerNumber){
-                accountCustomer.selected = true;
-              } else {
-                if(!accountCustomer.selected === true) {
-                  accountCustomer.selected = false;
-                }
-              }
-            });
-          });
-        } else {
-          $scope.customers.forEach(function(customer){
-            customer.selected = false;
-          });
+    if (!newProfile.customers) {
+      newProfile.customers = [];
+    }
+    $scope.profile = newProfile;
+  };
+
+  /*---Init---*/
+  function init() {
+    //$scope.roles = RoleService.getRoles(); //get available roles <----NEEDS ENDPOINT
+    $scope.roles = ['owner', 'accounting', 'approver', 'buyer', 'guest'];
+
+    processProfile(userProfile);
+
+    $q.all([
+      loadAvailableCustomers(customersConfig).then(setCustomers),
+      
+      UserProfileService.getAllUserCustomers(userProfile.userid).then(function(customers) {
+        $scope.profile.customers = customers;
+      })
+    ]).then(findSelectedCustomers);
+  }
+
+  /*---edit profile---*/
+  $scope.updateProfile = function () {
+    //attaches only selected customers to profile object before it is pushed to the database
+    var selectedCustomers = [];
+    $scope.customers.forEach(function(customer){
+      if(customer.selected){
+        selectedCustomers.push(customer);
+      }
+    });
+
+    $scope.profile.customers = selectedCustomers;
+
+    //pushes profile object to database
+    UserProfileService.updateUserProfileFromAdmin($scope.profile).then(function(newProfile){
+      $scope.displayMessage('success', 'The user was successfully updated.');
+    }, function(error){
+      $scope.displayMessage('error', 'An error occurred: ' + error);
+    });
+  };
+
+  // TODO: better way to do this?
+  $scope.deleteProfile = function (profile) {
+    //wipe customers out of user profile and set profile to lowest permission role
+    profile.role = 'guest';
+    profile.customers = [];
+
+    //push freshly wiped profile to database
+    UserProfileService.updateUserProfileFromAdmin(profile).then(function(newProfile){
+      //refreshes page with newest data
+      processProfile(newProfile);
+      $scope.displayMessage('success', 'The user was successfully deleted.');
+    }, function(error){
+      $scope.displayMessage('error', 'An error occurred: ' + error);
+    });
+  };
+
+  /**********
+  CUSTOMERS
+  **********/
+  $scope.customersSortAsc = true;
+  $scope.customersSortField = 'customerName';
+  var customersConfig = {
+    term: '',
+    size: 30,
+    from: 0,
+    sortField: $scope.customersSortField,
+    sortOrder: 'asc'
+  };
+
+  function loadAvailableCustomers(customersConfig) {
+    $scope.loadingCustomers = true;
+    return CustomerService.getCustomers(
+      customersConfig.term,
+       customersConfig.size,
+       customersConfig.from,
+       customersConfig.sortField,
+       customersConfig.sortOrder
+    ).then(function(data) {
+      $scope.loadingCustomers = false;
+      $scope.totalCustomers = data.totalResults;
+      return data.results;
+    });
+  }
+
+  function setCustomers(customers) {
+    $scope.customers = customers;
+  }
+  function appendCustomers(customers) {
+    $scope.customers = $scope.customers.concat(customers);
+  }
+
+  function findSelectedCustomers() {
+    // check if customer is selected
+    $scope.customers.forEach(function(customer) {
+      $scope.profile.customers.forEach(function(profileCustomer) {
+        if (customer.customerId === profileCustomer.customerId) {
+          customer.selected = true;
         }
-      };
+      });
 
-      //logic for proper select filtering, allows user to disable filter instead of showing only true or only false
-      $scope.filterFields = {};
-      $scope.setSelectedFilter = function(selectedFilter) {
-        if (selectedFilter) {
-          delete $scope.filterFields.selected;
-        } else {
-          $scope.filterFields.selected = true;
-        }
-      };
+      if (!customer.selected) {
+        customer.selected = false;
+      }
+    });
+  }
 
-      /*---Init---*/
-      //set default table sorting
-      $scope.sortBy = 'customerNumber';
-      $scope.sortOrder = true;
+  $scope.searchCustomers = function (searchTerm) {
+    customersConfig.from = 0;
+    customersConfig.term = searchTerm;
+    loadAvailableCustomers(customersConfig).then(setCustomers);
+  };
 
-      //$scope.roles = RoleService.getRoles(); //get available roles <----NEEDS ENDPOINT
+  $scope.sortCustomers = function(field, order) {
+    customersConfig.from = 0;
+    customersConfig.size = 30;
+    customersConfig.sortField = field;
+    $scope.customersSortField = field;
 
-      $scope.roles = ["owner", "accounting", "approver", "buyer", "guest"];
+    $scope.customersSortAsc = order;
+    if (order) {
+      customersConfig.sortOrder = 'asc';
+    } else {
+      customersConfig.sortOrder = 'desc';
+    }
+    
+    loadAvailableCustomers(customersConfig).then(setCustomers);
+  };
 
-      //get customers from the account of the currently logged in user
-      //$scope.customers = CustomerService.getAllCustomers(LocalStorage.getProfile().accountId);
-      $scope.customers = LocalStorage.getProfile().user_customers; // <--- NEEDS TO HIT CUSTOMER SERVICE ENDPOINT INSTEAD
+  $scope.infiniteScrollLoadMore = function() {
+    if (($scope.customers && $scope.customers.length >= $scope.totalCustomers) || $scope.loadingCustomers) {
+      return;
+    }
+    customersConfig.from += customersConfig.size;
+    loadAvailableCustomers(customersConfig).then(appendCustomers);
+  };
 
-      //get current user profile
-      processProfile(returnedProfile);
+  $scope.selectCustomer = function(customer) {
+    $scope.profile.customers.push(customer);
+    customer.selected = true;
+  };
 
-      /*---selected customers functions---*/
-      $scope.changeAllSelected = function (state) {
-        $scope.customers.forEach(function(customer){
-          customer.selected = state;
-        });
-      };
+  $scope.unselectCustomer = function(customer) {
+    var idx = $scope.profile.customers.indexOf(customer);
+    $scope.profile.customers.splice(idx, 1);
+    $scope.customers.forEach(function(availableCustomer) {
+      if (customer.customerNumber === availableCustomer.customerNumber) {
+        availableCustomer.selected = false;
+      }
+    });
+    customer.selected = false;
+  };
 
-      /*---edit profile---*/
-      $scope.updateProfile = function () {
-        //attaches only selected customers to profile object before it is pushed to the database
-        var selectedCustomers = [];
-        $scope.customers.forEach(function(customer){
-          if(customer.selected){
-            selectedCustomers.push(customer);
-          }
-        });
-
-        $scope.profile.customers = selectedCustomers;
-
-        //pushes profile object to database
-        UserProfileService.updateProfile($scope.profile).then(function(newProfile){
-          $scope.displayMessage('success',"The user was successfully updated.");
-          //processProfile(newProfile); // <-- UNCOMMENT WHENEVER DATA SENT BACK IS FRESH
-        },function(error){
-          $scope.displayMessage('error',"An error occurred: " + error);
-        });
-      };
-
-      $scope.deleteProfile = function () {
-        //wipe customers out of user profile and set profile to lowest permission role
-        $scope.profile.role = "guest";
-        $scope.profile.customers = [];
-
-        //push freshly wiped profile to database
-        UserProfileService.updateProfile($scope.profile).then(function(newProfile){
-          //refreshes page with newest data
-          processProfile(newProfile);
-          //displays message to user that the transaction was completed successfully
-          $scope.displayMessage('success',"The user was successfully deleted.");
-        },function(error){
-          $scope.displayMessage('error',"An error occurred: " + error);
-        });
-      };
-
-      /*---Sorting Controls for Table---*/
-      $scope.changeSort = function (column) {
-        var sort = $scope.sort;
-        if (sort.column == column) {
-            sort.descending = !sort.descending;
-        } else {
-            sort.column = column;
-            sort.descending = false;
-        }
-      };
-  }]);
+  init();
+}]);

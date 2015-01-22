@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         public string SaveContentImage( long contentId, string fileName, string base64file ) {
             string returnValue = null;
 
-            string postUrl = String.Concat( Configuration.MultiDocsProxyUrl, MULTIDOCS_ACTION );
+            string postUrl = String.Concat( Configuration.MultiDocsUrl, MULTIDOCS_ACTION );
 
             Dictionary<string, string> postData = new Dictionary<string, string>();
 

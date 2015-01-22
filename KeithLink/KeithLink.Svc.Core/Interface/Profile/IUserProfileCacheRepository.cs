@@ -7,11 +7,11 @@ using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Core.Interface.Profile
 {
-    public interface IUserProfileCacheRepository
-    {
-        UserProfile GetProfile(string emailAddress);
-        void AddProfile(UserProfile userProfile);
-        void ResetAllItems();
-        void RemoveItem(string emailAddress);
-    }
+	//public interface IUserProfileCacheRepository
+	//{
+	//	UserProfile GetProfile(string emailAddress);
+	//	void AddProfile(UserProfile userProfile);
+	//	void ResetAllItems();
+	//	void RemoveItem(string emailAddress);
+	//}
 }

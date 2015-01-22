@@ -7,18 +7,24 @@ using System.Collections.Generic;
 using System.Linq;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
     public class CustomerRepository : BaseOrgRepository, Core.Interface.Profile.ICustomerRepository
     {
         #region attributes
+
+		protected string CACHE_GROUPNAME { get { return "Profile"; } }
+		protected string CACHE_NAME { get { return "Profile"; } }
+		protected string CACHE_PREFIX { get { return "Default"; } }
+
         IEventLogRepository _logger;
-        ICustomerCacheRepository _customerCacheRepository;
+        ICacheRepository _customerCacheRepository;
         #endregion
 
         #region ctor
-        public CustomerRepository(IEventLogRepository logger, ICustomerCacheRepository customerCacheRepository)
+		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository)
         {
             _logger = logger;
             _customerCacheRepository = customerCacheRepository;
@@ -37,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public List<Customer> GetCustomers() {
-            var allCustomersFromCache = _customerCacheRepository.GetItem<List<Customer>>(GetCacheKey("allCustomers"));
+            var allCustomersFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("allCustomers"));
             if (allCustomersFromCache != null)
                 return allCustomersFromCache;
                 
@@ -54,19 +60,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 });
 
             List<Customer> customersList = customers.ToList();
-            _customerCacheRepository.AddItem<List<Customer>>(GetCacheKey("allCustomers"), customersList);
+			_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("allCustomers"), TimeSpan.FromHours(4), customersList);
             return  customersList;
         }
 
         public void ClearCustomerCache()
         {
-            _customerCacheRepository.RemoveItem(GetCacheKey("allCustomers"));
+			_customerCacheRepository.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
         }
 
         public void AddUserToCustomer(Guid customerId, Guid userId)
         {
             base.AddUserToOrg(customerId, userId);
-			_customerCacheRepository.RemoveItem(GetCacheKey(string.Format("user_{0}",userId.ToString())));
+			_customerCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("user_{0}", userId.ToString())));
 		}
 
         private static string GetUserOrgKey(Guid customerId, Guid userId)
@@ -77,12 +83,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public void RemoveUserFromCustomer(Guid customerId, Guid userId)
         {
             base.RemoveUserFromOrg(customerId, userId);
-			_customerCacheRepository.RemoveItem(GetCacheKey(string.Format("user_{0}",userId.ToString())));
+			_customerCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("user_{0}", userId.ToString())));
         }
 
         public List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId)
         {
-			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(GetCacheKey(string.Format("user_{0}",userId.ToString())));
+			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("user_{0}", userId.ToString())));
 			if (customerFromCache != null && customerFromCache.Count > 0)
 				return customerFromCache;
 
@@ -101,7 +107,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     userCustomers.Add(OrgToCustomer(org));
                 }
             }
-			_customerCacheRepository.AddItem<List<Customer>>(GetCacheKey(string.Format("user_{0}", userId.ToString())), userCustomers);
+			_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("user_{0}", userId.ToString())), TimeSpan.FromHours(4), userCustomers);
 
             return userCustomers;
         }
@@ -113,7 +119,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         public Customer GetCustomerByCustomerNumber(string customerNumber)
         {
-			var customerFromCache = _customerCacheRepository.GetItem<Customer>(GetCacheKey(customerNumber));
+			var customerFromCache = _customerCacheRepository.GetItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(customerNumber));
 			if (customerFromCache != null)
 				return customerFromCache;
 
@@ -125,7 +131,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			if (res.CommerceEntities.Count > 0)
 			{
 				var customer = OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]));
-				_customerCacheRepository.AddItem<Customer>(GetCacheKey(customerNumber), customer);
+				_customerCacheRepository.AddItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(customerNumber), TimeSpan.FromHours(4), customer);
 
 				return customer;
 			}
@@ -173,7 +179,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                             && !org.PreferredAddress.Telephone.Equals("0000000000") ? org.PreferredAddress.Telephone : string.Empty, // get from address profile
                 Email = string.Empty,
                 PointOfContact = string.Empty,
-                CurrentBalance = org.CurrentBalance,
+                CurrentBalance = org.AmountDue, //change from current balance per Tom B.'s reccommendation
                 BalanceAge1 = org.BalanceAge1,
                 BalanceAge2 = org.BalanceAge2,
                 BalanceAge3 = org.BalanceAge3,
@@ -204,7 +210,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 		public List<Customer> GetCustomersForDSR(string dsrNumber)
 		{
-			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(GetCacheKey(dsrNumber));
+			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsrNumber));
 			if (customerFromCache != null)
 				return customerFromCache;
 
@@ -225,7 +231,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 					}
 				}
 
-				_customerCacheRepository.AddItem<List<Customer>>(GetCacheKey(dsrNumber), customers);
+				_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsrNumber), TimeSpan.FromHours(4), customers);
 			}
 
             return customers;
@@ -233,7 +239,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 		public List<Customer> GetCustomersForAccount(string accountId)
 		{
-			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(GetCacheKey(string.Format("acct-{0}", accountId)));
+			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("acct-{0}", accountId)));
 			if (customerFromCache != null)
 				return customerFromCache;
 
@@ -254,7 +260,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 					}
 				}
 
-				_customerCacheRepository.AddItem<List<Customer>>(GetCacheKey(string.Format("acct-{0}", accountId)), customers);
+				_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("acct-{0}", accountId)), TimeSpan.FromHours(4), customers);
 			}
 
             return customers;
@@ -286,7 +292,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 		public List<Customer> GetCustomersForParentAccountOrganization(string accountId)
 		{
-			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(GetCacheKey(string.Format("acct-{0}", accountId)));
+			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("acct-{0}", accountId)));
 			if (customerFromCache != null)
 				return customerFromCache;
 
@@ -307,7 +313,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 					}
 				}
 
-				_customerCacheRepository.AddItem<List<Customer>>(GetCacheKey(string.Format("acct-{0}", accountId)), customers);
+				_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("acct-{0}", accountId)), TimeSpan.FromHours(4), customers);
 			}
 
             return customers;

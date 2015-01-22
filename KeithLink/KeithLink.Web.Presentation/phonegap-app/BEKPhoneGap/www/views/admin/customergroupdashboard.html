@@ -1,0 +1,201 @@
+<div page-header-bar>
+  <div header-message>
+    Group Administration
+  </div>
+  <div header-buttons></div>
+</div>
+
+<div class="page-content">
+<h2 ng-if="groupName">Customer Group: {{groupName}}</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-inline">
+      <div class="form-group">
+        <span class="text-red" ng-show="userExists">This user already exists, please contact Ben E. Keith Customer Service to add this user to your account</span>
+        <br ng-show="userExists">
+        <input type="email" class="form-control" placeholder="Enter email address" ng-model="addNewUserEmail"/>
+        <button class="btn btn-primary" ng-click="checkUser(addNewUserEmail)">Create New User</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    <h3>Assigned Admin Users</h3>
+
+    <div class="infiniteScroll">
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortBy1='emailaddress';sortOrder1=!sortOrder1;">Email
+            <span sort-icons field="'emailaddress'" sortorder="sortOrder1" sortby="sortBy1"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy1='firstname';sortOrder1=!sortOrder1;">First Name
+            <span sort-icons field="'firstname'" sortorder="sortOrder1" sortby="sortBy1"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy1='lastname';sortOrder1=!sortOrder1;">Last Name
+            <span sort-icons field="'lastname'" sortorder="sortOrder1" sortby="sortBy1"></span>
+          </th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="adminUser in adminUsers | orderBy:sortBy1:sortOrder1"
+              ng-class="{ odd : $odd, even: $even }">
+            <td><a class="btn-link" ui-sref="menu.admin.edituser({email: adminUser.emailaddress})">{{adminUser.emailaddress}}</a></td>
+            <td>{{adminUser.firstname}}</td>
+            <td>{{adminUser.lastname}}</td>
+            <td>
+              <a ng-click="addUserToRecipients(adminUser)" class="glyphicon glyphicon-plus"></a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="adminUsers.length === 0">
+          <tr>
+            <td colspan="4">There are no users to display.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="text-center" loading-spinner="loadingUsers"></div>
+
+    <h3>Assigned Customer Users</h3>
+
+    <div class="infiniteScroll">
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortBy2='emailaddress';sortOrder2=!sortOrder2;">Email
+            <span sort-icons field="'emailaddress'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy2='firstname';sortOrder2=!sortOrder2;">First Name
+            <span sort-icons field="'firstname'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy2='lastname';sortOrder2=!sortOrder2;">Last Name
+            <span sort-icons field="'lastname'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortBy2='rolename';sortOrder2=!sortOrder2;">Role
+            <span sort-icons field="'rolename'" sortorder="sortOrder2" sortby="sortBy2"></span>
+          </th>
+          <th class="icon-col">
+            <a ng-click="showFilter2 = !showFilter2;" class="icon-filter large-icon"></a>
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="filter-row" ng-show="showFilter2">
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.emailaddress">
+          </td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.firstname">
+          </td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.lastname">
+          </td>
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterFields2.rolename">
+          </td>
+          <td class="icon-col">
+            <a ng-click="filterFields2 = {}" class="large-icon text-light icon-cross3"></a>
+          </td>
+        </tr>
+        <tr ng-repeat="customerUser in customerUsers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
+            ng-class="{ odd : $odd, even: $even }">
+          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: customerUser.emailaddress})">{{customerUser.emailaddress}}</a></td>
+          <td>{{customerUser.firstname}}</td>
+          <td>{{customerUser.lastname}}</td>
+          <td class="text-capitalize">{{customerUser.rolename}}</td>
+          <td>
+            <a ng-click="addUserToRecipients(customerUser)" class="glyphicon glyphicon-plus"></a>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot ng-show="customerUsers.length === 0">
+        <tr>
+          <td colspan="5">There are no users to display.</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="text-center" loading-spinner="loadingUsers"></div>
+
+  </div>
+  <div class="col-md-6">
+    <h3>Assigned Customers</h3>
+    Showing {{customers.length}} of {{totalCustomers}} Customers
+
+    <form name="customerSearchForm" class="search-form">
+      <div class="input-group">
+        <input 
+          ng-model="customerSearchTerm" 
+          type="text" 
+          class="form-control" 
+          placeholder="Filter customers by name or number" />
+        <span class="input-group-btn">
+          <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default icon-search"></button>
+        </span>
+      </div>
+    </form>
+
+    <div class="infiniteScroll infiniteScroll-customers">
+      <table class="table no-margin table-border table-striped-rows"
+        infinite-scroll="infiniteScrollLoadMore()" 
+        infinite-scroll-container="'.infiniteScroll-customers'">
+        <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortAsc);">
+            Number
+            <span sort-icons field="'customerNumber'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortAsc)">
+            Name
+            <span sort-icons field="'customerName'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+          </th>
+          <th></th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="customer in customers"
+            ng-class="{ odd : $odd, even: $even }">
+          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})">{{customer.customerNumber}}</a>
+          </td>
+          <td>{{customer.customerName}}</td>
+          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})"><span
+            class="glyphicon glyphicon-pencil"></span> Customer Details</a></td>
+          <td>
+            <a ng-click="addCustomerToRecipients(customer)" class="glyphicon glyphicon-plus"></a>
+          </td>
+        </tr>
+        </tbody>
+        <tfoot ng-show="customers.length === 0">
+        <tr>
+          <td colspan="4">There are no customers to display.</td>
+        </tr>
+        </tfoot>
+      </table>
+    </div>
+    <div class="text-center" loading-spinner="loadingCustomers"></div>
+    
+  </div>
+</div>
+<h3>Broadcast a Message</h3>
+<div class="row">
+  <div class="col-md-6">
+    <label for="subjectHeader" class="control-label">Subject Header</label>
+    <input type="text" id="subjectHeader" ng-model="broadcast.subject" class="form-control" placeholder="Enter Subject Header Here">
+    <br>
+    <label for="bodyContent" class="control-label">Body Content</label>
+    <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
+    <button class="btn btn-primary top-buffer" ng-click="sendMessage()">Send Message</button>
+  </div>
+  <div class="col-md-6">
+    <label class="control-label">Broadcast Recipients <span style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span></label>
+    <ul class="form-control list-unstyled infiniteScroll" style="min-height: 135px;">
+      <li ng-repeat="recipient in recipients"><span style="cursor: pointer; color: red;" class="glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient)"></span> {{recipient.displayName}} ({{recipient.type}})</li>
+    </ul>
+  </div>
+</div>
+</div>

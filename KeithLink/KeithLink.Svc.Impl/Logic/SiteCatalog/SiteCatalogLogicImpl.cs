@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -25,13 +26,19 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private IProductImageRepository _imgRepository;
 		private IDivisionRepository _divisionRepository;
         private ICategoryImageRepository _categoryImageRepository;
-        private ICatalogCacheRepository _catalogCacheRepository;
+        private ICacheRepository _catalogCacheRepository;
 		private IListServiceRepository _listServiceRepository;
 		private IDivisionLogic _divisionLogic;
         private IOrderServiceRepository _orderServiceRepository;
+
+		protected string CACHE_GROUPNAME { get { return "Catalog"; } }
+		protected string CACHE_NAME { get { return "Catalog"; } }
+		protected string CACHE_PREFIX { get { return "Default"; } }
         #endregion
 
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICatalogCacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderServiceRepository orderServiceRepository)
+		public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, 
+			IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, 
+			IOrderServiceRepository orderServiceRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
@@ -46,13 +53,13 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public CategoriesReturn GetCategories(int from, int size)
         {
-            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(GetCategoriesCacheKey(from, size));
+			CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size));
             if (categoriesReturn == null)
             {
                 categoriesReturn = _catalogRepository.GetCategories(from, size);
                 AddCategoryImages(categoriesReturn);
                 AddCategorySearchName(categoriesReturn);
-                _catalogCacheRepository.AddItem<CategoriesReturn>(GetCategoriesCacheKey(from, size), categoriesReturn);
+				_catalogCacheRepository.AddItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size),TimeSpan.FromHours(2), categoriesReturn);
             }
             return categoriesReturn;
         }
@@ -86,6 +93,46 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			
             return ret;
         }
+
+		public Product GetProductByIdorUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile)
+		{
+			Product ret = null;
+			if (idorupc.Length <= 6)
+				ret = _catalogRepository.GetProductById(catalogInfo.BranchId, idorupc);
+			else
+			{
+				//Try to find by UPC
+				ProductsReturn products = GetProductsBySearch(catalogInfo, idorupc, new SearchInputModel() { From = 0, Size = 10, SField= "upc" }, profile);
+				foreach (Product p in products.Products)
+				{
+					if (p.UPC == idorupc)
+					{
+						return p;
+					}
+				}
+			}
+
+
+			if (ret == null)
+				return null;
+
+			AddFavoriteProductInfo(profile, ret, catalogInfo);
+			AddProductImageInfo(ret);
+			AddItemHistoryToProduct(ret, catalogInfo);
+
+			PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+
+			if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
+			{
+				var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
+				ret.CasePrice = String.Format("{0:C}", price.CasePrice);
+				ret.CasePriceNumeric = price.CasePrice;
+				ret.PackagePrice = String.Format("{0:C}", price.PackagePrice);
+				ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
+			}
+
+			return ret;
+		}
 
         private void AddCategoryImages(CategoriesReturn returnValue)
         {

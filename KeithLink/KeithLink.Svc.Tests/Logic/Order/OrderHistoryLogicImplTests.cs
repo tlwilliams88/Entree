@@ -13,6 +13,7 @@ using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Repository.Queue;
+using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Test.Logic.Order {
     [TestClass]
@@ -25,7 +26,7 @@ namespace KeithLink.Svc.Test.Logic.Order {
         private IOrderHistoryHeaderRepsitory _headerRepo;
         private OrderHistoryLogicImpl _logic;
         private GenericQueueRepositoryImpl _queue;
-        private NoCachePriceCacheRepositoryImpl _priceCache;
+		private NoCacheRepositoryImpl _priceCache;
         private PriceLogicImpl _priceLogic;
         private PriceRepositoryImpl _priceRepo;
         private ProductImageRepositoryImpl _imgRepo;

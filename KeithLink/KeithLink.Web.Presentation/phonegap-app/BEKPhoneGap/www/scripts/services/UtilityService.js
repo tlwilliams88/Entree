@@ -65,6 +65,8 @@ angular.module('bekApp')
           } else {
             deferred.reject(data.errorMessage);
           }
+        }, function(error) {
+          deferred.reject('An error occurred.');
         });
         return deferred.promise;
       }
