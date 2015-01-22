@@ -90,6 +90,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             return prod;
         }
 
+		[HttpGet]
+		[ApiKeyedRoute("catalog/product/scan/{idorupc}")]
+		public Product GetProductByIdorUPC(string idorupc)
+		{
+			Product prod = _catalogLogic.GetProductByIdorUPC(this.SelectedUserContext, idorupc, this.AuthenticatedUser);
+					
+			return prod;
+		}
+
         [HttpGet]
         [ApiKeyedRoute("catalog/search/{searchTerms}/products")]
 		public ProductsReturn GetProductsSearch(string searchTerms, [FromUri] SearchInputModel searchModel)

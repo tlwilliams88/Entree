@@ -7,10 +7,10 @@ using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Test.MockRepository;
 using KeithLink.Svc.Impl.Repository.Lists;
+using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Test.Logic.SiteCatalog
 {
@@ -24,12 +24,12 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
         {
             _logic = new SiteCatalogLogicImpl(
                 new ElasticSearchCatalogRepositoryImpl(),
-                new PriceLogicImpl(new PriceRepositoryImpl(), new NoCachePriceCacheRepositoryImpl()),
+				new PriceLogicImpl(new PriceRepositoryImpl(), new NoCacheRepositoryImpl()),
                 new ProductImageRepositoryImpl(),
 				new NoListServiceRepositoryImpl(),
                 new DivisionRepositoryImpl(),
                 new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
-                new NoCacheCatalogCacheRepositoryImpl(),
+				new NoCacheRepositoryImpl(),
 				new DivisionLogicImpl(new DivisionRepositoryImpl(), new NoDivisionServiceRepositoryImpl()),
                 new Impl.Repository.Orders.NoOrderServiceRepositoryImpl()
                 );

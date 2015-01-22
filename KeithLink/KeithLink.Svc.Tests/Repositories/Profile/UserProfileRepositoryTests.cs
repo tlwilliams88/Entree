@@ -1,16 +1,16 @@
 ﻿using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
     [TestClass]
     public class UserProfileRepositoryTests {
         #region attributes
-        private NoCacheUserProfileCacheRepository _cache;
+		private NoCacheRepositoryImpl _cache;
         private EventLogRepositoryImpl _log;
         private UserProfileRepository _profile;
         #endregion
@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #region ctor
         public UserProfileRepositoryTests() {
             _log = new EventLogRepositoryImpl("Unit tests");
-            _cache = new NoCacheUserProfileCacheRepository();
+            _cache = new NoCacheRepositoryImpl();
             _profile = new UserProfileRepository(_log);
         }
         #endregion

@@ -366,6 +366,7 @@
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BrandController.cs" />
+    <Compile Include="Controllers\CacheController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ContentManagementController.cs" />
     <Compile Include="Controllers\ReportController.cs" />

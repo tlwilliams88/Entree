@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -12,10 +13,14 @@ namespace KeithLink.Svc.Impl.Logic
     {
         #region attributes
         IPriceRepository _priceRepository;
-        IPriceCacheRepository _priceCacheRepository;
+        ICacheRepository _priceCacheRepository;
+
+		private const string CACHE_GROUPNAME = "Pricing";
+		private const string CACHE_NAME = "Pricing";
+		private const string CACHE_PREFIX = "Default";
         #endregion
 
-        public PriceLogicImpl(IPriceRepository priceRepository, IPriceCacheRepository priceCacheRepository)
+		public PriceLogicImpl(IPriceRepository priceRepository, ICacheRepository priceCacheRepository)
         {
             _priceRepository = priceRepository;
             _priceCacheRepository = priceCacheRepository;
@@ -36,12 +41,17 @@ namespace KeithLink.Svc.Impl.Logic
                 List<Price> uncachedPrices = _priceRepository.GetPrices(BranchId, customerNumber, shipDate, uncachedProductList);
                 foreach (Price p in uncachedPrices)
                 {
-                    _priceCacheRepository.AddItem(p);
+					_priceCacheRepository.AddItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(p.BranchId, p.CustomerNumber, p.ItemNumber), TimeSpan.FromHours(2), p);
                 }
                 retVal.Prices.AddRange(uncachedPrices);
             }
             return retVal;
         }
+
+		private string GetCacheKey(string branchId, string customerNumber, string itemNumber)
+		{
+			return string.Format("{0}-{1}-{2}", branchId, customerNumber, itemNumber);
+		}
 
         /// <summary>
         /// separate items that are cached from non-cached items
@@ -62,7 +72,7 @@ namespace KeithLink.Svc.Impl.Logic
 
             foreach (Product currentProduct in fullList)
             {
-                Price tempPrice = _priceCacheRepository.GetPrice(branchId, customerNumber, currentProduct.ItemNumber);
+				Price tempPrice = _priceCacheRepository.GetItem<Price>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(branchId, customerNumber, currentProduct.ItemNumber));
 
                 if (tempPrice == null)
                 {

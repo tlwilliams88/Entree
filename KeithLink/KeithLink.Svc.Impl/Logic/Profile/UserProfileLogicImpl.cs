@@ -18,14 +18,19 @@ using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
         #region attributes
         private const string GUEST_USER_WELCOME = "GuestUserWelcome";
         private const string CREATED_USER_WELCOME = "CreatedUserWelcome";
+		protected string CACHE_GROUPNAME { get { return "Profile"; } }
+		protected string CACHE_NAME { get { return "Profile"; } }
+		protected string CACHE_PREFIX { get { return "Default"; } }
 
-        private IUserProfileCacheRepository _cache;
+
+        private ICacheRepository _cache;
         private IUserProfileRepository      _csProfile;
         private ICustomerDomainRepository   _extAd;
         private IUserDomainRepository       _intAd;
@@ -40,8 +45,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #endregion
 
         #region ctor
-        public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
+        public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
+									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
 									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository,
 									IEventLogRepository eventLog)
 		{
@@ -569,7 +574,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false)
 		{
             // check for cached user profile first
-            Core.Models.Profile.UserProfile profile = _cache.GetProfile(emailAddress);
+			Core.Models.Profile.UserProfile profile = _cache.GetItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
             UserProfileReturn retVal = new UserProfileReturn();
 
@@ -594,10 +599,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // add to cache if found
             if (retVal.UserProfiles.Count > 0) {
-                _cache.AddProfile(retVal.UserProfiles.FirstOrDefault());
+				_cache.AddItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(retVal.UserProfiles.FirstOrDefault().EmailAddress), TimeSpan.FromHours(2), retVal.UserProfiles.FirstOrDefault());
             }
             return retVal;
         }
+
+		private string CacheKey(string email)
+		{
+			return string.Format("{0}-{1}", "bek", email);
+		}
 
         /// <summary>
         /// get the role assigned to the specified user
@@ -706,8 +716,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _extAd.UpdateUserAttributes(existingUser.UserProfiles[0].EmailAddress, emailAddress, firstName, lastName);
 
             // remove the old user profile from cache and then update it with the new profile
-            _cache.RemoveItem(existingUser.UserProfiles[0].EmailAddress);
-            _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
+			_cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(existingUser.UserProfiles[0].EmailAddress));		
+			
         }
         #endregion
 
