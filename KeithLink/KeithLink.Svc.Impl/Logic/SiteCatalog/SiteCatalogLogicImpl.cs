@@ -94,6 +94,46 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
+		public Product GetProductByIdorUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile)
+		{
+			Product ret = null;
+			if (idorupc.Length <= 6)
+				ret = _catalogRepository.GetProductById(catalogInfo.BranchId, idorupc);
+			else
+			{
+				//Try to find by UPC
+				ProductsReturn products = GetProductsBySearch(catalogInfo, idorupc, new SearchInputModel() { From = 0, Size = 10, SField= "upc" }, profile);
+				foreach (Product p in products.Products)
+				{
+					if (p.UPC == idorupc)
+					{
+						return p;
+					}
+				}
+			}
+
+
+			if (ret == null)
+				return null;
+
+			AddFavoriteProductInfo(profile, ret, catalogInfo);
+			AddProductImageInfo(ret);
+			AddItemHistoryToProduct(ret, catalogInfo);
+
+			PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+
+			if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
+			{
+				var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
+				ret.CasePrice = String.Format("{0:C}", price.CasePrice);
+				ret.CasePriceNumeric = price.CasePrice;
+				ret.PackagePrice = String.Format("{0:C}", price.PackagePrice);
+				ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
+			}
+
+			return ret;
+		}
+
         private void AddCategoryImages(CategoriesReturn returnValue)
         {
             foreach (Category c in returnValue.Categories)
