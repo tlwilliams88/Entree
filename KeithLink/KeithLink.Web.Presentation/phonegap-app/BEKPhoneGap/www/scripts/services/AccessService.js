@@ -1,85 +1,104 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AccessService', ['AuthenticationService', 'LocalStorage', 'Constants',
-    function (AuthenticationService, LocalStorage, Constants) {
+  .factory('AccessService', ['LocalStorage', 'Constants',
+    function (LocalStorage, Constants) {
 
-    var Service = {
+  // validates the token is not expired
+  function isValidToken() {
+    var token = LocalStorage.getToken();
+    var now = new Date();
+    return (now < new Date(token.expires_at));
+  }
 
-      isLoggedIn: function() {
-        return !!(LocalStorage.getToken() && LocalStorage.getProfile() && AuthenticationService.isValidToken());
-      },
+  var Service = {
 
-      isOrderEntryCustomer: function() {
-        return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isDsr() ) );
-      },
+    isLoggedIn: function() {
+      return !!(LocalStorage.getToken() && LocalStorage.getProfile() && isValidToken());
+    },
 
-      isInternalUser: function() {
-        return ( Service.isLoggedIn() && ( Service.isDsr() ) );
-      },
+    isPasswordExpired: function() {
+        return (LocalStorage.getProfile().passwordexpired);
+    },
 
-      // ROLES
+    isOrderEntryCustomer: function() {
+      return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isDsr() ) );
+    },
 
-      isOwner: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
-      },
+    isInternalUser: function() {
+      return ( Service.isLoggedIn() && ( Service.isDsr() ) );
+    },
 
-      isAccounting: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.ACCOUNTING );
-      },
+    // ROLES
 
-      isApprover: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.APPROVER );
-      },
+    isOwner: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
+    },
 
-      isBuyer: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
-      },
+    isAccounting: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.ACCOUNTING );
+    },
 
-      isGuest: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
-      },
+    isApprover: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.APPROVER );
+    },
 
-      isSysAdmin: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.SYS_ADMIN );
-      },
+    isBuyer: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
+    },
 
-      isBranchManager: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
-      },
+    isGuest: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
+    },
 
-      isDsr: function() {
-        return ( LocalStorage.getUserRole() === Constants.roles.DSR );
-      },
+    isSysAdmin: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.SYS_ADMIN );
+    },
 
-      // PRIVILEDGES
+    isBranchManager: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
+    },
 
-      canBrowseCatalog: function() {
-        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
-      },
+    isDsr: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.DSR );
+    },
 
-      canManageLists: function() {
-        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
-      },
+    // PRIVILEDGES
 
-      canCreateOrders: function() {
-        return ( Service.isDsr() || Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
-      },
+    canBrowseCatalog: function() {
+      return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
+    },
 
-      canSubmitOrders: function() {
-        return ( Service.isDsr() || Service.isOwner() || Service.isApprover() );
-      },
+    canSeePrices: function() {
+      return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
+    },
 
-      canPayInvoices: function() {
-        return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() );
-      },
+    canManageLists: function() {
+      return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
+    },
 
-      canManageAccount: function() {
-        return ( Service.isDsr() || Service.isOwner() );
-      }
+    canCreateOrders: function() {
+      return ( Service.isDsr() || Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
+    },
 
-    };
- 
-    return Service;
+    canSubmitOrders: function() {
+      return ( Service.isDsr() || Service.isOwner() || Service.isApprover() );
+    },
 
-  }]);
+    canPayInvoices: function() {
+      return ( Service.isDsr() || Service.isOwner() || Service.isAccounting() );
+    },
+
+    canManageAccount: function() {
+      return ( Service.isDsr() || Service.isOwner() );
+    },
+
+    canManageAccounts: function() {
+      return ( true );
+    }
+
+  };
+
+  return Service;
+
+}]);

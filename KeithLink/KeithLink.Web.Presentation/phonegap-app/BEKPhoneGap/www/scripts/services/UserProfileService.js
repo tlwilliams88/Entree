@@ -8,13 +8,13 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService',
-    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService',
+    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService) {
 
     var Service = {
 
       // gets and sets current user profile
-      getProfile: function(email) { 
+      getCurrentUserProfile: function(email) { 
         return Service.getUserProfile(email).then(function (profile) {
           profile.salesRep = {
             'id': 34234,
@@ -24,22 +24,26 @@ angular.module('bekApp')
             'imageUrl': './images/placeholder-dsr.jpg'
           };
 
-          //profile.imageUrl = 'http://testmultidocs.bekco.com/avatar/{1d521e08-62c9-4749-ad62-dfe03617acfc}';
-
           LocalStorage.setProfile(profile);
-          // TODO: how to determine if user has customer locations, needs to match logic to display dropdowns
-          if (profile.rolename === 'guest') {
-            LocalStorage.setSelectedBranchInfo(profile.branchid);
-          } else {
+
+          // check if user is Order entry customer to determin which branch/context to select
+          if (AccessService.isOrderEntryCustomer()) {
             var userSelectedContext = {
               id: profile.defaultcustomer.customerNumber,
               text: profile.defaultcustomer.displayname,
               customer: profile.defaultcustomer
             };
             LocalStorage.setSelectedCustomerInfo(userSelectedContext);
+
+          } else {
+            LocalStorage.setSelectedBranchInfo(profile.branchid);
           }
 
           return profile;
+        }, function(error) {
+          // log out
+          LocalStorage.clearAll();
+          return $q.reject(error.data.error_description);
         });
       },
 
@@ -56,26 +60,29 @@ angular.module('bekApp')
         });
       },
 
-      searchUserCustomers: function(searchTerm, size, from) {
-        var data = {
-          params: {
-            size: size,
-            from: from,
-            terms: searchTerm
-          }
-        };
-        return $http.get('/profile/customer', data).then(function(response) {
-          return response.data;
+      getAllUserCustomers: function(userId) {
+        var promise = $http.get('/profile/user/' + userId + '/customers');
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse.customers;
         });
       },
 
       // accountid, customerid , email
       getAllUsers: function(params) {
-        var promise = $http.get('/profile/users', params);
+        var config = {
+          params: params
+        };
+        
+        var promise = $http.get('/profile/users', config);
 
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
           return successResponse.userProfiles;
         });
+      },
+
+      getUsersForGroup: function(accountId) {
+        var promise = $http.get('/profile/account/' + accountId + '/users');
+        return UtilityService.resolvePromise(promise);
       },
 
       createUser: function(userProfile) {
@@ -83,9 +90,12 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
-      // TODO: updateUser and updateProfile are duplicates
+      createUserFromAdmin: function(userProfile) {
+        var promise = $http.post('/profile/admin/user', userProfile);
+        return UtilityService.resolvePromise(promise);
+      },
 
-      updateUser: function(userProfile) {
+      updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
 
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
@@ -96,8 +106,14 @@ angular.module('bekApp')
         });
       },
 
-      updateProfile: function(userProfile) {
-        return Service.updateUser(userProfile);
+      updateUserProfileFromAdmin: function(userProfile) {
+        var promise = $http.put('/profile', userProfile);
+
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          var profile = successResponse.userProfiles[0];
+          $log.debug(profile);
+          return profile;
+        });
       },
 
       changePassword: function(passwordData) {
@@ -105,7 +121,7 @@ angular.module('bekApp')
 
         $http.put('/profile/password', passwordData).then(function(response) {
           $log.debug(response);
-          if (response.data === '"Password update successful"') {
+          if (response.data.successResponse === true) {
             deferred.resolve(response.data);
           } else {
             deferred.reject(response.data);
@@ -115,13 +131,10 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
+      /**********
+      AVATAR
+      **********/
       uploadAvatar: function(file) {
-        // TODO: add upload avatar api call
-        // needs to return url so you can refresh the profile object
-        // /profile/avatar
-        // file, name as params
-        // binary not base64
-
         var promise = $upload.upload({
           url: '/profile/avatar',
           method: 'POST',
@@ -130,7 +143,6 @@ angular.module('bekApp')
         });
 
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
-          // TODO: update url locally 
           toaster.pop('success', null, 'Successfully uploaded avatar');
         }, function(error) {
           toaster.pop('error', null, 'Error uploading avatar.');

@@ -13,6 +13,7 @@ angular.module('bekApp')
     var categories;
 
     var Service = {
+      itemUsageParams: false,
       getItemUsageReport: function(fromDate, toDate, sortField, sortDir) {
         var deferred = $q.defer();
 

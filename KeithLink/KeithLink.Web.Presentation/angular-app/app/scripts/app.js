@@ -56,8 +56,8 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, $window, $location) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location', 'PhonegapPushService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, $window, $location, PhonegapPushService) {
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -104,6 +104,9 @@ angular
 
     // redirect register page to homepage if logged in
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
+      if (ENV.mobileApp) {  // ask to allow push notifications
+        PhonegapPushService.register();
+      }
       $rootScope.redirectUserToCorrectHomepage();
       event.preventDefault();
     }
@@ -121,9 +124,10 @@ angular
     }
 
     // updates google analytics when state changes
-    if (!$window.ga)
+    if (!$window.ga) {
       return;
-        $window.ga('send', 'pageview', { page: $location.path() });
+    }
+    $window.ga('send', 'pageview', { page: $location.path() });
   });
 
 }]);

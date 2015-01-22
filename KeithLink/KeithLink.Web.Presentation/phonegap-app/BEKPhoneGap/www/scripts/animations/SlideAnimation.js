@@ -21,5 +21,5 @@ angular.module('bekApp').animation('.slide', function() {
         element.hide().slideDown(done);
       }
     }
-  }
+  };
 });

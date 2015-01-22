@@ -22,8 +22,8 @@
         <button
           class="btn-no-style"
           ng-click="$spMenu.hide()"
-          ui-sref="menu.accountdetails">
-          <li>Account Settings</li>
+          ui-sref="menu.userprofile">
+          <li>Profile Settings</li>
         </button>
         <button
           class="btn-no-style"
@@ -112,7 +112,7 @@
         <button
           class="btn-no-style"
           ng-disabled="!canCreateOrders"
-          ui-sref="menu.addtoorder.items({ })"
+          ui-sref="menu.addtoorder.items({ listId: 0 })"
           ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li>
             <div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>
@@ -122,8 +122,8 @@
         <button
           class="btn-no-style"
           ng-if="canManageAccount"
-          ui-sref="menu.admin.accountadmin"
-          ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}">
+          ng-click="goToAdminLandingPage()"
+          ng-class="{'is-selected': $state.includes('menu.admin')}">
           <li>
             <div class="sidebar-nav__icon"><span class="icon-cog"></span></div>
             Admin
@@ -158,7 +158,7 @@
 </div> <!-- end Mobile Sidebar -->
 
 <div id="sp-page" ng-swipe-left="$spMenu.hide()" ng-swipe-right="$spMenu.show()" class="desktop-wrapper">
-  
+
   <!-- Desktop Sidebar -->
   <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
     <div class="sidebar-logo text-center">
@@ -231,7 +231,7 @@
         <button
           class="btn-no-style"
           ng-disabled="!canCreateOrders"
-          ui-sref="menu.addtoorder.items({ })"
+          ui-sref="menu.addtoorder.items({ listId: 0 })"
           ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
           <li>
             <span class="icon-add-to-list sidebar-nav__icon"></span>
@@ -241,8 +241,8 @@
         <button
           class="btn-no-style"
           ng-if="canManageAccount"
-          ui-sref="menu.admin.accountadmin"
-          ng-class="{'is-selected': $state.includes('menu.admin.accountadmin')}" >
+          ng-click="goToAdminLandingPage()"
+          ng-class="{'is-selected': $state.includes('menu.admin') }" >
           <li>
             <span class="icon-cog sidebar-nav__icon"></span>
             Admin
@@ -260,7 +260,17 @@
       </p>
       <a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a>
     </div>
+
+            
     <div class="text-center sidebar-meta">
+      <div id="google_translate_element"></div>
+      <script type="text/javascript">
+           function googleTranslateElementInit() {
+             new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-58495462-2'}, 'google_translate_element');
+           }
+       </script>
+      <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
       <span>Copyright 2014 Ben E. Keith</span>
       <a href="#">benekeith.com</a>
     </div>
@@ -270,10 +280,11 @@
     <div class="col-sm-12">
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
         <ul class="left-mobile-menu" style="float: left;">
-          <a ng-hide="$state.current.name === 'menu.home'" ng-click="backfunction()"><li><span class="icon-back"></span></li></a>
+          <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li><span class="icon-back"></span></li></a>
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu" style="float: right;">
+          <a ng-show="isMobileApp" ng-click="scanBarcode()"><li><span class="icon-camera"></span></li></a>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
           <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
         </ul>
@@ -281,7 +292,7 @@
       </div>
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
-        <div class="col-md-4 hidden-sm hidden-xs">
+        <div class="col-md-4 hidden-sm hidden-xs" ng-hide="$state.includes('menu.admin')">
           <!-- <div class="select-div"> -->
             <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
           <!-- </div> -->
@@ -300,7 +311,7 @@
             </div>
           </form>
         </div>
-        <div class="col-md-4 hidden-sm hidden-xs text-right nowrap">
+        <div class="col-md-4 hidden-sm hidden-xs text-right nowrap pull-right">
           <div>
             <a ng-if="isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
               <span class="icon-bell"></span>
@@ -311,7 +322,7 @@
                 <span class="user-info__name">{{userProfile.displayname}}</span>
                 <span class="user-info__job-title text-capitalize">{{userProfile.rolename}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                  <button class="btn btn-lg btn-default" ui-sref="menu.accountdetails">Account Settings</button>
+                  <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                   <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>
