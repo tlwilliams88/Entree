@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -14,11 +14,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	{
 		private readonly IUnitOfWork unitOfWork;
 		private readonly IContentManagementItemRepository contentManagementRepository;
+        private readonly IEventLogRepository log;
 
-        public InternalContentManagementLogic(IContentManagementItemRepository contentManagementRepository, IUnitOfWork unitOfWork)
+        public InternalContentManagementLogic(IContentManagementItemRepository contentManagementRepository, IUnitOfWork unitOfWork,
+            IEventLogRepository log)
 		{
             this.contentManagementRepository = contentManagementRepository;
 			this.unitOfWork = unitOfWork;
+            this.log = log;
 		}
 
         public void CreateContentItem(Core.Models.ContentManagement.ContentItemPostModel contentItemModel)
@@ -41,6 +44,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     contentItem.ImageUrl = contentManagementRepository.SaveContentImage( contentItem.Id, contentItemModel.ImageFileName, contentItemModel.Base64ImageData );
                     unitOfWork.SaveChanges();
                 } catch (Exception e) {
+                    log.WriteErrorLog("Exception saving content item image", e);
                     throw new ApplicationException( String.Format( "There was an error uploading the image: {0}", e.Message ) );
                 }
             }
