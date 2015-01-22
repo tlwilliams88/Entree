@@ -230,7 +230,7 @@ namespace KeithLink.Svc.Impl.Logic {
         private string GetItemNumberFromUPC( string upc, OrderImportOptions options, UserProfile user, UserSelectedContext catalogInfo ) {
             string returnValue = String.Empty;
 
-            ProductsReturn products = catalogLogic.GetProductsBySearch( catalogInfo, upc, new SearchInputModel() { From = 0, Size = 10 }, user);
+            ProductsReturn products = catalogLogic.GetProductsBySearch( catalogInfo, upc, new SearchInputModel() { From = 0, Size = 10, SField= "upc"  }, user);
             foreach (Product p in products.Products) {
                 if (p.UPC == upc) {
                     returnValue = p.ItemNumber;

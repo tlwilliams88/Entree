@@ -97,6 +97,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Email\EmailTemplateTest.cs" />
+    <Compile Include="Logic\NoCacheRepositoryImpl.cs" />
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />
     <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />

@@ -16,14 +16,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
     {
         #region attributes
         IEventLogRepository _logger;
-        ICustomerCacheRepository _customerCacheRepository;
-        #endregion
+       #endregion
 
         #region ctor
-        public AccountRepository(IEventLogRepository logger, ICustomerCacheRepository customerCacheRepository)
+        public AccountRepository(IEventLogRepository logger)
         {
             _logger = logger;
-            _customerCacheRepository = customerCacheRepository;
         }
         #endregion
 

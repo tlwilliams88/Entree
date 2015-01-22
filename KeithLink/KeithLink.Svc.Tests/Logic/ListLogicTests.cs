@@ -8,7 +8,6 @@ using KeithLink.Svc.Test.MockRepository;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Repository.Profile.Cache;
 
 namespace KeithLink.Svc.Test.Logic
 {

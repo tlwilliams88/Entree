@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
-    function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService',
+    function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService) {
 
     // gets prepopulated login info for dev environment
     $scope.loginInfo = {
@@ -25,9 +25,12 @@ angular.module('bekApp')
       $scope.loginErrorMessage = '';
       
       AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
+<<<<<<< HEAD
+=======
         if (ENV.mobileApp) { // ask to allow push notifications
           PhonegapPushService.register();
         }
+>>>>>>> 1199270747403d434d230fb61b127bed91e83642
         $scope.redirectUserToCorrectHomepage();
       }, function(errorMessage) {
         $scope.loginErrorMessage = errorMessage;

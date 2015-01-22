@@ -164,6 +164,8 @@
     <Compile Include="Extensions\Orders\PurchaseOrderExtension.cs" />
     <Compile Include="Extensions\Paging.cs" />
     <Compile Include="Helpers\EnumUtil.cs" />
+    <Compile Include="Interface\Cache\ICacheRefreshRepository.cs" />
+    <Compile Include="Interface\Cache\ICacheRepository.cs" />
     <Compile Include="Interface\Configuration\IExportSettingServiceRepository.cs" />
     <Compile Include="Interface\Configuration\IInternalExportSettingLogic.cs" />
     <Compile Include="Interface\Configuration\IExportSettingRepository.cs" />

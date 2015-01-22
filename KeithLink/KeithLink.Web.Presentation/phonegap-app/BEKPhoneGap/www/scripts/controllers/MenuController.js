@@ -158,6 +158,8 @@ angular.module('bekApp')
       }
     });
   };
+<<<<<<< HEAD
+=======
 
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
@@ -176,6 +178,7 @@ angular.module('bekApp')
       console.log('Scanning failed: ' + error);
     });
   };
+>>>>>>> 1199270747403d434d230fb61b127bed91e83642
 
   /**********
   SET USER PERMISSIONS

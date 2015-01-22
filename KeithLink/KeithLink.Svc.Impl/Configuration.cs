@@ -124,6 +124,8 @@ namespace KeithLink.Svc.Impl
 
 		private const string KEY_CONTACT_EMAIL_FORMAT = "{0}_ContactEmail";
 		private const string KEY_ADD_SERVERNAME_TO_HEADER = "AddServerNameToHeaderResponse";
+		private const string KEY_CACHE_SERVERSENDPOINTS = "CacheServerEndpoints";
+
         #endregion
 
         #region methods
@@ -266,6 +268,15 @@ namespace KeithLink.Svc.Impl
                 return GetCommaSeparatedValues(val);
             }
         }
+
+		public static List<string> CacheServersEndpoints
+		{
+			get
+			{
+				string value = GetValue(KEY_CACHE_SERVERSENDPOINTS, string.Empty);
+				return GetCommaSeparatedValues(value);
+			}
+		}
         
         public static string AppDataConnectionString
         {
