@@ -32,7 +32,7 @@ angular
     'ui.select2',             // used for context menu dropdown in upper left corner
     'configenv'               // used to inject environment variables into angular through Grunt
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
 
   // configure loading bar
