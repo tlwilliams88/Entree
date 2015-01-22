@@ -6,17 +6,6 @@ using the directive, !!!properties must be strings
 fcsa-number="{ 'minDigits': 6 }"
 
 AVAILABLE OPTIONS
-<<<<<<< HEAD
-addMissingDecimals (requires maxDecimals to be set)
-maxDecimals
-min
-max
-preventInvalidInput
-maxDigits
-minDigits
-prepend
-append
-=======
 addMissingDecimals  boolean (requires maxDecimals to be set)
 maxDecimals         number
 min                 number
@@ -27,7 +16,6 @@ minDigits           number
 prepend             string
 append              string
 noFormat            boolean
->>>>>>> 1199270747403d434d230fb61b127bed91e83642
 */
 
 (function() {

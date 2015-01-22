@@ -32,7 +32,7 @@ angular
     'ui.select2',             // used for context menu dropdown in upper left corner
     'configenv'               // used to inject environment variables into angular through Grunt
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
 
   // configure loading bar
@@ -56,13 +56,8 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-<<<<<<< HEAD
-.run(['$rootScope', '$state', '$log', 'toaster', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location',
-  function($rootScope, $state, $log, toaster, AccessService, AuthenticationService, NotificationService, $window, $location) {
-=======
 .run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location', 'PhonegapPushService', 'PhonegapServices',
   function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, $window, $location, PhonegapPushService, PhonegapServices) {
->>>>>>> 1199270747403d434d230fb61b127bed91e83642
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -109,12 +104,9 @@ angular
 
     // redirect register page to homepage if logged in
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
-<<<<<<< HEAD
-=======
       if (ENV.mobileApp) {  // ask to allow push notifications
         PhonegapPushService.register();
       }
->>>>>>> 1199270747403d434d230fb61b127bed91e83642
       $rootScope.redirectUserToCorrectHomepage();
       event.preventDefault();
     }
@@ -132,16 +124,10 @@ angular
     }
 
     // updates google analytics when state changes
-<<<<<<< HEAD
-    if (!$window.ga)
-      return;
-        $window.ga('send', 'pageview', { page: $location.path() });
-=======
     if (!$window.ga) {
       return;
     }
     $window.ga('send', 'pageview', { page: $location.path() });
->>>>>>> 1199270747403d434d230fb61b127bed91e83642
   });
 
 }]);
