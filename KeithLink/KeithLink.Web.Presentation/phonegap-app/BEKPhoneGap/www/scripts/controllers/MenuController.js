@@ -9,8 +9,9 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
-    function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+
+  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
+    function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService) {
 
   $scope.$state = $state;
   $scope.isMobileApp = ENV.mobileApp;
@@ -162,15 +163,19 @@ angular.module('bekApp')
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
       function (result) {
-          console.log('We got a barcode\n' +
-                'Result: ' + result.text + '\n' +
-                'Format: ' + result.format + '\n' +
-                'Cancelled: ' + result.cancelled);
-      }, 
-      function (error) {
-          console.log('Scanning failed: ' + error);
-      }
-   );
+        // console.log('We got a barcode\n' +
+        //   'Result: ' + result.text + '\n' +
+        //   'Format: ' + result.format + '\n' +
+        //   'Cancelled: ' + result.cancelled);
+
+        ProductService.scanProduct(result.text).then(function(item) {
+          $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+        }, function (error) {
+          $scope.displayMessage('error', error)
+        });
+    }, function (error) {
+      console.log('Scanning failed: ' + error);
+    });
   };
 
   /**********
