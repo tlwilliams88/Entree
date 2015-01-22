@@ -18,13 +18,15 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
         List<EF.Invoice> GetInvoiceTransactoin(string division, string customerNumber, string invoiceNumber);
 
         List<EF.Invoice> GetMainInvoices(string division, string customerNumber);
-				
-		EF.Invoice GetInvoiceHeader(string division, string customerNumber, string invoiceNumber);
 
-		IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll();
+        long GetNextConfirmationId();
+        
+        EF.Invoice GetInvoiceHeader(string division, string customerNumber, string invoiceNumber);
 
-		long GetNextConfirmationId();
+        void MarkInvoiceAsPaid(string division, string customerNumber, string invoiceNumber);
 
-		void PayInvoice(PaymentTransaction payment);
+        void PayInvoice(PaymentTransaction payment);
+        
+        IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll();
     }
 }
