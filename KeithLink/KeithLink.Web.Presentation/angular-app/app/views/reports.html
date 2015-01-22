@@ -10,10 +10,10 @@
 
 <div class="page-content">
   <div class="row">
-      <form id="itemUsageForm" >
-          <table class="info-box">
-            <tr>
-              <td style="font-weight:bold;padding-left:15px;padding-right:15px;">From:</td>
+      <form id="itemUsageForm" style ="margin:15px">        
+          <table class = "info-box">            
+            <tr>              
+              <td style="font-weight:bold;padding-left:15px;padding-right:15px;padding-top:30px;padding-bottom:30px;">From:</td>
               <td class="datepicker">
               <a
                 ng-click="openDatepickerFrom = true"
@@ -43,7 +43,7 @@
                 close-text="Close"></a>
               {{itemusagequery.toDate | date:shortDate}}
             </td>
-            <td style="padding-left:25px;" class="hidden-print">
+            <td style="padding-left:25px;padding-right:15px;" class="hidden-print">
               <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
             </td>
             </tr>
