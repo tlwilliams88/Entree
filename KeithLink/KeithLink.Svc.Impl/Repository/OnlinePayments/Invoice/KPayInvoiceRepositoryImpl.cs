@@ -107,8 +107,16 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
 				new SqlParameter("@ConfId", payment.ConfirmationId),
 				new SqlParameter("@SchDate", payment.PaymentDate)
 				);
-
 		}
+
+        public void MarkInvoiceAsPaid(string division, string customerNumber, string invoiceNumber) {
+            _dbContext.Context.Database.ExecuteSqlCommand(
+                "procMarkInvoiceAsPaid @Division, @CustNum, @Invoice",
+                new SqlParameter("@Division", division),
+                new SqlParameter("@CustNum", customerNumber),
+                new SqlParameter("@Invoice", invoiceNumber)
+                );
+        }
 			
 
 		public IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll()

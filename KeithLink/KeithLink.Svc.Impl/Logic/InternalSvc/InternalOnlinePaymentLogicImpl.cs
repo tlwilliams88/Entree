@@ -289,18 +289,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var confId = _invoiceRepo.GetNextConfirmationId();
 
-			foreach (var payment in payments)
-				_invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
-				{
-					AccountNumber = payment.AccountNumber,
-					BranchId = GetDivision(userContext.BranchId),
-					ConfirmationId = confId,
-					CustomerNumber = userContext.CustomerId,
-					InvoiceNumber = payment.InvoiceNumber,
-					PaymentAmount = payment.PaymentAmount,
-					PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
-					UserName = emailAddress
-				});
+            foreach (var payment in payments) {
+                _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction() {
+                    AccountNumber = payment.AccountNumber,
+                    BranchId = GetDivision(userContext.BranchId),
+                    ConfirmationId = confId,
+                    CustomerNumber = userContext.CustomerId,
+                    InvoiceNumber = payment.InvoiceNumber,
+                    PaymentAmount = payment.PaymentAmount,
+                    PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
+                    UserName = emailAddress
+                });
+
+                _invoiceRepo.MarkInvoiceAsPaid(GetDivision(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
+            }
 		}
         #endregion
 			
