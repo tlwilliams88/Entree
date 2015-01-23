@@ -360,7 +360,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             try {
                 var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
-                if (template != null) _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
+                if (template != null) {
+                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
+                } else { 
+                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", CREATED_USER_WELCOME));
+                };
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
             }

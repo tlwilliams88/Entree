@@ -131,7 +131,7 @@ namespace KeithLink.Svc.Impl.Migrations
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
                 new MessageTemplate {
-                    TemplateKey = "CreatedUserWeclome",
+                    TemplateKey = "CreatedUserWelcome",
                     Subject = "Welcome to Entrée",
                     IsBodyHtml = false,
                     Type = MessageTemplateType.Email,
