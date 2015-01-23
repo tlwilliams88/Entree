@@ -19,7 +19,6 @@ namespace KeithLink.Svc.Test.Email
 		[TestMethod]
 		public void SendEmailTest()
 		{
-			EmailClientImpl emailClient = new EmailClientImpl(new TokenReplacer());
 			//MessageTemplateLogicImpl messageTemplateLogic = new MessageTemplateLogicImpl(new MessageTemplateRepositoryImpl(new UnitOfWork()));
 
 			//var template = messageTemplateLogic.ReadForKey("testEmailTemplate");
@@ -32,8 +31,7 @@ namespace KeithLink.Svc.Test.Email
 
         [TestMethod]
         public void SendEmailAndTemporaryPasswordToCreatedUser() {
-            EmailClientImpl emailClient = new EmailClientImpl( new TokenReplacer() );
-
+            
             //MessageTemplateLogicImpl m = new MessageTemplateLogicImpl( new MessageTemplateRepositoryImpl( new UnitOfWork() ) );
 
             //var template = m.ReadForKey( "CreatedUserWeclome" );

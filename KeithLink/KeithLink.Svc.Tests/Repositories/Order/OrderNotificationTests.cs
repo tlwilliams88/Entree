@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
 
             _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach);
-            _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(new TokenReplacer()), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
+            _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
             //_orderHistoryRepo = new OrderHistoryHeaderRepositoryImpl(
         
         }
