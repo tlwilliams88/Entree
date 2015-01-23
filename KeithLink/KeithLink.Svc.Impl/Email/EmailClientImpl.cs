@@ -9,7 +9,6 @@ using System.IO;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Common.Core.Logging;
@@ -28,7 +27,6 @@ namespace KeithLink.Svc.Impl
 		private string filePathEmailTemplates { get; set; }
 		private string filePathGlobalTokens { get; set; }
 		
-		private readonly ITokenReplacer tokenReplacer;
 
 		private SmtpClient _smtpClient;
 		public SmtpClient smtpClient
@@ -43,7 +41,7 @@ namespace KeithLink.Svc.Impl
 
 		#endregion
 
-		public EmailClientImpl(ITokenReplacer tokenReplacer)
+		public EmailClientImpl()
         {
             this.serviceEmailAddress = Configuration.ServiceEmailAddress;
 			this.smtpHostName = Configuration.SMTPHostName;
@@ -51,7 +49,6 @@ namespace KeithLink.Svc.Impl
 			this.smtpUserName = Configuration.SMTPUsername;
 			this.smtpPassword = Configuration.SMTPPassword;
 
-			this.tokenReplacer = tokenReplacer;
         }
 
 		public void SendTemplateEmail(MessageTemplateModel template, List<string> emails, List<string> ccAddresses, List<string> bccAddresses, object tokens)

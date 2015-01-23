@@ -24,7 +24,6 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Core.Interface.Component;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -36,19 +35,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
-		private readonly ITokenReplacer tokenReplacer;
         #endregion
 
         #region ctor
         public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, ITokenReplacer tokenReplacer)
+			ICatalogLogic catalogLogic, ICustomerRepository customerRepository)
 		{
 			this._invoiceRepo = invoiceRepo;
 			this._bankRepo = bankRepo;
 			this._orderHistoryRepo = orderHistoryrepo;
 			this._catalogLogic = catalogLogic;
 			this._customerRepository = customerRepository;
-			this.tokenReplacer = tokenReplacer;
 		}
         #endregion
 
@@ -135,7 +132,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			
 
-            invoiceModel.InvoiceLink =new Uri(tokenReplacer.ReplaceTokens(Configuration.WebNowUrl, new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
+            invoiceModel.InvoiceLink =new Uri(Configuration.WebNowUrl.Inject(new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
 
             if (invoiceModel.DueDate < DateTime.Now) {
                 invoiceModel.Status = InvoiceStatus.PastDue;
@@ -197,7 +194,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			Parallel.ForEach(pagedInvoices.Results, invoice =>
 			{
-				invoice.InvoiceLink = new Uri(tokenReplacer.ReplaceTokens(Configuration.WebNowUrl, new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
+				invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
 			});
 			
             return new InvoiceHeaderReturnModel() {
@@ -289,18 +286,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var confId = _invoiceRepo.GetNextConfirmationId();
 
-			foreach (var payment in payments)
-				_invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction()
-				{
-					AccountNumber = payment.AccountNumber,
-					BranchId = GetDivision(userContext.BranchId),
-					ConfirmationId = confId,
-					CustomerNumber = userContext.CustomerId,
-					InvoiceNumber = payment.InvoiceNumber,
-					PaymentAmount = payment.PaymentAmount,
-					PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
-					UserName = emailAddress
-				});
+            foreach (var payment in payments) {
+                _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction() {
+                    AccountNumber = payment.AccountNumber,
+                    BranchId = GetDivision(userContext.BranchId),
+                    ConfirmationId = confId,
+                    CustomerNumber = userContext.CustomerId,
+                    InvoiceNumber = payment.InvoiceNumber,
+                    PaymentAmount = payment.PaymentAmount,
+                    PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
+                    UserName = emailAddress
+                });
+
+                _invoiceRepo.MarkInvoiceAsPaid(GetDivision(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
+            }
 		}
         #endregion
 			

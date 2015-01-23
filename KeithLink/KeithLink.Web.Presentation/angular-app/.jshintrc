@@ -12,7 +12,7 @@
   "quotmark": "single",
   "regexp": true,
   "undef": true,
-  "predef": [ "jQuery", "c3", "cordova" ],
+  "predef": [ "jQuery", "c3", "cordova", "moment", "jstz" ],
   "strict": true,
   "trailing": true,
   "smarttabs": true,

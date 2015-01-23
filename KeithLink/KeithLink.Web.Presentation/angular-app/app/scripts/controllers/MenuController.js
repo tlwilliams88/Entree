@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
-    function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService) {
+  .controller('MenuController', ['$scope', '$state', '$log', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
+    function ($scope, $state, $log, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService) {
 
   $scope.$state = $state;
   $scope.isMobileApp = ENV.mobileApp;
@@ -161,6 +161,7 @@ angular.module('bekApp')
     });
   };
 
+  // PHONEGAP Feature
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
       function (result) {
@@ -169,10 +170,12 @@ angular.module('bekApp')
         //   'Format: ' + result.format + '\n' +
         //   'Cancelled: ' + result.cancelled);
 
+        $log.debug(result.text);
         ProductService.scanProduct(result.text).then(function(item) {
+          ProductService.selectedProduct = item;
           $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
         }, function (error) {
-          $scope.displayMessage('error', error)
+          $scope.displayMessage('warning', 'No product found for scanned number.');
         });
     }, function (error) {
       console.log('Scanning failed: ' + error);

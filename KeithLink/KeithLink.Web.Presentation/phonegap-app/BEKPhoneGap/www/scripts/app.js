@@ -32,7 +32,7 @@ angular
     'ui.select2',             // used for context menu dropdown in upper left corner
     'configenv'               // used to inject environment variables into angular through Grunt
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV',
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
 
   // configure loading bar
@@ -56,8 +56,8 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location', 'PhonegapPushService', 'PhonegapServices',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, $window, $location, PhonegapPushService, PhonegapServices) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, $window, $location, PhonegapServices, PhonegapPushService) {
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string

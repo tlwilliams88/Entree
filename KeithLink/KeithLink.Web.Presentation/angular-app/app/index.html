@@ -65,6 +65,19 @@
     <script src="lib/moment-js/jstz-1.0.4.min.js"></script>
     <!-- endbuild -->
 
+    <!--
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script>
+        angular.element(document).ready(function() {
+            app.initialize();
+            document.addEventListener('deviceready', function onDeviceReady() {
+                angular.bootstrap(document, ['bekApp']);
+            }, false);
+        });
+    </script>
+    -->
+
      <script id="template/carousel/carousel.html" type="text/ng-template">
       <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
         <ol class="carousel-paging" ng-show="slides.length > 1">
@@ -172,7 +185,7 @@
     <script type="text/javascript" src="scripts/resources/NotificationResource.js"></script>
     <script type="text/javascript" src="scripts/resources/BankAccountResource.js"></script>
     <script type="text/javascript" src="scripts/filters/SortListsFilter.js"></script>
-    <script type="text/javascript" src="scripts/filters/MeetsMinimumQuantityFilter.js"></script>
+    <script type="text/javascript" src="scripts/filters/MinimumQuantityFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/PhoneNumberFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/StyleOrdersFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/LocalTimeZoneTimeFilter.js"></script>
