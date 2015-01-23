@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>HTML & CSS Avery Labels (5160) by MM at Boulder Information Services</title>
+  <style>
+    @font-face {
+      font-family: 'Code39AzaleaFont';
+      src:url('/fonts/Code39Azalea/Code39Azalea.eot');
+      src:url('/fonts/Code39Azalea/Code39Azalea.eot') format('embedded-opentype'),
+        url('/fonts/Code39Azalea/Code39Azalea.woff') format('woff'),
+        url('/fonts/Code39Azalea/Code39Azalea.ttf') format('truetype'),
+        url('/fonts/Code39Azalea/Code39Azalea.svg#Code39Azalea') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+    body {
+      width: 8.5in;
+      margin: 0in .1875in;
+    }
+    .label{
+      float: left;
+
+      text-align: center;
+      overflow: hidden;
+
+      outline: 1px dotted; /* outline doesn't occupy space like border does */
+    }
+    .label > .barcode {
+      font-family: 'Code39AzaleaFont';
+    }
+
+    .label.label-5160 {
+      /* Avery 5160 labels -- CSS and HTML by MM at Boulder Information Services */
+      width: 2.025in; /* plus .6 inches from padding */
+      height: .875in; /* plus .125 inches from padding */
+      padding: .125in .3in 0;
+      margin-right: .125in; /* the gutter */
+      font-size: 11px;
+    }
+    .label.label-5160 > .barcode {
+      font-size: 40px;
+    }
+
+    .page-break  {
+      clear: left;
+      display:block;
+      page-break-after:always;
+    }
+  </style>
+
+</head>
+<body>
+
+<div class="label" ng-class="'label-' + type" ng-repeat-start="item in items">
+	<!-- <img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /> -->
+	<span class="barcode">{{item.itemnumber}}</span>
+	<br>
+	{{item.itemnumber}}<br>
+	{{item.name}}<br>
+	{{item.packsize}}
+</div>
+<div ng-repeat-end ng-if="($index + 1) % 30 === 0" class="page-break"></div>
+<!-- <div class="label"><img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /><br>Human readable</div>
+<div class="label"><img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /><br>Human readable</div>
+<div class="label"><img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /><br>Human readable</div>
+<div class="label">(Repeat 30 times)</div> -->
+<!-- page break after every 30 -->
+
+
+</body>
+</html>

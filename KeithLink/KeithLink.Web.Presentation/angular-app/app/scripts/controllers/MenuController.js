@@ -165,15 +165,15 @@ angular.module('bekApp')
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
       function (result) {
-        // console.log('We got a barcode\n' +
-        //   'Result: ' + result.text + '\n' +
-        //   'Format: ' + result.format + '\n' +
-        //   'Cancelled: ' + result.cancelled);
-
-        $log.debug(result.text);
-        ProductService.scanProduct(result.text).then(function(item) {
-          ProductService.selectedProduct = item;
-          $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+        var scannedText = result.text;
+        $log.debug(scannedText);
+        ProductService.scanProduct(scannedText).then(function(item) {
+          if (item) {
+            ProductService.selectedProduct = item;
+            $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+          } else {
+            $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
+          }
         }, function (error) {
           $scope.displayMessage('warning', 'No product found for scanned number.');
         });
