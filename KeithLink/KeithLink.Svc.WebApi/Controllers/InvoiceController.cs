@@ -93,14 +93,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new OperationReturnModel<bool>() { SuccessResponse = true };
 		}
 
-		[HttpGet]
-		[ApiKeyedRoute("invoice/test")]        
-		public List<PaymentTransactionModel> Test()
+		[HttpPost]
+		[ApiKeyedRoute("invoice/transactions/pending")]
+		public PagedResults<PaymentTransactionModel> PendingTransaction(PagingModel paging)
 		{
-			return new List<PaymentTransactionModel>() { new PaymentTransactionModel() { InvoiceNumber = "1234", AccountNumber = "1234", PaymentAmount = 123.43m, PaymentDate = DateTime.Now } };
+			return _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
 		}
-
-
+		
         #endregion
     }
 }

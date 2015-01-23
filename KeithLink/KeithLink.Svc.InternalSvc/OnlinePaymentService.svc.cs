@@ -20,6 +20,7 @@ using KeithLink.Svc.Impl;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 
 namespace KeithLink.Svc.InternalSvc {
 	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
@@ -115,5 +116,11 @@ namespace KeithLink.Svc.InternalSvc {
 		#endregion				
 	
 
+	
+
+		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
+		{
+			return _onlinePaymentsLogic.PendingTransactionsAllCustomers(user, paging);
+		}
 	}
 }

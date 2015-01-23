@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Test.Logic {
 
             _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach);
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(new TokenReplacer()), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
         }
         #endregion
 

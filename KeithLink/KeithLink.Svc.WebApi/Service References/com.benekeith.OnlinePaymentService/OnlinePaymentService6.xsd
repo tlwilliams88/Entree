@@ -10,8 +10,13 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="account" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="amount" type="xs:decimal" />
+      <xs:element minOccurs="0" name="confirmationid" type="xs:long" />
+      <xs:element minOccurs="0" name="customername" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="date" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="submittedby" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="submittedon" type="xs:dateTime" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PaymentTransactionModel" nillable="true" type="tns:PaymentTransactionModel" />

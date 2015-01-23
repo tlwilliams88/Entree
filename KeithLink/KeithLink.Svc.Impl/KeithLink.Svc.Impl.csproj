@@ -186,7 +186,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
-    <Compile Include="Component\TokenReplacer.cs" />
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="ETL\InvoiceLogicImpl.cs" />
@@ -486,6 +485,7 @@
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Invoice\KPayInvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\NoOnlinePaymentServiceRepository.cs" />
+    <Compile Include="Repository\OnlinePayments\Payment\KPayPaymentTransactionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />
