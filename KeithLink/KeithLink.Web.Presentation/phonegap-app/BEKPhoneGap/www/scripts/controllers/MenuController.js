@@ -9,7 +9,6 @@
  */
 
 angular.module('bekApp')
-
   .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
     function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService) {
 
@@ -56,7 +55,7 @@ angular.module('bekApp')
     query: function (query){
       $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
 
-      if (query.page === 1 && firstPageCustomers) { // use cache if getting first page
+      if (query.page === 1 && firstPageCustomers && !query.term) { // use cache if getting first page
         query.callback(firstPageCustomers);
       } else {
         CustomerService.getCustomers(
@@ -78,7 +77,9 @@ angular.module('bekApp')
             });
           });
 
-          firstPageCustomers = customerList;
+          if (query.page === 1 && !query.term) {
+            firstPageCustomers = customerList;
+          }
           query.callback(customerList);
         });
       }
@@ -160,6 +161,7 @@ angular.module('bekApp')
     });
   };
 
+  // PHONEGAP Feature
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
       function (result) {
@@ -169,9 +171,10 @@ angular.module('bekApp')
         //   'Cancelled: ' + result.cancelled);
 
         ProductService.scanProduct(result.text).then(function(item) {
+          ProductService.selectedProduct = item;
           $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
         }, function (error) {
-          $scope.displayMessage('error', error)
+          $scope.displayMessage('warning', 'No product found for scanned number.');
         });
     }, function (error) {
       console.log('Scanning failed: ' + error);

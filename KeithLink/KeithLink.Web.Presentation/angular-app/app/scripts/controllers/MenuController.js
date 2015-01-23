@@ -161,6 +161,7 @@ angular.module('bekApp')
     });
   };
 
+  // PHONEGAP Feature
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
       function (result) {
@@ -170,9 +171,10 @@ angular.module('bekApp')
         //   'Cancelled: ' + result.cancelled);
 
         ProductService.scanProduct(result.text).then(function(item) {
+          ProductService.selectedProduct = item;
           $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
         }, function (error) {
-          $scope.displayMessage('error', error)
+          $scope.displayMessage('warning', 'No product found for scanned number.');
         });
     }, function (error) {
       console.log('Scanning failed: ' + error);

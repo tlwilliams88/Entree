@@ -20,6 +20,7 @@ angular.module('bekApp')
       if (listItem.qtyInCart < listItem.parlevel || (listItem.parlevel === 0 && listItem.qtyInCart === 0)) {
         filteredList.push(listItem);
       }
+      
 
     });
     
