@@ -471,7 +471,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
-    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
@@ -485,6 +484,7 @@
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Invoice\KPayInvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\NoOnlinePaymentServiceRepository.cs" />
+    <Compile Include="Repository\OnlinePayments\Payment\KPayPaymentTransactionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />
     <Compile Include="Repository\EF\Operational\EFBaseRepository.cs" />

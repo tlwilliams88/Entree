@@ -61,6 +61,8 @@ using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.Reports;
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Payment;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 #endregion
 
 namespace KeithLink.Svc.InternalSvc
@@ -191,6 +193,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
             builder.RegisterType<NoOnlinePaymentServiceRepository>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
+			builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
 
 			builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 

@@ -31,5 +31,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
 
 		[OperationContract]
 		InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
+
+		[OperationContract]
+		PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.OnlinePayments;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
@@ -24,6 +25,7 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -35,17 +37,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
+		private readonly IKPayPaymentTransactionRepository _paymentTransactionRepository;
         #endregion
 
         #region ctor
         public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-			ICatalogLogic catalogLogic, ICustomerRepository customerRepository)
+			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, IKPayPaymentTransactionRepository paymentTransactionRepository)
 		{
 			this._invoiceRepo = invoiceRepo;
 			this._bankRepo = bankRepo;
 			this._orderHistoryRepo = orderHistoryrepo;
 			this._catalogLogic = catalogLogic;
 			this._customerRepository = customerRepository;
+			this._paymentTransactionRepository = paymentTransactionRepository;
 		}
         #endregion
 
@@ -173,8 +177,41 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var statusFilter = BuildStatusFilter(paging.Filter);
 			if (statusFilter != null)
 				isfilter.Filters.Add(statusFilter);
+
+
+			FilterInfo filter = BuildCustomerFilter(customers);
 			
+			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(isfilter, null).Filter(filter, null).ToList();
+
+			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
+
+			Parallel.ForEach(pagedInvoices.Results, invoice =>
+			{
+				invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
+
+				if (invoice.Status == InvoiceStatus.Pending)
+				{
+					//Retrieve payment transaction record
+					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(GetDivision(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault();
+
+					if (payment != null)
+					{
+						invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault());
+
+					}
+				}
+
+			});
 			
+            return new InvoiceHeaderReturnModel() {
+                HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
+                PagedResults = pagedInvoices,
+				TotalAmmountDue = customers.Sum(c => c.CurrentBalance)
+            };
+        }
+
+		private FilterInfo BuildCustomerFilter(List<Core.Models.Profile.Customer> customers)
+		{
 			FilterInfo filter = new FilterInfo();
 			filter.Filters = new List<FilterInfo>();
 			filter.Condition = "||";
@@ -187,22 +224,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				filter.Filters.Add(inFilter);
 			}
-			
-			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(isfilter, null).Filter(filter, null).ToList();
-
-			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
-
-			Parallel.ForEach(pagedInvoices.Results, invoice =>
-			{
-				invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
-			});
-			
-            return new InvoiceHeaderReturnModel() {
-                HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
-                PagedResults = pagedInvoices,
-				TotalAmmountDue = customers.Sum(c => c.CurrentBalance)
-            };
-        }
+			return filter;
+		}
 
 		private FilterInfo BuildStatusFilter(FilterInfo passedFilter)
 		{
@@ -282,15 +305,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 
-        public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
+
+		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
 		{
 			var confId = _invoiceRepo.GetNextConfirmationId();
 
             foreach (var payment in payments) {
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction() {
                     AccountNumber = payment.AccountNumber,
-                    BranchId = GetDivision(userContext.BranchId),
-                    ConfirmationId = confId,
+                    Division = GetDivision(userContext.BranchId),
+                    ConfirmationId = (int)confId,
                     CustomerNumber = userContext.CustomerId,
                     InvoiceNumber = payment.InvoiceNumber,
                     PaymentAmount = payment.PaymentAmount,
@@ -301,7 +325,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 _invoiceRepo.MarkInvoiceAsPaid(GetDivision(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
             }
 		}
-        #endregion
-			
+
+		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
+		{
+			var customers = _customerRepository.GetCustomersForUser(user.UserId);
+
+			var customerFilter = BuildCustomerFilter(customers);
+
+			var transactions = _paymentTransactionRepository.ReadAll().AsQueryable().Filter(customerFilter, null);
+
+			var transactionResults = transactions.ToList().Select(t => t.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(t.CustomerNumber)).First())).AsQueryable().GetPage(paging);
+
+			return transactionResults;
+		}
+		
+		#endregion
 	}
 }

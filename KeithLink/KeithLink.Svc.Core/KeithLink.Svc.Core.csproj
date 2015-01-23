@@ -154,6 +154,7 @@
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
     <Compile Include="Extensions\OnlinePayments\Customer\CustomerBankExtension.cs" />
+    <Compile Include="Extensions\OnlinePayments\PaymentTransactionExtensions.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationDetailExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationFileExtension.cs" />
     <Compile Include="Extensions\Orders\Confirmations\ConfirmationHeaderExtension.cs" />
@@ -188,6 +189,7 @@
     <Compile Include="Interface\OnlinePayments\Invoice\IKPayInvoiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
+    <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
     <Compile Include="Interface\Orders\History\IInternalOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
@@ -462,7 +464,6 @@
   <ItemGroup>
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Log\" />
-    <Folder Include="Interface\OnlinePayments\Payment\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
