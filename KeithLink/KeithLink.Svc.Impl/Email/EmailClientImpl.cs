@@ -115,12 +115,11 @@ namespace KeithLink.Svc.Impl
                 client.UseDefaultCredentials = false;
             }
 
-            try
-            {
-                client.Send(message);
-			}
-            finally
-            {
+            try {
+                client.Send( message );
+            } catch (Exception e) {
+                throw e;                
+            } finally {
                 client.Dispose();
             }
         }
