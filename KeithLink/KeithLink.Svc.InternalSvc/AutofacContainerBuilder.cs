@@ -23,7 +23,6 @@ using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 #endregion
 #region using__interface
-using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Invoices;
@@ -146,7 +145,6 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
             builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
-            builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
             builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();

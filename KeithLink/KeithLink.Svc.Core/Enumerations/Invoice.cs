@@ -38,6 +38,8 @@ namespace KeithLink.Svc.Core.Enumerations
 		[Description("Paid")]
 		Paid,
 		[Description("Past Due")]
-		PastDue
+		PastDue,
+		[Description("Payment Pending")]
+		Pending
 	}
 }

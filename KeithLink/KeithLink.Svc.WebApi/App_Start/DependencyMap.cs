@@ -42,7 +42,6 @@ using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Impl.Logic.Export;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Core.Interface.Cache;
@@ -93,7 +92,6 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
-			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
 
             builder.RegisterType<KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoyrHeaderRepositoryImpl>().As<KeithLink.Svc.Core.Interface.Orders.History.IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork>().As<KeithLink.Svc.Impl.Repository.EF.Operational.IUnitOfWork>();
