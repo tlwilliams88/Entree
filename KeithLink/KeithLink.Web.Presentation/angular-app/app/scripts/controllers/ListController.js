@@ -471,8 +471,11 @@ angular.module('bekApp')
         controller: 'PrintOptionsModalController',
         scope: $scope,
         resolve: {
-          list: function() {
-            return list;
+          items: function() {
+            return list.items;
+          },
+          name: function() {
+            return list.name;
           }
         }
       });

@@ -101,7 +101,7 @@ angular.module('bekApp')
   };
 
   $scope.infiniteScrollLoadMore = function() {
-    if (($scope.notifications && $scope.notifications.length >= $scope.totalResults) || $scope.loadingResults) {
+    if (($scope.notifications && $scope.notifications.length >= $scope.totalNotifications) || $scope.loadingResults) {
       return;
     }
 
