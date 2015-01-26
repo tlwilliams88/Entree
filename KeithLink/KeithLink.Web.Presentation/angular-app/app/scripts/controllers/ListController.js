@@ -485,8 +485,8 @@ angular.module('bekApp')
     $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
 
     $scope.$on('$destroy', function() {
-      ListService.lists = null;
-      ListService.labels = null;
+      ListService.lists = [];
+      ListService.labels = [];
     });
 
   }]);
