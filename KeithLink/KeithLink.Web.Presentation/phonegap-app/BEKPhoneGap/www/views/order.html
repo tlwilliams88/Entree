@@ -1,7 +1,7 @@
 <div page-header-bar>
   <div header-message>
     Order History 
-    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success pull-right">Get Latest Updates</button>
+    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success" style="font-size: 12px;padding: 7px 10px;margin-left: 15px;">Get Latest<br>Updates</button>
   </div>
   <div header-buttons>
     <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
@@ -79,7 +79,7 @@
           <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.invoicenumber}}</a>
         </td>
         <td>{{order.createddate | date:'MM/dd/yyyy h:mma'}}</td>
-        <td>{{order.status}}</td>
+        <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
         <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | date:shortDate }}</td>
         <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
         <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>

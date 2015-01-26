@@ -77,7 +77,19 @@ namespace KeithLink.Svc.Impl.ETL
                         ""status1_not_analyzed"" : {
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
-         				}
+         				},
+                        ""nutritional"" : {
+                            ""properties"" : {
+                                ""diet"" : {
+                                    ""properties"" : {
+                                        ""diettype"" : {
+                                            ""type"" : ""string"",
+                                            ""index"" : ""not_analyzed""
+                                        }
+                                    }
+                                }
+                            }
+                        }
 				   }
 				}
 			}";

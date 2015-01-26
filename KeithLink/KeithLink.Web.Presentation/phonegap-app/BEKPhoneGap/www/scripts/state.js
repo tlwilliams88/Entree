@@ -293,6 +293,23 @@ angular.module('bekApp')
     })
 
     /**********
+    TRANSACTION
+    **********/
+    .state('menu.transaction', {
+      url: '/transactions/',
+      templateUrl: 'views/transaction.html',
+      controller: 'TransactionController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        accounts: ['BankAccountService', function(BankAccountService) {
+          return BankAccountService.getAllBankAccounts();
+        }]
+      }
+    })
+
+    /**********
     MARKETING CMS
     **********/
     .state('menu.marketing', {

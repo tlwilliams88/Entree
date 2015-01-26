@@ -70,5 +70,11 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public Core.Models.Paging.PagedResults<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> PendingTransactionsAllCustomers(Core.Models.Profile.UserProfile user, Core.Models.Paging.PagingModel paging)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

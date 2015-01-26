@@ -65,7 +65,6 @@
     <script src="lib/moment-js/jstz-1.0.4.min.js"></script>
     <!-- endbuild -->
 
-    
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
     <script>
@@ -74,9 +73,6 @@
             document.addEventListener('deviceready', function onDeviceReady() {
                 angular.bootstrap(document, ['bekApp']);
             }, false);
-            // jQuery(document).ready(function() {
-            //     angular.bootstrap(document, ['bekApp']);
-            // });
         });
     </script>
 
@@ -122,12 +118,14 @@
     <script type="text/javascript" src="scripts/controllers/modal/ImportModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ItemNotesModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ExportModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/modal/PrintOptionsModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupDashboardController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/EditUserDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/GoogleServicesController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/TransactionController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
@@ -159,6 +157,7 @@
     <script type="text/javascript" src="scripts/services/AuthenticationInterceptor.js"></script>
     <script type="text/javascript" src="scripts/services/BrandService.js"></script>
     <script type="text/javascript" src="scripts/services/CategoryService.js"></script>
+    <script type="text/javascript" src="scripts/services/TransactionService.js"></script>
     <script type="text/javascript" src="scripts/services/ListService.js"></script>
     <script type="text/javascript" src="scripts/services/CartService.js"></script>
     <script type="text/javascript" src="scripts/services/ProductService.js"></script>
@@ -171,6 +170,7 @@
     <script type="text/javascript" src="scripts/services/CustomerGroupService.js"></script>
     <script type="text/javascript" src="scripts/services/ResolveService.js"></script>
     <script type="text/javascript" src="scripts/services/InvoiceService.js"></script>
+    <script type="text/javascript" src="scripts/services/PrintService.js"></script>
     <script type="text/javascript" src="scripts/services/NotificationService.js"></script>
     <script type="text/javascript" src="scripts/services/BankAccountService.js"></script>
     <script type="text/javascript" src="scripts/services/MarketingService.js"></script>
@@ -187,7 +187,7 @@
     <script type="text/javascript" src="scripts/resources/NotificationResource.js"></script>
     <script type="text/javascript" src="scripts/resources/BankAccountResource.js"></script>
     <script type="text/javascript" src="scripts/filters/SortListsFilter.js"></script>
-    <script type="text/javascript" src="scripts/filters/MeetsMinimumQuantityFilter.js"></script>
+    <script type="text/javascript" src="scripts/filters/MinimumQuantityFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/PhoneNumberFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/StyleOrdersFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/LocalTimeZoneTimeFilter.js"></script>

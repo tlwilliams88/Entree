@@ -1,0 +1,148 @@
+<div page-header-bar>
+  <div header-message>
+    Pending Transactions for All Customers
+  </div>
+  <div header-buttons>
+    <button class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></button>
+    <!-- <button class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></button> -->
+  </div>
+</div>
+
+<div class="row page-content">
+  <div class="col-xs-12">
+
+    <a class="pull-left" ui-sref="menu.invoice">Return to Invoices</a>
+    <div class="text-right">
+      Showing {{transactions.length}} of {{totalTransactions}} Transactions
+    </div>
+
+    <table class="table table-border table-striped-rows invoice-table" navigate-table="mobile" infinite-scroll="infiniteScrollLoadMore()">
+      <thead>
+        <tr>
+          <th class="sort-col-header" ng-click="sortTransactions('customername', !sortOrder)">
+            Customer Name
+            <span sort-icons field="'customername'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+          </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('customernumber', !sortOrder)">
+            Customer #
+            <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+          </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('confirmationid', !sortOrder)">
+            Confirmation ID
+            <span sort-icons field="'confirmationid'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+          </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('invoicenumber', !sortOrder)">
+            Invoice #
+            <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortTransactions('amount', !sortOrder)">
+            Amount
+            <span sort-icons field="'amount'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortTransactions('date', !sortOrder)">
+            Date Scheduled
+            <span sort-icons field="'date'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+          </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('account', !sortOrder)">
+            Account
+            <span sort-icons field="'account'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+          </th>
+
+          <th class="large-icon icon-col">
+            <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- Filter Row -->
+        <tr class="filter-row" ng-show="showFilter">
+          <td class="input-col">
+            <input type="text" placeholder="Filter..." ng-model="filterRowFields.customername">
+          </td>
+          <td class="input-col hidden-mobile-visible-print">
+            <input type="text" placeholder="Filter..." ng-model="filterRowFields.customernumber">
+          </td>
+          <td class="input-col hidden-mobile-visible-print">
+            <input type="text" placeholder="Filter..." ng-model="filterRowFields.confirmationid">
+          </td>
+          <td class="input-col hidden-mobile-visible-print">
+            <input type="text" placeholder="Filter..." ng-model="filterRowFields.invoicenumber">
+          </td>
+          <td></td>
+          <td></td>
+          <td class="input-col hidden-mobile-visible-print">
+            <input type="text" placeholder="Filter..." ng-model="filterRowFields.account">
+          </td>
+          <td class="input-col nowrap">
+            <button type="button" class="btn btn-primary btn-sm" ng-click="filterTransactions(filterRowFields)">Filter</button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterRowFields)">Clear</button>
+          </td>
+        </tr> <!-- end Filter Row -->
+
+        <tr ng-repeat-start="transaction in transactions" ng-class="{ odd : $odd, even: $even }">
+          <td>
+            {{::transaction.customername}}
+          </td>
+          <td class="hidden-mobile-visible-print">
+            {{::transaction.customernumber}}
+          </td>
+          <td class="hidden-mobile-visible-print">
+            {{::transaction.confirmationid}}
+          </td>
+          <td class=" hidden-mobile-visible-print">
+            {{::transaction.invoicenumber}}
+          </td>
+          <td>
+            {{::transaction.amount}}
+          </td>
+          <td>
+            {{::transaction.date | date:short}}
+          </td>
+          <td class="hidden-mobile-visible-print">
+            {{::transaction.account}}
+          </td>
+          <td></td>
+        </tr>
+
+        <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
+          <td colspan="8">
+            <table>
+              <colgroup>
+                <col width="25%" />
+                <col width="75%" />
+              </colgroup>
+              <tr>
+                <td>Confirmation ID</td>
+                <td>{{transaction.confirmationid}}</td>
+              </tr>
+              <tr>
+                <td>Invoice #</td>
+                <td>{{transaction.invoicenumber}}</td>
+              </tr>
+              <tr>
+                <td>Customer Number</td>
+                <td>{{transaction.customernumber}}</td>
+              </tr>
+              <tr>
+                <td>Account</td>
+                <td>{{transaction.customerNumber}}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+      </tbody>
+
+      <tfoot ng-show="transactions.length === 0 && !loadingResults">
+        <tr>
+          <td colspan="7">There are no transactions to display.</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="text-center" loading-spinner="loadingResults"></div>
+
+  </div>
+</div>
+

@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 	public class BEKDBContext: DbContext
 	{
 		public BEKDBContext() { }
-        public BEKDBContext(string nameOrConnectionString) : base(nameOrConnectionString) { }
+		public BEKDBContext(string nameOrConnectionString) : base(nameOrConnectionString) { }
 		public BEKDBContext(DbConnection existingConnection) : base(existingConnection, true) { }
 
 		public DbSet<List> Lists { get; set; }

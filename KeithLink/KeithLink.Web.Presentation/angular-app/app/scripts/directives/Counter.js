@@ -98,7 +98,7 @@ angular.module('bekApp')
 		  
           // Check if what's typed is numeric or if it has any letters.
           if ( /\b[0-9]+\b/.test(scope.value) ) {
-			if(length != null){
+			if(length != null){ // jshint ignore:line
 				if(curLength <= length){
 					setValue(scope.value);
 				}

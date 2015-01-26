@@ -9,8 +9,14 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService',
-    function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService) {
+  .controller('MenuController', ['$scope', '$rootScope', '$state', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
+    function (
+      $scope, $rootScope, $state, $log, $window,  // built in angular services
+      $modal,                         // ui-bootstrap library
+      ENV,                            // environment config, see configenv.js file which is generated from Grunt
+      branches,                       // state resolve
+      CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService // bek custom services
+    ) {
 
   $scope.$state = $state;
   $scope.isMobileApp = ENV.mobileApp;
@@ -49,13 +55,26 @@ angular.module('bekApp')
     size: 15
   };
 
+  // list of state names where a user has the possibility of viewing info from multiple customers
+  var statesWithViewingAllCustomers = ['menu.invoice', 'menu.transaction'];
+  
+  // listens for state change event to restore selectedUserContext
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+  
+    // if users is viewing all customers
+    // change selected user context back to the one stored in LocalStorage here
+    if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && !$scope.selectedUserContext.id) {
+      $scope.setSelectedUserContext(LocalStorage.getCurrentCustomer());
+    }
+  });
+
   var firstPageCustomers; // used to cache the first page of customer results
   // populates upper-left customer dropdown infinite scroll
   $scope.customerSelectOptions = {
     query: function (query){
       $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
 
-      if (query.page === 1 && firstPageCustomers) { // use cache if getting first page
+      if (query.page === 1 && firstPageCustomers && !query.term) { // use cache if getting first page
         query.callback(firstPageCustomers);
       } else {
         CustomerService.getCustomers(
@@ -77,7 +96,9 @@ angular.module('bekApp')
             });
           });
 
-          firstPageCustomers = customerList;
+          if (query.page === 1 && !query.term) {
+            firstPageCustomers = customerList;
+          }
           query.callback(customerList);
         });
       }
@@ -159,18 +180,25 @@ angular.module('bekApp')
     });
   };
 
+  // PHONEGAP Feature
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
       function (result) {
-          console.log('We got a barcode\n' +
-                'Result: ' + result.text + '\n' +
-                'Format: ' + result.format + '\n' +
-                'Cancelled: ' + result.cancelled);
-      }, 
-      function (error) {
-          console.log('Scanning failed: ' + error);
-      }
-   );
+        var scannedText = result.text;
+        $log.debug(scannedText);
+        ProductService.scanProduct(scannedText).then(function(item) {
+          if (item) {
+            ProductService.selectedProduct = item;
+            $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+          } else {
+            $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
+          }
+        }, function (error) {
+          $scope.displayMessage('warning', 'No product found for scanned number.');
+        });
+    }, function (error) {
+      console.log('Scanning failed: ' + error);
+    });
   };
 
   /**********

@@ -50,6 +50,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceDetails", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetInvoiceDetailsResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> GetInvoiceDetailsAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomers", ReplyAction="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomersResponse")]
+        KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel> PendingTransactionsAllCustomers(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomers", ReplyAction="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomersResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel>> PendingTransactionsAllCustomersAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -125,6 +131,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Invoices.InvoiceModel> GetInvoiceDetailsAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, string invoiceNumber) {
             return base.Channel.GetInvoiceDetailsAsync(userContext, invoiceNumber);
+        }
+        
+        public KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel> PendingTransactionsAllCustomers(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.PendingTransactionsAllCustomers(user, paging);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel>> PendingTransactionsAllCustomersAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.PendingTransactionsAllCustomersAsync(user, paging);
         }
     }
 }

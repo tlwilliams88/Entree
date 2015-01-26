@@ -3,6 +3,7 @@ using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -74,6 +75,9 @@ namespace KeithLink.Svc.Core.Models.Invoices
 
 		[DataMember(Name = "transactions")]
 		public List<InvoiceTransactionModel> Transactions { get; set; }
+
+		[DataMember(Name = "pendingtransaction")]
+		public PaymentTransactionModel PendingTransaction { get; set; }
 
 		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{
