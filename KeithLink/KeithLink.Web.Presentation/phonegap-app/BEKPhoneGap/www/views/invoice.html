@@ -1,8 +1,8 @@
 <div page-header-bar>
   <div header-message>
-    {{headerText}}
+    Showing
     <div class="btn-group hidden-print" dropdown is-open="status.isopen1">
-      <button ng-show="!viewingAllCustomers" type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedFilterView.name}} <span class="icon-arrow-down6"></span></button>
+      <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedFilterView.name}} <span class="icon-arrow-down6"></span></button>
 
       <ul class="dropdown-menu">
         <li><a
@@ -11,7 +11,19 @@
           ng-if="selectedFilterView.name !== filterView.name">
         {{filterView.name}}</a></li>
       </ul>
-      <button type="button" class="btn-header-right btn-lg btn btn-default" ng-click="switchViewingAllCustomers()">{{viewAllButtonText}}</button>
+    </div>
+     for 
+    <div class="btn-group hidden-print" dropdown is-open="status.isopen2">
+      <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{viewAllButtonText}} <span class="icon-arrow-down6"></span></button>
+
+      <ul class="dropdown-menu">
+        <li ng-if="!viewingAllCustomers"><a ng-click="switchViewingAllCustomers(true)">
+          All Customers
+        </a></li>
+        <li ng-if="viewingAllCustomers"><a ng-click="switchViewingAllCustomers(false)">
+          {{customerText}}
+        </a></li>
+      </ul>
     </div>
   </div>
   <div header-buttons>
@@ -21,9 +33,14 @@
 </div>
 
 <div class="row page-content">
+  
+  <!-- <div class="col-xs-12">
+    <a ui-sref="menu.transaction">View Pending Transactions for All Customers</a>
+  </div> -->
+
   <form name="invoiceForm" class="style-validation-errors" novalidate>
     <div class="col-md-12" ng-if="viewingAllCustomers">
-      <h3>Total Amount Due: {{totalAmountDue | currency}}</h3>
+      <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
     </div>
     <div class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers">
       <div class="info-box" ng-if="hasPayableInvoices">

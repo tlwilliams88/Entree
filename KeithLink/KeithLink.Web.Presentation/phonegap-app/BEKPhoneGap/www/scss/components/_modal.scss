@@ -27,3 +27,9 @@
 .color-background-modal .modal-content {
   background-color: $background;
 }
+
+@media print {
+  .modal {
+    display: none !important;
+  }
+}

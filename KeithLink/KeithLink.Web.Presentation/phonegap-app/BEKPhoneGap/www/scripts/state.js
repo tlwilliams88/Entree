@@ -29,7 +29,7 @@ angular.module('bekApp')
       resolve: {
         // guest users must have branches to load the page (but non-guest users do not?)
         branches: ['BranchService', function(BranchService) {
-          return []; //BranchService.getBranches();
+          return BranchService.getBranches();
         }]
       }
     })
@@ -288,6 +288,23 @@ angular.module('bekApp')
       resolve: {
         invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
           return InvoiceService.getInvoice($stateParams.invoiceNumber);
+        }]
+      }
+    })
+
+    /**********
+    TRANSACTION
+    **********/
+    .state('menu.transaction', {
+      url: '/transactions/',
+      templateUrl: 'views/transaction.html',
+      controller: 'TransactionController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        accounts: ['BankAccountService', function(BankAccountService) {
+          return BankAccountService.getAllBankAccounts();
         }]
       }
     })
