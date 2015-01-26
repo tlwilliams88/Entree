@@ -29,7 +29,7 @@ angular.module('bekApp')
       resolve: {
         // guest users must have branches to load the page (but non-guest users do not?)
         branches: ['BranchService', function(BranchService) {
-          return BranchService.getBranches();
+          return []; //BranchService.getBranches();
         }]
       }
     })

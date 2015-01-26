@@ -260,17 +260,15 @@
       </p>
       <a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a>
     </div>
-
             
     <div class="text-center sidebar-meta">
-      <div id="google_translate_element"></div>
+      <div style="margin-top:10px; margin-bottom:10px;" id="google_translate_element"></div>
       <script type="text/javascript">
            function googleTranslateElementInit() {
              new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-58495462-2'}, 'google_translate_element');
            }
        </script>
       <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
       <span>Copyright 2014 Ben E. Keith</span>
       <a href="#">benekeith.com</a>
     </div>
@@ -284,7 +282,6 @@
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu" style="float: right;">
-          <a ng-click="scanBarcode()"><li><span class="icon-camera"></span></li></a>
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
           <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
         </ul>
@@ -307,6 +304,7 @@
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
                 <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
+                <button ng-if="isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>
           </form>

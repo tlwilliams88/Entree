@@ -123,7 +123,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
                 .ToTable("PaymentTransaction")
                 .MapToStoredProcedures(s => {
                     s.Insert(i => i.HasName("procInsertTransaction")
-                                   .Parameter(p => p.BranchId, "Division")
+                                   .Parameter(p => p.Division, "Division")
                                    .Parameter(p => p.CustomerNumber, "CustNum")
                                    .Parameter(p => p.InvoiceNumber, "Invoice")
                                    .Parameter(p => p.AccountNumber, "Account")

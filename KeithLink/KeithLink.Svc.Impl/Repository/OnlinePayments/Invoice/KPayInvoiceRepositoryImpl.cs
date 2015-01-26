@@ -98,7 +98,7 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
 		{
 			_dbContext.Context.Database.ExecuteSqlCommand(
 				"procInsertTransaction @Division, @CustNum, @Invoice, @Account, @UserName, @Amount, @ConfId, @SchDate",
-				new SqlParameter("@Division", payment.BranchId),
+				new SqlParameter("@Division", payment.Division),
 				new SqlParameter("@CustNum", payment.CustomerNumber),
 				new SqlParameter("@Invoice", payment.InvoiceNumber),
 				new SqlParameter("@Account", payment.AccountNumber),

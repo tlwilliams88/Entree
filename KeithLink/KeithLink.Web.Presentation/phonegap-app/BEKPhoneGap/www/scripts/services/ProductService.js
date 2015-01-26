@@ -137,7 +137,7 @@ angular.module('bekApp')
             if (response.data) {
               return response.data; // return item object
             } else {
-              return $q.reject('No product found for scanned number.');
+              return $q.reject();
             }
           });
         },

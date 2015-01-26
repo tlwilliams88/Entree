@@ -56,8 +56,8 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location', 'PhonegapPushService',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, $window, $location, PhonegapPushService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, $window, $location, PhonegapServices, PhonegapPushService) {
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
