@@ -185,7 +185,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
-			Parallel.ForEach(pagedInvoices.Results, invoice =>
+			foreach(var invoice in pagedInvoices.Results)
 			{
 				invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
 
@@ -201,7 +201,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					}
 				}
 
-			});
+			}
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
