@@ -276,7 +276,7 @@
             <span ng-if="item.caseprice !== '$0.00'">{{::item.caseprice}}</span>
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td class="large-icon icon-col">
+          <td class="large-icon icon-col nowrap">
             <div 
               ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" 
               context-menu-template

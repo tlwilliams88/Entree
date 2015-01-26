@@ -27,6 +27,20 @@ angular.module('bekApp')
       $scope.hasPayableInvoices = data.haspayableinvoices;
       $scope.totalAmountDue = data.totaldue;
 
+      // // Test data
+      // data.pagedresults.results[0].pendingtransaction = {
+      //   amount: 123.43,
+      //   date: '2015-01-22T00:00:00Z',
+      //   editable: true
+      // };
+
+      data.pagedresults.results.forEach(function(invoice) {
+        if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+          invoice.paymentAmount = invoice.pendingtransaction.amount;
+          invoice.date = invoice.pendingtransaction.date;
+        }
+      });
+
       return data.pagedresults.results;
     });
   }
@@ -270,9 +284,15 @@ angular.module('bekApp')
 
   $scope.selectInvoice = function (invoice, isSelected) {
     if (isSelected) {
-      invoice.paymentAmount = invoice.amount.toString();
+      if (!invoice.pendingtransaction) {
+        invoice.paymentAmount = invoice.amount.toString();
+      }
     } else {
-      invoice.paymentAmount = '0';
+      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+        invoice.paymentAmount = invoice.pendingtransaction.amount; 
+      } else {
+        invoice.paymentAmount = '0';  
+      }
     }
   };
 

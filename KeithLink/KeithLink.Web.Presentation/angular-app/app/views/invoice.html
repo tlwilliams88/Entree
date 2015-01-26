@@ -214,7 +214,7 @@
                 }"
                 ng-required="invoice.isSelected">
             </td>
-            <td ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
+            <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
                 ng-click="openDatepicker = true"
                 ng-if="invoice.ispayable"
@@ -227,7 +227,7 @@
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
-              {{invoice.date | date:shortDate}}
+              <span ng-show="invoice.ispayable">{{invoice.date | date:shortDate}}</span>
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
@@ -267,7 +267,7 @@
                       ng-required="invoice.isSelected">
                   </td>
                 </tr>
-                <tr ng-if="invoice.ispayable">
+                <tr ng-if="!viewingAllCustomers && invoice.ispayable">
                   <td>
                     Schedule Date
                   </td>
