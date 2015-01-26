@@ -56,6 +56,9 @@ angular.module('bekApp')
             field: propertyName,
             value: $scope.filterRowFields[propertyName]
           };
+          if (!isNaN(filterField.value)) {
+            filterField.type = 'eq';
+          }
           filterObject.filter.push(filterField);
         }
       }
