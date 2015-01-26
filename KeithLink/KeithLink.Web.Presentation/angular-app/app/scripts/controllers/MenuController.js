@@ -194,7 +194,7 @@ angular.module('bekApp')
             $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
           }
         }, function (error) {
-          $scope.displayMessage('warning', 'No product found for scanned number.');
+          $scope.displayMessage('error', 'Error with scan product request.');
         });
     }, function (error) {
       console.log('Scanning failed: ' + error);

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService',
-    function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService) {
+  .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'Constants',
+    function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, Constants) {
     
     $scope.myInterval = -1;
 
@@ -70,6 +70,19 @@ angular.module('bekApp')
       });
     };
 
+ $scope.showAdditionalInfo = function(notification) {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/notificationdetailsmodal.html',
+      controller: 'NotificationDetailsModalController',
+      windowClass: 'color-background-modal',
+      scope: $scope,
+      resolve: {
+        notification: function() {
+          return notification;
+        }
+      }
+    });
+  };
     /**********
     order summary graph data
     **********/
@@ -84,6 +97,47 @@ angular.module('bekApp')
 
     var fromString = $filter('date')(from, 'yyyy-MM-dd');
     var toString = $filter('date')(to, 'yyyy-MM-dd');
+
+    $scope.notificationParams = {
+     size: 8,
+     from:0,
+     sort: [{
+      field: 'messagecreatedutc',
+      order: 'desc'
+
+    }]
+    // filter: {
+    //   field: 'subject',
+    //   value: 'value',
+    //   filter: [
+    //      {
+    //        field: 'name',
+    //        value: 'value'
+    //      }
+    //   ]
+    // }
+  };
+
+    $scope.loadingResults = true;
+      NotificationService.getMessages($scope.notificationParams).then(function(data) {
+        var notifications =data.results,
+        notificationDates ={},
+        dates = [];
+        notifications.forEach(function(notification){
+         var date = $filter('date')(notification.messagecreatedutc, 'yyyy-MM-dd');
+         if(notificationDates[date]){
+          notificationDates[date].push(notification)
+          }
+          else{
+            dates.push(date);
+            notificationDates[date] = [notification];
+          }          
+         
+        })
+      $scope.notificationDates = notificationDates;
+      $scope.dates = dates;      
+      $scope.loadingResults = false;
+    });
 
     // get order summary data
     OrderService.getOrdersByDate(fromString, toString).then(function(orders) {
@@ -127,6 +181,8 @@ angular.module('bekApp')
       monthData.unshift('x');
       barData.unshift('bar');
       lineData.unshift('line');
+
+
 
       // see c3js.org/reference.html website for list of options
       var chart = c3.generate({

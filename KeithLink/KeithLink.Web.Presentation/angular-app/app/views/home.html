@@ -263,71 +263,37 @@
 
       </div>
     </div> <!-- end Featured Items -->
+
     <!-- Recent Activity -->
-    <div class="col-md-4 hidden-xs hidden-sm">
-      <h3>Recent Activity</h3>
-      
-      <div class="notification notification--date">
-        <div class="notification__icon">
-          <span class="icon-record"></span>
-        </div>
-        <div class="notification__date">Thursday, April 21, 2014</div>
+    <div class="hidden-xs hidden-sm pull-right col-md-4 col-xs-12">
+      <h3 >Recent Activity</h3>  
+      <div ng-repeat = "date in dates">
+            <div class="notification notification--date">
+              <div class="notification__icon">
+                <span class="icon-record"></span>
+              </div>
+              <div class="notification__date">{{date | date:'EEEE MMMM dd, yyyy'}} </div>
+            </div>
+            <div ng-repeat = "notification in notificationDates[date]">
+        <tr>
+          <div class ="hand" ng-click ="showAdditionalInfo(notification)">
+          <td>   
+            <div  class="notification notification--activity">
+              <div class="notification__icon">
+                <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>          
+                <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
+                <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
+              </div>
+              <div class="notification__message">
+                {{notification.subject}}
+                <div class="timestamp"> {{notification.messagecreatedutc | LocalTimeZoneTime}}</div>
+              </div>
+            </div>
+          </td>
+          </div>
+        </tr>
       </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-dollar"></span></div>
-        </div>
-        <div class="notification__message">
-          You | <span class="timestamp">8:45am</span>
-        </div>
-      </div>
-      <div class="notification notification--message">
-        <div class="notification__icon">
-          <img ng-src="{{userProfile.imageurl}}" alt="">
-        </div>
-        <div class="notification__message">
-          Created an Invoice | <span class="timestamp">8:45am</span>
-        </div>
-      </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-box"></span></div>
-        </div>
-        <div class="notification__message">
-          item
-        </div>
-      </div>
-      <div class="notification notification--date">
-        <div class="notification__icon">
-          <span class="icon-record"></span>
-        </div>
-        <div class="notification__date">Wednesday, April 20, 2014</div>
-      </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-clipboard"></span></div>
-        </div>
-        <div class="notification__message">
-          Created an Order | <span class="timestamp">9:29am</span>
-        </div>
-      </div>
-      <div class="notification notification--message">
-        <div class="notification__icon">
-          <img ng-src="{{userProfile.salesRep.imageurl}}" alt="">
-        </div>
-        <div class="notification__message">
-          Heather Hill | <span class="timestamp">8:44am</span>
-          <p><a href="">Set New Appointment</a></p>
-        </div>
-      </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-checkmark"></span></div>
-        </div>
-        <div class="notification__message">
-          Paid Invoice <a href="">00005649</a> | <span class="timespan">8:30am</span>
-        </div>
-      </div>
+      </div>     
 
     </div> <!-- end Recent Activity -->
   </div>
