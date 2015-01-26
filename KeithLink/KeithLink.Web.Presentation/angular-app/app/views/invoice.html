@@ -38,7 +38,10 @@
     <a ui-sref="menu.transaction">View Pending Transactions for All Customers</a>
   </div>
 
-  <form name="invoiceForm" class="style-validation-errors" novalidate>
+  <form name="invoiceForm"
+        unsaved-warning-form 
+        class="style-validation-errors" 
+        novalidate>
     <div class="col-md-12" ng-if="viewingAllCustomers">
       <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
     </div>
