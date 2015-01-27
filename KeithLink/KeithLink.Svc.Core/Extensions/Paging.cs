@@ -143,6 +143,8 @@ namespace KeithLink.Svc.Core.Extensions
 			else if (fieldType.IsEnum)
 				formattedValue = string.Format("\"{0}\"", GetEnumValueExpression(fieldType, value));
 
+			if (fieldType != typeof(string) && op == Operator.Contains)
+				op = Operator.Equals;
 
 
 			// build expression
