@@ -206,6 +206,7 @@
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
     <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
+    <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\Invoices\InvoiceExportRequestModel.cs" />
@@ -384,6 +385,9 @@
     <Compile Include="Models\Profile\AccountFilterModel.cs" />
     <Compile Include="Models\Profile\Address.cs" />
     <Compile Include="Models\Profile\AccountUsersReturn.cs" />
+    <Compile Include="Models\Profile\CustomerAddUserModel.cs" />
+    <Compile Include="Models\Profile\CustomerNumberComparer.cs" />
+    <Compile Include="Models\Profile\Dsr.cs" />
     <Compile Include="Models\Profile\UserFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerReturn.cs" />

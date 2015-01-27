@@ -38,6 +38,17 @@ namespace KeithLink.Svc.Impl.Migrations
             //    );
             //
 
+            context.Dsrs.AddOrUpdate(
+                d => d.DsrNumber,
+                new Dsr {
+                    DsrNumber = "066",
+                    Name = "Ochoa, Raul",
+                    BranchId = "FAM",
+                    Phone = "4328896994",
+                    EmailAddress = "riochoa@benekeith.com",
+                    ImageUrl = "/img/avatar.jpg"
+                } );
+
 			context.BranchSupports.AddOrUpdate(
 				b => b.BranchId,
 				new BranchSupport
