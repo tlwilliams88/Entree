@@ -205,8 +205,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
-                PagedResults = pagedInvoices
-				//TotalAmmountDue = customers.Sum(c => c.CurrentBalance) //TODO: Calculate from invoices
+                PagedResults = pagedInvoices,
+				TotalAmmountDue = kpayInvoices.Sum(i => i.AmountDue)
             };
         }
 
