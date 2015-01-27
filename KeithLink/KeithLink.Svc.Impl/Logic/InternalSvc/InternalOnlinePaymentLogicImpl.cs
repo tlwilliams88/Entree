@@ -192,7 +192,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				if (invoice.Status == InvoiceStatus.Pending)
 				{
 					//Retrieve payment transaction record
-					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(GetDivision(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault();
+					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(GetDivision(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
 
 					if (payment != null)
 					{
@@ -205,8 +205,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
-                PagedResults = pagedInvoices
-				//TotalAmmountDue = customers.Sum(c => c.CurrentBalance) //TODO: Calculate from invoices
+                PagedResults = pagedInvoices,
+				TotalAmmountDue = kpayInvoices.Sum(i => i.AmountDue)
             };
         }
 
