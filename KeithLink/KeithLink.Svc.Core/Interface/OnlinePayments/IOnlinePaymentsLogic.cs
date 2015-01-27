@@ -25,5 +25,7 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments{
         void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);
 
 		PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging);
+
+		CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId);
 	}
 }

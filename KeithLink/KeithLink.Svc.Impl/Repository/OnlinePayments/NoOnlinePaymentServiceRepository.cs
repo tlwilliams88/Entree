@@ -76,5 +76,11 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public Core.Models.Profile.CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId)
+		{
+			return new Core.Models.Profile.CustomerAccountBalanceModel();
+		}
 	}
 }

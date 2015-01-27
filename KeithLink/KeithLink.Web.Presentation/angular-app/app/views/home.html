@@ -33,29 +33,24 @@
         
         <h4><strong>Account Balance</strong></h4>
         
-        <p class="text-red currency-value">
-          {{selectedUserContext.customer.currentbalance || 0 | currency}}
+        <p class="currency-value">
+          {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
         </p>
         
         <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
         
         <div class="row text-center">
           <div class="balance__term--amount term-amount-1">
-            <strong>{{selectedUserContext.customer.balanceage1label}}</strong>
-            {{selectedUserContext.customer.balanceage1 | currency}}
+            <strong>Current</strong>
+            {{selectedUserContext.customer.balance.currentbalance | currency}}
           </div>
           <div class="balance__term--amount term-amount-2">
-            <strong>{{selectedUserContext.customer.balanceage2label}}</strong>
-            {{selectedUserContext.customer.balanceage2 | currency}}
+            <strong>Past Due</strong>
+            <div class="text-red">
+            <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
+            </div>
           </div>
-          <div class="balance__term--amount term-amount-3">
-            <strong>{{selectedUserContext.customer.balanceage3label}}</strong>
-            {{selectedUserContext.customer.balanceage3 | currency}}
-          </div>
-          <div class="balance__term--amount term-amount-4">
-            <strong>{{selectedUserContext.customer.balanceage4label}}</strong>
-            {{selectedUserContext.customer.balanceage4 | currency}}
-          </div>
+          
         </div>
       </div>
       <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">
