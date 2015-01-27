@@ -1,3 +1,38 @@
+@font-face {
+  font-family: 'Open Sans';
+  src:url('/fonts/google-fonts-Open_Sans/OpenSans-Semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src:url('/fonts/google-fonts-Open_Sans/OpenSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src:url('/fonts/google-fonts-Open_Sans/OpenSans-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Code39AzaleaFont';
+  src:url('/fonts/Code39Azalea/Code39Azalea.eot');
+  src:url('/fonts/Code39Azalea/Code39Azalea.eot') format('embedded-opentype'),
+    url('/fonts/Code39Azalea/Code39Azalea.woff') format('woff'),
+    url('/fonts/Code39Azalea/Code39Azalea.ttf') format('truetype'),
+    url('/fonts/Code39Azalea/Code39Azalea.svg#Code39Azalea') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.barcode {
+  font-family: 'Code39AzaleaFont';
+}
+
 a {
   cursor: pointer;
 }
@@ -20,16 +55,3 @@ a:hover {
   font-weight: 600;
 }
 
-@font-face {
-  font-family: 'Code39AzaleaFont';
-  src:url('/fonts/Code39Azalea/Code39Azalea.eot');
-  src:url('/fonts/Code39Azalea/Code39Azalea.eot') format('embedded-opentype'),
-    url('/fonts/Code39Azalea/Code39Azalea.woff') format('woff'),
-    url('/fonts/Code39Azalea/Code39Azalea.ttf') format('truetype'),
-    url('/fonts/Code39Azalea/Code39Azalea.svg#Code39Azalea') format('svg');
-  font-weight: normal;
-  font-style: normal;
-}
-.barcode {
-  font-family: 'Code39AzaleaFont';
-}

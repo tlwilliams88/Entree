@@ -36,8 +36,11 @@ angular.module('bekApp')
 
       data.pagedresults.results.forEach(function(invoice) {
         if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+          invoice.userCanPayInvoice = true;
           invoice.paymentAmount = invoice.pendingtransaction.amount;
           invoice.date = invoice.pendingtransaction.date;
+        } else if (invoice.ispayable) {
+          invoice.userCanPayInvoice = true;
         }
       });
 
@@ -251,6 +254,12 @@ angular.module('bekApp')
       type: 'equals'
     }]
   }, {
+    name: 'Pending Payments',
+    filterFields: [{
+      field: 'statusdescription',
+      value: 'Pending'
+    }]
+  }, {
     name: 'Open Invoices',
     filterFields: [{
       field: 'statusdescription',
@@ -319,7 +328,9 @@ angular.module('bekApp')
     if (!processingPayInvoices) {
       processingPayInvoices = true;
       var payments = $filter('filter')($scope.invoices, {isSelected: true});
-      InvoiceService.payInvoices(payments, $scope.selectedAccount).finally(function () {
+      InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
+        $state.go('menu.transaction');
+      }).finally(function () {
         processingPayInvoices = false;
       });
     }

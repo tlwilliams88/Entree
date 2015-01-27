@@ -40,13 +40,13 @@
         <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
         
         <div class="row text-center">
-          <div class="balance__term--amount term-amount-1">
+          <div class="balance__term--amount">
             <strong>Current</strong>
             {{selectedUserContext.customer.balance.currentbalance | currency}}
           </div>
-          <div class="balance__term--amount term-amount-2">
+          <div class="balance__term--amount">
             <strong>Past Due</strong>
-            <div class="text-red">
+            <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
             <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
             </div>
           </div>
