@@ -205,8 +205,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
-                PagedResults = pagedInvoices,
-				TotalAmmountDue = customers.Sum(c => c.CurrentBalance)
+                PagedResults = pagedInvoices
+				//TotalAmmountDue = customers.Sum(c => c.CurrentBalance) //TODO: Calculate from invoices
             };
         }
 
@@ -340,5 +340,22 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		}
 		
 		#endregion
+
+
+		public CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId)
+		{
+			var invoices = _invoiceRepo.GetAllOpenInvoices(GetDivision(branchId), customerId);
+			
+			var returnModel = new CustomerAccountBalanceModel() { CurrentBalance = 0, PastDue = 0, TotalBalance = 0 };
+
+			if (invoices != null)
+			{
+				returnModel.TotalBalance = invoices.Sum(i => i.AmountDue);
+				returnModel.CurrentBalance = invoices.Where(i => i.DueDate >= DateTime.Now).Sum(a => a.AmountDue);
+				returnModel.PastDue = invoices.Where(i => i.DueDate < DateTime.Now).Sum(a => a.AmountDue);
+			}
+
+			return returnModel;
+		}
 	}
 }

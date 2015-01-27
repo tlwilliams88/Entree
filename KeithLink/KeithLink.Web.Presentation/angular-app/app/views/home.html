@@ -33,29 +33,24 @@
         
         <h4><strong>Account Balance</strong></h4>
         
-        <p class="text-red currency-value">
-          {{selectedUserContext.customer.currentbalance || 0 | currency}}
+        <p class="currency-value">
+          {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
         </p>
         
         <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
         
         <div class="row text-center">
           <div class="balance__term--amount term-amount-1">
-            <strong>{{selectedUserContext.customer.balanceage1label}}</strong>
-            {{selectedUserContext.customer.balanceage1 | currency}}
+            <strong>Current</strong>
+            {{selectedUserContext.customer.balance.currentbalance | currency}}
           </div>
           <div class="balance__term--amount term-amount-2">
-            <strong>{{selectedUserContext.customer.balanceage2label}}</strong>
-            {{selectedUserContext.customer.balanceage2 | currency}}
+            <strong>Past Due</strong>
+            <div class="text-red">
+            <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
+            </div>
           </div>
-          <div class="balance__term--amount term-amount-3">
-            <strong>{{selectedUserContext.customer.balanceage3label}}</strong>
-            {{selectedUserContext.customer.balanceage3 | currency}}
-          </div>
-          <div class="balance__term--amount term-amount-4">
-            <strong>{{selectedUserContext.customer.balanceage4label}}</strong>
-            {{selectedUserContext.customer.balanceage4 | currency}}
-          </div>
+          
         </div>
       </div>
       <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">
@@ -268,71 +263,37 @@
 
       </div>
     </div> <!-- end Featured Items -->
+
     <!-- Recent Activity -->
-    <div class="col-md-4 hidden-xs hidden-sm">
-      <h3>Recent Activity</h3>
-      
-      <div class="notification notification--date">
-        <div class="notification__icon">
-          <span class="icon-record"></span>
-        </div>
-        <div class="notification__date">Thursday, April 21, 2014</div>
+    <div class="hidden-xs hidden-sm pull-right col-md-4 col-xs-12">
+      <h3 >Recent Activity</h3>  
+      <div ng-repeat = "date in dates">
+            <div class="notification notification--date">
+              <div class="notification__icon">
+                <span class="icon-record"></span>
+              </div>
+              <div class="notification__date">{{date | date:'EEEE MMMM dd, yyyy'}} </div>
+            </div>
+            <div ng-repeat = "notification in notificationDates[date]">
+        <tr>
+          <div class ="hand" ng-click ="showAdditionalInfo(notification)">
+          <td>   
+            <div  class="notification notification--activity">
+              <div class="notification__icon">
+                <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>          
+                <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
+                <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
+              </div>
+              <div class="notification__message">
+                {{notification.subject}}
+                <div class="timestamp"> {{notification.messagecreatedutc | LocalTimeZoneTime}}</div>
+              </div>
+            </div>
+          </td>
+          </div>
+        </tr>
       </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-dollar"></span></div>
-        </div>
-        <div class="notification__message">
-          You | <span class="timestamp">8:45am</span>
-        </div>
-      </div>
-      <div class="notification notification--message">
-        <div class="notification__icon">
-          <img ng-src="{{userProfile.imageurl}}" alt="">
-        </div>
-        <div class="notification__message">
-          Created an Invoice | <span class="timestamp">8:45am</span>
-        </div>
-      </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-box"></span></div>
-        </div>
-        <div class="notification__message">
-          item
-        </div>
-      </div>
-      <div class="notification notification--date">
-        <div class="notification__icon">
-          <span class="icon-record"></span>
-        </div>
-        <div class="notification__date">Wednesday, April 20, 2014</div>
-      </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-clipboard"></span></div>
-        </div>
-        <div class="notification__message">
-          Created an Order | <span class="timestamp">9:29am</span>
-        </div>
-      </div>
-      <div class="notification notification--message">
-        <div class="notification__icon">
-          <img ng-src="{{userProfile.salesRep.imageurl}}" alt="">
-        </div>
-        <div class="notification__message">
-          Heather Hill | <span class="timestamp">8:44am</span>
-          <p><a href="">Set New Appointment</a></p>
-        </div>
-      </div>
-      <div class="notification notification--activity">
-        <div class="notification__icon">
-          <div class="icon"><span class="icon-checkmark"></span></div>
-        </div>
-        <div class="notification__message">
-          Paid Invoice <a href="">00005649</a> | <span class="timespan">8:30am</span>
-        </div>
-      </div>
+      </div>     
 
     </div> <!-- end Recent Activity -->
   </div>

@@ -28,5 +28,6 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
         void PayInvoice(PaymentTransaction payment);
         
         IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll();
+
     }
 }

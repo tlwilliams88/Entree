@@ -56,6 +56,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomers", ReplyAction="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomersResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel>> PendingTransactionsAllCustomersAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetCustomerAccountBalance", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetCustomerAccountBalanceResponse")]
+        KeithLink.Svc.Core.Models.Profile.CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOnlinePaymentService/GetCustomerAccountBalance", ReplyAction="http://tempuri.org/IOnlinePaymentService/GetCustomerAccountBalanceResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.CustomerAccountBalanceModel> GetCustomerAccountBalanceAsync(string customerId, string branchId);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -139,6 +145,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OnlinePaymentService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel>> PendingTransactionsAllCustomersAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
             return base.Channel.PendingTransactionsAllCustomersAsync(user, paging);
+        }
+        
+        public KeithLink.Svc.Core.Models.Profile.CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId) {
+            return base.Channel.GetCustomerAccountBalance(customerId, branchId);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.CustomerAccountBalanceModel> GetCustomerAccountBalanceAsync(string customerId, string branchId) {
+            return base.Channel.GetCustomerAccountBalanceAsync(customerId, branchId);
         }
     }
 }

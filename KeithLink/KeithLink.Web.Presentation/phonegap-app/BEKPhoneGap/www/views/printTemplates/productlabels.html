@@ -54,7 +54,7 @@
 
 <div class="label" ng-class="'label-' + type" ng-repeat-start="item in items">
 	<!-- <img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /> -->
-	<span class="barcode">{{'*' + item.itemnumber + '*'}}</span>
+	<span class="barcode">{{item.itemnumber}}</span>
 	<br>
 	{{item.itemnumber}}<br>
 	{{item.name}}<br>

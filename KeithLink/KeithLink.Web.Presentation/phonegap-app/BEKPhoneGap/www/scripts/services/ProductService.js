@@ -137,7 +137,7 @@ angular.module('bekApp')
             if (response.data) {
               return response.data; // return item object
             } else {
-              return $q.reject();
+              return;
             }
           });
         },

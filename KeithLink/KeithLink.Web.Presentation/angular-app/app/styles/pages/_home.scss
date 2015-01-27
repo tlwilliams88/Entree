@@ -63,12 +63,8 @@
     }
   }
 
-  &:first-child .notification__icon:after {
-    top: 5px;
-  }
-
   .notification__message {
-    width: inherit !important;
+    width: calc(75% - 15px) !important;    
     @include make-md-column(9);
     @include arrow('left','top', 5px, $color-white, $color-border, 1px);
     margin-top: 15px;
@@ -79,7 +75,7 @@
     padding: 8px;
     // margin-left: -20px;
 
-    span.timestamp {
+    .timestamp {
       color: $color-border;
     }
   }
@@ -100,9 +96,9 @@
       padding-top: 20px;
 
       div.icon {
-        height: 25px;
-        width: 25px;
-        padding: 3px;
+        height: 26px;
+        width: 26px;
+        padding: 4px 1px;
         border: 1px solid $color-font;
         border-radius: 100px;
         background-color: $color-white;

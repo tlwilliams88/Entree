@@ -74,11 +74,11 @@
               Each
               <span sort-icons field="'Each'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
-            <th class="sort-col-header text-center" ng-click="sortTable('TotalQuantityOrdered')">
+            <th class="sort-col-header hidden-mobile-visible-print text-center" ng-click="sortTable('TotalQuantityOrdered')">
               # Ordered
               <span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
-            <th class="sort-col-header text-center"  ng-click="sortTable('TotalQuantityShipped')">
+            <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('TotalQuantityShipped')">
               # Shipped
   			<span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span>
             </th>
@@ -100,10 +100,10 @@
             <td class="hidden-mobile-visible-print text-center">
               {{item.each}}
             </td>
-            <td class="text-center">
+            <td class="text-center hidden-mobile-visible-print">
               {{item.totalquantityordered}}
             </td>
-            <td class="text-center">
+            <td class="text-center hidden-mobile-visible-print">
               {{item.totalquantityshipped}}
             </td>
             <td class="large-icon icon-col">
@@ -117,6 +117,14 @@
                   <col width="25%" />
                   <col width="75%" />
                 </colgroup>
+                <tr>
+                  <td># Ordered</td>
+                  <td>{{item.totalquantityordered}}</td>
+                </tr>
+                <tr>
+                  <td># Shipped</td>
+                  <td>{{item.totalquantityshipped}}</td>
+                </tr>
                 <tr>
                   <td>Pack/Size</td>
                   <td>{{item.packsize}}</td>

@@ -19,6 +19,7 @@ using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.OnlinePayments;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -42,13 +43,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IEmailClient _emailClient;
 		private IMessagingServiceRepository _messagingServiceRepository;
 		private IEventLogRepository _eventLog;
+		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
 									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository,
-									IEventLogRepository eventLog)
+									IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -62,6 +64,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_emailClient = emailClient;
 			_messagingServiceRepository = messagingServiceRepository;
 			_eventLog = eventLog;
+			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
         }
         #endregion
 
@@ -948,28 +951,31 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			
 			//Populate the Last order updated date for each customer
 			foreach (var customer in returnValue.Results)
+			{
 				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
 
-
-
-			foreach (var cust in returnValue.Results)
-			{
-				if (string.IsNullOrEmpty(cust.TermCode))
-					continue;
-
-				//Lookup Term info
-				var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
-
-				if (term != null)
-				{
-					cust.TermDescription = term.Description;
-					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
-					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
-					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-					cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
-				}
-
+				customer.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customer.CustomerNumber, customer.CustomerBranch); 
 			}
+			
+
+			//foreach (var cust in returnValue.Results)
+			//{
+			//	if (string.IsNullOrEmpty(cust.TermCode))
+			//		continue;
+
+			//	//Lookup Term info
+			//	var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+			//	if (term != null)
+			//	{
+			//		cust.TermDescription = term.Description;
+			//		cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+			//		cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+			//		cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+			//		cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
+			//	}
+
+			//}
 			
 
 			return returnValue;

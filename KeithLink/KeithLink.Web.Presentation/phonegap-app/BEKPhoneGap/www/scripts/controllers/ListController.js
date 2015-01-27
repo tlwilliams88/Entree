@@ -404,6 +404,10 @@ angular.module('bekApp')
       }
     };
 
+    /******
+    MODALS
+    ******/
+
     $scope.openListImportModal = function () {
 
       var modalInstance = $modal.open({
@@ -461,7 +465,28 @@ angular.module('bekApp')
       });
     };
 
+    $scope.openPrintOptionsModal = function(list) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/printoptionsmodal.html',
+        controller: 'PrintOptionsModalController',
+        scope: $scope,
+        resolve: {
+          items: function() {
+            return list.items;
+          },
+          name: function() {
+            return list.name;
+          }
+        }
+      });
+    };
+
     resetPage(angular.copy(originalList));
     $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+
+    $scope.$on('$destroy', function() {
+      ListService.lists = null;
+      ListService.labels = null;
+    });
 
   }]);
