@@ -223,6 +223,7 @@
     <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
     <Compile Include="Models\Messaging\Queue\OrderEta.cs" />
     <Compile Include="Models\Messaging\Queue\EtaNotification.cs" />
+    <Compile Include="Models\Messaging\Queue\PaymentConfirmationNotification.cs" />
     <Compile Include="Models\Messaging\UserMessageModel.cs" />
     <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
     <Compile Include="Models\ModelExport\ExportModelConfiguration.cs" />

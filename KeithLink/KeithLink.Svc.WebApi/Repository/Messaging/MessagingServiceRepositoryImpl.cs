@@ -13,18 +13,24 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.WebApi.Repository.Messaging
 {
-	public class MessagingServiceRepositoryImpl: IMessagingServiceRepository
-	{
+	public class MessagingServiceRepositoryImpl: IMessagingServiceRepository {
+        #region attributes
         private com.benekeith.MessagingService.IMessagingService serviceClient;
+        #endregion
 
-        public MessagingServiceRepositoryImpl(com.benekeith.MessagingService.IMessagingService serviceClient)
-        {
+        #region ctor
+        public MessagingServiceRepositoryImpl(com.benekeith.MessagingService.IMessagingService serviceClient) {
             this.serviceClient = serviceClient;
         }
+        #endregion
 
-        public List<UserMessageModel> ReadUserMessages(UserProfile user)
-        {
-            return serviceClient.ReadUserMessages(user).ToList();
+        #region methods
+        public void CreateMailMessage(MailMessageModel mailMessage) {
+            serviceClient.CreateMailMessage(mailMessage);
+        }
+
+        public int GetUnreadMessagesCount(Guid userId) {
+            return serviceClient.GetUnreadMessagesCount(userId);
         }
 
         public void MarkAsReadUserMessages(List<UserMessageModel> userMessages)
@@ -32,14 +38,8 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
             serviceClient.MarkAsReadUserMessages(userMessages.ToArray());
         }
 
-        public int GetUnreadMessagesCount(Guid userId)
-        {
-            return serviceClient.GetUnreadMessagesCount(userId);
-        }
-
-        public void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user)
-        {
-            serviceClient.UpdateMessagingPreferences(messagingPreferenceModel, user);
+        public MessageTemplateModel ReadMessageTemplateForKey(string key) {
+            return serviceClient.ReadMessageTemplateForKey(key);
         }
 
         public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId)
@@ -52,22 +52,18 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
 			return serviceClient.ReadPagedUserMessages(user, paging);
 		}
 
+        public List<UserMessageModel> ReadUserMessages(UserProfile user) {
+            return serviceClient.ReadUserMessages(user).ToList();
+        }
 
         public bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel)
         {
             return serviceClient.RegisterPushDevice(user, deviceRegistrationModel);
         }
 
-
-		public MessageTemplateModel ReadMessageTemplateForKey(string key)
-		{
-			return serviceClient.ReadMessageTemplateForKey(key);
-		}
-
-
-		public void CreateMailMessage(MailMessageModel mailMessage)
-		{
-			serviceClient.CreateMailMessage(mailMessage);
-		}
-	}
+        public void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile user) {
+            serviceClient.UpdateMessagingPreferences(messagingPreferenceModel, user);
+        }
+        #endregion
+    }
 }

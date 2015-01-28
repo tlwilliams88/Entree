@@ -1,33 +1,35 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core.Enumerations;
+using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
-using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using EFCustomer = KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
 using EFInvoice = KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Component;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Enumerations;
-using KeithLink.Svc.Core.Helpers;
-using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
-using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
-using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
-using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Models.Paging;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Core.Interface.Component;
 
-namespace KeithLink.Svc.Impl.Logic.InternalSvc
-{
+namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
 
         #region attributes
@@ -36,23 +38,51 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
-		private readonly ITokenReplacer tokenReplacer;
+        private readonly IGenericQueueRepository _queue;
         #endregion
 
         #region ctor
         public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, ITokenReplacer tokenReplacer)
+			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, IGenericQueueRepository queueRepo)
 		{
 			this._invoiceRepo = invoiceRepo;
 			this._bankRepo = bankRepo;
 			this._orderHistoryRepo = orderHistoryrepo;
 			this._catalogLogic = catalogLogic;
 			this._customerRepository = customerRepository;
-			this.tokenReplacer = tokenReplacer;
+            _queue = queueRepo;
 		}
         #endregion
 
         #region methods
+        private FilterInfo BuildStatusFilter(FilterInfo passedFilter) {
+            if (passedFilter == null)
+                return null;
+
+            if (passedFilter.Filters != null) {
+                foreach (var filter in passedFilter.Filters) {
+                    var createdFilter = BuildStatusFilter(filter);
+                    if (createdFilter != null)
+                        return createdFilter;
+                }
+            }
+
+            if (passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase)) {
+                switch (passedFilter.Value.ToUpper()) {
+                    case "OPEN":
+                        return new FilterInfo() { Field = "InvoiceStatus", Value = "O", FilterType = "eq" };
+                    case "PAID":
+                        return new FilterInfo() { Field = "InvoiceStatus", Value = "C", FilterType = "eq" };
+                    case "PAST DUE":
+                        return new FilterInfo() { Field = "InvoiceStatus", Value = "O", FilterType = "eq" };
+                    case "PENDING":
+                        return new FilterInfo() { Field = "InvoiceStatus", Value = "P", FilterType = "eq" };
+                }
+            }
+
+            return null;
+        }
+
         public void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber) {
             _invoiceRepo.DeleteInvoice(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
         }
@@ -133,9 +163,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             //Convert to invoice model
             var invoiceModel = kpayInvoiceHeader.ToInvoiceModel(customer);
 
-			
-
-            invoiceModel.InvoiceLink =new Uri(tokenReplacer.ReplaceTokens(Configuration.WebNowUrl, new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
+            invoiceModel.InvoiceLink =new Uri(Configuration.WebNowUrl.Inject(new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
 
             if (invoiceModel.DueDate < DateTime.Now) {
                 invoiceModel.Status = InvoiceStatus.PastDue;
@@ -197,7 +225,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			Parallel.ForEach(pagedInvoices.Results, invoice =>
 			{
-				invoice.InvoiceLink = new Uri(tokenReplacer.ReplaceTokens(Configuration.WebNowUrl, new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
+				invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
 			});
 			
             return new InvoiceHeaderReturnModel() {
@@ -207,36 +235,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             };
         }
 
-		private FilterInfo BuildStatusFilter(FilterInfo passedFilter)
-		{
-			if (passedFilter == null)
-				return null;
-
-			if (passedFilter.Filters != null)
-			{
-				foreach (var filter in passedFilter.Filters)
-				{
-					var createdFilter = BuildStatusFilter(filter);
-					if (createdFilter != null) return createdFilter;
-				}
-			}
-
-			if (passedFilter.Field.Equals("StatusDescription", StringComparison.CurrentCultureIgnoreCase))
-			{
-				switch (passedFilter.Value.ToUpper())
-				{
-					case "OPEN":
-						return new FilterInfo() { Field = "InvoiceStatus", Value = "O", FilterType = "eq" };
-					case "PAID":
-						return new FilterInfo() { Field = "InvoiceStatus", Value = "C", FilterType = "eq" };
-					case "PAST DUE":
-						return new FilterInfo() { Field = "InvoiceStatus", Value = "O", FilterType = "eq" };
-				}
-			}
-
-			return null;
-		}
-		
 		private void LookupProductDetails(InvoiceModel invoiceItem, UserSelectedContext catalogInfo)
 		{
 			if (invoiceItem.Items == null || invoiceItem.Items.Count == 0)
@@ -303,6 +301,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
                 _invoiceRepo.MarkInvoiceAsPaid(GetDivision(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
             }
+
+            // create payment notification
+            PaymentConfirmationNotification notification = new PaymentConfirmationNotification();
+            notification.BranchId = userContext.BranchId;
+            notification.CustomerNumber = userContext.CustomerId;
+            notification.Payments = payments;
+
+            // write the payment notification to Rabbit MQ
+            _queue.PublishToQueue(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
+                                  Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
 		}
         #endregion
 			
