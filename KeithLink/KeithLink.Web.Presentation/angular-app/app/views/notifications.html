@@ -33,7 +33,7 @@
               Label
               <span sort-icons field="'label'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
             </th>
-            <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortNotifications('customernumber', !sortOrder)">
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('customernumber', !sortOrder)">
               Customer
               <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
             </th>
@@ -41,7 +41,7 @@
               Subject
               <span sort-icons field="'subject'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
             </th>
-            <th class="sort-col-header hidden-xs hidden-sm" ng-click="sortNotifications('notificationtypedescription', !sortOrder)">
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('notificationtypedescription', !sortOrder)">
               Type
               <span sort-icons field="'notificationtypedescription'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
             </th>
@@ -62,13 +62,13 @@
             <td class="input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.label">
             </td>
-            <td class="hidden-xs hidden-sm input-col">
+            <td class="hidden-mobile-visible-print input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.customernumber">
             </td>
             <td class="input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.subject">
             </td>
-            <td class="hidden-xs hidden-sm input-col">
+            <td class="hidden-mobile-visible-print input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.notificationtypedescription">
             </td>
             <td></td>
@@ -84,10 +84,10 @@
             ng-class="{ odd : $odd, even: $even, 'new-message': !notification.messagereadutc, 'mandatory': notification.mandatory }">
             
             <td>{{notification.label}}</td>
-            <td class="hidden-xs hidden-sm">{{notification.customernumber}}</td>
+            <td class="hidden-mobile-visible-print">{{notification.customernumber}}</td>
             <td>{{notification.subject}}</td>
-            <td class="hidden-xs hidden-sm">{{notification.notificationtypedescription}}</td>
-            <td>{{notification.messagecreatedutc | date:medium }}</td>
+            <td class="hidden-mobile-visible-print">{{notification.notificationtypedescription}}</td>
+            <td>{{notification.messagecreatedutc | date:'MMM d, y h:mm:ss a' }}</td>
             <td class="large-icon icon-col">
               <a ng-if="notification.body" ng-click="showAdditionalInfo(notification)"><span class="text-light icon-ellipsis"></span></a>
             </td>

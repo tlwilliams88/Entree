@@ -186,6 +186,8 @@
     <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Reports.ItemUsageReportItemModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Profile.CustomerAccountBalanceModel.datasource" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
@@ -574,6 +576,7 @@
     </None>
     <None Include="Web.Test.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>

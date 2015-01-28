@@ -20,6 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Impl.Repository.OnlinePayments;
 
 namespace KeithLink.Svc.Test.Repositories.Order
     {
@@ -54,7 +55,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
 
             _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach);
-            _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(new TokenReplacer()), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
+            _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository());
             //_orderHistoryRepo = new OrderHistoryHeaderRepositoryImpl(
         
         }

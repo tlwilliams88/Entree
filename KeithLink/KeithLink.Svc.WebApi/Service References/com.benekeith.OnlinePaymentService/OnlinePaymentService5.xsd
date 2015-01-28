@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:complexType name="InvoiceHeaderReturnModel">
     <xs:sequence>
@@ -32,10 +33,11 @@
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfInvoiceItem" />
       <xs:element minOccurs="0" name="itemsequence" type="xs:int" />
       <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="status" type="q2:InvoiceStatus" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" minOccurs="0" name="pendingtransaction" nillable="true" type="q2:PaymentTransactionModel" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="status" type="q3:InvoiceStatus" />
       <xs:element minOccurs="0" name="statusdescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="transactions" nillable="true" type="tns:ArrayOfInvoiceTransactionModel" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q3:InvoiceType" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q4:InvoiceType" />
       <xs:element minOccurs="0" name="typedescription" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
@@ -48,7 +50,7 @@
   <xs:element name="ArrayOfInvoiceItem" nillable="true" type="tns:ArrayOfInvoiceItem" />
   <xs:complexType name="InvoiceItem">
     <xs:complexContent mixed="false">
-      <xs:extension xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" base="q4:BaseProductInfo">
+      <xs:extension xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" base="q5:BaseProductInfo">
         <xs:sequence>
           <xs:element minOccurs="0" name="catchweight" type="xs:boolean" />
           <xs:element minOccurs="0" name="classcode" nillable="true" type="xs:string" />
@@ -82,7 +84,7 @@
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="itemsequence" type="xs:int" />
       <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
-      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q5:InvoiceType" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q6:InvoiceType" />
       <xs:element minOccurs="0" name="typedescription" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

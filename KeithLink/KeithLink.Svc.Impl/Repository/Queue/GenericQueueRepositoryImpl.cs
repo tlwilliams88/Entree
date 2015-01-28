@@ -53,8 +53,12 @@ namespace KeithLink.Svc.Impl.Repository.Queue
                     VirtualHost = virtualHost
                 };
 
-                using (IConnection connection = connectionFactory.CreateConnection()) {
-                    using (IModel model = connection.CreateModel()) {
+                using (IConnection connection = connectionFactory.CreateConnection())
+                {
+                    connection.AutoClose = false; //to prevent using block from attempting to close a connection that DNE
+
+                    using (IModel model = connection.CreateModel())
+                    {
                         IBasicProperties props = model.CreateBasicProperties();
                         props.DeliveryMode = 2; // persistent delivery mode
 

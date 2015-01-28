@@ -30,6 +30,11 @@ angular.module('bekApp')
       getAllOpen: {
         url: '/invoice?forAllCustomers=true',
         method: 'POST'
+      },
+
+      getAllPendingTransactions: {
+        url: '/invoice/transactions/pending',
+        method: 'POST'
       }
 
     });

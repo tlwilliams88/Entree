@@ -11,6 +11,7 @@ using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Impl.Repository.OnlinePayments;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -44,7 +45,7 @@ namespace KeithLink.Svc.Test.Logic {
 
             _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach);
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(new TokenReplacer()), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository());
         }
         #endregion
 

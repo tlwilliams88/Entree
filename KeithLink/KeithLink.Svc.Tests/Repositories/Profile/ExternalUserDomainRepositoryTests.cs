@@ -63,9 +63,9 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         
         [TestMethod]
         public void BelongsToGroup() {
-            bool hasAccess = _custUserRepo.IsInGroup("sabroussard@somecompany.com", "Jimmys Chicken Shack Owner");
+            string roleName = _custUserRepo.GetUserGroup("sabroussard@somecompany.com", new System.Collections.Generic.List<string>() { "owner" });
 
-            Assert.IsTrue(hasAccess);
+            Assert.IsTrue(roleName == "owner");
         }
 
         [TestMethod]

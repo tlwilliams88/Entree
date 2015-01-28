@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Ben E. Keith Product Labels</title>
+  <style>
+    @font-face {
+      font-family: 'Code39AzaleaFont';
+      src:url('/fonts/Code39Azalea/Code39Azalea.eot');
+      src:url('/fonts/Code39Azalea/Code39Azalea.eot') format('embedded-opentype'),
+        url('/fonts/Code39Azalea/Code39Azalea.woff') format('woff'),
+        url('/fonts/Code39Azalea/Code39Azalea.ttf') format('truetype'),
+        url('/fonts/Code39Azalea/Code39Azalea.svg#Code39Azalea') format('svg');
+      font-weight: normal;
+      font-style: normal;
+    }
+    @page {
+      size: 8.5in 11in;
+      margin: .5in .1875in;
+    }
+    body {
+      margin: 0;
+    }
+    .label{
+      float: left;
+      
+      text-align: center;
+      overflow: hidden;
+
+      outline: 1px dotted; /* outline doesn't occupy space like border does */
+    }
+    .label > .barcode {
+      font-family: 'Code39AzaleaFont';
+    }
+
+    .page-break  {
+      clear: left;
+      display:block;
+      page-break-after:always;
+    }
+
+
+    /* Avery 5160 labels -- CSS and HTML by MM at Boulder Information Services */
+    .label.label-5160 {
+      width: 1.85in; /* plus .6 inches from padding */
+      height: .8in; /* plus .125 inches from padding */
+      padding: .125in .3in 0;
+      font-size: 11px;
+      line-height: 11px;
+    }
+    .label.label-with-margin.label-5160 {
+      margin-right: .1in; /* the gutter */
+    }
+    .label.label-5160 > .barcode {
+      font-size: 40px;
+      line-height: 40px;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<div class="label" ng-class="{ 'label-{{labelOption.type}}': true, 'label-with-margin': ($index + 1) % labelOption.columns !== 0 }" ng-repeat-start="item in items">
+	<!-- <img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /> -->
+	<span class="barcode">{{'*' + item.itemnumber + '*'}}</span>
+	<div>
+    {{item.itemnumber}}<br>
+	  {{item.name}}<br>
+	  {{item.packsize}}
+  </div>
+</div>
+<div ng-repeat-end ng-if="($index + 1) % labelOption.numberOnPage === 0" class="page-break"></div>
+<!-- <div class="label"><img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /><br>Human readable</div>
+<div class="label"><img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /><br>Human readable</div>
+<div class="label"><img src="https://boulderinformationservices.files.wordpress.com/2011/08/barcode_sample.png" /><br>Human readable</div>
+<div class="label">(Repeat 30 times)</div> -->
+<!-- page break after every 30 -->
+
+
+</body>
+</html>

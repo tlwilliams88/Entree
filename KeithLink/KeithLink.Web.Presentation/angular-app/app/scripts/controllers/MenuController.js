@@ -9,8 +9,14 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$state', '$modal', '$window', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
-    function ($scope, $state, $modal, $window, ENV, branches, CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService) {
+  .controller('MenuController', ['$scope', '$rootScope', '$state', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
+    function (
+      $scope, $rootScope, $state, $log, $window,  // built in angular services
+      $modal,                         // ui-bootstrap library
+      ENV,                            // environment config, see configenv.js file which is generated from Grunt
+      branches,                       // state resolve
+      CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService // bek custom services
+    ) {
 
   $scope.$state = $state;
   $scope.isMobileApp = ENV.mobileApp;
@@ -48,6 +54,19 @@ angular.module('bekApp')
     from: 0,
     size: 15
   };
+
+  // list of state names where a user has the possibility of viewing info from multiple customers
+  var statesWithViewingAllCustomers = ['menu.invoice', 'menu.transaction'];
+  
+  // listens for state change event to restore selectedUserContext
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
+  
+    // if users is viewing all customers
+    // change selected user context back to the one stored in LocalStorage here
+    if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && !$scope.selectedUserContext.id) {
+      $scope.setSelectedUserContext(LocalStorage.getCurrentCustomer());
+    }
+  });
 
   var firstPageCustomers; // used to cache the first page of customer results
   // populates upper-left customer dropdown infinite scroll
@@ -161,18 +180,21 @@ angular.module('bekApp')
     });
   };
 
+  // PHONEGAP Feature
   $scope.scanBarcode = function() {
     cordova.plugins.barcodeScanner.scan(
       function (result) {
-        // console.log('We got a barcode\n' +
-        //   'Result: ' + result.text + '\n' +
-        //   'Format: ' + result.format + '\n' +
-        //   'Cancelled: ' + result.cancelled);
-
-        ProductService.scanProduct(result.text).then(function(item) {
-          $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+        var scannedText = result.text;
+        $log.debug(scannedText);
+        ProductService.scanProduct(scannedText).then(function(item) {
+          if (item) {
+            ProductService.selectedProduct = item;
+            $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+          } else {
+            $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
+          }
         }, function (error) {
-          $scope.displayMessage('error', error)
+          $scope.displayMessage('error', 'Error with scan product request.');
         });
     }, function (error) {
       console.log('Scanning failed: ' + error);
