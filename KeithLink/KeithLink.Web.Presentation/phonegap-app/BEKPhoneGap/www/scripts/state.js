@@ -5,12 +5,22 @@ angular.module('bekApp')
   function ($stateProvider, $urlRouterProvider) {
 
   // the $stateProvider determines path urls and their related controllers
+  /*
+  data
+    authorize: matches a function in AccessService and checks the user has access to the route
+  */
+
   $stateProvider
     // register
     .state('register', {
       url: '/register/',
       templateUrl: 'views/register.html',
       controller: 'RegisterController'
+    })
+    .state('changepassword', {
+        url: '/changepassword/',
+        templateUrl: 'views/changepassword.html',
+        controller: 'ChangePasswordController'
     })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
@@ -21,7 +31,6 @@ angular.module('bekApp')
         branches: ['BranchService', function(BranchService) {
           return BranchService.getBranches();
         }]
-        // get SHIP DATES: I originally put this here so I could set the default ship date of new carts
       }
     })
     // /home
@@ -33,10 +42,10 @@ angular.module('bekApp')
         authorize: 'isOrderEntryCustomer'
       }
     })
-    .state('menu.accountdetails', {
-      url: '/account/',
-      templateUrl: 'views/accountdetails.html',
-      controller: 'AccountDetailsController',
+    .state('menu.userprofile', {
+      url: '/profile/',
+      templateUrl: 'views/userprofile.html',
+      controller: 'UserProfileController',
       data: {
         authorize: 'isLoggedIn'
       },
@@ -164,12 +173,13 @@ angular.module('bekApp')
         authorize: 'canCreateOrders'
       },
       resolve: {
-        originalBasket: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+        originalBasket: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', 'CartService', function($stateParams, carts, changeOrders, ResolveService, CartService) {
           var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
           if (selectedBasket) {
             return selectedBasket;
           } else {
-            $state.go('menu.home');
+            // no existing carts found, create a new cart and redirect to it
+            return CartService.createCart();
           }
         }]
       }
@@ -199,6 +209,10 @@ angular.module('bekApp')
           return CartService.getShipDates();
         }]
       }
+      // ,
+      // controller: ['$state', 'carts', function($state, carts) {
+      //   $state.go('menu.addtoorder.items', { listId: 123, cartId: 'new' });
+      // }]
     })
     .state('menu.addtoorder.items', {
       url: ':listId/?cartId&useParlevel',
@@ -211,13 +225,9 @@ angular.module('bekApp')
         selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.selectDefaultList($stateParams.listId);
         }],
-        selectedCart: ['$state', '$stateParams', 'carts', 'changeOrders', 'ResolveService', function($state, $stateParams, carts, changeOrders, ResolveService) {
+        selectedCart: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
           var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
-          if (selectedBasket) {
-            return selectedBasket;
-          } else {
-            $state.go('menu.home');
-          }
+          return selectedBasket;
         }]
       }
     })
@@ -263,9 +273,6 @@ angular.module('bekApp')
         authorize: 'canPayInvoices'
       },
       resolve: {
-        // invoices: [ 'InvoiceService', function(InvoiceService) {
-        //   return InvoiceService.getAllInvoices();
-        // }],
         accounts: ['BankAccountService', function(BankAccountService) {
           return BankAccountService.getAllBankAccounts();
         }]
@@ -286,6 +293,23 @@ angular.module('bekApp')
     })
 
     /**********
+    TRANSACTION
+    **********/
+    .state('menu.transaction', {
+      url: '/transactions/',
+      templateUrl: 'views/transaction.html',
+      controller: 'TransactionController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        accounts: ['BankAccountService', function(BankAccountService) {
+          return BankAccountService.getAllBankAccounts();
+        }]
+      }
+    })
+
+    /**********
     MARKETING CMS
     **********/
     .state('menu.marketing', {
@@ -294,11 +318,6 @@ angular.module('bekApp')
       controller: 'MarketingController',
       data: {
         authorize: 'canPayInvoices'
-      },
-      resolve: {
-        // invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
-        //   return InvoiceService.getInvoiceDetails($stateParams.invoiceNumber);
-        // }]
       }
     })
 
@@ -324,39 +343,7 @@ angular.module('bekApp')
     **********/
     .state('menu.admin', {
       url: '/admin/',
-      templateUrl: 'views/admin/menu.html',
-      data: {
-        authorize: 'canManageAccount'
-      }
-    })
-    .state('menu.admin.user', {
-      url: 'users/',
-      templateUrl: 'views/admin/users.html', //'views/adminusers.html',
-      controller: 'UsersController',
-      data: {
-        authorize: 'canManageAccount'
-      },
-      resolve: {
-        users: [ 'UserProfileService', function(UserProfileService) {
-          return [{name: 'Maria'}, {name: 'Andrew'}, {name: 'Josh'}]; //UserProfileService.getAllUsers();
-        }]
-      }
-    })
-    .state('menu.admin.adduser', {
-      url: 'users/add/',
-      templateUrl: 'views/admin/adduserdetails.html',
-      controller: 'AddUserDetailsController',
-      data: {
-        authorize: 'canManageAccount'
-      }
-    })
-    .state('menu.admin.accountadmin',{
-      url: 'account/',
-      templateUrl: 'views/admin/accountadmin.html',
-      controller: 'AccountAdminController',
-      data: {
-        authorize: 'canManageAccount'
-      }
+      template: '<ui-view>'
     })
     .state('menu.admin.edituser', {
       url: 'edituser/:email/',
@@ -366,38 +353,54 @@ angular.module('bekApp')
         authorize: 'canManageAccount'
       },
       resolve: {
-        returnedProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+        userProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
           return UserProfileService.getUserProfile($stateParams.email);
         }]
       }
     })
     .state('menu.admin.customer', {
       url: 'customers/:customerNumber/',
-      templateUrl: 'views/admin/customers.html',
-      controller: 'CustomersController',
+      templateUrl: 'views/admin/customerdetails.html',
+      controller: 'CustomerDetailsController',
       data: {
         authorize: 'canManageAccount'
       }
     })
-    .state('menu.admin.account', {
-      url: 'accounts/',
-      templateUrl: 'views/admin/accounts.html',
-      controller: 'AccountsController',
+
+    /*************
+    ADMIN CUSTOMER GROUPS
+    *************/
+    .state('menu.admin.customergroupdashboard',{
+      url: 'customergroup/dashboard/?customerGroupId',
+      templateUrl: 'views/admin/customergroupdashboard.html',
+      controller: 'CustomerGroupDashboardController',
+      data: {
+        authorize: 'canManageAccount'
+      }
+    })
+    .state('menu.admin.customergroup', {
+      url: 'customergroup/',
+      templateUrl: 'views/admin/customergroups.html',
+      controller: 'CustomerGroupsController',
+      data: {
+        authorize: 'canManageAccount'
+      }
+    })
+    .state('menu.admin.customergroupdetails', {
+      url: 'customergroup/:groupId/',
+      templateUrl: 'views/admin/customergroupdetails.html',
+      controller: 'CustomerGroupDetailsController',
       data: {
         authorize: 'canManageAccount'
       },
       resolve: {
-        accounts: [ 'AccountService', function(AccountService) {
-          return AccountService.getAccounts();
+        originalCustomerGroup: ['$stateParams', 'CustomerGroupService', function($stateParams, CustomerGroupService) {
+          if ($stateParams.groupId === 'new') {
+            return {};
+          } else {
+            return CustomerGroupService.getGroupDetails($stateParams.groupId);
+          }
         }]
-      }
-    })
-    .state('menu.admin.account.details', {
-      url: ':accountId/',
-      templateUrl: 'views/admin/accountdetails.html',
-      controller: 'AdminAccountDetailsController',
-      data: {
-        authorize: 'canManageAccount'
       }
     });
 
@@ -406,15 +409,19 @@ angular.module('bekApp')
       url: '/404/',
       templateUrl: 'views/404.html'
     });
+  
   // redirect to /home route when going to '' or '/' paths
   $urlRouterProvider.when('', '/register');
   $urlRouterProvider.when('/', '/register');
+  
+  // redirect when user tries to go to an abstract state
   $urlRouterProvider.when('/lists', '/lists/1');
   $urlRouterProvider.when('/lists/', '/lists/1');
   $urlRouterProvider.when('/cart/', '/cart/1');
   $urlRouterProvider.when('/cart/', '/cart/1');
-  $urlRouterProvider.otherwise('/404');
 
+  $urlRouterProvider.otherwise('/404');
+  
   // allow user to access paths with or without trailing slashes
   $urlRouterProvider.rule(function ($injector, $location) {
     var path = $location.url();

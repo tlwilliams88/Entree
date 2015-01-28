@@ -150,6 +150,12 @@
   margin-top: 5px;
 }
 
+.btn-header-right {
+  margin-left: 5px;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
 // Specificity overrides
 input[type="submit"],
 input[type="reset"],

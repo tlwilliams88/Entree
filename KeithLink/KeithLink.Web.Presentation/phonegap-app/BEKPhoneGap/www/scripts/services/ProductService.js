@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
-    function($http, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
+  .factory('ProductService', ['$http', '$q', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
+    function($http, $q, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
 
       var defaultPageSize = Constants.infiniteScrollPageSize,
         defaultStartingIndex = 0;
@@ -27,7 +27,7 @@ angular.module('bekApp')
       var Service = {
         selectedProduct: {}, 
 
-        getFacets: function(categories, brands, dietary, itemspecs) {
+        getFacets: function(categories, brands, manufacturers, dietary, itemspecs) {
           var facets = [];
 
           // handle nonstock special case
@@ -42,6 +42,9 @@ angular.module('bekApp')
           }
           if (brands && brands.length > 0) {
             facets.push('brands:' + brands.join('|'));
+          }
+          if (manufacturers && manufacturers.length > 0) {
+              facets.push('mfrname:' + manufacturers.join('|'));
           }
           if (dietary && dietary.length > 0) {
             facets.push('dietary:' + dietary.join('|'));
@@ -127,6 +130,16 @@ angular.module('bekApp')
             Service.selectedProduct = {};
           }
           return returnProduct;
+        },
+
+        scanProduct: function(itemNumber) {
+          return $http.get('/catalog/product/scan/' + itemNumber).then(function(response) {
+            if (response.data) {
+              return response.data; // return item object
+            } else {
+              return;
+            }
+          });
         },
 
         /****************

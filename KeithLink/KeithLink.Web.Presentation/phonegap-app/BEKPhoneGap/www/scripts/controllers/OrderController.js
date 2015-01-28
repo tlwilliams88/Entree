@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'orders', 'LocalStorage', 'OrderService',
-  function ($scope, $state, $timeout, $modal, orders, LocalStorage, OrderService) {
+.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'orders', 'OrderService',
+  function ($scope, $state, $timeout, $modal, orders, OrderService) {
 
   $scope.sortBy = 'createddate';
   $scope.sortOrder = true;

@@ -34,7 +34,6 @@ using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
@@ -43,8 +42,9 @@ using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Impl.Logic.Export;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Core.Interface.Component;
 using KeithLink.Svc.Impl.Repository.Queue;
+using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Core.Interface.Cache;
 #endregion
 
 namespace KeithLink.Svc.WebApi
@@ -67,7 +67,6 @@ namespace KeithLink.Svc.WebApi
 
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
-            builder.RegisterType<PriceCacheRepositoryImpl>().As<IPriceCacheRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
 			builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
@@ -78,15 +77,12 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
-            builder.RegisterType<UserProfileCacheRepository>().As<IUserProfileCacheRepository>();
 			builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
-            builder.RegisterType<CatalogCacheRepositoryImpl>().As<ICatalogCacheRepository>();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
-            builder.RegisterType<CustomerCacheRepositoryImpl>().As<ICustomerCacheRepository>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
 			builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
 			builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
@@ -96,7 +92,6 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
-			builder.RegisterType<TokenReplacer>().As<ITokenReplacer>();
 
             builder.RegisterType<KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoyrHeaderRepositoryImpl>().As<KeithLink.Svc.Core.Interface.Orders.History.IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork>().As<KeithLink.Svc.Impl.Repository.EF.Operational.IUnitOfWork>();
@@ -123,6 +118,9 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<com.benekeith.ConfigurationService.ConfigurationServiceClient>().As<com.benekeith.ConfigurationService.IConfigurationService>();
 
 			builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
+
+			builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
+			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
             // Build the container.
             var container = builder.Build();

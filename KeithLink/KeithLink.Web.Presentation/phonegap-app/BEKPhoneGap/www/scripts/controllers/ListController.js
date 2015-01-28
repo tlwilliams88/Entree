@@ -16,6 +16,10 @@ angular.module('bekApp')
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
+    // used for the 'Show More' button
+    $scope.showMoreListNames = true;
+    $scope.numberListNamesToShow = 5;
+
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
     }
@@ -374,21 +378,6 @@ angular.module('bekApp')
       updateItemPositions();
     };
 
-    // SHOW MORE
-    // limit number of list names displayed in the sidebar
-    var showMoreLimit = 5;
-    $scope.itemsLimit = function() {
-      return showMoreLimit;
-    };
-    $scope.showMore = function() {
-      showMoreLimit = $scope.lists.length;
-    };
-    $scope.hasMoreItemsToShow = function() {
-      if ($scope.lists) {
-        return showMoreLimit < $scope.lists.length;
-      }
-    };
-
     // FILTER LIST
     $scope.listSearchTerm = '';
     $scope.search = function (row) {
@@ -414,6 +403,10 @@ angular.module('bekApp')
         $scope.itemsToDisplay += itemsPerPage;
       }
     };
+
+    /******
+    MODALS
+    ******/
 
     $scope.openListImportModal = function () {
 
@@ -472,7 +465,28 @@ angular.module('bekApp')
       });
     };
 
+    $scope.openPrintOptionsModal = function(list) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/printoptionsmodal.html',
+        controller: 'PrintOptionsModalController',
+        scope: $scope,
+        resolve: {
+          items: function() {
+            return list.items;
+          },
+          name: function() {
+            return list.name;
+          }
+        }
+      });
+    };
+
     resetPage(angular.copy(originalList));
     $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+
+    $scope.$on('$destroy', function() {
+      ListService.lists = null;
+      ListService.labels = null;
+    });
 
   }]);

@@ -18,14 +18,20 @@ using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.OnlinePayments;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
         #region attributes
         private const string GUEST_USER_WELCOME = "GuestUserWelcome";
         private const string CREATED_USER_WELCOME = "CreatedUserWelcome";
+		protected string CACHE_GROUPNAME { get { return "Profile"; } }
+		protected string CACHE_NAME { get { return "Profile"; } }
+		protected string CACHE_PREFIX { get { return "Default"; } }
 
-        private IUserProfileCacheRepository _cache;
+
+        private ICacheRepository _cache;
         private IUserProfileRepository      _csProfile;
         private ICustomerDomainRepository   _extAd;
         private IUserDomainRepository       _intAd;
@@ -37,13 +43,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IEmailClient _emailClient;
 		private IMessagingServiceRepository _messagingServiceRepository;
 		private IEventLogRepository _eventLog;
+		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
         #endregion
 
         #region ctor
-        public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo, 
-                                    IUserProfileCacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
+        public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
+									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
 									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository,
-									IEventLogRepository eventLog)
+									IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -57,6 +64,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_emailClient = emailClient;
 			_messagingServiceRepository = messagingServiceRepository;
 			_eventLog = eventLog;
+			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
         }
         #endregion
 
@@ -355,7 +363,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             try {
                 var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
-                if (template != null) _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
+                if (template != null) {
+                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
+                } else { 
+                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", CREATED_USER_WELCOME));
+                };
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
             }
@@ -576,7 +588,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false)
 		{
             // check for cached user profile first
-            Core.Models.Profile.UserProfile profile = _cache.GetProfile(emailAddress);
+			Core.Models.Profile.UserProfile profile = _cache.GetItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
             UserProfileReturn retVal = new UserProfileReturn();
 
@@ -601,10 +613,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // add to cache if found
             if (retVal.UserProfiles.Count > 0) {
-                _cache.AddProfile(retVal.UserProfiles.FirstOrDefault());
+				_cache.AddItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(retVal.UserProfiles.FirstOrDefault().EmailAddress), TimeSpan.FromHours(2), retVal.UserProfiles.FirstOrDefault());
             }
             return retVal;
         }
+
+		private string CacheKey(string email)
+		{
+			return string.Format("{0}-{1}", "bek", email);
+		}
 
         /// <summary>
         /// get the role assigned to the specified user
@@ -710,8 +727,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             // remove the old user profile from cache and then update it with the new profile
-            _cache.RemoveItem(existingUser.UserProfiles[0].EmailAddress);
-            _cache.AddProfile(GetUserProfile(id).UserProfiles.FirstOrDefault());
+			_cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(existingUser.UserProfiles[0].EmailAddress));		
+			
         }
 
         private void UpdateCustomersForUser(List<Customer> customerList, string roleName, UserProfile existingUser)
@@ -955,28 +972,31 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			
 			//Populate the Last order updated date for each customer
 			foreach (var customer in returnValue.Results)
+			{
 				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
 
-
-
-			foreach (var cust in returnValue.Results)
-			{
-				if (string.IsNullOrEmpty(cust.TermCode))
-					continue;
-
-				//Lookup Term info
-				var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
-
-				if (term != null)
-				{
-					cust.TermDescription = term.Description;
-					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
-					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
-					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-					cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
-				}
-
+				customer.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customer.CustomerNumber, customer.CustomerBranch); 
 			}
+			
+
+			//foreach (var cust in returnValue.Results)
+			//{
+			//	if (string.IsNullOrEmpty(cust.TermCode))
+			//		continue;
+
+			//	//Lookup Term info
+			//	var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+			//	if (term != null)
+			//	{
+			//		cust.TermDescription = term.Description;
+			//		cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+			//		cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+			//		cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+			//		cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
+			//	}
+
+			//}
 			
 
 			return returnValue;

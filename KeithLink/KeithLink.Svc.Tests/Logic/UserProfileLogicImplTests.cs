@@ -1,7 +1,6 @@
 ﻿using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.Impl.Repository.Profile.Cache;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Repository.Orders;
@@ -11,13 +10,15 @@ using KeithLink.Svc.WebApi.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Impl.Repository.OnlinePayments;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
     public class UserProfileLogicImplTests {
 
         #region attrbitues
-        private NoCacheUserProfileCacheRepository   _cache;
+		private NoCacheRepositoryImpl _cache;
         private UserProfileRepository               _csProfileRepo;
         private CustomerContainerRepository         _custRepo;
         private ExternalUserDomainRepository        _extAd;
@@ -31,8 +32,8 @@ namespace KeithLink.Svc.Test.Logic {
         #region ctor
         public UserProfileLogicImplTests() {
             _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
-            _cache = new Impl.Repository.Profile.Cache.NoCacheUserProfileCacheRepository();
-            var _custCach = new Impl.Repository.Profile.Cache.NoCacheCustomerCacheRepositoryImpl();
+			_cache = new NoCacheRepositoryImpl();
+			var _custCach = new NoCacheRepositoryImpl();
             
             _custRepo = new CustomerContainerRepository(_log);
 
@@ -42,9 +43,9 @@ namespace KeithLink.Svc.Test.Logic {
 
             _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);
 
-            _acct = new AccountRepository(_log, _custCach);
+            _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach);
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(new TokenReplacer()), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"));
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository());
         }
         #endregion
 

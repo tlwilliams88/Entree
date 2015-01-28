@@ -6,14 +6,13 @@
     <title>Entree</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta name="google-translate-customization" content="5a38f0b9c30a1e39-6cd1be521a76df8d-gec30a383844c0600-14"></meta>
+    <meta name="google-translate-customization" content="5a38f0b9c30a1e39-6cd1be521a76df8d-gec30a383844c0600-14">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(app) styles/vendor.css -->
     <link rel="stylesheet" href="lib/ng-mobile-menu/ng-mobile-menu.css" />
     <link rel="stylesheet" href="lib/angular-toaster/toaster.css" />
     <link rel="stylesheet" href="lib/angular-loading-bar/loading-bar.css" />
     <link rel="stylesheet" href="lib/icomoon/style.css" />
-    <link rel="stylesheet" href="lib/google-fonts-Open_Sans/css/google-fonts.css" />
     <link rel="stylesheet" href="lib/c3/c3.css" />
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -65,6 +64,19 @@
     <script src="lib/moment-js/jstz-1.0.4.min.js"></script>
     <!-- endbuild -->
 
+    <!--
+    <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+    <script>
+        angular.element(document).ready(function() {
+            app.initialize();
+            document.addEventListener('deviceready', function onDeviceReady() {
+                angular.bootstrap(document, ['bekApp']);
+            }, false);
+        });
+    </script>
+    -->
+
      <script id="template/carousel/carousel.html" type="text/ng-template">
       <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
         <ol class="carousel-paging" ng-show="slides.length > 1">
@@ -107,12 +119,14 @@
     <script type="text/javascript" src="scripts/controllers/modal/ImportModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ItemNotesModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ExportModalController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/modal/PrintOptionsModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupDashboardController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/EditUserDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/GoogleServicesController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/TransactionController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
@@ -144,6 +158,7 @@
     <script type="text/javascript" src="scripts/services/AuthenticationInterceptor.js"></script>
     <script type="text/javascript" src="scripts/services/BrandService.js"></script>
     <script type="text/javascript" src="scripts/services/CategoryService.js"></script>
+    <script type="text/javascript" src="scripts/services/TransactionService.js"></script>
     <script type="text/javascript" src="scripts/services/ListService.js"></script>
     <script type="text/javascript" src="scripts/services/CartService.js"></script>
     <script type="text/javascript" src="scripts/services/ProductService.js"></script>
@@ -156,6 +171,7 @@
     <script type="text/javascript" src="scripts/services/CustomerGroupService.js"></script>
     <script type="text/javascript" src="scripts/services/ResolveService.js"></script>
     <script type="text/javascript" src="scripts/services/InvoiceService.js"></script>
+    <script type="text/javascript" src="scripts/services/PrintService.js"></script>
     <script type="text/javascript" src="scripts/services/NotificationService.js"></script>
     <script type="text/javascript" src="scripts/services/BankAccountService.js"></script>
     <script type="text/javascript" src="scripts/services/MarketingService.js"></script>
@@ -172,11 +188,17 @@
     <script type="text/javascript" src="scripts/resources/NotificationResource.js"></script>
     <script type="text/javascript" src="scripts/resources/BankAccountResource.js"></script>
     <script type="text/javascript" src="scripts/filters/SortListsFilter.js"></script>
-    <script type="text/javascript" src="scripts/filters/MeetsMinimumQuantityFilter.js"></script>
+    <script type="text/javascript" src="scripts/filters/MinimumQuantityFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/PhoneNumberFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/StyleOrdersFilter.js"></script>
     <script type="text/javascript" src="scripts/filters/LocalTimeZoneTimeFilter.js"></script>
     <script type="text/javascript" src="scripts/animations/SlideAnimation.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapServices.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapAuthenticationService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapListService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapCartService.js"></script>
+    <script type="text/javascript" src="scripts/phonegapServices/PhonegapPushService.js"></script>
+
     <!-- endbuild -->
 
     <!-- Google Analytics -->

@@ -31,7 +31,10 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 		Mail = 16,
         //[Description("ETA")] - no need for description; no preference for this type
         [EnumMember]
-        Eta = 32
+        Eta = 32,
+        [Description("Payment Confirmation")]
+        [EnumMember]
+        PaymentConfirmation = 64
 	}
 
 	[DataContract(Name = "Channel")]

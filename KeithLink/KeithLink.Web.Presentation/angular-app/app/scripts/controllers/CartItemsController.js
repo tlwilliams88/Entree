@@ -296,4 +296,8 @@ angular.module('bekApp')
     }
 
 
+    $scope.$on('$destroy', function() {
+      CartService.carts = [];
+    });
+
   }]);

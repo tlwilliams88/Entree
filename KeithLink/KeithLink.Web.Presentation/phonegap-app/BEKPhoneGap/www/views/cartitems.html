@@ -1,5 +1,5 @@
 <div class="row page-header-bar">
-  <div class="col-md-7 page-header-bar__message">
+  <div class="page-header-bar__message">
     <div ng-hide="currentCart.isRenaming">
       <div class="btn-group" dropdown is-open="status.isopen">
         <button type="button" class="select-cart btn-lg btn btn-default dropdown-toggle">
@@ -72,7 +72,7 @@
     </form>
 
   </div>
-  <div class="col-md-5 hidden-xs hidden-sm hidden-print page-header-bar__actions">
+  <div class="hidden-xs hidden-sm hidden-print page-header-bar__actions">
 
     <div class="pull-right">
       <div class="page-header__buttons">
@@ -101,6 +101,7 @@
             <p class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</p>
             <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
             <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
+            <p class="text-red" ng-show="cartForm.poNumber.$error.maxlength">PO Number cannot be more than 20 characters.</p>
             <p class="text-red" ng-show="(!currentCart.items || currentCart.items.length === 0)">There are no items in this cart. Cannot submit order.</p>
 
           </div>
@@ -169,7 +170,7 @@
         <div class="form-group no-margin">
           <label for="shipDate" class="col-sm-3 control-label">PO Number:</label>
           <div class="col-sm-6">
-            <input class="form-control" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
+            <input class="form-control" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
           </div>
         </div>
 
@@ -290,7 +291,7 @@
     <div class="col-md-12">
       <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
       <h4 class="visible-xs-inline-block">Cart Items</h4>
-      <table class="table table-striped-rows table-border" navigate-table>
+      <table class="table table-striped-rows table-border" navigate-table="mobile">
         <thead>
           <tr>
             <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">

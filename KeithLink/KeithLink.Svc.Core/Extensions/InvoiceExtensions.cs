@@ -38,9 +38,18 @@ namespace KeithLink.Svc.Core.Extensions
 			if (value.InvoiceType.Trim().Equals("cm", StringComparison.InvariantCultureIgnoreCase))
 				return InvoiceStatus.Open;
 
-			return value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) ?
-										value.DueDate >= DateTime.Now ?
-										InvoiceStatus.Open : InvoiceStatus.PastDue : InvoiceStatus.Paid;
+			switch (value.InvoiceStatus.ToUpper())
+			{
+				case "O":
+					if (value.DueDate >= DateTime.Now)
+						return InvoiceStatus.Open;
+					else
+						return InvoiceStatus.PastDue;
+				case "P":
+					return InvoiceStatus.Pending;
+				default:
+					return InvoiceStatus.Paid;
+			}
 		}
 
 		public static InvoiceTransactionModel ToTransationModel(this EFInvoice.Invoice value)

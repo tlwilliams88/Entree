@@ -23,7 +23,7 @@
 		<div class="page-subheader-bar__message">
 			{{featuredBreadcrumb.displayText}}
 		</div>
-    <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="hidden-print btn-no-style page-subheader-bar__button button-right">
+    <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="nowrap hidden-print btn-no-style page-subheader-bar__button button-right">
       Filter <span ng-show="filterCount > 0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
     </button>
   </div>
@@ -60,6 +60,24 @@
 						</div>
 					</div>
 				</accordion-group>
+
+                <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
+					<accordion-heading>
+						Manufacturer<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
+					</accordion-heading>
+					<div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
+						<div class="panel-body">
+							<input type="checkbox"
+							value="manufacturerValue_{{manufacturer.name}}"
+							id="manufacturerId_{{manufacturer.name}}"
+							ng-checked="facets.mfrname.selected.indexOf(brand.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
+							ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
+							ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
+							<label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} ({{manufacturer.count}})</label>
+						</div>
+					</div>
+				</accordion-group>
+
 				<accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
 					<accordion-heading>
 						Dietary<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
@@ -135,6 +153,28 @@
 				</div>
 			</div>
 		</div>
+		<div class="row" ng-show="facets.mfrname.available.length > 0">
+			<div class="col-sm-12">
+				<h3>Manufacturers</h3>
+				<div ng-repeat="manufacturer in facets.mfrname.available | limitTo: facets.mfrname.showMore ? numberFacetsToShow : facets.mfrname.available.length">
+					<input 
+            		type="checkbox"
+  					value="manufacturerValue_{{manufacturer.name}}"
+  					id="manufacturerId_{{manufacturer.name}}"
+  					ng-checked="facets.mfrname.selected.indexOf(manufacturer.name) > -1 || manufacturer.name === featuredBreadcrumb.displayText"
+  					ng-disabled="manufacturer.name === featuredBreadcrumb.displayText"
+  					ng-click="toggleSelection(facets.mfrname.selected, manufacturer.name)">
+					<label for="manufacturerId_{{manufacturer.name}}">{{manufacturer.name}} ({{manufacturer.count}})</label>
+				</div>
+				<div>
+					<a 
+            ng-if="facets.mfrname.available.length > numberFacetsToShow" 
+            ng-click="facets.mfrname.showMore = !facets.mfrname.showMore">
+            {{facets.mfrname.showMore ? '+ Show More' : '- Show Less'}}
+          </a>
+				</div>
+			</div>
+		</div>
 		<div class="row" ng-show="facets.dietary.available.length > 0">
 			<div class="col-sm-12">
 				<h3>Dietary</h3>
@@ -182,8 +222,8 @@
 	<!-- Search Results -->
 	<div class="col-md-9 col-xs-12">
 		<div class="row">
-			<h2 class="col-xs-6">Search Results</h2>
-      <span style="margin-top: 25px;" class="col-xs-6 text-right">{{totalItems}} results</span>
+			<h2 class="col-xs-7">Search Results</h2>
+      <span style="margin-top: 25px;" class="col-xs-5 text-right">{{totalItems}} results</span>
 		</div>
 		
 		<table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()" context-menu favorite-item-click-handlers>
@@ -206,7 +246,7 @@
             Pack/Size
           </th>
           <th class="hidden-mobile-visible-print"></th>
-          <th class="hidden-mobile-visible-print" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
+          <th class="hidden-mobile-visible-print" ng-show="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
             Price
             <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span>
           </th>
@@ -219,25 +259,31 @@
             <span favorite-icons></span>
           </td>
           <td>
-            <a ng-click="goToItemDetails(item)">{{item.itemnumber}}</a>
+            <a ng-click="goToItemDetails(item)">{{::item.itemnumber}}</a>
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.brand_extended_description}}
+            {{::item.brand_extended_description}}
           </td>
           <td>
-            {{item.name}}
+            {{::item.name}}
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.pack | number}} / {{item.size}}
+            {{::item.pack | number}} / {{::item.size}}
           </td>
           <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
           </td>
-          <td class="hidden-mobile-visible-print">
-            <span ng-if="item.caseprice !== '$0.00'">{{item.caseprice}}</span>
+          <td class="hidden-mobile-visible-print" ng-show="canSeePrices">
+            <span ng-if="item.caseprice !== '$0.00'">{{::item.caseprice}}</span>
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="large-icon icon-col">
-            <span ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" context-menu-template class="context-menu__in-list hidden-print"><a><span class="icon-plus2"></span></a></span>
+            <div 
+              ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" 
+              context-menu-template
+              class="context-menu-template context-menu__in-list hidden-print"
+            >
+              <a class="icon-plus2"></a>
+            </div>
 
             <a class="hidden-print" ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
           </td>
@@ -252,18 +298,18 @@
               <tbody>
                 <tr>
                   <td>Pack/Size</td>
-                  <td>{{item.pack | number}} / {{item.size}}</td>
+                  <td>{{::item.pack | number}} / {{::item.size}}</td>
                 </tr>
                 <tr>
                   <td>Brand</td>
-                  <td>{{item.brand_extended_description}}</td>
+                  <td>{{::item.brand_extended_description}}</td>
                 </tr>
                 <tr>
                   <td colspan="2" item-icons></td>
                 </tr>
-                <tr ng-if="item.caseprice !== '$0.00'">
+                <tr ng-if="item.caseprice !== '$0.00'" ng-show="canSeePrices">
                   <td>Price</td>
-                  <td>{{item.caseprice}}</td>
+                  <td>{{::item.caseprice}}</td>
                 </tr>
               </tbody>
             </table>

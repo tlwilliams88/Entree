@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF {
     public class PaymentTransaction {
         [Key, Column("Division", TypeName="char", Order=1), MaxLength(5)]
-        public string BranchId { get; set; }
+		public string Division { get; set; }
 
         [Key, Column(TypeName="char", Order = 2), MaxLength(6)]
         public string CustomerNumber { get; set; }
@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF {
         public decimal PaymentAmount { get; set; }
 
         [Required]
-        public long ConfirmationId { get; set; }
+        public int ConfirmationId { get; set; }
 
         [Column(TypeName="date")]
         public DateTime ScheduledPaymentDate { get; set; }

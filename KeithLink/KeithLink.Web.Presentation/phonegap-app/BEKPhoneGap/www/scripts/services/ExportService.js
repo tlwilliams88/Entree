@@ -55,10 +55,21 @@ angular.module('bekApp')
             // Get the filename from the x-filename header or default to 'download.bin'
             // var filename = headers['x-filename'] || 'download.bin';
 
-            var filename;
-            if (config.selectedtype === 'CSV') {
+            var filename, 
+              selectedType;
+
+            // special config structure for invoices
+            if (config.export) {
+              selectedType = config.export.selectedtype;
+
+            // default config structure
+            } else {
+              selectedType = config.selectedtype;              
+            }
+
+            if (selectedType === 'CSV') {
               filename = 'export.csv';
-            } else if (config.selectedtype === 'EXCEL') {
+            } else if (selectedType === 'EXCEL') {
               filename = 'export.xlsx';
             } else {
               filename = 'export.txt';
@@ -100,7 +111,7 @@ angular.module('bekApp')
                   try {
                     // Prepare a blob URL
                     console.log('Trying download link method with simulated click ...');
-                    var blob = new Blob([data], { type: contentType });
+                    var blob = new Blob([data], { type: contentType }); // jshint ignore:line
                     var url = urlCreator.createObjectURL(blob);
                     link.setAttribute('href', url);
 
@@ -126,8 +137,8 @@ angular.module('bekApp')
                     // Prepare a blob URL
                     // Use application/octet-stream when using window.location to force download
                     console.log('Trying download link method with window.location ...');
-                    var blob = new Blob([data], { type: octetStreamMime });
-                    var url = urlCreator.createObjectURL(blob);
+                    var blob = new Blob([data], { type: octetStreamMime }); // jshint ignore:line
+                    var url = urlCreator.createObjectURL(blob); // jshint ignore:line
                     window.location = url;
                     console.log('Download link method with window.location succeeded');
                     success = true;

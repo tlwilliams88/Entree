@@ -10,6 +10,7 @@
 
 .modal-backdrop {
   bottom: 0;
+  position: fixed !important; // override bootstrap
 }
 
 .modal-close-button {
@@ -25,4 +26,10 @@
 
 .color-background-modal .modal-content {
   background-color: $background;
+}
+
+@media print {
+  .modal {
+    display: none !important;
+  }
 }

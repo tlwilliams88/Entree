@@ -23,6 +23,22 @@ angular.module('bekApp')
         }).$promise;
       },
 
+      // for all customers
+      getAllOpenInvoices: function(params){
+        return Invoice.getAllOpen(params).$promise;
+      },
+
+      // for all customers
+      getPendingTransactions: function(params) {
+        return Invoice.getAllPendingTransactions(params).$promise.then(function (data) {
+          // add data to wrapper object so it matches format of getInvoices endpoints
+          var wrapper = {
+            pagedresults: data
+          };
+          return wrapper;
+        });
+      },
+
       payInvoices: function(payments, account) {
         payments.forEach(function(payment) {
           payment.account = account.accountNumber;
@@ -40,8 +56,19 @@ angular.module('bekApp')
         return Invoice.getInvoiceExportConfig({}).$promise;
       },
 
-      exportInvoice: function(config) {
-        ExportService.export('/invoice/export/', config);
+      exportInvoice: function(config, params) {
+        // {
+        //   "paging": {"size":50,"from":0,"filter":{"filter":[],"field":"statusdescription","value":"Past Due"}},
+        //   "export": {"selectedtype": "CSV"}
+        // }
+        params.size = null;
+        params.from = null;
+        var exportParams = {
+          paging: params,
+          export: config
+        };
+
+        ExportService.export('/invoice/export/', exportParams);
       },
 
       getDetailExportConfig: function(invoiceNumber) {

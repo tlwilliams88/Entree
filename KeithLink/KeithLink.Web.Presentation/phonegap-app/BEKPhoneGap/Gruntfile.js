@@ -4,13 +4,15 @@ module.exports = function(grunt) {
       pkg: grunt.file.readJSON('package.json'),
       phonegap: {
         config: {
-          plugins: ['https://github.com/apache/cordova-plugin-network-information.git',
+          plugins: [
+              'https://github.com/apache/cordova-plugin-network-information.git',
               'https://github.com/phonegap-build/PushPlugin.git',
               'org.apache.cordova.device',
               'org.apache.cordova.dialogs',
               'org.apache.cordova.vibration',
               'org.apache.cordova.statusbar',
-              'org.apache.cordova.console'
+              'org.apache.cordova.console',
+              'https://github.com/wildabeast/BarcodeScanner.git'
           ],
           maxBuffer: 500,
           platforms: ['ios', 'android'],
@@ -37,7 +39,6 @@ module.exports = function(grunt) {
       "www/lib/{,*/}*",
       "www/scripts/app.js",
       "www/scripts/state.js",
-      "www/scripts/configenv.js",
       "www/index.html",
       "www/scripts/controllers/{,*/}*",
       "www/scripts/directives/{,*/}*",
@@ -98,12 +99,6 @@ cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
       {
 cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
     src: 'state.js',           // copy state.js
-    dest: 'www/scripts/',    // destination folder
-    expand: true           // required when using cwd
-  },
-      {
-cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
-    src: 'configenv.js',           // copy configenv.js
     dest: 'www/scripts/',    // destination folder
     expand: true           // required when using cwd
   },
@@ -177,6 +172,14 @@ cwd: '../../angular-app/app/styles/',  // set working folder / root to copy
         all: {
           files: 'www/{,*/}*.{html,js,png}'
         }
+      },
+      compass: {
+        all: {
+          options: {
+            sassDir: 'www/scss',
+            cssDir: 'www/css'
+          }
+        }
       }
     }, grunt.loadNpmTasks('grunt-contrib-sass'),
      grunt.loadNpmTasks('grunt-contrib-watch'), 
@@ -184,9 +187,11 @@ cwd: '../../angular-app/app/styles/',  // set working folder / root to copy
      grunt.loadNpmTasks('grunt-phonegap'),
      grunt.loadNpmTasks('grunt-contrib-copy'),
      grunt.loadNpmTasks('grunt-contrib-clean'),
+     grunt.loadNpmTasks('grunt-contrib-compass'),
      grunt.registerTask('update',[
       'clean',
-      'copy:all']),
+      'copy:all',
+      'compass:all']),
      grunt.registerTask('server', function() {
       grunt.task.run('connect:server');
       return grunt.task.run('watch');

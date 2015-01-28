@@ -1,8 +1,8 @@
 <div page-header-bar>
   <div header-message>
-    {{headerText}}
+    Showing
     <div class="btn-group hidden-print" dropdown is-open="status.isopen1">
-      <button ng-show="!viewingAllCustomers" type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedFilterView.name}} <span class="icon-arrow-down6"></span></button>
+      <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedFilterView.name}} <span class="icon-arrow-down6"></span></button>
 
       <ul class="dropdown-menu">
         <li><a
@@ -11,7 +11,19 @@
           ng-if="selectedFilterView.name !== filterView.name">
         {{filterView.name}}</a></li>
       </ul>
-      <button type="button" class="btn-header-right btn-lg btn btn-default" ng-click="switchViewingAllCustomers()">{{viewAllButtonText}}</button>
+    </div>
+     for 
+    <div class="btn-group hidden-print" dropdown is-open="status.isopen2">
+      <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{viewAllButtonText}} <span class="icon-arrow-down6"></span></button>
+
+      <ul class="dropdown-menu">
+        <li ng-if="!viewingAllCustomers"><a ng-click="switchViewingAllCustomers(true)">
+          All Customers
+        </a></li>
+        <li ng-if="viewingAllCustomers"><a ng-click="switchViewingAllCustomers(false)">
+          {{customerText}}
+        </a></li>
+      </ul>
     </div>
   </div>
   <div header-buttons>
@@ -21,12 +33,20 @@
 </div>
 
 <div class="row page-content">
-  <form name="invoiceForm" class="style-validation-errors" novalidate>
+  
+  <div class="col-xs-12">
+    <a ui-sref="menu.transaction">View Pending Transactions for All Customers</a>
+  </div>
+
+  <form name="invoiceForm"
+        unsaved-warning-form 
+        class="style-validation-errors" 
+        novalidate>
     <div class="col-md-12" ng-if="viewingAllCustomers">
-      <h3>Total Amount Due: {{totalAmountDue | currency}}</h3>
+      <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
     </div>
-    <div class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers">
-      <div class="info-box" ng-if="hasPayableInvoices">
+    <div ng-hide = "isDsr" class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers">
+      <div  ng-hide ="" class="info-box" ng-if="hasPayableInvoices">
         <h3 style="margin-top:0">Billing Information</h3>
         <address class="text-light">
           {{selectedUserContext.customer.customerName}}<br>
@@ -82,35 +102,33 @@
         <thead>
           <tr>
             <th ng-if="!viewingAllCustomers" class="input-col">
-              <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll()">
+              <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll()" no-dirty-check>
             </th>
             <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customername', !sortOrder)">
-              Customer Name
-              <span sort-icons field="'customername'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+              Customer 
+              <span>Name <span sort-icons field="'customername'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customernumber', !sortOrder)">
-              Customer #
-              <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+              Customer
+              <span># <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortInvoices('invoicenumber', !sortOrder)">
-              Reference #
-              <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+              Reference
+              <span># <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortInvoices('type', !sortOrder)">
-              Type
-              <span sort-icons field="'type'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+              <span>Type <span sort-icons field="'type'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortInvoices('status', !sortOrder)">
-              Status
-              <span sort-icons field="'status'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+              <span>Statusx<span sort-icons field="'status'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('duedate', !sortOrder)">
-              Due Date
-              <span sort-icons field="'duedate'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+              Due
+              <span>Date<span sort-icons field="'duedate'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortInvoices('amount', !sortOrder)">
-              Amount Due
-              <span sort-icons field="'amount'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span>
+              Amount
+              <span>Due<span sort-icons field="'amount'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="text-center hidden-mobile-visible-print">Invoice Image</th>
             <th ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print">Payment Amt</th>
@@ -128,19 +146,19 @@
               <!-- <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterRowFields.isSelected)"/> -->
             </td>
             <td ng-show="viewingAllCustomers" class="input-col">
-              <input type="text" placeholder="Filter..." ng-model="filterRowFields.customername">
+              <input type="text" placeholder="Filter..." ng-model="filterRowFields.customername" no-dirty-check>
             </td>
             <td ng-show="viewingAllCustomers" class="input-col">
-              <input type="text" placeholder="Filter..." ng-model="filterRowFields.customernumber">
+              <input type="text" placeholder="Filter..." ng-model="filterRowFields.customernumber" no-dirty-check>
             </td>
             <td class="input-col">
-              <input type="text" placeholder="Filter..." ng-model="filterRowFields.invoicenumber">
+              <input type="text" placeholder="Filter..." ng-model="filterRowFields.invoicenumber" no-dirty-check>
             </td>
             <td class="input-col">
-              <input type="text" placeholder="Filter..." ng-model="filterRowFields.typedescription">
+              <input type="text" placeholder="Filter..." ng-model="filterRowFields.typedescription" no-dirty-check>
             </td>
             <td class="input-col hidden-mobile-visible-print">
-              <input type="text" placeholder="Filter..." ng-model="filterRowFields.statusdescription">
+              <input type="text" placeholder="Filter..." ng-model="filterRowFields.statusdescription" no-dirty-check>
             </td>
             <td class="hidden-mobile-visible-print"></td>
             <td></td>
@@ -155,7 +173,7 @@
 
           <tr ng-repeat-start="invoice in invoices" ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, 'invoice__late':  invoice.status === 2}">
             <td ng-if="!viewingAllCustomers">
-              <input ng-if="invoice.ispayable" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
+              <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
               <a ng-click="changeCustomerOnClick(invoice.customernumber)">{{invoice.customername}}</a>
@@ -184,7 +202,7 @@
             </td>
             <td ng-if="!viewingAllCustomers" class="input-col hidden-mobile-visible-print">
               <input
-                ng-if="invoice.ispayable"
+                ng-if="invoice.userCanPayInvoice"
                 class="text-right"
                 type="text"
                 ng-model="invoice.paymentAmount"
@@ -195,12 +213,13 @@
                   'prepend': '$',
                   'min': {{invoice.amount > 0 ? 0 : invoice.amount}}
                 }"
-                ng-required="invoice.isSelected">
+                ng-required="invoice.isSelected"
+                ng-disabled="!invoice.isSelected">
             </td>
-            <td ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
+            <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
                 ng-click="openDatepicker = true"
-                ng-if="invoice.ispayable"
+                ng-if="invoice.userCanPayInvoice && invoice.isSelected"
                 class="icon-calendar"
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                 ng-model="invoice.date"
@@ -210,7 +229,7 @@
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
-              {{invoice.date | date:shortDate}}
+              <span ng-show="invoice.userCanPayInvoice">{{invoice.date | date:shortDate}}</span>
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
@@ -232,11 +251,11 @@
                   <td>Status</td>
                   <td>{{invoice.statusdescription}}</td>
                 </tr>
-                <tr ng-if="invoice.ispayable">
+                <tr ng-if="invoice.userCanPayInvoice">
                   <td>Payment Amount</td>
                   <td>
                     <input
-                      ng-if="invoice.ispayable"
+                      ng-if="invoice.userCanPayInvoice"
                       class="form-control text-right"
                       type="text"
                       ng-model="invoice.paymentAmount"
@@ -247,10 +266,11 @@
                         'prepend': '$',
                         'min': {{invoice.amount > 0 ? 0 : invoice.amount}}
                       }"
-                      ng-required="invoice.isSelected">
+                      ng-required="invoice.isSelected"
+                      ng-disabled="!invoice.isSelected">
                   </td>
                 </tr>
-                <tr ng-if="invoice.ispayable">
+                <tr ng-if="!viewingAllCustomers && invoice.userCanPayInvoice">
                   <td>
                     Schedule Date
                   </td>
@@ -258,6 +278,7 @@
                    <!--  <a
                       ng-click="openDatepicker = true"
                       class="icon-calendar"
+                      ng-if="invoice.userCanPayInvoice && invoice.isSelected"
                       datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                       ng-model="invoice.date"
                       is-open="openDatepicker"

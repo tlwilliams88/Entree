@@ -4,17 +4,25 @@ angular.module('bekApp')
   .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService',
     function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService) {
     
-    $scope.carts = carts;
-    $scope.lists = lists;
-    $scope.shipDates = CartService.shipDates;
-    $scope.changeOrders = changeOrders;
-    $scope.selectedList = selectedList;
-    $scope.selectedCart = selectedCart;
-    $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
-    $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
+    function init() {
+      if (selectedCart) {
+        $scope.selectedCart = selectedCart;
+        $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
+      } else {
+        // create new cart if no cart was selected
+        $scope.createNewCart();
+      }
+      
+      $scope.carts = carts;
+      $scope.lists = lists;
+      $scope.shipDates = CartService.shipDates;
+      $scope.changeOrders = changeOrders;
+      $scope.selectedList = selectedList;
+      $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
 
-    $scope.sortBy = 'position';
-    $scope.sortOrder = false;
+      $scope.sortBy = 'position';
+      $scope.sortOrder = false;
+    }
 
     // INFINITE SCROLL
     var itemsPerPage = Constants.infiniteScrollPageSize;
@@ -69,6 +77,7 @@ angular.module('bekApp')
       cart.items = [];
       cart.id = 'New';
       $scope.selectedCart = cart;
+      $scope.isChangeOrder = false;
     };
 
     function combineDuplicateItemNumbers(items) {
@@ -124,13 +133,9 @@ angular.module('bekApp')
     function saveNewCart(items, shipDate) {
       if (!processingSaveCart) {
         processingSaveCart = true;
-        CartService.createCart(items, shipDate).then(function(cartId) {
+        CartService.createCart(items, shipDate).then(function(cart) {
           // $scope.selectedCart = cart;
           $scope.addToOrderForm.$setPristine();
-
-          var cart = {
-            id: cartId
-          };
 
           $scope.goToList($scope.selectedList, cart);
           $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
@@ -234,10 +239,6 @@ angular.module('bekApp')
       }
     };
 
-
-    // create new cart if no cart was selected
-    if (!selectedCart.items) {
-      $scope.createNewCart();
-    }
+    init();
 
   }]);

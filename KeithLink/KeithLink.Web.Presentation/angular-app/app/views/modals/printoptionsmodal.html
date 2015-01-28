@@ -1,0 +1,23 @@
+ <div class="modal-header">
+    <h3 class="modal-title">Print: {{name}}</h3>
+</div>
+<div class="modal-body">
+
+  <form name="printOptionsForm" class="form-horizontal style-validation-errors">
+    <div class="form-group">
+      <label for="averyCode" class="col-sm-3 control-label">Avery Label Code: </label>
+      <div class="col-sm-9">
+        <select name="averyCode" ng-model="selectedLabelOption" ng-options="option as option.type for option in labelOptions"></select>
+      </div>
+    </div>
+    <div class="form-group">
+      <button class="col-sm-offset-3 btn-lg btn btn-primary" type="submit" ng-click="printLabels(items, selectedLabelOption)">Print Label(s)</button>
+    </div>
+  </form>
+
+</div>
+<div class="modal-footer">
+    <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
+    <button class="btn-lg btn btn-primary" type="submit" ng-click="print()">Print Page</button>
+    <button class="btn-lg btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+</div>

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-  .directive('counter', function() {
+  .directive('counter', ['$filter', '$window', function($filter, $window) {
     return {
       restrict: 'A',
       require: 'ngModel',
@@ -98,7 +98,7 @@ angular.module('bekApp')
 		  
           // Check if what's typed is numeric or if it has any letters.
           if ( /\b[0-9]+\b/.test(scope.value) ) {
-			if(length != null){
+			if(length != null){ // jshint ignore:line
 				if(curLength <= length){
 					setValue(scope.value);
 				}
@@ -111,7 +111,7 @@ angular.module('bekApp')
 			}
           }
           else {
-			setValue( parseInt(scope.value.toString().substring(0,curLength - 1)) );
+			setValue( parseInt( scope.value.toString().substring(0,curLength - 1) ) );
           }
           
           // If a minimum is set, let's make sure we're within the limit.
@@ -130,6 +130,18 @@ angular.module('bekApp')
           // Re-set the value as an integer.
           setValue( scope.value );
         };
+
+        scope.confirmQuantity = function(qty) {
+          var pattern = /^([0-9])\1+$/; // repeating digits pattern
+
+          if (qty > 50 || pattern.test(qty)) {
+            var isConfirmed = $window.confirm('Do you want to continue with entered quatity of ' + qty + '?');
+            if (!isConfirmed) {
+              // clear input
+              scope.value = null;
+            }
+          } 
+        };
     }
   };
-});
+}]);

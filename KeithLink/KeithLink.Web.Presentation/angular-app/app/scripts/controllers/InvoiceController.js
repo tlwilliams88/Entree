@@ -4,6 +4,9 @@ angular.module('bekApp')
   .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants', '$rootScope', 'LocalStorage', 'CustomerService', '$state',
     function ($scope, $filter, $modal, accounts, InvoiceService, Constants, $rootScope, LocalStorage, CustomerService, $state) {
 
+  $scope.customerText = $scope.selectedUserContext.customer.customerNumber + ' - ' + $scope.selectedUserContext.customer.customerName;
+  var currentUserSelectedContext = {};
+
   function loadInvoices(params) {
     var promise;
     $scope.loadingResults = true;
@@ -24,6 +27,23 @@ angular.module('bekApp')
       $scope.hasPayableInvoices = data.haspayableinvoices;
       $scope.totalAmountDue = data.totaldue;
 
+      // // Test data
+      // data.pagedresults.results[0].pendingtransaction = {
+      //   amount: 123.43,
+      //   date: '2015-01-22T00:00:00Z',
+      //   editable: true
+      // };
+
+      data.pagedresults.results.forEach(function(invoice) {
+        if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+          invoice.userCanPayInvoice = true;
+          invoice.paymentAmount = invoice.pendingtransaction.amount;
+          invoice.date = invoice.pendingtransaction.date;
+        } else if (invoice.ispayable) {
+          invoice.userCanPayInvoice = true;
+        }
+      });
+
       return data.pagedresults.results;
     });
   }
@@ -36,57 +56,48 @@ angular.module('bekApp')
   VIEWING INVOICES FOR ALL CUSTOMERS
   ************/
 
-  function setPageText(customerName, customerNumber) {
+  function setPageText() {
     if ($scope.viewingAllCustomers) {
       //set button and header text
-      $scope.viewAllButtonText = 'Return to Invoices for: ' + customerNumber + ' - ' + customerName;
-      $scope.headerText = 'Open Invoices of All Customers';
+      $scope.viewAllButtonText = 'All Customers';
     } else {
-      $scope.viewAllButtonText = 'View Open Invoices for All Customers';
-      $scope.headerText = 'Invoices for: ' + customerName;
+      $scope.viewAllButtonText = $scope.customerText;
     }
   }
 
+  function setContextForViewingAllCustomers() {
+    //store current user context temporarily
+    currentUserSelectedContext = $scope.selectedUserContext;
+    //wipe user context and replace text with all customers
+    var tempContext = {
+      text: 'All Customers'
+    };
+    $scope.setSelectedUserContext(tempContext);
+  }
+
   //toggles state between all customer invoices and single customer invoices
-  $scope.switchViewingAllCustomers = function () {
-    //properly set string values for each state and change the selected user context to a placeholder to prevent confusion
-    $scope.viewingAllCustomers = !$scope.viewingAllCustomers;
+  $scope.switchViewingAllCustomers = function (isViewingAllCustomers) {
+    $scope.viewingAllCustomers = isViewingAllCustomers;
     
-    //wipe current invoices out
+    // clear values to reset page
     $scope.invoices = [];
     $scope.totalInvoices = 0;
-
-    // clear filter row
     $scope.filterRowFields = {};
+    setPageText();
 
     if ($scope.viewingAllCustomers) {
 
-      setPageText($scope.selectedUserContext.customer.customerName, $scope.selectedUserContext.customer.customerNumber);
-      //store current user context temporarily
-      temporarySelectedUserContext = $scope.selectedUserContext;
-
-      //wipe user context and replace text with all customers
-      var tempContext = {
-        text: 'All Customers'
-      };
-      $scope.setSelectedUserContext(tempContext);
+      $scope.selectedFilterView = $scope.filterViews[2]; // default to Open Invoices filter view
+      setContextForViewingAllCustomers();
 
     } else {
-      setPageText(temporarySelectedUserContext.customer.customerName);
-      //restore previous selected user context
-      $scope.setSelectedUserContext(temporarySelectedUserContext);
+      
+      //restore previously selected user context
+      $scope.setSelectedUserContext(currentUserSelectedContext);
     }
 
     loadInvoices($scope.invoiceParams).then(setInvoices);
   };
-
-  //listens for state change event to restore selectedUserContext
-  $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    //change selected user context back to the one stored in LocalStorage here
-    if (fromState.name === 'menu.invoice' && !$scope.selectedUserContext.id) {
-      $scope.setSelectedUserContext(LocalStorage.getCurrentCustomer());
-    }
-  });
 
   function changeUserContext(stateName, stateParams, customerNumber) {
     //generate and set customer context to customerNumber that user selected
@@ -151,16 +162,8 @@ angular.module('bekApp')
       filter: []
     };
 
-    // if viewing all customers, set open filter
-    if ($scope.viewingAllCustomers) {
-      filterObject.filter.push({
-        field: 'statusdescription',
-        value: 'open'
-      });
-    }
-
     // if filter view is selected, set given filter
-    if ($scope.selectedFilterView && !$scope.viewingAllCustomers) {
+    if ($scope.selectedFilterView) {
       filterObject.filter = filterObject.filter.concat($scope.selectedFilterView.filterFields);
     }
 
@@ -198,7 +201,6 @@ angular.module('bekApp')
 
   $scope.filterInvoices = function (filterFields) {
     // reset paging
-    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
     $scope.invoiceParams.from = 0;
 
     loadInvoices($scope.invoiceParams).then(setInvoices);
@@ -219,7 +221,6 @@ angular.module('bekApp')
     }];
 
     // reset paging
-    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
     $scope.invoiceParams.from = 0;
 
     loadInvoices($scope.invoiceParams).then(setInvoices);
@@ -252,8 +253,13 @@ angular.module('bekApp')
       value: true,
       type: 'equals'
     }]
-  },
-  {
+  }, {
+    name: 'Pending Payments',
+    filterFields: [{
+      field: 'statusdescription',
+      value: 'Pending'
+    }]
+  }, {
     name: 'Open Invoices',
     filterFields: [{
       field: 'statusdescription',
@@ -276,7 +282,6 @@ angular.module('bekApp')
   $scope.selectFilterView = function (filterView) {
     $scope.selectedFilterView = filterView;
 
-    $scope.invoiceParams.size = Constants.infiniteScrollPageSize;
     $scope.invoiceParams.from = 0;
 
     loadInvoices($scope.invoiceParams).then(setInvoices);
@@ -288,9 +293,15 @@ angular.module('bekApp')
 
   $scope.selectInvoice = function (invoice, isSelected) {
     if (isSelected) {
-      invoice.paymentAmount = invoice.amount.toString();
+      if (!invoice.pendingtransaction) {
+        invoice.paymentAmount = invoice.amount.toString();
+      }
     } else {
-      invoice.paymentAmount = '0';
+      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+        invoice.paymentAmount = invoice.pendingtransaction.amount; 
+      } else {
+        invoice.paymentAmount = '0';  
+      }
     }
   };
 
@@ -317,7 +328,9 @@ angular.module('bekApp')
     if (!processingPayInvoices) {
       processingPayInvoices = true;
       var payments = $filter('filter')($scope.invoices, {isSelected: true});
-      InvoiceService.payInvoices(payments, $scope.selectedAccount).finally(function () {
+      InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
+        $state.go('menu.transaction');
+      }).finally(function () {
         processingPayInvoices = false;
       });
     }
@@ -346,7 +359,6 @@ angular.module('bekApp')
     });
   };
 
-
   $scope.invoices = [];
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
@@ -361,10 +373,8 @@ angular.module('bekApp')
   };
 
   //set defaults and instantiate persistent user context
-  setPageText($scope.selectedUserContext.customer.customerName);
-  var temporarySelectedUserContext = {};
-
-  $scope.sortBy = 'invoicenumber';
+  setPageText();
+  
   $scope.sortOrder = true;
 
   $scope.invoiceParams = {

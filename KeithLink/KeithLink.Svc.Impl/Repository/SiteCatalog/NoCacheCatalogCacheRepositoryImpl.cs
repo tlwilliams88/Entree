@@ -7,23 +7,23 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
-    public class NoCacheCatalogCacheRepositoryImpl : ICatalogCacheRepository
-    {
-        public void AddItem<T>(string key, T item)
-        {
-        }
+	//public class NoCacheCatalogCacheRepositoryImpl : ICatalogCacheRepository
+	//{
+	//	public void AddItem<T>(string key, T item)
+	//	{
+	//	}
 
-        public void ResetAllItems()
-        {
-        }
+	//	public void ResetAllItems()
+	//	{
+	//	}
 
-        public void RemoveItem(string key)
-        {
-        }
+	//	public void RemoveItem(string key)
+	//	{
+	//	}
 
-        public T GetItem<T>(string key)
-        {
-            return default(T);
-        }
-    }
+	//	public T GetItem<T>(string key)
+	//	{
+	//		return default(T);
+	//	}
+	//}
 }

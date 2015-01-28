@@ -12,6 +12,7 @@
       <xs:element minOccurs="0" name="imageurl" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="lastname" nillable="true" type="xs:string" />
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingpreferences" nillable="true" type="q1:ArrayOfProfileMessagingPreferenceModel" />
+      <xs:element minOccurs="0" name="passwordexpired" type="xs:boolean" />
       <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="rolename" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="userid" type="ser:guid" />
@@ -22,16 +23,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="accountId" nillable="true" type="ser:guid" />
       <xs:element minOccurs="0" name="address" nillable="true" type="tns:address" />
-      <xs:element minOccurs="0" name="balanceage1" nillable="true" type="xs:decimal" />
-      <xs:element minOccurs="0" name="balanceage1label" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="balanceage2" nillable="true" type="xs:decimal" />
-      <xs:element minOccurs="0" name="balanceage2label" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="balanceage3" nillable="true" type="xs:decimal" />
-      <xs:element minOccurs="0" name="balanceage3label" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="balanceage4" nillable="true" type="xs:decimal" />
-      <xs:element minOccurs="0" name="balanceage4label" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="contractId" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="currentbalance" nillable="true" type="xs:decimal" />
       <xs:element minOccurs="0" name="customerBranch" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customerId" type="ser:guid" />
       <xs:element minOccurs="0" name="customerName" nillable="true" type="xs:string" />
@@ -61,4 +53,12 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="address" nillable="true" type="tns:address" />
+  <xs:complexType name="CustomerAccountBalanceModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currentbalance" type="xs:decimal" />
+      <xs:element minOccurs="0" name="pastdue" type="xs:decimal" />
+      <xs:element minOccurs="0" name="totalbalance" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerAccountBalanceModel" nillable="true" type="tns:CustomerAccountBalanceModel" />
 </xs:schema>

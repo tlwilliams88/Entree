@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
-    function($http, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
+  .factory('ProductService', ['$http', '$q', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
+    function($http, $q, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
 
       var defaultPageSize = Constants.infiniteScrollPageSize,
         defaultStartingIndex = 0;
@@ -130,6 +130,16 @@ angular.module('bekApp')
             Service.selectedProduct = {};
           }
           return returnProduct;
+        },
+
+        scanProduct: function(itemNumber) {
+          return $http.get('/catalog/product/scan/' + itemNumber).then(function(response) {
+            if (response.data) {
+              return response.data; // item found, return item object
+            } else {
+              return;
+            }
+          });
         },
 
         /****************

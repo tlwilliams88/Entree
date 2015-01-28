@@ -14,7 +14,7 @@ angular.module('bekApp')
     var Service = {
       
       selectDefaultBasket: function(id, changeOrders) {
-        var selectedBasket = {};
+        var selectedBasket;
 
         // check valid cart id
         var selectedCart = CartService.findCartById(id);
