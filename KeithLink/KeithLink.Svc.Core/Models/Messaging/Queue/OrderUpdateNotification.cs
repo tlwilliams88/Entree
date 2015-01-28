@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
     {
         public OrderUpdateNotification()
         {
-            this.NotificationType = Enumerations.Messaging.NotificationType.OrderUpdate;
+            this.NotificationType = Enumerations.Messaging.NotificationType.OrderShipped;
         }
     }
 }

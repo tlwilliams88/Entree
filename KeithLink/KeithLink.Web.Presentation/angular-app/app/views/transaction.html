@@ -94,7 +94,7 @@
             {{::transaction.invoicenumber}}
           </td>
           <td>
-            {{::transaction.amount}}
+            {{::transaction.amount | currency}}
           </td>
           <td>
             {{::transaction.date | date:short}}

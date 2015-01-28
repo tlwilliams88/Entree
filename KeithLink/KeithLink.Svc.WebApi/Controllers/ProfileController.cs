@@ -149,26 +149,11 @@ namespace KeithLink.Svc.WebApi.Controllers
                 if (!_profileLogic.IsInternalAddress(userInfo.Email))
                 {
                     _profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
-                                                  userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId);
+                                                  userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId, 
+                                                  true /* hard coded security for now */, userInfo.Customers, userInfo.Role);
                 }
 
-                UserProfileReturn profile = _profileLogic.GetUserProfile(userInfo.Email);
-
-                // handle customer updates - will need to add security here
-                if (userInfo.Customers != null && userInfo.Customers.Count > 0)// && // security here)
-                {
-					var customers = _profileLogic.GetCustomersForUser(profile.UserProfiles[0]);
-
-					IEnumerable<Guid> custsToAdd = userInfo.Customers.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
-					IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(userInfo.Customers.Select(c => c.CustomerId));
-                    foreach (Guid c in custsToAdd)
-                        _profileLogic.AddUserToCustomer(c, profile.UserProfiles[0].UserId);
-                    foreach (Guid c in custsToRemove)
-                        _profileLogic.RemoveUserFromCustomer(c, profile.UserProfiles[0].UserId);
-                }
-
-                profile = _profileLogic.GetUserProfile(userInfo.Email);
-                retVal.SuccessResponse = profile;
+                retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 

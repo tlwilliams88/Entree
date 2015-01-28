@@ -27,17 +27,19 @@ namespace KeithLink.Svc.Core.Extensions.Messaging
             {
                 var serializer = new DataContractJsonSerializer(typeof(BaseNotification));
                 BaseNotification notification = (BaseNotification)serializer.ReadObject(ms);
-                if (notification.NotificationType == Core.Enumerations.Messaging.NotificationType.OrderConfirmation)
-                {
-                    ms.Position = 0;
-                    return (BaseNotification)new DataContractJsonSerializer(typeof(OrderConfirmationNotification)).ReadObject(ms);
+
+                ms.Position = 0;
+
+                switch (notification.NotificationType) {
+                    case Core.Enumerations.Messaging.NotificationType.OrderConfirmation:
+                        return (BaseNotification)new DataContractJsonSerializer(typeof(OrderConfirmationNotification)).ReadObject(ms);    
+                    case Core.Enumerations.Messaging.NotificationType.Eta:
+                        return (BaseNotification)new DataContractJsonSerializer(typeof(EtaNotification)).ReadObject(ms);
+                    case Core.Enumerations.Messaging.NotificationType.PaymentConfirmation:
+                        return (BaseNotification)new DataContractJsonSerializer(typeof(PaymentConfirmationNotification)).ReadObject(ms);
+                    default:
+                        return notification;
                 }
-                else if (notification.NotificationType == Core.Enumerations.Messaging.NotificationType.Eta)
-                {
-                    ms.Position = 0;
-                    return (BaseNotification)new DataContractJsonSerializer(typeof(EtaNotification)).ReadObject(ms);
-                }
-                return notification;
             }
         }
     }
