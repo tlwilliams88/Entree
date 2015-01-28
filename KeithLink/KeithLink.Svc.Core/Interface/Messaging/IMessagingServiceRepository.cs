@@ -14,22 +14,22 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 {
 	public interface IMessagingServiceRepository
 	{
-        List<UserMessageModel> ReadUserMessages(UserProfile userProfile);
-
-        void MarkAsReadUserMessages(List<UserMessageModel> updatedUserMessages);
+        void CreateMailMessage(MailMessageModel mailMessage);
 
         int GetUnreadMessagesCount(Guid userId);
 
-        void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile userProfile);
+        void MarkAsReadUserMessages(List<UserMessageModel> updatedUserMessages);
+        
+        MessageTemplateModel ReadMessageTemplateForKey(string key);
 
         List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
 
-		PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
+        PagedResults<UserMessageModel> ReadPagedUserMessages(UserProfile user, PagingModel paging);
+
+        List<UserMessageModel> ReadUserMessages(UserProfile userProfile);
 
         bool RegisterPushDevice(UserProfile user, PushDeviceRegistrationModel deviceRegistrationModel);
 
-		MessageTemplateModel ReadMessageTemplateForKey(string key);
-
-		void CreateMailMessage(MailMessageModel mailMessage);
+        void UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel, UserProfile userProfile);
     }
 }

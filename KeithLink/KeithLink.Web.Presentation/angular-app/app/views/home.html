@@ -29,7 +29,7 @@
     <div class="col-md-4 col-md-push-8">
       <div class="info-box">
 
-        <a ui-sref="menu.invoice" class="pull-right btn btn-primary btn-lg">Pay Now</a>
+        <a ui-sref="menu.invoice" ng-hide = "isDsr" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         
         <h4><strong>Account Balance</strong></h4>
         
@@ -40,13 +40,13 @@
         <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
         
         <div class="row text-center">
-          <div class="balance__term--amount term-amount-1">
+          <div class="balance__term--amount">
             <strong>Current</strong>
             {{selectedUserContext.customer.balance.currentbalance | currency}}
           </div>
-          <div class="balance__term--amount term-amount-2">
+          <div class="balance__term--amount">
             <strong>Past Due</strong>
-            <div class="text-red">
+            <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
             <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
             </div>
           </div>
@@ -89,7 +89,7 @@
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy':'UTC'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">

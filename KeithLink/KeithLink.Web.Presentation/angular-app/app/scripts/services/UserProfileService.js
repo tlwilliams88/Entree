@@ -92,7 +92,9 @@ angular.module('bekApp')
 
       createUserFromAdmin: function(userProfile) {
         var promise = $http.post('/profile/admin/user', userProfile);
-        return UtilityService.resolvePromise(promise);
+        return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          return successResponse.userProfiles;
+        });
       },
 
       updateUserProfile: function(userProfile) {

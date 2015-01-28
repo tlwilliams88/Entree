@@ -44,40 +44,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.userProfileLogic = userProfileLogic;
         }
 
-        private string GetMessageSubjectForNotification(BaseNotification notification)
-        {
-            if (notification.NotificationType == NotificationType.OrderConfirmation)
-            {
-                OrderConfirmationNotification ocn = (OrderConfirmationNotification)notification;
-                return "BEK: Order Confirmation for " + notification.CustomerNumber + " (" + ocn.OrderChange.OrderName + ")";
-            }
-            return "unknown message type";
-        }
-
-        private string GetMessageForNotification(BaseNotification notification)
-        {
-            if (notification.NotificationType == NotificationType.OrderConfirmation)
-            {
-                OrderConfirmationNotification ocn = (OrderConfirmationNotification)notification;
-                string statusString = String.IsNullOrEmpty(ocn.OrderChange.OriginalStatus)
-                    ? "Order confirmed with status: " + ocn.OrderChange.CurrentStatus
-                    : "Order updated from status: " + ocn.OrderChange.OriginalStatus + " to " + ocn.OrderChange.CurrentStatus;
-
-                string orderLineChanges = string.Empty;
-                foreach (var line in ocn.OrderChange.ItemChanges)
-                    orderLineChanges += orderLineChanges + "Item: " + line.ItemNumber +
-                        (String.IsNullOrEmpty(line.SubstitutedItemNumber) ? string.Empty : ("replace by: " + line.SubstitutedItemNumber)) +
-                        "  Status: " + line.NewStatus + (line.NewStatus == line.OriginalStatus || string.IsNullOrEmpty(line.OriginalStatus) 
-                                                            ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
-
-                string originalOrderInfo = "Original Order Information:" + System.Environment.NewLine;
-                foreach (var line in ocn.OrderChange.Items)
-                    originalOrderInfo += line.ItemNumber + ", " + line.ItemDescription + " (" + line.QuantityOrdered + ")" + System.Environment.NewLine;
-                return statusString + System.Environment.NewLine + orderLineChanges + System.Environment.NewLine + originalOrderInfo;
-            }
-            return "unknown message type";
-        }
-
         public long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage)
         {
             var newUserMessage = userMessage.ToEFUserMessage();

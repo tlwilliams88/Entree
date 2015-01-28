@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Profile;
 using System.DirectoryServices.AccountManagement;
+using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface ICustomerDomainRepository {
@@ -16,9 +17,11 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         bool IsPasswordExpired( string emailAddress );
 
-        bool IsInGroup(string userName, string groupName);
+        string GetUserGroup(string userName, List<string> groupNames);
 
         void JoinGroup(string customerName, string roleName, UserPrincipal user);
+
+        void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail);
 
         bool UpdatePassword(string emailAddress, string oldPassword, string newPassword);
 
