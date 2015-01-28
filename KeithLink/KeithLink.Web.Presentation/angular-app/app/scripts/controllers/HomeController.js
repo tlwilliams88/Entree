@@ -126,14 +126,14 @@ angular.module('bekApp')
         notifications.forEach(function(notification){
          var date = $filter('date')(notification.messagecreatedutc, 'yyyy-MM-dd');
          if(notificationDates[date]){
-          notificationDates[date].push(notification)
+          notificationDates[date].push(notification);
           }
           else{
             dates.push(date);
             notificationDates[date] = [notification];
           }          
          
-        })
+        });
       $scope.notificationDates = notificationDates;
       $scope.dates = dates;      
       $scope.loadingResults = false;

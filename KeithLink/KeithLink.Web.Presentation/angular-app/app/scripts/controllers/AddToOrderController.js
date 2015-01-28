@@ -39,17 +39,20 @@ angular.module('bekApp')
       });
     };
 
-    function redirect(list, cart) {
-      $state.go('menu.addtoorder.items', { listId: list.listid, cartId: cart.ordernumber || cart.id, useParlevel: $scope.useParlevel });
+    function redirect(listId, cartId) {
+      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: $scope.useParlevel });
     }
 
     $scope.goToList = function(list, cart) {
-      if (cart.id) {
+      if (cart.id) { // make sure cart is not a change order 
+
+        // TODO: unsaved changes warning happens AFTER selected cart is already set to active
         CartService.setActiveCart(cart.id).then(function() {
-          redirect(list, cart);
+          // wait until cart is successfuly set to 'active' to redirect so item.quantityincart is updated
+          redirect(list.listid, cart.id);
         });
       } else {
-        redirect(list, cart);
+        redirect(list.listid, cart.ordernumber);
       }
     };
 
