@@ -12,6 +12,9 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
     [DataContract]
     public class BaseNotification
     {
+        [DataMember(Name = "branchid")]
+        public string BranchId { get; set; }
+
         [DataMember(Name="customernumber")]
         public string CustomerNumber { get; set; }
 

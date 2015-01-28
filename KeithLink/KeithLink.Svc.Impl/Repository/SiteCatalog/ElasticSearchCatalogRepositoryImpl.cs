@@ -73,8 +73,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                             }
                         },
                         functions = BuildItemBoostFunctions(searchExpression),
-                        score_mode = "max",
-                        boost_mode = "multiply"
+                        score_mode = "sum",
+                        boost_mode = "replace"
                     }
                 },
                 sort = BuildSort(sortField, sortDir),
@@ -105,6 +105,26 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         private static List<dynamic> BuildItemBoostFunctions(string searchTerms = null) {
             List<dynamic> boosts = new List<dynamic>();
 
+
+			
+				boosts.Add(new
+				{
+					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase_prefix = new { name_not_analyzed = searchTerms.ToLower() } } } } } },
+					boost_factor = 1500
+				});
+				boosts.Add(new
+				{
+					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } },
+					boost_factor = 1400
+				});
+				boosts.Add(new
+				{
+					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } },
+					boost_factor = 1300
+				});
+			
+
+
             // preferred item boosts
             boosts.Add(new { filter = new { term = new { preferreditemcode = "A" } }, 
                 boost_factor = 300 });
@@ -113,22 +133,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             boosts.Add(new { filter = new { term = new { preferreditemcode = "C" } }, 
                 boost_factor = 100 });
 
-            // name and description boosts
-            if (!String.IsNullOrEmpty(searchTerms)) // search is keyword
-            {
-                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
-                    boost_factor = 500 });
-                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
-                    boost_factor = 250 });
-            }
-            // phrase boosts on name and description
-            if (!String.IsNullOrEmpty(searchTerms) && Regex.IsMatch(searchTerms, "\\s+")) // search is keyword and any whitespace in search terms
-            {
-                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
-                    boost_factor = 1000 });
-                boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
-                    boost_factor = 500 });
-            }
+			//// name and description boosts
+			//if (!String.IsNullOrEmpty(searchTerms)) // search is keyword
+			//{
+			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
+			//		boost_factor = 500 });
+			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
+			//		boost_factor = 250 });
+			//}
+			//// phrase boosts on name and description
+			//if (!String.IsNullOrEmpty(searchTerms) && Regex.IsMatch(searchTerms, "\\s+")) // search is keyword and any whitespace in search terms
+			//{
+			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
+			//		boost_factor = 1000 });
+			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
+			//		boost_factor = 500 });
+			//}
 
             return boosts;
         }
@@ -195,7 +215,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// </remarks>
         private static dynamic BuildCategoryFilter(string category) {
             return new { multi_match =
-                    new { query = category, fields = 
+                    new { query = category.ToLower(), fields = 
                         new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
         }
 

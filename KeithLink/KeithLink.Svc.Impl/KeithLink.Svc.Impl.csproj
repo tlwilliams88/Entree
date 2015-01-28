@@ -214,6 +214,7 @@
     <Compile Include="Logic\Messaging\EtaNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\InvoiceNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EmailMessageProvider.cs" />
+    <Compile Include="Logic\Messaging\PaymentConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\WebMessageProvider.cs" />
     <Compile Include="Logic\Messaging\MessageTemplateLogicImpl.cs" />
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />

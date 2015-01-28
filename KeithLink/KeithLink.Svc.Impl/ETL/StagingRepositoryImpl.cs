@@ -184,6 +184,11 @@ namespace KeithLink.Svc.Impl.ETL
             return worksheetItems;
         }
 
+        public DataTable ReadDsrInfo()
+        {
+            return PopulateDataTable("[ETL].[ReadDsrInfo]");
+        }
+
 
     }
 }
