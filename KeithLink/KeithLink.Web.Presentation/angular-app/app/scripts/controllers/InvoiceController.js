@@ -27,18 +27,11 @@ angular.module('bekApp')
       $scope.hasPayableInvoices = data.haspayableinvoices;
       $scope.totalAmountDue = data.totaldue;
 
-      // // Test data
-      // data.pagedresults.results[0].pendingtransaction = {
-      //   amount: 123.43,
-      //   date: '2015-01-22T00:00:00Z',
-      //   editable: true
-      // };
-
       data.pagedresults.results.forEach(function(invoice) {
         if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
           invoice.userCanPayInvoice = true;
           invoice.paymentAmount = invoice.pendingtransaction.amount;
-          invoice.date = invoice.pendingtransaction.date;
+          invoice.date = invoice.pendingtransaction.date.substr(0,10); // get format '2014-01-31'
         } else if (invoice.ispayable) {
           invoice.userCanPayInvoice = true;
         }
@@ -254,16 +247,16 @@ angular.module('bekApp')
       type: 'equals'
     }]
   }, {
-    name: 'Pending Payments',
-    filterFields: [{
-      field: 'statusdescription',
-      value: 'Pending'
-    }]
-  }, {
     name: 'Open Invoices',
     filterFields: [{
       field: 'statusdescription',
       value: 'Open'
+    }]
+  }, {
+    name: 'Invoices Pending Payment',
+    filterFields: [{
+      field: 'statusdescription',
+      value: 'Pending'
     }]
   }, {
     name: 'Past Due Invoices',
@@ -305,10 +298,11 @@ angular.module('bekApp')
     }
   };
 
-  $scope.selectAll = function () {
+  $scope.selectAll = function (areAllSelected) {
+    $scope.selectAllPayable = areAllSelected;
     angular.forEach($scope.invoices, function (item, index) {
-      if (item.ispayable) {
-        item.isSelected = $scope.selectAllPayable;
+      if (item.userCanPayInvoice) {
+        item.isSelected = areAllSelected;
         $scope.selectInvoice(item, item.isSelected);
       }
     });

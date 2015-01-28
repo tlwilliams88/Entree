@@ -45,8 +45,8 @@
     <div class="col-md-12" ng-if="viewingAllCustomers">
       <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
     </div>
-    <div ng-hide = "isDsr" class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers">
-      <div  ng-hide ="" class="info-box" ng-if="hasPayableInvoices">
+    <div class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers && !isDsr">
+      <div class="info-box" ng-if="hasPayableInvoices">
         <h3 style="margin-top:0">Billing Information</h3>
         <address class="text-light">
           {{selectedUserContext.customer.customerName}}<br>
@@ -92,7 +92,7 @@
       </div>
     </div>
 
-    <div class="col-sm-12 col-xs-12 padding-top-xs padding-top-sm" ng-class="{'col-md-8': !viewingAllCustomers, 'col-md-12': viewingAllCustomers}">
+    <div class="col-sm-12 col-xs-12 padding-top-xs padding-top-sm" ng-class="{'col-md-8': !viewingAllCustomers && !isDsr, 'col-md-12': viewingAllCustomers || isDsr }">
 
       <div class="text-right">
         Showing {{invoices.length}} of {{totalInvoices}} Invoices
@@ -102,7 +102,7 @@
         <thead>
           <tr>
             <th ng-if="!viewingAllCustomers" class="input-col">
-              <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll()" no-dirty-check>
+              <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
             </th>
             <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customername', !sortOrder)">
               Customer 
@@ -120,7 +120,7 @@
               <span>Type <span sort-icons field="'type'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortInvoices('status', !sortOrder)">
-              <span>Statusx<span sort-icons field="'status'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
+              <span>Status <span sort-icons field="'status'" sortorder="sortOrder" sortby="invoiceParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('duedate', !sortOrder)">
               Due
@@ -176,26 +176,26 @@
               <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
-              <a ng-click="changeCustomerOnClick(invoice.customernumber)">{{invoice.customername}}</a>
+              <a ng-click="changeCustomerOnClick(invoice.customernumber)">{{::invoice.customername}}</a>
             </td>
             <td ng-show="viewingAllCustomers">
-              <a ng-click="changeCustomerOnClick(invoice.customernumber)">{{invoice.customernumber}}</a>
+              <a ng-click="changeCustomerOnClick(invoice.customernumber)">{{::invoice.customernumber}}</a>
             </td>
             <td>
-              <a ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.invoicenumber)">{{invoice.invoicenumber}}</a>
-              <span ng-show="invoice.typedescription !== 'Invoice'">{{invoice.invoicenumber}}</span>
+              <a ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.invoicenumber)">{{::invoice.invoicenumber}}</a>
+              <span ng-show="invoice.typedescription !== 'Invoice'">{{::invoice.invoicenumber}}</span>
             </td>
             <td>
-              {{invoice.typedescription}}
+              {{::invoice.typedescription}}
             </td>
             <td class="highlight-text hidden-mobile-visible-print">
-              {{invoice.statusdescription}}
+              {{::invoice.statusdescription}}
             </td>
             <td class="hidden-mobile-visible-print">
-              {{invoice.duedate | date:short }}
+              {{::invoice.duedate | date:short }}
             </td>
             <td>
-              {{invoice.amount | currency}}
+              {{::invoice.amount | currency}}
             </td>
             <td class="text-center icon-col large-icon hidden-mobile-visible-print">
               <a ng-if="invoice.invoicelink" target="_blank" ng-href="{{invoice.invoicelink}}" class="icon-camera"></a>
@@ -245,11 +245,11 @@
                 </colgroup>
                 <tr>
                   <td>Due Date</td>
-                  <td>{{invoice.duedate | date:short}}</td>
+                  <td>{{::invoice.duedate | date:short}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
-                  <td>{{invoice.statusdescription}}</td>
+                  <td>{{::invoice.statusdescription}}</td>
                 </tr>
                 <tr ng-if="invoice.userCanPayInvoice">
                   <td>Payment Amount</td>

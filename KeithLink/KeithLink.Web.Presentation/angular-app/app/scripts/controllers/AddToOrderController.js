@@ -39,17 +39,20 @@ angular.module('bekApp')
       });
     };
 
-    function redirect(list, cart) {
-      $state.go('menu.addtoorder.items', { listId: list.listid, cartId: cart.ordernumber || cart.id, useParlevel: $scope.useParlevel });
+    function redirect(listId, cartId) {
+      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: $scope.useParlevel });
     }
 
     $scope.goToList = function(list, cart) {
-      if (cart.id) {
+      if (cart.id) { // make sure cart is not a change order 
+
+        // TODO: unsaved changes warning happens AFTER selected cart is already set to active
         CartService.setActiveCart(cart.id).then(function() {
-          redirect(list, cart);
+          // wait until cart is successfuly set to 'active' to redirect so item.quantityincart is updated
+          redirect(list.listid, cart.id);
         });
       } else {
-        redirect(list, cart);
+        redirect(list.listid, cart.ordernumber);
       }
     };
 
@@ -190,13 +193,42 @@ angular.module('bekApp')
       }
     };
 
+    $scope.getPriceForItem = function(item) {
+      var price = 0;
+      if (item.catchweight) {
+        
+        if (item.each) {
+          // Package – ((Avg Weight/Pack) * Qty) * Price
+          price = (item.average_weight / parseInt(item.pack)) * item.quantity * item.packageprice;
+        } else {
+          // Case - (Avg Weight * Qty) * Price  
+          if (item.average_weight > 0) {
+            price = item.average_weight * item.quantity * item.caseprice;
+          } else {
+            price = 1 * item.quantity * item.caseprice;
+          }
+        }        
+      } else {
+        if (item.each) {
+          price = item.quantity * item.packageprice;
+        } else {
+          price = item.quantity * item.caseprice;
+        }
+      }
+      return price;
+    };
+
     $scope.getSubtotal = function(cartItems, listItems) {
       var subtotal = 0;
       angular.forEach(cartItems, function(item, index) {
         if (item.price) {
-          subtotal += ( item.quantity * item.price );
+          if (item.catchweight) {
+            subtotal += (item.average_weight ? item.average_weight : 1) * item.quantity * item.price;
+          } else {
+            subtotal += ( item.quantity * item.price );
+          }
         } else {
-          subtotal += ( item.quantity * (item.each ? parseFloat(item.packageprice) : parseFloat(item.caseprice)) );
+          subtotal += $scope.getPriceForItem(item);
         }
       });
       angular.forEach(listItems, function(item, index) {

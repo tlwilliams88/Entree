@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.WebApi.Attribute;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
 	[AllowAnonymous]
+	[RequireHttps(true)]
 	public class CacheController: BaseController
 	{
 		private ICacheRefreshRepository cacheRepository;

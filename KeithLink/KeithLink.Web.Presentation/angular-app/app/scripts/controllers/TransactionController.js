@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('TransactionController', ['$scope', 'TransactionService', 'Constants', 'LocalStorage', '$state',
-    function ($scope, TransactionService, Constants, LocalStorage, $state) {
+  .controller('TransactionController', ['$scope', '$state', 'TransactionService', 'Constants', 'LocalStorage', 'CustomerService',
+    function ($scope, $state, TransactionService, Constants, LocalStorage, CustomerService) {
 
   function loadTransactions(params) {
     var promise;
@@ -21,6 +21,48 @@ angular.module('bekApp')
   function setTransactions(transactions) {
     $scope.transactions = transactions;
   }
+
+  /***
+  NAVIGATION LINKS 
+  ***/
+
+  function changeUserContext(stateName, stateParams, customerNumber) {
+    //generate and set customer context to customerNumber that user selected
+    CustomerService.getCustomerDetails(customerNumber).then(function (customer) {
+      var generatedUserContext = {
+        id: customer.customerNumber,
+        text: customer.displayname,
+        customer: customer
+      };
+
+      //set the selected context to the generated one
+      $scope.setSelectedUserContext(generatedUserContext);
+
+      //persist the context change to Local Storage to prevent the stateChangeStart listener from reverting the context change
+      LocalStorage.setSelectedCustomerInfo(generatedUserContext);
+
+      //refresh the page
+      $state.transitionTo(stateName, stateParams, {
+        reload: true,
+        inherit: false,
+        notify: true
+      });
+    });
+  }
+
+  //change the selected user context to the one the user clicked and refresh the page
+  $scope.goToInvoicesForCustomer = function(customerNumber) {
+    changeUserContext('menu.invoice', {}, customerNumber);
+  };
+
+  $scope.goToInvoiceDetails = function(customerNumber, invoiceNumber){
+    if ($scope.viewingAllCustomers) {
+      // change selected context if viewing all customers
+      changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber);
+    } else {
+      $state.go('menu.invoiceitems', { invoiceNumber: invoiceNumber} );
+    }
+  };
 
   /**********
   PAGING, SORTING, FILTERING
