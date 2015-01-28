@@ -92,35 +92,23 @@ namespace KeithLink.Svc.InternalSvc {
 			return _onlinePaymentsLogic.GetInvoiceHeaders(user, userContext, paging, forAllCustomers);
         }
 
-		//public List<InvoiceModel> GetInvoiceTransactions(UserSelectedContext userContext, string invoiceNumber) {
-		//	List<EFInvoice.Invoice> kpayInvoices = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-		//	List<InvoiceModel> returnInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(false)).ToList(); // TODO: is KPayCustomer value required here?
-
-		//	foreach(InvoiceModel inv in returnInvoices){
-		//		// set link to web now
-		//		System.Collections.Hashtable dictionary = new System.Collections.Hashtable();
-		//		dictionary.Add("branch", userContext.BranchId);
-		//		dictionary.Add("customer", userContext.CustomerId);
-		//		dictionary.Add("invoice", inv.InvoiceNumber);
-
-		//		inv.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(dictionary));
-		//	}
-
-		//	return returnInvoices;
-		//}
-        
+		
         public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{
 			_onlinePaymentsLogic.MakeInvoicePayment(userContext, emailAddress, payments);
 		}
-		#endregion				
-	
-
-	
-
+		
 		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
 		{
 			return _onlinePaymentsLogic.PendingTransactionsAllCustomers(user, paging);
+		}
+
+		#endregion
+
+
+		public CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId)
+		{
+			return _onlinePaymentsLogic.GetCustomerAccountBalance(customerId, branchId);
 		}
 	}
 }

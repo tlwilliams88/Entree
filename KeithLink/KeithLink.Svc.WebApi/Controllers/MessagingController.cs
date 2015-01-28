@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.IO;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
@@ -18,6 +19,7 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class MessagingController : BaseController {
         #region attributes
         private readonly IMessagingServiceRepository messagingServiceRepository;
+        private readonly IUserProfileLogic userProfileLogic;
         #endregion
 
         #region ctor
@@ -25,6 +27,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			: base(profileLogic)
 		{
             this.messagingServiceRepository = messagingServiceRepository;
+            this.userProfileLogic = profileLogic;
         }
         #endregion
 
@@ -58,6 +61,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
             ret.SuccessResponse = true;
             return ret;
+        }
+
+        [HttpGet]
+        [ApiKeyedRoute("messaging/preferences")]
+        public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences()
+        {
+            return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferences(this.AuthenticatedUser.UserId) };
         }
 
         [HttpPut]

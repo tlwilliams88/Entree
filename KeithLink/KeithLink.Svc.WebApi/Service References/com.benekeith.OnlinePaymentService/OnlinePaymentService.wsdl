@@ -12,8 +12,8 @@
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
       <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd9" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
-      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+      <xsd:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOnlinePaymentService_DeleteInvoice_InputMessage">
@@ -58,6 +58,12 @@
   <wsdl:message name="IOnlinePaymentService_PendingTransactionsAllCustomers_OutputMessage">
     <wsdl:part name="parameters" element="tns:PendingTransactionsAllCustomersResponse" />
   </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetCustomerAccountBalance_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerAccountBalance" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_GetCustomerAccountBalance_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCustomerAccountBalanceResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOnlinePaymentService">
     <wsdl:operation name="DeleteInvoice">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/DeleteInvoice" message="tns:IOnlinePaymentService_DeleteInvoice_InputMessage" />
@@ -86,6 +92,10 @@
     <wsdl:operation name="PendingTransactionsAllCustomers">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomers" message="tns:IOnlinePaymentService_PendingTransactionsAllCustomers_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomersResponse" message="tns:IOnlinePaymentService_PendingTransactionsAllCustomers_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerAccountBalance">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetCustomerAccountBalance" message="tns:IOnlinePaymentService_GetCustomerAccountBalance_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetCustomerAccountBalanceResponse" message="tns:IOnlinePaymentService_GetCustomerAccountBalance_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOnlinePaymentService" type="tns:IOnlinePaymentService">
@@ -146,6 +156,15 @@
     </wsdl:operation>
     <wsdl:operation name="PendingTransactionsAllCustomers">
       <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/PendingTransactionsAllCustomers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCustomerAccountBalance">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/GetCustomerAccountBalance" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

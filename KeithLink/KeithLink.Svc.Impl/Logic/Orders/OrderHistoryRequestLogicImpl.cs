@@ -65,7 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 CustomerNumber = context.CustomerId
             };
 
-			_queue.PublishToQueue(JsonConvert.SerializeObject(request), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeOrderUpdateRequests);
+			_queue.PublishToQueue(JsonConvert.SerializeObject(request), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeOrderUpdateRequests);
 
             _log.WriteInformationLog(string.Format("Publishing order history request to queue for message ({0}).", request.MessageId));
             _log.WriteInformationLog(string.Format("Request for all orders sent to queue - Branch: {0}, CustomerNumber: {1}", context.BranchId, context.CustomerId));

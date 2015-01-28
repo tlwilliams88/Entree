@@ -33,29 +33,24 @@
         
         <h4><strong>Account Balance</strong></h4>
         
-        <p class="text-red currency-value">
-          {{selectedUserContext.customer.currentbalance || 0 | currency}}
+        <p class="currency-value">
+          {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
         </p>
         
         <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
         
         <div class="row text-center">
-          <div class="balance__term--amount term-amount-1">
-            <strong>{{selectedUserContext.customer.balanceage1label}}</strong>
-            {{selectedUserContext.customer.balanceage1 | currency}}
+          <div class="balance__term--amount">
+            <strong>Current</strong>
+            {{selectedUserContext.customer.balance.currentbalance | currency}}
           </div>
-          <div class="balance__term--amount term-amount-2">
-            <strong>{{selectedUserContext.customer.balanceage2label}}</strong>
-            {{selectedUserContext.customer.balanceage2 | currency}}
+          <div class="balance__term--amount">
+            <strong>Past Due</strong>
+            <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
+            <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
+            </div>
           </div>
-          <div class="balance__term--amount term-amount-3">
-            <strong>{{selectedUserContext.customer.balanceage3label}}</strong>
-            {{selectedUserContext.customer.balanceage3 | currency}}
-          </div>
-          <div class="balance__term--amount term-amount-4">
-            <strong>{{selectedUserContext.customer.balanceage4label}}</strong>
-            {{selectedUserContext.customer.balanceage4 | currency}}
-          </div>
+          
         </div>
       </div>
       <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">
@@ -94,7 +89,7 @@
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy':'UTC'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">

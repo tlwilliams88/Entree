@@ -19,6 +19,7 @@ using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.OnlinePayments;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -42,13 +43,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IEmailClient _emailClient;
 		private IMessagingServiceRepository _messagingServiceRepository;
 		private IEventLogRepository _eventLog;
+		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
 									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository,
-									IEventLogRepository eventLog)
+									IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -62,6 +64,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_emailClient = emailClient;
 			_messagingServiceRepository = messagingServiceRepository;
 			_eventLog = eventLog;
+			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
         }
         #endregion
 
@@ -415,6 +418,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return GetUserProfile(emailAddress);
         }
 
+        public void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName)
+        {
+            _extAd.UpdateUserGroups(customerNames, roleName, emailAddress);
+        }
+
         /// <summary>
         /// take all of the fields from the commerce server profile and put them into our custom object and load other custom data
         /// </summary>
@@ -454,8 +462,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 				DSMRole = dsmRole,
 				DSRNumber = dsrNumber,
                 //UserCustomers = userCustomers,
-                ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),                
-                MessagingPreferences = GetMessagingPreferences(Guid.Parse(csProfile.Id))
+                ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id))
             };
         }
 
@@ -463,8 +470,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         {
             var msgPrefModelList = new List<ProfileMessagingPreferenceDetailModel>();
             //loop through each notification type to load in model
-            foreach (var notifType in Enum.GetValues(typeof(NotificationType)))
+            foreach (NotificationType notifType in Enum.GetValues(typeof(NotificationType)))
             {
+                if (String.IsNullOrEmpty(EnumUtils<NotificationType>.GetDescription(notifType, string.Empty)))
+                    continue; // don't include values for types without a description; those are for internal use
+
                 var currentSelectedChannels = new List<ProfileChannelModel>();
 
                 //find and add selected channels for current notification type
@@ -476,7 +486,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 msgPrefModelList.Add(new ProfileMessagingPreferenceDetailModel()
                 {
                     NotificationType = (NotificationType)notifType,
-                    Description = EnumUtils<NotificationType>.GetDescription((NotificationType)notifType, ""),
+                    Description = EnumUtils<NotificationType>.GetDescription(notifType, ""),
                     SelectedChannels = currentSelectedChannels
                 });
 
@@ -484,7 +494,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return msgPrefModelList;
         }
 
-        private List<ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid)
+        public List<ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid)
         {
             var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
             var userCustomers = _customerRepo.GetCustomersForUser(guid);
@@ -627,17 +637,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (IsInternalAddress(email)) {
                 roleName = "owner";
             } else {
-                if (roleName == null && _extAd.IsInGroup(email, "owner")) {
-                    roleName = "owner";
-                } else if (roleName == null && _extAd.IsInGroup(email, "approver")) {
-                    roleName = "approver";
-                } else if (roleName == null && _extAd.IsInGroup(email, "buyer")) {
-                    roleName = "buyer";
-                } else if (roleName == null && _extAd.IsInGroup(email, "accounting")) {
-                    roleName = "accounting";
-                } else if (roleName == null && _extAd.IsInGroup(email, "guest")) {
-                    roleName = "guest";
-                }
+                roleName = _extAd.GetUserGroup(email, new List<string>() { "owner", "approver", "buyer", "accounting", "guest" });
             }
 
             return roleName;
@@ -701,7 +701,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
+        public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, 
+            bool updateCustomerListAndRole, List<Customer> customerList, string roleName) {
             AssertEmailAddressLength(emailAddress);
             AssertEmailAddress(emailAddress);
             AssertFirstNameLength(firstName);
@@ -719,9 +720,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             _extAd.UpdateUserAttributes(existingUser.UserProfiles[0].EmailAddress, emailAddress, firstName, lastName);
 
+            // update customer list
+            if (updateCustomerListAndRole && customerList != null && customerList.Count > 0)
+            {
+                UpdateCustomersForUser(customerList, roleName, existingUser.UserProfiles[0]);
+            }
+
             // remove the old user profile from cache and then update it with the new profile
 			_cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(existingUser.UserProfiles[0].EmailAddress));		
 			
+        }
+
+        private void UpdateCustomersForUser(List<Customer> customerList, string roleName, UserProfile existingUser)
+        {
+            var customers = GetCustomersForUser(existingUser);
+
+            IEnumerable<Guid> custsToAdd = customerList.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
+            IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(customerList.Select(c => c.CustomerId));
+            foreach (Guid c in custsToAdd)
+                AddUserToCustomer(c, existingUser.UserId);
+            foreach (Guid c in custsToRemove)
+                RemoveUserFromCustomer(c, existingUser.UserId);
+            UpdateUserRoles(customerList.Select(x => x.CustomerName).ToList(), existingUser.EmailAddress, roleName);
         }
         #endregion
 
@@ -917,6 +937,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             foreach (Guid g in usersToDelete)
                 _accountRepo.RemoveUserFromAccount(accountId, g);
 
+            // update account user roles to owner
+            foreach (UserProfile user in users) // all account users are assumed to be owners on all customers
+                UpdateCustomersForUser(customers, "owner", user);
+
             // refresh cache; need to reload customers
             _customerRepo.ClearCustomerCache();
             return true;
@@ -948,28 +972,31 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			
 			//Populate the Last order updated date for each customer
 			foreach (var customer in returnValue.Results)
+			{
 				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
 
-
-
-			foreach (var cust in returnValue.Results)
-			{
-				if (string.IsNullOrEmpty(cust.TermCode))
-					continue;
-
-				//Lookup Term info
-				var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
-
-				if (term != null)
-				{
-					cust.TermDescription = term.Description;
-					cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
-					cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
-					cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-					cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
-				}
-
+				customer.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customer.CustomerNumber, customer.CustomerBranch); 
 			}
+			
+
+			//foreach (var cust in returnValue.Results)
+			//{
+			//	if (string.IsNullOrEmpty(cust.TermCode))
+			//		continue;
+
+			//	//Lookup Term info
+			//	var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
+
+			//	if (term != null)
+			//	{
+			//		cust.TermDescription = term.Description;
+			//		cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
+			//		cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
+			//		cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
+			//		cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
+			//	}
+
+			//}
 			
 
 			return returnValue;

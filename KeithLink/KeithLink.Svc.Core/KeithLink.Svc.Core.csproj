@@ -225,6 +225,7 @@
     <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
     <Compile Include="Models\Messaging\Queue\OrderEta.cs" />
     <Compile Include="Models\Messaging\Queue\EtaNotification.cs" />
+    <Compile Include="Models\Messaging\Queue\PaymentConfirmationNotification.cs" />
     <Compile Include="Models\Messaging\UserMessageModel.cs" />
     <Compile Include="Models\Messaging\UserMessagingPreferenceModel.cs" />
     <Compile Include="Models\ModelExport\ExportModelConfiguration.cs" />
@@ -384,6 +385,7 @@
     <Compile Include="Models\Profile\AccountFilterModel.cs" />
     <Compile Include="Models\Profile\Address.cs" />
     <Compile Include="Models\Profile\AccountUsersReturn.cs" />
+    <Compile Include="Models\Profile\CustomerAccountBalanceModel.cs" />
     <Compile Include="Models\Profile\UserFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerReturn.cs" />

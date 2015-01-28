@@ -53,5 +53,11 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
 		{
 			return _client.PendingTransactionsAllCustomers(user, paging);
 		}
+
+
+		public CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId)
+		{
+			return _client.GetCustomerAccountBalance(customerId, branchId);
+		}
 	}
 }
