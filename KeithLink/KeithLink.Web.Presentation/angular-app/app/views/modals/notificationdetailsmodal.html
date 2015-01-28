@@ -7,7 +7,7 @@
   <h3>{{notification.messagecreatedutc | date:medium }}</h3>
 
   <h4 style="margin-top:20px;">Subject: {{notification.subject}}</h4>
-  <p style="margin-bottom:20px;" ng-class="{ 'text-red': notification.mandatory }">{{notification.body}}</p>
+  <p style="margin-bottom:20px;" ng-class="{ 'text-red': notification.mandatory }" ng-bind-html="notification.body"></p>
 
   <div class="row">
     <label class="col-xs-4" for="">Label</label>
