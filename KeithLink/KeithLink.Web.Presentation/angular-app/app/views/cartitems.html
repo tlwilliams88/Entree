@@ -402,7 +402,7 @@
               <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
             </td>
             <td ng-if="!isChangeOrder" class="hidden-mobile-visible-print ">
-              {{(item.quantity * (item.each ? item.packageprice : item.caseprice) || 0) | currency}}
+              {{getPriceForItem(item) | currency}}
             </td>
 
             <td ng-if="isChangeOrder" class="hidden-mobile-visible-print ">

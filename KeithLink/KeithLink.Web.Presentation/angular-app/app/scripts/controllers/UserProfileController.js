@@ -39,7 +39,7 @@ angular.module('bekApp')
       $scope.defaultPreferences = prefArray;
 
     }, function (error) {
-      $scope.displayMessage('error', 'An error occurred while reading user preferences' + error)
+      $scope.displayMessage('error', 'An error occurred while reading user preferences' + error);
     });
 
   };

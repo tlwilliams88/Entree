@@ -109,6 +109,13 @@ namespace KeithLink.Svc.Impl.ETL
             return;
         }
 
+        public void ImportDsrInfo()
+        {
+            DataTable dsrInfo = stagingRepository.ReadDsrInfo();
+            //TODO: Move image to multidocs
+            //dsrInfo contains fields:  EmailAddress and EmployeePhoto
+        }
+
         private AddressProfiles CreateAddressFromStagedData(DataRow row)
         {
             return new AddressProfiles()
@@ -214,5 +221,6 @@ namespace KeithLink.Svc.Impl.ETL
             }
             return profileSystem;
         }
+       
     }
 }

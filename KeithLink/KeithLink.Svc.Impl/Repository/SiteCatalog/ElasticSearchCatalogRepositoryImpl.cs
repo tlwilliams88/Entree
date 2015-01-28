@@ -363,6 +363,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.TempZone = oProd._source.temp_zone;
             p.CatchWeight = oProd._source.catchweight;
 			p.IsProprietary = oProd._source.isproprietary;
+            p.AverageWeight = oProd._source.averageweight;
             Nutritional nutritional = new Nutritional();
             if (oProd._source.nutritional != null) {
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;

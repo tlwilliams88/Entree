@@ -18,7 +18,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     [Serializable]
     public class Product: BaseProductInfo, IExportableModel
     {
-		
         #region ctor
         public Product()
         {
@@ -27,18 +26,31 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         }
         #endregion
 
+        #region methods
+        public List<ExportModelConfiguration> DefaultExportConfiguration() {
+            var defaultConfig = new List<ExportModelConfiguration>();
+
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 10, Label = "Brand" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 30, Label = "Pack/Size" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 40, Label = "Price" });
+
+
+            return defaultConfig;
+        }
+
+        [OnSerializing]
+        void OnSerializing(StreamingContext context) {
+            //Do not output a "blank" upc
+            if (this.UPC.Equals("00000000000000"))
+                this.UPC = string.Empty;
+        }
+        #endregion
+
         #region properties
-        
-        
         [DataMember(Name = "ext_description")]
         public string ExtendedDescription { get; set; }
-		       
-        
-        
-
-        
-		       
-        
 		                        
         [DataMember(Name = "cube")]
         public string CaseCube { get; set; }		
@@ -52,28 +64,6 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember( Name = "orderhistory" )]
         public Dictionary<string, int> OrderHistory { get; set; }
         #endregion
-        
-		[OnSerializing]
-		void OnSerializing(StreamingContext context)
-		{
-			//Do not output a "blank" upc
-			if (this.UPC.Equals("00000000000000"))
-				this.UPC = string.Empty;
-		}
-
-		public List<ExportModelConfiguration> DefaultExportConfiguration()
-		{
-			var defaultConfig = new List<ExportModelConfiguration>();
-
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Order = 10, Label = "Brand" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 30, Label = "Pack/Size" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "CasePrice", Order = 40, Label = "Price" });
-
-
-			return defaultConfig;
-		}
 	}
 
 	

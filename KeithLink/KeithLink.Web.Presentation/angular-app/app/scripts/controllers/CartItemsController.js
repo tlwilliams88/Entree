@@ -163,6 +163,27 @@ angular.module('bekApp')
       });
     };
 
+    $scope.getPriceForItem = function(item) {
+      var price = 0;
+      if (item.catchweight) {
+        
+        if (item.each) {
+          // Package – ((Avg Weight/Pack) * Qty) * Price
+          price = (item.avgweight / parseInt(item.pack)) * item.quantity * item.packageprice;
+        } else {
+          // Case - (Avg Weight * Qty) * Price  
+          price = item.avgweight * item.quantity * item.caseprice;
+        }        
+      } else {
+        if (item.each) {
+          price = item.quantity * item.packageprice;
+        } else {
+          price = item.quantity * item.caseprice;
+        }
+      }
+      return price;
+    };
+
     $scope.getSubtotal = function(cartItems) {
       var subtotal = 0;
       angular.forEach(cartItems, function(item, index) {
