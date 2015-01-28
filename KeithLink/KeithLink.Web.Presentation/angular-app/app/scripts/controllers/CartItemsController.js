@@ -169,10 +169,14 @@ angular.module('bekApp')
         
         if (item.each) {
           // Package – ((Avg Weight/Pack) * Qty) * Price
-          price = (item.avgweight / parseInt(item.pack)) * item.quantity * item.packageprice;
+          price = (item.average_weight / parseInt(item.pack)) * item.quantity * item.packageprice;
         } else {
           // Case - (Avg Weight * Qty) * Price  
-          price = item.avgweight * item.quantity * item.caseprice;
+          if (item.average_weight > 0) {
+            price = item.average_weight * item.quantity * item.caseprice;
+          } else {
+            price = 1 * item.quantity * item.caseprice;
+          }
         }        
       } else {
         if (item.each) {
@@ -187,7 +191,7 @@ angular.module('bekApp')
     $scope.getSubtotal = function(cartItems) {
       var subtotal = 0;
       angular.forEach(cartItems, function(item, index) {
-        subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
+        subtotal += $scope.getPriceForItem(item);
       });
       return subtotal;
     };

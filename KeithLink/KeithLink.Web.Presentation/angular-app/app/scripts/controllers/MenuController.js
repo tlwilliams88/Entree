@@ -214,7 +214,7 @@ angular.module('bekApp')
     // $scope.isInternalUser = AccessService.isInternalUser();
     // $scope.isBekAdmin = AccessService.isBekAdmin();
 
-    $scope.isDsr = true; //= AccessService.isDsr();
+    $scope.isDsr = AccessService.isDsr();
 
     $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
     $scope.canSeePrices = AccessService.canSeePrices();
