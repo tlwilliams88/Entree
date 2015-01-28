@@ -508,6 +508,7 @@ namespace KeithLink.Svc.Impl.ETL
                         CatchWeight = row.GetString("HowPrice") == "3",
 						IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId")),
 						ProprietaryCustomers = BuildPropritaryCustomerList(row.GetString("ItemId"), proprietaryItems),
+                        AverageWeight = (row.GetInt("FPNetWt") > 0 ? row.GetInt("FPNetWt") / 100 : (row.GetInt("GrossWeight") > 0 ? row.GetInt("GrossWeight") / 100 : 0)),
                         Nutritional = new NutritionalInformation()
                         {
                             BrandOwner = row.GetString("BrandOwner"),

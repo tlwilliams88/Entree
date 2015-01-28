@@ -127,5 +127,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "manufacturer_name")]
 		[Description("Manufacturer Name")]
 		public string ManufacturerName { get; set; }
+
+        [DataMember(Name = "average_weight")]
+        [Description("Average Weight")]
+        public double AverageWeight { get; set; }
     }
 }
