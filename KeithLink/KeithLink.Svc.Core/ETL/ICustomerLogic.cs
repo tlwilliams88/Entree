@@ -9,5 +9,6 @@ namespace KeithLink.Svc.Core.ETL
     public interface ICustomerLogic
     {
         void ImportCustomersToOrganizationProfile();
+        void ImportDsrInfo();
     }
 }

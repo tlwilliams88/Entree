@@ -241,7 +241,7 @@
           <td class="hidden-mobile-visible-print">
             {{item.brand}}
           </td>
-          <td class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'">
+          <td class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'" >
             {{item.quantityincart}}
           </td>
           <td ng-show="useParlevel" class="hidden-mobile-visible-print">
@@ -261,7 +261,7 @@
           <td class="input-col nowrap">
             <ng-form class="hidden-print" name="quantityForm">
               <!-- <input type="text" name="quantity" ng-model="item.quantity" class="input-number text-right" integer> -->
-              <div counter ng-model="item.quantity" min="0" length="5"></div>
+              <div counter ng-model="item.quantity" min="0" length="5" ng-hide = "item.caseprice === '$0.00'"></div>
             </ng-form>
           </td>
           <td class="input-col hidden-mobile-visible-print">

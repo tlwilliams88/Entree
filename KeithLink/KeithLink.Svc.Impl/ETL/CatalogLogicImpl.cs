@@ -482,7 +482,7 @@ namespace KeithLink.Svc.Impl.ETL
                         MfrNameNotAnalyzed = row.GetString("MfrName"),
                         MfrNumber = row.GetString("MfrNumber"),
                         Name = row.GetString("Name"),
-                        NameNotAnalyzed = row.GetString("Name"),
+						NameNotAnalyzed = row.GetString("Name").ToLower(),
                         Pack = row.GetString("Pack"),
                         Package = row.GetString("Package"),
                         ParentCategoryId = row.GetString("ParentCategoryId"),
@@ -508,6 +508,7 @@ namespace KeithLink.Svc.Impl.ETL
                         CatchWeight = row.GetString("HowPrice") == "3",
 						IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId")),
 						ProprietaryCustomers = BuildPropritaryCustomerList(row.GetString("ItemId"), proprietaryItems),
+                        AverageWeight = (row.GetInt("FPNetWt") > 0 ? row.GetInt("FPNetWt") / 100 : (row.GetInt("GrossWt") > 0 ? row.GetInt("GrossWt") / 100 : 0)),
                         Nutritional = new NutritionalInformation()
                         {
                             BrandOwner = row.GetString("BrandOwner"),
