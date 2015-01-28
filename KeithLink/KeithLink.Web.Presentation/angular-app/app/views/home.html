@@ -94,7 +94,7 @@
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy':'UTC'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">

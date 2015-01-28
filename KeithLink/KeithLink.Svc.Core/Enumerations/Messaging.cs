@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 	[DataContract(Name = "NotificationType")]
 	public enum NotificationType
 	{
-		[Description("Undefined")]
+		//[Description("Undefined")] - no need for description; no preference for this type
 		[EnumMember]
 		Undefined = 0,
         [Description("My Order is Confirmed")]
@@ -19,17 +19,17 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
 		OrderConfirmation = 1,
         [Description("My Order is Shipped")]
 		[EnumMember]
-		OrderUpdate = 2,
+		OrderShipped = 2,
         [Description("My Invoices Need Attention")]
 		[EnumMember]
 		InvoiceAttention = 4,
         [Description("Ben E. Keith Has News For Me")]
 		[EnumMember]
 		HasNews = 8,
-		[Description("Mail")]
+		//[Description("Mail")] - no need for description; no preference for this type
 		[EnumMember]
 		Mail = 16,
-        [Description("ETA")]
+        //[Description("ETA")] - no need for description; no preference for this type
         [EnumMember]
         Eta = 32
 	}

@@ -14,7 +14,9 @@ angular.module('bekApp')
 
       var prefArray = [];
 
-      $scope.userProfile.messagingpreferences.forEach(function (preference, index) {
+    var prefsFromSvc = MessagePreferenceService.loadPreferences();
+    prefsFromSvc.then(function (success) {
+      success.forEach(function(preference, index){ 
         if(preference.customerNumber === $scope.customer.customerNumber){
           
           if (!$scope.preferncesFound) {
@@ -22,7 +24,7 @@ angular.module('bekApp')
           }
 
           //for every topic of notification build a preference object
-          $scope.userProfile.messagingpreferences[index].preferences.forEach(function(preference){
+          success[index].preferences.forEach(function(preference){
             var newPreference = {};
             //set description and notification type
             newPreference.description = preference.description;
@@ -46,6 +48,9 @@ angular.module('bekApp')
           //persist temp array to scope for use in DOM
           $scope.defaultPreferences = prefArray;
         }
+      })
+    }, function (error) {
+        $scope.displayMessage('error', 'An error occurred while reading user preferences' + error)
       });
     });
   };
@@ -92,29 +97,39 @@ angular.module('bekApp')
   /*---page functions---*/
   $scope.restoreDefaults = function () {
     var prefArray = [];
-    //for every topic of notification build a preference object
-    $scope.userProfile.messagingpreferences[0].preferences.forEach(function(preference){
-      var newPreference = {};
-      //set description and default to false
-      newPreference.description = preference.description;
-      newPreference.notificationType = preference.notificationType;
-      newPreference.channels = [false,false,false];
-      //override defaulted false with true if it is sent by the pref object
-      preference.selectedChannels.forEach(function (selectedChannel) {
-        if(selectedChannel.channel === 1){
-          newPreference.channels[0] = true;
-        } else if(selectedChannel.channel === 2){
-          newPreference.channels[1] = true;
-        } else if(selectedChannel.channel === 4){
-          newPreference.channels[2] = true;
-        }
-      });
-      //add new pref object with booleans to the temporary array
-      prefArray.push(newPreference);
-    });
-
     //persist temp array to scope for use in DOM
     $scope.defaultPreferences = prefArray;
+
+    var prefsFromSvc = MessagePreferenceService.loadPreferences();
+    prefsFromSvc.then(function (success) {
+      success[0].preferences.forEach(function(preference){ // first entry is users default preferences...
+        var newPreference = {};
+        //set description and default to false
+        newPreference.description = preference.description;
+        newPreference.notificationType = preference.notificationType;
+        newPreference.channels = [false,false,false];
+        //override defaulted false with true if it is sent by the pref object
+        preference.selectedChannels.forEach(function (selectedChannel) {
+          if(selectedChannel.channel === 1){
+            newPreference.channels[0] = true;
+          } else if(selectedChannel.channel === 2){
+            newPreference.channels[1] = true;
+          } else if(selectedChannel.channel === 4){
+            newPreference.channels[2] = true;
+          }
+        });
+        //add new pref object with booleans to the temporary array
+        prefArray.push(newPreference);
+      });
+
+      //persist temp array to scope for use in DOM
+      $scope.defaultPreferences = prefArray;
+
+      $scope.savePreferences();
+
+    }, function (error) {
+      $scope.displayMessage('error', 'An error occurred while reading user preferences' + error)
+    });
   };
 
 }]);
