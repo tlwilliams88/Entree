@@ -39,26 +39,27 @@
   }
 }
 
-.mobile-filter{
+.mobile-filter {
   @include arrow('top','right', 10px, $color-brown, $color-brown, 2px);
   position: absolute;
   z-index: 1;
   background-color: $color-white;
-}
-.mobile-filter:before{
-  right: 29px;
-  top: -23px;
-}
-.mobile-filter:after{
-  right: 30px;
+
+  &:before {
+    right: 29px;
+    top: -23px;
+  }
+  &:after {
+    right: 30px;
+  }
 }
 
-.panel-group{
+.panel-group {
   margin-bottom: 0;
   .panel + .panel{
     margin-top:0;
   }
-  .panel{
+  .panel {
     border-radius: 0;
     border-bottom: 0px;
     .panel-heading{
@@ -87,8 +88,8 @@
       }
     }
   }
-  .panel-body{
-    padding:0;
+  .panel-body {
+    padding: 0;
     .panel{
       border-bottom: 0;
       border-left: 0;
@@ -120,9 +121,12 @@
           position: absolute;
           width: 100%;
           height: 100%;
-          padding: 11px 15px;
+          padding: 11px 7px;
           font-size: 12px;
           font-weight: 400;
+        }
+        input[type="checkbox"] { // hide filter checkboxes on mobile accordion
+          display: none;
         }
         input[type="checkbox"] + label{
           background-position: right;

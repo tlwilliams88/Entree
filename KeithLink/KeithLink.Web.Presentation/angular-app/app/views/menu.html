@@ -289,7 +289,7 @@
       </div>
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
-        <div class="col-md-4 hidden-sm hidden-xs" ng-hide="$state.includes('menu.admin')">
+        <div class="col-md-4 hidden-sm hidden-xs" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction')">
           <!-- <div class="select-div"> -->
             <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
           <!-- </div> -->

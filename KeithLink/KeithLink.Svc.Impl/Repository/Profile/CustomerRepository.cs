@@ -188,11 +188,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                             && !org.PreferredAddress.Telephone.Equals("0000000000") ? org.PreferredAddress.Telephone : string.Empty, // get from address profile
                 Email = string.Empty,
                 PointOfContact = string.Empty,
-                CurrentBalance = org.AmountDue, //change from current balance per Tom B.'s reccommendation
-                BalanceAge1 = org.BalanceAge1,
-                BalanceAge2 = org.BalanceAge2,
-                BalanceAge3 = org.BalanceAge3,
-                BalanceAge4 = org.BalanceAge4,
                 TermCode = org.TermCode,
                 KPayCustomer = org.AchType == "2" || org.AchType == "3",
 

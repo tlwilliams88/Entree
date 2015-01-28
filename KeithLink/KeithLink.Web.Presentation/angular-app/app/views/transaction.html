@@ -11,7 +11,7 @@
 <div class="row page-content">
   <div class="col-xs-12">
 
-    <a class="pull-left" ui-sref="menu.invoice">Return to Invoices</a>
+    <a ui-sref="menu.invoice">Return to Invoices</a>
     <div class="text-right">
       Showing {{transactions.length}} of {{totalTransactions}} Transactions
     </div>
@@ -94,7 +94,7 @@
             {{::transaction.invoicenumber}}
           </td>
           <td>
-            {{::transaction.amount}}
+            {{::transaction.amount | currency}}
           </td>
           <td>
             {{::transaction.date | date:short}}

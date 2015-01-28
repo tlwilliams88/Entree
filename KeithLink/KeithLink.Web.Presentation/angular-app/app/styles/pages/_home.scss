@@ -1,37 +1,15 @@
 // Account Balance
 .balance__term--amount {
   @include make-xs-column(6);
-  @include make-sm-column(3);
-  @include make-md-column(6);
-  @include make-lg-column(3);
+  // @include make-sm-column(3);
+  // @include make-md-column(6);
+  // @include make-lg-column(3);
 
   strong {
     display: block;
   }
-}
 
-// Aging  Term amount borders
-
-.term-amount-1, .term-amount-3 {
-  border-right: 1px solid $color-border;
-}
-
-// xs and md devices show as 2x2 grid
-@media(max-width: $screen-xs-max),
-  (min-width: $screen-md-min) and (max-width: $screen-md-max) {
-  .term-amount-3, .term-amount-4 {
-    margin-top: 5px;
-    strong {
-      padding-top: 5px;
-      border-top: 1px solid $color-border;
-    }
-  }
-}
-
-// sm and lg devices show as 1x4 grid
-@media(min-width: $screen-sm-min) and (max-width: $screen-sm-max),
-  (min-width: $screen-lg-min) {
-  .term-amount-2 {
+  &:first-child {
     border-right: 1px solid $color-border;
   }
 }
@@ -63,12 +41,8 @@
     }
   }
 
-  &:first-child .notification__icon:after {
-    top: 5px;
-  }
-
   .notification__message {
-    width: inherit !important;
+    width: calc(75% - 15px) !important;    
     @include make-md-column(9);
     @include arrow('left','top', 5px, $color-white, $color-border, 1px);
     margin-top: 15px;
@@ -79,7 +53,7 @@
     padding: 8px;
     // margin-left: -20px;
 
-    span.timestamp {
+    .timestamp {
       color: $color-border;
     }
   }
@@ -100,9 +74,9 @@
       padding-top: 20px;
 
       div.icon {
-        height: 25px;
-        width: 25px;
-        padding: 3px;
+        height: 26px;
+        width: 26px;
+        padding: 4px 1px;
         border: 1px solid $color-font;
         border-radius: 100px;
         background-color: $color-white;

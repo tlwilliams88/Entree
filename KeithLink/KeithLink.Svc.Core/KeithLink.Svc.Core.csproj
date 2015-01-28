@@ -388,6 +388,7 @@
     <Compile Include="Models\Profile\CustomerAddUserModel.cs" />
     <Compile Include="Models\Profile\CustomerNumberComparer.cs" />
     <Compile Include="Models\Profile\Dsr.cs" />
+    <Compile Include="Models\Profile\CustomerAccountBalanceModel.cs" />
     <Compile Include="Models\Profile\UserFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerReturn.cs" />

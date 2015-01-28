@@ -34,5 +34,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
 
 		[OperationContract]
 		PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging);
+
+		[OperationContract]
+		CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId);
     }
 }
