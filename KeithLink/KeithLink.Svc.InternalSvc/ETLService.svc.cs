@@ -42,6 +42,9 @@ namespace KeithLink.Svc.InternalSvc
             Task.Factory.StartNew(() => customerLogic.ImportCustomersToOrganizationProfile()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
+            Task.Factory.StartNew(() => customerLogic.ImportDsrInfo()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
             return true;
         }
         

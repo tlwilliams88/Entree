@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="313"
-  DTS:VersionGUID="{FFA74AAD-A8A9-4103-B04F-6FE05AF1C4D3}">
+  DTS:VersionBuild="320"
+  DTS:VersionGUID="{A66CD097-83CD-4C41-B8C4-AB5191899413}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\bidContractDetail.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\bidContractDetail.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -139,7 +139,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\bidContractHeader.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\bidContractHeader.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -667,7 +667,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerBid.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerBid.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -751,7 +751,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerWorksheet.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerWorksheet.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -858,7 +858,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\keithNetInvoice.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\keithNetInvoice.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1182,7 +1182,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\openDetailAR.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\openDetailAR.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1330,7 +1330,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\paidDetailFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\paidDetailFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1477,7 +1477,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\propCustomer.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\propCustomer.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1552,7 +1552,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\propItem.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\propItem.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1628,7 +1628,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\temp\customerTerms.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerTerms.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1720,17 +1720,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://corpkecdev1:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
+            DTS:ServerURL="http://corpkecdev1:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACrtCuOcyyPH/xfISQ5XftyAAAAAASAAACgAAAAEAAAAHpUheMcLVw5VwUxBzZcUCgIAAAAghUg7GgIm+gUAAAATUSC8LddS2MjWRioZQKC6TnKVNo</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAde3FmI8jWI65WRGqKpNdJAAAAAASAAACgAAAAEAAAAOWD2DOkTl6V+JmW4n2SvEAIAAAANfzHBlhB7AUUAAAAlTzXArW/QSkIsCt4WDD412eSgj8</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD4f27odLI3ATHusUdpIr95AAAAAASAAACgAAAAEAAAALMFoRTenBs/V9O+3gGwqDoIAAAA0rm23ZGKriEUAAAArAQSTQpY2BSrp9lQJ6hcEfOY/to</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABTnat10cLIuLze0t5iSS2UAAAAAASAAACgAAAAEAAAABAHdLXsxs1n0+QRTc6LrJ8IAAAA//4iimKH+HAUAAAAQQrOKfuhRRWWIFtW9nIKtbaxL94</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1742,7 +1742,17 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[OLE_BEK_SAM]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{DD0FDF4E-5BF2-4780-B7CA-FBED82735DFC}"
+      DTS:ObjectName="OLE_BEK_SAM">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=corpsqltst12\bi;Initial Catalog=SAM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1762,12 +1772,7 @@
       DTS:ObjectName="OLE_KPay">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpsqltst12;User Id=ecom;Initial Catalog=kpay;Provider=SQLNCLI11.1;">
-          <DTS:Password
-            DTS:Name="Password"
-            Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA9GJTnkw3ME6+XP8Y8o1FMAAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACWVrYvi3lJMzjyPaqTGftBAAAAAASAAACgAAAAEAAAANl1E+1FGHccgRpKaEJ73KkQAAAA9wnvcEWOkJixm30azg1TPxQAAABr/fOmzMemOI6jEHNdiotcdwwFyw</DTS:Password>
-        </DTS:ConnectionManager>
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=kpay;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1777,7 +1782,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1829,7 +1834,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
       <DTS:VariableValue
-        DTS:DataType="8">\\bekbackup\ftproot\eBusiness\Test\KeithCom\</DTS:VariableValue>
+        DTS:DataType="8">\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -2251,6 +2256,15 @@
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
+          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -2469,35 +2483,6 @@
     </VisualStudio>
   </ProjectExtensions>
 </Project>]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
-    "ings")]
-
-namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
           <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[using System.IO;
@@ -2750,6 +2735,35 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
+    "ings")]
+
+namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
+          <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -2779,15 +2793,6 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -18150,6 +18155,792 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       </DTS:PrecedenceConstraints>
     </DTS:Executable>
     <DTS:Executable
+      DTS:refId="Package\Process_EmployeeData"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{89BB1074-B32F-484F-B49B-C904E25D4A9F}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Process_EmployeeData">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Process_EmployeeData\Get Raw DSR Data"
+          DTS:CreationName="SSIS.Pipeline.3"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{25A32156-E242-4133-8E36-3A05868AD9A5}"
+          DTS:ExecutableType="SSIS.Pipeline.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Get Raw DSR Data"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table"
+                  componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="App_Data Staging Table"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[ETL].[Staging_Dsr]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">true</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[DsrNumber]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="8"
+                          cachedName="DsrNumber"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[DsrNumber]"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[DsrNumber]" />
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[Name]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Name"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[Name]" />
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[EmailAddress]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="EmailAddress"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EmailAddress]"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[EmailAddress]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[DsrNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="8"
+                          name="DsrNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[Name]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Name" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EmailAddress]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="EmailAddress" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data"
+                  componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Kpay DSR Data"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[Dsr]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">0</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_KPay]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_KPay]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[DsrNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].ExternalColumns[DsrNumber]"
+                          length="8"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[DsrNumber]"
+                          name="DsrNumber"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[Name]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                          length="50"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[Name]"
+                          name="Name"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[EmailAddress]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].ExternalColumns[EmailAddress]"
+                          length="50"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].Columns[EmailAddress]"
+                          name="EmailAddress"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].ExternalColumns[DsrNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="8"
+                          name="DsrNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].ExternalColumns[Name]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Name" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output].ExternalColumns[EmailAddress]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="EmailAddress" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[DsrNumber]"
+                          codePage="1252"
+                          dataType="str"
+                          length="8"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[DsrNumber]"
+                          name="DsrNumber" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[Name]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[Name]"
+                          name="Name" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[EmailAddress]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[EmailAddress]"
+                          name="EmailAddress" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Process_EmployeeData\Get Raw DSR Data.Paths[OLE DB Source Output]"
+                  endId="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table.Inputs[OLE DB Destination Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Process_EmployeeData\Get Raw EmployeeData"
+          DTS:CreationName="SSIS.Pipeline.3"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{CE5EA592-8D6E-47A4-92F9-7A039214650F}"
+          DTS:ExecutableType="SSIS.Pipeline.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Get Raw EmployeeData"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table"
+                  componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="App_Data Staging Table"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[ETL].[Staging_EmployeeInfo]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">true</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[EMPLID]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="11"
+                          cachedName="EMPLID"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EMPLID]"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMPLID]" />
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[EMAIL_ADDR]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="70"
+                          cachedName="EMAIL_ADDR"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EMAIL_ADDR]"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMAIL_ADDR]" />
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[PHONE]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="24"
+                          cachedName="PHONE"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[PHONE]"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[PHONE]" />
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[EMPLOYEE_PHOTO]"
+                          cachedDataType="image"
+                          cachedName="EMPLOYEE_PHOTO"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EMPLOYEE_PHOTO]"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMPLOYEE_PHOTO]" />
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[LAST_NAME]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="LAST_NAME"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[LAST_NAME]"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[LAST_NAME]" />
+                        <inputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].Columns[FIRST_NAME]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="30"
+                          cachedName="FIRST_NAME"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[FIRST_NAME]"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[FIRST_NAME]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EMPLID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="11"
+                          name="EMPLID" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EMAIL_ADDR]"
+                          codePage="1252"
+                          dataType="str"
+                          length="70"
+                          name="EMAIL_ADDR" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[PHONE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="24"
+                          name="PHONE" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[EMPLOYEE_PHOTO]"
+                          dataType="image"
+                          name="EMPLOYEE_PHOTO" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[LAST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="LAST_NAME" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input].ExternalColumns[FIRST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="FIRST_NAME" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table"
+                  componentClassID="{165A526D-D5DE-47FF-96A6-F8274C19826B}"
+                  contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+                  description="OLE DB Source"
+                  name="Sam Employee Table"
+                  usesDispositions="true"
+                  version="7">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[dbo].[rsHR_ENTRE_VW]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.String"
+                      description="The variable that contains the SQL command to be executed."
+                      name="SqlCommandVariable"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">0</property>
+                    <property
+                      dataType="System.String"
+                      description="The mappings between the parameters in the SQL command and variables."
+                      name="ParameterMapping"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_SAM]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_SAM]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output]"
+                      name="OLE DB Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMPLID]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[EMPLID]"
+                          length="11"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMPLID]"
+                          name="EMPLID"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMAIL_ADDR]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[EMAIL_ADDR]"
+                          length="70"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMAIL_ADDR]"
+                          name="EMAIL_ADDR"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[PHONE]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[PHONE]"
+                          length="24"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[PHONE]"
+                          name="PHONE"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMPLOYEE_PHOTO]"
+                          dataType="image"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[EMPLOYEE_PHOTO]"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[EMPLOYEE_PHOTO]"
+                          name="EMPLOYEE_PHOTO"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[LAST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[LAST_NAME]"
+                          length="30"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[LAST_NAME]"
+                          name="LAST_NAME"
+                          truncationRowDisposition="FailComponent" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[FIRST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[FIRST_NAME]"
+                          length="30"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].Columns[FIRST_NAME]"
+                          name="FIRST_NAME"
+                          truncationRowDisposition="FailComponent" />
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[EMPLID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="11"
+                          name="EMPLID" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[EMAIL_ADDR]"
+                          codePage="1252"
+                          dataType="str"
+                          length="70"
+                          name="EMAIL_ADDR" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[PHONE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="24"
+                          name="PHONE" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[EMPLOYEE_PHOTO]"
+                          dataType="image"
+                          name="EMPLOYEE_PHOTO" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[LAST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="LAST_NAME" />
+                        <externalMetadataColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output].ExternalColumns[FIRST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          name="FIRST_NAME" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output]"
+                      isErrorOut="true"
+                      name="OLE DB Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[EMPLID]"
+                          codePage="1252"
+                          dataType="str"
+                          length="11"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[EMPLID]"
+                          name="EMPLID" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[EMAIL_ADDR]"
+                          codePage="1252"
+                          dataType="str"
+                          length="70"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[EMAIL_ADDR]"
+                          name="EMAIL_ADDR" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[PHONE]"
+                          codePage="1252"
+                          dataType="str"
+                          length="24"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[PHONE]"
+                          name="PHONE" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[EMPLOYEE_PHOTO]"
+                          dataType="image"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[EMPLOYEE_PHOTO]"
+                          name="EMPLOYEE_PHOTO" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[LAST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[LAST_NAME]"
+                          name="LAST_NAME" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[FIRST_NAME]"
+                          codePage="1252"
+                          dataType="str"
+                          length="30"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[FIRST_NAME]"
+                          name="FIRST_NAME" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Process_EmployeeData\Get Raw EmployeeData.Paths[OLE DB Source Output]"
+                  endId="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table.Inputs[OLE DB Destination Input]"
+                  name="OLE DB Source Output"
+                  startId="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table.Outputs[OLE DB Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Process_EmployeeData.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{3C1BC7FD-D78D-4E03-A16F-974245B14265}"
+          DTS:From="Package\Process_EmployeeData\Get Raw DSR Data"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Process_EmployeeData\Get Raw EmployeeData" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+    <DTS:Executable
       DTS:refId="Package\Process_Invoices"
       DTS:CreationName="STOCK:SEQUENCE"
       DTS:Description="Sequence Container"
@@ -23648,6 +24439,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:ObjectName="Constraint 12"
       DTS:To="Package\Archive Mainframe Files" />
     <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 13]"
+      DTS:CreationName=""
+      DTS:DTSID="{E17A9B34-FBD8-48A1-B57B-F9A8C18708EF}"
+      DTS:From="Package\Process_EmployeeData"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 13"
+      DTS:To="Package\Application Data Processing" />
+    <DTS:PrecedenceConstraint
       DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
       DTS:CreationName=""
       DTS:DTSID="{ACE1CE1B-0874-4FC1-8367-EA3626F2902C}"
@@ -23726,7 +24525,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     design-time-name="Package">
     <LayoutInfo>
       <GraphLayout
-        Capacity="64" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="128" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="181,42"
           Id="Package\Application Data Processing\Process Catalog Data"
@@ -23750,14 +24549,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="245,389"
-          Size="245,432"
+          PanelSize="254,336"
+          Size="254,379"
           Id="Package\Application Data Processing"
-          TopLeft="1515.35714285714,394.166666666667" />
+          TopLeft="1810.35714285714,384.166666666667" />
         <NodeLayout
           Size="193,42"
           Id="Package\Archive Mainframe Files"
-          TopLeft="1922.30952380952,562.559523809525" />
+          TopLeft="2122.30952380952,557.559523809525" />
         <NodeLayout
           Size="151,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Branches"
@@ -23962,6 +24761,55 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Id="Package\Process_ContractAndWorksheet"
           TopLeft="1055.23809523809,349.166666666667" />
         <NodeLayout
+          Size="169,42"
+          Id="Package\Process_EmployeeData\Get Raw DSR Data"
+          TopLeft="48.3333333333335,27.3333333333334" />
+        <NodeLayout
+          Size="192,42"
+          Id="Package\Process_EmployeeData\Get Raw EmployeeData"
+          TopLeft="25.0000000000002,100.666666666667" />
+        <EdgeLayout
+          Id="Package\Process_EmployeeData.PrecedenceConstraints[Constraint]"
+          TopLeft="132.833333333333,69.3333333333334">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-11.8333333333333,31.3333333333336"
+              Start="0,0"
+              End="-11.8333333333333,23.8333333333336">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,11.6666666666668" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,11.6666666666668"
+                    Point2="0,15.6666666666668"
+                    Point3="-4,15.6666666666668" />
+                  <mssgle:LineSegment
+                    End="-7.83333333333329,15.6666666666668" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-7.83333333333329,15.6666666666668"
+                    Point2="-11.8333333333333,15.6666666666668"
+                    Point3="-11.8333333333333,19.6666666666668" />
+                  <mssgle:LineSegment
+                    End="-11.8333333333333,23.8333333333336" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="235,513"
+          Size="235,556"
+          Id="Package\Process_EmployeeData"
+          TopLeft="1457.14285714286,367.5" />
+        <NodeLayout
           Size="157,42"
           Id="Package\Process_Invoices\Customer Invoice Import Tasks\Customer Terms"
           TopLeft="17.3333333333333,71.3333333333333" />
@@ -24114,37 +24962,37 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 10]"
-          TopLeft="1637.85714285714,826.166666666667">
+          TopLeft="1937.35714285714,763.166666666667">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-497.28571428571,792.833333333334"
+              EndConnector="-796.78571428571,855.833333333333"
               Start="0,0"
-              End="-497.28571428571,785.333333333334">
+              End="-796.78571428571,848.333333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,550.983333333334" />
+                    End="0,595.083333333333" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,550.983333333334"
-                    Point2="0,554.983333333334"
-                    Point3="-4,554.983333333334" />
+                    Point1="0,595.083333333333"
+                    Point2="0,599.083333333333"
+                    Point3="-4,599.083333333333" />
                   <mssgle:LineSegment
-                    End="-493.28571428571,554.983333333334" />
+                    End="-792.78571428571,599.083333333333" />
                   <mssgle:CubicBezierSegment
-                    Point1="-493.28571428571,554.983333333334"
-                    Point2="-497.28571428571,554.983333333334"
-                    Point3="-497.28571428571,558.983333333334" />
+                    Point1="-792.78571428571,599.083333333333"
+                    Point2="-796.78571428571,599.083333333333"
+                    Point3="-796.78571428571,603.083333333333" />
                   <mssgle:LineSegment
-                    End="-497.28571428571,785.333333333334" />
+                    End="-796.78571428571,848.333333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-263.884204799105,559.983333333334,30.4826953125,9.7490234375"
+              BoundingBox="-413.634204799105,604.083333333333,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -24186,30 +25034,18 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 12]"
-          TopLeft="1760.35714285714,610.166666666667">
+          TopLeft="2064.35714285714,576.113095238096">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="161.952380952381,-26.6071428571424"
+              EndConnector="57.9523809523803,0"
               Start="0,0"
-              End="154.452380952381,-26.6071428571424">
+              End="50.4523809523803,0">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="76.9761904761905,0" />
-                  <mssgle:CubicBezierSegment
-                    Point1="76.9761904761905,0"
-                    Point2="80.9761904761905,0"
-                    Point3="80.9761904761905,-4" />
-                  <mssgle:LineSegment
-                    End="80.9761904761905,-22.6071428571424" />
-                  <mssgle:CubicBezierSegment
-                    Point1="80.9761904761905,-22.6071428571424"
-                    Point2="80.9761904761905,-26.6071428571424"
-                    Point3="84.9761904761905,-26.6071428571424" />
-                  <mssgle:LineSegment
-                    End="154.452380952381,-26.6071428571424" />
+                    End="50.4523809523803,0" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24258,26 +25094,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="533.452380952381,276.083333333334"
+              EndConnector="832.952380952377,266.083333333334"
               Start="0,0"
-              End="533.452380952381,268.583333333334">
+              End="832.952380952377,258.583333333334">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,69.1620833333334" />
+                    End="0,66.5120833333334" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,69.1620833333334"
-                    Point2="0,73.1620833333334"
-                    Point3="4,73.1620833333334" />
+                    Point1="0,66.5120833333334"
+                    Point2="0,70.5120833333334"
+                    Point3="4,70.5120833333334" />
                   <mssgle:LineSegment
-                    End="529.452380952381,73.1620833333334" />
+                    End="828.952380952377,70.5120833333334" />
                   <mssgle:CubicBezierSegment
-                    Point1="529.452380952381,73.1620833333334"
-                    Point2="533.452380952381,73.1620833333334"
-                    Point3="533.452380952381,77.1620833333334" />
+                    Point1="828.952380952377,70.5120833333334"
+                    Point2="832.952380952377,70.5120833333334"
+                    Point3="832.952380952377,74.5120833333334" />
                   <mssgle:LineSegment
-                    End="533.452380952381,268.583333333334" />
+                    End="832.952380952377,258.583333333334" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24292,26 +25128,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="1043.02380952381,-64.2619047619061"
+              EndConnector="1338.02380952381,-95.4619047619057"
               Start="0,0"
-              End="1035.52380952381,-64.2619047619061">
+              End="1330.52380952381,-95.4619047619057">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="588.131446202067,0" />
+                    End="823.452482244854,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="588.131446202067,0"
-                    Point2="592.131446202067,0"
-                    Point3="592.131446202067,-4" />
+                    Point1="823.452482244854,0"
+                    Point2="827.452482244854,0"
+                    Point3="827.452482244854,-4" />
                   <mssgle:LineSegment
-                    End="592.131446202067,-60.2619047619061" />
+                    End="827.452482244854,-91.4619047619057" />
                   <mssgle:CubicBezierSegment
-                    Point1="592.131446202067,-60.2619047619061"
-                    Point2="592.131446202067,-64.2619047619061"
-                    Point3="596.131446202067,-64.2619047619061" />
+                    Point1="827.452482244854,-91.4619047619057"
+                    Point2="827.452482244854,-95.4619047619057"
+                    Point3="831.452482244854,-95.4619047619057" />
                   <mssgle:LineSegment
-                    End="1035.52380952381,-64.2619047619061" />
+                    End="1330.52380952381,-95.4619047619057" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24326,26 +25162,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="627.785714285714,-236.5"
+              EndConnector="922.785714285711,-204.1"
               Start="0,0"
-              End="620.285714285714,-236.5">
+              End="915.285714285711,-204.1">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="411.956178790534,0" />
+                    End="507.459177704423,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="411.956178790534,0"
-                    Point2="415.956178790534,0"
-                    Point3="415.956178790534,-4" />
+                    Point1="507.459177704423,0"
+                    Point2="511.459177704423,0"
+                    Point3="511.459177704423,-4" />
                   <mssgle:LineSegment
-                    End="415.956178790534,-232.5" />
+                    End="511.459177704423,-200.1" />
                   <mssgle:CubicBezierSegment
-                    Point1="415.956178790534,-232.5"
-                    Point2="415.956178790534,-236.5"
-                    Point3="419.956178790534,-236.5" />
+                    Point1="511.459177704423,-200.1"
+                    Point2="511.459177704423,-204.1"
+                    Point3="515.459177704423,-204.1" />
                   <mssgle:LineSegment
-                    End="620.285714285714,-236.5" />
+                    End="915.285714285711,-204.1" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24360,26 +25196,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="165.119047619048,-172"
+              EndConnector="460.11904761905,-171.4"
               Start="0,0"
-              End="157.619047619048,-172">
+              End="452.61904761905,-171.4">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="78.5595238095241,0" />
+                    End="251.023572751711,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="78.5595238095241,0"
-                    Point2="82.5595238095241,0"
-                    Point3="82.5595238095241,-4" />
+                    Point1="251.023572751711,0"
+                    Point2="255.023572751711,0"
+                    Point3="255.023572751711,-4" />
                   <mssgle:LineSegment
-                    End="82.5595238095241,-168" />
+                    End="255.023572751711,-167.4" />
                   <mssgle:CubicBezierSegment
-                    Point1="82.5595238095241,-168"
-                    Point2="82.5595238095241,-172"
-                    Point3="86.5595238095241,-172" />
+                    Point1="255.023572751711,-167.4"
+                    Point2="255.023572751711,-171.4"
+                    Point3="259.023572751711,-171.4" />
                   <mssgle:LineSegment
-                    End="157.619047619048,-172" />
+                    End="452.61904761905,-171.4" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -24494,6 +25330,40 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             <mssgm:EdgeLabel
               BoundingBox="-56.9913476562475,245.014150943397,30.4826953125,9.7490234375"
               RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 13]"
+          TopLeft="1692.14285714286,645.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="118.214285714283,-183.133333333333"
+              Start="0,0"
+              End="110.714285714283,-183.133333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="79.6817599658446,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="79.6817599658446,0"
+                    Point2="83.6817599658446,0"
+                    Point3="83.6817599658446,-4" />
+                  <mssgle:LineSegment
+                    End="83.6817599658446,-179.133333333333" />
+                  <mssgle:CubicBezierSegment
+                    Point1="83.6817599658446,-179.133333333333"
+                    Point2="83.6817599658446,-183.133333333333"
+                    Point3="87.6817599658446,-183.133333333333" />
+                  <mssgle:LineSegment
+                    End="110.714285714283,-183.133333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
@@ -25699,6 +26569,160 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Process_ContractAndWorksheet\Import Contract Data\WorkSheet Items\Bek_Commerce_AppData">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_EmployeeData\Get Raw DSR Data">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data"
+          TopLeft="316,53" />
+        <NodeLayout
+          Size="195,42"
+          Id="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table"
+          TopLeft="321,147" />
+        <EdgeLayout
+          Id="Package\Process_EmployeeData\Get Raw DSR Data.Paths[OLE DB Source Output]"
+          TopLeft="392.5,95">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="26,52"
+              Start="0,0"
+              End="26,44.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,22"
+                    Point2="0,26"
+                    Point3="4,26" />
+                  <mssgle:LineSegment
+                    End="22,26" />
+                  <mssgle:CubicBezierSegment
+                    Point1="22,26"
+                    Point2="26,26"
+                    Point3="26,30" />
+                  <mssgle:LineSegment
+                    End="26,44.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_EmployeeData\Get Raw DSR Data\App_Data Staging Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_EmployeeData\Get Raw DSR Data\Kpay DSR Data">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_EmployeeData\Get Raw EmployeeData">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="180,42"
+          Id="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table"
+          TopLeft="320,58" />
+        <NodeLayout
+          Size="195,42"
+          Id="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table"
+          TopLeft="354,172" />
+        <EdgeLayout
+          Id="Package\Process_EmployeeData\Get Raw EmployeeData.Paths[OLE DB Source Output]"
+          TopLeft="410,100">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="41.5,72"
+              Start="0,0"
+              End="41.5,64.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,32" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,32"
+                    Point2="0,36"
+                    Point3="4,36" />
+                  <mssgle:LineSegment
+                    End="37.5,36" />
+                  <mssgle:CubicBezierSegment
+                    Point1="37.5,36"
+                    Point2="41.5,36"
+                    Point3="41.5,40" />
+                  <mssgle:LineSegment
+                    End="41.5,64.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_EmployeeData\Get Raw EmployeeData\App_Data Staging Table">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_EmployeeData\Get Raw EmployeeData\Sam Employee Table">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
