@@ -106,11 +106,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             List<dynamic> boosts = new List<dynamic>();
 
 
-			if (!String.IsNullOrEmpty(searchTerms) && Regex.IsMatch(searchTerms, "\\s+")) // search is keyword
-			{
+			
 				boosts.Add(new
 				{
-					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase_prefix = new { name_not_analyzed = searchTerms } } } } } },
+					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase_prefix = new { name_not_analyzed = searchTerms.ToLower() } } } } } },
 					boost_factor = 1500
 				});
 				boosts.Add(new
@@ -123,25 +122,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } },
 					boost_factor = 1300
 				});
-			}
-			else if (!String.IsNullOrEmpty(searchTerms))
-			{
-				boosts.Add(new
-				{
-					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase_prefix = new { name_not_analyzed = searchTerms } } } } } },
-					boost_factor = 1500
-				});
-				boosts.Add(new
-				{
-					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } },
-					boost_factor = 1400
-				});
-				boosts.Add(new
-				{
-					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } },
-					boost_factor = 1300
-				});
-			}
+			
 
 
             // preferred item boosts
