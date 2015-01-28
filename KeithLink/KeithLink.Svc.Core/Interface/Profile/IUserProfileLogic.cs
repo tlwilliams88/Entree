@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId );
 
         UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
+        void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName);
 
         //UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
 		UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false);
@@ -22,10 +23,10 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
 
-        void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
+        void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName);
 
 		PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
-
+        List<Models.Messaging.ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid);
 
         // admin functions
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);

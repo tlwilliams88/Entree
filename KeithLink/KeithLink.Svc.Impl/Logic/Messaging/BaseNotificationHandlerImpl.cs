@@ -76,26 +76,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             return recipients;
         }
 
-        protected static IEnumerable<Core.Models.Messaging.ProfileMessagingPreferenceDetailModel> LoadMessagingPreferences(OrderConfirmationNotification orderConfirmation, Svc.Core.Models.Profile.UserProfile userProfile)
-        {
-            IEnumerable<Core.Models.Messaging.ProfileMessagingPreferenceDetailModel> profileMessagingPreferences = null;
-            if (userProfile.MessagingPreferences != null && userProfile.MessagingPreferences.Any(
-                p => p.CustomerNumber == orderConfirmation.CustomerNumber))
-            {
-                profileMessagingPreferences =
-                    userProfile.MessagingPreferences.Where(p => p.CustomerNumber == orderConfirmation.CustomerNumber).FirstOrDefault()
-                        .Preferences.Where(p => p.NotificationType == orderConfirmation.NotificationType);
-            }
-            else if (userProfile.MessagingPreferences != null && userProfile.MessagingPreferences.Any(
-                p => p.CustomerNumber == null))
-            {
-                profileMessagingPreferences =
-                    userProfile.MessagingPreferences.Where(p => p.CustomerNumber == null).FirstOrDefault()
-                        .Preferences.Where(p => p.NotificationType == orderConfirmation.NotificationType);
-            }
-            return profileMessagingPreferences;
-        }
-
         protected void SendMessage(List<Recipient> recipients, Message message)
         {
             // TODO: Turn this into one line of code that doesn't depend on specific channels...
