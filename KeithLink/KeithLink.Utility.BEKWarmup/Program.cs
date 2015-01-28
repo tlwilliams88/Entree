@@ -34,6 +34,18 @@ namespace KeithLink.Utility.BEKWarmup
 				authRequest.AddHeader("Accept", "application/json");
 				var authResponse = client.Execute<AuthenResponse>(authRequest);
 
+				if (authResponse == null || authResponse.StatusCode != System.Net.HttpStatusCode.OK ||  authResponse.Data == null || authResponse.Data.access_token == null)
+				{
+					string sSource = "BEK_Shop";
+					string sLog = "Application";
+					string sEvent = "BEK Authentication Failure - WarmUpScript - " + authResponse.Content;
+
+					if (!System.Diagnostics.EventLog.SourceExists(sSource))
+						System.Diagnostics.EventLog.CreateEventSource(sSource, sLog);
+					System.Diagnostics.EventLog.WriteEntry(sSource, sEvent, System.Diagnostics.EventLogEntryType.Warning, 234);
+				}
+
+
 				//Get User Profile
 				var profileRequest = new RestRequest("/profile?email=" + userName, Method.GET);
 				profileRequest.AddHeader("Authorization", string.Format("Bearer {0}", authResponse.Data.access_token));

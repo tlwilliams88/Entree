@@ -482,7 +482,7 @@ namespace KeithLink.Svc.Impl.ETL
                         MfrNameNotAnalyzed = row.GetString("MfrName"),
                         MfrNumber = row.GetString("MfrNumber"),
                         Name = row.GetString("Name"),
-                        NameNotAnalyzed = row.GetString("Name"),
+						NameNotAnalyzed = row.GetString("Name").ToLower(),
                         Pack = row.GetString("Pack"),
                         Package = row.GetString("Package"),
                         ParentCategoryId = row.GetString("ParentCategoryId"),
