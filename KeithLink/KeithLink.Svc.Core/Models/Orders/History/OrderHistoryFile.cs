@@ -10,6 +10,8 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public OrderHistoryFile() {
             Header = new OrderHistoryHeader();
             Details = new List<OrderHistoryDetail>();
+
+            ValidHeader = true;
         }
         #endregion
 
@@ -19,6 +21,8 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
 
         [DataMember()]
         public List<OrderHistoryDetail> Details { get; set; }
+
+        public bool ValidHeader { get; set; }
         #endregion
     }
 }

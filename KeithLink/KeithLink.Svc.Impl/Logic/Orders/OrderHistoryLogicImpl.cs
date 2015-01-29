@@ -442,7 +442,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                             
                             currentFile = new OrderHistoryFile();
 
-                            currentFile.Header.Parse(data);
+                            // check for length of header record to make sure there is data
+                            if (data.Trim().Length > 1) {
+                                try {
+                                    currentFile.Header.Parse(data);
+                                    currentFile.ValidHeader = true;
+                                } catch {
+                                    currentFile.ValidHeader = false;
+                                }
+                            } else {
+                                currentFile.ValidHeader = false;
+                            }
+                            
                             break;
                         case "D":
                             if (currentFile != null) {
