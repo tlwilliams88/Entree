@@ -284,6 +284,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
+        public bool ResendUnconfirmedOrder(UserProfile userProfile, int controlNumber)
+        {
+            string controlNumberMainFrameFormat = controlNumber.ToString("0000000.##");
+            Guid userId = orderServiceRepository.GetUserIdForControlNumber(controlNumber);
+            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(userId, controlNumberMainFrameFormat);
+            string originalOrderNumber = order.Properties["OriginalOrderNumber"].ToString();
+            OrderType type = originalOrderNumber == controlNumberMainFrameFormat ? OrderType.NormalOrder : OrderType.ChangeOrder;
+            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, controlNumberMainFrameFormat, order, type); // TODO, logic to compare original order number and control number
+            return true;
+        }
+
         public NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId)
         {
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();

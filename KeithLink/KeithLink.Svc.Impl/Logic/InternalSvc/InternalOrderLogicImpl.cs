@@ -4,9 +4,13 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommerceServer.Core;
+using CommerceServer.Core.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
@@ -119,5 +123,62 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			unitOfWork.SaveChanges();
 		}
+
+        public List<Core.Models.Orders.OrderHeader> GetSubmittedUnconfirmedOrders()
+        {
+            var manager = Helpers.CommerceServerCore.GetOrderManagementContext().PurchaseOrderManager;
+            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", "Submitted");
+            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
+
+            int c = results.Tables.Count;
+
+            // Get the value of the OrderGroupId property of each
+            // purchase order.
+            List<Guid> poIds = new List<Guid>();
+            foreach (DataRow row in results.Tables[0].Rows)
+            {
+                poIds.Add(new Guid(row["OrderGroupId"].ToString()));
+            }
+
+            // Get the XML representation of the purchase orders.
+            System.Xml.XmlElement poXml = manager.GetPurchaseOrdersAsXml(poIds.ToArray());
+            System.Xml.XmlNodeList nodes = poXml.SelectNodes("/OrderGroups/PurchaseOrder");
+            List<Core.Models.Orders.OrderHeader> orders = new List<Core.Models.Orders.OrderHeader>();
+            foreach (System.Xml.XmlNode p in nodes)
+            {
+                Core.Models.Orders.OrderHeader order = new Core.Models.Orders.OrderHeader();
+                order.CustomerNumber = p.SelectNodes("WeaklyTypedProperties/WeaklyTypedProperty[@Name='CustomerId']")[0].Attributes["Value"].Value;
+                order.Branch = p.SelectNodes("WeaklyTypedProperties/WeaklyTypedProperty[@Name='BranchId']")[0].Attributes["Value"].Value;
+                order.ControlNumber = Convert.ToInt32(p.Attributes["TrackingNumber"].Value);
+                order.OrderCreateDateTime = Convert.ToDateTime(p.Attributes["Created"].Value).ToUniversalTime();
+                orders.Add(order);
+            }
+            
+            return orders;
+        }
+
+        public Guid GetUserIdForControlNumber(int controlNumber)
+        { // todo move this to a common location; confirmation logic does the same thing
+            System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
+            SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            SearchClause trackingNumberClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", controlNumber.ToString("0000000.##"));
+
+            // Create search options.
+
+            SearchOptions options = new SearchOptions();
+            options.PropertiesToReturn = "SoldToId";
+            options.SortProperties = "SoldToId";
+            options.NumberOfRecordsToReturn = 1;
+            // Perform the search.
+            System.Data.DataSet results = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().SearchPurchaseOrders(trackingNumberClause, options);
+
+            if (results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0)
+            {
+                return Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
+            }
+            return Guid.Empty;
+        }
 	}
 }

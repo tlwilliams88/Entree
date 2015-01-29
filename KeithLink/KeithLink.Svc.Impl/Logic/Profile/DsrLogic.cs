@@ -6,17 +6,22 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class DsrLogic : IDsrLogic {
         #region attributes
 
         IDsrRepository _dsrRepository;
+        private readonly IUnitOfWork unitOfWork;
 
         #endregion
 
-        public DsrLogic( IDsrRepository dsrRepository ) {
+        public DsrLogic(IDsrRepository dsrRepository, IUnitOfWork unitOfWork)
+        {
             _dsrRepository = dsrRepository;
+            this.unitOfWork = unitOfWork;
         }
 
         public Dsr GetDsr( string branchId, string dsrNumber ) {
@@ -45,6 +50,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             return returnValue;
+        }
+
+        public void CreateOrUpdateDsr(Dsr dsr)
+        {
+            var newDsr = DsrExtensions.ToEFDsr(dsr);
+            _dsrRepository.CreateOrUpdate(newDsr);
+            unitOfWork.SaveChanges();
+            
         }
 
 

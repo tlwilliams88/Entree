@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
-    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket, criticalItemsLists) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -163,38 +163,10 @@ angular.module('bekApp')
       });
     };
 
-    $scope.getPriceForItem = function(item) {
-      var price = 0;
-      if (item.catchweight) {
-        
-        if (item.each) {
-          // Package – ((Avg Weight/Pack) * Qty) * Price
-          price = (item.average_weight / parseInt(item.pack)) * item.quantity * item.packageprice;
-        } else {
-          // Case - (Avg Weight * Qty) * Price  
-          if (item.average_weight > 0) {
-            price = item.average_weight * item.quantity * item.caseprice;
-          } else {
-            price = 1 * item.quantity * item.caseprice;
-          }
-        }        
-      } else {
-        if (item.each) {
-          price = item.quantity * item.packageprice;
-        } else {
-          price = item.quantity * item.caseprice;
-        }
-      }
-      return price;
-    };
-
-    $scope.getSubtotal = function(cartItems) {
-      var subtotal = 0;
-      angular.forEach(cartItems, function(item, index) {
-        subtotal += $scope.getPriceForItem(item);
-      });
-      return subtotal;
-    };
+    $scope.getPriceForItem = PricingService.getPriceForItem;
+    $scope.getSubtotal = PricingService.getSubtotalForItems;
+    $scope.canOrderItem = PricingService.canOrderItem;
+    $scope.hasPackagePrice = PricingService.hasPackagePrice;
 
     $scope.deleteItem = function(item) {
       var idx = $scope.currentCart.items.indexOf(item);

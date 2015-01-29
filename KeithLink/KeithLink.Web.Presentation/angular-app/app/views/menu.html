@@ -1,4 +1,12 @@
 <!-- Mobile Sidebar -->
+<!-- CSS to hide the Google Translate header bar -->
+<style type="text/css">iframe.goog-te-banner-frame{ display: none !important;}
+ body {position: static !important; top:0px !important;}
+/* CSS to disable the Google Translate "original text" pop-up */
+.goog-tooltip{ display: none !important;}
+.goog-tooltip:hover{ display: none !important;}
+.goog-text-highlight{ background-color: transparent !important; border: none !important; box-shadow: none !important;}></style>
+<!-- End CSS -->
 <div id="sp-nav" ng-swipe-right="$spMenu.hide()" class="sidebar sidebar-mobile" style="display:none;">
  <div class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
     <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
@@ -260,12 +268,18 @@
       </p>
       <a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a>
     </div>
-            
+
     <div class="text-center sidebar-meta">
       <div style="margin-top:10px; margin-bottom:10px;" id="google_translate_element"></div>
       <script type="text/javascript">
            function googleTranslateElementInit() {
-             new google.translate.TranslateElement({pageLanguage: 'en', includedLanguages: 'es', layout: google.translate.TranslateElement.InlineLayout.SIMPLE, gaTrack: true, gaId: 'UA-58495462-2'}, 'google_translate_element');
+             new google.translate.TranslateElement({
+              pageLanguage: 'en',
+              includedLanguages: 'es,en',
+              layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
+              gaTrack: true,
+              gaId: 'UA-58495462-2'},
+               'google_translate_element');
            }
        </script>
       <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>

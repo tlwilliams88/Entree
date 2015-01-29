@@ -150,6 +150,7 @@
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
+    <Compile Include="Extensions\DsrExtensions.cs" />
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />

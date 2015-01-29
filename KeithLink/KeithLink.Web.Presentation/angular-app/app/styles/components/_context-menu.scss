@@ -30,13 +30,19 @@
       color: $color-font-light;
     }
   }
+  .btn-group {
+    max-width: 150px;
+  }
   .btn, {
     color: $color-font-light;
     font-size: $font-size-base;
     // text-align: left;
     letter-spacing: 0;
     min-width: 150px;
+    max-width: 150px;
     padding: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 
     &:hover {
       color: $color-white !important;
