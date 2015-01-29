@@ -105,6 +105,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             var bank = _bankRepo.GetBankAccount(GetDivision(notification.BranchId), notification.CustomerNumber, notification.Payments[0].AccountNumber);
 
             Message message = new Message();
+            message.BodyIsHtml = template.IsBodyHtml;
             message.MessageSubject = template.Subject.Inject(customer);
             message.MessageBody = template.Body.Inject(new { 
                                                                 CustomerNumber = customer.CustomerNumber,

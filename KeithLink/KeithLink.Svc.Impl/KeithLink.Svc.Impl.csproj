@@ -529,6 +529,7 @@
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\Cache\NoCacheUserProfileCacheRepository.cs" />
     <Compile Include="Repository\Profile\Cache\UserProfileCacheRepository.cs" />
+    <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />

@@ -23,18 +23,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         IEventLogRepository _logger;
         ICacheRepository _customerCacheRepository;
-
-        BEKDBContext _db;
+        IDsrServiceRepository _dsrService;
 
         #endregion
 
         #region ctor
-		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository)
+		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrServiceRepository dsrService)
         {
             _logger = logger;
             _customerCacheRepository = customerCacheRepository;
-
-            _db = new BEKDBContext();
+            _dsrService = dsrService;
         }
         #endregion
 
@@ -167,8 +165,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         private Customer OrgToCustomer(Organization org)
         {
-            KeithLink.Svc.Core.Models.EF.Dsr dsr = _db.Dsrs.First();
-
             Customer customer =  new Customer()
             {
                 CustomerId = Guid.Parse(org.Id),
@@ -190,16 +186,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 PointOfContact = string.Empty,
                 TermCode = org.TermCode,
                 KPayCustomer = org.AchType == "2" || org.AchType == "3",
-
-                // TODO - fill with data from a real data sour
-                Dsr = new Dsr { 
-                    DsrNumber = org.DsrNumber, 
-                    EmailAddress = dsr.EmailAddress, 
-                    ImageUrl = dsr.ImageUrl,
-                    Name = dsr.Name,
-                    PhoneNumber = dsr.Phone
-                }
-                    
+                Dsr = _dsrService.GetDsr(org.BranchNumber, org.DsrNumber)
             };
 
             // fill in the address

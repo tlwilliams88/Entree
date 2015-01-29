@@ -59,14 +59,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
         {
-            if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
             if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "emailAddress is null"); }
-            if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
+            if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
             if (password == null) { throw new ArgumentNullException("password", "password is null"); }
+            if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
 
             errorMessage = null;
 
             string userName = emailAddress.Split('@')[0];
+
+            // before authenticating, confirm that user is on whitelist
+            if (Configuration.WhiteListedBekUsersEnforced)
+            {
+                if (!Configuration.WhiteListedBekUsers.Contains(userName.ToLower()))
+                {
+                    errorMessage = "Internal User Not Whitelisted";
+                    return false;
+                }
+            }
 
             // connect to server
             try {

@@ -606,14 +606,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // check for cached user profile first
 			Core.Models.Profile.UserProfile profile = _cache.GetItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
-            if (profile != null)
-            {
-                retVal.UserProfiles.Add(profile);
-                return retVal;
-            }
 
             if (IsInternalAddress(emailAddress).Equals(false) && profile != null) {
-                profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress );
+                profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress ); // always check password expired status; even when cached...
+            }
+
+            if (profile != null)
+            {
                 retVal.UserProfiles.Add(profile);
                 return retVal;
             }
