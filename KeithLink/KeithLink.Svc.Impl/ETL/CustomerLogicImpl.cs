@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Profile;
 using CommerceServer.Core.Profiles;
 using CommerceServer.Core.Runtime.Profiles;
 using CommerceServer.Core.Runtime;
@@ -20,11 +21,13 @@ namespace KeithLink.Svc.Impl.ETL
     public class CustomerLogicImpl : ICustomerLogic
     {
         private IStagingRepository stagingRepository;
+        private IDsrLogic dsrLogic;
         static ProfileContext profileSystem = null;
 
-        public CustomerLogicImpl(IStagingRepository stagingRepository)
+        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic)
         {
             this.stagingRepository = stagingRepository;
+            this.dsrLogic = dsrLogic;
         }
 
         public void ImportCustomersToOrganizationProfile()
@@ -112,6 +115,21 @@ namespace KeithLink.Svc.Impl.ETL
         public void ImportDsrInfo()
         {
             DataTable dsrInfo = stagingRepository.ReadDsrInfo();
+
+            foreach (DataRow row in dsrInfo.Rows)
+            {
+                var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr
+                {
+                    Branch = row.GetString("BranchId")
+                    , DsrNumber = row.GetString("DsrNumber")
+                    , EmailAddress = row.GetString("EmailAddress")
+                    , Name = row.GetString("Name")
+                    , ImageUrl = row.GetString("ImageUrl")
+                    , PhoneNumber = row.GetString("Phone")
+                };
+                dsrLogic.CreateOrUpdateDsr(newDsr);
+            }
+
             //TODO: Move image to multidocs
             //dsrInfo contains fields:  EmailAddress and EmployeePhoto
         }
