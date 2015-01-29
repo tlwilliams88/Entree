@@ -275,7 +275,7 @@
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.quantity * (item.each ? item.packageprice : item.caseprice) | currency}}
+            {{getPriceForItem(item) | currency}}
           </td>
           <td class="large-icon icon-col">
             <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>

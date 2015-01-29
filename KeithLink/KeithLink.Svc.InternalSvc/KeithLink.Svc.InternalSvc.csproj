@@ -142,6 +142,7 @@
   <ItemGroup>
     <Content Include="CacheService.svc" />
     <Content Include="ContentManagementService.svc" />
+    <Content Include="DsrService.svc" />
     <Content Include="ReportService.svc" />
     <Content Include="DivisionService.svc" />
     <Content Include="ConfigurationService.svc" />
@@ -166,7 +167,11 @@
     <Compile Include="ContentManagementService.svc.cs">
       <DependentUpon>ContentManagementService.svc</DependentUpon>
     </Compile>
+    <Compile Include="DsrService.svc.cs">
+      <DependentUpon>DsrService.svc</DependentUpon>
+    </Compile>
     <Compile Include="GlobalErrorBehaviorAttribute.cs" />
+    <Compile Include="Interfaces\IDsrService.cs" />
     <Compile Include="Interfaces\ICacheService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
     <Compile Include="ReportService.svc.cs">
