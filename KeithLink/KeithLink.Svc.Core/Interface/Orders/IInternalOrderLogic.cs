@@ -15,5 +15,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
         List<Core.Models.Orders.History.OrderHistoryHeader> GetCustomerOrderHistories(UserSelectedContext catalogInfo);
 		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
 		void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);
+        List<OrderHeader> GetSubmittedUnconfirmedOrders();
+        Guid GetUserIdForControlNumber(int controlNumber);
 	}
 }

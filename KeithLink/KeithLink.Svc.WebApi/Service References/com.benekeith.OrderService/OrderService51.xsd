@@ -17,4 +17,12 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="OrderSource" nillable="true" type="tns:OrderSource" />
+  <xs:simpleType name="OrderType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NormalOrder" />
+      <xs:enumeration value="ChangeOrder" />
+      <xs:enumeration value="DeleteOrder" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="OrderType" nillable="true" type="tns:OrderType" />
 </xs:schema>

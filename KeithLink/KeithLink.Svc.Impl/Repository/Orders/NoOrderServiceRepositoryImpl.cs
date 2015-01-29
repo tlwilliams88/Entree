@@ -52,5 +52,17 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+
+        public List<OrderHeader> GetSubmittedUnconfirmedOrders()
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public Guid GetUserIdForControlNumber(int controlNumber)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -248,12 +248,10 @@ namespace KeithLink.Svc.Impl.Logic
 			//Save to Commerce Server
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
 			var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), cartId);
-
 			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(basket.UserId.ToGuid(), orderNumber);
 
-            orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder);
-
-            orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo));
+            orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
+            orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue
 
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}

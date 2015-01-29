@@ -277,7 +277,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        new PurchaseOrderRepositoryImpl(),
                                                                        catLogic,
                                                                        new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-																	   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl()),
+																	   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl(), new KeithLink.Svc.Impl.Repository.Profile.NoDsrServiceRepository()),
                                                                        conversionLogic);
 
                 logic.ListenForMainFrameCalls();
@@ -380,7 +380,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                    new PurchaseOrderRepositoryImpl(),
                                                                                    catLogic,
                                                                                    new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-																				   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl()),
+																				   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl(), new KeithLink.Svc.Impl.Repository.Profile.NoDsrServiceRepository()),
                                                                                    conversionLogic);
 
                             if (CanOpenFile(filePath)) {

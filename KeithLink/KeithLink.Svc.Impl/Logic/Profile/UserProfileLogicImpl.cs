@@ -437,16 +437,45 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			string dsrRole = string.Empty;
 			string dsrNumber = string.Empty;
 			string dsmRole = string.Empty;
+            string userRole = string.Empty;
+            string userBranch = string.Empty;
             bool isInternalUser = IsInternalAddress( csProfile.Email );
 
             if (isInternalUser)
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
-                dsrRole = GetUserDsrRole(user);
-                dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
-				if (String.IsNullOrEmpty(dsrRole))
-					dsmRole = GetUserDsmRole(user);							
-			}
+                string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
+                if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
+                {
+                    dsrRole = internalUserRole;
+                    dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
+                    userRole = "dsr";
+                    userBranch = internalUserRole.Substring(0, 3);
+                }
+                else if (internalUserRole.ToLower().Contains("sys-ac-dsms"))
+                {
+                    dsmRole = internalUserRole;
+                    userRole = "dsm";
+                    userBranch = internalUserRole.Substring(0, 3);
+                }
+                else if (internalUserRole.ToLower().Contains("ls-csv-all") || internalUserRole.ToLower().Contains("ls-mis-all"))
+                {
+                    userRole = "branchismanager";
+                    userBranch = internalUserRole.Substring(0, 3);
+                }
+                else if (internalUserRole.ToLower().Contains(Svc.Core.Constants.ROLE_CORPORATE_ADMIN) || internalUserRole.ToLower().Contains(Svc.Core.Constants.ROLE_CORPORATE_SECURITY))
+                {
+                    userRole = "beksysadmin";
+                }
+                else
+                    userRole = "guest";
+            }
+            else
+            {
+                userRole = GetUserRole(csProfile.Email);
+                userBranch = csProfile.DefaultBranch;
+            }
+
 			
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
@@ -457,8 +486,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 EmailAddress = csProfile.Email,
                 PhoneNumber = csProfile.Telephone,
                 CustomerNumber = csProfile.DefaultCustomer,
-                BranchId = csProfile.DefaultBranch,
-                RoleName = !String.IsNullOrEmpty(dsrRole) ? "dsr" : GetUserRole(csProfile.Email),
+                BranchId = userBranch,
+                RoleName = userRole,
 				DSMRole = dsmRole,
 				DSRNumber = dsrNumber,
                 //UserCustomers = userCustomers,
@@ -518,20 +547,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return returnedMsgPrefModel;
         }
 
-        private string GetUserDsmRole(UserPrincipal user)
-        {
-            string dsmRole = _intAd.FirstUserGroup(user.UserPrincipalName, new List<string>() { Constants.ROLE_INTERNAL_DSM_FAM, Constants.ROLE_INTERNAL_DSM_FAQ, Constants.ROLE_INTERNAL_DSM_FDF,
-                    Constants.ROLE_INTERNAL_DSM_FHS, Constants.ROLE_INTERNAL_DSM_FLR, Constants.ROLE_INTERNAL_DSM_FOK, Constants.ROLE_INTERNAL_DSM_FSA });
-            return dsmRole;
-        }
-
-        private string GetUserDsrRole(UserPrincipal user)
-        {
-            string dsrRole = _intAd.FirstUserGroup(user.UserPrincipalName, new List<string>() { Constants.ROLE_INTERNAL_DSR_FAM, Constants.ROLE_INTERNAL_DSR_FAQ, Constants.ROLE_INTERNAL_DSR_FDF,
-                    Constants.ROLE_INTERNAL_DSR_FHS, Constants.ROLE_INTERNAL_DSR_FLR, Constants.ROLE_INTERNAL_DSR_FOK, Constants.ROLE_INTERNAL_DSR_FSA });
-            return dsrRole;
-        }
-
         /// <summary>
         /// translate the AD branch name to mainframe branch name
         /// </summary>
@@ -587,13 +602,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
 		public UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false)
 		{
+            UserProfileReturn retVal = new UserProfileReturn();
+
             // check for cached user profile first
 			Core.Models.Profile.UserProfile profile = _cache.GetItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
-            UserProfileReturn retVal = new UserProfileReturn();
-
             if (IsInternalAddress(emailAddress).Equals(false) && profile != null) {
-                profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress );
+                profile.PasswordExpired = _extAd.IsPasswordExpired( emailAddress ); // always check password expired status; even when cached...
+            }
+
+            if (profile != null)
+            {
                 retVal.UserProfiles.Add(profile);
                 return retVal;
             }
@@ -635,6 +654,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             string roleName = null;
 
             if (IsInternalAddress(email)) {
+                //roleName = _intAd.
                 roleName = "owner";
             } else {
                 roleName = _extAd.GetUserGroup(email, new List<string>() { "owner", "approver", "buyer", "accounting", "guest" });

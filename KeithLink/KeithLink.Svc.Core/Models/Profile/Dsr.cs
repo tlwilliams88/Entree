@@ -15,6 +15,9 @@ namespace KeithLink.Svc.Core.Models.Profile {
         [DataMember(Name = "name")]
         public string Name { get; set; }
 
+        [DataMember(Name = "branch")]
+        public string Branch { get; set; }
+
         [DataMember( Name = "phonenumber" )]
         public string PhoneNumber { get; set; }
 

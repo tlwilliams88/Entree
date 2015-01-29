@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 try
                 {
-                    emailClient.SendEmail(new List<string>() { recipient.ProviderEndpoint }, null, null, message.MessageSubject, message.MessageBody);
+                    emailClient.SendEmail(new List<string>() { recipient.ProviderEndpoint }, null, null, message.MessageSubject, message.MessageBody, message.BodyIsHtml);
                 }
                 catch (Exception ex)
                 {
