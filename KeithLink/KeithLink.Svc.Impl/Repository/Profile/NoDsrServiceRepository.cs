@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
     public class NoDsrServiceRepository : IDsrServiceRepository {
 
         public Dsr GetDsr( string branchId, string dsrNumber ) {
-            throw new NotImplementedException();
+            return new Dsr();
         }
     }
 }
