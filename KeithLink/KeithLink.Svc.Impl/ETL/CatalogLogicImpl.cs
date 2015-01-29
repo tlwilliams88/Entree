@@ -452,94 +452,92 @@ namespace KeithLink.Svc.Impl.ETL
             return new DisplayName[1] { new DisplayName() { language = Language, Value = value } };
         }
 
-        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, Dictionary<string, List<string>> proprietaryItems)
-        {
-            var item =  new ItemUpdate()
-            {
-                index = new RootData()
-                {
-                    _id = row.GetString("ItemId"),
-                    _index = row.GetString("BranchId").ToLower(),
-                    data = new AdditionalData()
-                    {
-                        Brand = row.GetString("Brand"),
-                        BrandNotAnalyzed = row.GetString("Brand"),
-                        BrandDescription = row.GetString("BrandDescription"),
-                        BrandDescriptionNotAnalyzed = row.GetString("BrandDescription"),
-                        BrandControlLabel = row.GetString("MaxSmrt"),
-                        Buyer = row.GetString("Buyer"),
-                        Cases = row.GetString("Cases"),
-                        CategoryId = row.GetString("CategoryId"),
-                        CategoryName = row.GetString("CategoryName"),
-                        CategoryNameNotAnalyzed = row.GetString("CategoryName"),
-                        CatMgr = row.GetString("CatMgr"),
-                        Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty),
-                        CaseOnly = row.GetString("ICSEOnly"),
-                        ItemClass = row.GetString("Class"),
-                        ItemType = row.GetString("ItemType"),
-                        Kosher = row.GetString("Kosher"),
-                        MfrName = row.GetString("MfrName"),
-                        MfrNameNotAnalyzed = row.GetString("MfrName"),
-                        MfrNumber = row.GetString("MfrNumber"),
-                        Name = row.GetString("Name"),
-						NameNotAnalyzed = row.GetString("Name").ToLower(),
-                        Pack = row.GetString("Pack"),
-                        Package = row.GetString("Package"),
-                        ParentCategoryId = row.GetString("ParentCategoryId"),
-                        ParentCategoryName = row.GetString("ParentCategoryName"),
-                        ParentCategoryNameNotAnalyzed = row.GetString("ParentCategoryName"),
-                        PreferredItemCode = row.GetString("PreferredItemCode"),
-                        Size = row.GetString("Size"),
-                        SpecialOrderItem = row.GetString("SpecialOrderItem"),
-                        Status1 = row.GetString("Status1"),
-                        Status1NotAnalyzed = row.GetString("Status1"),
-                        Status2 = row.GetString("Status2"),
-                        Upc = row.GetString("UPC"),
-                        Vendor1 = row.GetString("Vendor1"),
-                        Vendor2 = row.GetString("Vendor2"),
-                        BranchId = row.GetString("BranchId"),
-                        ReplacedItem = row.GetString("ReplacedItem"),
-                        ReplacementItem = row.GetString("ReplacementItem"),
-                        ChildNutrition = row.GetString(ItemSpec_CNDoc),
-                        SellSheet = row.GetString(ItemSpec_SellSheet),
-                        ItemNumber = row.GetString("ItemId"),
-						NonStock = row.GetString("NonStock"),
-                        TempZone = row.GetString("TempZone"),
-                        CatchWeight = row.GetString("HowPrice") == "3",
-						IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId")),
-						ProprietaryCustomers = BuildPropritaryCustomerList(row.GetString("ItemId"), proprietaryItems),
-                        Nutritional = new NutritionalInformation()
-                        {
-                            BrandOwner = row.GetString("BrandOwner"),
-                            CountryOfOrigin = row.GetString("CountryOfOrigin"),
-                            GrossWeight = row.GetString("GrossWeight"),
-                            HandlingInstruction = row.GetString("HandlingInstruction"),
-                            Height = row.GetString("Height"),
-                            Ingredients = row.GetString("Ingredients"),
-                            Length = row.GetString("Length"),
-                            MarketingMessage = row.GetString("MarketingMessage"),
-                            MoreInformation = row.GetString("MoreInformation"),
-                            ServingSize = row.GetString("ServingSize"),
-                            ServingSizeUom = row.GetString("ServingSizeUOM"),
-                            ServingsPerPack = row.GetString("ServingsPerPack"),
-                            ServingSuggestion = row.GetString("ServingSuggestion"),
-                            Shelf = row.GetString("Shelf"),
-                            StorageTemp = row.GetString("StorageTemp"),
-                            UnitMeasure = row.GetString("UnitMeasure"),
-                            UnitsPerCase = row.GetString("UnitsPerCase"),
-                            Volume = row.GetString("Volume"),
-                            Width = row.GetString("Width"),
-                            Nutrition = nutrition.ContainsKey(row.GetString("UPC")) ? nutrition[row.GetString("UPC")] : null,
-                            Diet = diets.ContainsKey(row.GetString("UPC")) ? diets[row.GetString("UPC")] : null,
-                            Allergen = allergens.ContainsKey(row.GetString("UPC")) ? allergens[row.GetString("UPC")] : null,
-                        }
-                    }
+        private ItemUpdate PopulateElasticSearchItem(DataRow row, Dictionary<string, List<ItemNutrition>> nutrition, 
+                                                     Dictionary<string, List<Diet>> diets, Dictionary<string, Allergen> allergens, 
+                                                     Dictionary<string, List<string>> proprietaryItems) {
+            NutritionalInformation nutInfo = new NutritionalInformation();
+            nutInfo.BrandOwner = row.GetString("BrandOwner");
+            nutInfo.CountryOfOrigin = row.GetString("CountryOfOrigin");
+            nutInfo.GrossWeight = row.GetString("GrossWeight");
+            nutInfo.HandlingInstruction = row.GetString("HandlingInstruction");
+            nutInfo.Height = row.GetString("Height");
+            nutInfo.Ingredients = row.GetString("Ingredients");
+            nutInfo.Length = row.GetString("Length");
+            nutInfo.MarketingMessage = row.GetString("MarketingMessage");
+            nutInfo.MoreInformation = row.GetString("MoreInformation");
+            nutInfo.ServingSize = row.GetString("ServingSize");
+            nutInfo.ServingSizeUom = row.GetString("ServingSizeUOM");
+            nutInfo.ServingsPerPack = row.GetString("ServingsPerPack");
+            nutInfo.ServingSuggestion = row.GetString("ServingSuggestion");
+            nutInfo.Shelf = row.GetString("Shelf");
+            nutInfo.StorageTemp = row.GetString("StorageTemp");
+            nutInfo.UnitMeasure = row.GetString("UnitMeasure");
+            nutInfo.UnitsPerCase = row.GetString("UnitsPerCase");
+            nutInfo.Volume = row.GetString("Volume");
+            nutInfo.Width = row.GetString("Width");
+            nutInfo.Nutrition = nutrition.ContainsKey(row.GetString("UPC")) ? nutrition[row.GetString("UPC")] : null;
+            nutInfo.Diet = diets.ContainsKey(row.GetString("UPC")) ? diets[row.GetString("UPC")] : null;
+            nutInfo.Allergen = allergens.ContainsKey(row.GetString("UPC")) ? allergens[row.GetString("UPC")] : null;
 
-                }
-            };
-			item.index.data.ItemSpecification = new List<string>();
+            AdditionalData data = new AdditionalData();
+            data.Brand = row.GetString("Brand");
+            data.BrandNotAnalyzed = row.GetString("Brand");
+            data.BrandDescription = row.GetString("BrandDescription");
+            data.BrandDescriptionNotAnalyzed = row.GetString("BrandDescription");
+            data.BrandControlLabel = row.GetString("MaxSmrt");
+            data.Buyer = row.GetString("Buyer");
+            data.Cases = row.GetString("Cases");
+            data.CategoryId = row.GetString("CategoryId");
+            data.CategoryName = row.GetString("CategoryName");
+            data.CategoryNameNotAnalyzed = row.GetString("CategoryName");
+            data.CatMgr = row.GetString("CatMgr");
+            data.Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty);
+            data.CaseOnly = row.GetString("ICSEOnly");
+            data.ItemClass = row.GetString("Class");
+            data.ItemType = row.GetString("ItemType");
+            data.Kosher = row.GetString("Kosher");
+            data.MfrName = row.GetString("MfrName");
+            data.MfrNameNotAnalyzed = row.GetString("MfrName");
+            data.MfrNumber = row.GetString("MfrNumber");
+            data.Name = row.GetString("Name");
+			data.NameNotAnalyzed = row.GetString("Name").ToLower();
+            data.Pack = row.GetString("Pack");
+            data.Package = row.GetString("Package");
+            data.ParentCategoryId = row.GetString("ParentCategoryId");
+            data.ParentCategoryName = row.GetString("ParentCategoryName");
+            data.ParentCategoryNameNotAnalyzed = row.GetString("ParentCategoryName");
+            data.PreferredItemCode = row.GetString("PreferredItemCode");
+            data.Size = row.GetString("Size");
+            data.SpecialOrderItem = row.GetString("SpecialOrderItem");
+            data.Status1 = row.GetString("Status1");
+            data.Status1NotAnalyzed = row.GetString("Status1");
+            data.Status2 = row.GetString("Status2");
+            data.Upc = row.GetString("UPC");
+            data.Vendor1 = row.GetString("Vendor1");
+            data.Vendor2 = row.GetString("Vendor2");
+            data.BranchId = row.GetString("BranchId");
+            data.ReplacedItem = row.GetString("ReplacedItem");
+            data.ReplacementItem = row.GetString("ReplacementItem");
+            data.ChildNutrition = row.GetString(ItemSpec_CNDoc);
+            data.SellSheet = row.GetString(ItemSpec_SellSheet);
+            data.ItemNumber = row.GetString("ItemId");
+			data.NonStock = row.GetString("NonStock");
+            data.TempZone = row.GetString("TempZone");
+            data.CatchWeight = row.GetString("HowPrice") == "3";
+			data.IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId"));
+			data.ProprietaryCustomers = BuildPropritaryCustomerList(row.GetString("ItemId"), proprietaryItems);
+            data.AverageWeight = (row.GetInt("FPNetWt") > 0 ? row.GetInt("FPNetWt") / 100 : (row.GetInt("GrossWt") > 0 ? row.GetInt("GrossWt") / 100 : 0));
+            data.Nutritional = nutInfo;
 
-			
+            RootData index = new RootData();
+            index._id = row.GetString("ItemId");
+            index._index = row.GetString("BranchId").ToLower();
+            index.data = data;
+
+            ItemUpdate item = new ItemUpdate();
+            item.index = index;
+
+            item.index.data.ItemSpecification = new List<string>();
 
 			if (item.index.data.ReplacementItem != "000000")
 				item.index.data.ItemSpecification.Add(ItemSpec_ReplacementItem);

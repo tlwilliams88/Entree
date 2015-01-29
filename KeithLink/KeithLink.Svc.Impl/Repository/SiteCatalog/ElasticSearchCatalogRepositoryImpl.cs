@@ -106,7 +106,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             List<dynamic> boosts = new List<dynamic>();
 
 
-			
+			if(!string.IsNullOrEmpty(searchTerms))
+			{
 				boosts.Add(new
 				{
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase_prefix = new { name_not_analyzed = searchTerms.ToLower() } } } } } },
@@ -122,7 +123,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } },
 					boost_factor = 1300
 				});
-			
+			}
 
 
             // preferred item boosts
@@ -215,7 +216,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         /// </remarks>
         private static dynamic BuildCategoryFilter(string category) {
             return new { multi_match =
-                    new { query = category.ToLower(), fields = 
+                    new { query = category, fields = 
                         new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
         }
 
@@ -363,6 +364,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.TempZone = oProd._source.temp_zone;
             p.CatchWeight = oProd._source.catchweight;
 			p.IsProprietary = oProd._source.isproprietary;
+            p.AverageWeight = oProd._source.averageweight;
             Nutritional nutritional = new Nutritional();
             if (oProd._source.nutritional != null) {
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;
