@@ -2,6 +2,7 @@
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
   <xs:complexType name="ArrayOfOrder">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="Order" nillable="true" type="tns:Order" />
@@ -10,9 +11,12 @@
   <xs:element name="ArrayOfOrder" nillable="true" type="tns:ArrayOfOrder" />
   <xs:complexType name="Order">
     <xs:sequence>
+      <xs:element minOccurs="0" name="actualdeliverytime" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="commerceid" type="ser:guid" />
       <xs:element minOccurs="0" name="createddate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="deliverydate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="deliveryoutofsequence" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="estimateddeliverytime" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="invoicestatus" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ischangeorderallowed" type="xs:boolean" />
@@ -21,6 +25,7 @@
       <xs:element minOccurs="0" name="ordernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ordertotal" type="xs:double" />
       <xs:element minOccurs="0" name="requestedshipdate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="scheduleddeliverytime" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
@@ -59,4 +64,29 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserActiveCartModel" nillable="true" type="tns:UserActiveCartModel" />
+  <xs:complexType name="ArrayOfOrderHeader">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderHeader" nillable="true" type="tns:OrderHeader" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderHeader" nillable="true" type="tns:ArrayOfOrderHeader" />
+  <xs:complexType name="OrderHeader">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Branch" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ControlNumber" type="xs:int" />
+      <xs:element minOccurs="0" name="CustomerNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeliveryDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="FutureOrder" type="xs:boolean" />
+      <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderCreateDateTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="OrderFilled" type="xs:boolean" />
+      <xs:element minOccurs="0" name="OrderSendDateTime" type="xs:dateTime" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderType" type="q2:OrderType" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderingSystem" type="q3:OrderSource" />
+      <xs:element minOccurs="0" name="PONumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Specialinstructions" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderHeader" nillable="true" type="tns:OrderHeader" />
 </xs:schema>

@@ -150,6 +150,7 @@
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
+    <Compile Include="Extensions\DsrExtensions.cs" />
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
+    <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\Reports\IReportServiceRepository.cs" />

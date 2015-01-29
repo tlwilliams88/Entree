@@ -366,6 +366,12 @@ angular.module('bekApp')
         authorize: 'canManageAccount'
       }
     })
+    .state('menu.admin.ordermanagement', {
+      url: 'ordermanagement/',
+      templateUrl: 'views/admin/ordermanagement.html',
+      controller: 'OrderManagementController',
+      resolve: {}
+    })
 
     /*************
     ADMIN CUSTOMER GROUPS

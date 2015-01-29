@@ -45,6 +45,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
             _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
 			_cache = new NoCacheRepositoryImpl();
 			var _custCach = new NoCacheRepositoryImpl();
+            var dsrService = new NoDsrServiceRepository();
 
             _custRepo = new CustomerContainerRepository(_log);
 
@@ -54,7 +55,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
             _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);
 
             _acct = new AccountRepository(_log);
-            _cust = new CustomerRepository(_log, _custCach);
+            _cust = new CustomerRepository(_log, _custCach, dsrService);
             _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository());
             //_orderHistoryRepo = new OrderHistoryHeaderRepositoryImpl(
         

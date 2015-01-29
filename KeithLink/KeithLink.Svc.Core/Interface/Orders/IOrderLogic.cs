@@ -16,5 +16,6 @@ namespace KeithLink.Svc.Core.Interface.Orders
         NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId);
         Order UpdateOrderForEta(UserProfile user, Order order);
         List<Order> UpdateOrdersForSecurity(UserProfile user, List<Order> orders);
+        bool ResendUnconfirmedOrder(UserProfile userProfile, int controlNumber);
     }
 }

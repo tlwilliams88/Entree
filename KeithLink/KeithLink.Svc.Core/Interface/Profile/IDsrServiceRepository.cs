@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
-    public interface IDsrLogic {
+    public interface IDsrServiceRepository {
         Dsr GetDsr( string branchId, string dsrNumber );
-        void CreateOrUpdateDsr(Dsr dsr);
     }
 }
