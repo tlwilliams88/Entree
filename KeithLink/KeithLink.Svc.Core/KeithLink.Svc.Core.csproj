@@ -196,6 +196,8 @@
     <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
+    <Compile Include="Interface\Profile\IDsrLogic.cs" />
+    <Compile Include="Interface\Profile\IDsrRepository.cs" />
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\Reports\IReportServiceRepository.cs" />

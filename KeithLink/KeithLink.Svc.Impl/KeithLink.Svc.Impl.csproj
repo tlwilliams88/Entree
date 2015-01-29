@@ -226,6 +226,7 @@
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
+    <Compile Include="Logic\Profile\DsrLogic.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
@@ -523,6 +524,7 @@
     <Compile Include="Repository\Profile\CustomerRepository.cs" />
     <Compile Include="Repository\Orders\ShipDateRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
+    <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\Cache\NoCacheUserProfileCacheRepository.cs" />
