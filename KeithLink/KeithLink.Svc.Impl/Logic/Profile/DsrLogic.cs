@@ -24,11 +24,25 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             var d = _dsrRepository.GetDsrByBranchAndDsrNumber( branchId, dsrNumber );
 
-            returnValue.DsrNumber = d.DsrNumber;
-            returnValue.EmailAddress = d.EmailAddress;
-            returnValue.Name = d.Name;
-            returnValue.ImageUrl = d.ImageUrl.Inject( new { baseUrl = Configuration.MultiDocsProxyUrl } );
-            returnValue.PhoneNumber = d.Phone;
+            if (d != null) {
+                returnValue.DsrNumber = d.DsrNumber;
+                returnValue.EmailAddress = d.EmailAddress;
+                returnValue.Name = d.Name;
+                returnValue.ImageUrl = d.ImageUrl.Inject( new { baseUrl = Configuration.MultiDocsProxyUrl } );
+                returnValue.PhoneNumber = d.Phone;
+            } else {
+                // Will be used to populate branch specific information
+                switch (branchId) {
+                    default:
+                        returnValue.PhoneNumber = "0000000000";
+                        break;
+                }
+
+                returnValue.DsrNumber = "000";
+                returnValue.EmailAddress = String.Concat(branchId, "@benekeith.com");
+                returnValue.Name = "Ben E. Keith";
+                returnValue.ImageUrl = String.Concat(Configuration.MultiDocsProxyUrl, "userimages/", branchId, "@benekeith.com");
+            }
 
             return returnValue;
         }
