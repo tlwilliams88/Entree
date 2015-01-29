@@ -296,6 +296,8 @@ angular.module('bekApp')
         invoice.paymentAmount = '0';  
       }
     }
+
+    $scope.invoiceForm.$setDirty();
   };
 
   $scope.selectAll = function (areAllSelected) {

@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('NotificationDetailsModalController', ['$scope', '$modalInstance', '$state', 'notification',
-  function ($scope, $modalInstance, $state, notification) {
+.controller('NotificationDetailsModalController', ['$scope', '$modalInstance', '$sce', '$state', 'notification',
+  function ($scope, $modalInstance, $sce, $state, notification) {
 
   $scope.notification = notification;
+
+  $scope.notification.body = $sce.trustAsHtml(notification.body);
 
   $scope.closeModal = function() {
     $modalInstance.dismiss('cancel');
