@@ -32,9 +32,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 
         private ICacheRepository _cache;
-        private IUserProfileRepository      _csProfile;
-        private ICustomerDomainRepository   _extAd;
-        private IUserDomainRepository       _intAd;
+        private IUserProfileRepository _csProfile;
+        private ICustomerDomainRepository _extAd;
+        private IUserDomainRepository _intAd;
         private IAccountRepository _accountRepo;
         private ICustomerRepository _customerRepo;
 		private IOrderServiceRepository _orderServiceRepository;

@@ -38,6 +38,17 @@ namespace KeithLink.Svc.Impl.Migrations
             //    );
             //
 
+            context.Dsrs.AddOrUpdate(
+                d => d.DsrNumber,
+                new Dsr {
+                    DsrNumber = "066",
+                    Name = "Ochoa, Raul",
+                    BranchId = "FAM",
+                    Phone = "4328896994",
+                    EmailAddress = "riochoa@benekeith.com",
+                    ImageUrl = "/img/avatar.jpg"
+                } );
+
 			context.BranchSupports.AddOrUpdate(
 				b => b.BranchId,
 				new BranchSupport
@@ -171,6 +182,62 @@ namespace KeithLink.Svc.Impl.Migrations
                     IsBodyHtml = false,
                     Type = MessageTemplateType.Email,
                     Body = etaOrderLine.ToString()
+                });
+
+
+            /**** Build Payment Confirmation main template ****/
+            System.Text.StringBuilder paymentConfirmation = new System.Text.StringBuilder();
+            paymentConfirmation.AppendLine("<p>Your payments have been scheduled for processing on the next business day.<p>");
+            paymentConfirmation.AppendLine("Account: {CustomerNumber} - {CustomerName}<br/>");
+            paymentConfirmation.AppendLine("Branch: {BranchId}<br/>");
+            paymentConfirmation.AppendLine("Bank: {BankAccount}<br/>");
+            paymentConfirmation.AppendLine("<table>");
+            paymentConfirmation.AppendLine("	<tr>");
+            paymentConfirmation.AppendLine("		<td>Ref</td>");
+            paymentConfirmation.AppendLine("		<td>Number</td>");
+            paymentConfirmation.AppendLine("		<td>Ref Date</td>");
+            paymentConfirmation.AppendLine("		<td>Due Date</td>");
+            paymentConfirmation.AppendLine("		<td>Scheduled</td>");
+            paymentConfirmation.AppendLine("		<td>Amount</td>");
+            paymentConfirmation.AppendLine("	</tr>");
+            paymentConfirmation.AppendLine("{PaymentDetailLines}");
+            paymentConfirmation.AppendLine("	<tr>");
+            paymentConfirmation.AppendLine("		<td colspan=\"5\" style=\"text-align: right\">Customer Total</td>");
+            paymentConfirmation.AppendLine("		<td>");
+            paymentConfirmation.AppendLine("			{TotalPayments:f2}");
+            paymentConfirmation.AppendLine("		<td>");
+            paymentConfirmation.AppendLine("	</tr>");
+            paymentConfirmation.AppendLine("</table>");
+
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate {
+                    TemplateKey = "PaymentConfirmation",
+                    Subject = "Payment Confirmation for {CustomerName}",
+                    IsBodyHtml = true,
+                    Type = MessageTemplateType.Email,
+                    Body = paymentConfirmation.ToString()
+                });
+
+            /**** Build Payment Confirmation Detail template ****/
+            System.Text.StringBuilder paymentConfirmationDetail = new System.Text.StringBuilder();
+            paymentConfirmationDetail.AppendLine("	<tr>");
+            paymentConfirmationDetail.AppendLine("		<td>{InvoiceType}</td>");
+            paymentConfirmationDetail.AppendLine("		<td>{InvoiceNumber}</td>");
+            paymentConfirmationDetail.AppendLine("		<td>{InvoiceDate:MM/dd/yyyy}</td>");
+            paymentConfirmationDetail.AppendLine("		<td>{DueDate:MM/dd/yyyy}</td>");
+            paymentConfirmationDetail.AppendLine("		<td>{ScheduledDate:MM/dd/yyyy}</td>");
+            paymentConfirmationDetail.AppendLine("		<td>{PaymentAmount:f2}</td>");
+            paymentConfirmationDetail.AppendLine("	</tr>");
+
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate {
+                    TemplateKey = "PaymentConfirmationDetail",
+                    Subject = "",
+                    IsBodyHtml = true,
+                    Type = MessageTemplateType.Email,
+                    Body = paymentConfirmationDetail.ToString()
                 });
         }
     }

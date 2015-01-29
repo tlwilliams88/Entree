@@ -153,5 +153,8 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 
 		[JsonProperty("proprietarycustomers")]
 		public string ProprietaryCustomers { get; set; }
+
+        [JsonProperty("averageweight")]
+        public double AverageWeight { get; set; }
     }
 }

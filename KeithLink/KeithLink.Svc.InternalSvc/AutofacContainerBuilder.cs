@@ -84,6 +84,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<ConfigurationService>();
             builder.RegisterType<ReportService>();
 			builder.RegisterType<CacheService>();
+            builder.RegisterType<DsrService>();
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
@@ -158,6 +159,8 @@ namespace KeithLink.Svc.InternalSvc
                 .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.InvoiceAttention);
             builder.RegisterType<EtaNotificationHandlerImpl>()
                 .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.Eta);
+            builder.RegisterType<PaymentConfirmationNotificationHandlerImpl>()
+                .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.PaymentConfirmation);
             builder.Register<Func<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>(
                 c => {
                     var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>();
@@ -187,7 +190,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 			builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 
-            // customer bank - JA - 11/13
+            // customer bank - JA - 11/13<
             builder.RegisterType<OnlinePaymentService>();
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
@@ -209,6 +212,11 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+
+
+            // dsr repository
+            builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
+            builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
             return builder.Build();
         }

@@ -29,6 +29,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		public DbSet<Invoice> Invoices { get; set; }
 		public DbSet<InvoiceItem> InvoiceItems { get; set; }
 		public DbSet<BranchSupport> BranchSupports { get; set; }
+        public DbSet<Dsr> Dsrs { get; set; }
 		public DbSet<MessageTemplate> MessageTemplates { get; set; }
 		public DbSet<Term> Terms { get; set; }
 		public DbSet<ListShare> ListShares { get; set; }
@@ -45,25 +46,31 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational
 		{
 			modelBuilder.Entity<List>().ToTable("Lists", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<ListItem>().ToTable("ListItems", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ListShare>().ToTable("ListShares", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
 			modelBuilder.Entity<OrderHistoryHeader>().ToTable("OrderHistoryHeader", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<OrderHistoryDetail>().ToTable("OrderHistoryDetail", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+			modelBuilder.Entity<UserActiveCart>().ToTable("UserActiveCarts", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
 			modelBuilder.Entity<Invoice>().ToTable("Invoices", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
 			modelBuilder.Entity<BranchSupport>().ToTable("BranchSupports", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Dsr>().ToTable( "Dsrs", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+
             modelBuilder.Entity<UserMessage>().ToTable("UserMessages", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
             modelBuilder.Entity<CustomerTopic>().ToTable("CustomerTopics", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserTopicSubscription>().ToTable("UserTopicSubscriptions", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserPushNotificationDevice>().ToTable("UserPushNotificationDevices", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<MessageTemplate>().ToTable("MessageTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<ExportSetting>().ToTable("ExportSettings", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            modelBuilder.Entity<UserTopicSubscription>().ToTable("UserTopicSubscriptions", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 			modelBuilder.Entity<Term>().ToTable("Terms", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<ListShare>().ToTable("ListShares", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<UserPushNotificationDevice>().ToTable("UserPushNotificationDevices", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-			modelBuilder.Entity<UserActiveCart>().ToTable("UserActiveCarts", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
         }
 		
 		public override int SaveChanges()
