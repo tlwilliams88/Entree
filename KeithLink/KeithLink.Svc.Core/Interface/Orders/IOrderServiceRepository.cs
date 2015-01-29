@@ -25,6 +25,11 @@ namespace KeithLink.Svc.Core.Interface.Orders
 		
         void SaveOrderHistory(OrderHistoryFile historyFile);
 		
-        void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);		
+        void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);
+
+        // functions called by admin page
+        List<OrderHeader> GetSubmittedUnconfirmedOrders();
+
+        Guid GetUserIdForControlNumber(int controlNumber);
 	}
 }

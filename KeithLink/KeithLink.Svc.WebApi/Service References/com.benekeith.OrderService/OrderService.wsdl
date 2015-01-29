@@ -60,6 +60,18 @@
   <wsdl:message name="IOrderService_SaveOrderHistory_OutputMessage">
     <wsdl:part name="parameters" element="tns:SaveOrderHistoryResponse" />
   </wsdl:message>
+  <wsdl:message name="IOrderService_GetSubmittedUnconfirmedOrders_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetSubmittedUnconfirmedOrders" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetSubmittedUnconfirmedOrders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetSubmittedUnconfirmedOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetUserIdForControlNumber_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserIdForControlNumber" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetUserIdForControlNumber_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserIdForControlNumberResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOrderService">
     <wsdl:operation name="ReadLatestOrderModifiedDateForCustomer">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomer" message="tns:IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage" />
@@ -92,6 +104,14 @@
     <wsdl:operation name="SaveOrderHistory">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/SaveOrderHistory" message="tns:IOrderService_SaveOrderHistory_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/SaveOrderHistoryResponse" message="tns:IOrderService_SaveOrderHistory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSubmittedUnconfirmedOrders">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetSubmittedUnconfirmedOrders" message="tns:IOrderService_GetSubmittedUnconfirmedOrders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetSubmittedUnconfirmedOrdersResponse" message="tns:IOrderService_GetSubmittedUnconfirmedOrders_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserIdForControlNumber">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetUserIdForControlNumber" message="tns:IOrderService_GetUserIdForControlNumber_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetUserIdForControlNumberResponse" message="tns:IOrderService_GetUserIdForControlNumber_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOrderService" type="tns:IOrderService">
@@ -161,6 +181,24 @@
     </wsdl:operation>
     <wsdl:operation name="SaveOrderHistory">
       <soap:operation soapAction="http://tempuri.org/IOrderService/SaveOrderHistory" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSubmittedUnconfirmedOrders">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetSubmittedUnconfirmedOrders" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserIdForControlNumber">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetUserIdForControlNumber" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

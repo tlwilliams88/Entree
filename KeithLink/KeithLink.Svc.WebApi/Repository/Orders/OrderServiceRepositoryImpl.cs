@@ -55,8 +55,16 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
         public void SaveOrderHistory(OrderHistoryFile historyFile) {
             serviceClient.SaveOrderHistory(historyFile);
         }
+
+        public List<OrderHeader> GetSubmittedUnconfirmedOrders()
+        {
+            return serviceClient.GetSubmittedUnconfirmedOrders().ToList();
+        }
+
+        public Guid GetUserIdForControlNumber(int controlNumber)
+        {
+            return serviceClient.GetUserIdForControlNumber(controlNumber);
+        }
         #endregion
-
-
 	}
 }
