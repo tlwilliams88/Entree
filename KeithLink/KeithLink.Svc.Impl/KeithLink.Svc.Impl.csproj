@@ -226,6 +226,7 @@
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
+    <Compile Include="Logic\Profile\DsrLogic.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
@@ -445,6 +446,10 @@
     <Compile Include="Repository\EF\Migrations\201501201656099_Add order ETA fields to order history header.Designer.cs">
       <DependentUpon>201501201656099_Add order ETA fields to order history header.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201501272026284_CreateDsrTable.cs" />
+    <Compile Include="Repository\EF\Migrations\201501272026284_CreateDsrTable.Designer.cs">
+      <DependentUpon>201501272026284_CreateDsrTable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -519,6 +524,7 @@
     <Compile Include="Repository\Profile\CustomerRepository.cs" />
     <Compile Include="Repository\Orders\ShipDateRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
+    <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\Cache\NoCacheUserProfileCacheRepository.cs" />
@@ -930,6 +936,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201501201656099_Add order ETA fields to order history header.resx">
       <DependentUpon>201501201656099_Add order ETA fields to order history header.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201501272026284_CreateDsrTable.resx">
+      <DependentUpon>201501272026284_CreateDsrTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
