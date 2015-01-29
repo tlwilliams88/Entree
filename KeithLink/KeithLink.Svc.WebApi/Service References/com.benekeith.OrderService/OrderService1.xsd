@@ -45,11 +45,14 @@
   <xs:element name="OrderHistoryDetail" nillable="true" type="tns:OrderHistoryDetail" />
   <xs:complexType name="OrderHistoryHeader">
     <xs:sequence>
+      <xs:element minOccurs="0" name="actualtime" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="controlnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="deliverydate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="deliveryoutofsequence" nillable="true" type="xs:boolean" />
       <xs:element minOccurs="0" name="errorstatus" type="xs:boolean" />
+      <xs:element minOccurs="0" name="estimatedtime" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="futureitems" type="xs:boolean" />
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
@@ -57,6 +60,7 @@
       <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="ordersystem" type="q3:OrderSource" />
       <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="routenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="scheduledtime" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="stopnumber" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>

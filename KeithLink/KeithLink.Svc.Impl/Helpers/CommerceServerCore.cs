@@ -37,9 +37,16 @@ namespace KeithLink.Svc.Impl.Helpers
 
         public static OrderContext GetOrderContext()
         {
-            if (context == null)
+            if (orderContext == null)
                 LoadOrderContext();
             return orderContext;
+        }
+
+        public static OrderManagementContext GetOrderManagementContext()
+        {
+            if (context == null)
+                LoadOrderContext();
+            return context;
         }
     }
 }

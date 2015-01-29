@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService',
-    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService',
+    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService) {
     
     function init() {
       if (selectedCart) {
@@ -55,21 +55,6 @@ angular.module('bekApp')
         redirect(list.listid, cart.ordernumber);
       }
     };
-
-    // $scope.selectList = function(list) {
-    //   $state.go('menu.addtoorder.items', { listId: list.listid, cartId: $scope.selectedCart.ordernumber || $scope.selectedCart.id, useParlevel: $scope.useParlevel });
-    // };
-
-    // $scope.selectCart = function(cart) {
-    //   CartService.getCart(cart.id).then(function(cart) {
-    //     $scope.selectedCart = cart;
-    //     $scope.selectList($scope.selectedList);
-    //   });
-    // };
-
-    // $scope.selectChangeOrder = function(changeOrder) {
-    //   $scope.selectedCart = OrderService.findChangeOrderByOrderNumber(changeOrders, changeOrder.ordernumber);
-    // };
 
     $scope.sortByPrice = function(item) {
       return item.each ? item.packageprice : item.caseprice;
@@ -193,50 +178,15 @@ angular.module('bekApp')
       }
     };
 
-    $scope.getPriceForItem = function(item) {
-      var price = 0;
-      if (item.catchweight) {
-        
-        if (item.each) {
-          // Package – ((Avg Weight/Pack) * Qty) * Price
-          price = (item.average_weight / parseInt(item.pack)) * item.quantity * item.packageprice;
-        } else {
-          // Case - (Avg Weight * Qty) * Price  
-          if (item.average_weight > 0) {
-            price = item.average_weight * item.quantity * item.caseprice;
-          } else {
-            price = 1 * item.quantity * item.caseprice;
-          }
-        }        
-      } else {
-        if (item.each) {
-          price = item.quantity * item.packageprice;
-        } else {
-          price = item.quantity * item.caseprice;
-        }
-      }
-      return price;
-    };
+    $scope.canOrderItem = PricingService.canOrderItem;
+    $scope.hasPackagePrice = PricingService.hasPackagePrice;
+    $scope.getPriceForItem = PricingService.getPriceForItem;
 
     $scope.getSubtotal = function(cartItems, listItems) {
-      var subtotal = 0;
-      angular.forEach(cartItems, function(item, index) {
-        if (item.price) {
-          if (item.catchweight) {
-            subtotal += (item.average_weight ? item.average_weight : 1) * item.quantity * item.price;
-          } else {
-            subtotal += ( item.quantity * item.price );
-          }
-        } else {
-          subtotal += $scope.getPriceForItem(item);
-        }
-      });
-      angular.forEach(listItems, function(item, index) {
-        if (item.quantity) {
-          subtotal += parseFloat( item.quantity * (item.each ? item.packageprice : item.caseprice) );
-        }
-      });
-      return subtotal;
+      var listItemsWithQuantity = $scope.getListItemsWithQuantity(listItems);
+
+      // get subtotal for cart items and list items with quantity > 0
+      return PricingService.getSubtotalForItems(cartItems) + PricingService.getSubtotalForItems(listItemsWithQuantity);
     };
 
     $scope.getItemCount = function(cart, list) {

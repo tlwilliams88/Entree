@@ -36,5 +36,11 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         void SaveOrderHistory(OrderHistoryFile historyFile);
+
+        [OperationContract]
+        List<OrderHeader> GetSubmittedUnconfirmedOrders();
+
+        [OperationContract]
+        Guid GetUserIdForControlNumber(int controlNumber);
 	}
 }

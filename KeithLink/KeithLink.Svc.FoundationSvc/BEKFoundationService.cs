@@ -66,6 +66,7 @@ namespace KeithLink.Svc.FoundationSvc
                 pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 
                 po.TrackingNumber = GetNextControlNumber();
+                po.Status = "Submitted";
                 po.Save();
 
                 return po.TrackingNumber;
