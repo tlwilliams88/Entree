@@ -13,6 +13,8 @@ using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Configuration;
+using Microsoft.Reporting.WinForms;
+using System.Reflection;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -170,6 +172,64 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.DeleteItems(itemIds);
 		}
 
+		[HttpGet]
+		[ApiKeyedRoute("list/barcode/{listId}")]
+		public HttpResponseMessage Barcode(long listId)
+		{
+			var list = listServiceRepository.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+			
+
+			//TODO: Cleanup, some is test code
+			ReportViewer rv = new ReportViewer();
+
+			rv.ProcessingMode = ProcessingMode.Local;
+			//rv.LocalReport.ReportPath = "Report1.rdlc";
+			
+			Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+			Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.Itembarcode5160.rdlc");
+			rv.LocalReport.LoadReportDefinition(rdlcStream);
+			rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", list));
+
+			var bytes = rv.LocalReport.Render("PDF");
+
+			Stream stream = new MemoryStream(bytes);
+
+			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+			result.Content = new StreamContent(stream);
+			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+
+
+			result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+
+			return result;
+
+			
+
+		}
+		//public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest) where T : class, IExportableModel
+		//{
+		//	var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
+
+		//	MemoryStream stream;
+		//	if (exportRequest.Fields == null)
+		//		stream = exportLogic.Export(model, exportRequest.SelectedType);// new ModelExporter<T>(model).Export(exportRequest.SelectedType);
+		//	else
+		//	{
+		//		stream = exportLogic.Export(model, exportRequest.Fields, exportRequest.SelectedType); //new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
+		//	}
+		//	HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+		//	result.Content = new StreamContent(stream);
+		//	result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+
+		//	if (exportRequest.SelectedType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
+		//		result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+		//	else if (exportRequest.SelectedType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
+		//		result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/tab-separated-values");
+		//	else
+		//		result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+
+		//	return result;
+		//}
 
 
 		

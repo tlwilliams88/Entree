@@ -140,5 +140,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

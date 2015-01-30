@@ -11,7 +11,6 @@ angular.module('bekApp')
     
     CustomerService.getCustomerDetails($stateParams.customerNumber, $stateParams.branchNumber).then(function(customer) {
       $scope.customer = customer;
-console.log('customer: ' + JSON.stringify($scope.customer));
       var prefArray = [];
 
     var prefsFromSvc = MessagePreferenceService.loadPreferences();
