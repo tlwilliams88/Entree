@@ -11,6 +11,8 @@ namespace KeithLink.Svc.Core.Models.Messaging
     {
         [DataMember(Name = "customernumber")]
         public string CustomerNumber { get; set; }
+        [DataMember(Name = "branchid")]
+        public string BranchId { get; set; }
         [DataMember(Name = "preferences")]
         public List<ProfileMessagingPreferenceDetailModel> Preferences { get; set; }
     }

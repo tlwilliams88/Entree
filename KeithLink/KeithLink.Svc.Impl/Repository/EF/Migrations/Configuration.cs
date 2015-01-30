@@ -203,7 +203,7 @@ namespace KeithLink.Svc.Impl.Migrations
             paymentConfirmation.AppendLine("{PaymentDetailLines}");
             paymentConfirmation.AppendLine("	<tr>");
             paymentConfirmation.AppendLine("		<td colspan=\"5\" style=\"text-align: right\">Customer Total</td>");
-            paymentConfirmation.AppendLine("		<td>");
+            paymentConfirmation.AppendLine("		<td style=\"text-align: right\">");
             paymentConfirmation.AppendLine("			{TotalPayments:f2}");
             paymentConfirmation.AppendLine("		<td>");
             paymentConfirmation.AppendLine("	</tr>");
@@ -227,7 +227,7 @@ namespace KeithLink.Svc.Impl.Migrations
             paymentConfirmationDetail.AppendLine("		<td>{InvoiceDate:MM/dd/yyyy}</td>");
             paymentConfirmationDetail.AppendLine("		<td>{DueDate:MM/dd/yyyy}</td>");
             paymentConfirmationDetail.AppendLine("		<td>{ScheduledDate:MM/dd/yyyy}</td>");
-            paymentConfirmationDetail.AppendLine("		<td>{PaymentAmount:f2}</td>");
+            paymentConfirmationDetail.AppendLine("		<td style=\"text-align: right\">{PaymentAmount:f2}</td>");
             paymentConfirmationDetail.AppendLine("	</tr>");
 
             context.MessageTemplates.AddOrUpdate(

@@ -168,7 +168,7 @@ angular.module('bekApp')
       processingCreateCustomerGroup = true;
       CustomerGroupService.createGroup(group).then(function(newGroup) {
         $scope.displayMessage('success', 'Successfully created a new customer group.');
-        $state.go('menu.admin.editcustomergroup', { groupId: newGroup.id });
+        $state.go('menu.admin.customergroupdetails', { groupId: newGroup.id });
       }, function(error) {
         $log.debug(error);
         $scope.displayMessage('error', 'Error creating new customer group.');

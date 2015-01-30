@@ -10,7 +10,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 {
     public interface IUserMessagingPreferenceRepository : IBaseEFREpository<UserMessagingPreference>
     {
-        IEnumerable<UserMessagingPreference> ReadByUserIdsAndNotificationType(IEnumerable<Guid> ids, NotificationType notificationType);
+        IEnumerable<UserMessagingPreference> ReadByUserIdsAndNotificationType(IEnumerable<Guid> ids, NotificationType notificationType, bool defaultsOnly = false);
+        IEnumerable<UserMessagingPreference> ReadByCustomerAndNotificationType(string customerNumber, string branchId, NotificationType notificationType);
         //List<UserTopicSubscription> GetUserTopicSubscriptions(Guid userId);
     }
 }

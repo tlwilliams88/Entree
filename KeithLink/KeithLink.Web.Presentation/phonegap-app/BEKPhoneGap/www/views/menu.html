@@ -153,11 +153,11 @@
     </ul>
   </nav>
   <div class="person-info sidebar-dsr" ng-if="isOrderEntryCustomer">
-    <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageUrl}}" alt=""></div>
+    <div class="person-info__section"><img ng-src="{{selectedUserContext.customer.dsr.imageurl}}" alt="dsr image"></div>
     <div class="person-info__section person-info__details">
-      <span class="text-white">{{userProfile.salesRep.name}}</span>
-      <a ng-href="{{'tel:' + userProfile.salesRep.phone}}" class="text-white">{{userProfile.salesRep.phone}}</a>
-      <span><a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a></span>
+      <span class="text-white">{{selectedUserContext.customer.dsr.name}}</span>
+      <a ng-href="{{'tel:' + selectedUserContext.customer.dsr.phonenumber}}" class="text-white">{{selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</a>
+      <span><a class="text-uppercase" href="mailto:{{selectedUserContext.customer.dsr.emailaddress}}">Email Me</a></span>
     </div>
   </div>
   <div ng-if="isOrder" class="sidebar-actions text-center">
@@ -261,12 +261,12 @@
 
     <div class="sidebar-dsr text-center" ng-if="isOrderEntryCustomer">
       <p>Your Sales Rep</p>
-      <img ng-show="userProfile.salesRep.imageUrl" ng-src="{{userProfile.salesRep.imageUrl}}" alt="dsr image" />
+      <img ng-src="{{selectedUserContext.customer.dsr.imageurl}}" alt="dsr image" />
       <p class="contact-info">
-        <span>{{userProfile.salesRep.name}}</span>
-        <span>{{userProfile.salesRep.phone}}</span>
+        <span>{{selectedUserContext.customer.dsr.name}}</span>
+        <span>{{selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</span>
       </p>
-      <a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a>
+      <a class="text-uppercase" href="mailto:{{selectedUserContext.customer.dsr.emailaddress}}">Email Me</a>
     </div>
 
     <div class="text-center sidebar-meta">
