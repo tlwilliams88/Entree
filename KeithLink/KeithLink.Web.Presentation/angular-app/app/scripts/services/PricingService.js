@@ -14,7 +14,7 @@ angular.module('bekApp')
     // Case - (Avg Weight * Qty) * Price
     // Package – ((Avg Weight/Pack) * Qty) * Price
 
-    var averageWeight = item.average_weight ? item.item.average_weight : 1; // use avg weight = 1 if weight = 0
+    var averageWeight = item.average_weight ? item.average_weight : 1; // use avg weight = 1 if weight = 0
 
     if (item.each) {
       // calculate avg weight per pack when buying by the pack

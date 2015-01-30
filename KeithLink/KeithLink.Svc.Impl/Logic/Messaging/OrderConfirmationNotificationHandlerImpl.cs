@@ -45,7 +45,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
 
             // load up recipients, customer and message
-            Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber);
+            Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
             List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer);
             Message message = GetEmailMessageForNotification(orderConfirmation, customer);
 

@@ -118,22 +118,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return messagingPreferencesList;
         }
 
-        public void UpdateUserMessagingPreference(UserMessagingPreferenceModel userMessagingPreference)
-        {
-            var currentUserMessagingPreference = userMessagingPreferenceRepository.Read(u => u.Id.Equals(userMessagingPreference.Id)).FirstOrDefault();
-
-            if (currentUserMessagingPreference == null)
-                return;
-
-            currentUserMessagingPreference.Channel = userMessagingPreference.Channel;
-            currentUserMessagingPreference.CustomerNumber = userMessagingPreference.CustomerNumber;
-            currentUserMessagingPreference.NotificationType = userMessagingPreference.NotificationType;
-            currentUserMessagingPreference.UserId = userMessagingPreference.UserId;
-
-            unitOfWork.SaveChanges();
-        }
-
-
         public int GetUnreadMessagesCount(Guid userId)
         {
             int count = userMessageRepository.GetUnreadMessagesCount(userId);
@@ -143,19 +127,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public void UpdateMessagingPreferences(ProfileMessagingPreferenceModel updatedMessagingPreferenceModel, UserProfile user)
         {
-            var currentUserMessagingPreferences = userMessagingPreferenceRepository.Read(u => (u.UserId.Equals(user.UserId) && u.CustomerNumber == updatedMessagingPreferenceModel.CustomerNumber));
-
             //first delete existing messaging preferences
-            DeleteMessagingPreferencesByCustomer(user.UserId, updatedMessagingPreferenceModel.CustomerNumber);
+            DeleteMessagingPreferencesByCustomer(user.UserId, updatedMessagingPreferenceModel.CustomerNumber, updatedMessagingPreferenceModel.BranchId);
 
             //then create messaging preferences
             CreateMessagingPreferencesByCustomer(user.UserId, updatedMessagingPreferenceModel);
         }
 
         //this also works for user default since customer = null for user default
-        public void DeleteMessagingPreferencesByCustomer(Guid userId, string customerNumber)
+        public void DeleteMessagingPreferencesByCustomer(Guid userId, string customerNumber, string branchId)
         {
-            var messagingPreferences = userMessagingPreferenceRepository.Read(i => (i.UserId.Equals(userId) && i.CustomerNumber == customerNumber));
+            var messagingPreferences = userMessagingPreferenceRepository.Read(i => (i.UserId.Equals(userId) && i.CustomerNumber.Equals(customerNumber) && i.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)));
 
             foreach (var pref in messagingPreferences)
             {
@@ -176,7 +158,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         Channel = channel.Channel,
                         CustomerNumber = messagingPrefModel.CustomerNumber,
                         NotificationType = currentPreference.NotificationType,
-                        UserId = userId
+                        UserId = userId,
+                        BranchId = messagingPrefModel.BranchId == null ? null : messagingPrefModel.BranchId.ToLower()
                     };
                     userMessagingPreferenceRepository.Create(newPreference);
                 }

@@ -190,7 +190,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber) {
             var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
 
             if (kpayInvoiceHeader == null) //Invoice not found
                 return null;
@@ -231,7 +231,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			if (forAllCustomers)
 				customers = _customerRepository.GetCustomersForUser(user.UserId);
 			else
-				customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId) };
+				customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
 
 			FilterInfo isfilter = new FilterInfo();
 			isfilter.Filters = new List<FilterInfo>();

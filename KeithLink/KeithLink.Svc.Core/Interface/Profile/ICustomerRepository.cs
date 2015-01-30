@@ -10,11 +10,12 @@ namespace KeithLink.Svc.Core.Interface.Profile
     public interface ICustomerRepository
     {
         List<Customer> GetCustomers();
-        Customer GetCustomerByCustomerNumber(string customerNumber);
+        Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
         List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId);
         List<Customer> GetCustomersByNameSearch(string searchText);
+        List<Customer> GetCustomersByNameSearchAndBranch(string search, string branchId);
 		List<Customer> GetCustomersForDSR(string dsrNumber);
 		List<Customer> GetCustomersForAccount(string accountId);
 		List<Customer> GetCustomersByNameOrNumber(string search);
