@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name="userprofile")]
+	[Serializable]
     public class UserProfile : System.Security.Principal.IIdentity
     {
         
