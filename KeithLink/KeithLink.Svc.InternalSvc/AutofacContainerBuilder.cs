@@ -186,6 +186,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
+            builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 			builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();

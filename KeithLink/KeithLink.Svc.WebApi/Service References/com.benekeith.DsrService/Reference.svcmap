@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="93d6f0b1-bdf7-41b0-a37e-d2011e22f6ba" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>false</ReferenceAllAssemblies>
+    <ReferencedAssemblies>
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Common.Impl" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Core" />
+      <ReferencedAssembly AssemblyName="KeithLink.Svc.Impl" />
+      <ReferencedAssembly AssemblyName="Microsoft.CSharp" />
+    </ReferencedAssemblies>
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:1317/DsrService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DsrService.xsd" MetadataType="Schema" ID="d1287f22-fe66-4140-aaa5-a8c003b37e04" SourceId="1" SourceUrl="http://localhost:1317/DsrService.svc?xsd=xsd2" />
+    <MetadataFile FileName="DsrService1.xsd" MetadataType="Schema" ID="ab553560-f691-45c3-9ca8-21a50ec8a802" SourceId="1" SourceUrl="http://localhost:1317/DsrService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DsrService2.xsd" MetadataType="Schema" ID="409c28be-c6e0-42ce-b4b2-121fd13c0565" SourceId="1" SourceUrl="http://localhost:1317/DsrService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DsrService.wsdl" MetadataType="Wsdl" ID="18bceefc-6e0d-43ab-b716-8f8ac5581aaa" SourceId="1" SourceUrl="http://localhost:1317/DsrService.svc?wsdl" />
+    <MetadataFile FileName="DsrService.disco" MetadataType="Disco" ID="c6240754-241b-49e2-bd9e-68c02ed16b06" SourceId="1" SourceUrl="http://localhost:1317/DsrService.svc?disco" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
