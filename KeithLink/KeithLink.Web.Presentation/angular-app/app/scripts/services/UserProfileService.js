@@ -23,8 +23,8 @@ angular.module('bekApp')
           // check if user is Order entry customer to determin which branch/context to select
           if (AccessService.isOrderEntryCustomer()) {
             var userSelectedContext = {
-              id: profile.defaultcustomer.customerNumber,
-              text: profile.defaultcustomer.displayname,
+              id: profile.defaultcustomer != null ? profile.defaultcustomer.customerNumber : '',
+              text: profile.defaultcustomer != null ? profile.defaultcustomer.displayname : '',
               customer: profile.defaultcustomer
             };
             LocalStorage.setSelectedCustomerInfo(userSelectedContext);

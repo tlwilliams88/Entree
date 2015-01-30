@@ -443,9 +443,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (isInternalUser)
             {
-                UserPrincipal user = _intAd.GetUser(csProfile.Email);
+                string emtouser = csProfile.Email;
+                UserPrincipal user = _intAd.GetUser(emtouser);
                 string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
-                if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
+                /*if (true) -- for testing
+                {
+                    userRole = "beksysadmin";
+                }
+                else*/ if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
                 {
                     dsrRole = internalUserRole;
                     dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
@@ -463,7 +468,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     userRole = "branchismanager";
                     userBranch = internalUserRole.Substring(0, 3);
                 }
-                else if (internalUserRole.ToLower().Contains(Svc.Core.Constants.ROLE_CORPORATE_ADMIN) || internalUserRole.ToLower().Contains(Svc.Core.Constants.ROLE_CORPORATE_SECURITY))
+                else if (internalUserRole.Equals(Svc.Core.Constants.ROLE_CORPORATE_ADMIN, StringComparison.InvariantCultureIgnoreCase) || internalUserRole.Equals(Svc.Core.Constants.ROLE_CORPORATE_SECURITY, StringComparison.InvariantCultureIgnoreCase))
                 {
                     userRole = "beksysadmin";
                 }
@@ -540,6 +545,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
                 {
                     CustomerNumber = currentCustomer.CustomerNumber,
+                    BranchId = currentCustomer.CustomerBranch,
                     Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, currentCustomer.CustomerNumber)
                 });
             }
@@ -972,7 +978,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			if (!string.IsNullOrEmpty(account))
 				allCustomers = _customerRepo.GetCustomersForAccount(account.ToGuid().ToCommerceServerFormat());
 			else
-				allCustomers = GetCustomersForUser(user);
+				allCustomers = GetCustomersForUser(user, searchTerms);
 			
 			if (!string.IsNullOrEmpty(searchTerms))
 			{
@@ -1036,35 +1042,35 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
-		public List<Customer> GetCustomersForUser(UserProfile user)
+		public List<Customer> GetCustomersForUser(UserProfile user, string search = "")
 		{
 			List<Customer> allCustomers = new List<Customer>();
 			if (IsInternalAddress(user.EmailAddress))
 			{
-				//UserPrincipal userP = _intAd.GetUser(user.EmailAddress);
-				//dsrRole = GetUserDsrRole(user);
-				//dsrNumber = user.Description;
+                if (user.RoleName == "owner") // special case where internal user is designated admin; hard coded to jmcmilland and pabrandt
+                {
+                    allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+                }
 				if (!String.IsNullOrEmpty(user.DSRNumber))
 				{
 					// lookup customers by their assigned dsr number
 					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber);
 				}
-				else
+                else if (!String.IsNullOrEmpty(user.DSMRole) || user.RoleName == "branchismanager")
 				{
-					if (!String.IsNullOrEmpty(user.DSMRole))
-					{
-						// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
-						allCustomers = _customerRepo.GetCustomers(); // TODO: reduce list to only the DSM's DSRs
-					}
-					else
-					{
-						// until we add customer service logic, return all customers for non-DSM/non-DSR internal users.  certain things will be missing (contract lists) if there is no account yet...
-						//userCustomers = _customerRepo.GetCustomers().OrderBy(x => x.CustomerName).ToList();
-						allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
-					}
+					// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
+                    if (search.Length >= 3)
+                        allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId); // TODO: reduce list to only the DSM's DSRs
+				}
+				else
+				{ // assume admin user with access to all customers
+                    if (search.Length >= 3)
+                        allCustomers = _customerRepo.GetCustomersByNameSearch(search);
+                    // internal owner - special case for phils user
+                    //allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
 				}
 			}
-			else
+			else // external user
 			{
 				allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
 			}

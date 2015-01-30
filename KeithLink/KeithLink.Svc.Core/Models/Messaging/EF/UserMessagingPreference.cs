@@ -19,5 +19,9 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
         [MaxLength(9)]
         [Column(TypeName = "varchar")]
         public string CustomerNumber { get; set; }
+
+        [MaxLength(4)]
+        [Column(TypeName = "varchar")]
+        public string BranchId { get; set; }
     }
 }

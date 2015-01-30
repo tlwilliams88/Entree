@@ -39,19 +39,27 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer)
         {
             Svc.Core.Models.Profile.UserProfileReturn users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
-            List<UserMessagingPreference> profileMessagingPreferences =
-                userMessagingPreferenceRepository.ReadByUserIdsAndNotificationType(users.UserProfiles.Select(u => u.UserId), notificationType).ToList();
+            List<UserMessagingPreference> userDefaultMessagingPreferences = // list of each user's default prefs
+                userMessagingPreferenceRepository.ReadByUserIdsAndNotificationType(users.UserProfiles.Select(u => u.UserId), notificationType, true).ToList();
+            List<UserMessagingPreference> customerMessagingPreferences = // list of customer's user specific pref
+                userMessagingPreferenceRepository.ReadByCustomerAndNotificationType(customer.CustomerNumber, customer.CustomerBranch, notificationType).ToList();
+            foreach (Guid userId in customerMessagingPreferences.Select(x => x.UserId).Except(users.UserProfiles.Select(x => x.UserId)))
+            {
+                // this will handle internal users that have a messaging pref setup for a customer
+                users.UserProfiles.Add(userProfileLogic.GetUserProfile(userId).UserProfiles.FirstOrDefault());
+            }
+
             List<Recipient> recipients = new List<Recipient>();
 
             foreach (Svc.Core.Models.Profile.UserProfile userProfile in users.UserProfiles)
             {
-                if (profileMessagingPreferences != null)
+                if (userDefaultMessagingPreferences != null)
                 {
                     // first, check for customer specific prefs
-                    IEnumerable<UserMessagingPreference> prefsToUse = profileMessagingPreferences.Where(
-                        p => p.CustomerNumber == customer.CustomerNumber);
-                    if (prefsToUse == null || prefsToUse.Count() == 0)
-                        prefsToUse = profileMessagingPreferences.Where(p => p.CustomerNumber == null);
+                    IEnumerable<UserMessagingPreference> prefsToUse = customerMessagingPreferences.Where(
+                        p => p.UserId == userProfile.UserId); // check for customer specific prefs first
+                    if (prefsToUse == null || prefsToUse.Count() == 0) // then check for defaults
+                        prefsToUse = userDefaultMessagingPreferences.Where(p => p.UserId == userProfile.UserId);
                     
                     foreach (var pref in prefsToUse)
                     {
