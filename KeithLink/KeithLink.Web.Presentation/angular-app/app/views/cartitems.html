@@ -150,7 +150,7 @@
                     <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
                       <td>{{shipDate.dayofweek}}</td>
                       <td class="nowrap">{{shipDate.shipdate}}</td>
-                      <td class="nowrap">{{shipDate.cutoffdatetime}}</td>
+                      <td class="nowrap">{{shipDate.cutoffDateObject | LocalTimeZoneTimeWithDate}}</td>
                     </tr>
                   </table>
                 </div>
@@ -162,8 +162,8 @@
         <div class="form-group">
           <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
           <div class="col-sm-6">
-            <p class="form-control-static text-light">{{selectedShipDate.cutoffdatetime}}</p>
-            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
+            <p class="form-control-static text-light">{{selectedShipDate.cutoffDateObject | LocalTimeZoneTimeWithDate}}</p>
+            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffDateObject" order-cutoff-date>
           </div>
         </div>
 
