@@ -331,14 +331,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        [ApiKeyedRoute("profile/customer/{customerNumber}")]
-        public OperationReturnModel<Customer> GetCustomer(string customerNumber)
+        [ApiKeyedRoute("profile/customer/{branchId}/{customerNumber}")]
+        public OperationReturnModel<Customer> GetCustomer(string branchId, string customerNumber)
         {
             OperationReturnModel<Customer> retVal = new OperationReturnModel<Customer>();
 
             try
             {
-                retVal.SuccessResponse = _profileLogic.GetCustomerByCustomerNumber(customerNumber);
+				retVal.SuccessResponse = _profileLogic.GetCustomerByCustomerNumber(customerNumber, branchId);
             }
             catch (ApplicationException axe)
             {

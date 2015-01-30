@@ -177,7 +177,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
             // get all users to then read all orders from CS
             List<PurchaseOrder> allOrders = new List<PurchaseOrder>();
-            var sharedUsers = _userProfileRepository.GetUsersForCustomerOrAccount(_customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId).CustomerId).ToList();
+            var sharedUsers = _userProfileRepository.GetUsersForCustomerOrAccount(_customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId, customerInfo.BranchId).CustomerId).ToList();
 
             foreach (var user in sharedUsers)
             {

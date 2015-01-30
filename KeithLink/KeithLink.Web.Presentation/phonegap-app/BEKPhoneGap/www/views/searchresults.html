@@ -273,12 +273,12 @@
           <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
           </td>
           <td class="hidden-mobile-visible-print" ng-show="canSeePrices">
-            <span ng-if="item.caseprice !== '$0.00'">{{::item.caseprice}}</span>
+            <span ng-if="hasCasePrice(item)">{{::item.caseprice}}</span>
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td class="large-icon icon-col">
+          <td class="large-icon icon-col nowrap">
             <div 
-              ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" 
+              ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
               context-menu-template
               class="context-menu-template context-menu__in-list hidden-print"
             >
@@ -307,7 +307,7 @@
                 <tr>
                   <td colspan="2" item-icons></td>
                 </tr>
-                <tr ng-if="item.caseprice !== '$0.00'" ng-show="canSeePrices">
+                <tr ng-if="hasCasePrice(item)" ng-show="canSeePrices">
                   <td>Price</td>
                   <td>{{::item.caseprice}}</td>
                 </tr>

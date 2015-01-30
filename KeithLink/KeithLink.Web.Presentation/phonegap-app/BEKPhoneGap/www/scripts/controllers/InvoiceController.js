@@ -27,17 +27,15 @@ angular.module('bekApp')
       $scope.hasPayableInvoices = data.haspayableinvoices;
       $scope.totalAmountDue = data.totaldue;
 
-      // data.pagedresults.results[0].pendingtransaction = {
-      //   paymentAmount: 123.43,
-      //   date: '2015-01-22T00:00:00Z'
-      // };
-
-      // data.pagedresults.results.forEach(function(invoice) {
-      //   if (invoice.pendingtransaction) {
-      //     invoice.paymentAmount = invoice.pendingtransaction.amount;
-      //     invoice.date = invoice.pendingtransaction.date;
-      //   }
-      // });
+      data.pagedresults.results.forEach(function(invoice) {
+        if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+          invoice.userCanPayInvoice = true;
+          invoice.paymentAmount = invoice.pendingtransaction.amount;
+          invoice.date = invoice.pendingtransaction.date.substr(0,10); // get format '2014-01-31'
+        } else if (invoice.ispayable) {
+          invoice.userCanPayInvoice = true;
+        }
+      });
 
       return data.pagedresults.results;
     });
@@ -255,6 +253,12 @@ angular.module('bekApp')
       value: 'Open'
     }]
   }, {
+    name: 'Invoices Pending Payment',
+    filterFields: [{
+      field: 'statusdescription',
+      value: 'Pending'
+    }]
+  }, {
     name: 'Past Due Invoices',
     filterFields: [{
       field: 'statusdescription',
@@ -282,16 +286,23 @@ angular.module('bekApp')
 
   $scope.selectInvoice = function (invoice, isSelected) {
     if (isSelected) {
-      invoice.paymentAmount = invoice.amount.toString();
+      if (!invoice.pendingtransaction) {
+        invoice.paymentAmount = invoice.amount.toString();
+      }
     } else {
-      invoice.paymentAmount = '0';
+      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+        invoice.paymentAmount = invoice.pendingtransaction.amount; 
+      } else {
+        invoice.paymentAmount = '0';  
+      }
     }
   };
 
-  $scope.selectAll = function () {
+  $scope.selectAll = function (areAllSelected) {
+    $scope.selectAllPayable = areAllSelected;
     angular.forEach($scope.invoices, function (item, index) {
-      if (item.ispayable) {
-        item.isSelected = $scope.selectAllPayable;
+      if (item.userCanPayInvoice) {
+        item.isSelected = areAllSelected;
         $scope.selectInvoice(item, item.isSelected);
       }
     });
@@ -311,7 +322,9 @@ angular.module('bekApp')
     if (!processingPayInvoices) {
       processingPayInvoices = true;
       var payments = $filter('filter')($scope.invoices, {isSelected: true});
-      InvoiceService.payInvoices(payments, $scope.selectedAccount).finally(function () {
+      InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
+        $state.go('menu.transaction');
+      }).finally(function () {
         processingPayInvoices = false;
       });
     }

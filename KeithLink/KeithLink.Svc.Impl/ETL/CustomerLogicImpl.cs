@@ -53,9 +53,9 @@ namespace KeithLink.Svc.Impl.ETL
                 {
                     // Create a new profile object.
                     Profile prof = null;
-                    if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber))
+                    if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
                     {
-                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber).FirstOrDefault().Id, "Organization");
+                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id, "Organization");
                     }
                     else
                     {
@@ -188,7 +188,7 @@ namespace KeithLink.Svc.Impl.ETL
         private List<Organization> GetExistingOrganizations(string organizationType)
         {
             ProfileContext ctxt = GetProfileContext();
-            string cmdText = "SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type FROM Organization";
+            string cmdText = "SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type, GeneralInfo.branch_number FROM Organization";
 
             // Create a new RecordsetClass object.
             ADODB.Recordset rs = new ADODB.Recordset();
@@ -211,7 +211,8 @@ namespace KeithLink.Svc.Impl.ETL
                     existingOrgs.Add(new Organization() { CustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
                                                           NationalOrRegionalAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
                                                           OrganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
-                                                          Id = rs.Fields["GeneralInfo.org_id"].Value.ToString()
+														  Id = rs.Fields["GeneralInfo.org_id"].Value.ToString(),
+														  BranchNumber = rs.Fields["GeneralInfo.branch_number"].Value.ToString()
                                                         });
 
                     // Move to the next record.

@@ -16,29 +16,31 @@
       <div class="item-details__main-info pull-left">
         <h3 class="item-name">
           <span favorite-item-click-handlers favorite-icons></span>
-          {{item.name}}
+          {{::item.name}}
           <span class="item-details__icons" item-icons="item"></span>
         </h3>
         <div>
           <div ng-if="item.description" class="main-info__description">
-            <strong>Description:</strong> {{item.description}}
+            <strong>Description:</strong> {{::item.description}}
           </div>
           <div>
             <span><strong>Item #</strong> {{item.itemnumber}} | </span>
-            <span ng-if="item.caseprice !== '$0.00' && item.caseprice"><strong>Case:</strong> {{item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |</span>
-            <span ng-if="item.packageprice !== '$0.00' && item.packageprice">
-              <strong>Package:</strong> {{item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
+            <span ng-if="hasCasePrice(item)">
+              <strong>Case:</strong> {{::item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
             </span>
-            <span ng-if="item.pack !== null"><strong>Pack/Size:</strong> {{item.pack|number}}/{{item.size}}</span>
+            <span ng-if="hasPackagePrice(item)">
+              <strong>Package:</strong> {{::item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
+            </span>
+            <span ng-if="item.packsize !== null"><strong>Pack/Size:</strong> {{::item.packsize}}</span>
           </div>
           <div>
-            <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> {{item.brand_extended_description}}</span>
+            <span ng-if="item.brand_extended_description !== null"><strong>Brand:</strong> {{::item.brand_extended_description}}</span>
           </div>
           <div>
-            <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{item.upc}}</span>
+            <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{::item.upc}}</span>
           </div>
         </div>
-        <div ng-if="canManageLists || canCreateOrders || canSubmitOrders && item.caseprice !== '$0.00'" class="hidden-print sub-content">
+        <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" class="hidden-print sub-content">
           <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template>
             Add To...
             <span class="icon-arrow-down6"></span>
