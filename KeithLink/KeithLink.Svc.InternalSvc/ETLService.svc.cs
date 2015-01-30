@@ -31,18 +31,23 @@ namespace KeithLink.Svc.InternalSvc
 
         public bool ProcessETLDataSerial()
         {
-            Task.Factory.StartNew(() => RunAllTasks()).ContinueWith((t) =>
+            Task.Factory.StartNew(() => categoryLogic.ProcessCatalogDataSerial()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => customerLogic.ImportCustomerTasksSerial()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
         }
 
-        private void RunAllTasks()
+        /*
+        private void RunAllCatalogTasks()
         {
             categoryLogic.ProcessCatalogDataSerial();
             customerLogic.ImportCustomersToOrganizationProfile();
             customerLogic.ImportDsrInfo();
         }
+        */
 
         public bool ProcessCatalogData()
         {

@@ -15,6 +15,7 @@ using CommerceServer.Core.Runtime;
 using CommerceServer.Core.Shared;
 using CommerceServer.Core.Runtime.Configuration;
 using CommerceServer.Core.Runtime.Diagnostics;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -23,11 +24,31 @@ namespace KeithLink.Svc.Impl.ETL
         private IStagingRepository stagingRepository;
         private IDsrLogic dsrLogic;
         static ProfileContext profileSystem = null;
+        private readonly IEventLogRepository eventLog;
 
-        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic)
+
+        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog)
         {
             this.stagingRepository = stagingRepository;
             this.dsrLogic = dsrLogic;
+            this.eventLog = eventLog;
+        }
+
+        public void ImportCustomerTasksSerial()
+        {
+            try
+            {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
+                ImportCustomersToOrganizationProfile();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
+                ImportDsrInfo();
+                eventLog.WriteInformationLog("ETL Import Process Complete:  CustomerLogicImpl Tasks");
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+            }
         }
 
         public void ImportCustomersToOrganizationProfile()

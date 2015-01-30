@@ -123,11 +123,26 @@ namespace KeithLink.Svc.Impl.ETL
         //run all catalog, es, and pre-populated list tasks in a non-distributed manner
         public void ProcessCatalogDataSerial()
         {
-            ImportCatalog();
-            ImportItemsToElasticSearch();
-            ImportCategoriesToElasticSearch();
-            ImportHouseBrandsToElasticSearch();
-            ImportPrePopulatedLists();
+            try
+            {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Catalog");
+                ImportCatalog();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Items to Elastic Search");
+                ImportItemsToElasticSearch();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Categories to Elastic Search");
+                ImportCategoriesToElasticSearch();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import House Brands to ElasticSearch");
+                ImportHouseBrandsToElasticSearch();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Pre-Populated Lists");
+                ImportPrePopulatedLists();
+                eventLog.WriteInformationLog("ETL Import Process Complete:  CatalogLogicImpl Tasks");
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+            }
+            
         }
 
         public void ProcessCatalogData()
