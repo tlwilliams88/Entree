@@ -261,7 +261,7 @@
 
     <div class="sidebar-dsr text-center" ng-if="isOrderEntryCustomer">
       <p>Your Sales Rep</p>
-      <img ng-show="userProfile.salesRep.imageUrl" ng-src="{{selectedUserContext.customer.dsr.imageurl}}" alt="dsr image" />
+      <img ng-src="{{selectedUserContext.customer.dsr.imageurl}}" alt="dsr image" />
       <p class="contact-info">
         <span>{{selectedUserContext.customer.dsr.name}}</span>
         <span>{{selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</span>
