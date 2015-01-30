@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService',
-    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService',
+    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService) {
     
     function init() {
       if (selectedCart) {
@@ -39,34 +39,22 @@ angular.module('bekApp')
       });
     };
 
-    function redirect(list, cart) {
-      $state.go('menu.addtoorder.items', { listId: list.listid, cartId: cart.ordernumber || cart.id, useParlevel: $scope.useParlevel });
+    function redirect(listId, cartId) {
+      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: $scope.useParlevel });
     }
 
     $scope.goToList = function(list, cart) {
-      if (cart.id) {
+      if (cart.id) { // make sure cart is not a change order 
+
+        // TODO: unsaved changes warning happens AFTER selected cart is already set to active
         CartService.setActiveCart(cart.id).then(function() {
-          redirect(list, cart);
+          // wait until cart is successfuly set to 'active' to redirect so item.quantityincart is updated
+          redirect(list.listid, cart.id);
         });
       } else {
-        redirect(list, cart);
+        redirect(list.listid, cart.ordernumber);
       }
     };
-
-    // $scope.selectList = function(list) {
-    //   $state.go('menu.addtoorder.items', { listId: list.listid, cartId: $scope.selectedCart.ordernumber || $scope.selectedCart.id, useParlevel: $scope.useParlevel });
-    // };
-
-    // $scope.selectCart = function(cart) {
-    //   CartService.getCart(cart.id).then(function(cart) {
-    //     $scope.selectedCart = cart;
-    //     $scope.selectList($scope.selectedList);
-    //   });
-    // };
-
-    // $scope.selectChangeOrder = function(changeOrder) {
-    //   $scope.selectedCart = OrderService.findChangeOrderByOrderNumber(changeOrders, changeOrder.ordernumber);
-    // };
 
     $scope.sortByPrice = function(item) {
       return item.each ? item.packageprice : item.caseprice;
@@ -190,21 +178,15 @@ angular.module('bekApp')
       }
     };
 
+    $scope.canOrderItem = PricingService.canOrderItem;
+    $scope.hasPackagePrice = PricingService.hasPackagePrice;
+    $scope.getPriceForItem = PricingService.getPriceForItem;
+
     $scope.getSubtotal = function(cartItems, listItems) {
-      var subtotal = 0;
-      angular.forEach(cartItems, function(item, index) {
-        if (item.price) {
-          subtotal += ( item.quantity * item.price );
-        } else {
-          subtotal += ( item.quantity * (item.each ? parseFloat(item.packageprice) : parseFloat(item.caseprice)) );
-        }
-      });
-      angular.forEach(listItems, function(item, index) {
-        if (item.quantity) {
-          subtotal += parseFloat( item.quantity * (item.each ? item.packageprice : item.caseprice) );
-        }
-      });
-      return subtotal;
+      var listItemsWithQuantity = $scope.getListItemsWithQuantity(listItems);
+
+      // get subtotal for cart items and list items with quantity > 0
+      return PricingService.getSubtotalForItems(cartItems) + PricingService.getSubtotalForItems(listItemsWithQuantity);
     };
 
     $scope.getItemCount = function(cart, list) {

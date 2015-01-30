@@ -391,7 +391,7 @@
               </ng-form>
             </td>
             <td class="hidden-mobile-visible-print input-col">
-              <ng-form name="eachForm" ng-if="item.packageprice !== '0'">
+              <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
                 <input type="checkbox" ng-model="item.each" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
@@ -442,7 +442,7 @@
                 <tr>
                   <td item-icons></td>
                 </tr>
-                <tr ng-if="item.packageprice !== '0'">
+                <tr ng-if="hasPackagePrice(item)">
                   <td>Each</td>
                   <td>
                     <input type="checkbox" value="" name="each" id="each" ng-model="item.each">

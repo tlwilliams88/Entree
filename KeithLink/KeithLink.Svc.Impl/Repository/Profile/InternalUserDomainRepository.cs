@@ -3,7 +3,9 @@ using KeithLink.Svc.Core.Interface.Profile;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
+using System.DirectoryServices;
 using System.Text;
+using System.Linq;
 using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
@@ -57,14 +59,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// </remarks>
         public bool AuthenticateUser(string emailAddress, string password, out string errorMessage)
         {
-            if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
             if (emailAddress == null) { throw new ArgumentNullException("emailAddress", "emailAddress is null"); }
-            if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
+            if (emailAddress.Length == 0) { throw new ArgumentException("emailAddress is required", "emailAddress"); }
             if (password == null) { throw new ArgumentNullException("password", "password is null"); }
+            if (password.Length == 0) { throw new ArgumentException("password is required", "password"); }
 
             errorMessage = null;
 
             string userName = emailAddress.Split('@')[0];
+
+            // before authenticating, confirm that user is on whitelist
+            if (Configuration.WhiteListedBekUsersEnforced)
+            {
+                if (!Configuration.WhiteListedBekUsers.Contains(userName.ToLower()))
+                {
+                    errorMessage = "Internal User Not Whitelisted";
+                    return false;
+                }
+            }
 
             // connect to server
             try {
@@ -192,59 +204,31 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-
-        /// <summary>
-        /// test to see if the user has access to the specified group
-        /// </summary>
-        /// <param name="userName">the user we are testing</param>
-        /// <param name="groupName">the group</param>
-        /// <returns>true if the user has access to the group</returns>
-        /// <remarks>
-        /// gsalazar - 10.19/2014 - original code
-        /// gsalazar - 10/19/2014 - add argument validation
-        /// </remarks>
-        public string FirstUserGroup(string userName, List<string> groupNames)
+        public string FirstUserGroup(UserPrincipal user, List<string> groupNames)
         {
-            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
-            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
-            if (groupNames == null) { throw new ArgumentNullException("groupName", "groupName is required"); }
-            if (groupNames.Count == 0 || String.IsNullOrEmpty(groupNames[0])) { throw new ArgumentException("groupName is required", "groupName"); }
+            if (user == null) { throw new ArgumentException("user is required", "user"); }
+            if (groupNames.Count == 0 || string.IsNullOrEmpty(groupNames.FirstOrDefault())) { throw new ArgumentException("groupName is required", "groupName"); }
 
             try
             {
-                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
-                                                                         Configuration.ActiveDirectoryInternalServerName,
-                                                                         Configuration.ActiveDirectoryInternalRootNode,
-                                                                         ContextOptions.SimpleBind,
-                                                                         Configuration.ActiveDirectoryInternalDomainUserName,
-                                                                         Configuration.ActiveDirectoryInternalPassword))
+                foreach (string g in ((DirectoryEntry)user.GetUnderlyingObject()).Properties["memberOf"])
                 {
-
-					UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, userName.Split('@')[0]);
-
-                    if (user == null)
-                        return string.Empty;
-                    else
-                        try
-                        {
-                            foreach (string groupName in groupNames)
-                            {
-                                if (user.IsMemberOf(principal, IdentityType.SamAccountName, groupName))
-                                    return groupName;
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.WriteErrorLog("Error lookup up user's group", ex);
-                        }
+                    string groupName = g.Substring(3, g.ToLower().IndexOf(",ou=") - 3).ToLower(); // get group name from fully qualified AD string
+                    foreach (string s in groupNames)
+                    {
+                        if (groupName.Equals(s, StringComparison.InvariantCultureIgnoreCase))
+                            return s;
+                    }
                 }
             }
             catch (Exception ex)
             {
-                _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
+                _logger.WriteErrorLog("Error loading group", ex);
             }
-            return string.Empty;
+
+            return "guest";
         }
+
         #endregion
     }
 }

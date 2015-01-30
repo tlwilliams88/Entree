@@ -38,6 +38,17 @@ namespace KeithLink.Svc.Impl.Migrations
             //    );
             //
 
+            context.Dsrs.AddOrUpdate(
+                d => d.DsrNumber,
+                new Dsr {
+                    DsrNumber = "066",
+                    Name = "Ochoa, Raul",
+                    BranchId = "FAM",
+                    Phone = "4328896994",
+                    EmailAddress = "riochoa@benekeith.com",
+                    ImageUrl = "/img/avatar.jpg"
+                } );
+
 			context.BranchSupports.AddOrUpdate(
 				b => b.BranchId,
 				new BranchSupport
@@ -180,14 +191,14 @@ namespace KeithLink.Svc.Impl.Migrations
             paymentConfirmation.AppendLine("Account: {CustomerNumber} - {CustomerName}<br/>");
             paymentConfirmation.AppendLine("Branch: {BranchId}<br/>");
             paymentConfirmation.AppendLine("Bank: {BankAccount}<br/>");
-            paymentConfirmation.AppendLine("<table>");
+            paymentConfirmation.AppendLine("<table style=\"width: 100%\">");
             paymentConfirmation.AppendLine("	<tr>");
-            paymentConfirmation.AppendLine("		<td>Ref</td>");
-            paymentConfirmation.AppendLine("		<td>Number</td>");
-            paymentConfirmation.AppendLine("		<td>Ref Date</td>");
-            paymentConfirmation.AppendLine("		<td>Due Date</td>");
-            paymentConfirmation.AppendLine("		<td>Scheduled</td>");
-            paymentConfirmation.AppendLine("		<td>Amount</td>");
+            paymentConfirmation.AppendLine("		<th>Ref</th>");
+            paymentConfirmation.AppendLine("		<th>Number</th>");
+            paymentConfirmation.AppendLine("		<th>Ref Date</th>");
+            paymentConfirmation.AppendLine("		<th>Due Date</th>");
+            paymentConfirmation.AppendLine("		<th>Scheduled</th>");
+            paymentConfirmation.AppendLine("		<th>Amount</th>");
             paymentConfirmation.AppendLine("	</tr>");
             paymentConfirmation.AppendLine("{PaymentDetailLines}");
             paymentConfirmation.AppendLine("	<tr>");

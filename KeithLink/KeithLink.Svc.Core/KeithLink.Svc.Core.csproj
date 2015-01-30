@@ -150,6 +150,7 @@
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
+    <Compile Include="Extensions\DsrExtensions.cs" />
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
@@ -196,6 +197,9 @@
     <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
+    <Compile Include="Interface\Profile\IDsrLogic.cs" />
+    <Compile Include="Interface\Profile\IDsrRepository.cs" />
+    <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
@@ -206,6 +210,7 @@
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
     <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
+    <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
     <Compile Include="Models\Invoices\InvoiceExportRequestModel.cs" />
@@ -385,6 +390,9 @@
     <Compile Include="Models\Profile\AccountFilterModel.cs" />
     <Compile Include="Models\Profile\Address.cs" />
     <Compile Include="Models\Profile\AccountUsersReturn.cs" />
+    <Compile Include="Models\Profile\CustomerAddUserModel.cs" />
+    <Compile Include="Models\Profile\CustomerNumberComparer.cs" />
+    <Compile Include="Models\Profile\Dsr.cs" />
     <Compile Include="Models\Profile\CustomerAccountBalanceModel.cs" />
     <Compile Include="Models\Profile\UserFilterModel.cs" />
     <Compile Include="Models\Profile\CustomerFilterModel.cs" />

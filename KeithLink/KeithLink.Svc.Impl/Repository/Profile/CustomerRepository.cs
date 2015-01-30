@@ -8,10 +8,12 @@ using System.Linq;
 using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using System.Data.Entity;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
-    public class CustomerRepository : BaseOrgRepository, Core.Interface.Profile.ICustomerRepository
+    public class CustomerRepository : BaseOrgRepository, Core.Interface.Profile.ICustomerRepository 
     {
         #region attributes
 
@@ -21,13 +23,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         IEventLogRepository _logger;
         ICacheRepository _customerCacheRepository;
+        IDsrServiceRepository _dsrService;
+
         #endregion
 
         #region ctor
-		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository)
+		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrServiceRepository dsrService)
         {
             _logger = logger;
             _customerCacheRepository = customerCacheRepository;
+            _dsrService = dsrService;
         }
         #endregion
 
@@ -158,7 +163,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return customers;
         }
 
-        private static Customer OrgToCustomer(Organization org)
+        private Customer OrgToCustomer(Organization org)
         {
             Customer customer =  new Customer()
             {
@@ -180,7 +185,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 Email = string.Empty,
                 PointOfContact = string.Empty,
                 TermCode = org.TermCode,
-                KPayCustomer = org.AchType == "2" || org.AchType == "3"
+                KPayCustomer = org.AchType == "2" || org.AchType == "3",
+                Dsr = _dsrService.GetDsr(org.BranchNumber, org.DsrNumber)
             };
 
             // fill in the address
@@ -200,8 +206,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         #endregion
-
-
 
 		public List<Customer> GetCustomersForDSR(string dsrNumber)
 		{
@@ -261,7 +265,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return customers;
 		}
 
-
 		public List<Customer> GetCustomersByNameOrNumber(string search)
 		{
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
@@ -283,7 +286,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			}
             return customers;
         }
-
 
 		public List<Customer> GetCustomersForParentAccountOrganization(string accountId)
 		{

@@ -27,8 +27,9 @@ angular.module('bekApp')
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
       resolve: {
-        // guest users must have branches to load the page (but non-guest users do not?)
         branches: ['BranchService', function(BranchService) {
+          // guest users must have branches to load the page (but non-guest users do not)
+          // also needed for tech support
           return BranchService.getBranches();
         }]
       }
@@ -365,6 +366,12 @@ angular.module('bekApp')
       data: {
         authorize: 'canManageAccount'
       }
+    })
+    .state('menu.admin.ordermanagement', {
+      url: 'ordermanagement/',
+      templateUrl: 'views/admin/ordermanagement.html',
+      controller: 'OrderManagementController',
+      resolve: {}
     })
 
     /*************

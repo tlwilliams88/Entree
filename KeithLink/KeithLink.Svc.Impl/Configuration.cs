@@ -33,6 +33,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_INTERNAL_USER = "ADIntUser";
         private const string KEY_AD_INVALIDATTEMPTS = "ADBadPwdCount";
         private const string KEY_AD_LOCKOUTDURATION = "ADLockoutDuration";
+        private const string KEY_WHITE_LISTED_BEK_USERS = "WhiteListedBekUsers";
+        private const string KEY_WHITE_LISTED_BEK_USERS_ENFORCED = "WhiteListedBekUsersEnforced";
 
         // Elasticsearch / Commerce Server / Application specific
         private const string KEY_ALLOWED_API_KEYS = "AllowedApiKeys";
@@ -258,6 +260,30 @@ namespace KeithLink.Svc.Impl
                     return 30;
                 }
             } 
+        }
+
+        public static bool WhiteListedBekUsersEnforced
+        {
+            get
+            {
+                try
+                {
+                    return Convert.ToBoolean(GetValue(KEY_WHITE_LISTED_BEK_USERS_ENFORCED, "true"));
+                }
+                catch
+                {
+                    return true;
+                }
+            }
+        }
+
+        public static List<string> WhiteListedBekUsers
+        {
+            get
+            {
+                string val = GetValue(KEY_WHITE_LISTED_BEK_USERS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
         }
 
         public static List<string> AllowedApiKeys

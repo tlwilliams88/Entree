@@ -135,7 +135,7 @@ angular.module('bekApp')
         scanProduct: function(itemNumber) {
           return $http.get('/catalog/product/scan/' + itemNumber).then(function(response) {
             if (response.data) {
-              return response.data; // return item object
+              return response.data; // item found, return item object
             } else {
               return;
             }

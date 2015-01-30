@@ -68,6 +68,16 @@ namespace KeithLink.Svc.InternalSvc {
         public void SaveOrderHistory(OrderHistoryFile historyFile) {
             _historyLogic.SaveOrder(historyFile);
         }
+
+        public List<OrderHeader> GetSubmittedUnconfirmedOrders()
+        {
+            return _orderLogic.GetSubmittedUnconfirmedOrders();
+        }
+
+        public Guid GetUserIdForControlNumber(int controlNumber)
+        {
+            return _orderLogic.GetUserIdForControlNumber(controlNumber);
+        }
 		#endregion
 	}		
 }

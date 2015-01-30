@@ -277,7 +277,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                        new PurchaseOrderRepositoryImpl(),
                                                                        catLogic,
                                                                        new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-																	   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl()),
+																	   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl(), new KeithLink.Svc.Impl.Repository.Profile.NoDsrServiceRepository()),
                                                                        conversionLogic);
 
                 logic.ListenForMainFrameCalls();
@@ -295,6 +295,12 @@ namespace KeithLink.Svc.Windows.OrderService {
                 _historyRequestProcessing = true;
 
                 try {
+                    if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5) {
+                        while (DateTime.Now.Hour < 5) {
+                            System.Threading.Thread.Sleep(60000);
+                        }
+                    }
+
 					OrderHistoryRequestLogicImpl requestLogic = new OrderHistoryRequestLogicImpl(_log, new GenericQueueRepositoryImpl(), new OrderUpdateRequestSocketRepositoryImpl());
 
                     requestLogic.ProcessRequests();
@@ -374,34 +380,37 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                    new PurchaseOrderRepositoryImpl(),
                                                                                    catLogic,
                                                                                    new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-																				   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl()),
+																				   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl(), new KeithLink.Svc.Impl.Repository.Profile.NoDsrServiceRepository()),
                                                                                    conversionLogic);
 
                             if (CanOpenFile(filePath)) {
                                 OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
 
                                 foreach (OrderHistoryFile file in parsedFile.Files) {
-                                    file.SenderApplicationName = Configuration.ApplicationName;
-                                    file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
+                                    // do not upload an order file with an invalid header
+                                    if (file.ValidHeader) {
+                                        file.SenderApplicationName = Configuration.ApplicationName;
+                                        file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
 
-                                    try {
-                                        var jsonValue = JsonConvert.SerializeObject(file);
-										GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
-										repo.PublishToQueue(jsonValue, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
+                                        try {
+                                            var jsonValue = JsonConvert.SerializeObject(file);
+                                            GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
+                                            repo.PublishToQueue(jsonValue, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
 
-                                        StringBuilder logMsg = new StringBuilder();
-                                        logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
-                                        logMsg.AppendLine();
-										logMsg.AppendLine(jsonValue);
+                                            StringBuilder logMsg = new StringBuilder();
+                                            logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
+                                            logMsg.AppendLine();
+                                            logMsg.AppendLine(jsonValue);
 
-                                        _log.WriteInformationLog(logMsg.ToString());
+                                            _log.WriteInformationLog(logMsg.ToString());
 
-                                        _silenceOrderUpdateMessages = false;
-                                    } catch (Exception ex) {
-                                        if (!_silenceOrderUpdateMessages) {
-                                            HandleException(ex);
-                                            _silenceOrderUpdateMessages = true;
-                                            break;
+                                            _silenceOrderUpdateMessages = false;
+                                        } catch (Exception ex) {
+                                            if (!_silenceOrderUpdateMessages) {
+                                                HandleException(ex);
+                                                _silenceOrderUpdateMessages = true;
+                                                break;
+                                            }
                                         }
                                     }
                                 }

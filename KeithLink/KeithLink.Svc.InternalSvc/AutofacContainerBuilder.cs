@@ -84,6 +84,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<ConfigurationService>();
             builder.RegisterType<ReportService>();
 			builder.RegisterType<CacheService>();
+            builder.RegisterType<DsrService>();
 
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
@@ -185,11 +186,12 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
+            builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 			builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 
-            // customer bank - JA - 11/13
+            // customer bank - JA - 11/13<
             builder.RegisterType<OnlinePaymentService>();
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
@@ -211,6 +213,11 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+
+
+            // dsr repository
+            builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
+            builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
             return builder.Build();
         }

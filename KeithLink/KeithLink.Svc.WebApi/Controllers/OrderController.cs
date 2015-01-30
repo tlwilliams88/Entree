@@ -174,6 +174,24 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new OrderHistoryUpdateModel() { LastUpdated = _orderServiceRepository.ReadLatestUpdatedDate(this.SelectedUserContext) };
 		}
 
+        [HttpGet]
+        [ApiKeyedRoute("order/admin/submittedUnconfirmed")]
+        public Models.OperationReturnModel<List<OrderHeader>> GetUnconfirmedOrders()
+        {
+            List<OrderHeader> orders = _orderServiceRepository.GetSubmittedUnconfirmedOrders();
+            return new Models.OperationReturnModel<List<OrderHeader>>() { SuccessResponse = orders };
+        }
+
+        [HttpPut]
+        [ApiKeyedRoute("order/admin/resubmitUnconfirmed/{controlNumber}")]
+        public Models.OperationReturnModel<bool> ResubmitUnconfirmedOrder(int controlNumber)
+        {
+            return new Models.OperationReturnModel<bool>() 
+                {
+                    SuccessResponse = _orderLogic.ResendUnconfirmedOrder(this.AuthenticatedUser, controlNumber) 
+                };
+        }
+
         #endregion
     }
 }
