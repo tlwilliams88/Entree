@@ -128,7 +128,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
             
             // load up recipients, customer and message
-            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber);
+            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
             List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer);
             Message message = GetEmailMessageForNotification(confirmation, customer);
 

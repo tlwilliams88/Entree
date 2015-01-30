@@ -143,6 +143,13 @@ angular.module('bekApp')
         $scope.customerGroup.adminusers.push(profiles[0]);
       } else {
         // display error message to user
+        UserProfileService.createUserFromAdmin(data).then(function (profiles) {
+          if (profiles.length === 1) {
+            $scope.customerGroup.adminusers.push(profiles[0]);
+          } else {
+            // display error message to user
+          }
+        });
       }
     });
   };
