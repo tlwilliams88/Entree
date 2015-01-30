@@ -5,12 +5,11 @@
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IListServcie_AddItems_InputMessage">
@@ -139,6 +138,12 @@
   <wsdl:message name="IListServcie_ReadRecommendedItemsList_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadRecommendedItemsListResponse" />
   </wsdl:message>
+  <wsdl:message name="IListServcie_GetBarcodeForList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBarcodeForList" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_GetBarcodeForList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBarcodeForListResponse" />
+  </wsdl:message>
   <wsdl:portType name="IListServcie">
     <wsdl:operation name="AddItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
@@ -223,6 +228,10 @@
     <wsdl:operation name="ReadRecommendedItemsList">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadRecommendedItemsList" message="tns:IListServcie_ReadRecommendedItemsList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadRecommendedItemsListResponse" message="tns:IListServcie_ReadRecommendedItemsList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBarcodeForList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/GetBarcodeForList" message="tns:IListServcie_GetBarcodeForList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/GetBarcodeForListResponse" message="tns:IListServcie_GetBarcodeForList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
@@ -409,6 +418,15 @@
     </wsdl:operation>
     <wsdl:operation name="ReadRecommendedItemsList">
       <soap:operation soapAction="http://tempuri.org/IListServcie/ReadRecommendedItemsList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetBarcodeForList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/GetBarcodeForList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -620,6 +620,7 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -786,6 +787,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>

@@ -48,7 +48,7 @@
               <a href="javascript:void(0);" ng-click="resendUnconfirmedOrder(item)">Re-Submit</a>
             </td>
             <td class="hidden-mobile-visible-print text-center">
-              <a href="google.com">Order</a>
+              <a ng-href="#/order/{{zeroPad(item, 7)}}/">Order</a>
             </td>
           </tr>
   			</tbody>
