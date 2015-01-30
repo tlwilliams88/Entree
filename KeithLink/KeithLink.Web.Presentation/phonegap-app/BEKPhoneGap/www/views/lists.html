@@ -506,7 +506,7 @@
 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
                 <div 
-                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders)" 
+                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
                   context-menu-template
                   class="context-menu-template context-menu__in-list hidden-print"
                 >

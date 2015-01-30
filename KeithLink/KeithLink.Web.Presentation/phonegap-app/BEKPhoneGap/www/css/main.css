@@ -7502,72 +7502,90 @@ html, body {
   white-space: nowrap;
 }
 
-/* line 1, ../scss/scaffolding/_typography.scss */
+@font-face {
+  font-family: 'Open Sans';
+  src: url("../fonts/google-fonts-Open_Sans/OpenSans-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url("../fonts/google-fonts-Open_Sans/OpenSans-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url("../fonts/google-fonts-Open_Sans/OpenSans-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Code39AzaleaFont';
+  src: url("../fonts/Code39Azalea/Code39Azalea.eot");
+  src: url("../fonts/Code39Azalea/Code39Azalea.eot") format("embedded-opentype"), url("../fonts/Code39Azalea/Code39Azalea.woff") format("woff"), url("../fonts/Code39Azalea/Code39Azalea.ttf") format("truetype"), url("../fonts/Code39Azalea/Code39Azalea.svg#Code39Azalea") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+/* line 32, ../scss/scaffolding/_typography.scss */
+.barcode {
+  font-family: 'Code39AzaleaFont';
+}
+
+/* line 36, ../scss/scaffolding/_typography.scss */
 a, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   cursor: pointer;
 }
 
-/* line 4, ../scss/scaffolding/_typography.scss */
+/* line 39, ../scss/scaffolding/_typography.scss */
 a:hover, .nav-tabs li a:hover, .nav-tabs li.active a:hover {
   text-decoration: none;
 }
 
-/* line 8, ../scss/scaffolding/_typography.scss */
+/* line 43, ../scss/scaffolding/_typography.scss */
 .text-red {
   color: #dc6a6a;
 }
 
-/* line 9, ../scss/scaffolding/_typography.scss */
+/* line 44, ../scss/scaffolding/_typography.scss */
 .text-green {
   color: #04a773;
 }
 
-/* line 10, ../scss/scaffolding/_typography.scss */
+/* line 45, ../scss/scaffolding/_typography.scss */
 .text-white {
   color: #fff;
 }
 
-/* line 11, ../scss/scaffolding/_typography.scss */
+/* line 46, ../scss/scaffolding/_typography.scss */
 .text-regular {
   color: #504938;
 }
 
-/* line 12, ../scss/scaffolding/_typography.scss */
+/* line 47, ../scss/scaffolding/_typography.scss */
 .text-blue {
   color: #489ecf;
 }
 
-/* line 13, ../scss/scaffolding/_typography.scss */
+/* line 48, ../scss/scaffolding/_typography.scss */
 .text-light {
   color: #a0947f;
 }
 
-/* line 14, ../scss/scaffolding/_typography.scss */
+/* line 49, ../scss/scaffolding/_typography.scss */
 .text-gold {
   color: gold;
 }
 
-/* line 16, ../scss/scaffolding/_typography.scss */
+/* line 51, ../scss/scaffolding/_typography.scss */
 .text-thin {
   font-weight: 300;
 }
 
-/* line 18, ../scss/scaffolding/_typography.scss */
+/* line 53, ../scss/scaffolding/_typography.scss */
 .text-small {
   font-size: 8px;
   font-weight: 600;
-}
-
-@font-face {
-  font-family: 'Code39AzaleaFont';
-  src: url("/fonts/Code39Azalea/Code39Azalea.eot");
-  src: url("/fonts/Code39Azalea/Code39Azalea.eot") format("embedded-opentype"), url("/fonts/Code39Azalea/Code39Azalea.woff") format("woff"), url("/fonts/Code39Azalea/Code39Azalea.ttf") format("truetype"), url("/fonts/Code39Azalea/Code39Azalea.svg#Code39Azalea") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
-/* line 33, ../scss/scaffolding/_typography.scss */
-.barcode {
-  font-family: 'Code39AzaleaFont';
 }
 
 /* line 1, ../scss/scaffolding/_alignment.scss */
@@ -7748,18 +7766,21 @@ ng-class="{ odd : $odd, even: $even }"
 /* line 57, ../scss/components/_table.scss */
 .table > thead > tr > th.sort-col-header {
   cursor: pointer;
+}
+/* line 59, ../scss/components/_table.scss */
+.table > thead > tr > th.sort-col-header > span {
   white-space: nowrap;
 }
-/* line 69, ../scss/components/_table.scss */
+/* line 71, ../scss/components/_table.scss */
 .table > tbody > tr.mobile-details-row > td {
   border-top: none;
 }
-/* line 74, ../scss/components/_table.scss */
+/* line 76, ../scss/components/_table.scss */
 .table > tfoot > tr > td,
 .table .filter-row > td {
   background-color: #fff;
 }
-/* line 83, ../scss/components/_table.scss */
+/* line 85, ../scss/components/_table.scss */
 .table > thead > tr > th,
 .table > thead > tr > td,
 .table > tbody > tr > th,
@@ -7768,21 +7789,21 @@ ng-class="{ odd : $odd, even: $even }"
 .table > tfoot > tr > td {
   padding: 12px 5px;
 }
-/* line 90, ../scss/components/_table.scss */
+/* line 92, ../scss/components/_table.scss */
 .table > tbody + tbody {
   border-top: none;
 }
-/* line 94, ../scss/components/_table.scss */
+/* line 96, ../scss/components/_table.scss */
 .table .item-selected > tr > td,
 .table .item-selected > td {
   background-color: #f8f8c4 !important;
 }
 
-/* line 100, ../scss/components/_table.scss */
+/* line 102, ../scss/components/_table.scss */
 .table-narrow {
   margin-bottom: 0;
 }
-/* line 103, ../scss/components/_table.scss */
+/* line 105, ../scss/components/_table.scss */
 .table-narrow > thead > tr > th,
 .table-narrow > thead > tr > td,
 .table-narrow > tbody > tr > th,
@@ -7791,7 +7812,7 @@ ng-class="{ odd : $odd, even: $even }"
 .table-narrow > tfoot > tr > td {
   padding: 6px 5px;
 }
-/* line 111, ../scss/components/_table.scss */
+/* line 113, ../scss/components/_table.scss */
 .table-narrow > thead > tr > th.input-col,
 .table-narrow > thead > tr > td.input-col,
 .table-narrow > tbody > tr > th.input-col,
@@ -7801,42 +7822,42 @@ ng-class="{ odd : $odd, even: $even }"
   padding: 3px 5px;
 }
 
-/* line 122, ../scss/components/_table.scss */
+/* line 124, ../scss/components/_table.scss */
 table tr > td.input-col, table tr > th.input-col {
   padding: 6px 5px;
 }
-/* line 125, ../scss/components/_table.scss */
+/* line 127, ../scss/components/_table.scss */
 table tr > td.input-col input[type="text"], table tr > th.input-col input[type="text"] {
   border: 1px solid #c3bc9c;
   padding: 5px;
   width: 100%;
 }
-/* line 132, ../scss/components/_table.scss */
+/* line 134, ../scss/components/_table.scss */
 table tr > td.icon-col, table tr > th.icon-col {
   padding: 7px 5px;
 }
-/* line 136, ../scss/components/_table.scss */
+/* line 138, ../scss/components/_table.scss */
 table tr > td.notes-col, table tr > th.notes-col {
   max-width: 100px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-/* line 145, ../scss/components/_table.scss */
+/* line 147, ../scss/components/_table.scss */
 table tr.filter-row input {
   width: 100%;
 }
-/* line 150, ../scss/components/_table.scss */
+/* line 152, ../scss/components/_table.scss */
 table tr.mobile-details-row table {
   width: 100%;
 }
-/* line 152, ../scss/components/_table.scss */
+/* line 154, ../scss/components/_table.scss */
 table tr.mobile-details-row table > tbody > tr > td {
   padding-top: 5px;
 }
 
 @media print {
-  /* line 166, ../scss/components/_table.scss */
+  /* line 168, ../scss/components/_table.scss */
   .table > thead > tr > th,
   .table > thead > tr > td,
   .table > tbody > tr > th,
@@ -7846,36 +7867,36 @@ table tr.mobile-details-row table > tbody > tr > td {
     padding: 8px 3px;
   }
 
-  /* line 177, ../scss/components/_table.scss */
+  /* line 179, ../scss/components/_table.scss */
   table tr > td.input-col, table tr > th.input-col {
     padding: 5px 3px;
   }
-  /* line 180, ../scss/components/_table.scss */
+  /* line 182, ../scss/components/_table.scss */
   table tr > td.input-col input[type="text"], table tr > th.input-col input[type="text"] {
     border: 1px solid #c3bc9c;
     padding: 3px;
     width: 100%;
   }
-  /* line 187, ../scss/components/_table.scss */
+  /* line 189, ../scss/components/_table.scss */
   table tr > td.icon-col, table tr > th.icon-col {
     padding: 4px 3px;
   }
-  /* line 191, ../scss/components/_table.scss */
+  /* line 193, ../scss/components/_table.scss */
   table tr > td.notes-col, table tr > th.notes-col {
     max-width: 100px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  /* line 200, ../scss/components/_table.scss */
+  /* line 202, ../scss/components/_table.scss */
   table tr.filter-row input {
     width: 100%;
   }
-  /* line 205, ../scss/components/_table.scss */
+  /* line 207, ../scss/components/_table.scss */
   table tr.mobile-details-row table {
     width: 100%;
   }
-  /* line 207, ../scss/components/_table.scss */
+  /* line 209, ../scss/components/_table.scss */
   table tr.mobile-details-row table > tbody > tr > td {
     padding-top: 5px;
   }
@@ -8123,35 +8144,39 @@ form.style-validation-errors .form-error-message {
 }
 /* line 36, ../scss/components/_featured-items.scss */
 .featured-item-mobile img {
-  max-height: 84px;
-  max-width: 100px;
+  height: 84px;
+  max-width: 100%;
 }
-/* line 41, ../scss/components/_featured-items.scss */
+/* line 40, ../scss/components/_featured-items.scss */
+.featured-item-mobile img.product-placeholder-image {
+  padding: 23px 15px;
+}
+/* line 45, ../scss/components/_featured-items.scss */
 .featured-item-mobile .featured-item-mobile__detail {
   text-align: left;
   padding: 25px 15px 25px 20px;
 }
-/* line 45, ../scss/components/_featured-items.scss */
+/* line 49, ../scss/components/_featured-items.scss */
 .featured-item-mobile .featured-item-mobile__detail a, .featured-item-mobile .featured-item-mobile__detail .nav-tabs li a:hover, .nav-tabs li .featured-item-mobile .featured-item-mobile__detail a:hover {
   font-size: 12px;
 }
-/* line 50, ../scss/components/_featured-items.scss */
+/* line 54, ../scss/components/_featured-items.scss */
 .featured-item-mobile .carousel-counter {
   display: none;
 }
 
-/* line 55, ../scss/components/_featured-items.scss */
+/* line 59, ../scss/components/_featured-items.scss */
 .carousel-control.right, .carousel-control.left {
   background-image: none;
   color: #c3bc9c;
 }
 
-/* line 61, ../scss/components/_featured-items.scss */
+/* line 65, ../scss/components/_featured-items.scss */
 .carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right {
   top: 38%;
 }
 
-/* line 66, ../scss/components/_featured-items.scss */
+/* line 70, ../scss/components/_featured-items.scss */
 .carousel-paging {
   position: absolute;
   z-index: 15;
@@ -8160,7 +8185,7 @@ form.style-validation-errors .form-error-message {
   right: 0;
   cursor: auto;
 }
-/* line 74, ../scss/components/_featured-items.scss */
+/* line 78, ../scss/components/_featured-items.scss */
 .carousel-paging .showIndex {
   display: none;
 }
@@ -8338,26 +8363,33 @@ form.style-validation-errors .form-error-message {
   color: #a0947f;
 }
 /* line 33, ../scss/components/_context-menu.scss */
+.context-menu .btn-group {
+  max-width: 150px;
+}
+/* line 36, ../scss/components/_context-menu.scss */
 .context-menu .btn {
   color: #a0947f;
   font-size: 12px;
   letter-spacing: 0;
   min-width: 150px;
+  max-width: 150px;
   padding: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-/* line 41, ../scss/components/_context-menu.scss */
+/* line 47, ../scss/components/_context-menu.scss */
 .context-menu .btn:hover {
   color: #fff !important;
   background-color: #489ecf !important;
   border-color: #489ecf !important;
 }
-/* line 54, ../scss/components/_context-menu.scss */
+/* line 60, ../scss/components/_context-menu.scss */
 .context-menu .btn-group.open > button {
   box-shadow: none;
   color: #fff;
 }
 
-/* line 66, ../scss/components/_context-menu.scss */
+/* line 72, ../scss/components/_context-menu.scss */
 .context-menu__in-list .dropdown-menu {
   left: -100%;
 }
@@ -8857,73 +8889,22 @@ form.style-validation-errors .form-error-message {
   min-height: 1px;
   padding-left: 15px;
   padding-right: 15px;
-  position: relative;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-  position: relative;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-  position: relative;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
-}
-@media (min-width: 768px) {
-  /* line 2, ../scss/pages/_home.scss */
-  .balance__term--amount {
-    float: left;
-    width: 25%;
-  }
-}
-@media (min-width: 992px) {
-  /* line 2, ../scss/pages/_home.scss */
-  .balance__term--amount {
-    float: left;
-    width: 50%;
-  }
-}
-@media (min-width: 1200px) {
-  /* line 2, ../scss/pages/_home.scss */
-  .balance__term--amount {
-    float: left;
-    width: 25%;
-  }
 }
 /* line 8, ../scss/pages/_home.scss */
 .balance__term--amount strong {
   display: block;
 }
-
-/* line 15, ../scss/pages/_home.scss */
-.term-amount-1, .term-amount-3 {
+/* line 12, ../scss/pages/_home.scss */
+.balance__term--amount:first-child {
   border-right: 1px solid #c3bc9c;
 }
 
-@media (max-width: 767px), (min-width: 992px) and (max-width: 1199px) {
-  /* line 22, ../scss/pages/_home.scss */
-  .term-amount-3, .term-amount-4 {
-    margin-top: 5px;
-  }
-  /* line 24, ../scss/pages/_home.scss */
-  .term-amount-3 strong, .term-amount-4 strong {
-    padding-top: 5px;
-    border-top: 1px solid #c3bc9c;
-  }
-}
-@media (min-width: 768px) and (max-width: 991px), (min-width: 1200px) {
-  /* line 34, ../scss/pages/_home.scss */
-  .term-amount-2 {
-    border-right: 1px solid #c3bc9c;
-  }
-}
-/* line 39, ../scss/pages/_home.scss */
+/* line 17, ../scss/pages/_home.scss */
 .account-summary__graph {
   border-top: none;
 }
 
-/* line 44, ../scss/pages/_home.scss */
+/* line 22, ../scss/pages/_home.scss */
 .notification {
   margin-left: -15px;
   margin-right: -15px;
@@ -8938,7 +8919,7 @@ form.style-validation-errors .form-error-message {
 .notification:after {
   clear: both;
 }
-/* line 48, ../scss/pages/_home.scss */
+/* line 26, ../scss/pages/_home.scss */
 .notification .notification__icon {
   position: relative;
   min-height: 1px;
@@ -8950,13 +8931,13 @@ form.style-validation-errors .form-error-message {
   margin-bottom: -100%;
 }
 @media (min-width: 992px) {
-  /* line 48, ../scss/pages/_home.scss */
+  /* line 26, ../scss/pages/_home.scss */
   .notification .notification__icon {
     float: left;
     width: 25%;
   }
 }
-/* line 55, ../scss/pages/_home.scss */
+/* line 33, ../scss/pages/_home.scss */
 .notification .notification__icon:after {
   content: "";
   position: absolute;
@@ -8966,13 +8947,9 @@ form.style-validation-errors .form-error-message {
   left: 49%;
   border-left: 2px solid #504938;
 }
-/* line 66, ../scss/pages/_home.scss */
-.notification:first-child .notification__icon:after {
-  top: 5px;
-}
-/* line 70, ../scss/pages/_home.scss */
+/* line 44, ../scss/pages/_home.scss */
 .notification .notification__message {
-  width: inherit !important;
+  width: calc(75% - 15px) !important;
   position: relative;
   min-height: 1px;
   padding-left: 15px;
@@ -8985,7 +8962,7 @@ form.style-validation-errors .form-error-message {
   padding: 8px;
 }
 @media (min-width: 992px) {
-  /* line 70, ../scss/pages/_home.scss */
+  /* line 44, ../scss/pages/_home.scss */
   .notification .notification__message {
     float: left;
     width: 75%;
@@ -9017,15 +8994,15 @@ form.style-validation-errors .form-error-message {
   left: -12px;
   top: 4px;
 }
-/* line 82, ../scss/pages/_home.scss */
-.notification .notification__message span.timestamp {
+/* line 56, ../scss/pages/_home.scss */
+.notification .notification__message .timestamp {
   color: #c3bc9c;
 }
-/* line 88, ../scss/pages/_home.scss */
+/* line 62, ../scss/pages/_home.scss */
 .notification.notification--date .notification__icon {
   padding-top: 15px;
 }
-/* line 91, ../scss/pages/_home.scss */
+/* line 65, ../scss/pages/_home.scss */
 .notification.notification--date .notification__date {
   position: relative;
   min-height: 1px;
@@ -9035,31 +9012,31 @@ form.style-validation-errors .form-error-message {
   padding-left: 0;
 }
 @media (min-width: 992px) {
-  /* line 91, ../scss/pages/_home.scss */
+  /* line 65, ../scss/pages/_home.scss */
   .notification.notification--date .notification__date {
     float: left;
     width: 75%;
   }
 }
-/* line 99, ../scss/pages/_home.scss */
+/* line 73, ../scss/pages/_home.scss */
 .notification.notification--activity .notification__icon {
   padding-top: 20px;
 }
-/* line 102, ../scss/pages/_home.scss */
+/* line 76, ../scss/pages/_home.scss */
 .notification.notification--activity .notification__icon div.icon {
-  height: 25px;
-  width: 25px;
-  padding: 3px;
+  height: 26px;
+  width: 26px;
+  padding: 4px 1px;
   border: 1px solid #504938;
   border-radius: 100px;
   background-color: #fff;
   display: inline-block;
 }
-/* line 114, ../scss/pages/_home.scss */
+/* line 88, ../scss/pages/_home.scss */
 .notification.notification--message .notification__icon {
   padding-top: 10px;
 }
-/* line 117, ../scss/pages/_home.scss */
+/* line 91, ../scss/pages/_home.scss */
 .notification.notification--message .notification__icon img {
   height: 40px;
   width: 40px;
@@ -9068,45 +9045,45 @@ form.style-validation-errors .form-error-message {
   border-radius: 100px;
 }
 
-/* line 131, ../scss/pages/_home.scss */
+/* line 105, ../scss/pages/_home.scss */
 .order-summary__header {
   font-weight: 600;
 }
 
-/* line 134, ../scss/pages/_home.scss */
+/* line 108, ../scss/pages/_home.scss */
 .order-summary__order {
   background-color: #fff;
   border: 1px solid #c3bc9c;
   margin-top: 10px;
   box-shadow: 0px 0px 5px #c3bc9c;
 }
-/* line 140, ../scss/pages/_home.scss */
+/* line 114, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--paid {
   border-left: 3px solid #04a773;
 }
-/* line 143, ../scss/pages/_home.scss */
+/* line 117, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--paid .highlight-col {
   color: #04a773;
 }
-/* line 147, ../scss/pages/_home.scss */
+/* line 121, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--late {
   border-left: 3px solid #dc6a6a;
 }
-/* line 150, ../scss/pages/_home.scss */
+/* line 124, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--late .highlight-col {
   color: #dc6a6a;
 }
-/* line 156, ../scss/pages/_home.scss */
+/* line 130, ../scss/pages/_home.scss */
 .order-summary__order .table-col {
   padding: 34px 0;
 }
-/* line 160, ../scss/pages/_home.scss */
+/* line 134, ../scss/pages/_home.scss */
 .order-summary__order .order-col {
   background-color: #f1efe5;
   border-right: 1px solid #c3bc9c;
   padding: 15px 0;
 }
-/* line 165, ../scss/pages/_home.scss */
+/* line 139, ../scss/pages/_home.scss */
 .order-summary__order .order-col .order-col__number {
   font-size: 16px;
   font-weight: 600;
@@ -9144,27 +9121,27 @@ form.style-validation-errors .form-error-message {
   }
 }
 @media (max-width: 991px) {
-  /* line 180, ../scss/pages/_home.scss */
+  /* line 154, ../scss/pages/_home.scss */
   .order-summary__order {
     border-top: none;
   }
-  /* line 185, ../scss/pages/_home.scss */
+  /* line 159, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--late {
     border-left: none;
   }
-  /* line 187, ../scss/pages/_home.scss */
+  /* line 161, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--late .order-col {
     border-top: 3px solid #dc6a6a;
   }
-  /* line 191, ../scss/pages/_home.scss */
+  /* line 165, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--paid {
     border-left: none;
   }
-  /* line 193, ../scss/pages/_home.scss */
+  /* line 167, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--paid .order-col {
     border-top: 3px solid #04a773;
   }
-  /* line 198, ../scss/pages/_home.scss */
+  /* line 172, ../scss/pages/_home.scss */
   .order-summary__order .order-col {
     border-bottom: 1px solid #c3bc9c;
     border-top: 1px solid #c3bc9c;
@@ -9201,16 +9178,16 @@ form.style-validation-errors .form-error-message {
     bottom: -22px;
     left: 9px;
   }
-  /* line 207, ../scss/pages/_home.scss */
+  /* line 181, ../scss/pages/_home.scss */
   .order-summary__order .order-col .order-col__date {
     text-align: right;
     font-size: 14px;
   }
-  /* line 213, ../scss/pages/_home.scss */
+  /* line 187, ../scss/pages/_home.scss */
   .order-summary__order .order-details {
     padding: 15px;
   }
-  /* line 216, ../scss/pages/_home.scss */
+  /* line 190, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item {
     margin-left: -15px;
     margin-right: -15px;
@@ -9225,7 +9202,7 @@ form.style-validation-errors .form-error-message {
   .order-summary__order .order-details > .details-item:after {
     clear: both;
   }
-  /* line 220, ../scss/pages/_home.scss */
+  /* line 194, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item > div {
     position: relative;
     float: left;
@@ -9234,11 +9211,11 @@ form.style-validation-errors .form-error-message {
     padding-left: 15px;
     padding-right: 15px;
   }
-  /* line 223, ../scss/pages/_home.scss */
+  /* line 197, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item .item-value {
     text-align: right;
   }
-  /* line 226, ../scss/pages/_home.scss */
+  /* line 200, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item .item-title {
     font-weight: 600;
   }
