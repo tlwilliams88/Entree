@@ -445,7 +445,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
-                if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
+                if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
+                {
+                    userRole = "owner";
+                }
+                else if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
                 {
                     dsrRole = internalUserRole;
                     dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
