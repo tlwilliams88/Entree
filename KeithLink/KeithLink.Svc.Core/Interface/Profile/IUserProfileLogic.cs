@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         // admin functions
         CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
-        Customer GetCustomerByCustomerNumber(string customerNumber);
+        Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
         Account GetAccount(Guid id);
         AccountUsersReturn GetAccountUsers(Guid id);
