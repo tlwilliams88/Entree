@@ -177,7 +177,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public HttpResponseMessage Barcode(long listId)
 		{
 			var list = listServiceRepository.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, listId);
-
+			
 
 			//TODO: Cleanup, some is test code
 			ReportViewer rv = new ReportViewer();
