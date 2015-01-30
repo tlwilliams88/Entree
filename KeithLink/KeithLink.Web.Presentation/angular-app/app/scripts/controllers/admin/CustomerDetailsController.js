@@ -9,7 +9,7 @@ angular.module('bekApp')
   var init = function(){
     $scope.preferncesFound = false;
     
-    CustomerService.getCustomerDetails($stateParams.customerNumber).then(function(customer) {
+    CustomerService.getCustomerDetails($stateParams.customerNumber, $stateParams.branchNumber).then(function(customer) {
       $scope.customer = customer;
 console.log('customer: ' + JSON.stringify($scope.customer));
       var prefArray = [];
