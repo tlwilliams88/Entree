@@ -360,7 +360,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.admin.customer', {
-      url: 'customers/:customerNumber/',
+      url: 'customers/:customerNumber/:branchNumber/',
       templateUrl: 'views/admin/customerdetails.html',
       controller: 'CustomerDetailsController',
       data: {

@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         void AddCustomerToAccount(Guid accountId, Guid customerId);
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
-		List<Customer> GetCustomersForUser(UserProfile user);
+		List<Customer> GetCustomersForUser(UserProfile user, string search = "");
         List<Customer> GetCustomersForExternalUser(Guid userId);
     }
 }
