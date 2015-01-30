@@ -140,6 +140,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadRecommendedItemsList", ReplyAction="http://tempuri.org/IListServcie/ReadRecommendedItemsListResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.RecommendedItemModel[]> ReadRecommendedItemsListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/GetBarcodeForList", ReplyAction="http://tempuri.org/IListServcie/GetBarcodeForListResponse")]
+        KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel[] GetBarcodeForList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/GetBarcodeForList", ReplyAction="http://tempuri.org/IListServcie/GetBarcodeForListResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel[]> GetBarcodeForListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -335,6 +341,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.RecommendedItemModel[]> ReadRecommendedItemsListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
             return base.Channel.ReadRecommendedItemsListAsync(catalogInfo);
+        }
+        
+        public KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel[] GetBarcodeForList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
+            return base.Channel.GetBarcodeForList(user, catalogInfo, Id);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel[]> GetBarcodeForListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
+            return base.Channel.GetBarcodeForListAsync(user, catalogInfo, Id);
         }
     }
 }

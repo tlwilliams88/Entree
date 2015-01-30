@@ -14,15 +14,9 @@ angular.module('bekApp')
     var Service = {
 
       // gets and sets current user profile
-      getCurrentUserProfile: function(email) { 
-        return Service.getUserProfile(email).then(function (profile) {
-          profile.salesRep = {
-            'id': 34234,
-            'name': 'Heather Hill',
-            'phone': '(888) 912-2342',
-            'email': 'heather.hill@benekeith.com',
-            'imageUrl': './images/placeholder-dsr.jpg'
-          };
+      getCurrentUserProfile: function(email) {
+
+        return Service.getUserProfile(email).then(function (profile) {          
 
           LocalStorage.setProfile(profile);
 

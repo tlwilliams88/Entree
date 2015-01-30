@@ -138,5 +138,11 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return listLogic.ReadRecommendedItemsList(catalogInfo);
 		}
+
+
+		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+		{
+			return listLogic.GetBarcodeForList(user, catalogInfo, Id);
+		}
 	}
 }
