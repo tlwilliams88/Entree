@@ -8,13 +8,17 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService',
-    function ($scope, $modal, item, ProductService) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'PricingService',
+    function ($scope, $modal, item, ProductService, PricingService) {
     
     var originalItemNotes = item.notes;
 
     $scope.item = item;
     $scope.item.quantity = 1;
+
+    $scope.canOrderItem = PricingService.canOrderItem;
+    $scope.hasCasePrice = PricingService.hasCasePrice;
+    $scope.canOrderItem = PricingService.canOrderItem;
     
     ProductService.getProductDetails(item.itemnumber).then(function(item) {
       $scope.item = item;

@@ -90,7 +90,7 @@ angular
         event.preventDefault();
       }
 
-      if (AccessService.isPasswordExpired()) {
+      if (AccessService.isLoggedIn() && AccessService.isPasswordExpired()) {
         $state.go('changepassword');
         event.preventDefault();
       }

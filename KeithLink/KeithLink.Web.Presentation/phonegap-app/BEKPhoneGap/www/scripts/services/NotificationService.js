@@ -22,6 +22,7 @@ angular.module('bekApp')
       },
 
       getMessages: function(params) {
+      
         return Notification.save(params).$promise.then(function(data) {
           data.results.forEach(function(notification) {
             switch (notification.notificationtype) {
@@ -29,11 +30,14 @@ angular.module('bekApp')
               case 1: // My order is shipped
                 notification.displayType = 'Order';
                 break;
+              case 64:
               case 2: // My invoices need attention
                 notification.displayType = 'Invoice';
                 break;
               case 3: // Ben E Keith has news for me
-                break;
+              case 8:
+               notification.displayType = 'News';
+              break;
             }
           });
           return data;

@@ -82,27 +82,29 @@
 
         <tr ng-repeat-start="transaction in transactions" ng-class="{ odd : $odd, even: $even }">
           <td>
-            {{::transaction.customername}}
+            <a ng-click="goToInvoicesForCustomer(transaction.customernumber)">{{::transaction.customername}}</a>
           </td>
           <td class="hidden-mobile-visible-print">
-            {{::transaction.customernumber}}
+            <a ng-click="goToInvoicesForCustomer(transaction.customernumber)">{{::transaction.customernumber}}</a>
           </td>
           <td class="hidden-mobile-visible-print">
             {{::transaction.confirmationid}}
           </td>
           <td class=" hidden-mobile-visible-print">
-            {{::transaction.invoicenumber}}
+            <a ng-click="goToInvoiceDetails(transaction.customernumber, transaction.invoicenumber)">{{::transaction.invoicenumber}}</a>
           </td>
           <td>
-            {{::transaction.amount}}
+            {{::transaction.amount | currency}}
           </td>
           <td>
-            {{::transaction.date | date:short}}
+            {{::transaction.date.substr(0,10) | date:short}}
           </td>
           <td class="hidden-mobile-visible-print">
             {{::transaction.account}}
           </td>
-          <td></td>
+          <td class="large-icon icon-col">
+            <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+          </td>
         </tr>
 
         <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
@@ -114,19 +116,19 @@
               </colgroup>
               <tr>
                 <td>Confirmation ID</td>
-                <td>{{transaction.confirmationid}}</td>
+                <td>{{::transaction.confirmationid}}</td>
               </tr>
               <tr>
                 <td>Invoice #</td>
-                <td>{{transaction.invoicenumber}}</td>
+                <a ng-click="goToInvoiceDetails(transaction.customernumber, transaction.invoicenumber)">{{::transaction.invoicenumber}}</a>
               </tr>
               <tr>
                 <td>Customer Number</td>
-                <td>{{transaction.customernumber}}</td>
+                <a href="goToInvoicesForCustomer(transaction.customernumber)">{{::transaction.customernumber}}</a>
               </tr>
               <tr>
                 <td>Account</td>
-                <td>{{transaction.customerNumber}}</td>
+                <td>{{::transaction.account}}</td>
               </tr>
             </table>
           </td>

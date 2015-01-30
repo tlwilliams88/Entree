@@ -6,13 +6,16 @@ angular.module('bekApp')
 
   $scope.items = items;
   $scope.name = name;
-  $scope.labelOptions = {
-    type: '5160'
-  };
+  $scope.labelOptions = [{
+    type: '5160',
+    numberOnPage: 30,
+    columns: 3
+  }];
+  $scope.selectedLabelOption = $scope.labelOptions[0]; // pre-select first option
 
-  $scope.printLabels = function(items, labelType) {
+  $scope.printLabels = function(items, labelOption) {
     var data = {
-      type: labelType,
+      labelOption: labelOption,
       items: items
     };
     PrintService.print('views/printTemplates/productlabels.html', data);
