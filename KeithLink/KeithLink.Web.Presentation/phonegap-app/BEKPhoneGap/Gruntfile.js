@@ -30,8 +30,7 @@ module.exports = function(grunt) {
               }
             }
           },
-          versionCode: 1,
-          permissions: []
+          versionCode: 1
         }
       },
       clean: [
