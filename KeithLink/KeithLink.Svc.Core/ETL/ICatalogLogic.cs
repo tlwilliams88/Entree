@@ -11,6 +11,7 @@ namespace KeithLink.Svc.Core.ETL
         void ProcessCatalogData();
         void ProcessContractAndWorksheetData();
         void ProcessElasticSearchData();
+        void ProcessCatalogDataSerial();
         //void ImportCatalog();
         //void ImportProfiles();
         //void ImportItemsToElasticSearch();

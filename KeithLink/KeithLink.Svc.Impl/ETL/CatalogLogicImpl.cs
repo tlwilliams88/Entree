@@ -120,6 +120,16 @@ namespace KeithLink.Svc.Impl.ETL
             this.messageLogic = messageLogic;
         }
 
+        //run all catalog, es, and pre-populated list tasks in a non-distributed manner
+        public void ProcessCatalogDataSerial()
+        {
+            ImportCatalog();
+            ImportItemsToElasticSearch();
+            ImportCategoriesToElasticSearch();
+            ImportHouseBrandsToElasticSearch();
+            ImportPrePopulatedLists();
+        }
+
         public void ProcessCatalogData()
         {
             try
