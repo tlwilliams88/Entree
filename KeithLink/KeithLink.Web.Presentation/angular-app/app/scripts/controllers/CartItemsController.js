@@ -34,12 +34,10 @@ angular.module('bekApp')
     // set default selected critical items list
     if ($scope.mandatoryList) {
       $scope.mandatoryList.active = true;
-    } else {
-      $scope.mandatoryList = {};
-    }
-    if ($scope.reminderList) {
+    } else if ($scope.reminderList) {
       $scope.reminderList.active = true;
     } else {
+      $scope.mandatoryList = {};
       $scope.reminderList = {};
     }
 
