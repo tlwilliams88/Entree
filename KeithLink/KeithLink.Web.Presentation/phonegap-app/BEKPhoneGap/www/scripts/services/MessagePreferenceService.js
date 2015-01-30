@@ -6,8 +6,14 @@ angular.module('bekApp')
       updatePreferences: function(preferences){
         var promise = $http.put('/messaging/preferences', preferences);
         return UtilityService.resolvePromise(promise);
+      },
+      loadPreferences: function(){
+        var promise = $http.get('/messaging/preferences');
+        return UtilityService.resolvePromise(promise);
       }
     };
 
     return Service;
   }]);
+
+
