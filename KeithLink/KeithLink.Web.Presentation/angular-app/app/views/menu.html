@@ -153,11 +153,11 @@
     </ul>
   </nav>
   <div class="person-info sidebar-dsr" ng-if="isOrderEntryCustomer">
-    <div class="person-info__section"><img ng-src="{{userProfile.salesRep.imageUrl}}" alt=""></div>
+    <div class="person-info__section"><img ng-src="{{selectedUserContext.customer.dsr.imageurl}}" alt="dsr image"></div>
     <div class="person-info__section person-info__details">
-      <span class="text-white">{{userProfile.salesRep.name}}</span>
-      <a ng-href="{{'tel:' + userProfile.salesRep.phone}}" class="text-white">{{userProfile.salesRep.phone}}</a>
-      <span><a class="text-uppercase" href="mailto:{{userProfile.salesRep.email}}">Email Me</a></span>
+      <span class="text-white">{{selectedUserContext.customer.dsr.name}}</span>
+      <a ng-href="{{'tel:' + selectedUserContext.customer.dsr.phonenumber}}" class="text-white">{{selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</a>
+      <span><a class="text-uppercase" href="mailto:{{selectedUserContext.customer.dsr.emailaddress}}">Email Me</a></span>
     </div>
   </div>
   <div ng-if="isOrder" class="sidebar-actions text-center">
