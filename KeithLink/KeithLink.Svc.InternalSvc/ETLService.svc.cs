@@ -29,6 +29,26 @@ namespace KeithLink.Svc.InternalSvc
 			this.invoiceLogic = invoiceLogic;
         }
 
+        public bool ProcessETLDataSerial()
+        {
+            Task.Factory.StartNew(() => categoryLogic.ProcessCatalogDataSerial()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            Task.Factory.StartNew(() => customerLogic.ImportCustomerTasksSerial()).ContinueWith((t) =>
+            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+            return true;
+        }
+
+        /*
+        private void RunAllCatalogTasks()
+        {
+            categoryLogic.ProcessCatalogDataSerial();
+            customerLogic.ImportCustomersToOrganizationProfile();
+            customerLogic.ImportDsrInfo();
+        }
+        */
+
         public bool ProcessCatalogData()
         {
             Task.Factory.StartNew(() => categoryLogic.ProcessCatalogData()).ContinueWith((t) =>

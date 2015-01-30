@@ -146,6 +146,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         public List<Customer> GetCustomersByNameSearch(string searchText)
         {
+            var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(searchText));
+            if (customerFromCache != null)
+                return customerFromCache;
+
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
             queryOrg.SearchCriteria.WhereClause = "GeneralInfo.name LIKE '%" + searchText + "%'"; // org type of customer
 
@@ -160,6 +164,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     customers.Add(OrgToCustomer(org));
                 }
             }
+
+            _customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(searchText), TimeSpan.FromMinutes(2), customers);
             return customers;
         }
 
@@ -235,6 +241,35 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             return customers;
 		}
+
+        public List<Customer> GetCustomersByNameSearchAndBranch(string search, string branchId)
+        {
+            var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(search + branchId));
+            if (customerFromCache != null)
+                return customerFromCache;
+
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.branch_number = '" + branchId + "' AND GeneralInfo.name LIKE '%" + search + "%'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            List<Customer> customers = new List<Customer>();
+
+            if (res.CommerceEntities.Count > 0)
+            {
+                foreach (CommerceEntity ent in res.CommerceEntities)
+                {
+                    Organization org = new Organization(ent);
+                    if (org.OrganizationType == "0")
+                    {
+                        customers.Add(OrgToCustomer(org));
+                    }
+                }
+
+                _customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(search + branchId), TimeSpan.FromHours(4), customers);
+            }
+
+            return customers;
+        }
 
 		public List<Customer> GetCustomersForAccount(string accountId)
 		{

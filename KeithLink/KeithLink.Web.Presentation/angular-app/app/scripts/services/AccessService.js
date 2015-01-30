@@ -22,10 +22,10 @@ angular.module('bekApp')
     },
 
     isOrderEntryCustomer: function() {
-      return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isDsr() ) );
+      return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isInternalAccountAdminUser() ) );
     },
 
-    isInternalUser: function() {
+    isInternalAccountAdminUser: function() {
       return ( Service.isLoggedIn() && ( Service.isDsr() || Service.isDsm() || Service.isSysAdmin() || Service.isBranchManager() ) );
     },
 
@@ -71,23 +71,23 @@ angular.module('bekApp')
     // PRIVILEDGES
 
     canBrowseCatalog: function() {
-      return ( Service.isDsm() || Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
     },
 
     canSeePrices: function() {
-      return ( Service.isDsm() || Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
     },
 
     canManageLists: function() {
-      return ( Service.isDsm() || Service.isDsr() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
     },
 
     canCreateOrders: function() {
-      return ( Service.isDsm() || Service.isDsr() || Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
     },
 
     canSubmitOrders: function() {
-      return ( Service.isDsm() || Service.isDsr() || Service.isOwner() || Service.isApprover() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isApprover() );
     },
 
     canPayInvoices: function() {
@@ -95,11 +95,11 @@ angular.module('bekApp')
     },
 
     canManageAccount: function() {
-      return ( Service.isDsm() || Service.isDsr() || Service.isOwner() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner() );
     },
 
     canManageAccounts: function() {
-      return ( Service.isDsm() || Service.isDsr() || Service.isSysAdmin() || Service.isBranchManager() );
+      return ( Service.isInternalAccountAdminUser() );
     }
 
   };

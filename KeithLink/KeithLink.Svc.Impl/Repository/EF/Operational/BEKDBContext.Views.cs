@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets949b3f6912f7265b7ad29eaccbf17a02d0dee98608c1197ecc8153650c865648))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets8405d37f59960ca88de3dad6fc7d2c49b985ad00cdd64fef7ca47017525c4dad))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets949b3f6912f7265b7ad29eaccbf17a02d0dee98608c1197ecc8153650c865648 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySets8405d37f59960ca88de3dad6fc7d2c49b985ad00cdd64fef7ca47017525c4dad : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "949b3f6912f7265b7ad29eaccbf17a02d0dee98608c1197ecc8153650c865648"; }
+            get { return "8405d37f59960ca88de3dad6fc7d2c49b985ad00cdd64fef7ca47017525c4dad"; }
         }
 
         /// <summary>
@@ -1322,7 +1322,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessagingPreference
-        [CodeFirstDatabaseSchema.UserMessagingPreference](T1.UserMessagingPreference_Id, T1.UserMessagingPreference_UserId, T1.UserMessagingPreference_NotificationType, T1.UserMessagingPreference_Channel, T1.UserMessagingPreference_CustomerNumber, T1.UserMessagingPreference_CreatedUtc, T1.UserMessagingPreference_ModifiedUtc)
+        [CodeFirstDatabaseSchema.UserMessagingPreference](T1.UserMessagingPreference_Id, T1.UserMessagingPreference_UserId, T1.UserMessagingPreference_NotificationType, T1.UserMessagingPreference_Channel, T1.UserMessagingPreference_CustomerNumber, T1.UserMessagingPreference_BranchId, T1.UserMessagingPreference_CreatedUtc, T1.UserMessagingPreference_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserMessagingPreference_Id, 
@@ -1330,6 +1330,7 @@ namespace Edm_EntityMappingGeneratedViews
             CAST(T.NotificationType AS [Edm.Int32]) AS UserMessagingPreference_NotificationType, 
             CAST(T.Channel AS [Edm.Int32]) AS UserMessagingPreference_Channel, 
             T.CustomerNumber AS UserMessagingPreference_CustomerNumber, 
+            T.BranchId AS UserMessagingPreference_BranchId, 
             T.CreatedUtc AS UserMessagingPreference_CreatedUtc, 
             T.ModifiedUtc AS UserMessagingPreference_ModifiedUtc, 
             True AS _from0
@@ -1345,7 +1346,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessagingPreferences
-        [KeithLink.Svc.Impl.Repository.EF.Operational.UserMessagingPreference](T1.UserMessagingPreference_Id, T1.UserMessagingPreference_UserId, T1.UserMessagingPreference_NotificationType, T1.UserMessagingPreference_Channel, T1.UserMessagingPreference_CustomerNumber, T1.UserMessagingPreference_CreatedUtc, T1.UserMessagingPreference_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.UserMessagingPreference](T1.UserMessagingPreference_Id, T1.UserMessagingPreference_UserId, T1.UserMessagingPreference_NotificationType, T1.UserMessagingPreference_Channel, T1.UserMessagingPreference_CustomerNumber, T1.UserMessagingPreference_BranchId, T1.UserMessagingPreference_CreatedUtc, T1.UserMessagingPreference_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserMessagingPreference_Id, 
@@ -1353,6 +1354,7 @@ namespace Edm_EntityMappingGeneratedViews
             CAST(T.NotificationType AS [KeithLink.Svc.Impl.Repository.EF.Operational.NotificationType]) AS UserMessagingPreference_NotificationType, 
             CAST(T.Channel AS [KeithLink.Svc.Impl.Repository.EF.Operational.Channel]) AS UserMessagingPreference_Channel, 
             T.CustomerNumber AS UserMessagingPreference_CustomerNumber, 
+            T.BranchId AS UserMessagingPreference_BranchId, 
             T.CreatedUtc AS UserMessagingPreference_CreatedUtc, 
             T.ModifiedUtc AS UserMessagingPreference_ModifiedUtc, 
             True AS _from0

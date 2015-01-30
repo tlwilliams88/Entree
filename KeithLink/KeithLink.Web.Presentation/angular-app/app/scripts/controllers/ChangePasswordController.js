@@ -24,7 +24,7 @@ angular.module('bekApp')
                UserProfileService.changePassword(passwordData).then(function(response) {
                    profile.passwordexpired = false;
                    LocalStorage.setProfile(profile);
-                   if ( AccessService.isOrderEntryCustomer() || AccessService.isInternalUser() ) {
+                   if ( AccessService.isOrderEntryCustomer() || AccessService.isInternalAccountAdminUser() ) {
                         $state.go('menu.home');
                    } else {
                         $state.go('menu.catalog.home');
