@@ -99,6 +99,16 @@ angular.module('bekApp')
 
       exportOrderDetails: function(config, orderNumber) {
         ExportService.export('/order/export/' + orderNumber, config);
+      },
+
+      getUnconfirmedOrders: function() {
+        var promise = $http.get('/order/admin/submittedUnconfirmed');
+        return UtilityService.resolvePromise(promise);
+      },
+
+      resubmitUnconfirmedOrder: function(controlNumber) {
+        var promise = $http.put('/order/admin/resubmitUnconfirmed/' + controlNumber );
+        return UtilityService.resolvePromise(promise);
       }
 
     };
