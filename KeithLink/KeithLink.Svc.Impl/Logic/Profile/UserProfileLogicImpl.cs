@@ -769,9 +769,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
         #endregion
 
-        public Customer GetCustomerByCustomerNumber(string customerNumber)
+		public Customer GetCustomerByCustomerNumber(string customerNumber, string branchId)
         {
-            return _customerRepo.GetCustomerByCustomerNumber(customerNumber);
+            return _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
         }
 
         public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
