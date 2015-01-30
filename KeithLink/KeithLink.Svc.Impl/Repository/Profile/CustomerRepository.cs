@@ -122,21 +122,21 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return "CustomerCache_" + setName;
         }
 
-        public Customer GetCustomerByCustomerNumber(string customerNumber)
+		public Customer GetCustomerByCustomerNumber(string customerNumber, string branchId)
         {
-			var customerFromCache = _customerCacheRepository.GetItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(customerNumber));
+			var customerFromCache = _customerCacheRepository.GetItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("{0}-{1}",customerNumber, branchId)));
 			if (customerFromCache != null)
 				return customerFromCache;
 
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0' AND GeneralInfo.customer_number = '" + customerNumber + "'"; // org type of customer
+			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0' AND GeneralInfo.customer_number = '" + customerNumber + "' AND GeneralInfo.branch_number = '" + branchId + "'"; // org type of customer
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
 			if (res.CommerceEntities.Count > 0)
 			{
 				var customer = OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]));
-				_customerCacheRepository.AddItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(customerNumber), TimeSpan.FromHours(4), customer);
+				_customerCacheRepository.AddItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("{0}-{1}", customerNumber, branchId)), TimeSpan.FromHours(4), customer);
 
 				return customer;
 			}

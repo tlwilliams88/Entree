@@ -443,14 +443,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (isInternalUser)
             {
-                string emtouser = csProfile.Email;
-                UserPrincipal user = _intAd.GetUser(emtouser);
+                UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
-                /*if (true) -- for testing
+                if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
                 {
-                    userRole = "beksysadmin";
+                    userRole = "owner";
                 }
-                else*/ if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
+                else if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
                 {
                     dsrRole = internalUserRole;
                     dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
@@ -771,9 +770,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
         #endregion
 
-        public Customer GetCustomerByCustomerNumber(string customerNumber)
+		public Customer GetCustomerByCustomerNumber(string customerNumber, string branchId)
         {
-            return _customerRepo.GetCustomerByCustomerNumber(customerNumber);
+            return _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
         }
 
         public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
