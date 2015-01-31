@@ -59,18 +59,20 @@ namespace KeithLink.Svc.Impl.ETL
             BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
             BlockingCollection<AddressProfiles> addressesForImport = new BlockingCollection<AddressProfiles>();
 
-            Parallel.ForEach(customers.AsEnumerable(), row =>
+            //Parallel.ForEach(customers.AsEnumerable(), row =>
+            foreach(DataRow row in customers.Rows)
             {
                 orgsForImport.Add(CreateOrganizationFromStagedData(row));
                 addressesForImport.Add(CreateAddressFromStagedData(row));
-            });
+            }
 
             // Get Existing Organizations from CS
             List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type and natl_or_regl_account_number
 
             ProfileContext ctxt = GetProfileContext();
             
-            Parallel.ForEach(orgsForImport, org =>
+            //Parallel.ForEach(orgsForImport, org =>
+            foreach(Organization org in orgsForImport)
                 {
                     // Create a new profile object.
                     Profile prof = null;
@@ -127,7 +129,7 @@ namespace KeithLink.Svc.Impl.ETL
                     addressProfile.Update();
 
                     prof.Update();
-                });
+                }
 
             TimeSpan took = DateTime.Now - start;
             return;
