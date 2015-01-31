@@ -70,7 +70,8 @@ namespace KeithLink.Svc.Impl.ETL
 
             ProfileContext ctxt = GetProfileContext();
             
-            Parallel.ForEach(orgsForImport, org =>
+            //Parallel.ForEach(orgsForImport, org =>
+            foreach(Organization org in orgsForImport)
                 {
                     // Create a new profile object.
                     Profile prof = null;
@@ -127,7 +128,7 @@ namespace KeithLink.Svc.Impl.ETL
                     addressProfile.Update();
 
                     prof.Update();
-                });
+                }
 
             TimeSpan took = DateTime.Now - start;
             return;
