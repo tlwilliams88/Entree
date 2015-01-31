@@ -15,6 +15,7 @@ using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Configuration;
 using Microsoft.Reporting.WinForms;
 using System.Reflection;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -23,14 +24,16 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private readonly IListServiceRepository listServiceRepository;
 		private readonly IExportSettingServiceRepository exportSettingRepository;
+		private readonly IEventLogRepository elRepo;
         #endregion
 
         #region ctor
-		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository, IExportSettingServiceRepository exportSettingRepository)
+		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository, IExportSettingServiceRepository exportSettingRepository, IEventLogRepository elRepo)
 			: base(profileLogic)
 		{
             this.listServiceRepository = listServiceRepository;
 			this.exportSettingRepository = exportSettingRepository;
+			this.elRepo = elRepo;
         }
         #endregion
 
@@ -176,33 +179,54 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/barcode/{listId}")]
 		public HttpResponseMessage Barcode(long listId)
 		{
-			var list = listServiceRepository.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, listId);
-			
-
-			//TODO: Cleanup, some is test code
-			ReportViewer rv = new ReportViewer();
-
-			rv.ProcessingMode = ProcessingMode.Local;
-			//rv.LocalReport.ReportPath = "Report1.rdlc";
-			
-			Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
-			Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.Itembarcode5160.rdlc");
-			rv.LocalReport.LoadReportDefinition(rdlcStream);
-			rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", list));
-
-			var bytes = rv.LocalReport.Render("PDF");
-
-			Stream stream = new MemoryStream(bytes);
-
-			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-			result.Content = new StreamContent(stream);
-			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+			try
+			{
+				var list = listServiceRepository.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
 
-			result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+				//TODO: Cleanup, some is test code
+				ReportViewer rv = new ReportViewer();
 
-			return result;
+				rv.ProcessingMode = ProcessingMode.Local;
+				//rv.LocalReport.ReportPath = "Report1.rdlc";
 
+				Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+				Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.Itembarcode5160.rdlc");
+				rv.LocalReport.LoadReportDefinition(rdlcStream);
+				rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", list));
+				
+				var bytes = rv.LocalReport.Render("PDF");
+				using (System.IO.FileStream fs = new System.IO.FileStream(@"C:\Downloads\barcode.pdf", System.IO.FileMode.Create))
+				{
+					fs.Write(bytes, 0, bytes.Length);
+				}
+
+				Stream stream = new MemoryStream(bytes);
+
+				HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+				result.Content = new StreamContent(stream);
+				result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+
+
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+
+				return result;
+
+
+
+			}
+			catch (Exception ex)
+			{
+				//TODO: This is test code to determine issue in dev. This should be removed.
+				elRepo.WriteErrorLog("e", ex);
+				if (ex.InnerException != null)
+				{
+					elRepo.WriteErrorLog("b", ex.InnerException);
+					if(ex.InnerException.InnerException != null)
+						elRepo.WriteErrorLog("c", ex.InnerException.InnerException);
+				}
+			}
+			return null;
 			
 
 		}
