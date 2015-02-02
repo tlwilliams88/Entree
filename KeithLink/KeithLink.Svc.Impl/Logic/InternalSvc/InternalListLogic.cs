@@ -263,6 +263,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.Kosher = prod.Kosher;
 					listItem.ManufacturerName = prod.ManufacturerName;
 					listItem.ManufacturerNumber = prod.ManufacturerNumber;
+                    listItem.AverageWeight = prod.AverageWeight;
 					listItem.Nutritional = new Nutritional()
 					{
 						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
