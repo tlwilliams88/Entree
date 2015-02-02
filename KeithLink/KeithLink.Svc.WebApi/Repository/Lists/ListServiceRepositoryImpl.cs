@@ -151,7 +151,11 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 
 		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
-			return serviceClient.GetBarcodeForList(user, catalogInfo, Id).ToList();
+			var list = serviceClient.GetBarcodeForList(user, catalogInfo, Id);
+
+			if (list == null)
+				return null;
+			return list.ToList();
 		}
 	}
 }

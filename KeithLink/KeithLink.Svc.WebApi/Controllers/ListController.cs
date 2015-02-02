@@ -183,6 +183,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 			{
 				var list = listServiceRepository.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
+				if (list == null)
+					return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };
+
 
 				//TODO: Cleanup, some is test code
 				ReportViewer rv = new ReportViewer();
