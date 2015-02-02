@@ -39,7 +39,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory
             , IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory)
+                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
         {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;

@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                                                           IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory,
                                                           IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, 
-                   userMessagingPreferenceRepository, messageProviderFactory)
+                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
         {
             _log = eventLogRepository;
             _userLogic = userProfileLogic;
