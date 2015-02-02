@@ -132,6 +132,15 @@ namespace KeithLink.Svc.Impl.ETL
 
             //TODO: Move image to multidocs
             //dsrInfo contains fields:  EmailAddress and EmployeePhoto
+            DataTable dsrImages = stagingRepository.ReadDsrImages();
+            foreach (DataRow row in dsrImages.Rows) {
+                if ( !string.IsNullOrEmpty(row["EmployeePhoto"].ToString()) ) {
+                    dsrLogic.SendImageToMultiDocs( row.GetString( "EmailAddress" ), (byte[])row["EmployeePhoto"] );
+                }
+            }
+            
+            
+            
         }
 
         private AddressProfiles CreateAddressFromStagedData(DataRow row)
