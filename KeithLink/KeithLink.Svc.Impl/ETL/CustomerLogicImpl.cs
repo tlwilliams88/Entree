@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.ETL
             catch (Exception ex)
             {
                 //log
-                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+                eventLog.WriteErrorLog("Error with ETL Import -- Import Customer Tasks", ex);
             }
         }
 
