@@ -190,5 +190,10 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
 
+        public DataTable ReadDsrImages() {
+            return PopulateDataTable( "[ETL].[ReadDsrImage]" );
+        }
+
+
     }
 }
