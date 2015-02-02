@@ -9,7 +9,7 @@
  * used on search results and lists page
  */
 angular.module('bekApp')
-.directive('favoriteIcons', ['ListService', function(ListService){
+.directive('favoriteIcons', [ function(){
   return {
     restrict: 'A',
     templateUrl: 'views/directives/favoriteicons.html'

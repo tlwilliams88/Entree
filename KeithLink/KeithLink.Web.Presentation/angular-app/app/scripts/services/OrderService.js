@@ -35,7 +35,9 @@ angular.module('bekApp')
       *************/
 
       getChangeOrders: function() {
-        var promise = $http.get('/order/changeorder');
+        var promise = $http.get('/order/changeorder', {
+          header: true
+        });
         return UtilityService.resolvePromise(promise);
       },
 
