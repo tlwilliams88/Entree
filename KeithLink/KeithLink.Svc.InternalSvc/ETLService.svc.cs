@@ -29,7 +29,7 @@ namespace KeithLink.Svc.InternalSvc
 			this.invoiceLogic = invoiceLogic;
         }
 
-        public bool ProcessETLDataSerial()
+        public bool ProcessETLData()
         {
             /*
             Task.Factory.StartNew(() => RunAllCatalogTasks()).ContinueWith((t) =>
@@ -39,7 +39,7 @@ namespace KeithLink.Svc.InternalSvc
             Task.Factory.StartNew(() => categoryLogic.ProcessCatalogDataSerial()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
-            Task.Factory.StartNew(() => customerLogic.ImportCustomerTasksSerial()).ContinueWith((t) =>
+            Task.Factory.StartNew(() => customerLogic.ImportCustomerTasks()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
