@@ -88,7 +88,7 @@
               <tr ng-repeat="shipDate in shipDates" ng-click="selectedCart.requestedshipdate = shipDate.shipdate">
                 <td>{{shipDate.dayofweek}}</td>
                 <td class="nowrap">{{shipDate.shipdate}}</td>
-                <td class="nowrap">{{shipDate.cutoffdatetime}}</td>
+                <td class="nowrap">{{shipDate.cutoffDateString}}</td>
               </tr>
             </table>
           </div>

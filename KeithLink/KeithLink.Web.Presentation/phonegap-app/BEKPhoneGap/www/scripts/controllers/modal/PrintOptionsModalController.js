@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('PrintOptionsModalController', ['$scope', '$modalInstance', 'PrintService', 'items', 'name',
-  function ($scope, $modalInstance, PrintService, items, name) {
+.controller('PrintOptionsModalController', ['$scope', '$modalInstance', 'PrintService', 'ListService', 'list',
+  function ($scope, $modalInstance, PrintService, ListService, list) {
 
-  $scope.items = items;
-  $scope.name = name;
+  $scope.list = list;
   $scope.labelOptions = [{
     type: '5160',
     numberOnPage: 30,
@@ -13,12 +12,16 @@ angular.module('bekApp')
   }];
   $scope.selectedLabelOption = $scope.labelOptions[0]; // pre-select first option
 
-  $scope.printLabels = function(items, labelOption) {
-    var data = {
-      labelOption: labelOption,
-      items: items
-    };
-    PrintService.print('views/printTemplates/productlabels.html', data);
+  // $scope.printLabels = function(items, labelOption) {
+  //   var data = {
+  //     labelOption: labelOption,
+  //     items: items
+  //   };
+  //   PrintService.print('views/printTemplates/productlabels.html', data);
+  // };
+
+  $scope.printLabels = function(list, labelOption) {
+    ListService.printBarcodes(list.listid);
   };
 
   $scope.cancel = function () {

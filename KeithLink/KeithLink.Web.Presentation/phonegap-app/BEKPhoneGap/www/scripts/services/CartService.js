@@ -244,6 +244,14 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
+
+            data.shipdates.forEach(function(date) {
+              // 2013-01-01 00:00
+              var tzName = jstz.determine().name();
+              var localTime = moment(date.cutoffdatetime).tz(tzName);
+              date.cutoffDateString = localTime.format('YYYY-MM-DD hh:mmA z');
+            });
+
             angular.copy(data.shipdates, Service.shipDates);
             deferred.resolve(data.shipdates);
             return data.shipdates;

@@ -1,5 +1,5 @@
  <div class="modal-header">
-    <h3 class="modal-title">Print: {{name}}</h3>
+    <h3 class="modal-title">Print: {{list.name}}</h3>
 </div>
 <div class="modal-body">
 
@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="form-group">
-      <button class="col-sm-offset-3 btn-lg btn btn-primary" type="submit" ng-click="printLabels(items, selectedLabelOption)">Print Label(s)</button>
+      <button class="col-sm-offset-3 btn-lg btn btn-primary" type="submit" ng-click="printLabels(list, selectedLabelOption)">Print Label(s)</button>
     </div>
   </form>
 
