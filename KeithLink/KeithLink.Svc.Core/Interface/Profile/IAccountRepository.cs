@@ -16,5 +16,6 @@ namespace KeithLink.Svc.Core.Interface.Profile
         void RemoveCustomerFromAccount(Guid accountId, Guid customerId);
         void AddUserToAccount(Guid accountId, Guid userId);
         void RemoveUserFromAccount(Guid accountId, Guid userId);
+		Guid UpdateAccount(string name, Guid accountId);
     }
 }
