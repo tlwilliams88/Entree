@@ -47,20 +47,4 @@ angular.module('bekApp')
       });
     };
 
-    $scope.openPrintOptionsModal = function(item) {
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/printoptionsmodal.html',
-        controller: 'PrintOptionsModalController',
-        scope: $scope,
-        resolve: {
-          items: function() {
-            return [item];
-          },
-          name: function() {
-            return item.name;
-          }
-        }
-      });
-    };
-
   }]);

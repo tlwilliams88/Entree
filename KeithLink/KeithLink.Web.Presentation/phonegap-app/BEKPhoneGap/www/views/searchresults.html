@@ -36,7 +36,7 @@
       <accordion close-others="oneAtATime">
 				<accordion-group is-open="status.openCategories" ng-show="facets.categories.available.length > 0">
 					<accordion-heading>
-						Categories<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
+						Categories<i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
 					</accordion-heading>
 					<div ng-repeat="category in facets.categories.available" class="panel panel-default">
 						<div class="panel-body">
@@ -46,7 +46,7 @@
 				</accordion-group>
 				<accordion-group is-open="status.openBrand" ng-show="facets.brands.available.length > 0">
 					<accordion-heading>
-						Brand<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
+						Brand<i class="pull-right" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
 					</accordion-heading>
 					<div ng-repeat="brand in facets.brands.available" class="panel panel-default">
 						<div class="panel-body">
@@ -63,7 +63,7 @@
 
                 <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
 					<accordion-heading>
-						Manufacturer<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
+						Manufacturer<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
 					</accordion-heading>
 					<div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
 						<div class="panel-body">
@@ -80,7 +80,7 @@
 
 				<accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
 					<accordion-heading>
-						Dietary<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
+						Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
 					</accordion-heading>
 					<div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
 						<div class="panel-body">
@@ -95,7 +95,7 @@
 				</accordion-group>
 				<accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0">
 					<accordion-heading>
-						Item Specifications<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
+						Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
 					</accordion-heading>
 					<div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
 						<div class="panel-body">
@@ -273,12 +273,12 @@
           <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
           </td>
           <td class="hidden-mobile-visible-print" ng-show="canSeePrices">
-            <span ng-if="item.caseprice !== '$0.00'">{{::item.caseprice}}</span>
+            <span ng-if="hasCasePrice(item)">{{::item.caseprice}}</span>
             <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
           </td>
-          <td class="large-icon icon-col">
+          <td class="large-icon icon-col nowrap">
             <div 
-              ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.caseprice !== '$0.00'" 
+              ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
               context-menu-template
               class="context-menu-template context-menu__in-list hidden-print"
             >
@@ -307,7 +307,7 @@
                 <tr>
                   <td colspan="2" item-icons></td>
                 </tr>
-                <tr ng-if="item.caseprice !== '$0.00'" ng-show="canSeePrices">
+                <tr ng-if="hasCasePrice(item)" ng-show="canSeePrices">
                   <td>Price</td>
                   <td>{{::item.caseprice}}</td>
                 </tr>

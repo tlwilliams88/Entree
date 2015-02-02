@@ -147,5 +147,15 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			return serviceClient.ReadRecommendedItemsList(catalogInfo).ToList();
 		}
+
+
+		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+		{
+			var list = serviceClient.GetBarcodeForList(user, catalogInfo, Id);
+
+			if (list == null)
+				return null;
+			return list.ToList();
+		}
 	}
 }

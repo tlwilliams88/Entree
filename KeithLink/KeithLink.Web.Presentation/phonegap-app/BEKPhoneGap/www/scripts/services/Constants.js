@@ -12,18 +12,19 @@ angular.module('bekApp')
       currentCustomer: 'currentCustomer'
     },
 
-    servicelocatorUrl: '../servicelocator',
+    servicelocatorUrl: '../servicelocator', // DEPRECATED
 
     roles: {
       // external
       OWNER: 'owner',
-      ACCOUNTING: 'Accounting',
-      APPROVER: 'Approver',
-      BUYER: 'Buyer',
+      ACCOUNTING: 'accounting',
+      APPROVER: 'approver',
+      BUYER: 'buyer',
       GUEST: 'guest',
 
       // internal
       DSR: 'dsr',
+      DSM: 'dsm',
       SYS_ADMIN: 'beksysadmin',
       BRANCH_MANAGER: 'branchismanager'
     },

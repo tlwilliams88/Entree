@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                                                           IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory,
                                                           IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, 
-                   userMessagingPreferenceRepository, messageProviderFactory)
+                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
         {
             _log = eventLogRepository;
             _userLogic = userProfileLogic;
@@ -105,6 +105,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             var bank = _bankRepo.GetBankAccount(GetDivision(notification.BranchId), notification.CustomerNumber, notification.Payments[0].AccountNumber);
 
             Message message = new Message();
+            message.BodyIsHtml = template.IsBodyHtml;
             message.MessageSubject = template.Subject.Inject(customer);
             message.MessageBody = template.Body.Inject(new { 
                                                                 CustomerNumber = customer.CustomerNumber,
@@ -127,7 +128,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
             
             // load up recipients, customer and message
-            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber);
+            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
             List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer);
             Message message = GetEmailMessageForNotification(confirmation, customer);
 

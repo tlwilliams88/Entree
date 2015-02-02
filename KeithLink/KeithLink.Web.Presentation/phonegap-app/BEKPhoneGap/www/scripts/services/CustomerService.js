@@ -35,8 +35,8 @@ angular.module('bekApp')
         });
       },
 
-      getCustomerDetails: function(customerNumber) {
-        var promise = $http.get('/profile/customer/' + customerNumber);
+      getCustomerDetails: function(customerNumber, branchNumber) {
+        var promise = $http.get('/profile/customer/' + branchNumber + '/' + customerNumber);
         return UtilityService.resolvePromise(promise);
       }
 

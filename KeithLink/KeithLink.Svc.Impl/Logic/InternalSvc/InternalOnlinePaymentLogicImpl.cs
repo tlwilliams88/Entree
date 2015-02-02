@@ -190,7 +190,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber) {
             var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
-            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
 
             if (kpayInvoiceHeader == null) //Invoice not found
                 return null;
@@ -231,7 +231,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			if (forAllCustomers)
 				customers = _customerRepository.GetCustomersForUser(user.UserId);
 			else
-				customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId) };
+				customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
 
 			FilterInfo isfilter = new FilterInfo();
 			isfilter.Filters = new List<FilterInfo>();
@@ -325,6 +325,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			var confId = _invoiceRepo.GetNextConfirmationId();
 
             foreach (var payment in payments) {
+                if (!payment.PaymentDate.HasValue) { payment.PaymentDate = DateTime.Now; }
+
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction() {
                     AccountNumber = payment.AccountNumber,
                     Division = GetDivision(userContext.BranchId),
@@ -332,7 +334,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     CustomerNumber = userContext.CustomerId,
                     InvoiceNumber = payment.InvoiceNumber,
                     PaymentAmount = payment.PaymentAmount,
-                    PaymentDate = payment.PaymentDate.HasValue ? payment.PaymentDate.Value : DateTime.Now,
+                    PaymentDate = payment.PaymentDate.Value,
                     UserName = emailAddress
                 });
 

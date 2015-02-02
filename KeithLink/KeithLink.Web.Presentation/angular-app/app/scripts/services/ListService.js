@@ -188,6 +188,13 @@ angular.module('bekApp')
           ExportService.export('/list/export/' + listId, config);
         },
 
+        printBarcodes: function(listId) {
+          var promise = $http.get('/list/barcode/' + listId, {
+            responseType: 'arraybuffer'
+          });
+          return ExportService.print(promise);
+        },
+
         /********************
         EDIT LIST
         ********************/

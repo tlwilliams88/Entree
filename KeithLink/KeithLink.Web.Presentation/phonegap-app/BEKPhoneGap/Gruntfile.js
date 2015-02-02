@@ -12,6 +12,7 @@ module.exports = function(grunt) {
               'org.apache.cordova.vibration',
               'org.apache.cordova.statusbar',
               'org.apache.cordova.console',
+              'org.apache.cordova.inappbrowser',
               'https://github.com/wildabeast/BarcodeScanner.git'
           ],
           maxBuffer: 500,
@@ -30,8 +31,7 @@ module.exports = function(grunt) {
               }
             }
           },
-          versionCode: 1,
-          permissions: []
+          versionCode: 1
         }
       },
       clean: [
@@ -83,6 +83,11 @@ cwd: '../../angular-app/app/images/',  // set working folder / root to copy
     src: '**/*',           // copy all files and subfolders
     dest: 'www/images/',    // destination folder
     expand: true           // required when using cwd
+  }, {
+cwd: '../../angular-app/app/fonts/',
+    src: '**/*',
+    dest: 'www/fonts/',
+    expand: true
   },
   {
 cwd: '../../angular-app/app/lib/',  // set working folder / root to copy
@@ -92,16 +97,16 @@ cwd: '../../angular-app/app/lib/',  // set working folder / root to copy
   },
     {
 cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
-    src: 'app.js',           // copy app.js
+    src: ['app.js', 'state.js'],           // copy app.js
     dest: 'www/scripts/',    // destination folder
     expand: true           // required when using cwd
   },
-      {
-cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
-    src: 'state.js',           // copy state.js
-    dest: 'www/scripts/',    // destination folder
-    expand: true           // required when using cwd
-  },
+//       {
+// cwd: '../../angular-app/app/scripts/',  // set working folder / root to copy
+//     src: 'state.js',           // copy state.js
+//     dest: 'www/scripts/',    // destination folder
+//     expand: true           // required when using cwd
+//   },
       {
 cwd: '../../angular-app/app/',  // set working folder / root to copy
     src: 'index.html',           // copy index.html

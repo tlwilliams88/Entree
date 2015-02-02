@@ -108,7 +108,7 @@ angular.module('bekApp')
 
   $scope.goToAdminLandingPage = function() {
     // internal bek admin user
-    if (AccessService.isInternalUser()) {
+    if (AccessService.isInternalAccountAdminUser()) {
       $state.go('menu.admin.customergroup');
       
     // external owner admin
@@ -194,7 +194,7 @@ angular.module('bekApp')
             $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
           }
         }, function (error) {
-          $scope.displayMessage('warning', 'No product found for scanned number.');
+          $scope.displayMessage('error', 'Error with scan product request.');
         });
     }, function (error) {
       console.log('Scanning failed: ' + error);
@@ -211,7 +211,7 @@ angular.module('bekApp')
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
 
-    // $scope.isInternalUser = AccessService.isInternalUser();
+    // $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
     // $scope.isBekAdmin = AccessService.isBekAdmin();
 
     $scope.isDsr = AccessService.isDsr();

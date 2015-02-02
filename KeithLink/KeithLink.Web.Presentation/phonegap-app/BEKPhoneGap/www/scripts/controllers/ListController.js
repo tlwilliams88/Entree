@@ -8,13 +8,15 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService', 'PricingService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService, PricingService) {
     
     var orderBy = $filter('orderBy');
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
+
+    $scope.canOrderItem = PricingService.canOrderItem;
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
@@ -471,11 +473,8 @@ angular.module('bekApp')
         controller: 'PrintOptionsModalController',
         scope: $scope,
         resolve: {
-          items: function() {
-            return list.items;
-          },
-          name: function() {
-            return list.name;
+          list: function() {
+            return list;
           }
         }
       });
@@ -483,10 +482,5 @@ angular.module('bekApp')
 
     resetPage(angular.copy(originalList));
     $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
-
-    $scope.$on('$destroy', function() {
-      ListService.lists = null;
-      ListService.labels = null;
-    });
 
   }]);

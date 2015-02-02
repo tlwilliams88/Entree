@@ -15,6 +15,7 @@ using CommerceServer.Core.Runtime;
 using CommerceServer.Core.Shared;
 using CommerceServer.Core.Runtime.Configuration;
 using CommerceServer.Core.Runtime.Diagnostics;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -23,11 +24,31 @@ namespace KeithLink.Svc.Impl.ETL
         private IStagingRepository stagingRepository;
         private IDsrLogic dsrLogic;
         static ProfileContext profileSystem = null;
+        private readonly IEventLogRepository eventLog;
 
-        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic)
+
+        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog)
         {
             this.stagingRepository = stagingRepository;
             this.dsrLogic = dsrLogic;
+            this.eventLog = eventLog;
+        }
+
+        public void ImportCustomerTasksSerial()
+        {
+            try
+            {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
+                ImportCustomersToOrganizationProfile();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
+                ImportDsrInfo();
+                eventLog.WriteInformationLog("ETL Import Process Complete:  CustomerLogicImpl Tasks");
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+            }
         }
 
         public void ImportCustomersToOrganizationProfile()
@@ -38,24 +59,26 @@ namespace KeithLink.Svc.Impl.ETL
             BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
             BlockingCollection<AddressProfiles> addressesForImport = new BlockingCollection<AddressProfiles>();
 
-            Parallel.ForEach(customers.AsEnumerable(), row =>
+            //Parallel.ForEach(customers.AsEnumerable(), row =>
+            foreach(DataRow row in customers.Rows)
             {
                 orgsForImport.Add(CreateOrganizationFromStagedData(row));
                 addressesForImport.Add(CreateAddressFromStagedData(row));
-            });
+            }
 
             // Get Existing Organizations from CS
             List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type and natl_or_regl_account_number
 
             ProfileContext ctxt = GetProfileContext();
             
-            Parallel.ForEach(orgsForImport, org =>
+            //Parallel.ForEach(orgsForImport, org =>
+            foreach(Organization org in orgsForImport)
                 {
                     // Create a new profile object.
                     Profile prof = null;
-                    if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber))
+                    if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
                     {
-                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber).FirstOrDefault().Id, "Organization");
+                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id, "Organization");
                     }
                     else
                     {
@@ -106,7 +129,7 @@ namespace KeithLink.Svc.Impl.ETL
                     addressProfile.Update();
 
                     prof.Update();
-                });
+                }
 
             TimeSpan took = DateTime.Now - start;
             return;
@@ -197,7 +220,7 @@ namespace KeithLink.Svc.Impl.ETL
         private List<Organization> GetExistingOrganizations(string organizationType)
         {
             ProfileContext ctxt = GetProfileContext();
-            string cmdText = "SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type FROM Organization";
+            string cmdText = "SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type, GeneralInfo.branch_number FROM Organization";
 
             // Create a new RecordsetClass object.
             ADODB.Recordset rs = new ADODB.Recordset();
@@ -220,7 +243,8 @@ namespace KeithLink.Svc.Impl.ETL
                     existingOrgs.Add(new Organization() { CustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
                                                           NationalOrRegionalAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
                                                           OrganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
-                                                          Id = rs.Fields["GeneralInfo.org_id"].Value.ToString()
+														  Id = rs.Fields["GeneralInfo.org_id"].Value.ToString(),
+														  BranchNumber = rs.Fields["GeneralInfo.branch_number"].Value.ToString()
                                                         });
 
                     // Move to the next record.

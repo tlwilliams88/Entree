@@ -191,19 +191,19 @@ namespace KeithLink.Svc.Impl.Migrations
             paymentConfirmation.AppendLine("Account: {CustomerNumber} - {CustomerName}<br/>");
             paymentConfirmation.AppendLine("Branch: {BranchId}<br/>");
             paymentConfirmation.AppendLine("Bank: {BankAccount}<br/>");
-            paymentConfirmation.AppendLine("<table>");
+            paymentConfirmation.AppendLine("<table style=\"width: 100%\">");
             paymentConfirmation.AppendLine("	<tr>");
-            paymentConfirmation.AppendLine("		<td>Ref</td>");
-            paymentConfirmation.AppendLine("		<td>Number</td>");
-            paymentConfirmation.AppendLine("		<td>Ref Date</td>");
-            paymentConfirmation.AppendLine("		<td>Due Date</td>");
-            paymentConfirmation.AppendLine("		<td>Scheduled</td>");
-            paymentConfirmation.AppendLine("		<td>Amount</td>");
+            paymentConfirmation.AppendLine("		<th>Ref</th>");
+            paymentConfirmation.AppendLine("		<th>Number</th>");
+            paymentConfirmation.AppendLine("		<th>Ref Date</th>");
+            paymentConfirmation.AppendLine("		<th>Due Date</th>");
+            paymentConfirmation.AppendLine("		<th>Scheduled</th>");
+            paymentConfirmation.AppendLine("		<th>Amount</th>");
             paymentConfirmation.AppendLine("	</tr>");
             paymentConfirmation.AppendLine("{PaymentDetailLines}");
             paymentConfirmation.AppendLine("	<tr>");
             paymentConfirmation.AppendLine("		<td colspan=\"5\" style=\"text-align: right\">Customer Total</td>");
-            paymentConfirmation.AppendLine("		<td>");
+            paymentConfirmation.AppendLine("		<td style=\"text-align: right\">");
             paymentConfirmation.AppendLine("			{TotalPayments:f2}");
             paymentConfirmation.AppendLine("		<td>");
             paymentConfirmation.AppendLine("	</tr>");
@@ -227,7 +227,7 @@ namespace KeithLink.Svc.Impl.Migrations
             paymentConfirmationDetail.AppendLine("		<td>{InvoiceDate:MM/dd/yyyy}</td>");
             paymentConfirmationDetail.AppendLine("		<td>{DueDate:MM/dd/yyyy}</td>");
             paymentConfirmationDetail.AppendLine("		<td>{ScheduledDate:MM/dd/yyyy}</td>");
-            paymentConfirmationDetail.AppendLine("		<td>{PaymentAmount:f2}</td>");
+            paymentConfirmationDetail.AppendLine("		<td style=\"text-align: right\">{PaymentAmount:f2}</td>");
             paymentConfirmationDetail.AppendLine("	</tr>");
 
             context.MessageTemplates.AddOrUpdate(

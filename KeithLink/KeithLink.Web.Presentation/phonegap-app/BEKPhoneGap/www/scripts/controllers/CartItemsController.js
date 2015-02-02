@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
-    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, changeOrders, originalBasket, criticalItemsLists) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
 
     $scope.loadingResults = false;
     $scope.sortBy = null;
@@ -34,12 +34,10 @@ angular.module('bekApp')
     // set default selected critical items list
     if ($scope.mandatoryList) {
       $scope.mandatoryList.active = true;
-    } else {
-      $scope.mandatoryList = {};
-    }
-    if ($scope.reminderList) {
+    } else if ($scope.reminderList) {
       $scope.reminderList.active = true;
     } else {
+      $scope.mandatoryList = {};
       $scope.reminderList = {};
     }
 
@@ -163,13 +161,10 @@ angular.module('bekApp')
       });
     };
 
-    $scope.getSubtotal = function(cartItems) {
-      var subtotal = 0;
-      angular.forEach(cartItems, function(item, index) {
-        subtotal += ( (item.quantity || 0) * (item.each ? item.packageprice : item.caseprice) );
-      });
-      return subtotal;
-    };
+    $scope.getPriceForItem = PricingService.getPriceForItem;
+    $scope.getSubtotal = PricingService.getSubtotalForItems;
+    $scope.canOrderItem = PricingService.canOrderItem;
+    $scope.hasPackagePrice = PricingService.hasPackagePrice;
 
     $scope.deleteItem = function(item) {
       var idx = $scope.currentCart.items.indexOf(item);
@@ -294,10 +289,4 @@ angular.module('bekApp')
     if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
       $scope.startEditCartName(originalBasket.name);
     }
-
-
-    $scope.$on('$destroy', function() {
-      CartService.carts = null;
-    });
-
   }]);

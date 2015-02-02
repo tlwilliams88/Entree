@@ -120,6 +120,31 @@ namespace KeithLink.Svc.Impl.ETL
             this.messageLogic = messageLogic;
         }
 
+        //run all catalog, es, and pre-populated list tasks in a non-distributed manner
+        public void ProcessCatalogDataSerial()
+        {
+            try
+            {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Catalog");
+                ImportCatalog();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Items to Elastic Search");
+                ImportItemsToElasticSearch();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Categories to Elastic Search");
+                ImportCategoriesToElasticSearch();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import House Brands to ElasticSearch");
+                ImportHouseBrandsToElasticSearch();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Pre-Populated Lists");
+                ImportPrePopulatedLists();
+                eventLog.WriteInformationLog("ETL Import Process Complete:  CatalogLogicImpl Tasks");
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+            }
+            
+        }
+
         public void ProcessCatalogData()
         {
             try
@@ -250,14 +275,15 @@ namespace KeithLink.Svc.Impl.ETL
 
 			var branches = stagingRepository.ReadAllBranches();
 
-			Parallel.ForEach(branches.AsEnumerable(), row =>
+			//Parallel.ForEach(branches.AsEnumerable(), row =>
+            foreach(DataRow row in branches.Rows)
 			{
 				if (!elasticSearchRepository.CheckIfIndexExist(row.GetString("BranchId").ToLower()))
 				{
 					elasticSearchRepository.CreateEmptyIndex(row.GetString("BranchId").ToLower());
 					elasticSearchRepository.MapProductProperties(row.GetString("BranchId").ToLower(), ProductMapping);
 				}
-			});
+			}
 
             var dataTable = stagingRepository.ReadFullItemForElasticSearch();
             var products = new BlockingCollection<ItemUpdate>();
@@ -269,10 +295,11 @@ namespace KeithLink.Svc.Impl.ETL
             var itemAllergens = BuildAllergenDictionary(gsData);
 			var proprietaryItems = BuildProprietaryItemDictionary(stagingRepository.ReadProprietaryItems());
 
-            Parallel.ForEach(dataTable.AsEnumerable(), row =>
+            //Parallel.ForEach(dataTable.AsEnumerable(), row =>
+            foreach(DataRow row in dataTable.Rows)
             {
                 products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens, proprietaryItems));
-            });
+            };
 
             int totalProcessed = 0;
 			
@@ -298,7 +325,8 @@ namespace KeithLink.Svc.Impl.ETL
             var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
 
             //Parent Categories
-            Parallel.ForEach(parentCategories.AsEnumerable(), row =>
+            //Parallel.ForEach(parentCategories.AsEnumerable(), row =>
+            foreach(DataRow row in parentCategories.Rows)
             {
                 categories.Add(new ElasticSearchCategoryUpdate()
                 {
@@ -314,10 +342,11 @@ namespace KeithLink.Svc.Impl.ETL
                         }
                     }
                 });
-            });
+            };
 
             //Sub Categories
-            Parallel.ForEach(childCategories.AsEnumerable(), row =>
+            //Parallel.ForEach(childCategories.AsEnumerable(), row =>
+            foreach(DataRow row in childCategories.Rows)
             {
                 categories.Add(new ElasticSearchCategoryUpdate()
                 {
@@ -332,7 +361,7 @@ namespace KeithLink.Svc.Impl.ETL
                         }
                     }
                 });
-            });
+            }
 
             elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
 
@@ -347,7 +376,8 @@ namespace KeithLink.Svc.Impl.ETL
             var brandsDataTable = stagingRepository.ReadBrandControlLabels();
             var brands = new BlockingCollection<Models.ElasticSearch.BrandControlLabels.BrandUpdate>();
 
-            Parallel.ForEach(brandsDataTable.AsEnumerable(), row =>
+            //Parallel.ForEach(brandsDataTable.AsEnumerable(), row =>reach
+            foreach(DataRow row in brandsDataTable.Rows)
                 {
                     brands.Add(new Models.ElasticSearch.BrandControlLabels.BrandUpdate() 
                     {
@@ -361,7 +391,7 @@ namespace KeithLink.Svc.Impl.ETL
                             }
                         }
                     });
-                });
+                }
 
             elasticSearchRepository.Create(string.Concat(brands.Select(c => c.ToJson())));
 
