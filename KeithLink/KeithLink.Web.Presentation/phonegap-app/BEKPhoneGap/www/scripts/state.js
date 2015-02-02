@@ -125,7 +125,13 @@ angular.module('bekApp')
         labels: ['ListService', function(ListService) {
           return ListService.getAllLabels();
         }]
-      }
+      },
+      controller: ['$scope', 'ListService', function($scope, ListService) {
+        $scope.$on('$destroy', function() {
+          ListService.lists = [];
+          ListService.labels = [];
+        });
+      }]
     })
     .state('menu.lists.items', {
       url: ':listId/?renameList',
@@ -164,7 +170,12 @@ angular.module('bekApp')
         shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
         }]
-      }
+      },
+      controller: ['$scope', 'CartService', function($scope, CartService) {
+        $scope.$on('$destroy', function() {
+          CartService.carts = [];
+        });
+      }]
     })
     .state('menu.cart.items', {
       url: ':cartId/?renameCart',
@@ -360,7 +371,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.admin.customer', {
-      url: 'customers/:customerNumber/',
+      url: 'customers/:customerNumber/:branchNumber/',
       templateUrl: 'views/admin/customerdetails.html',
       controller: 'CustomerDetailsController',
       data: {

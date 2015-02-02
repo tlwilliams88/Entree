@@ -90,6 +90,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                                 org.SetPropertyValue("BalanceAge4", r.GetNullableDecimal("u_balance_age_4"));
                                 org.SetPropertyValue("AmountDue", r.GetNullableDecimal("u_amount_due"));
 								org.SetPropertyValue("AchType", r.GetString("u_customer_ach_type"));
+								org.SetPropertyValue("GeneralInfo.preferred_address", r.GetString("u_preferred_address"));
                                 response.CommerceEntities.Add(org);
                             }
                             else if (searchCriteria.Model.Properties[0].Key == "OrganizationId")

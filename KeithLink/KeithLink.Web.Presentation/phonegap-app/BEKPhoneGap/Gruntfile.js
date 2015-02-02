@@ -12,6 +12,7 @@ module.exports = function(grunt) {
               'org.apache.cordova.vibration',
               'org.apache.cordova.statusbar',
               'org.apache.cordova.console',
+              'org.apache.cordova.inappbrowser',
               'https://github.com/wildabeast/BarcodeScanner.git'
           ],
           maxBuffer: 500,

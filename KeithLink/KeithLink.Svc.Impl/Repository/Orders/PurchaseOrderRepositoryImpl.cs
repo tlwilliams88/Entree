@@ -90,7 +90,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
-		public List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId)
+		public List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId, bool header = false)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
 			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
@@ -99,8 +99,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 			queryBaskets.QueryOptions.RefreshBasket = false;
 
-			var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
-			queryBaskets.RelatedOperations.Add(queryLineItems);
+			if (!header)
+			{
+				var queryLineItems = new CommerceQueryRelatedItem<CommerceEntity>("LineItems", "LineItem");
+				queryBaskets.RelatedOperations.Add(queryLineItems);
+			}
 
 			var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
 

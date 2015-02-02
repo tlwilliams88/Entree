@@ -9,5 +9,6 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IDsrRepository : IBaseEFREpository<Dsr> {
         Dsr GetDsrByBranchAndDsrNumber( string branchId, string dsrNumber );
+        void SendImageToMultiDocs( string emailAddress, Byte[] fileBytes );
     }
 }

@@ -9,5 +9,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IDsrLogic {
         Dsr GetDsr( string branchId, string dsrNumber );
         void CreateOrUpdateDsr(Dsr dsr);
+        void SendImageToMultiDocs( string emailAddress, Byte[] fileBytes );
     }
 }

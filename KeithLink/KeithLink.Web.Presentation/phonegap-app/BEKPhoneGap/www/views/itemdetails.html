@@ -3,7 +3,7 @@
     Item Details
   </div>
   <div header-buttons>
-      <button title="Print" class="btn btn-icon btn-default" ng-click="openPrintOptionsModal(item)"><span class="icon-printer"></span></button>
+      <button title="Print" class="btn btn-icon btn-default" ng-click="print()"><span class="icon-printer"></span></button>
   </div>
 </div>
 
@@ -222,7 +222,7 @@
         </tab>
         <tab heading="Images" ng-show="item.productimages.length > 0">
           <div class="hidden-print item-details__images">
-              <a ng-href="{{image.url}}" target="_blank" ng-repeat="image in item.productimages">
+              <a ng-click="openExternalLink(image.url)" ng-repeat="image in item.productimages">
                   <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
               </a>
               <br />

@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name="address")]
+	[Serializable]
     public class Address
     {
         [DataMember(Name="street")]

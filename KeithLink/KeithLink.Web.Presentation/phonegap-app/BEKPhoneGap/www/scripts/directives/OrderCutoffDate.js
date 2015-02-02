@@ -12,12 +12,8 @@ angular.module('bekApp')
       function checkValidity(viewValue) {
         if(scope.$modelValue || scope.$modelValue === undefined){
 
-          var dateValue = viewValue;
-          if (viewValue) { // IE and ipad don't support creating dates with YYYY-MM-DD 00:00 format
-            dateValue = dateValue.split(' ')[0];
-          }
-          var cutoffDate = new Date(dateValue),
-            now = new Date();
+          var cutoffDate = moment(viewValue),
+            now = moment();
 
           if (now < cutoffDate) {
             
