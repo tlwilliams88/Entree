@@ -1,59 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:simpleType name="NotificationType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Undefined" />
-      <xs:enumeration value="OrderConfirmation" />
-      <xs:enumeration value="OrderUpdate" />
-      <xs:enumeration value="InvoiceAttention">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="HasNews">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Mail">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="NotificationType" nillable="true" type="tns:NotificationType" />
-  <xs:simpleType name="Channel">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Email">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="MobilePush">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-      <xs:enumeration value="Web">
-        <xs:annotation>
-          <xs:appinfo>
-            <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
-          </xs:appinfo>
-        </xs:annotation>
-      </xs:enumeration>
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="Channel" nillable="true" type="tns:Channel" />
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+  <xs:complexType name="ArrayOfListItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ListItem" nillable="true" type="tns:ListItem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfListItem" nillable="true" type="tns:ArrayOfListItem" />
+  <xs:complexType name="ListItem">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" base="q1:BaseProductInfo">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q2:ListType" />
+          <xs:element minOccurs="0" name="category" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="fromdate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="label" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="listitemid" type="xs:long" />
+          <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="parlevel" type="xs:decimal" />
+          <xs:element minOccurs="0" name="position" type="xs:int" />
+          <xs:element minOccurs="0" name="quantityincart" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="storagetemp" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="todate" nillable="true" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ListItem" nillable="true" type="tns:ListItem" />
+  <xs:complexType name="UserList">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q3:ListType" />
+      <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ismandatory" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isrecommended" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isreminder" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isshared" type="xs:boolean" />
+      <xs:element minOccurs="0" name="issharing" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isworksheet" type="xs:boolean" />
+      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfListItem" />
+      <xs:element minOccurs="0" name="listid" type="xs:long" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="read_only" type="xs:boolean" />
+      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="sharedwith" nillable="true" type="q4:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UserList" nillable="true" type="tns:UserList" />
+  <xs:complexType name="ArrayOfUserList">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="UserList" nillable="true" type="tns:UserList" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfUserList" nillable="true" type="tns:ArrayOfUserList" />
+  <xs:complexType name="ArrayOfrecentitem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="recentitem" nillable="true" type="tns:recentitem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfrecentitem" nillable="true" type="tns:ArrayOfrecentitem" />
+  <xs:complexType name="recentitem">
+    <xs:sequence>
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q5:ArrayOfProductImage" />
+      <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="recentitem" nillable="true" type="tns:recentitem" />
+  <xs:complexType name="ListCopyShareModel">
+    <xs:sequence>
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="customers" nillable="true" type="q6:ArrayOfcustomer" />
+      <xs:element minOccurs="0" name="listid" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListCopyShareModel" nillable="true" type="tns:ListCopyShareModel" />
+  <xs:complexType name="ArrayOfrecommendeditem">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="recommendeditem" nillable="true" type="tns:recommendeditem" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfrecommendeditem" nillable="true" type="tns:ArrayOfrecommendeditem" />
+  <xs:complexType name="recommendeditem">
+    <xs:sequence>
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q7:ArrayOfProductImage" />
+      <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="recommendeditem" nillable="true" type="tns:recommendeditem" />
 </xs:schema>

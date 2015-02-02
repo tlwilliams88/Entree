@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -53,5 +54,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void ShareList(ListCopyShareModel shareListModel);
 
 		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
+
+		List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 	}
 }

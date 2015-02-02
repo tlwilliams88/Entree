@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Models.Reports;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -623,11 +624,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 		}
         
-		#endregion
-
-
-
-
+		
 
 		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
 		{
@@ -656,5 +653,51 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			return returnItems;
 		}
+
+
+		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+		{
+			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
+			if (cachedList != null)
+			{
+				return cachedList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
+			}
+
+			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+
+			if (list == null)
+				return null;
+
+			var returnList = list.ToListModel(catalogInfo);
+			LookupNameAndPackSize(user, returnList, catalogInfo);
+
+			return returnList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
+			
+		}
+
+		private void LookupNameAndPackSize(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+		{
+			if (list.Items == null || list.Items.Count == 0)
+				return;
+
+			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
+			
+
+			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
+			
+			Parallel.ForEach(list.Items, listItem =>
+			{
+				var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+				if (prod != null)
+				{
+					listItem.Name = prod.Name;
+					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);	
+				}
+				
+			});
+
+		}
+
+		#endregion
 	}
 }

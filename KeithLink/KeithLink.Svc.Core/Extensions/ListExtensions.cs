@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -44,5 +45,6 @@ namespace KeithLink.Svc.Core.Extensions
                     list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc, FromDate = i.FromDate, ToDate = i.ToDate }).ToList()
 			};
 		}
+		
 	}
 }

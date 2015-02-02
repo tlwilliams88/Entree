@@ -8,6 +8,7 @@ using System.Runtime.Serialization;
 namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name = "customer")]
+	[Serializable]
     public class Customer
     {
         [DataMember(Name = "customerNumber")]

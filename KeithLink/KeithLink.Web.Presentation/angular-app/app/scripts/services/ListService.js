@@ -188,6 +188,13 @@ angular.module('bekApp')
           ExportService.export('/list/export/' + listId, config);
         },
 
+        printBarcodes: function(listId) {
+          var promise = $http.get('/list/barcode/' + listId, {
+            responseType: 'arraybuffer'
+          });
+          return ExportService.print(promise);
+        },
+
         /********************
         EDIT LIST
         ********************/
@@ -452,9 +459,7 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getCriticalItems().$promise.then(function() {
-            return [{"listid":10714,"sharedwith":[],"name":"Reminder","is_contract_list":false,"read_only":false,"items":[],"isfavorite":false,"isworksheet":false,"isreminder":true,"isshared":false,"issharing":false,"ismandatory":false,"isrecommended":false,"type":8},{"listid":10719,"sharedwith":[],"name":"Mandatory","is_contract_list":false,"read_only":false,"items":[{"listitemid":206096,"label":null,"parlevel":0.00,"position":0,"packsize":"1 / 22 CT","storagetemp":"","quantityincart":null,"category":null,"fromdate":null,"todate":null,"type":9,"itemnumber":"031298","description":"Repack From 88 Size","nonstock":"N","caseprice":"11.43","packageprice":"0","replacementitem":"000000","replaceditem":"000000","childnutrition":"N","brand":"PACKER","brand_extended_description":"PACKER","brand_control_label":null,"name":"Orange Fancy 22 Ct","favorite":false,"notes":null,"catchweight":false,"sellsheet":null,"deviatedcost":null,"temp_zone":"C","categoryId":"AP570","categoryname":"Oranges","class":"12","vendor_num":"007115","upc":"10072240244466","size":null,"pack":"","cases":"79","nutritional":{"brandowner":null,"countryoforigin":"","grossweight":"","handlinginstruction":"","ingredients":"","marketingmessage":null,"moreinformation":null,"servingsize":null,"servingsizeuom":null,"servingsperpack":null,"servingsuggestion":null,"shelf":null,"storagetemp":null,"unitmeasure":null,"unitspercase":null,"volume":null,"height":"","length":"","width":"","nutrition":null,"diet":null,"allergens":null},"kosher":"N","manufacturer_number":"10412","manufacturer_name":"PACKER","average_weight":0.0},{"listitemid":206099,"label":null,"parlevel":0.00,"position":0,"packsize":"1 / 30 CT","storagetemp":"","quantityincart":null,"category":null,"fromdate":null,"todate":null,"type":9,"itemnumber":"107845","description":"Ready To Use","nonstock":"N","caseprice":"12.82","packageprice":"0","replacementitem":"000000","replaceditem":"000000","childnutrition":"N","brand":"MARKON READY SET SER","brand_extended_description":"MARKON READY SET SER","brand_control_label":null,"name":"Cilantro Iceless 30ct W/T","favorite":false,"notes":null,"catchweight":false,"sellsheet":null,"deviatedcost":null,"temp_zone":"C","categoryId":"AP380","categoryname":"Herbs, Chives, Fresh Spices","class":"18","vendor_num":"007115","upc":"20611628917386","size":null,"pack":"","cases":"181","nutritional":{"brandowner":null,"countryoforigin":"","grossweight":"","handlinginstruction":"","ingredients":"","marketingmessage":null,"moreinformation":null,"servingsize":null,"servingsizeuom":null,"servingsperpack":null,"servingsuggestion":null,"shelf":null,"storagetemp":null,"unitmeasure":null,"unitspercase":null,"volume":null,"height":"","length":"","width":"","nutrition":null,"diet":null,"allergens":null},"kosher":"Y","manufacturer_number":"91738","manufacturer_name":"MARKON","average_weight":0.0}],"isfavorite":false,"isworksheet":false,"isreminder":false,"isshared":false,"issharing":false,"ismandatory":true,"isrecommended":false,"type":9}];
-          });
+          return List.getCriticalItems().$promise;
         },
 
         findMandatoryList: function() {

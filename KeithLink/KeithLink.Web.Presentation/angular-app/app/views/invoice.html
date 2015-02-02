@@ -198,7 +198,7 @@
               {{::invoice.amount | currency}}
             </td>
             <td class="text-center icon-col large-icon hidden-mobile-visible-print">
-              <a ng-if="invoice.invoicelink" target="_blank" ng-href="{{invoice.invoicelink}}" class="icon-camera"></a>
+              <a ng-if="invoice.invoicelink" target="_system" ng-href="{{invoice.invoicelink}}" class="icon-camera"></a>
             </td>
             <td ng-if="!viewingAllCustomers" class="input-col hidden-mobile-visible-print">
               <input
@@ -294,7 +294,7 @@
                 </tr>
                 <tr>
                   <td class="large-icon" colspan="2">
-                    <a ng-if="invoice.image" ng-href="{{invoice.image}}" class="icon-camera"></a>
+                    <a ng-if="invoice.image" ng-href="{{invoice.image}}" target="_system" class="icon-camera"></a>
                   </td>
                 </tr>
               </table>

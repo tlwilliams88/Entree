@@ -15,6 +15,7 @@ using CommerceServer.Core.Runtime;
 using CommerceServer.Core.Shared;
 using CommerceServer.Core.Runtime.Configuration;
 using CommerceServer.Core.Runtime.Diagnostics;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -23,11 +24,31 @@ namespace KeithLink.Svc.Impl.ETL
         private IStagingRepository stagingRepository;
         private IDsrLogic dsrLogic;
         static ProfileContext profileSystem = null;
+        private readonly IEventLogRepository eventLog;
 
-        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic)
+
+        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog)
         {
             this.stagingRepository = stagingRepository;
             this.dsrLogic = dsrLogic;
+            this.eventLog = eventLog;
+        }
+
+        public void ImportCustomerTasksSerial()
+        {
+            try
+            {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
+                ImportCustomersToOrganizationProfile();
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
+                ImportDsrInfo();
+                eventLog.WriteInformationLog("ETL Import Process Complete:  CustomerLogicImpl Tasks");
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+            }
         }
 
         public void ImportCustomersToOrganizationProfile()
@@ -38,18 +59,20 @@ namespace KeithLink.Svc.Impl.ETL
             BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
             BlockingCollection<AddressProfiles> addressesForImport = new BlockingCollection<AddressProfiles>();
 
-            Parallel.ForEach(customers.AsEnumerable(), row =>
+            //Parallel.ForEach(customers.AsEnumerable(), row =>
+            foreach(DataRow row in customers.Rows)
             {
                 orgsForImport.Add(CreateOrganizationFromStagedData(row));
                 addressesForImport.Add(CreateAddressFromStagedData(row));
-            });
+            }
 
             // Get Existing Organizations from CS
             List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type and natl_or_regl_account_number
 
             ProfileContext ctxt = GetProfileContext();
             
-            Parallel.ForEach(orgsForImport, org =>
+            //Parallel.ForEach(orgsForImport, org =>
+            foreach(Organization org in orgsForImport)
                 {
                     // Create a new profile object.
                     Profile prof = null;
@@ -106,7 +129,7 @@ namespace KeithLink.Svc.Impl.ETL
                     addressProfile.Update();
 
                     prof.Update();
-                });
+                }
 
             TimeSpan took = DateTime.Now - start;
             return;

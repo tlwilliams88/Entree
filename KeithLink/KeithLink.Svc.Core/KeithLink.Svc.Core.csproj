@@ -401,6 +401,7 @@
     <Compile Include="Models\Orders\ShipDateReturn.cs" />
     <Compile Include="Models\Orders\OrderLine.cs" />
     <Compile Include="Models\Profile\Customer.cs" />
+    <Compile Include="Models\Reports\ItemBarcodeModel.cs" />
     <Compile Include="Models\Reports\ItemUsageReportItemModel.cs" />
     <Compile Include="Models\Reports\ItemUsageReportQueryModel.cs" />
     <Compile Include="Models\ShoppingCart\QuickAddItemModel.cs" />

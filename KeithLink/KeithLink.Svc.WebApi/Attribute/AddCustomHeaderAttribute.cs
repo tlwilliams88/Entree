@@ -16,13 +16,16 @@ namespace KeithLink.Svc.WebApi.Attribute
 				{
 					actionExecutedContext.Response.Content.Headers.Add("serverName", System.Environment.MachineName.ToString());
 				}catch{}
-
-			actionExecutedContext.Response.Headers.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue()
+			try
 			{
-				MaxAge = new TimeSpan(0),
-				NoCache = true,
-				NoStore = true
-			};
+				actionExecutedContext.Response.Headers.CacheControl = new System.Net.Http.Headers.CacheControlHeaderValue()
+				{
+					MaxAge = new TimeSpan(0),
+					NoCache = true,
+					NoStore = true
+				};
+			}
+			catch { }
 		}
 	}
 }

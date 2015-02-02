@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" />
   <xs:element name="AddItems">
     <xs:complexType>
       <xs:sequence>
@@ -303,6 +304,22 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadRecommendedItemsListResult" nillable="true" type="q47:ArrayOfrecommendeditem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBarcodeForList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q48:userprofile" />
+        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q49:UserSelectedContext" />
+        <xs:element minOccurs="0" name="Id" type="xs:long" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetBarcodeForListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" minOccurs="0" name="GetBarcodeForListResult" nillable="true" type="q50:ArrayOfItemBarcodeModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
