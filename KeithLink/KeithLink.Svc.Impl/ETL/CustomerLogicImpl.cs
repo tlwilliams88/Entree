@@ -38,17 +38,12 @@ namespace KeithLink.Svc.Impl.ETL
         {
             try
             {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
                 var customerTask = Task.Factory.StartNew(() => ImportCustomersToOrganizationProfile());
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
                 var dsrTask = Task.Factory.StartNew(() => ImportDsrInfo());
 
                 Task.WaitAll(customerTask, dsrTask);
-                
-                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
-                ImportCustomersToOrganizationProfile();
-
-                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
-                ImportDsrInfo();
-                eventLog.WriteInformationLog("ETL Import Process Complete:  CustomerLogicImpl Tasks");
             }
             catch (Exception ex)
             {

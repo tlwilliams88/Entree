@@ -45,14 +45,6 @@ namespace KeithLink.Svc.InternalSvc
             return true;
         }
 
-        
-        private void RunAllCatalogTasks()
-        {
-            categoryLogic.ProcessCatalogDataSerial();
-            customerLogic.ImportCustomerTasksSerial();
-        }
-        
-
         public bool ProcessCatalogData()
         {
             Task.Factory.StartNew(() => categoryLogic.ProcessCatalogData()).ContinueWith((t) =>
