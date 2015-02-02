@@ -27,7 +27,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
             , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory)
+                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
         {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
@@ -45,6 +45,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
 
             // load up recipients, customer and message
+            eventLogRepository.WriteInformationLog("order confirmation, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
             Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
             List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer);
             Message message = GetEmailMessageForNotification(orderConfirmation, customer);
