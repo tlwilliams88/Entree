@@ -7,9 +7,12 @@ angular.module('bekApp')
 
   /*---init---*/
   var init = function(){
-    $scope.preferncesFound = false;
-    
+    $scope.preferencesFound = false;
+    $scope.loadingCustomer = true;
+    $scope.errorMessage = '';
+
     CustomerService.getCustomerDetails($stateParams.customerNumber, $stateParams.branchNumber).then(function(customer) {
+      
       $scope.customer = customer;
       var prefArray = [];
 
@@ -18,8 +21,8 @@ angular.module('bekApp')
       success.forEach(function(preference, index){ 
         if(preference.customerNumber === $scope.customer.customerNumber){
           
-          if (!$scope.preferncesFound) {
-            $scope.preferncesFound = true;
+          if (!$scope.preferencesFound) {
+            $scope.preferencesFound = true;
           }
 
           //for every topic of notification build a preference object
@@ -51,6 +54,11 @@ angular.module('bekApp')
     }, function (error) {
         $scope.displayMessage('error', 'An error occurred while reading user preferences' + error)
       });
+    }).finally(function() {
+      $scope.loadingCustomer = false;
+      if (!$scope.customer) {
+        $scope.errorMessage = 'No customer found.';
+      }
     });
   };
 

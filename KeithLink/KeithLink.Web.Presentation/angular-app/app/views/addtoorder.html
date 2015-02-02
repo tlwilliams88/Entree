@@ -127,32 +127,27 @@
       <thead>
         <tr>
           <th class="sort-col-header" ng-click="sortBy='position';sortOrder=!sortOrder;">
-            #
-            <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span># <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
-            Item #
-            <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+            Item
+            <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortBy='notes';sortOrder=!sortOrder;">
-            Notes
-            <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-xs hidden-sm"></th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='label';sortOrder=!sortOrder;">
-            Label
-            <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder;">
-            Name
-            <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
           <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
-            Brand
-            <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'">
             # in Cart
@@ -164,16 +159,13 @@
             On Hand
           </th>
           <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
-            Qty
-            <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Qty <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='each';sortOrder=!sortOrder;">
-            Each
-            <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
-            Price
-            <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Price <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Ext Price

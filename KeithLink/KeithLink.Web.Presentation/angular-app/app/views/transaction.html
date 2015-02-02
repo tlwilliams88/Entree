@@ -20,32 +20,30 @@
       <thead>
         <tr>
           <th class="sort-col-header" ng-click="sortTransactions('customername', !sortOrder)">
-            Customer Name
-            <span sort-icons field="'customername'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+            Customer
+            <span>Name <span sort-icons field="'customername'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('customernumber', !sortOrder)">
-            Customer #
-            <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+            Customer
+            <span># <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('confirmationid', !sortOrder)">
-            Confirmation ID
-            <span sort-icons field="'confirmationid'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+            Confirmation
+            <span>ID <span sort-icons field="'confirmationid'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('invoicenumber', !sortOrder)">
-            Invoice #
-            <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+            Invoice
+            <span># <span sort-icons field="'invoicenumber'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortTransactions('amount', !sortOrder)">
-            Amount
-            <span sort-icons field="'amount'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+            <span>Amount <span sort-icons field="'amount'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortTransactions('date', !sortOrder)">
-            Date Scheduled
-            <span sort-icons field="'date'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+            Date
+            <span>Scheduled <span sort-icons field="'date'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTransactions('account', !sortOrder)">
-            Account
-            <span sort-icons field="'account'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span>
+            <span>Account <span sort-icons field="'account'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
           </th>
 
           <th class="large-icon icon-col">

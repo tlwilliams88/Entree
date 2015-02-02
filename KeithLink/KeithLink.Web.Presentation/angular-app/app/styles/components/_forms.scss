@@ -8,3 +8,7 @@ form.style-validation-errors {
     
   }
 }
+
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: rgb(235, 235, 228);
+}
