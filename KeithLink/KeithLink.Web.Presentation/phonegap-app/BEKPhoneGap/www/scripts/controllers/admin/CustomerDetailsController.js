@@ -9,9 +9,8 @@ angular.module('bekApp')
   var init = function(){
     $scope.preferncesFound = false;
     
-    CustomerService.getCustomerDetails($stateParams.customerNumber).then(function(customer) {
+    CustomerService.getCustomerDetails($stateParams.customerNumber, $stateParams.branchNumber).then(function(customer) {
       $scope.customer = customer;
-
       var prefArray = [];
 
     var prefsFromSvc = MessagePreferenceService.loadPreferences();
@@ -64,6 +63,7 @@ angular.module('bekApp')
 
     //initializes properties
     preferencePayload.customerNumber = $scope.customer.customerNumber;
+    preferencePayload.branchId = $scope.customer.customerBranch;
     preferencePayload.preferences = [];
 
     //for each topic format object accordingly by pushing only trues to the array

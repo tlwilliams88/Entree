@@ -289,10 +289,4 @@ angular.module('bekApp')
     if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
       $scope.startEditCartName(originalBasket.name);
     }
-
-
-    $scope.$on('$destroy', function() {
-      CartService.carts = [];
-    });
-
   }]);
