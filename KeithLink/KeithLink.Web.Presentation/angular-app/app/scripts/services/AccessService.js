@@ -18,7 +18,7 @@ angular.module('bekApp')
     },
 
     isPasswordExpired: function() {
-        return (LocalStorage.getProfile().passwordexpired);
+        return (Service.isLoggedIn() && LocalStorage.getProfile().passwordexpired);
     },
 
     isOrderEntryCustomer: function() {
@@ -31,6 +31,7 @@ angular.module('bekApp')
 
     // ROLES
 
+    // EXTERNAL
     isOwner: function() {
       return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
     },
@@ -51,6 +52,7 @@ angular.module('bekApp')
       return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
     },
 
+    // INTERNAL
     isSysAdmin: function() {
       return ( LocalStorage.getUserRole() === Constants.roles.SYS_ADMIN );
     },
