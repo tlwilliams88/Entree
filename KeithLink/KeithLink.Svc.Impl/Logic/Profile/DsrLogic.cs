@@ -37,9 +37,33 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 returnValue.PhoneNumber = d.Phone;
             } else {
                 // Will be used to populate branch specific information
-                switch (branchId) {
+                switch (branchId.ToLower()) {
+                    case "fam":
+                        returnValue.PhoneNumber = "8006589790";
+                        break;
+                    case "faq":
+                        returnValue.PhoneNumber = "8006752949";
+                        break;
+                    case "far":
+                        returnValue.PhoneNumber = "8007772356";
+                        break;
+                    case "fdf":
+                        returnValue.PhoneNumber = "8773176100";
+                        break;
+                    case "fhs":
+                        returnValue.PhoneNumber = "8553275500";
+                        break;
+                    case "flr":
+                        returnValue.PhoneNumber = "5019071518";
+                        break;
+                   case "fok":
+                        returnValue.PhoneNumber = "8004753484";
+                        break;
+                   case "fsa":
+                        returnValue.PhoneNumber = "8004888456";
+                        break;
                     default:
-                        returnValue.PhoneNumber = "0000000000";
+                        returnValue.PhoneNumber = "8177596800"; //if all else fails, call go
                         break;
                 }
 
