@@ -21,18 +21,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         ICustomerRepository customerRepository;
         IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
+        KeithLink.Common.Core.Logging.IEventLogRepository log;
         #endregion
 
         #region ctor
         public BaseNotificationHandlerImpl(IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
-            , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory)
+            , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory,
+            KeithLink.Common.Core.Logging.IEventLogRepository log)
         {
             this.userProfileLogic = userProfileLogic;
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
             this.customerRepository = customerRepository;
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.messageProviderFactory = messageProviderFactory;
+            this.log = log;
         }
         #endregion
 
@@ -48,7 +51,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 // this will handle internal users that have a messaging pref setup for a customer
                 users.UserProfiles.Add(userProfileLogic.GetUserProfile(userId).UserProfiles.FirstOrDefault());
             }
-
+            List<UserMessagingPreference> ump = new List<UserMessagingPreference>();
+            ump.AddRange(userDefaultMessagingPreferences);
+            ump.AddRange(customerMessagingPreferences);
+            string prefs = string.Empty;
+            foreach (var u in ump)
+                prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType;
+            log.WriteInformationLog("notification prefs: " + prefs + ", numProfiles: " + users.UserProfiles.Count + ", userDefaultMessagingPreferences: " + userDefaultMessagingPreferences + ", customerMessagingPreferences: " + customerMessagingPreferences);
+                
             List<Recipient> recipients = new List<Recipient>();
 
             foreach (Svc.Core.Models.Profile.UserProfile userProfile in users.UserProfiles)
