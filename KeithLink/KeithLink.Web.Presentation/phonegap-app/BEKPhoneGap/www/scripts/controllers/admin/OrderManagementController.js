@@ -25,6 +25,12 @@ angular.module('bekApp')
           OrderService.resubmitUnconfirmedOrder(item.controlNumber);
         }
 
+        $scope.zeroPad = function(item, size) {
+          console.log('num: ' + item.controlNumber + ', size: ' + size);
+          var s = item.controlNumber + "";
+          while (s.length < size) s = "0" + s;
+          return s;
+        }
         // INIT
         loadUnconfirmedOrders();
   }]);

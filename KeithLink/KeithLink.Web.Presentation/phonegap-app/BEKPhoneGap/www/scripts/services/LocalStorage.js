@@ -90,8 +90,8 @@ angular.module('bekApp')
       },
 
       setSelectedCustomerInfo: function(customer) { // for order entry users
-        setBranchId(customer.customer.customerBranch);
-        setCustomerNumber(customer.customer.customerNumber);
+        setBranchId(customer.customer == null ? '' : customer.customer.customerBranch);
+        setCustomerNumber(customer.customer == null ? '' : customer.customer.customerNumber);
         setCurrentCustomer(customer);
       }
     };

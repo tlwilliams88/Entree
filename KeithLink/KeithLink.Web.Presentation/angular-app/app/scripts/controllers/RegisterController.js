@@ -11,6 +11,8 @@ angular.module('bekApp')
   .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
     function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
 
+    $scope.isMobileApp = ENV.mobileApp;
+
     // gets prepopulated login info for dev environment
     $scope.loginInfo = {
       username: ENV.username,

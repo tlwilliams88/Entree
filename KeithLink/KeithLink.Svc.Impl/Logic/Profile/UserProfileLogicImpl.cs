@@ -967,6 +967,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             foreach (UserProfile user in users) // all account users are assumed to be owners on all customers
                 UpdateCustomersForUser(customers, "owner", user);
 
+			_accountRepo.UpdateAccount(name, accountId);
+
             // refresh cache; need to reload customers
             _customerRepo.ClearCustomerCache();
             return true;

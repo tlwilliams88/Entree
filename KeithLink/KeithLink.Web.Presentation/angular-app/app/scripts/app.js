@@ -73,6 +73,10 @@ angular
     }
   };
 
+  $rootScope.openExternalLink = function(url) {
+    window.open(url, '_system');
+  };
+
   /**********
   $stateChangeStart
   **********/
@@ -90,7 +94,7 @@ angular
         event.preventDefault();
       }
 
-      if (AccessService.isLoggedIn() && AccessService.isPasswordExpired()) {
+      if (AccessService.isPasswordExpired()) {
         $state.go('changepassword');
         event.preventDefault();
       }
