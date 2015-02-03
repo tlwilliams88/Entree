@@ -34,20 +34,21 @@ namespace KeithLink.Svc.Impl.ETL
             this.eventLog = eventLog;
         }
 
-        public void ImportCustomerTasksSerial()
+        public void ImportCustomerTasks()
         {
             try
             {
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
-                ImportCustomersToOrganizationProfile();
+                var customerTask = Task.Factory.StartNew(() => ImportCustomersToOrganizationProfile());
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
-                ImportDsrInfo();
-                eventLog.WriteInformationLog("ETL Import Process Complete:  CustomerLogicImpl Tasks");
+                var dsrTask = Task.Factory.StartNew(() => ImportDsrInfo());
+
+                Task.WaitAll(customerTask, dsrTask);
             }
             catch (Exception ex)
             {
                 //log
-                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+                eventLog.WriteErrorLog("Error with ETL Import -- Import Customer Tasks", ex);
             }
         }
 
