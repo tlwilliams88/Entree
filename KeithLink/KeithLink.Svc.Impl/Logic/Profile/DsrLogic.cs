@@ -34,39 +34,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 returnValue.EmailAddress = d.EmailAddress;
                 returnValue.Name = d.Name;
                 returnValue.ImageUrl = d.ImageUrl.Inject( new { baseUrl = Configuration.MultiDocsProxyUrl } );
-                returnValue.PhoneNumber = d.Phone;
+                returnValue.PhoneNumber = d.Phone == null ? returnDefaultDsrPhone(branchId) : d.Phone;
             } else {
                 // Will be used to populate branch specific information
-                switch (branchId.ToLower()) {
-                    case "fam":
-                        returnValue.PhoneNumber = "8006589790";
-                        break;
-                    case "faq":
-                        returnValue.PhoneNumber = "8006752949";
-                        break;
-                    case "far":
-                        returnValue.PhoneNumber = "8007772356";
-                        break;
-                    case "fdf":
-                        returnValue.PhoneNumber = "8773176100";
-                        break;
-                    case "fhs":
-                        returnValue.PhoneNumber = "8553275500";
-                        break;
-                    case "flr":
-                        returnValue.PhoneNumber = "5019071518";
-                        break;
-                   case "fok":
-                        returnValue.PhoneNumber = "8004753484";
-                        break;
-                   case "fsa":
-                        returnValue.PhoneNumber = "8004888456";
-                        break;
-                    default:
-                        returnValue.PhoneNumber = "8177596800"; //if all else fails, call go
-                        break;
-                }
-
+                returnValue.PhoneNumber = returnDefaultDsrPhone(branchId);
                 returnValue.DsrNumber = "000";
                 returnValue.EmailAddress = String.Concat(branchId, "@benekeith.com");
                 returnValue.Name = "Ben E. Keith";
@@ -88,6 +59,45 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _dsrRepository.SendImageToMultiDocs( emailAddress, fileBytes );
         }
 
+        #region Helper Methods
+        private string returnDefaultDsrPhone(string branchId)
+        {
+            string phone = "";
+            switch (branchId.ToLower())
+            {
+                case "fam":
+                    phone = "8006589790";
+                    break;
+                case "faq":
+                    phone = "8006752949";
+                    break;
+                case "far":
+                    phone = "8007772356";
+                    break;
+                case "fdf":
+                    phone = "8773176100";
+                    break;
+                case "fhs":
+                    phone = "8553275500";
+                    break;
+                case "flr":
+                    phone = "5019071518";
+                    break;
+                case "fok":
+                    phone = "8004753484";
+                    break;
+                case "fsa":
+                    phone = "8004888456";
+                    break;
+                default:
+                    phone = "8177596800"; //if all else fails, call go
+                    break;
+            }
+                
+            return phone;
 
+        }
+
+        #endregion
     }
 }
