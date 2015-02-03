@@ -1065,19 +1065,25 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId); // TODO: reduce list to only the DSM's DSRs
+					else
+						allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+					
 				}
 				else
 				{ // assume admin user with access to all customers
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
-                    // internal owner - special case for phils user
-                    //allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
+                    else
+						allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
 				}
 			}
 			else // external user
 			{
 				allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
 			}
+
+			
+
 			return allCustomers;
 		}
 	}
