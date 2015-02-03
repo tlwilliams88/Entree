@@ -249,7 +249,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 return customerFromCache;
 
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.branch_number = '" + branchId + "' AND GeneralInfo.name LIKE '%" + search + "%'"; // org type of customer
+			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.branch_number = '" + branchId + "' AND GeneralInfo.name LIKE '%" + search.Replace("'", "''") + "%'"; // org type of customer
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
             List<Customer> customers = new List<Customer>();
