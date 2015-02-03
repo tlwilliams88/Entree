@@ -445,11 +445,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
-                if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
+                /*if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
                 {
                     userRole = "owner";
                 }
-                else if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
+                 */
+                if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
                 {
                     dsrRole = internalUserRole;
                     dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
@@ -899,7 +900,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public UserProfileReturn GetUserProfileByGuid(Guid UserId)
         {
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";//UserId.ToString();
+            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
@@ -1048,10 +1049,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			List<Customer> allCustomers = new List<Customer>();
 			if (IsInternalAddress(user.EmailAddress))
 			{
+                /*
                 if (user.RoleName == "owner") // special case where internal user is designated admin; hard coded to jmcmilland and pabrandt
                 {
                     allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
                 }
+                */
 				if (!String.IsNullOrEmpty(user.DSRNumber))
 				{
 					// lookup customers by their assigned dsr number

@@ -10,77 +10,77 @@
 
 <div class="page-content">
   <div class="row">
-      <form id="itemUsageForm" style ="margin:15px">        
-          <table class = "info-box">            
-            <tr>              
-              <td style="font-weight:bold;padding-left:15px;padding-right:15px;padding-top:30px;padding-bottom:30px;">From:</td>
-              <td class="datepicker">
-              <a
-                ng-click="openDatepickerFrom = true"
-                class="icon-calendar"
-                datepicker-popup="{{datepickerOptions.options.dateFormat}}"
-                ng-model="itemusagequery.fromDate"
-                is-open="openDatepickerFrom"
-                min-date="datepickerOptions.minDate"
-                max-date="datepickerOptions.maxDate"
-                datepicker-options="datepickerOptions.options"
-                date-disabled="disabled(date, mode)"
-                close-text="Close"></a>
-              {{itemusagequery.fromDate | date:shortDate}}
-            </td>
-            <td style="font-weight:bold;padding-left:15px;padding-right:15px;">To:</td>
-            <td class="datepicker">
-              <a
-                ng-click="openDatepickerTo = true"
-                class="icon-calendar"
-                datepicker-popup="{{datepickerOptions.options.dateFormat}}"
-                ng-model="itemusagequery.toDate"
-                is-open="openDatepickerTo"
-                min-date="datepickerOptions.minDate"
-                max-date="datepickerOptions.maxDate"
-                datepicker-options="datepickerOptions.options"
-                date-disabled="disabled(date, mode)"
-                close-text="Close"></a>
-              {{itemusagequery.toDate | date:shortDate}}
-            </td>
-            <td style="padding-left:25px;padding-right:15px;" class="hidden-print">
-              <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
-            </td>
-            </tr>
-          </table>          
-      </form>
+    <form id="itemUsageForm" class="item-usage-form col-md-6">
+      <div class="info-box" style="display:inline-block;">
+      <table>            
+        <tr>              
+          <td class="datepicker">
+            <label>From: </label>
+            <a
+              ng-click="openDatepickerFrom = true"
+              class="icon-calendar"
+              datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+              ng-model="itemusagequery.fromDate"
+              is-open="openDatepickerFrom"
+              min-date="datepickerOptions.minDate"
+              max-date="datepickerOptions.maxDate"
+              datepicker-options="datepickerOptions.options"
+              date-disabled="disabled(date, mode)"
+              close-text="Close"></a>
+            {{itemusagequery.fromDate | date:shortDate}}
+          </td>
+          <td class="datepicker">
+            <label>To: </label>
+            <a
+              ng-click="openDatepickerTo = true"
+              class="icon-calendar"
+              datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+              ng-model="itemusagequery.toDate"
+              is-open="openDatepickerTo"
+              min-date="datepickerOptions.minDate"
+              max-date="datepickerOptions.maxDate"
+              datepicker-options="datepickerOptions.options"
+              date-disabled="disabled(date, mode)"
+              close-text="Close"></a>
+            {{itemusagequery.toDate | date:shortDate}}
+          </td>
+          <td class="hidden-print">
+            <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
+          </td>
+        </tr>
+      </table>
+      </div>
+    </form>
 
   	<div class="col-xs-12 col-md-12 col-lg-9">
   		<div class="row">
   			<h2 class="col-xs-6">Item Usage</h2>
-        <span style="margin-top: 25px;" class="col-xs-6 text-right">{{itemusages.length}} results</span>
+        <span class="sub-content col-xs-6 text-right">{{itemusages.length}} results</span>
   		</div>
   		
   		<table class="table table-striped-rows table-border">
   			<thead>
   				<tr>
             <th class="sort-col-header" ng-click="sortTable('ItemNumber')">
-              Item #
-              <span sort-icons field="'ItemNumber'" sortorder="sortReverse" sortby="sortField"></span>
+              Item
+              <span># <span sort-icons field="'ItemNumber'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortTable('Name')" >
-              Name
-              <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span>
+              <span>Name <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
             <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
             <th class="sort-col-header hidden-mobile-visible-print text-center" ng-click="sortTable('Each')">
-              Each
-              <span sort-icons field="'Each'" sortorder="sortReverse" sortby="sortField"></span>
+              <span>Each <span sort-icons field="'Each'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print text-center" ng-click="sortTable('TotalQuantityOrdered')">
-              # Ordered
-              <span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span>
+              #
+              <span>Ordered<span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('TotalQuantityShipped')">
-              # Shipped
-  			<span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span>
+              #
+  			       <span>Shipped <span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
             <th></th>
           </tr>
