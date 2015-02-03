@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UserProfileService', 'UtilityService', 'ExportService', 'List',
-    function($http, $q, $filter, $upload, toaster, UserProfileService, UtilityService, ExportService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List',
+    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -155,6 +155,7 @@ angular.module('bekApp')
           return List.get({
             listId: listId,
           }).$promise.then(function(list) {
+            PricingService.updateCaculatedFields(list.items);
             updateListPermissions(list);
 
             // update new list in cache object
