@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    Customer # {{customer.customerNumber}}: {{customer.customerName}}
+    Customer Details
   </div>
   <div header-buttons>
 
@@ -8,31 +8,37 @@
 </div>
 
 <div class="row page-content">
-  <div class="col-xs-12">
-    <h2 class="no-margin-top">Customer Information</h2>
-    <div class="row">
+  <div class="col-xs-12" loading-spinner="loadingCustomer"></div>
+  <div class="col-xs-12 text-red" ng-show="errorMessage && !loadingCustomer">
+    {{errorMessage}}
+  </div>
+  <div class="col-xs-12" ng-show="customer && !loadingCustomer">
+    <h2 class="no-margin-top">#{{customer.customerNumber}}: {{customer.customerName}}</h2>
+    <!-- <div class="row">
       <div class="col-lg-6 col-md-6">
         <div class="col-md-12 form-group">
           <label class="control-label">Email:</label> {{customer.email}}
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="row">
       <div class="col-lg-6 col-md-6">
         <div class="col-md-12 form-group">
-          <label class="control-label">Phone:</label> {{customer.phone}}
+          <label class="control-label">Phone:</label> {{customer.phone || 'N/A' | phoneNumber}}
         </div>
       </div>
     </div>
     <div class="row">
       <div class="col-lg-6 col-md-6">
         <div class="col-md-12">
-          <label class="control-label">Address:</label> {{customer.address.street}} {{customer.address.city}}, {{customer.address.regioncode}} {{customer.address.postalcode}}
+          <label class="control-label">Address:</label><br>
+          {{customer.address.street}}<br>
+          {{customer.address.city}}, {{customer.address.regioncode}} {{customer.address.postalcode}}
         </div>
       </div>
     </div>
 
-    <div ng-show="preferncesFound">
+    <div ng-show="preferencesFound">
       <h2>Customer Notification Preferences &nbsp;&nbsp;&nbsp;<a class="smallerHeaderLinkText" ng-init="canEditNotifications = false" ng-click="canEditNotifications = !canEditNotifications"><span class="glyphicon glyphicon-pencil"></span> Edit Notifications</a></h2>
       <form name="preferencesForm" ng-submit="savePreferences()" class="form-horizontal">
         <table class="preferencesTable">

@@ -84,6 +84,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             
         }
 
+        public void SendImageToMultiDocs( string emailAddress, Byte[] fileBytes ) {
+            _dsrRepository.SendImageToMultiDocs( emailAddress, fileBytes );
+        }
+
 
     }
 }

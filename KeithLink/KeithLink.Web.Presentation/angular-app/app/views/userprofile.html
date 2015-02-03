@@ -194,7 +194,7 @@
           class="form-control" 
           placeholder="Filter customers by name or number" />
         <span class="input-group-btn">
-          <button type="button" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default icon-search"></button>
+          <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default icon-search"></button>
         </span>
       </div>
     </form>
@@ -219,7 +219,7 @@
         <tbody>
           <tr ng-repeat="customer in customers" ng-class="{ odd : $odd, even: $even }">
             <td>
-              <a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})">
+              <a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})">
                 {{customer.customerNumber}}
               </a>
             </td>

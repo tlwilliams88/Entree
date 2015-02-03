@@ -1711,7 +1711,8 @@ This file contains the Metadata Repository
         <Relationships>
           <Relationship name="OrganizationUser" type="Relationship" modelName="UserProfile" isMultipleItems="true" />
           <Relationship name="UserOrganization" type="Relationship" modelName="Organization" isMultipleItems="true" />
-        </Relationships>
+					<Relationship name="PreferredAddress" type="Relationship" modelName="Address" isMultipleItems="false" csArea="Profiles" />
+				</Relationships>
 
       </CommerceEntity>
       <!-- UserOrganizations End -->

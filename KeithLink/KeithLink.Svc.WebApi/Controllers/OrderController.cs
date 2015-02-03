@@ -144,9 +144,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpGet]
         [ApiKeyedRoute("order/changeorder")]
-        public Models.OperationReturnModel<List<Order>> GetChangeOrders()
+		public Models.OperationReturnModel<List<Order>> GetChangeOrders(bool header = false)
         {
-            List<Order> changeOrders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
+            List<Order> changeOrders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext, header: header);
 
             Models.OperationReturnModel<List<Order>> ret = new Models.OperationReturnModel<List<Order>>();
             ret.SuccessResponse = changeOrders.Where(x => x.IsChangeOrderAllowed).ToList();

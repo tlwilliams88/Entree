@@ -70,8 +70,8 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
         public List<Core.Models.OnlinePayments.Invoice.EF.Invoice> GetInvoiceTransactoin(string division, string customerNumber, string invoiceNumber) {
             return _dbContext.Invoices.Where(i => i.Division.Equals(division) && 
                                                   i.CustomerNumber.Equals(customerNumber) && 
-                                                  i.InvoiceNumber.StartsWith(invoiceNumber) && 
-                                                  i.ItemLine > 0).ToList();
+                                                  i.InvoiceNumber.StartsWith(invoiceNumber) &&
+												  i.ItemSequence > 0).ToList();
         }
 
         public List<Core.Models.OnlinePayments.Invoice.EF.Invoice> GetMainInvoices(string division, string customerNumber) {
