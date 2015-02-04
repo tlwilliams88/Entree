@@ -8,5 +8,6 @@ using KeithLink.Svc.Core.Models.Profile;
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IDsrServiceRepository {
         Dsr GetDsr( string branchId, string dsrNumber );
+		List<Dsr> GetAllDsrInfo();
     }
 }

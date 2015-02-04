@@ -65,7 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             List<string> invoiceNumbers = eta.Orders.Select(x => x.OrderId).ToList();
             var orders = orderHistoryRepository.Read(x => invoiceNumbers.Contains(x.InvoiceNumber)); // get all orders for order ETAs
             Parallel.ForEach(orders, order => {
-                    var etaInfo = eta.Orders.Where(o => o.OrderId == order.InvoiceNumber)
+                    var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId))
                         .FirstOrDefault();
 
                     order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();

@@ -12,5 +12,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
         public Dsr GetDsr( string branchId, string dsrNumber ) {
             return new Dsr();
         }
-    }
+
+
+		public List<Dsr> GetAllDsrInfo()
+		{
+			return new List<Dsr>();
+		}
+	}
 }
