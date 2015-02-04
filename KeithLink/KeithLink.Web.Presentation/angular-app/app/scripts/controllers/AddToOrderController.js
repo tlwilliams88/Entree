@@ -203,7 +203,7 @@ angular.module('bekApp')
       // get subtotal for cart items and list items with quantity > 0
       $scope.subtotal = PricingService.getSubtotalForItems(cartItems) + PricingService.getSubtotalForItemsWithPrice(listItemsWithQuantity);
       return $scope.subtotal;
-    };
+    }
 
     $scope.getItemCount = function(cart, list) {
       if (cart && list) {
