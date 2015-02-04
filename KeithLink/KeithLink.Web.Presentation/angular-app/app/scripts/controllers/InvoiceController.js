@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants', '$rootScope', 'LocalStorage', 'CustomerService', '$state',
-    function ($scope, $filter, $modal, accounts, InvoiceService, Constants, $rootScope, LocalStorage, CustomerService, $state) {
+  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants', '$rootScope', 'LocalStorage', 'CustomerService', '$state', 'AccessService',
+    function ($scope, $filter, $modal, accounts, InvoiceService, Constants, $rootScope, LocalStorage, CustomerService, $state, AccessService) {
 
   $scope.customerText = $scope.selectedUserContext.customer.customerNumber + ' - ' + $scope.selectedUserContext.customer.customerName;
   var currentUserSelectedContext = {};
@@ -10,6 +10,7 @@ angular.module('bekApp')
   function loadInvoices(params) {
     var promise;
     $scope.loadingResults = true;
+    $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
 
     params.filter = createFilterObject();
 
