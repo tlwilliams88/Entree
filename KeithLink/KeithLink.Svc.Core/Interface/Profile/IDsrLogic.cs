@@ -10,5 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         Dsr GetDsr( string branchId, string dsrNumber );
         void CreateOrUpdateDsr(Dsr dsr);
         void SendImageToMultiDocs( string emailAddress, Byte[] fileBytes );
+		List<Dsr> GetAllDsrInfo();
     }
 }

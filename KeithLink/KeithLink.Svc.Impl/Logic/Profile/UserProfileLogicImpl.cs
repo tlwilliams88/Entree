@@ -1047,6 +1047,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public List<Customer> GetCustomersForUser(UserProfile user, string search = "")
 		{
 			List<Customer> allCustomers = new List<Customer>();
+			if (string.IsNullOrEmpty(search)) search = "";
 			if (IsInternalAddress(user.EmailAddress))
 			{
                 /*
@@ -1074,7 +1075,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
                     else
-						allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
+						allCustomers = _customerRepo.GetCustomers(); //use the use the user organization object for customer filtering
 				}
 			}
 			else // external user

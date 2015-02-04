@@ -20,7 +20,19 @@ namespace KeithLink.Svc.WebApi.Repository.Profile {
         #region methods
         public Dsr GetDsr( string branchId, string dsrNumber ) {
             return _client.GetDsr( branchId, dsrNumber );
-        }
-        #endregion
-    }
+        }     
+
+
+		public List<Dsr> GetAllDsrInfo()
+		{
+			var dsrs =  _client.GetAllDsrInfo();
+
+			if (dsrs == null)
+				return new List<Dsr>();
+			else
+				return dsrs.ToList();
+
+		} 
+		#endregion
+	}
 }
