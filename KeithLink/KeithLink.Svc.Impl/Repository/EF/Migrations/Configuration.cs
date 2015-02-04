@@ -38,16 +38,16 @@ namespace KeithLink.Svc.Impl.Migrations
             //    );
             //
 
-            context.Dsrs.AddOrUpdate(
-                d => d.DsrNumber,
-                new Dsr {
-                    DsrNumber = "066",
-                    Name = "Ochoa, Raul",
-                    BranchId = "FAM",
-                    Phone = "4328896994",
-                    EmailAddress = "riochoa@benekeith.com",
-                    ImageUrl = "/img/avatar.jpg"
-                } );
+            //context.Dsrs.AddOrUpdate(
+            //    d => d.DsrNumber,
+            //    new Dsr {
+            //        DsrNumber = "066",
+            //        Name = "Ochoa, Raul",
+            //        BranchId = "FAM",
+            //        Phone = "4328896994",
+            //        EmailAddress = "riochoa@benekeith.com",
+            //        ImageUrl = "/img/avatar.jpg"
+            //    } );
 
 			context.BranchSupports.AddOrUpdate(
 				b => b.BranchId,
@@ -136,7 +136,7 @@ namespace KeithLink.Svc.Impl.Migrations
             newUserPasswordBody.AppendLine( "An account has been created for you. Please use the temporary password to login and get started" );
             newUserPasswordBody.AppendLine();
             newUserPasswordBody.AppendLine( "Password: {password}" );
-            newUserPasswordBody.AppendLine( String.Concat("URL: ", KeithLink.Svc.Impl.Configuration.PresentationUrl ));
+            newUserPasswordBody.AppendLine( "Url: {url}");
             newUserPasswordBody.AppendLine();
 
             context.MessageTemplates.AddOrUpdate(
