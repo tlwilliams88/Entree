@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="lib/angular-toaster/toaster.css" />
     <link rel="stylesheet" href="lib/angular-loading-bar/loading-bar.css" />
     <link rel="stylesheet" href="lib/icomoon/style.css" />
+    <link rel="stylesheet" href="lib/angular-carousel/angular-carousel.css" />
     <link rel="stylesheet" href="lib/c3/c3.css" />
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -47,6 +48,7 @@
     <script src="lib/d3/d3.js"></script>
     <script src="lib/c3/c3.js"></script>
     <script src="lib/angular-local-storage/angular-local-storage.js"></script>
+    <script src="lib/angular-carousel/angular-carousel.js"></script>
     <script src="lib/ng-mobile-menu/ng-mobile-menu.js"></script>
     <script src="lib/angular-dragdrop/angular-dragdrop.js"></script>
     <script src="lib/angular-ui-sortable/sortable.js"></script>
@@ -76,18 +78,6 @@
         });
     </script>
     -->
-
-     <script id="template/carousel/carousel.html" type="text/ng-template">
-      <div ng-mouseenter="pause()" ng-mouseleave="play()" class="carousel" ng-swipe-right="prev()" ng-swipe-left="next()">
-        <ol class="carousel-paging" ng-show="slides.length > 1">
-          <li ng-repeat="slide in slides track by $index" ng-class="{showIndex: !isActive(slide)}" ng-click="select(slide)">{{$index + 1}} / {{slides.length}}</li>
-        </ol>
-        <div class="carousel-inner" ng-transclude></div>
-        <a class="left carousel-control" ng-click="prev()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-left"></span></a>
-        <a class="right carousel-control" ng-click="next()" ng-show="slides.length > 1"><span class="glyphicon glyphicon-chevron-right"></span></a>
-    </div>
-    </script>
-
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script type="text/javascript" src="scripts/app.js"></script>

@@ -20,6 +20,7 @@ angular
     'ui.router',
     'ui.bootstrap',
     'ui.sortable',            // jquery ui list sorting (used on lists page)
+    'angular-carousel',
     'shoppinpal.mobile-menu', // mobile sidebar menu
     'ngDragDrop',             // jquery ui drag and drop (used on lists page)
     'infinite-scroll',

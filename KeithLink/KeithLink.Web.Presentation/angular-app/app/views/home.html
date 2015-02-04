@@ -227,38 +227,8 @@
           </div>
         </div>
 
-        <div class="col-xs-12">
-          <div class="featured-item-mobile visible-xs visible-sm">
-            <carousel interval="myInterval" disable-ng-animate>
-              <slide ng-repeat="item in promoItems track by $index" active="item.active">
-                <div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
-                  <img ng-src="{{item.imageurl}}" alt="image">
-                </div>
-                <div class="col-xs-8 no-padding featured-item-mobile__detail">
-                  <div>{{item.tagline}}</div>
-                  <a 
-                    ng-if="item.targeturl" 
-                    ng-href="{{item.targeturl}}" 
-                    class="text-uppercase"
-                    target="_system">
-                    {{item.targeturltext}}
-                  </a>
-                  <a 
-                    ng-if="item.productid" 
-                    ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
-                    class="text-uppercase">
-                    {{item.targeturltext}}
-                  </a>
-                  <a 
-                    ng-if="!item.targeturl && !item.productid && item.content" 
-                    ng-click="showPromoItemContent(item)"
-                    class="text-uppercase">
-                    {{item.targeturltext}}
-                  </a>
-                </div>
-              </slide>
-            </carousel>
-          </div>
+        <div class="col-xs-12 hidden-md hidden-lg" ng-show="promoItems.length > 0">
+          <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
         </div> 
 
       </div>

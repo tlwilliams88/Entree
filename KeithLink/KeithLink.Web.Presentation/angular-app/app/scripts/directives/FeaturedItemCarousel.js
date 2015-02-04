@@ -19,9 +19,10 @@ angular.module('bekApp')
     return {
       restrict: 'A',
       scope: {
-        itemList: '=items',
-        linkSref: '=link'
+        itemList: '=featuredItemCarousel',
+        template: '@template'
       },
+      transclude: true,
       templateUrl: 'views/directives/featureditemcarousel.html'
     };
 
