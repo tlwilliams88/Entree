@@ -53,7 +53,7 @@ angular.module('bekApp')
     $scope.profile.customers = selectedCustomers;
 
     //pushes profile object to database
-    UserProfileService.updateUserProfileFromAdmin($scope.profile).then(function(newProfile){
+    UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
       $scope.displayMessage('success', 'The user was successfully updated.');
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);
@@ -67,7 +67,7 @@ angular.module('bekApp')
     profile.customers = [];
 
     //push freshly wiped profile to database
-    UserProfileService.updateUserProfileFromAdmin(profile).then(function(newProfile){
+    UserProfileService.updateUserProfile(profile).then(function(newProfile){
       //refreshes page with newest data
       processProfile(newProfile);
       $scope.displayMessage('success', 'The user was successfully deleted.');

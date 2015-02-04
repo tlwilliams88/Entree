@@ -96,12 +96,14 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() );
     },
 
+    // user can manage their own account
     canManageAccount: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner() );
+      return ( Service.isBranchManager() || Service.isSysAdmin() || Service.isOwner() );
     },
 
+    // user can manage all accounts and create new accounts
     canManageAccounts: function() {
-      return ( Service.isInternalAccountAdminUser() );
+      return ( Service.isBranchManager() || Service.isSysAdmin() );
     }
 
   };
