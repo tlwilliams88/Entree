@@ -25,6 +25,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         bool UpdatePassword(string emailAddress, string oldPassword, string newPassword);
 
+        void UpdatePassword( string emailAddress, string newPassword );
+
         void UpdateUserAttributes(string oldEmailAddress, string newEmailAdress, string firstName, string lastName);
 
         bool UsernameExists(string userName);

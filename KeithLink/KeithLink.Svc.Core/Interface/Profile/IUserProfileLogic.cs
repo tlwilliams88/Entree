@@ -22,6 +22,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         bool IsInternalAddress(string emailAddress);
 
         bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
+        void ResetPassword( string emailAddress );
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName);
 
@@ -36,10 +37,12 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         AccountUsersReturn GetAccountUsers(Guid id);
         UserProfileReturn GetUsers(UserFilterModel userFilters);
         AccountReturn CreateAccount(string name);
+
         bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
         void AddCustomerToAccount(Guid accountId, Guid customerId);
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
+
 		List<Customer> GetCustomersForUser(UserProfile user, string search = "");
         List<Customer> GetCustomersForExternalUser(Guid userId);
     }

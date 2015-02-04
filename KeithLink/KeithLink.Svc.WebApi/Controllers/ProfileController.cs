@@ -101,6 +101,23 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        [HttpPost]
+        [ApiKeyedRoute( "profile/forgotpassword" )]
+        public OperationReturnModel<bool> ForgotPassword( string emailAddress ) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+
+            try {
+                _profileLogic.ResetPassword( emailAddress );
+                returnValue.SuccessResponse = true;
+            } catch (Exception ex) {
+                returnValue.SuccessResponse = false;
+                returnValue.ErrorMessage = "There was an error processing your request. Please validate your information is correct. If the problem persists please contact support";
+                _log.WriteErrorLog( "Controller reset password error", ex );
+            }
+
+            return returnValue;
+        }
+
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
