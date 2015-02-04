@@ -954,6 +954,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             IEnumerable<Guid> usersToAdd = users.Select(u => u.UserId).Except(existingUsers.Select(u => u.UserId));
             IEnumerable<Guid> usersToDelete = existingUsers.Select(u => u.UserId).Except(users.Select(u => u.UserId));
 
+			//First make sure the customer is not already a member of an account
+			foreach (Guid custId in customersToAdd)
+			{
+				var cust = _customerRepo.GetCustomerById(custId);
+				if (cust != null)
+					if (cust.AccountId != null)
+						throw new Exception(string.Format("Customer {0}-{1} is already a member of a Customer Group", cust.CustomerNumber, cust.CustomerName));
+			}
+
+
+
             foreach (Guid g in customersToAdd)
                 _accountRepo.AddCustomerToAccount(accountId, g);
             foreach (Guid g in customersToDelete)
@@ -998,13 +1009,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerName");
 
 			
-			//Populate the Last order updated date for each customer
-			foreach (var customer in returnValue.Results)
-			{
-				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
-
-				customer.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customer.CustomerNumber, customer.CustomerBranch); 
-			}
+			
 			
 
 			//foreach (var cust in returnValue.Results)
@@ -1086,6 +1091,37 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			
 
 			return allCustomers;
+		}
+
+
+		public void RemoveUserFromAccount(Guid accountId, Guid userId)
+		{
+			List<Account> allAccounts = _accountRepo.GetAccounts();
+			Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
+			acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+
+			AccountUsersReturn usersReturn = new AccountUsersReturn();
+			usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
+			usersReturn.CustomerUserProfiles = new List<UserProfile>();
+
+			foreach (Customer c in acct.Customers)
+			{
+				RemoveUserFromCustomer(c.CustomerId, userId);
+			}
+
+			//Remove directly from account
+			_accountRepo.RemoveUserFromAccount(accountId, userId);
+		}
+
+
+		public CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId)
+		{
+			var returnModel = new CustomerBalanceOrderUpdatedModel();
+
+			returnModel.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
+			returnModel.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customerId, branchId);
+
+			return returnModel;
 		}
 	}
 }

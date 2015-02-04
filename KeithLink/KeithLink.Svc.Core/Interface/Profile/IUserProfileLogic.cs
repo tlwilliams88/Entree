@@ -6,6 +6,7 @@ using System.Collections.Generic;
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IUserProfileLogic {
         void CreateBekUserProfile(string emailAddress);
+		CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId);
 
         UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId);
         UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId );
@@ -42,5 +43,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
 		List<Customer> GetCustomersForUser(UserProfile user, string search = "");
         List<Customer> GetCustomersForExternalUser(Guid userId);
+		void RemoveUserFromAccount(Guid accountId, Guid userId);
     }
 }

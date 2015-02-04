@@ -122,6 +122,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _custRepo.SearchCustomerContainers(searchText);
         }
 
+		[AllowAnonymous]
+		[HttpGet]
+		[ApiKeyedRoute("profile/customer/balance")]
+		public CustomerBalanceOrderUpdatedModel CustomerBalance()
+		{
+			return _profileLogic.GetBalanceForCustomer(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
+		}
+
         [Authorize]
         [HttpPut]
         [ApiKeyedRoute("profile/password")]
@@ -202,7 +210,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public OperationReturnModel<bool> UpdateAccount(Account account)
         {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
-
+			retVal.SuccessResponse = false;
             try
             {
                 retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
@@ -210,7 +218,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             catch (ApplicationException axe)
             {
                 retVal.ErrorMessage = axe.Message;
-
+			
                 _log.WriteErrorLog("Application exception", axe);
             }
             catch (Exception ex)
@@ -288,6 +296,35 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return new OperationReturnModel<AccountUsersReturn>() { SuccessResponse = _profileLogic.GetAccountUsers(accountId) };
         }
+
+		///profile/{userId}/account/{accountId} 
+		[Authorize]
+		[HttpDelete]
+		[ApiKeyedRoute("profile/{userId}/account/{accountId}")]        
+		public OperationReturnModel<bool> RemoveUserFromAcocunt(Guid userId, Guid accountId)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+			try
+			{
+				_profileLogic.RemoveUserFromAccount(accountId, userId);
+				retVal.SuccessResponse = true;
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
+
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
+
+			return retVal;
+		}
 
         [Authorize]
         [HttpPut]
