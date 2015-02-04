@@ -115,16 +115,6 @@ angular.module('bekApp')
         });
       },
 
-      updateUserProfileFromAdmin: function(userProfile) {
-        var promise = $http.put('/profile', userProfile);
-
-        return UtilityService.resolvePromise(promise).then(function(successResponse) {
-          var profile = successResponse.userProfiles[0];
-          $log.debug(profile);
-          return profile;
-        });
-      },
-
       changePassword: function(passwordData) {
         var deferred = $q.defer();
 
