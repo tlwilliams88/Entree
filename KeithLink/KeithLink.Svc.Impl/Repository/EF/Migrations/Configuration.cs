@@ -136,7 +136,7 @@ namespace KeithLink.Svc.Impl.Migrations
             newUserPasswordBody.AppendLine( "An account has been created for you. Please use the temporary password to login and get started" );
             newUserPasswordBody.AppendLine();
             newUserPasswordBody.AppendLine( "Password: {password}" );
-            newUserPasswordBody.AppendLine( "Url: {url}";
+            newUserPasswordBody.AppendLine( "Url: {url}");
             newUserPasswordBody.AppendLine();
 
             context.MessageTemplates.AddOrUpdate(
