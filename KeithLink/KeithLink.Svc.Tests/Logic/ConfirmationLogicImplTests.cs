@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Test.Logic
         [TestMethod]
         public void ConfirmationFileShouldParseAndSendToRabbitMQ()
         {
-            UnitOfWork uow = new UnitOfWork();
+			UnitOfWork uow = new UnitOfWork(new EventLogRepositoryImpl("Entree Tests"));
             OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, new EventLogRepositoryImpl("Unit Tests")); 
 
             ConfirmationLogicImpl logic = new ConfirmationLogicImpl(new EventLogRepositoryImpl("Entree Tests"),
