@@ -53,13 +53,6 @@ angular.module('bekApp')
       },
 
       setProfile: function(profile) {
-        // set display name for user
-        if (profile.firstname === 'guest' && profile.lastname === 'account') {
-          profile.displayname = profile.emailaddress;
-        } else {
-          profile.displayname = profile.firstname + ' ' + profile.lastname;
-        }
-
         localStorageService.set(Constants.localStorage.userProfile, profile);
       },
 

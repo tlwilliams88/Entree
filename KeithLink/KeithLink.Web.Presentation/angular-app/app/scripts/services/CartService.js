@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'toaster', 'UtilityService', 'Cart',
-    function ($http, $q, $upload, toaster, UtilityService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'toaster', 'UtilityService', 'PricingService', 'Cart',
+    function ($http, $q, $upload, toaster, UtilityService, PricingService, Cart) {
 
     var Service = {
       carts: [],
@@ -39,6 +39,7 @@ angular.module('bekApp')
         return Cart.get({ 
           cartId: cartId,
         }).$promise.then(function(cart) {
+          PricingService.updateCaculatedFields(cart.items);
           // update cart in cache
           var existingCart = UtilityService.findObjectByField(Service.carts, 'id', cart.id);
           if (existingCart) {
