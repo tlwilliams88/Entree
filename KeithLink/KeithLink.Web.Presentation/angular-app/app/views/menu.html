@@ -259,7 +259,7 @@
       </ul>
     </nav> <!-- END DESKTOP MENU -->
 
-    <div class="sidebar-dsr text-center" ng-show="selectedUserContext" ng-if="isOrderEntryCustomer">
+    <div class="sidebar-dsr text-center" ng-if="isOrderEntryCustomer && selectedUserContext.dsr">
       <p>Your Sales Rep</p>
       <img ng-src="{{selectedUserContext.customer.dsr.imageurl}}" alt="dsr image" />
       <p class="contact-info">
