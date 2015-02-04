@@ -364,7 +364,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             try {
                 var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
                 if (template != null) {
-                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
+                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword, url = Configuration.PresentationUrl } );
                 } else { 
                     throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", CREATED_USER_WELCOME));
                 };
@@ -445,11 +445,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
-                if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
+                /*if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
                 {
                     userRole = "owner";
                 }
-                else if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
+                 */
+                if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
                 {
                     dsrRole = internalUserRole;
                     dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
@@ -899,7 +900,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public UserProfileReturn GetUserProfileByGuid(Guid UserId)
         {
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";//UserId.ToString();
+            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
@@ -1046,12 +1047,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public List<Customer> GetCustomersForUser(UserProfile user, string search = "")
 		{
 			List<Customer> allCustomers = new List<Customer>();
+			if (string.IsNullOrEmpty(search)) search = "";
 			if (IsInternalAddress(user.EmailAddress))
 			{
+                /*
                 if (user.RoleName == "owner") // special case where internal user is designated admin; hard coded to jmcmilland and pabrandt
                 {
                     allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
                 }
+                */
 				if (!String.IsNullOrEmpty(user.DSRNumber))
 				{
 					// lookup customers by their assigned dsr number
@@ -1062,19 +1066,25 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId); // TODO: reduce list to only the DSM's DSRs
+					else
+						allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+					
 				}
 				else
 				{ // assume admin user with access to all customers
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
-                    // internal owner - special case for phils user
-                    //allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
+                    else
+						allCustomers = _customerRepo.GetCustomers(); //use the use the user organization object for customer filtering
 				}
 			}
 			else // external user
 			{
 				allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
 			}
+
+			
+
 			return allCustomers;
 		}
 	}

@@ -30,24 +30,19 @@
         <thead>
           <tr>
             <th class="sort-col-header" ng-click="sortNotifications('label', !sortOrder)">
-              Label
-              <span sort-icons field="'label'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+              <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('customernumber', !sortOrder)">
-              Customer
-              <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+              <span>Customer <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortNotifications('subject', !sortOrder)">
-              Subject
-              <span sort-icons field="'subject'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+              <span>Subject <span sort-icons field="'subject'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('notificationtypedescription', !sortOrder)">
-              Type
-              <span sort-icons field="'notificationtypedescription'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+              <span>Type <span sort-icons field="'notificationtypedescription'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortNotifications('messagecreatedutc', !sortOrder)">
-              Time
-              <span sort-icons field="'messagecreatedutc'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span>
+              <span>Time <span sort-icons field="'messagecreatedutc'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
             </th>
             <th class="hidden-print large-icon icon-col">
               <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>

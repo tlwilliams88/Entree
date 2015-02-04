@@ -183,6 +183,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 			{
 				var list = listServiceRepository.GetBarcodeForList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
+				if (list == null)
+					return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };
+
 
 				//TODO: Cleanup, some is test code
 				ReportViewer rv = new ReportViewer();
@@ -196,11 +199,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 				rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", list));
 				
 				var bytes = rv.LocalReport.Render("PDF");
-				using (System.IO.FileStream fs = new System.IO.FileStream(@"C:\Downloads\barcode.pdf", System.IO.FileMode.Create))
-				{
-					fs.Write(bytes, 0, bytes.Length);
-				}
-
+				
 				Stream stream = new MemoryStream(bytes);
 
 				HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);

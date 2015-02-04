@@ -74,6 +74,10 @@ angular
     }
   };
 
+  $rootScope.openExternalLink = function(url) {
+    window.open(url, '_system');
+  };
+
   /**********
   $stateChangeStart
   **********/

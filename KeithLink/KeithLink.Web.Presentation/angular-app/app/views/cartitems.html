@@ -45,7 +45,7 @@
       </div>
     </div>
 
-    <form name="renameCartForm" class="style-validation-errors inline-header-form" ng-show="currentCart.isRenaming" autocomplete="off">
+    <form name="renameCartForm" class="style-validation-errors inline-header-form nowrap" ng-show="currentCart.isRenaming" autocomplete="off">
       <input 
         check-duplicate-field="name" 
         collection="carts" 
@@ -192,12 +192,11 @@
                   <input type="checkbox" ng-model="mandatoryList.allSelected" no-dirty-check ng-change="changeAllSelectedItems(mandatoryItems, mandatoryList.allSelected)">
                 </th>
                 <th class="sort-col-header" ng-click="mandatorySortBy='itemnumber';mandatorySortOrder=!mandatorySortOrder;">
-                  Item #
-                  <span sort-icons field="'itemnumber'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span>
+                  Item
+                  <span># <span sort-icons field="'itemnumber'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span></span>
                 </th>
                 <th class="sort-col-header" ng-click="mandatorySortBy='name';mandatorySortOrder=!mandatorySortOrder;">
-                  Name
-                  <span sort-icons field="'name'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span>
+                  <span>Name <span sort-icons field="'name'" sortorder="mandatorySortOrder" sortby="mandatorySortBy"></span></span>
                 </th>
                 <th>
                   Qty
@@ -247,12 +246,11 @@
                   <input type="checkbox" ng-model="reminderList.allSelected" no-dirty-check ng-change="changeAllSelectedItems(reminderItems, reminderList.allSelected)">
                 </th>
                 <th class="sort-col-header" ng-click="reminderSortBy='itemnumber';reminderSortOrder=!reminderSortOrder;">
-                  Item #
-                  <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+                  Item
+                  <span># <span sort-icons field="'itemnumber'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
                 </th>
                 <th class="sort-col-header" ng-click="reminderSortBy='name';reminderSortOrder=!reminderSortOrder;">
-                  Name
-                  <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span>
+                  <span>Name <span sort-icons field="'name'" sortorder="reminderSortOrder" sortby="reminderSortBy"></span></span>
                 </th>
                 <th class="input-col">
                   <a class="pull-right" ng-show="reminderItems && reminderItems.length > 0" ng-click="addSelectedToCart(reminderItems)"><span class="icon-plus3 large-icon"></span> Add</a>
@@ -295,20 +293,18 @@
         <thead>
           <tr>
             <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
-              Item #
-              <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+              Item
+              <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='notes';sortOrder=!sortOrder">
-              Notes
-              <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="hidden-mobile-visible-print"></th>
             <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
-              Brand
-              <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder">
               Name
@@ -318,16 +314,13 @@
               
             </th>
             <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder">
-              Qty
-              <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span>Qty <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder">
-              Each
-              <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
+              <span>Each <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
-              Price
-              <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
+              <span>Price <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="hidden-mobile-visible-print ">
               Ext Price

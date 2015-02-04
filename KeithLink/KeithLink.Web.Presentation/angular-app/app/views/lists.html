@@ -28,7 +28,7 @@
 
     </div>
 
-    <form name="renameListForm" class="style-validation-errors inline-header-form" ng-show="selectedList.isRenaming">
+    <form name="renameListForm" class="style-validation-errors inline-header-form nowrap" ng-show="selectedList.isRenaming">
       <input 
         check-duplicate-field="name" 
         collection="lists" 
@@ -352,16 +352,13 @@
                 </span>
               </th>
               <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('itemnumber',sortOrder)">
-                Item
-                <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Item <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('name',sortOrder)">
-                Name
-                <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header"ng-click="sortOrder=!sortOrder;sortList('brand',sortOrder)">
-                Brand
-                <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
@@ -371,21 +368,18 @@
                 # in Cart
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.alternativeFieldHeader" ng-click="sortOrder=!sortOrder;sortList(selectedList.permissions.alternativeFieldName,sortOrder)">
-                {{selectedList.permissions.alternativeFieldHeader}}
-                <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>{{selectedList.permissions.alternativeFieldHeader}}
+                <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
-                Label
-                <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
-                Notes
-                <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeParlevel" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
-                {{permissions.alternativeParHeader || 'PAR'}}
-                <span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>{{permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               
               <th class="list-print-column">Inv / Ord 1</th>

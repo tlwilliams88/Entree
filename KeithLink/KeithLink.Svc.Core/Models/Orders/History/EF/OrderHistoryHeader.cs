@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		public string OrderStatus { get; set; }
 		public bool FutureItems { get; set; }
 		public bool ErrorStatus { get; set; }
-		[MaxLength(3)]
+		[MaxLength(4)]
 		[Column(TypeName = "char")]
 		public string RouteNumber { get; set; }
 		[MaxLength(3)]

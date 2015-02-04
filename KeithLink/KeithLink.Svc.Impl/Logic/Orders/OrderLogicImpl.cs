@@ -41,9 +41,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             this.userProfileLogic = userProfileLogic;
 		}
 
-		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true)
+		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false)
 		{
-            var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId);
+            var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId, header);
 
 			var returnOrders = orders.Select(p => ToOrder(p)).ToList();
 			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
@@ -94,7 +94,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
                 Status = System.Text.RegularExpressions.Regex.Replace(purchaseOrder.Status, "([a-z])([A-Z])", "$1 $2"),
                 RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)purchaseOrder.Properties["RequestedShipDate"],
-				Items = ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
+				Items = purchaseOrder.Properties["LineItems"] == null ? new List<OrderLine>() : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(purchaseOrder.Id)
 			};
 		}

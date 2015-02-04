@@ -29,7 +29,7 @@
     <div class="col-md-4 col-md-push-8">
       <div class="info-box">
 
-        <a ui-sref="menu.invoice" ng-hide = "isDsr" class="pull-right btn btn-primary btn-lg">Pay Now</a>
+        <a ui-sref="menu.invoice" ng-hide = "isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         
         <h4><strong>Account Balance</strong></h4>
         
@@ -205,8 +205,7 @@
                 {{item.tagline}}
                 <a 
                   ng-if="item.targeturl" 
-                  ng-href="{{item.targeturl}}" 
-                  target="_system" 
+                  ng-click="openExternalLink(item.targeturl)"
                   class="text-uppercase">
                   {{item.targeturltext}}
                 </a>
@@ -253,6 +252,7 @@
                 <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>          
                 <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
                 <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
+                <div class="icon" ng-show="notification.displayType === 'Mail'"><span class="icon-mail"></span></div>
               </div>
               <div class="notification__message">
                 {{notification.subject}}

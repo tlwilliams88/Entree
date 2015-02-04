@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Profile
 {
 	[DataContract]
+	[Serializable]
 	public class CustomerAccountBalanceModel
 	{
 		[DataMember(Name = "totalbalance")]

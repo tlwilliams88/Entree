@@ -12,7 +12,7 @@ angular.module('bekApp')
       currentCustomer: 'currentCustomer'
     },
 
-    servicelocatorUrl: '../servicelocator',
+    servicelocatorUrl: '../servicelocator', // DEPRECATED
 
     roles: {
       // external

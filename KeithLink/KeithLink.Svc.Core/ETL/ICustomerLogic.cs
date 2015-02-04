@@ -10,6 +10,6 @@ namespace KeithLink.Svc.Core.ETL
     {
         void ImportCustomersToOrganizationProfile();
         void ImportDsrInfo();
-        void ImportCustomerTasksSerial();
+        void ImportCustomerTasks();
     }
 }

@@ -93,7 +93,7 @@ angular.module('bekApp')
     },
 
     canPayInvoices: function() {
-      return ( Service.isOwner() || Service.isAccounting() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() );
     },
 
     canManageAccount: function() {

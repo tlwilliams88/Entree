@@ -97,7 +97,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12 info-box">
           <span class="nav-description text-light">Cart Info</span>
           <span class="nav-title">{{getItemCount(selectedCart, selectedList) || '0'}} Items</span>
-          <span class="nav-subtotal pull-right text-green">{{getSubtotal(selectedCart.items, selectedList.items) | currency}}</span>
+          <span class="nav-subtotal pull-right text-green">{{subtotal | currency}}</span>
         </div>
 
       </div>
@@ -109,7 +109,7 @@
     <div class="col-xs-3">{{selectedCart.name || selectedCart.ordernumber || 'New Cart'}}</div>
     <div class="col-xs-2">{{(selectedCart.requestedshipdate | date:shortDate) || 'Select a date...' }}</div>
     <div class="col-xs-2">{{getItemCount(selectedCart, selectedList) || '0'}} Items</div>
-    <div class="col-xs-2 text-right">{{getSubtotal(selectedCart.items, selectedList.items) | currency}}</div>
+    <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
 
   <form 
@@ -127,32 +127,27 @@
       <thead>
         <tr>
           <th class="sort-col-header" ng-click="sortBy='position';sortOrder=!sortOrder;">
-            #
-            <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span># <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
-            Item #
-            <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+            Item
+            <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortBy='notes';sortOrder=!sortOrder;">
-            Notes
-            <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-xs hidden-sm"></th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='label';sortOrder=!sortOrder;">
-            Label
-            <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder;">
-            Name
-            <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
           <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
-            Brand
-            <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'">
             # in Cart
@@ -164,16 +159,13 @@
             On Hand
           </th>
           <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
-            Qty
-            <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Qty <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='each';sortOrder=!sortOrder;">
-            Each
-            <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
-            Price
-            <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span>
+            <span>Price <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Ext Price
@@ -261,24 +253,24 @@
           <td class="input-col nowrap">
             <ng-form class="hidden-print" name="quantityForm">
               <!-- <input type="text" name="quantity" ng-model="item.quantity" class="input-number text-right" integer> -->
-              <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!canOrderItem(item)"></div>
+              <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"></div>
             </ng-form>
           </td>
           <td class="input-col hidden-mobile-visible-print">
-            <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
+            <ng-form name="eachForm" ng-if="item.hasPackagePrice">
               <input type="checkbox" ng-model="item.each" id="each" name="each" />
               <label for="each"></label>
             </ng-form>
           </td>
           <td class="hidden-mobile-visible-print">
-            <div ng-show="canOrderItem(item)">
+            <div ng-show="item.canOrder">
               {{item.each ? item.packageprice : item.caseprice | currency}}
               <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>  
             </div>
           </td>
           <td class="hidden-mobile-visible-print">
-            <div ng-show="canOrderItem(item)">
-              {{getPriceForItem(item) | currency}}  
+            <div ng-show="item.canOrder">
+              {{item.extPrice | currency}}  
             </div>
           </td>
           <td class="large-icon icon-col">
@@ -332,7 +324,7 @@
                   </ng-form>
                 </td>
               </tr>
-              <tr ng-if="hasPackagePrice(item)">
+              <tr ng-if="item.hasPackagePrice">
                 <td>Each</td>
                 <td>
                   <ng-form name="eachForm_mobile">
@@ -340,16 +332,16 @@
                   </ng-form>
                 </td>
               </tr>
-              <tr ng-show="canOrderItem(item)">
+              <tr ng-show="item.canOrder">
                 <td>Price</td>
                 <td>
                   {{item.each ? item.packageprice : item.caseprice | currency}}
                   <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
                 </td>
               </tr>
-              <tr ng-show="canOrderItem(item)">
+              <tr ng-show="item.canOrder">
                 <td>Ext Price</td>
-                <td>{{getPriceForItem(item) | currency}}</td>
+                <td>{{item.extPrice | currency}}</td>
               </tr>
             </table>
           </td>

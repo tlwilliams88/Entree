@@ -34,20 +34,21 @@ namespace KeithLink.Svc.Impl.ETL
             this.eventLog = eventLog;
         }
 
-        public void ImportCustomerTasksSerial()
+        public void ImportCustomerTasks()
         {
             try
             {
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
-                ImportCustomersToOrganizationProfile();
+                var customerTask = Task.Factory.StartNew(() => ImportCustomersToOrganizationProfile());
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
-                ImportDsrInfo();
-                eventLog.WriteInformationLog("ETL Import Process Complete:  CustomerLogicImpl Tasks");
+                var dsrTask = Task.Factory.StartNew(() => ImportDsrInfo());
+
+                Task.WaitAll(customerTask, dsrTask);
             }
             catch (Exception ex)
             {
                 //log
-                eventLog.WriteErrorLog("Error with ETL Import -- CatalogLogicImpl", ex);
+                eventLog.WriteErrorLog("Error with ETL Import -- Import Customer Tasks", ex);
             }
         }
 
@@ -141,7 +142,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             foreach (DataRow row in dsrInfo.Rows)
             {
-                var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr
+				var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr
                 {
                     Branch = row.GetString("BranchId")
                     , DsrNumber = row.GetString("DsrNumber")
@@ -155,6 +156,15 @@ namespace KeithLink.Svc.Impl.ETL
 
             //TODO: Move image to multidocs
             //dsrInfo contains fields:  EmailAddress and EmployeePhoto
+            DataTable dsrImages = stagingRepository.ReadDsrImages();
+            foreach (DataRow row in dsrImages.Rows) {
+                if ( !string.IsNullOrEmpty(row["EmployeePhoto"].ToString()) ) {
+                    dsrLogic.SendImageToMultiDocs( row.GetString( "EmailAddress" ), (byte[])row["EmployeePhoto"] );
+                }
+            }
+            
+            
+            
         }
 
         private AddressProfiles CreateAddressFromStagedData(DataRow row)

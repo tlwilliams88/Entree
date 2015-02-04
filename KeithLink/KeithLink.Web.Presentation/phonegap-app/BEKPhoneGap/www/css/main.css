@@ -8503,7 +8503,7 @@ form.style-validation-errors .form-error-message {
 }
 /* line 99, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr {
-  padding: 20px;
+  padding: 20px 10px;
   background-color: #373029;
   border-bottom: 1px solid #706457;
   letter-spacing: 1px;

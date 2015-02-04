@@ -22,6 +22,7 @@ namespace KeithLink.Svc.Core.ETL
         DataTable ReadContractItems(string customerNumber, string divisionName, string contractNumber);
         DataTable ReadWorksheetItems(string customerNumber, string divisionName);
         DataTable ReadDsrInfo();
+        DataTable ReadDsrImages();
 		void ProcessInvoices();
     }
 }
