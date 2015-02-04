@@ -1,15 +1,16 @@
-<div class="featured-item-mobile">
-    <carousel interval="myInterval">
-
-        <slide ng-repeat="item in itemList track by $index | limitTo:5" active="item.active">
-            
-            <div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
-                <img ng-src="{{item.imageurl}}">
-            </div>
-            <div class="col-xs-8 no-padding featured-item-mobile__detail">
-                {{item.name}}<br />
-                <a ui-sref="{{linkSref}}" class="text-uppercase">view details</a>
-            </div>
-        </slide>
-    </carousel>
+<div class="featured-item-mobile visible-xs visible-sm">
+  <span class="carousel-index">{{carouselIndex + 1}} / {{itemList.length}}</span>
+  <ul rn-carousel rn-carousel-buffered rn-carousel-index="carouselIndex" class="featured-item-carousel">
+    <li ng-repeat="item in itemList">
+      <div ng-include="template"></div>
+    </li>
+    <div class="rn-carousel-controls">
+      <span class="rn-carousel-control carousel-control-prev" ng-click="prevSlide()" ng-if="carouselIndex > 0">
+        <span class="glyphicon glyphicon-chevron-left"></span>
+      </span>
+      <span class="rn-carousel-control carousel-control-next" ng-click="nextSlide()" ng-if="carouselIndex < itemList.length - 1">
+        <span class="glyphicon glyphicon-chevron-right"></span>
+      </span>
+    </div>
+  </ul>
 </div>

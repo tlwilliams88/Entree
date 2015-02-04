@@ -26,6 +26,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #region attributes
         private const string GUEST_USER_WELCOME = "GuestUserWelcome";
         private const string CREATED_USER_WELCOME = "CreatedUserWelcome";
+        private const string RESET_PASSWORD = "ResetPassword";
+
 		protected string CACHE_GROUPNAME { get { return "Profile"; } }
 		protected string CACHE_NAME { get { return "Profile"; } }
 		protected string CACHE_PREFIX { get { return "Default"; } }
@@ -360,19 +362,44 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // Expire the users password so they can change it at neck login
             _extAd.ExpirePassword( emailAddress );
-
-            try {
-                var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
-                if (template != null) {
-                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
-                } else { 
-                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", CREATED_USER_WELCOME));
-                };
-            } catch (Exception ex) {
-                _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
-            }
+            SendPasswordChangeEmail( emailAddress, generatedPassword, CREATED_USER_WELCOME );
 
             return GetUserProfile( emailAddress );
+        }
+
+        /// <summary>
+        /// Reset a password administration style (no old password required)
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        public void ResetPassword( string emailAddress ) {
+            if (emailAddress == null)
+                throw new ArgumentException( "EmailAddress cannot be null" );
+
+            string generatedPassword = GenerateTemporaryPassword();
+
+            _extAd.UpdatePassword( emailAddress, generatedPassword );
+            _extAd.ExpirePassword( emailAddress );
+
+            SendPasswordChangeEmail( emailAddress, generatedPassword, RESET_PASSWORD );
+        }
+
+        /// <summary>
+        /// Send Password Change emails with a specific template
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        /// <param name="newPassword"></param>
+        /// <param name="MessageTemplate"></param>
+        private void SendPasswordChangeEmail(string emailAddress, string newPassword, string MessageTemplate) {
+            try {
+                var template = _messagingServiceRepository.ReadMessageTemplateForKey( MessageTemplate );
+                if (template != null) {
+                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = newPassword, url = Configuration.PresentationUrl } );
+                } else { 
+                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", MessageTemplate));
+                };
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog( "Error sending user profile email", ex );
+            }
         }
 
         private string GenerateTemporaryPassword()
