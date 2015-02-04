@@ -22,5 +22,10 @@ namespace KeithLink.Svc.InternalSvc {
         public Dsr GetDsr( string branchId, string dsrNumber ) {
             return _dsrLogic.GetDsr( branchId, dsrNumber );
         }
-    }
+
+		public List<Dsr> GetAllDsrInfo()
+		{
+			return _dsrLogic.GetAllDsrInfo();
+		}
+	}
 }

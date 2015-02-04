@@ -49,8 +49,21 @@ angular.module('bekApp')
         };
 
         return $http.get('/profile', data).then(function(response){
-          $log.debug(response.data);
-          return response.data.userProfiles[0];
+          var profile = response.data.userProfiles[0];
+          $log.debug(profile.data);
+          
+          // set display name for user
+          if (profile.firstname === 'guest' && profile.lastname === 'account') {
+            profile.displayname = profile.emailaddress;
+          } else if (profile.firstname && profile.lastname) {
+            profile.displayname = profile.firstname + ' ' + profile.lastname;
+          } else if (profile.firstname) {
+            profile.displayname = profile.firstname;
+          } else {
+            profile.displayname = profile.emailaddress;
+          }
+          
+          return profile;
         });
       },
 

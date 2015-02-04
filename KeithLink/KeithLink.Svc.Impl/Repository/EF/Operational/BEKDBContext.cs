@@ -13,103 +13,101 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.Entity.Infrastructure;
 using KeithLink.Svc.Core.Models.Orders.EF;
+using KeithLink.Common.Impl.Logging;
+using KeithLink.Common.Core.Logging;
 
-namespace KeithLink.Svc.Impl.Repository.EF.Operational
-{
-	public class BEKDBContext: DbContext
-	{
-		public BEKDBContext() { }
-		public BEKDBContext(string nameOrConnectionString) : base(nameOrConnectionString) { }
-		public BEKDBContext(DbConnection existingConnection) : base(existingConnection, true) { }
+namespace KeithLink.Svc.Impl.Repository.EF.Operational {
+    public class BEKDBContext : DbContext {
+        private IEventLogRepository _log;
 
-		public DbSet<List> Lists { get; set; }
-		public DbSet<ListItem> ListItems { get; set; }
-		public DbSet<OrderHistoryDetail> OrderHistoryDetails { get; set; }
-		public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
-		public DbSet<Invoice> Invoices { get; set; }
-		public DbSet<InvoiceItem> InvoiceItems { get; set; }
-		public DbSet<BranchSupport> BranchSupports { get; set; }
+        public BEKDBContext(IEventLogRepository logRepository) {
+            _log = logRepository;
+        }
+
+        public BEKDBContext( string nameOrConnectionString ) : base( nameOrConnectionString ) { }
+        public BEKDBContext( DbConnection existingConnection ) : base( existingConnection, true ) { }
+
+        public DbSet<List> Lists { get; set; }
+        public DbSet<ListItem> ListItems { get; set; }
+        public DbSet<OrderHistoryDetail> OrderHistoryDetails { get; set; }
+        public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceItem> InvoiceItems { get; set; }
+        public DbSet<BranchSupport> BranchSupports { get; set; }
         public DbSet<Dsr> Dsrs { get; set; }
-		public DbSet<MessageTemplate> MessageTemplates { get; set; }
-		public DbSet<Term> Terms { get; set; }
-		public DbSet<ListShare> ListShares { get; set; }
+        public DbSet<MessageTemplate> MessageTemplates { get; set; }
+        public DbSet<Term> Terms { get; set; }
+        public DbSet<ListShare> ListShares { get; set; }
         public DbSet<ContentItem> ContentItems { get; set; }
         public DbSet<UserMessage> UserMessages { get; set; }
         public DbSet<CustomerTopic> CustomerTopics { get; set; }
         public DbSet<UserMessagingPreference> UserMessagingPreferences { get; set; }
         public DbSet<UserPushNotificationDevice> UserPushNotificationDevices { get; set; }
         public DbSet<UserTopicSubscription> UserTopicSubscriptions { get; set; }
-		public DbSet<ExportSetting> ExportSettings { get; set; }
-		public DbSet<UserActiveCart> UserActiveCarts { get; set; }
-        
-		protected override void OnModelCreating(DbModelBuilder modelBuilder)
-		{
-			modelBuilder.Entity<List>().ToTable("Lists", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<ListItem>().ToTable("ListItems", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<ListShare>().ToTable("ListShares", schemaName: "List").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+        public DbSet<ExportSetting> ExportSettings { get; set; }
+        public DbSet<UserActiveCart> UserActiveCarts { get; set; }
 
-			modelBuilder.Entity<OrderHistoryHeader>().ToTable("OrderHistoryHeader", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<OrderHistoryDetail>().ToTable("OrderHistoryDetail", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<UserActiveCart>().ToTable("UserActiveCarts", schemaName: "Orders").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+        protected override void OnModelCreating( DbModelBuilder modelBuilder ) {
+            modelBuilder.Entity<List>().ToTable( "Lists", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<ListItem>().ToTable( "ListItems", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<ListShare>().ToTable( "ListShares", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
-			modelBuilder.Entity<Invoice>().ToTable("Invoices", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<InvoiceItem>().ToTable("InvoiceItems", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<OrderHistoryHeader>().ToTable( "OrderHistoryHeader", schemaName: "Orders" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<OrderHistoryDetail>().ToTable( "OrderHistoryDetail", schemaName: "Orders" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<UserActiveCart>().ToTable( "UserActiveCarts", schemaName: "Orders" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
-			modelBuilder.Entity<BranchSupport>().ToTable("BranchSupports", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Invoice>().ToTable( "Invoices", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<InvoiceItem>().ToTable( "InvoiceItems", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+
+            modelBuilder.Entity<BranchSupport>().ToTable( "BranchSupports", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<Dsr>().ToTable( "Dsrs", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
-            modelBuilder.Entity<UserMessage>().ToTable("UserMessages", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<CustomerTopic>().ToTable("CustomerTopics", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<UserTopicSubscription>().ToTable("UserTopicSubscriptions", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<UserMessagingPreference>().ToTable("UserMessagingPreferences", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            modelBuilder.Entity<UserPushNotificationDevice>().ToTable("UserPushNotificationDevices", schemaName: "Messaging").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<UserMessage>().ToTable( "UserMessages", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<CustomerTopic>().ToTable( "CustomerTopics", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<UserTopicSubscription>().ToTable( "UserTopicSubscriptions", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<UserMessagingPreference>().ToTable( "UserMessagingPreferences", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<UserPushNotificationDevice>().ToTable( "UserPushNotificationDevices", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
-            modelBuilder.Entity<MessageTemplate>().ToTable("MessageTemplates", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<ExportSetting>().ToTable("ExportSettings", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<MessageTemplate>().ToTable( "MessageTemplates", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<ExportSetting>().ToTable( "ExportSettings", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
-			modelBuilder.Entity<Term>().ToTable("Terms", schemaName: "Invoice").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Term>().ToTable( "Terms", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
-            modelBuilder.Entity<ContentItem>().ToTable("ContentItems", schemaName: "ContentManagement").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<ContentItem>().ToTable( "ContentItems", schemaName: "ContentManagement" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
         }
-		
-		public override int SaveChanges()
-		{
-			var changeSet = ChangeTracker.Entries<BaseEFModel>();
 
-			if (changeSet != null)
-			{
-				foreach (var entry in changeSet.Where(c => c.State != EntityState.Unchanged))
-				{
-					entry.Entity.ModifiedUtc = DateTime.UtcNow;
-				}
-			}
-			try
-			{
-				return base.SaveChanges();
-			}
-			catch (System.Data.Entity.Validation.DbEntityValidationException e)
-			{
-				foreach (var eve in e.EntityValidationErrors)
-				{
-					Console.WriteLine("Entity of type \"{0}\" in state \"{1}\" has the following validation errors:",
-						eve.Entry.Entity.GetType().Name, eve.Entry.State);
-					foreach (var ve in eve.ValidationErrors)
-					{
-						Console.WriteLine("- Property: \"{0}\", Error: \"{1}\"",
-							ve.PropertyName, ve.ErrorMessage);
-					}
-				}
-				throw;
-			}
-		}
-		
-		public void UndoDBContextChanges() {
-			foreach (DbEntityEntry entry in this.ChangeTracker.Entries()) {
-                if (entry.Entity != null) {
-				    entry.State = EntityState.Detached;
+        public override int SaveChanges() {
+            var changeSet = ChangeTracker.Entries<BaseEFModel>();
+
+            if (changeSet != null) {
+                foreach (var entry in changeSet.Where( c => c.State != EntityState.Unchanged )) {
+                    entry.Entity.ModifiedUtc = DateTime.UtcNow;
                 }
-			}
-		} 
-	}
+            }
+            try {
+                return base.SaveChanges();
+            } catch (System.Data.Entity.Validation.DbEntityValidationException e) {
+                StringBuilder errorDetails = new StringBuilder();
+
+                foreach (var eve in e.EntityValidationErrors) {
+                    errorDetails.AppendLine( String.Format( "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType(), eve.Entry.State ) );
+                    foreach (var ve in eve.ValidationErrors) {
+                        errorDetails.AppendLine( String.Format( " - Property: \"{0}\", Error: \"{1}\"", ve.PropertyName, ve.ErrorMessage ) );
+                    }
+                }
+
+                _log.WriteErrorLog( errorDetails.ToString() );
+                throw;
+            }
+        }
+
+        public void UndoDBContextChanges() {
+            foreach (DbEntityEntry entry in this.ChangeTracker.Entries()) {
+                if (entry.Entity != null) {
+                    entry.State = EntityState.Detached;
+                }
+            }
+        }
+    }
 }

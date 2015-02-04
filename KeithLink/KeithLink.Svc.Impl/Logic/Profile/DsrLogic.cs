@@ -30,11 +30,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             var d = _dsrRepository.GetDsrByBranchAndDsrNumber( branchId, dsrNumber );
 
             if (d != null) {
-                returnValue.DsrNumber = d.DsrNumber;
-                returnValue.EmailAddress = d.EmailAddress;
-                returnValue.Name = d.Name;
-                returnValue.ImageUrl = d.ImageUrl.Inject( new { baseUrl = Configuration.MultiDocsProxyUrl } );
-                returnValue.PhoneNumber = d.Phone == null ? returnDefaultDsrPhone(branchId) : d.Phone;
+				returnValue = ToDsrModel(d);
             } else {
                 // Will be used to populate branch specific information
                 returnValue.PhoneNumber = returnDefaultDsrPhone(branchId);
@@ -47,10 +43,43 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return returnValue;
         }
 
+		private Dsr ToDsrModel(Core.Models.EF.Dsr d)
+		{
+			return new Dsr()
+			{
+				DsrNumber = d.DsrNumber,
+				EmailAddress = d.EmailAddress,
+				Name = d.Name,
+				ImageUrl = d.ImageUrl.Inject(new { baseUrl = Configuration.MultiDocsProxyUrl }),
+				PhoneNumber = d.Phone == null ? returnDefaultDsrPhone(d.BranchId) : d.Phone,
+				Branch = d.BranchId
+			};
+		}
+
+		public List<Dsr> GetAllDsrInfo()
+		{
+			var dsrs = _dsrRepository.ReadAll();
+
+			return dsrs.Select(d => ToDsrModel(d)).ToList();
+		}
+
         public void CreateOrUpdateDsr(Dsr dsr)
         {
-            var newDsr = DsrExtensions.ToEFDsr(dsr);
-            _dsrRepository.CreateOrUpdate(newDsr);
+			var existingDsr = _dsrRepository.Read(d => d.BranchId.Equals(dsr.Branch, StringComparison.CurrentCultureIgnoreCase) && d.DsrNumber.Equals(dsr.DsrNumber)).FirstOrDefault();
+
+			if (existingDsr == null)
+			{
+				_dsrRepository.Create(DsrExtensions.ToEFDsr(dsr));
+			}
+			else
+			{
+				existingDsr.EmailAddress = dsr.EmailAddress;
+				existingDsr.ImageUrl = dsr.ImageUrl;
+				existingDsr.Name = dsr.Name;
+				existingDsr.Phone = dsr.PhoneNumber;
+				_dsrRepository.Update(existingDsr);
+			}
+
             unitOfWork.SaveChanges();
             
         }
@@ -99,5 +128,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         #endregion
-    }
+
+
+		
+	}
 }

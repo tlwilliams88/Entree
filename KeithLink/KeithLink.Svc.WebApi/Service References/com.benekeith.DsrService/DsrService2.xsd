@@ -16,4 +16,16 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetAllDsrInfo">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAllDsrInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="GetAllDsrInfoResult" nillable="true" type="q2:ArrayOfdsr" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>
