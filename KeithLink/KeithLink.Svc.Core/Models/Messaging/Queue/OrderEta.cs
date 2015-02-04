@@ -30,5 +30,8 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
 
         [DataMember(Name = "outofsequence")]
         public bool OutOfSequence { get; set; }
+
+        [DataMember(Name = "branch")]
+        public string BranchId { get; set; }
     }
 }
