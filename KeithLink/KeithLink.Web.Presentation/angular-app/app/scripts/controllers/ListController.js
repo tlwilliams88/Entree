@@ -235,16 +235,6 @@ angular.module('bekApp')
       });
     };
 
-    $scope.favoriteAll = function() {
-      $scope.addItemsToList(ListService.getFavoritesList());
-    };
-
-    $scope.unfavoriteAll = function() {
-      var items = getMultipleSelectedItems(),
-        favoritesList = ListService.getFavoritesList();
-
-      ListService.deleteMultipleItems(favoritesList.listid, items);
-    };
 
     /********************
     DRAG HELPERS
@@ -410,13 +400,13 @@ angular.module('bekApp')
     MODALS
     ******/
 
-    $scope.openListImportModal = function () {
+    // $scope.openListImportModal = function () {
 
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/listimportmodal.html',
-        controller: 'ImportModalController'
-      });
-    };
+    //   var modalInstance = $modal.open({
+    //     templateUrl: 'views/modals/listimportmodal.html',
+    //     controller: 'ImportModalController'
+    //   });
+    // };
 
     $scope.openExportModal = function() {
       var modalInstance = $modal.open({

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
-    function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
+    function ($scope, $state, ENV, toaster, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
 
     $scope.isMobileApp = ENV.mobileApp;
 
@@ -44,6 +44,14 @@ angular.module('bekApp')
       });
 
     };
+
+  $scope.forgotPassword = function(email) { 
+    UserProfileService.resetPassword(email).then(function(data){      
+       toaster.pop('success', null, 'Successfully reset password.');
+      },function(error) {
+      toaster.pop('error', null, 'Error resetting password.');        
+      });
+   };
 
   $scope.setSignUpBool = function(signUpBool) { 
     $scope.signUpBool = !signUpBool;
