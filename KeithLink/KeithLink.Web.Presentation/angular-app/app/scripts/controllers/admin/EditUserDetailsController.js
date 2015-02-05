@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$q', 'UserProfileService', 'userProfile', 'CustomerService',
-    function ($scope, $q, UserProfileService, userProfile, CustomerService) {
+  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$q', 'UserProfileService', 'userProfile', 'CustomerService',
+    function ($scope, $state, $stateParams, $q, UserProfileService, userProfile, CustomerService) {
 
   /*---convenience functions---*/
   var processProfile = function(newProfile){
@@ -53,7 +53,7 @@ angular.module('bekApp')
     $scope.profile.customers = selectedCustomers;
 
     //pushes profile object to database
-    UserProfileService.updateUserProfileFromAdmin($scope.profile).then(function(newProfile){
+    UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
       $scope.displayMessage('success', 'The user was successfully updated.');
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);
@@ -62,15 +62,10 @@ angular.module('bekApp')
 
   // TODO: better way to do this?
   $scope.deleteProfile = function (profile) {
-    //wipe customers out of user profile and set profile to lowest permission role
-    profile.role = 'guest';
-    profile.customers = [];
-
-    //push freshly wiped profile to database
-    UserProfileService.updateUserProfileFromAdmin(profile).then(function(newProfile){
-      //refreshes page with newest data
-      processProfile(newProfile);
-      $scope.displayMessage('success', 'The user was successfully deleted.');
+    var customerGroupId = $stateParams.groupId;
+    UserProfileService.removeUserFromCustomerGroup(profile.userid, customerGroupId).then(function(newProfile){
+      $scope.displayMessage('success', 'The user was successfully removed.');
+      $state.go('menu.admin.customergroupdashboard', { customerGroupId: customerGroupId });
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);
     });

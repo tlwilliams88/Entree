@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
                 null,
                 null,
                 new Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl(
-                    new Svc.Impl.Repository.Email.MessageTemplateRepositoryImpl(new UnitOfWork())),
+					new Svc.Impl.Repository.Email.MessageTemplateRepositoryImpl(new UnitOfWork(new EventLogRepositoryImpl("Entree Tests")))),
                     null
                 );
 

@@ -582,8 +582,8 @@ namespace KeithLink.Svc.Impl.ETL
 
             return item;
         }
-
-		private string BuildPropritaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems)
+        
+        private string BuildPropritaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems)
 		{
 			if (!proprietaryItems.ContainsKey(itemNumber))
 				return null;

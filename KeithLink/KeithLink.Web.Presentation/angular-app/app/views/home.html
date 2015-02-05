@@ -33,24 +33,28 @@
         
         <h4><strong>Account Balance</strong></h4>
         
-        <p class="currency-value">
-          {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
-        </p>
-        
-        <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
-        
-        <div class="row text-center">
-          <div class="balance__term--amount">
-            <strong>Current</strong>
-            {{selectedUserContext.customer.balance.currentbalance | currency}}
-          </div>
-          <div class="balance__term--amount">
-            <strong>Past Due</strong>
-            <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
-            <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
-            </div>
-          </div>
+        <div loading-spinner="loadingAccountBalance"></div>
+
+        <div ng-show="!loadingAccountBalance">
+          <p class="currency-value">
+            {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
+          </p>
           
+          <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
+          
+          <div class="row text-center">
+            <div class="balance__term--amount">
+              <strong>Current</strong>
+              {{selectedUserContext.customer.balance.currentbalance | currency}}
+            </div>
+            <div class="balance__term--amount">
+              <strong>Past Due</strong>
+              <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
+              <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
+              </div>
+            </div>
+            
+          </div>
         </div>
       </div>
       <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">
@@ -226,37 +230,8 @@
           </div>
         </div>
 
-        <div class="col-xs-12">
-          <div class="featured-item-mobile visible-xs visible-sm">
-            <carousel interval="myInterval" disable-ng-animate>
-              <slide ng-repeat="item in promoItems track by $index" active="item.active">
-                <div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
-                  <img ng-src="{{item.imageurl}}" alt="image">
-                </div>
-                <div class="col-xs-8 no-padding featured-item-mobile__detail">
-                  <div>{{item.tagline}}</div>
-                  <a 
-                    ng-if="item.targeturl" 
-                    class="text-uppercase"
-                    ng-click="openExternalLink(item.targeturl)">
-                    {{item.targeturltext}}
-                  </a>
-                  <a 
-                    ng-if="item.productid" 
-                    ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
-                    class="text-uppercase">
-                    {{item.targeturltext}}
-                  </a>
-                  <a 
-                    ng-if="!item.targeturl && !item.productid && item.content" 
-                    ng-click="showPromoItemContent(item)"
-                    class="text-uppercase">
-                    {{item.targeturltext}}
-                  </a>
-                </div>
-              </slide>
-            </carousel>
-          </div>
+        <div class="col-xs-12 hidden-md hidden-lg" ng-show="promoItems.length > 0">
+          <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
         </div> 
 
       </div>

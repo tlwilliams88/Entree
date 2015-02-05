@@ -9,6 +9,8 @@ angular.module('bekApp')
     ) {
 
   function getUsers(customerGroup) {
+    $scope.customerGroupId = customerGroup.id;
+
    if (customerGroup) {
       $scope.groupName = customerGroup.name;
       

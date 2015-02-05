@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
     public interface ICustomerRepository
     {
         List<Customer> GetCustomers();
+		Customer GetCustomerById(Guid customerId);
         Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);

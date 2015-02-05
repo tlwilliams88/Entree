@@ -13,16 +13,35 @@
   <wsdl:message name="IDsrService_GetDsr_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDsrResponse" />
   </wsdl:message>
+  <wsdl:message name="IDsrService_GetAllDsrInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllDsrInfo" />
+  </wsdl:message>
+  <wsdl:message name="IDsrService_GetAllDsrInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllDsrInfoResponse" />
+  </wsdl:message>
   <wsdl:portType name="IDsrService">
     <wsdl:operation name="GetDsr">
       <wsdl:input wsaw:Action="http://tempuri.org/IDsrService/GetDsr" message="tns:IDsrService_GetDsr_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IDsrService/GetDsrResponse" message="tns:IDsrService_GetDsr_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDsrInfo">
+      <wsdl:input wsaw:Action="http://tempuri.org/IDsrService/GetAllDsrInfo" message="tns:IDsrService_GetAllDsrInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IDsrService/GetAllDsrInfoResponse" message="tns:IDsrService_GetAllDsrInfo_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IDsrService" type="tns:IDsrService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="GetDsr">
       <soap:operation soapAction="http://tempuri.org/IDsrService/GetDsr" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDsrInfo">
+      <soap:operation soapAction="http://tempuri.org/IDsrService/GetAllDsrInfo" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

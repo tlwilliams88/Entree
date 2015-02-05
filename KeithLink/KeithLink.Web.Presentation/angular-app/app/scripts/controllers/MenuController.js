@@ -34,6 +34,13 @@ angular.module('bekApp')
   $scope.userProfile = LocalStorage.getProfile();
   refreshAccessPermissions();
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
+
+  $scope.loadingAccountBalance = true;
+  CustomerService.getAccountBalanceInfo().then(function(data) {
+    $scope.selectedUserContext.customer.balance = data.balance;
+    $scope.selectedUserContext.customer.lastorderupdate = data.lastorderupdate;
+    $scope.loadingAccountBalance = false;
+  });
  
   /**********
   SELECTED USER CONTEXT

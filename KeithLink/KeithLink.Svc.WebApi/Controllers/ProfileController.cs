@@ -101,6 +101,23 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        [HttpPost]
+        [ApiKeyedRoute( "profile/forgotpassword" )]
+        public OperationReturnModel<bool> ForgotPassword( string emailAddress ) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+
+            try {
+                _profileLogic.ResetPassword( emailAddress );
+                returnValue.SuccessResponse = true;
+            } catch (Exception ex) {
+                returnValue.SuccessResponse = false;
+                returnValue.ErrorMessage = "There was an error processing your request. Please validate your information is correct. If the problem persists please contact support";
+                _log.WriteErrorLog( "Controller reset password error", ex );
+            }
+
+            return returnValue;
+        }
+
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
@@ -121,6 +138,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         public CustomerContainerReturn SearchCustomers(string searchText) {
             return _custRepo.SearchCustomerContainers(searchText);
         }
+
+		[AllowAnonymous]
+		[HttpGet]
+		[ApiKeyedRoute("profile/customer/balance")]
+		public CustomerBalanceOrderUpdatedModel CustomerBalance()
+		{
+			return _profileLogic.GetBalanceForCustomer(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
+		}
 
         [Authorize]
         [HttpPut]
@@ -202,7 +227,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public OperationReturnModel<bool> UpdateAccount(Account account)
         {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
-
+			retVal.SuccessResponse = false;
             try
             {
                 retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
@@ -210,7 +235,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             catch (ApplicationException axe)
             {
                 retVal.ErrorMessage = axe.Message;
-
+			
                 _log.WriteErrorLog("Application exception", axe);
             }
             catch (Exception ex)
@@ -288,6 +313,35 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return new OperationReturnModel<AccountUsersReturn>() { SuccessResponse = _profileLogic.GetAccountUsers(accountId) };
         }
+
+		///profile/{userId}/account/{accountId} 
+		[Authorize]
+		[HttpDelete]
+		[ApiKeyedRoute("profile/{userId}/account/{accountId}")]        
+		public OperationReturnModel<bool> RemoveUserFromAcocunt(Guid userId, Guid accountId)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+			try
+			{
+				_profileLogic.RemoveUserFromAccount(accountId, userId);
+				retVal.SuccessResponse = true;
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
+
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
+
+			return retVal;
+		}
 
         [Authorize]
         [HttpPut]

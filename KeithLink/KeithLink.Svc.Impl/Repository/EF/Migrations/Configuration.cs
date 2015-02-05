@@ -38,16 +38,16 @@ namespace KeithLink.Svc.Impl.Migrations
             //    );
             //
 
-            context.Dsrs.AddOrUpdate(
-                d => d.DsrNumber,
-                new Dsr {
-                    DsrNumber = "066",
-                    Name = "Ochoa, Raul",
-                    BranchId = "FAM",
-                    Phone = "4328896994",
-                    EmailAddress = "riochoa@benekeith.com",
-                    ImageUrl = "/img/avatar.jpg"
-                } );
+            //context.Dsrs.AddOrUpdate(
+            //    d => d.DsrNumber,
+            //    new Dsr {
+            //        DsrNumber = "066",
+            //        Name = "Ochoa, Raul",
+            //        BranchId = "FAM",
+            //        Phone = "4328896994",
+            //        EmailAddress = "riochoa@benekeith.com",
+            //        ImageUrl = "/img/avatar.jpg"
+            //    } );
 
 			context.BranchSupports.AddOrUpdate(
 				b => b.BranchId,
@@ -130,13 +130,14 @@ namespace KeithLink.Svc.Impl.Migrations
 				}
 				);
 
+            /**** User account created temporary password email ****/
             System.Text.StringBuilder newUserPasswordBody = new System.Text.StringBuilder();
             newUserPasswordBody.AppendLine( "Welcome to Entrée!" );
             newUserPasswordBody.AppendLine();
             newUserPasswordBody.AppendLine( "An account has been created for you. Please use the temporary password to login and get started" );
             newUserPasswordBody.AppendLine();
             newUserPasswordBody.AppendLine( "Password: {password}" );
-            newUserPasswordBody.AppendLine( String.Concat("URL: ", KeithLink.Svc.Impl.Configuration.PresentationUrl ));
+            newUserPasswordBody.AppendLine( "Url: {url}");
             newUserPasswordBody.AppendLine();
 
             context.MessageTemplates.AddOrUpdate(
@@ -147,6 +148,26 @@ namespace KeithLink.Svc.Impl.Migrations
                     IsBodyHtml = false,
                     Type = MessageTemplateType.Email,
                     Body = newUserPasswordBody.ToString()
+                } );
+
+            /**** Forgot password email template ****/
+            System.Text.StringBuilder resetPasswordBody = new System.Text.StringBuilder();
+            resetPasswordBody.AppendLine( "Your Entrée password has changed" );
+            resetPasswordBody.AppendLine(  );
+            resetPasswordBody.AppendLine( "You recently changed your password for Ben E. Keith's Entrée system. If you feel this was done in error please contact support. " );
+            resetPasswordBody.AppendLine(  );
+            resetPasswordBody.AppendLine( "Temporary password: {password}" );
+            resetPasswordBody.AppendLine( "Url: {url}" );
+            resetPasswordBody.AppendLine();
+
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate {
+                    TemplateKey = "ResetPassword",
+                    Subject = "Your Ben E. Keith Entrée password has been changed",
+                    IsBodyHtml = false,
+                    Type = MessageTemplateType.Email,
+                    Body = resetPasswordBody.ToString()
                 } );
 
             /**** Build ETA notification main template ****/

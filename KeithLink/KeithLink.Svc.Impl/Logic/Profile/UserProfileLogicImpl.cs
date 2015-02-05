@@ -26,6 +26,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #region attributes
         private const string GUEST_USER_WELCOME = "GuestUserWelcome";
         private const string CREATED_USER_WELCOME = "CreatedUserWelcome";
+        private const string RESET_PASSWORD = "ResetPassword";
+
 		protected string CACHE_GROUPNAME { get { return "Profile"; } }
 		protected string CACHE_NAME { get { return "Profile"; } }
 		protected string CACHE_PREFIX { get { return "Default"; } }
@@ -360,19 +362,44 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // Expire the users password so they can change it at neck login
             _extAd.ExpirePassword( emailAddress );
-
-            try {
-                var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
-                if (template != null) {
-                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
-                } else { 
-                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", CREATED_USER_WELCOME));
-                };
-            } catch (Exception ex) {
-                _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
-            }
+            SendPasswordChangeEmail( emailAddress, generatedPassword, CREATED_USER_WELCOME );
 
             return GetUserProfile( emailAddress );
+        }
+
+        /// <summary>
+        /// Reset a password administration style (no old password required)
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        public void ResetPassword( string emailAddress ) {
+            if (emailAddress == null)
+                throw new ArgumentException( "EmailAddress cannot be null" );
+
+            string generatedPassword = GenerateTemporaryPassword();
+
+            _extAd.UpdatePassword( emailAddress, generatedPassword );
+            _extAd.ExpirePassword( emailAddress );
+
+            SendPasswordChangeEmail( emailAddress, generatedPassword, RESET_PASSWORD );
+        }
+
+        /// <summary>
+        /// Send Password Change emails with a specific template
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        /// <param name="newPassword"></param>
+        /// <param name="MessageTemplate"></param>
+        private void SendPasswordChangeEmail(string emailAddress, string newPassword, string MessageTemplate) {
+            try {
+                var template = _messagingServiceRepository.ReadMessageTemplateForKey( MessageTemplate );
+                if (template != null) {
+                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = newPassword, url = Configuration.PresentationUrl } );
+                } else { 
+                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", MessageTemplate));
+                };
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog( "Error sending user profile email", ex );
+            }
         }
 
         private string GenerateTemporaryPassword()
@@ -954,6 +981,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             IEnumerable<Guid> usersToAdd = users.Select(u => u.UserId).Except(existingUsers.Select(u => u.UserId));
             IEnumerable<Guid> usersToDelete = existingUsers.Select(u => u.UserId).Except(users.Select(u => u.UserId));
 
+			//First make sure the customer is not already a member of an account
+			foreach (Guid custId in customersToAdd)
+			{
+				var cust = _customerRepo.GetCustomerById(custId);
+				if (cust != null)
+					if (cust.AccountId != null)
+						throw new Exception(string.Format("Customer {0}-{1} is already a member of a Customer Group", cust.CustomerNumber, cust.CustomerName));
+			}
+
+
+
             foreach (Guid g in customersToAdd)
                 _accountRepo.AddCustomerToAccount(accountId, g);
             foreach (Guid g in customersToDelete)
@@ -998,13 +1036,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerName");
 
 			
-			//Populate the Last order updated date for each customer
-			foreach (var customer in returnValue.Results)
-			{
-				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
-
-				customer.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customer.CustomerNumber, customer.CustomerBranch); 
-			}
+			
 			
 
 			//foreach (var cust in returnValue.Results)
@@ -1047,6 +1079,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public List<Customer> GetCustomersForUser(UserProfile user, string search = "")
 		{
 			List<Customer> allCustomers = new List<Customer>();
+			if (string.IsNullOrEmpty(search)) search = "";
 			if (IsInternalAddress(user.EmailAddress))
 			{
                 /*
@@ -1074,7 +1107,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
                     else
-						allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
+						allCustomers = _customerRepo.GetCustomers(); //use the use the user organization object for customer filtering
 				}
 			}
 			else // external user
@@ -1085,6 +1118,37 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			
 
 			return allCustomers;
+		}
+
+
+		public void RemoveUserFromAccount(Guid accountId, Guid userId)
+		{
+			List<Account> allAccounts = _accountRepo.GetAccounts();
+			Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
+			acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+
+			AccountUsersReturn usersReturn = new AccountUsersReturn();
+			usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
+			usersReturn.CustomerUserProfiles = new List<UserProfile>();
+
+			foreach (Customer c in acct.Customers)
+			{
+				RemoveUserFromCustomer(c.CustomerId, userId);
+			}
+
+			//Remove directly from account
+			_accountRepo.RemoveUserFromAccount(accountId, userId);
+		}
+
+
+		public CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId)
+		{
+			var returnModel = new CustomerBalanceOrderUpdatedModel();
+
+			returnModel.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
+			returnModel.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customerId, branchId);
+
+			return returnModel;
 		}
 	}
 }

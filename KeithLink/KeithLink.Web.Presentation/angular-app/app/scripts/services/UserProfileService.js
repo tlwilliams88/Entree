@@ -110,6 +110,11 @@ angular.module('bekApp')
         });
       },
 
+      removeUserFromCustomerGroup: function(userId, accountId) {
+        var promise = $http.delete('/profile/' + userId + '/account/' + accountId);
+        return UtilityService.resolvePromise(promise);
+      },
+
       updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
 
@@ -117,16 +122,6 @@ angular.module('bekApp')
           var profile = successResponse.userProfiles[0];
           $log.debug(profile);
           LocalStorage.setProfile(profile);
-          return profile;
-        });
-      },
-
-      updateUserProfileFromAdmin: function(userProfile) {
-        var promise = $http.put('/profile', userProfile);
-
-        return UtilityService.resolvePromise(promise).then(function(successResponse) {
-          var profile = successResponse.userProfiles[0];
-          $log.debug(profile);
           return profile;
         });
       },
@@ -145,7 +140,7 @@ angular.module('bekApp')
 
         return deferred.promise;
       },
-
+      
       /**********
       AVATAR
       **********/

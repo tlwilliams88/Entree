@@ -744,6 +744,38 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         /// <summary>
+        /// change the password for the user without previous password
+        /// </summary>
+        /// <param name="emailAddress">the user's email address</param>
+        /// <param name="newPassword">the new password</param>
+        /// <returns>true if successful</returns>
+        /// <remarks>
+        /// mdjoiner - 02/05/2015 - documented
+        /// </remarks>
+        public void UpdatePassword(string emailAddress, string newPassword) {
+            try {
+                using (PrincipalContext principal = new PrincipalContext( ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryExternalPassword )) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity( principal, emailAddress );
+
+                    if (user == null) {
+                        throw new ApplicationException( "Email address not found" );
+                    }
+
+                    user.SetPassword( newPassword );
+                }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Could not change user's password", ex);
+                throw;
+            }
+        }
+
+
+        /// <summary>
         /// the original update password method that is still used to aid in network testing
         /// </summary>
         /// <remarks>

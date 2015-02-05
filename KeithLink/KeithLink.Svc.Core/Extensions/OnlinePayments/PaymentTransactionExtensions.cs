@@ -23,7 +23,7 @@ namespace KeithLink.Svc.Core.Extensions.OnlinePayments
 				PaymentDate = payment.ScheduledPaymentDate,
 				SubmittedDate = payment.PaymentDate,
 				UserName = payment.UserName,
-				Editable = DateTime.Now.Date < payment.ScheduledPaymentDate.Date
+				Editable = !payment.ScheduledPaymentDate.HasValue? false :  DateTime.Now.Date < payment.ScheduledPaymentDate.Value.Date
 			};
 		}
 	}

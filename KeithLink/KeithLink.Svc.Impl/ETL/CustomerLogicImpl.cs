@@ -142,7 +142,7 @@ namespace KeithLink.Svc.Impl.ETL
 
             foreach (DataRow row in dsrInfo.Rows)
             {
-                var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr
+				var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr
                 {
                     Branch = row.GetString("BranchId")
                     , DsrNumber = row.GetString("DsrNumber")

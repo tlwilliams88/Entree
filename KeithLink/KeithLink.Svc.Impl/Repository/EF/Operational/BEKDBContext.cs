@@ -24,6 +24,8 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             _log = logRepository;
         }
 
+		public BEKDBContext() {}
+
         public BEKDBContext( string nameOrConnectionString ) : base( nameOrConnectionString ) { }
         public BEKDBContext( DbConnection existingConnection ) : base( existingConnection, true ) { }
 
@@ -97,8 +99,10 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
                     }
                 }
 
-                _log.WriteErrorLog( errorDetails.ToString() );
-                throw;
+				if(_log != null)
+					_log.WriteErrorLog( errorDetails.ToString() );
+                
+				throw;
             }
         }
 
