@@ -73,7 +73,7 @@
     </button>
     <button title="Print" class="btn btn-default btn-icon" ng-click="openPrintOptionsModal(selectedList)"><span class="icon-printer"></span></button>
     <button title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
-    <button title="Import" class="btn btn-default btn-icon" ng-click="openListImportModal()"><span class="icon-publish"></span></button>
+    <!-- <button title="Import" class="btn btn-default btn-icon" ng-click="openListImportModal()"><span class="icon-publish"></span></button> -->
     <button ng-if="selectedList.permissions.canShareList || selectedList.permissions.canCopyList" title="Give List" class="btn btn-default btn-icon" ng-click="openReplicateListModal(selectedList)"><span class="icon-share"></span></button>
   </div>
 </div>
@@ -281,16 +281,6 @@
               ng-if="selectedList.permissions.canDeleteItems">
               <span class="icon-trash large-icon text-light"></span>
             </button>
-          </div>
-          <div class="btn-group" dropdown is-open="showMoreMenu">
-            <button type="button" class="btn btn-default btn-lg dropdown-toggle text-light">
-              More
-              <span class="icon-arrow-down6 text-light"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li ng-click="favoriteAll()"><a>Star Selected</a></li>
-              <li ng-click="unfavoriteAll()"><a>Unstar Selected</a></li>
-            </ul>
           </div>
         </div>
         <div class="col-xs-8 col-sm-4" ng-show="multiSelect.addingNewLabel">
