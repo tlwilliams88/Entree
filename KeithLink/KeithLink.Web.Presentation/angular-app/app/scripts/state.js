@@ -253,11 +253,6 @@ angular.module('bekApp')
       controller: 'OrderController',
       data: {
         authorize: 'canSubmitOrders'
-      },
-      resolve: {
-        orders: [ 'OrderService', function(OrderService) {
-          return OrderService.getAllOrders();
-        }]
       }
     })
     .state('menu.orderitems', {

@@ -17,6 +17,12 @@ angular.module('bekApp')
         return Order.query().$promise;
       },
 
+      getOrders: function(params) {
+        return $http.post('/order', params).then(function(response) {
+          return response.data;
+        });
+      },
+
       getOrderDetails: function(orderNumber) {
         return Order.get({
           orderNumber: orderNumber
