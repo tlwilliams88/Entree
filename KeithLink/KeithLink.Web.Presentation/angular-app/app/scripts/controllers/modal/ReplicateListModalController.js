@@ -14,17 +14,23 @@ angular.module('bekApp')
   function ($scope, $modalInstance, ListService, CustomerService, list) {
 
   $scope.list = list;
-  // $scope.customers = customers;
   $scope.selectedShareCustomers = [];
   $scope.selectedCopyCustomers = [];
   $scope.loadingResults = true;
 
-  var customersStartingIndex = 0;
-  var customersPerPage = 30;
+  $scope.customersConfig = {
+    term: '',
+    size: 30,
+    from: 0,
+  };
 
-  function loadCustomers(size, from) {
+  function loadCustomers(customersConfig) {
     $scope.loadingResults = true;
-    return CustomerService.getCustomers('', size, from).then(function(data) {
+    return CustomerService.getCustomers(
+      customersConfig.term,
+      customersConfig.size,
+      customersConfig.from
+    ).then(function(data) {
       $scope.loadingResults = false;
       $scope.totalCustomers = data.totalResults;
       var customers = data.results;
@@ -42,7 +48,7 @@ angular.module('bekApp')
     });
   }
 
-  loadCustomers(customersPerPage, customersStartingIndex).then(function(customers) {
+  loadCustomers($scope.customersConfig).then(function(customers) {
     $scope.customers = customers;
   });
 
@@ -52,10 +58,17 @@ angular.module('bekApp')
       return;
     }
 
-    customersStartingIndex += customersPerPage;
-
-    loadCustomers(customersPerPage, customersStartingIndex).then(function(customers) {
+    $scope.customersConfig.from += $scope.customersConfig.size;
+    loadCustomers($scope.customersConfig).then(function(customers) {
       $scope.customers = $scope.customers.concat(customers);
+    });
+  };
+
+  $scope.filterCustomerList = function(searchTerm) {
+    $scope.customersConfig.term = searchTerm;
+    $scope.customersConfig.from = 0;
+    loadCustomers($scope.customersConfig).then(function(customers) {
+      $scope.customers = customers;
     });
   };
 
