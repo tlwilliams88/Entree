@@ -30,6 +30,6 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF {
         public int ConfirmationId { get; set; }
 
         [Column(TypeName="date")]
-        public DateTime ScheduledPaymentDate { get; set; }
+        public DateTime? ScheduledPaymentDate { get; set; }
     }
 }
