@@ -41,6 +41,12 @@ angular.module('bekApp')
         });
       },
 
+          resetPassword: function(email) {          
+        var promise = $http.post('/profile/forgotpassword?emailAddress='+email);
+        return UtilityService.resolvePromise(promise);
+      },
+
+
       getUserProfile: function(email) {
         var data = {
           params: {

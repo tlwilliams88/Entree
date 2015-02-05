@@ -27,10 +27,9 @@
               <div class="col-md-5 text-red">
                 {{loginErrorMessage}}
               </div>
-              <div class="col-md-5">
-                <a ng-if="0==1" href=""><strong>Forgot your password?</strong></a><!-- hide until back end support -->
+              <div class="col-md-5" >
+                <a ng-confirm-click="{{'Are you sure you want to reset your password for the account: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" ><strong>Forgot your password?</strong></a>
               </div>
-
             </div>
           </form>
 
