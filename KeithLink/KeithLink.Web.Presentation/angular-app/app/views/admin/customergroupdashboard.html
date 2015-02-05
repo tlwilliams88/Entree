@@ -43,7 +43,7 @@
         <tbody>
           <tr ng-repeat="adminUser in adminUsers | orderBy:sortBy1:sortOrder1"
               ng-class="{ odd : $odd, even: $even }">
-            <td><a class="btn-link" ui-sref="menu.admin.edituser({email: adminUser.emailaddress})">{{adminUser.emailaddress}}</a></td>
+            <td><a class="btn-link" ui-sref="menu.admin.edituser({email: adminUser.emailaddress, groupId: customerGroupId})">{{adminUser.emailaddress}}</a></td>
             <td>{{adminUser.firstname}}</td>
             <td>{{adminUser.lastname}}</td>
             <td>
@@ -103,7 +103,7 @@
         </tr>
         <tr ng-repeat="customerUser in customerUsers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
             ng-class="{ odd : $odd, even: $even }">
-          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: customerUser.emailaddress})">{{customerUser.emailaddress}}</a></td>
+          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: customerUser.emailaddress, groupId: customerGroupId})">{{customerUser.emailaddress}}</a></td>
           <td>{{customerUser.firstname}}</td>
           <td>{{customerUser.lastname}}</td>
           <td class="text-capitalize">{{customerUser.rolename}}</td>

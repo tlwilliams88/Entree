@@ -38,6 +38,12 @@ angular.module('bekApp')
       getCustomerDetails: function(customerNumber, branchNumber) {
         var promise = $http.get('/profile/customer/' + branchNumber + '/' + customerNumber);
         return UtilityService.resolvePromise(promise);
+      },
+
+      getAccountBalanceInfo: function() {
+        return $http.get('/profile/customer/balance').then(function(response) {
+          return response.data;
+        });
       }
 
       // getCustomers: function(accountId) {

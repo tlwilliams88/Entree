@@ -130,6 +130,7 @@ namespace KeithLink.Svc.Impl.Migrations
 				}
 				);
 
+            /**** User account created temporary password email ****/
             System.Text.StringBuilder newUserPasswordBody = new System.Text.StringBuilder();
             newUserPasswordBody.AppendLine( "Welcome to Entrée!" );
             newUserPasswordBody.AppendLine();
@@ -147,6 +148,26 @@ namespace KeithLink.Svc.Impl.Migrations
                     IsBodyHtml = false,
                     Type = MessageTemplateType.Email,
                     Body = newUserPasswordBody.ToString()
+                } );
+
+            /**** Forgot password email template ****/
+            System.Text.StringBuilder resetPasswordBody = new System.Text.StringBuilder();
+            resetPasswordBody.AppendLine( "Your Entrée password has changed" );
+            resetPasswordBody.AppendLine(  );
+            resetPasswordBody.AppendLine( "You recently changed your password for Ben E. Keith's Entrée system. If you feel this was done in error please contact support. " );
+            resetPasswordBody.AppendLine(  );
+            resetPasswordBody.AppendLine( "Temporary password: {password}" );
+            resetPasswordBody.AppendLine( "Url: {url}" );
+            resetPasswordBody.AppendLine();
+
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate {
+                    TemplateKey = "ResetPassword",
+                    Subject = "Your Ben E. Keith Entrée password has been changed",
+                    IsBodyHtml = false,
+                    Type = MessageTemplateType.Email,
+                    Body = resetPasswordBody.ToString()
                 } );
 
             /**** Build ETA notification main template ****/

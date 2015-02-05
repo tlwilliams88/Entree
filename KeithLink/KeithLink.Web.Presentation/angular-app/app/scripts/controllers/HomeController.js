@@ -11,8 +11,6 @@ angular.module('bekApp')
   .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'Constants',
     function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, Constants) {
     
-    $scope.myInterval = -1;
-
     $scope.loadingOrders = true;
     OrderService.getAllOrders().then(function(orders) {
       $scope.orders = orders;
