@@ -197,7 +197,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 PointOfContact = string.Empty,
                 TermCode = org.TermCode,
 				KPayCustomer = org.AchType == "2" || org.AchType == "3",
-				Dsr = dsrs.Where(d => d.Branch.Equals(org.BranchNumber, StringComparison.CurrentCultureIgnoreCase) && d.DsrNumber.Equals(org.DsrNumber)).FirstOrDefault()
+				Dsr = dsrs.Where(d => d.Branch.Equals(org.BranchNumber, StringComparison.CurrentCultureIgnoreCase) && d.DsrNumber.Equals(org.DsrNumber)).DefaultIfEmpty(dsrs.Where(s => s.DsrNumber.Equals("000")).First()).First()
             };
 
             // fill in the address
