@@ -5,6 +5,18 @@
     </p>
     <form name="shareForm">
       <div class="share-customers">
+        <ng-form name="customerSearchForm" class="search-form">
+          <div class="input-group">
+            <input 
+              ng-model="customerSearchTerm" 
+              type="text" 
+              class="form-control" 
+              placeholder="Filter customers by name or number" />
+            <span class="input-group-btn">
+              <button type="submit" ng-click="filterCustomerList(customerSearchTerm)" class="btn btn-default icon-search"></button>
+            </span>
+          </div>
+        </ng-form>
         <div infinite-scroll="infiniteScrollLoadMore()" 
           infinite-scroll-container="'.share-customers'">
           <div 
@@ -36,6 +48,18 @@
       Copying a list with another customer provides that customer their own version of the list.  Once the list has been copied, it can be edited, modified, or deleted independent of the original list.
     </p>
     <form name="copyForm">
+      <ng-form name="customerSearchForm" class="search-form">
+        <div class="input-group">
+          <input 
+            ng-model="customerSearchTerm" 
+            type="text" 
+            class="form-control" 
+            placeholder="Filter customers by name or number" />
+          <span class="input-group-btn">
+            <button type="submit" ng-click="filterCustomerList(customerSearchTerm)" class="btn btn-default icon-search"></button>
+          </span>
+        </div>
+      </ng-form>
       <div class="copy-customers">
         <div infinite-scroll="infiniteScrollLoadMore()" 
           infinite-scroll-container="'.copy-customers'">

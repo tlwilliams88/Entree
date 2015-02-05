@@ -80,7 +80,7 @@
           Status
         </div>
         <div class="col-md-2">
-          Payment Status
+          Invoice Status
         </div>
       </div>
 
@@ -171,7 +171,7 @@
           </div>
           <div class="details-item">
             <div class="item-title">
-              Payment Status
+              Invoice Status
             </div>
             <div class="item-value highlight-col">
               {{order.invoicestatus || 'N/A'}}
@@ -240,35 +240,30 @@
     <!-- Recent Activity -->
     <div class="hidden-xs hidden-sm pull-right col-md-4 col-xs-12">
       <h3 >Recent Activity</h3>  
+      <p ng-show="dates && dates.length === 0">No receent activity found for this customer.</p>
       <div ng-repeat = "date in dates">
-            <div class="notification notification--date">
-              <div class="notification__icon">
-                <span class="icon-record"></span>
-              </div>
-              <div class="notification__date">{{date | date:'EEEE MMMM dd, yyyy'}} </div>
-            </div>
-            <div ng-repeat = "notification in notificationDates[date]">
-        <tr>
-          <div class ="hand" ng-click ="showAdditionalInfo(notification)">
-          <td>   
-            <div  class="notification notification--activity">
-              <div class="notification__icon">
-                <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>          
-                <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
-                <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
-                <div class="icon" ng-show="notification.displayType === 'Mail'"><span class="icon-mail"></span></div>
-              </div>
-              <div class="notification__message">
-                {{notification.subject}}
-                <div class="timestamp"> {{notification.messagecreatedutc | LocalTimeZoneTime}}</div>
-              </div>
-            </div>
-          </td>
+        <div class="notification notification--date">
+          <div class="notification__icon">
+            <span class="icon-record"></span>
           </div>
-        </tr>
+          <div class="notification__date">{{date | date:'EEEE MMMM dd, yyyy'}} </div>
+        </div>
+        <div ng-repeat = "notification in notificationDates[date]">
+          <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
+            <div class="notification__icon">
+              <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>
+              <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
+              <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
+              <div class="icon" ng-show="notification.displayType === 'Mail'"><span class="icon-mail"></span></div>
+            </div>
+            <div class="notification__message">
+              {{notification.subject}}
+              <div class="timestamp"> {{notification.messagecreatedutc | LocalTimeZoneTime}}</div>
+            </div>
+          </div>
+        </div>
       </div>
-      </div>     
-
+      <div loading-spinner="loadingRecentActivity"></div>
     </div> <!-- end Recent Activity -->
   </div>
 </div>

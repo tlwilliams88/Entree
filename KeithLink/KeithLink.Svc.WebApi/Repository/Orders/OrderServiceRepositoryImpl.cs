@@ -66,5 +66,11 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetUserIdForControlNumber(controlNumber);
         }
         #endregion
+
+
+		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
+		{
+			return serviceClient.GetPagedOrders(userId, customerInfo, paging);
+		}
 	}
 }

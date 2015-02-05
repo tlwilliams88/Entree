@@ -377,6 +377,9 @@
     <None Include="Service References\com.benekeith.OrderService\OrderService6.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.OrderService\OrderService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

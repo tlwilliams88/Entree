@@ -116,7 +116,7 @@ angular.module('bekApp')
     // }
   };
 
-    $scope.loadingResults = true;
+    $scope.loadingRecentActivity = true;
       NotificationService.getMessages($scope.notificationParams).then(function(data) {
         var notifications =data.results,
         notificationDates ={},
@@ -134,7 +134,7 @@ angular.module('bekApp')
         });
       $scope.notificationDates = notificationDates;
       $scope.dates = dates;      
-      $scope.loadingResults = false;
+      $scope.loadingRecentActivity = false;
     });
 
     // get order summary data

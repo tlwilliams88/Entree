@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
@@ -67,7 +68,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             foreach (var cust in customers) {
                 var inFilter = new FilterInfo();
                 inFilter.Condition = "&&";
-                inFilter.Filters = new List<FilterInfo>() { new FilterInfo() { Field = "Division", Value = GetDivision(cust.CustomerBranch), FilterType = "eq" }, new FilterInfo() { Field = "CustomerNumber", Value = cust.CustomerNumber, FilterType = "eq" } };
+				inFilter.Filters = new List<FilterInfo>() { new FilterInfo() { Field = "Division", Value = DivisionHelper.GetDivisionFromBranchId(cust.CustomerBranch), FilterType = "eq" }, new FilterInfo() { Field = "CustomerNumber", Value = cust.CustomerNumber, FilterType = "eq" } };
 
                 filter.Filters.Add(inFilter);
             }
@@ -103,11 +104,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         public void DeleteInvoice(UserSelectedContext userContext, string invoiceNumber) {
-            _invoiceRepo.DeleteInvoice(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+			_invoiceRepo.DeleteInvoice(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoiceNumber);
         }
 
         public List<CustomerBank> GetAllBankAccounts(UserSelectedContext userContext) {
-            List<EFCustomer.CustomerBank> bankEntities = _bankRepo.GetAllCustomerBanks(GetDivision(userContext.BranchId), userContext.CustomerId);
+			List<EFCustomer.CustomerBank> bankEntities = _bankRepo.GetAllCustomerBanks(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId);
 
             List<CustomerBank> banks = new List<CustomerBank>();
 
@@ -124,7 +125,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 		
         public CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber) {
-            EFCustomer.CustomerBank bankEntity = _bankRepo.GetBankAccount(GetDivision(userContext.BranchId), userContext.CustomerId, accountNumber);
+			EFCustomer.CustomerBank bankEntity = _bankRepo.GetBankAccount(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, accountNumber);
 
             if (bankEntity == null)
                 return null;
@@ -138,7 +139,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 		public CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId)
 		{
-			var invoices = _invoiceRepo.GetAllOpenInvoices(GetDivision(branchId), customerId);
+			var invoices = _invoiceRepo.GetAllOpenInvoices(DivisionHelper.GetDivisionFromBranchId(branchId), customerId);
 			
 			var returnModel = new CustomerAccountBalanceModel() { CurrentBalance = 0, PastDue = 0, TotalBalance = 0 };
 
@@ -152,44 +153,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			return returnModel;
 		}
 
-        private string GetDivision(string branchId)
-		{
-			if (branchId.Length == 5)
-			{
-				return branchId;
-			}
-			else if (branchId.Length == 3)
-			{
-				switch (branchId.ToUpper())
-				{
-					case "FAM":
-						return "FAM04";
-					case "FAQ":
-						return "FAQ08";
-					case "FAR":
-						return "FAR09";
-					case "FDF":
-						return "FDF01";
-					case "FHS":
-						return "FHS03";
-					case "FLR":
-						return "FLR05";
-					case "FOK":
-						return "FOK06";
-					case "FSA":
-						return "FSA07";
-					default:
-						return null;
-				}
-			}
-			else
-			{
-				return null;
-			}
-		}
+        
 
         public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber) {
-            var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+            var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoiceNumber);
             var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
 
             if (kpayInvoiceHeader == null) //Invoice not found
@@ -206,7 +173,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             //Get transactions
-            var transactions = _invoiceRepo.GetInvoiceTransactoin(GetDivision(userContext.BranchId), userContext.CustomerId, invoiceNumber);
+			var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoiceNumber);
             invoiceModel.Transactions = transactions.Select(t => t.ToTransationModel()).ToList();
 
             //Retrieve invoice details, from order history
@@ -254,7 +221,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 				if (invoice.Status == InvoiceStatus.Pending)
 				{
 					//Retrieve payment transaction record
-					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(GetDivision(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
+					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
 
 					if (payment != null)
 					{
@@ -329,7 +296,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction() {
                     AccountNumber = payment.AccountNumber,
-                    Division = GetDivision(userContext.BranchId),
+					Division = DivisionHelper.GetDivisionFromBranchId(userContext.BranchId),
                     ConfirmationId = (int)confId,
                     CustomerNumber = userContext.CustomerId,
                     InvoiceNumber = payment.InvoiceNumber,
@@ -338,7 +305,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     UserName = emailAddress
                 });
 
-                _invoiceRepo.MarkInvoiceAsPaid(GetDivision(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
+				_invoiceRepo.MarkInvoiceAsPaid(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
             }
 
             // create payment notification

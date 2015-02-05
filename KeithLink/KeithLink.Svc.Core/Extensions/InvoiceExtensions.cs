@@ -21,8 +21,8 @@ namespace KeithLink.Svc.Core.Extensions
 				InvoiceNumber = value.InvoiceNumber.Trim(),
 				Type = DetermineType(value.InvoiceType.Trim()),
 				TypeDescription = EnumUtils<InvoiceType>.GetDescription(DetermineType(value.InvoiceType.Trim())),
-				Status = DetermineStatus(value),
-				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(DetermineStatus(value)),
+				Status = value.DetermineStatus(),
+				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(value.DetermineStatus()),
 				CustomerNumber = value.CustomerNumber,
 				CustomerName = customer.CustomerName,
 				Amount = value.AmountDue,
@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Core.Extensions
 			};
 		}
 
-		private static InvoiceStatus DetermineStatus(EFInvoice.Invoice value)
+		public static InvoiceStatus DetermineStatus(this EFInvoice.Invoice value)
 		{
 			if (value.InvoiceType.Trim().Equals("cm", StringComparison.InvariantCultureIgnoreCase))
 				return InvoiceStatus.Open;
