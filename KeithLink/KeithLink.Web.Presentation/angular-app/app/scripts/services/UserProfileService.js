@@ -104,6 +104,11 @@ angular.module('bekApp')
         });
       },
 
+      removeUserFromCustomerGroup: function(userId, accountId) {
+        var promise = $http.delete('/profile/' + userId + '/account/' + accountId);
+        return UtilityService.resolvePromise(promise);
+      },
+
       updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
 
@@ -129,7 +134,7 @@ angular.module('bekApp')
 
         return deferred.promise;
       },
-
+      
       /**********
       AVATAR
       **********/

@@ -33,24 +33,28 @@
         
         <h4><strong>Account Balance</strong></h4>
         
-        <p class="currency-value">
-          {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
-        </p>
-        
-        <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
-        
-        <div class="row text-center">
-          <div class="balance__term--amount">
-            <strong>Current</strong>
-            {{selectedUserContext.customer.balance.currentbalance | currency}}
-          </div>
-          <div class="balance__term--amount">
-            <strong>Past Due</strong>
-            <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
-            <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
-            </div>
-          </div>
+        <div loading-spinner="loadingAccountBalance"></div>
+
+        <div ng-show="!loadingAccountBalance">
+          <p class="currency-value">
+            {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
+          </p>
           
+          <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
+          
+          <div class="row text-center">
+            <div class="balance__term--amount">
+              <strong>Current</strong>
+              {{selectedUserContext.customer.balance.currentbalance | currency}}
+            </div>
+            <div class="balance__term--amount">
+              <strong>Past Due</strong>
+              <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
+              <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
+              </div>
+            </div>
+            
+          </div>
         </div>
       </div>
       <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">

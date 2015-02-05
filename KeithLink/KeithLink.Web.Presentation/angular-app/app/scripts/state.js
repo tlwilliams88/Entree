@@ -358,7 +358,7 @@ angular.module('bekApp')
       template: '<ui-view>'
     })
     .state('menu.admin.edituser', {
-      url: 'edituser/:email/',
+      url: 'customergroup/:groupId/edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
       controller: 'EditUserDetailsController',
       data: {
