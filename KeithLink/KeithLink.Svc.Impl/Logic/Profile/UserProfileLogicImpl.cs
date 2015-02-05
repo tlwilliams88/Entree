@@ -889,6 +889,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 .Select(grp => grp.First())
                 .ToList();
 
+
+			foreach (var up in usersReturn.CustomerUserProfiles)
+				up.RoleName = GetUserRole(up.EmailAddress); 
+
+
             return usersReturn;
         }
 
