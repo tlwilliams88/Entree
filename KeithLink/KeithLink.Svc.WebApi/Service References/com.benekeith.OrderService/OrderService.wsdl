@@ -10,6 +10,7 @@
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" />
       <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage">
@@ -72,6 +73,12 @@
   <wsdl:message name="IOrderService_GetUserIdForControlNumber_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUserIdForControlNumberResponse" />
   </wsdl:message>
+  <wsdl:message name="IOrderService_GetPagedOrders_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPagedOrders" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetPagedOrders_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPagedOrdersResponse" />
+  </wsdl:message>
   <wsdl:portType name="IOrderService">
     <wsdl:operation name="ReadLatestOrderModifiedDateForCustomer">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomer" message="tns:IOrderService_ReadLatestOrderModifiedDateForCustomer_InputMessage" />
@@ -112,6 +119,10 @@
     <wsdl:operation name="GetUserIdForControlNumber">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetUserIdForControlNumber" message="tns:IOrderService_GetUserIdForControlNumber_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetUserIdForControlNumberResponse" message="tns:IOrderService_GetUserIdForControlNumber_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPagedOrders">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetPagedOrders" message="tns:IOrderService_GetPagedOrders_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetPagedOrdersResponse" message="tns:IOrderService_GetPagedOrders_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IOrderService" type="tns:IOrderService">
@@ -199,6 +210,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetUserIdForControlNumber">
       <soap:operation soapAction="http://tempuri.org/IOrderService/GetUserIdForControlNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPagedOrders">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetPagedOrders" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

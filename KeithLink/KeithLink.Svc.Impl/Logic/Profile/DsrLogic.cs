@@ -32,15 +32,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (d != null) {
 				returnValue = ToDsrModel(d);
             } else {
-                // Will be used to populate branch specific information
-                returnValue.PhoneNumber = returnDefaultDsrPhone(branchId);
-                returnValue.DsrNumber = "000";
-                returnValue.EmailAddress = String.Concat(branchId, "@benekeith.com");
-                returnValue.Name = "Ben E. Keith";
-                returnValue.ImageUrl = String.Concat(Configuration.MultiDocsProxyUrl, "userimages/", branchId, "@benekeith.com");
+                returnValue = GetDefault( branchId ); 
             }
 
             return returnValue;
+        }
+
+        private Dsr GetDefault(string branchId) {
+            return ToDsrModel(_dsrRepository.Read( d => d.DsrNumber == "000" && d.BranchId == branchId ).First());
         }
 
 		private Dsr ToDsrModel(Core.Models.EF.Dsr d)

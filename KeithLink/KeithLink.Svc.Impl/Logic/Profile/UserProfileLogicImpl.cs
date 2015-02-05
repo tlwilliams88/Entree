@@ -853,6 +853,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
+		public PagedResults<Account> GetPagedAccounts(PagingModel paging)
+		{
+			var accounts = _accountRepo.GetAccounts();
+
+			return accounts.AsQueryable().GetPage(paging);
+		}
+
         public Account GetAccount(Guid accountId)
         {
             Account acct = _accountRepo.GetAccounts().Where(x => x.Id == accountId).FirstOrDefault();
@@ -888,6 +895,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 .GroupBy(u => u.UserId)
                 .Select(grp => grp.First())
                 .ToList();
+
+
+			foreach (var up in usersReturn.CustomerUserProfiles)
+				up.RoleName = GetUserRole(up.EmailAddress); 
+
 
             return usersReturn;
         }
