@@ -551,7 +551,7 @@ namespace KeithLink.Svc.Impl.ETL
             data.ChildNutrition = row.GetString(ItemSpec_CNDoc);
             data.SellSheet = row.GetString(ItemSpec_SellSheet);
             data.ItemNumber = row.GetString("ItemId");
-			data.NonStock = getNonStockIndicator(row.GetString("NonStock"));
+			data.NonStock = row.GetString("NonStock");
             data.TempZone = row.GetString("TempZone");
             data.CatchWeight = row.GetString("HowPrice") == "3";
 			data.IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId"));
@@ -583,19 +583,7 @@ namespace KeithLink.Svc.Impl.ETL
             return item;
         }
         
-        private string getNonStockIndicator(string nonStockValue)
-        {
-            if (nonStockValue == "N" || nonStockValue == " ")
-            {
-                return "N";
-            }
-            else
-            {
-                return "Y";
-            }
-        }
-
-		private string BuildPropritaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems)
+        private string BuildPropritaryCustomerList(string itemNumber, Dictionary<string, List<string>> proprietaryItems)
 		{
 			if (!proprietaryItems.ContainsKey(itemNumber))
 				return null;
