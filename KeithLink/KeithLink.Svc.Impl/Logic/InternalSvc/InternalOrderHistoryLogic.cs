@@ -35,8 +35,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 		private const int THREAD_SLEEP_DURATION = 2000;
 
 
-        private readonly IOrderHistoryLogic _histLogic;
-
+        
 		private readonly IOrderHistoryHeaderRepsitory _headerRepo;
 		private readonly IPurchaseOrderRepository _poRepo;
 		private readonly IKPayInvoiceRepository _kpayInvoiceRepository;
@@ -51,11 +50,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #endregion
 
         #region ctor
-		public InternalOrderHistoryLogic(IOrderHistoryLogic orderHistoryLogic, IOrderHistoryHeaderRepsitory headerRepo,
+		public InternalOrderHistoryLogic(IOrderHistoryHeaderRepsitory headerRepo,
 			IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic,
 			IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic)
 		{
-            _histLogic = orderHistoryLogic;
 			_headerRepo = headerRepo;
 			_poRepo = poRepo;
 			_kpayInvoiceRepository = kpayInvoiceRepository;
