@@ -28,51 +28,31 @@ using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Enumerations;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {
         #region attributes
         private const int RECORDTYPE_LENGTH = 1;
         private const int RECORDTYPE_STARTPOS = 0;
-        private const int THREAD_SLEEP_DURATION = 2000;
-
-        private readonly ICatalogLogic _catalogLogic;
-        //private readonly IConfirmationLogic _confirmationLogic;
-        private readonly IOrderConversionLogic _conversionLogic;
+        
         private readonly IEventLogRepository _log;
-        private readonly IOrderHistoryDetailRepository _detailRepo;
-        private readonly IOrderHistoryHeaderRepsitory _headerRepo;
         private readonly IGenericQueueRepository _queue;
-        private readonly IPurchaseOrderRepository _poRepo;
         private readonly ISocketListenerRepository _socket;
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IUserProfileRepository _userProfileRepository;
-        private readonly ICustomerRepository _customerRepository;
-        //private readonly IUnitOfWork _unitOfWorkOriginal;
-
-        private bool _keepListening;
-        private Task _queueTask;
+        
         #endregion
 
         #region ctor
-        public OrderHistoryLogicImpl(IEventLogRepository logRepo, IOrderHistoryHeaderRepsitory headerRepo, IOrderHistoryDetailRepository detailRepo,
-									 IGenericQueueRepository queueRepo, IUnitOfWork unitOfWork, ISocketListenerRepository socket, 
-                                     IPurchaseOrderRepository poRepo, ICatalogLogic catalogLogic, IUserProfileRepository userProfileRepository, 
-                                     ICustomerRepository customerRepository, IOrderConversionLogic conversionLogic) {
-            _catalogLogic = catalogLogic;
-            //_confirmationLogic = confLogic;
-            _conversionLogic = conversionLogic;
+        public OrderHistoryLogicImpl(IEventLogRepository logRepo, IGenericQueueRepository queueRepo, ISocketListenerRepository socket)
+		{
             _log = logRepo;
-            _headerRepo = headerRepo;
-            _detailRepo = detailRepo;
-            _poRepo = poRepo;
             _queue = queueRepo;
-            _socket = socket;
-            _unitOfWork = unitOfWork;
-            _userProfileRepository = userProfileRepository;
-            _customerRepository = customerRepository;
-            
-            _keepListening = true;
+            _socket = socket;            
 
             _socket.FileReceived            += SocketFileReceived;
             _socket.ClosedPort              += SocketPortClosed;
@@ -137,231 +117,79 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
-        private void Create(OrderHistoryFile currentFile) {
-            // first attempt to find the order, look by branch and invoice number
-            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
-            
-            // second attempt to find the order, look by confirmation number
-            if (header == null) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
+        
+		//private List<Order> GetCommerceServerOrders(Guid userId, UserSelectedContext customerInfo) {
 
-            // last ditch effort is to create a new header
-            if (header == null) {
-                header = new EF.OrderHistoryHeader();
-                header.OrderDetails = new List<EF.OrderHistoryDetail>();
-            }
+		//	// get all users to then read all orders from CS
+		//	List<PurchaseOrder> allOrders = new List<PurchaseOrder>();
+		//	var sharedUsers = _userProfileRepository.GetUsersForCustomerOrAccount(_customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId, customerInfo.BranchId).CustomerId).ToList();
 
-            currentFile.Header.MergeWithEntity(ref header);
-
-            foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
-
-                EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
-
-                if (detail == null) {
-                    EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
-                    tempDetail.BranchId = header.BranchId;
-                    tempDetail.InvoiceNumber = header.InvoiceNumber;
-
-                    header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
-                } else {
-                    currentDetail.MergeWithEntityFrameworkModel(ref detail);
-
-                    detail.BranchId = header.BranchId;
-                    detail.InvoiceNumber = header.InvoiceNumber;
-                }
-            }
-
-            _headerRepo.CreateOrUpdate(header);
-        }
-
-        private List<Order> GetCommerceServerOrders(Guid userId, UserSelectedContext customerInfo) {
-
-            // get all users to then read all orders from CS
-            List<PurchaseOrder> allOrders = new List<PurchaseOrder>();
-            var sharedUsers = _userProfileRepository.GetUsersForCustomerOrAccount(_customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId, customerInfo.BranchId).CustomerId).ToList();
-
-            foreach (var user in sharedUsers)
-            {
-                allOrders.AddRange(_poRepo.ReadPurchaseOrders(user.UserId, customerInfo.CustomerId));
-            }
-            return allOrders.Select(o => o.ToOrder()).ToList();
-        }
-
-        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
-            var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
-
-            return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
-        }
-
-        private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
-            return LookupControlNumberAndStatus(headers);
-        }
-
-        private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                          d => d.OrderDetails);
-            return LookupControlNumberAndStatus(headers);
-        }
-
-        public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
-            //List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo),
-            //                                             GetOrderHistoryOrders(customerInfo));
-
-            //return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
-            return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
-        }
+		//	foreach (var user in sharedUsers)
+		//	{
+		//		allOrders.AddRange(_poRepo.ReadPurchaseOrders(user.UserId, customerInfo.CustomerId));
+		//	}
+		//	return allOrders.Select(o => o.ToOrder()).ToList();
+		//}
 
         public void ListenForMainFrameCalls() {
             _socket.Listen(Configuration.MainframOrderHistoryListeningPort);
         }
 
-        public void ListenForQueueMessages() {
-            _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
-        }
+       
+		
 
-        private void ListenForQueueMessagesInTask() {
-            while (_keepListening) {
-                System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
+		//private void LookupProductDetails(string branchId, Order order) {
+		//	if (order.Items == null) { return; }
 
-                int loopCnt = 0;
-                //IUnitOfWork uow = _unitOfWork.GetUniqueUnitOfWork();
+		//	var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber).ToList());
 
-				
+		//	var productDict = products.Products.ToDictionary(p => p.ItemNumber);
 
-                try {
-                    var rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+		//	Parallel.ForEach(order.Items, item => {
+		//		var prod = productDict.ContainsKey(item.ItemNumber) ? productDict[item.ItemNumber] : null;
+		//		if (prod != null)
+		//		{
+		//			item.Name = prod.Name;
+		//			item.Description = prod.Description;
+		//			item.Pack = prod.Pack;
+		//			item.Size = prod.Size;
+		//			item.StorageTemp = prod.Nutritional.StorageTemp;
+		//			item.Brand = prod.Brand;
+		//			item.BrandExtendedDescription = prod.BrandExtendedDescription;
+		//			item.ReplacedItem = prod.ReplacedItem;
+		//			item.ReplacementItem = prod.ReplacementItem;
+		//			item.NonStock = prod.NonStock;
+		//			item.ChildNutrition = prod.ChildNutrition;
+		//			item.CatchWeight = prod.CatchWeight;
+		//			item.TempZone = prod.TempZone;
+		//			item.ItemClass = prod.ItemClass;
+		//			item.CategoryId = prod.CategoryId;
+		//			item.CategoryName = prod.CategoryName;
+		//			item.UPC = prod.UPC;
+		//			item.VendorItemNumber = prod.VendorItemNumber;
+		//			item.Cases = prod.Cases;
+		//			item.Kosher = prod.Kosher;
+		//			item.ManufacturerName = prod.ManufacturerName;
+		//			item.ManufacturerNumber = prod.ManufacturerNumber;
+		//			item.Nutritional = new Nutritional() {
+		//				CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+		//				GrossWeight = prod.Nutritional.GrossWeight,
+		//				HandlingInstructions = prod.Nutritional.HandlingInstructions,
+		//				Height = prod.Nutritional.Height,
+		//				Length = prod.Nutritional.Length,
+		//				Ingredients = prod.Nutritional.Ingredients,
+		//				Width = prod.Nutritional.Width
+		//			};
+		//		}
+		//		//if (price != null) {
+		//		//    item.PackagePrice = price.PackagePrice.ToString();
+		//		//    item.CasePrice = price.CasePrice.ToString();
+		//		//}
+		//	});
 
-                    while (!string.IsNullOrEmpty(rawOrder)) {
-                        OrderHistoryFile historyFile = new OrderHistoryFile();
+		//}
 
-						historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
-
-                        _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
-
-                        Create(historyFile);
-                        _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile); 
-
-                        rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
-
-                        if (loopCnt++ == 100) {
-                            _unitOfWork.SaveChangesAndClearContext();
-                            //uow.SaveChangesAndClearContext();
-                            //uow = _unitOfWork.GetUniqueUnitOfWork();
-                            loopCnt = 0;
-                        }
-                    }
-
-                    if (loopCnt > 0) {
-                        _unitOfWork.SaveChangesAndClearContext();
-                        //uow.SaveChangesAndClearContext();
-                        //uow = _unitOfWork.GetUniqueUnitOfWork();
-
-                        loopCnt = 0;
-                    }
-                } catch (Exception ex) {
-                    _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
-                }
-            }
-
-        }
-
-		private List<Order> LookupControlNumberAndStatus(IEnumerable<EF.OrderHistoryHeader> headers)
-		{
-			var customerOrders = new BlockingCollection<Order>();
-			Parallel.ForEach(headers, h =>
-			{
-				Order currentOrder = h.ToOrderHeaderOnly();
-
-				if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
-				{
-					PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
-
-					if (po != null)
-					{
-						currentOrder.OrderNumber = h.ControlNumber;
-						currentOrder.Status = po.Status;
-					}
-				}
-
-				customerOrders.Add(currentOrder);
-			});
-
-			return customerOrders.ToList();
-		}
-
-        private void LookupProductDetails(string branchId, Order order) {
-            if (order.Items == null) { return; }
-
-            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber).ToList());
-
-			var productDict = products.Products.ToDictionary(p => p.ItemNumber);
-
-            Parallel.ForEach(order.Items, item => {
-				var prod = productDict.ContainsKey(item.ItemNumber) ? productDict[item.ItemNumber] : null;
-				if (prod != null)
-				{
-                    item.Name = prod.Name;
-                    item.Description = prod.Description;
-                    item.Pack = prod.Pack;
-                    item.Size = prod.Size;
-                    item.StorageTemp = prod.Nutritional.StorageTemp;
-                    item.Brand = prod.Brand;
-                    item.BrandExtendedDescription = prod.BrandExtendedDescription;
-                    item.ReplacedItem = prod.ReplacedItem;
-                    item.ReplacementItem = prod.ReplacementItem;
-                    item.NonStock = prod.NonStock;
-                    item.ChildNutrition = prod.ChildNutrition;
-                    item.CatchWeight = prod.CatchWeight;
-                    item.TempZone = prod.TempZone;
-                    item.ItemClass = prod.ItemClass;
-                    item.CategoryId = prod.CategoryId;
-                    item.CategoryName = prod.CategoryName;
-                    item.UPC = prod.UPC;
-                    item.VendorItemNumber = prod.VendorItemNumber;
-                    item.Cases = prod.Cases;
-                    item.Kosher = prod.Kosher;
-                    item.ManufacturerName = prod.ManufacturerName;
-                    item.ManufacturerNumber = prod.ManufacturerNumber;
-                    item.Nutritional = new Nutritional() {
-                        CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
-                        GrossWeight = prod.Nutritional.GrossWeight,
-                        HandlingInstructions = prod.Nutritional.HandlingInstructions,
-                        Height = prod.Nutritional.Height,
-                        Length = prod.Nutritional.Length,
-                        Ingredients = prod.Nutritional.Ingredients,
-                        Width = prod.Nutritional.Width
-                    };
-                }
-                //if (price != null) {
-                //    item.PackagePrice = price.PackagePrice.ToString();
-                //    item.CasePrice = price.CasePrice.ToString();
-                //}
-            });
-
-        }
-
-        private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders) {
-            System.Collections.Concurrent.BlockingCollection<Order> mergedOrdeList = new System.Collections.Concurrent.BlockingCollection<Order>();
-
-            Parallel.ForEach(orderHistoryOrders, ohOrder => {
-                mergedOrdeList.Add(ohOrder);
-            });
-
-            Parallel.ForEach(commerceServerOrders, csOrder => {
-                if (mergedOrdeList.Where(o => o.InvoiceNumber.Equals(csOrder.InvoiceNumber)).Count() == 0) {
-                    mergedOrdeList.Add(csOrder);
-                }
-                //if (csOrder.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
-                //    mergedOrdeList.Add(csOrder);
-                //}
-            });
-
-            return mergedOrdeList.ToList();
-        }
-
+        
         /// <summary>
         /// Parse an array of strings as a file
         /// </summary>
@@ -534,38 +362,103 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         //    _confirmationLogic.ProcessIncomingConfirmation(confirmation);
         //}
 
-        public Order ReadOrder(string branchId, string orderNumber) {
-            EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                  h.InvoiceNumber.Equals(orderNumber),
-                                                             d => d.OrderDetails).FirstOrDefault();
-            Order returnOrder = null;
-
-            if (myOrder == null) {
-                PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(orderNumber);
-                returnOrder = po.ToOrder();
-            } else {
-                 returnOrder = myOrder.ToOrder();
-            }
-
-            LookupProductDetails(branchId, returnOrder);
-
-            
-            return returnOrder;
-        }
-
-        public void Save(OrderHistoryFile currentFile) {
-            Create(currentFile);
-
-            _unitOfWork.SaveChanges();
-        }
-
-        public void StopListening() {
-            _keepListening = false;
-
-            if (_queueTask != null && _queueTask.Status == TaskStatus.Running) {
-                _queueTask.Wait();
-            }
-        }
+        
+        
         #endregion
+
+
+		//public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
+		//	//List<Order> customerOrders = MergeOrderLists(GetCommerceServerOrders(userId, customerInfo),
+		//	//                                             GetOrderHistoryOrders(customerInfo));
+
+		//	//return customerOrders.OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+		//	return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+		//}
+		//public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging)
+		//{
+		//	var headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+		//																	  h.CustomerNumber.Equals(customerInfo.CustomerId),
+		//																	d => d.OrderDetails);
+
+		//	return LookupControlNumberAndStatus(headers).AsQueryable().GetPage(paging);
+		//}
+		//public Order ReadOrder(string branchId, string orderNumber)
+		//{
+		//	EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+		//														  h.InvoiceNumber.Equals(orderNumber),
+		//													 d => d.OrderDetails).FirstOrDefault();
+		//	Order returnOrder = null;
+
+		//	if (myOrder == null)
+		//	{
+		//		PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(orderNumber);
+		//		returnOrder = po.ToOrder();
+		//	}
+		//	else
+		//	{
+		//		returnOrder = myOrder.ToOrder();
+		//	}
+
+		//	LookupProductDetails(branchId, returnOrder);
+
+
+		//	return returnOrder;
+		//}
+
+		//public void Save(OrderHistoryFile currentFile)
+		//{
+		//	Create(currentFile);
+
+		//	_unitOfWork.SaveChanges();
+		//}
+		//public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
+		//{
+		//	var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
+		//	var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
+
+		//	return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
+		//}
+
+		//private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
+		//{
+		//	IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+		//																	   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
+		//	return LookupControlNumberAndStatus(headers);
+		//}
+
+		//private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo)
+		//{
+		//	IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+		//																	   h.CustomerNumber.Equals(customerInfo.CustomerId),
+		//																  d => d.OrderDetails);
+		//	return LookupControlNumberAndStatus(headers);
+		//}
+
+		//private List<Order> LookupControlNumberAndStatus(IEnumerable<EF.OrderHistoryHeader> headers)
+		//{
+		//	var customerOrders = new BlockingCollection<Order>();
+		//	foreach (var h in headers)
+		//	{
+		//		Order currentOrder = h.ToOrderHeaderOnly();
+		//		var invoice = _kpayInvoiceRepositoryy.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(h.BranchId), h.CustomerNumber, h.InvoiceNumber.Trim());
+		//		if (invoice != null)
+		//			currentOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+
+		//		if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+		//		{
+		//			PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+		//			if (po != null)
+		//			{
+		//				currentOrder.OrderNumber = h.ControlNumber;
+		//				currentOrder.Status = po.Status;
+		//			}
+
+		//		}
+
+		//		customerOrders.Add(currentOrder);
+		//	}
+
+		//	return customerOrders.ToList();
+		//}
     }
 }

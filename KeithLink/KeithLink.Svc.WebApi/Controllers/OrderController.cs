@@ -5,6 +5,7 @@ using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Logic;
 using System;
@@ -56,6 +57,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
             return _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
                 _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext));
+		}
+
+		[HttpPost]
+		[ApiKeyedRoute("order/")]
+		public PagedResults<Order> PagedOrders(PagingModel paging)
+		{
+			var results = _orderServiceRepository.GetPagedOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext, paging);
+			_orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser, results.Results);
+			return results;
 		}
 
 		[HttpGet]

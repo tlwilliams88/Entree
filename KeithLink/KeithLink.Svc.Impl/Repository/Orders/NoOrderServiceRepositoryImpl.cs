@@ -64,5 +64,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         {
             throw new NotImplementedException();
         }
-    }
+
+
+		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

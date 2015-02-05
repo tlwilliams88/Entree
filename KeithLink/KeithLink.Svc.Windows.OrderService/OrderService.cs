@@ -269,16 +269,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                               new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
 
                 OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
-                                                                       new OrderHistoyrHeaderRepositoryImpl(uow),
-                                                                       new OrderHistoryDetailRepositoryImpl(uow),
                                                                        new GenericQueueRepositoryImpl(),
-                                                                       uow,
-                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                       new PurchaseOrderRepositoryImpl(),
-                                                                       catLogic,
-                                                                       new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-																	   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl(), new KeithLink.Svc.Impl.Repository.Profile.NoDsrServiceRepository()),
-                                                                       conversionLogic);
+                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
 
                 logic.ListenForMainFrameCalls();
             } catch (Exception e) {
@@ -372,16 +364,8 @@ namespace KeithLink.Svc.Windows.OrderService {
                                                                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
                                                                                           new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
                             OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
-                                                                                   new OrderHistoyrHeaderRepositoryImpl(uow),
-                                                                                   new OrderHistoryDetailRepositoryImpl(uow),
 																				   new GenericQueueRepositoryImpl(),
-                                                                                   uow,
-                                                                                   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                                   new PurchaseOrderRepositoryImpl(),
-                                                                                   catLogic,
-                                                                                   new KeithLink.Svc.Impl.Repository.Profile.UserProfileRepository(_log),
-																				   new KeithLink.Svc.Impl.Repository.Profile.CustomerRepository(_log, new NoCacheRepositoryImpl(), new KeithLink.Svc.Impl.Repository.Profile.NoDsrServiceRepository()),
-                                                                                   conversionLogic);
+                                                                                   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
 
                             if (CanOpenFile(filePath)) {
                                 OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);

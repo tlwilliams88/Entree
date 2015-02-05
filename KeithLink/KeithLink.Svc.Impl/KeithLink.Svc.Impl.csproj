@@ -192,6 +192,7 @@
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\CommerceServerCore.cs" />
+    <Compile Include="Helpers\DivisionHelper.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />

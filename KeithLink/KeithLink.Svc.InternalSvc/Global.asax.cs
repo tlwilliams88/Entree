@@ -25,7 +25,7 @@ namespace KeithLink.Svc.InternalSvc
     public class Global : System.Web.HttpApplication {
         #region attributes
         private IConfirmationLogic _confirmationLogic;
-        private IOrderHistoryLogic _orderHistoryLogic;
+        private IInternalOrderHistoryLogic _orderHistoryLogic;
         private Svc.Core.Interface.Messaging.INotificationQueueConsumer _notificationQueueConsumer;
         #endregion
 
@@ -91,7 +91,7 @@ namespace KeithLink.Svc.InternalSvc
         private void InitializeOrderUpdateThread() {
             //System.Diagnostics.Debugger.Launch();
 
-            _orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IOrderHistoryLogic>();
+			_orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IInternalOrderHistoryLogic>();
             _orderHistoryLogic.ListenForQueueMessages();
         }
 
