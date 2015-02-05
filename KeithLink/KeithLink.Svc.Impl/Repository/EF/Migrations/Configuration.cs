@@ -49,6 +49,21 @@ namespace KeithLink.Svc.Impl.Migrations
             //        ImageUrl = "/img/avatar.jpg"
             //    } );
 
+            List<Dsr> defaultDsrs = new List<Dsr>();
+            defaultDsrs.Add( new Dsr() { BranchId = "FAM", DsrNumber = "000", EmailAddress = "", Phone = "8006589790", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/fam@benekeith.com" } );
+            defaultDsrs.Add( new Dsr() { BranchId = "FDF", DsrNumber = "000", EmailAddress = "", Phone = "8773186100", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/fdf@benekeith.com" } );
+            defaultDsrs.Add( new Dsr() { BranchId = "FHS", DsrNumber = "000", EmailAddress = "", Phone = "8553275500", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/fhs@benekeith.com" } );
+            defaultDsrs.Add( new Dsr() { BranchId = "FLR", DsrNumber = "000", EmailAddress = "", Phone = "8006882356", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/flr@benekeith.com" } );
+            defaultDsrs.Add( new Dsr() { BranchId = "FAR", DsrNumber = "000", EmailAddress = "", Phone = "8006882356", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/far@benekeith.com" } );
+            defaultDsrs.Add( new Dsr() { BranchId = "FAQ", DsrNumber = "000", EmailAddress = "", Phone = "8006752949", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/faq@benekeith.com" } );
+            defaultDsrs.Add( new Dsr() { BranchId = "FOK", DsrNumber = "000", EmailAddress = "", Phone = "4057537911", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/fok@benekeith.com" } );
+            defaultDsrs.Add( new Dsr() { BranchId = "FSA", DsrNumber = "000", EmailAddress = "", Phone = "2105076151", Name = "Ben E. Keith", ImageUrl = "{baseUrl}userimages/fsa@benekeith.com" } );
+
+            context.Dsrs.AddOrUpdate(
+                d => new { d.DsrNumber, d.BranchId },
+                defaultDsrs.ToArray()
+                );
+
 			context.BranchSupports.AddOrUpdate(
 				b => b.BranchId,
 				new BranchSupport
