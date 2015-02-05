@@ -466,6 +466,16 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+
+		[Authorize]
+		[HttpPost]
+		[ApiKeyedRoute("profile/accounts")]
+		public PagedResults<Account> Accounts(PagingModel paging)
+		{
+			return _profileLogic.GetPagedAccounts(paging);
+		}
+
+
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile/users")]
