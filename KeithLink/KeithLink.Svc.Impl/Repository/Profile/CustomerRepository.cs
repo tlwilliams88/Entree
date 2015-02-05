@@ -373,5 +373,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		
 
 		#endregion
+
+
+		public Customer GetCustomerById(Guid customerId)
+		{
+			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.org_id = '" + customerId.ToCommerceServerFormat() + "'";
+
+			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+			if (res.CommerceEntities.Count > 0)
+			{
+				var dsrs = RetrieveDsrList();
+				var customer = OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]), dsrs);
+				
+				return customer;
+			}
+			else
+				return null;
+		}
 	}
 }
