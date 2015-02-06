@@ -10,6 +10,7 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System.Data.Entity;
+using KeithLink.Svc.Core.Models.Paging;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -54,7 +55,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             if (allCustomersFromCache != null)
                 return allCustomersFromCache;
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0'"; // org type of customer
+            queryOrg.SearchCriteria.WhereClause = "u_organization_type = '0'"; // org type of customer
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
@@ -70,6 +71,31 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("allCustomers"), TimeSpan.FromHours(4), customersList);
             return  customersList;
         }
+
+
+		public PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm)
+		{
+			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+			queryOrg.SearchCriteria.WhereClause = "u_organization_type = '0'";
+			if(!string.IsNullOrEmpty(searchTerm))
+				queryOrg.SearchCriteria.WhereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
+			queryOrg.SearchCriteria.FirstItemIndex = from;
+			queryOrg.SearchCriteria.NumberOfItemsToReturn = size;
+			queryOrg.SearchCriteria.ReturnTotalItemCount = true;
+
+			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+			var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
+			var dsrs = RetrieveDsrList();
+			System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
+			{
+				Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
+				customers.Add(OrgToCustomer(org, dsrs));
+			});
+
+			return new PagedResults<Customer>() { Results = customers.ToList(), TotalResults = res.TotalItemCount.HasValue ? res.TotalItemCount.Value : 0 };
+		}
+
 
         public void ClearCustomerCache()
         {
@@ -132,13 +158,15 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 				return customerFromCache;
 
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.organization_type = '0' AND GeneralInfo.customer_number = '" + customerNumber + "' AND GeneralInfo.branch_number = '" + branchId + "'"; // org type of customer
+			queryOrg.SearchCriteria.WhereClause = "u_organization_type = '0' AND u_customer_number = '" + customerNumber + "' AND u_branch_number = '" + branchId + "'"; // org type of customer
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
 			if (res.CommerceEntities.Count > 0)
 			{
 				var dsrs = RetrieveDsrList();
+                
+
 				var customer = OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]), dsrs);
 				_customerCacheRepository.AddItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("{0}-{1}", customerNumber, branchId)), TimeSpan.FromHours(4), customer);
 
@@ -155,7 +183,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 return customerFromCache;
 
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.name LIKE '%" + searchText.Replace("'", "''") + "%'"; // org type of customer
+            queryOrg.SearchCriteria.WhereClause = "u_name LIKE '%" + searchText.Replace("'", "''") + "%'"; // org type of customer
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
@@ -281,7 +309,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 return customerFromCache;
 
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.branch_number = '" + branchId + "' AND GeneralInfo.name LIKE '%" + search.Replace("'", "''") + "%'"; // org type of customer
+			queryOrg.SearchCriteria.WhereClause = "u_branch_number = '" + branchId + "' AND u_name LIKE '%" + search.Replace("'", "''") + "%'"; // org type of customer
 
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
             List<Customer> customers = new List<Customer>();
@@ -310,7 +338,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 				return customerFromCache;
 
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.parent_organization = '" + accountId + "' AND GeneralInfo.organization_type = '0'"; // org type of customer
+            queryOrg.SearchCriteria.WhereClause = "u_parent_organization = '" + accountId + "' AND u_organization_type = '0'"; // org type of customer
 
 			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
         	List<Customer> customers = new List<Customer>();
@@ -335,7 +363,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		public List<Customer> GetCustomersByNameOrNumber(string search)
 		{
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.name LIKE '%" + search + "%' OR GeneralInfo.customer_number LIKE '%" + search + "%'";
+			queryOrg.SearchCriteria.WhereClause = "u_name LIKE '%" + search + "%' OR u_customer_number LIKE '%" + search + "%'";
 
 			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
             List<Customer> customers = new List<Customer>();
@@ -361,7 +389,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 				return customerFromCache;
 
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.parent_organization = '" + accountId + "'"; // org type of customer
+			queryOrg.SearchCriteria.WhereClause = "u_parent_organization = '" + accountId + "'"; // org type of customer
 
 			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
             List<Customer> customers = new List<Customer>();
@@ -396,8 +424,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			var dsrInfo = _dsrService.GetAllDsrInfo();
 			//Cache the dsrs
 			_customerCacheRepository.AddItem<List<Dsr>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("dsrInfo"), TimeSpan.FromHours(4), dsrInfo);
-
-			return dsrInfo;
+            
+            if (dsrInfo == null || dsrInfo.Count == 0) {
+                _logger.WriteErrorLog("No DSRs returned from RetrieveDsrList in CustomerRepository, is BranchSupport.Dsrs populated?");
+            }
+			
+            return dsrInfo;
 		}
 		
 
@@ -407,7 +439,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		public Customer GetCustomerById(Guid customerId)
 		{
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.org_id = '" + customerId.ToCommerceServerFormat() + "'";
+			queryOrg.SearchCriteria.WhereClause = "u_org_id = '" + customerId.ToCommerceServerFormat() + "'";
 
 			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
