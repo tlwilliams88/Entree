@@ -237,8 +237,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					if (po != null)
 					{
 						currentOrder.OrderNumber = h.ControlNumber;
-						currentOrder.Status = po.Status;
+                        currentOrder.Status = po.Status;
 					}
+
+                    if (currentOrder.ActualDeliveryTime != null) {
+                        currentOrder.Status = "Delivered";
+                    }
 
 				}
 
@@ -329,7 +333,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			Parallel.ForEach(commerceServerOrders, csOrder =>
 			{
 				if (mergedOrdeList.Where(o => o.InvoiceNumber.Equals(csOrder.InvoiceNumber)).Count() == 0)
-				{
+				{ 
 					mergedOrdeList.Add(csOrder);
 				}
 				//if (csOrder.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
