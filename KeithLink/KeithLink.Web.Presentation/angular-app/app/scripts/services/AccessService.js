@@ -26,7 +26,7 @@ angular.module('bekApp')
     },
 
     isInternalAccountAdminUser: function() {
-      return ( Service.isLoggedIn() && ( Service.isDsr() || Service.isDsm() || Service.isSysAdmin() || Service.isBranchManager() ) );
+      return ( Service.isLoggedIn() && ( Service.isDsr() || Service.isDsm() || Service.isSysAdmin() || Service.isBranchManager() || Service.isPowerUser() ) );
     },
 
     // ROLES
@@ -59,6 +59,10 @@ angular.module('bekApp')
 
     isBranchManager: function() {
       return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
+    },
+
+    isPowerUser: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.POWER_USER );
     },
 
     isDsr: function() {
