@@ -139,6 +139,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			if (res.CommerceEntities.Count > 0)
 			{
 				var dsrs = RetrieveDsrList();
+                
+
 				var customer = OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]), dsrs);
 				_customerCacheRepository.AddItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("{0}-{1}", customerNumber, branchId)), TimeSpan.FromHours(4), customer);
 
@@ -367,8 +369,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			var dsrInfo = _dsrService.GetAllDsrInfo();
 			//Cache the dsrs
 			_customerCacheRepository.AddItem<List<Dsr>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("dsrInfo"), TimeSpan.FromHours(4), dsrInfo);
-
-			return dsrInfo;
+            
+            if (dsrInfo == null || dsrInfo.Count == 0) {
+                _logger.WriteErrorLog("No DSRs returned from RetrieveDsrList in CustomerRepository, is BranchSupport.Dsrs populated?");
+            }
+			
+            return dsrInfo;
 		}
 		
 
