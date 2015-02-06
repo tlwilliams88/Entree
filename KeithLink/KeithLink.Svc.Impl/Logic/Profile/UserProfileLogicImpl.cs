@@ -404,9 +404,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private string GenerateTemporaryPassword()
         {
-            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 0);
             for (int i = 0; !PasswordMeetsComplexityRequirements(generatedPassword) && i < 8; i++)
-                generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+                generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 0);
             return generatedPassword;
         }
 
