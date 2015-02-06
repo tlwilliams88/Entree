@@ -1641,6 +1641,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="IsPowerMenu"						csProperty="GeneralInfo.is_power_menu" />
               <PropertyMapping property="ContractNumber"						csProperty="GeneralInfo.contract_number" />
               <PropertyMapping property="DsrNumber"						csProperty="GeneralInfo.dsr_number" />
+              <PropertyMapping property="DsmNumber"						csProperty="GeneralInfo.dsm_number" />
               <PropertyMapping property="NationalOrRegionalAccountNumber"						csProperty="GeneralInfo.natl_or_regl_account_number" />
               <PropertyMapping property="NationalAccountId"						csProperty="GeneralInfo.national_account_id" />
               <PropertyMapping property="BranchNumber"						csProperty="GeneralInfo.branch_number" />

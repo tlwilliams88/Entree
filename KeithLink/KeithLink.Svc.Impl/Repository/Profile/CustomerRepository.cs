@@ -216,14 +216,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return customer;
         }
 		
-		public List<Customer> GetCustomersForDSR(string dsrNumber)
+		public List<Customer> GetCustomersForDSR(string dsrNumber, string branchId)
 		{
 			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsrNumber));
 			if (customerFromCache != null)
 				return customerFromCache;
 
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "GeneralInfo.dsr_number = '" + dsrNumber + "'"; // org type of customer
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.dsr_number = '" + dsrNumber + "' AND GeneralInfo.branch_number = '" + branchId + "'"; // org type of customer
 
 			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
             List<Customer> customers = new List<Customer>();
@@ -244,6 +244,35 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             return customers;
 		}
+
+        public List<Customer> GetCustomersForDSM(string dsmNumber, string branchId)
+        {
+            var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsmNumber));
+            if (customerFromCache != null)
+                return customerFromCache;
+
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+            queryOrg.SearchCriteria.WhereClause = "GeneralInfo.dsm_number = '" + dsmNumber + "' AND GeneralInfo.branch_number = '" + branchId + "'"; // org type of customer
+
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            List<Customer> customers = new List<Customer>();
+            var dsrs = RetrieveDsrList();
+            if (res.CommerceEntities.Count > 0)
+            {
+                foreach (CommerceEntity ent in res.CommerceEntities)
+                {
+                    Organization org = new Organization(ent);
+                    if (org.OrganizationType == "0")
+                    {
+                        customers.Add(OrgToCustomer(org, dsrs));
+                    }
+                }
+
+                _customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsmNumber), TimeSpan.FromHours(4), customers);
+            }
+
+            return customers;
+        }
 
         public List<Customer> GetCustomersByNameSearchAndBranch(string search, string branchId)
         {

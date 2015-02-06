@@ -55,11 +55,13 @@ namespace KeithLink.Svc.Core.Models.Profile
         public Guid UserId {get;set;}
 
 		public bool IsDSR { get { return RoleName.Equals("dsr", StringComparison.CurrentCultureIgnoreCase); } }
+        public bool IsDSM { get { return RoleName.Equals("dsm", StringComparison.CurrentCultureIgnoreCase); } }
 
         [DataMember( Name = "imageurl" )]
         public string ImageUrl { get; set; }
 
 		public string DSRNumber { get; set; }
+        public string DSMNumber { get; set; }
 		public string DSMRole { get; set; }
 		public bool IsInternalUser { get; set; }
         //[DataMember(Name = "username")]

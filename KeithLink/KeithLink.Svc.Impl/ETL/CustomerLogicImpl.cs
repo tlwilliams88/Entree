@@ -92,6 +92,7 @@ namespace KeithLink.Svc.Impl.ETL
                     prof.Properties["GeneralInfo.is_power_menu"].Value = org.IsPowerMenu;
                     prof.Properties["GeneralInfo.contract_number"].Value = org.ContractNumber;
                     prof.Properties["GeneralInfo.dsr_number"].Value = org.DsrNumber;
+                    prof.Properties["GeneralInfo.dsm_number"].Value = org.DsmNumber;
                     prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.NationalOrRegionalAccountNumber;
                     prof.Properties["GeneralInfo.branch_number"].Value = org.BranchNumber;
                     prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.OrganizationType;
@@ -190,6 +191,7 @@ namespace KeithLink.Svc.Impl.ETL
                 CustomerNumber = row.GetString("CustomerNumber"),
                 BranchNumber = row.GetString("BranchNumber"),
                 DsrNumber = row.GetString("DsrNumber"),
+                DsmNumber = row.GetString("DsmNumber"),
                 NationalOrRegionalAccountNumber = row.GetString("NationalOrRegionalAccountNumber"),
                 ContractNumber = row.GetString("ContractNumber"),
                 IsPoRequired = GetBoolFromYorN(row.GetString("PORequiredFlag")),

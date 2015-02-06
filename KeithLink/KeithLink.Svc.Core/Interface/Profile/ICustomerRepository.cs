@@ -17,7 +17,8 @@ namespace KeithLink.Svc.Core.Interface.Profile
         List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId);
         List<Customer> GetCustomersByNameSearch(string searchText);
         List<Customer> GetCustomersByNameSearchAndBranch(string search, string branchId);
-		List<Customer> GetCustomersForDSR(string dsrNumber);
+		List<Customer> GetCustomersForDSR(string dsrNumber, string branchId);
+        List<Customer> GetCustomersForDSM(string dsmNumber, string branchId);
 		List<Customer> GetCustomersForAccount(string accountId);
 		List<Customer> GetCustomersByNameOrNumber(string search);
 		List<Customer> GetCustomersForParentAccountOrganization(string accountId);

@@ -7589,6 +7589,25 @@ public partial class Organization : ICommerceEntity
 		}
 	}
 
+    /// <summary>
+    /// Gets or sets the DsrNumber property.
+    /// </summary>
+    /// <value>
+    /// The DsrNumber property from the property collection.
+    /// </value>
+    public virtual string DsmNumber
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.DsmNumber) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.DsmNumber, value);
+        }
+    }
+
 
 	/// <summary>
     /// Gets or sets the NationalOrRegionalAccountNumber property.
@@ -8023,18 +8042,20 @@ public partial class Organization : ICommerceEntity
         /// </summary>
 		public const string IsPowerMenu = "IsPowerMenu";
 
-
 		/// <summary>
         /// Constant for accessing ContractNumber property.
         /// </summary>
 		public const string ContractNumber = "ContractNumber";
 
-
-		/// <summary>
+        /// <summary>   
         /// Constant for accessing DsrNumber property.
         /// </summary>
 		public const string DsrNumber = "DsrNumber";
 
+        /// <summary>
+        /// Constant for accessing DsrNumber property.
+        /// </summary>
+        public const string DsmNumber = "DsmNumber";
 
 		/// <summary>
         /// Constant for accessing NationalOrRegionalAccountNumber property.

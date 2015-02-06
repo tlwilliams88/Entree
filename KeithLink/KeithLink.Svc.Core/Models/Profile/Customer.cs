@@ -32,6 +32,9 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "dsrNumber")]
         public string DsrNumber { get; set; }
 
+        [DataMember(Name = "dsmNumber")]
+        public string DsmNumber { get; set; }
+
         [DataMember( Name = "dsr" )]
         public Dsr Dsr { get; set; }
 
