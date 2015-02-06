@@ -12,8 +12,11 @@ angular.module('bekApp')
     function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, Constants) {
     
     $scope.loadingOrders = true;
-    OrderService.getAllOrders().then(function(orders) {
-      $scope.orders = orders;
+    OrderService.getOrders({
+      from: 0,
+      size: 4
+    }).then(function(data) {
+      $scope.orders = data.results;
       delete $scope.ordersMessage;
     }, function(error) {
       $scope.ordersMessage = 'Error loading orders.';

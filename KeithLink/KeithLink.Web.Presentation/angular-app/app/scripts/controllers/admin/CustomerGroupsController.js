@@ -1,55 +1,51 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupsController', ['$scope', 'CustomerGroupService',
+  .controller('CustomerGroupsController', ['$scope', 'CustomerGroupService', 'PagingModel',
     function (
       $scope, // angular
-      CustomerGroupService // custom bek service
+      CustomerGroupService, PagingModel // custom bek service
     ) {
 
-  function loadCustomerGroups(params) {
-    $scope.loadingResults = true;
-    return CustomerGroupService.getGroups(params).then(function(data) {
-      $scope.loadingResults = false;
-      $scope.totalGroups = data.totalResults;
-      
-      return data.results;
-    });
+  function setGroups(groups) {
+    $scope.customerGroups = groups;
   }
+  function appendGroups(groups) {
+    setGroups($scope.customerGroups.concat(groups));
+  }
+  function setTotal(total) {
+    $scope.totalGroups = total;
+  }
+  function startLoading() {
+    $scope.loadingResults = true;
+  }
+  function stopLoading() {
+    $scope.loadingResults = false;
+  }
+
+  var sort = {
+    field: 'name',
+    sortDescending: false
+  };
+
+  var customerGroups = new PagingModel( 
+    CustomerGroupService.getGroups, 
+    setGroups,
+    appendGroups,
+    setTotal,
+    startLoading,
+    stopLoading,
+    sort 
+  );
+
+  customerGroups.loadData();
     
   $scope.searchCustomerGroups = function(searchTerm) {
-    $scope.params.filter = {
-      field: 'name',
-      value: searchTerm
-    };
-    loadCustomerGroups($scope.params).then(function(groups) {
-      $scope.customerGroups = groups;
-    });
+    customerGroups.filterData({ name: searchTerm });
   };
 
-  $scope.infiniteScrollLoadMore = function () {
-    if (($scope.customerGroups && $scope.customerGroups.length >= $scope.totalGroups) || $scope.loadingResults) {
-      return;
-    }
-
-    $scope.params.from += $scope.params.size;
-
-    loadCustomerGroups($scope.params).then(function (customerGroups) {
-      $scope.customerGroups = $scope.customerGroups.concat(customerGroups);
-    });
+  $scope.infiniteScrollLoadMore = function() {
+    customerGroups.loadMoreData($scope.customerGroups, $scope.totalGroups, $scope.loadingResults);
   };
-
-  $scope.params = {
-    size: 30,
-    from: 0,
-    sort: [{
-      field: 'name',
-      order: 'asc'
-    }]
-  };
-
-  loadCustomerGroups($scope.params).then(function(groups) {
-    $scope.customerGroups = groups;
-  });
 
 }]);
