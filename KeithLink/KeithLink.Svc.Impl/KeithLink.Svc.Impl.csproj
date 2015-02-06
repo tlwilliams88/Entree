@@ -459,14 +459,6 @@
     <Compile Include="Repository\EF\Migrations\201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.Designer.cs">
       <DependentUpon>201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201502062032243_add_dsm_model.cs" />
-    <Compile Include="Repository\EF\Migrations\201502062032243_add_dsm_model.Designer.cs">
-      <DependentUpon>201502062032243_add_dsm_model.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Repository\EF\Migrations\201502062034281_add_dsm_number_to_dsr.cs" />
-    <Compile Include="Repository\EF\Migrations\201502062034281_add_dsm_number_to_dsr.Designer.cs">
-      <DependentUpon>201502062034281_add_dsm_number_to_dsr.cs</DependentUpon>
-    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -965,12 +957,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.resx">
       <DependentUpon>201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201502062032243_add_dsm_model.resx">
-      <DependentUpon>201502062032243_add_dsm_model.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201502062034281_add_dsm_number_to_dsr.resx">
-      <DependentUpon>201502062034281_add_dsm_number_to_dsr.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

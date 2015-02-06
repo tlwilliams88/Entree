@@ -210,7 +210,6 @@
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
     <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
-    <Compile Include="Models\EF\Dsm.cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />

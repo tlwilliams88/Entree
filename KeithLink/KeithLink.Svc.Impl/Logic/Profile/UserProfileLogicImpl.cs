@@ -1035,18 +1035,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			if (string.IsNullOrEmpty(searchTerms)) searchTerms = "";
 			if (IsInternalAddress(user.EmailAddress))
 			{
-				/*
-				if (user.RoleName == "owner") // special case where internal user is designated admin; hard coded to jmcmilland and pabrandt
-				{
-					allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
-				}
-				*/
-				if (!String.IsNullOrEmpty(user.DSRNumber))
+				if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber))
 				{
 					// lookup customers by their assigned dsr number
-					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber);
+					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber, user.BranchId);
 				}
-				else if (!String.IsNullOrEmpty(user.DSMRole) || user.RoleName == "branchismanager")
+                if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber))
+                {
+                    // lookup customers by their assigned dsr number
+                    allCustomers = _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
+                }
+				else if (user.RoleName == "branchismanager")
 				{
 					// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
 					if (searchTerms.Length >= 3)
