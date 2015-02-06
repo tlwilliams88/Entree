@@ -1027,11 +1027,40 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account)
 		{
 			List<Customer> allCustomers = new List<Customer>();
-			if (!string.IsNullOrEmpty(account))
-				allCustomers = _customerRepo.GetCustomersForAccount(account.ToGuid().ToCommerceServerFormat());
-			else
-				allCustomers = GetCustomersForUser(user, searchTerms);
-			
+			if (string.IsNullOrEmpty(searchTerms)) searchTerms = "";
+			if (IsInternalAddress(user.EmailAddress))
+			{
+				/*
+				if (user.RoleName == "owner") // special case where internal user is designated admin; hard coded to jmcmilland and pabrandt
+				{
+					allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+				}
+				*/
+				if (!String.IsNullOrEmpty(user.DSRNumber))
+				{
+					// lookup customers by their assigned dsr number
+					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber);
+				}
+				else if (!String.IsNullOrEmpty(user.DSMRole) || user.RoleName == "branchismanager")
+				{
+					// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
+					if (searchTerms.Length >= 3)
+						allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(searchTerms, user.BranchId); // TODO: reduce list to only the DSM's DSRs
+					else
+						allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+
+				}
+				else
+				{ // assume admin user with access to all customers
+					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+				}
+			}
+			else // external user
+			{
+				allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+			}
+
+
 			if (!string.IsNullOrEmpty(searchTerms))
 			{
 				//Build filter
@@ -1044,34 +1073,38 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "CustomerNumber", Value = searchTerms, FilterType = "contains" } }
 				};
 			}
-			
+
 			var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerName");
 
-			
-			
-			
-
-			//foreach (var cust in returnValue.Results)
-			//{
-			//	if (string.IsNullOrEmpty(cust.TermCode))
-			//		continue;
-
-			//	//Lookup Term info
-			//	var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
-
-			//	if (term != null)
-			//	{
-			//		cust.TermDescription = term.Description;
-			//		cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
-			//		cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
-			//		cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-			//		cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
-			//	}
-
-			//}
-			
 
 			return returnValue;
+
+
+			
+
+			//List<Customer> allCustomers = new List<Customer>();
+			//if (!string.IsNullOrEmpty(account))
+			//	allCustomers = _customerRepo.GetCustomersForAccount(account.ToGuid().ToCommerceServerFormat());
+			//else
+			//	allCustomers = GetCustomersForUser(user, searchTerms);
+			
+			//if (!string.IsNullOrEmpty(searchTerms))
+			//{
+			//	//Build filter
+			//	paging.Filter = new FilterInfo()
+			//	{
+			//		Field = "CustomerName",
+			//		FilterType = "contains",
+			//		Value = searchTerms,
+			//		Condition = "||",
+			//		Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "CustomerNumber", Value = searchTerms, FilterType = "contains" } }
+			//	};
+			//}
+			
+			//var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerName");
+			
+			
+			//return returnValue;
 		}
 
         public List<Customer> GetCustomersForExternalUser(Guid userId)

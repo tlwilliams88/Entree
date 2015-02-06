@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
     public interface ICustomerRepository
     {
         List<Customer> GetCustomers();
+		PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm);
 		Customer GetCustomerById(Guid customerId);
         Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
         void AddUserToCustomer(Guid customerId, Guid userId);
