@@ -14,7 +14,11 @@ angular.module('bekApp')
     $scope.loadingOrders = true;
     OrderService.getOrders({
       from: 0,
-      size: 4
+      size: 4,
+      sort:  [{
+        field: "createddate",
+        order: 'desc'
+      }]
     }).then(function(data) {
       $scope.orders = data.results;
       delete $scope.ordersMessage;
