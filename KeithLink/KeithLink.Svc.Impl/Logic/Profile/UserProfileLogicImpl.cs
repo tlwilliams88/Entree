@@ -495,7 +495,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     //TODO:  add checking for dsm / dsr job title -> need to know which ad property to use
                     dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
                 }
-                else if (internalUserRole.ToLower().Contains("Entree_BranchIS") || internalUserRole.ToLower().Contains("ls-mis-all"))
+                else if (internalUserRole.ToLower().Contains("entree_branchis") || internalUserRole.ToLower().Contains("ls-mis-all"))
                 {
                     userRole = "branchismanager";
                     userBranch = internalUserRole.Substring(0, 3);
