@@ -21,13 +21,13 @@
         </div>
         <div class="order-item">
           <div class="order-item-title">Order Date</div>
-          <div class="order-item-value-1">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</div>
+          <div class="order-item-value-1">{{order.createddate | date:'MM/dd/yyyy'}}</div>
           <div class="order-item-title">Requested Ship Date</div>
-          <div class="order-item-value-2">{{order.requestedshipdate | date:'MM/dd/yyyy h:mma'}}</div>
+          <div class="order-item-value-2">{{order.requestedshipdate | adjustDatepicker:'MM/dd/yyyy'}}</div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Delivery Date</div>
-          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | date:'MM/dd/yyyy'}}</div>
+          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | adjustDatepicker:'MM/dd/yyyy'}}</div>
           <div class="order-item-title">Delivered</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime == null && order.actualdeliverytime == null && order.scheduleddeliverytime == null">N/A</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | LocalTimeZoneTime}}</div>
