@@ -119,9 +119,16 @@ angular.module('bekApp')
         var promise = $http.put('/profile', userProfile);
 
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          var loggedinprofile = LocalStorage.getProfile(); //Get current users profile from LocalStorage
+
           var profile = successResponse.userProfiles[0];
           $log.debug(profile);
-          LocalStorage.setProfile(profile);
+          //Only save updated profile back to local storage if the profile being updated is the same as
+          //the currently logged in user. If this is an admin editing another user's profile, don't save
+          //to local storage
+          if(loggedinprofile.userid == profile.userid){
+            LocalStorage.setProfile(profile);
+          }
           return profile;
         });
       },
