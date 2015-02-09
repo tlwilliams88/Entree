@@ -138,7 +138,7 @@
           <div class="col-sm-6">
             <div class="btn-group" dropdown is-open="showShipDates">
               <p class="form-control-static">
-                {{currentCart.requestedshipdate | date:'yyyy-MM-dd'}}
+                {{currentCart.requestedshipdate | adjustDatepicker:'MM-dd-yyyy'}}
                 <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
                 <div class="dropdown-menu">
                   <table class="table no-margin">
