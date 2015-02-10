@@ -32,18 +32,16 @@ angular.module('bekApp')
 
 angular.module('bekApp')
 .filter('adjustDatepicker', ['$filter', function($filter){
-    var dateFilter = $filter('date');
+    var dateFilter = $filter('date');    
     return function(dateToFix, formatType){
+      if(!dateToFix || dateToFix === 'N/A'){
+        return dateToFix;
+      }
         var localDate, localTime, localOffset, adjustedDate;
         localDate       = new Date(dateToFix);
         localTime       = localDate.getTime();
         localOffset     = localDate.getTimezoneOffset() * 60000;
-        adjustedDate    = new Date(localTime + localOffset);
-        if(dateToFix){
-        return dateFilter(adjustedDate, formatType);
-    }
-    else{
-        return;
-    }
+        adjustedDate    = new Date(localTime + localOffset);    
+        return dateFilter(adjustedDate, formatType);   
     };
 }]);

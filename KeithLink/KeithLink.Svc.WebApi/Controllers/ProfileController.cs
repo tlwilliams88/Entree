@@ -412,34 +412,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [Authorize]
         [HttpGet]
-        [ApiKeyedRoute("profile/customers")]
-        //[Authorization(new string[] { Core.Constants.ROLE_EXTERNAL_OWNER })] // TODO - add internal roles
-        public OperationReturnModel<CustomerReturn> GetCustomers([FromUri] CustomerFilterModel customerFilter)
-        {
-            OperationReturnModel<CustomerReturn> retVal = new OperationReturnModel<CustomerReturn>();
-
-            try
-            {
-                retVal.SuccessResponse = _profileLogic.GetCustomers(customerFilter);
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
-
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
-
-            return retVal;
-        }
-
-        [Authorize]
-        [HttpGet]
         [ApiKeyedRoute("profile/accounts")]
         //[Authorization(new string[] { Core.Constants.ROLE_EXTERNAL_OWNER })] // TODO - add internal roles
         public OperationReturnModel<AccountReturn> GetAccounts([FromUri] AccountFilterModel accountFilter)

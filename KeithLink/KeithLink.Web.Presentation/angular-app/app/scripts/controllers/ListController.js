@@ -20,7 +20,7 @@ angular.module('bekApp')
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
-    $scope.numberListNamesToShow = 5;
+    $scope.numberListNamesToShow = 10;
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;

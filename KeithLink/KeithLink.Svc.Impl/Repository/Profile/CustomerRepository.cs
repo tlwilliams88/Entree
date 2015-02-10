@@ -72,31 +72,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return  customersList;
         }
 
-
-		public PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm)
-		{
-			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-			queryOrg.SearchCriteria.WhereClause = "u_organization_type = '0'";
-			if(!string.IsNullOrEmpty(searchTerm))
-				queryOrg.SearchCriteria.WhereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
-			queryOrg.SearchCriteria.FirstItemIndex = from;
-			queryOrg.SearchCriteria.NumberOfItemsToReturn = size;
-			queryOrg.SearchCriteria.ReturnTotalItemCount = true;
-
-			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
-
-			var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
-			var dsrs = RetrieveDsrList();
-			System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
-			{
-				Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
-				customers.Add(OrgToCustomer(org, dsrs));
-			});
-
-			return new PagedResults<Customer>() { Results = customers.ToList(), TotalResults = res.TotalItemCount.HasValue ? res.TotalItemCount.Value : 0 };
-		}
-
-
         public void ClearCustomerCache()
         {
 			_customerCacheRepository.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
@@ -431,11 +406,99 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			
             return dsrInfo;
 		}
-		
+
+
+		public Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId)
+		{
+			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+			queryOrg.SearchCriteria.WhereClause = string.Format("inner join [BEK_Commerce_profiles].[dbo].[UserOrganizationObject] uoo on oo.u_org_id = uoo.u_org_id WHERE uoo.u_user_id = '{0}' AND u_customer_number = '{1}' AND u_branch_number = '{2}'", userId.ToCommerceServerFormat(), customerNumber, branchId);
+
+			
+			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+			if (res.CommerceEntities.Count > 0)
+			{
+				var dsrs = RetrieveDsrList();
+				return OrgToCustomer(new KeithLink.Svc.Core.Models.Generated.Organization(res.CommerceEntities[0]), dsrs);
+			}
+			else
+				return null;
+		}
 
 		#endregion
 
+		#region Paged Results
 
+		public PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm)
+		{
+			var whereClause = "WHERE u_organization_type = '0'";
+			
+			return RetrievePagedResults(size, from, searchTerm, whereClause);
+		}
+
+		public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm)
+		{
+			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsr_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
+			
+			return RetrievePagedResults(size, from, searchTerm, whereClause);
+		}
+
+		public PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm)
+		{
+			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsm_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
+
+			return RetrievePagedResults(size, from, searchTerm, whereClause);
+		}
+
+		public PagedResults<Customer> GetPagedCustomersForBranch(int size, int from, string branchId, string searchTerm)
+		{
+			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_branch_number = '{0}'", branchId);
+
+			return RetrievePagedResults(size, from, searchTerm, whereClause);
+		}
+
+		public PagedResults<Customer> GetPagedCustomersForUser(int size, int from, Guid userId, string searchTerm)
+		{
+			var whereClause = string.Format("inner join [BEK_Commerce_profiles].[dbo].[UserOrganizationObject] uoo on oo.u_org_id = uoo.u_org_id WHERE uoo.u_user_id = '{0}' and u_organization_type = '0'", userId.ToCommerceServerFormat());
+
+			return RetrievePagedResults(size, from, searchTerm, whereClause);
+		}
+
+		public PagedResults<Customer> GetPagedCustomersForAccount(int size, int from, string searchTerm, string accountId)
+		{
+			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_parent_organization = '{0}'", accountId);
+
+			return RetrievePagedResults(size, from, searchTerm, whereClause);
+		}
+
+		private PagedResults<Customer> RetrievePagedResults(int size, int from, string searchTerm, string whereClause)
+		{
+			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+
+			if (!string.IsNullOrEmpty(searchTerm))
+				whereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
+
+
+			queryOrg.SearchCriteria.WhereClause = whereClause;
+			queryOrg.SearchCriteria.FirstItemIndex = from;
+			queryOrg.SearchCriteria.NumberOfItemsToReturn = size;
+			queryOrg.SearchCriteria.ReturnTotalItemCount = true;
+
+			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+			var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
+			var dsrs = RetrieveDsrList();
+			System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
+			{
+				Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
+				customers.Add(OrgToCustomer(org, dsrs));
+			});
+
+			return new PagedResults<Customer>() { Results = customers.ToList(), TotalResults = res.TotalItemCount.HasValue ? res.TotalItemCount.Value : 0 };
+		}
+		
+		#endregion
+				
 		public Customer GetCustomerById(Guid customerId)
 		{
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
@@ -453,5 +516,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			else
 				return null;
 		}
+
 	}
 }
