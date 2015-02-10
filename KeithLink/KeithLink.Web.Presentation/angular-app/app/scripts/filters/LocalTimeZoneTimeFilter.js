@@ -16,7 +16,7 @@ angular.module('bekApp')
 }]);
 
 angular.module('bekApp')
-.filter('LocalTimeZoneTimeWithDate', [ '$filter', function($filter) {
+.filter('LocalTimeZoneTimeWithDate', [ '$filter', function($filter) {  
   return function(datetimeobj) {
     var utcTime = moment(datetimeobj);
     
@@ -28,4 +28,20 @@ angular.module('bekApp')
     }
     return timezoneAbbrev;
   };
+}]);
+
+angular.module('bekApp')
+.filter('adjustDatepicker', ['$filter', function($filter){
+    var dateFilter = $filter('date');    
+    return function(dateToFix, formatType){
+      if(!dateToFix || dateToFix === 'N/A'){
+        return dateToFix;
+      }
+        var localDate, localTime, localOffset, adjustedDate;
+        localDate       = new Date(dateToFix);
+        localTime       = localDate.getTime();
+        localOffset     = localDate.getTimezoneOffset() * 60000;
+        adjustedDate    = new Date(localTime + localOffset);    
+        return dateFilter(adjustedDate, formatType);   
+    };
 }]);
