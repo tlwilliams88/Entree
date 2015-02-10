@@ -10,13 +10,12 @@ angular.module('bekApp')
         customers: [],
         adminusers: []
       };
-      $scope.customerGroup = angular.copy($scope.originalCustomerGroup);
       $scope.isNew = true;
     } else {
       $scope.originalCustomerGroup = originalCustomerGroup;
-      $scope.customerGroup = angular.copy($scope.originalCustomerGroup);
       $scope.isNew = false;
     }
+    $scope.customerGroup = angular.copy($scope.originalCustomerGroup);
     
     loadCustomers(customersConfig).then(setCustomers);
   }

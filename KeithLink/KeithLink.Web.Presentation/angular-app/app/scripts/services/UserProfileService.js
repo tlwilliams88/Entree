@@ -126,7 +126,7 @@ angular.module('bekApp')
           //Only save updated profile back to local storage if the profile being updated is the same as
           //the currently logged in user. If this is an admin editing another user's profile, don't save
           //to local storage
-          if(loggedinprofile.userid == profile.userid){
+          if(loggedinprofile.userid === profile.userid){
             LocalStorage.setProfile(profile);
           }
           return profile;

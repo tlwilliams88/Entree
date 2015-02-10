@@ -77,9 +77,9 @@
           <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
           <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.invoicenumber}}</a>
         </td>
-        <td>{{order.createddate | date:'MM/dd/yyyy h:mma'}}</td>
+        <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
-        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | adjustDatepicker:shortDate }}</td>
+        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY' }}</td>
         <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
         <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
         <!-- <td class="hidden-mobile-visible-print">{{order.invoicenumber || 'N/A'}}</td> -->
@@ -97,7 +97,7 @@
             </colgroup>
             <tr>
               <td>Delivery Date</td>
-              <td>{{order.deliverydate || 'N/A' | date:shortDate}}</td>
+              <td>{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY'}}</td>
             </tr>
             <tr>
               <td>Item Count</td>

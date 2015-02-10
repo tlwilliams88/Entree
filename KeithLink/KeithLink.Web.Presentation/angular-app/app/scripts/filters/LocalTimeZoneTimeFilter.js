@@ -1,47 +1,36 @@
 'use strict';
 
-angular.module('bekApp')
-.filter('LocalTimeZoneTime', [ '$filter', function($filter) {
-  return function(datetimeobj) {
-    var utcTime = moment(datetimeobj);
-
-    var timezoneAbbrev = '';
-    if (datetimeobj) {
-      var tzName = jstz.determine().name();
-      var localTime = moment(utcTime).tz(tzName);
-      timezoneAbbrev = localTime.format('h:mma z'); //CST
+function getFormattedDateTime(dateTime, formatString, useTimezone) {
+  var date = moment(dateTime);
+  if (dateTime && date.isValid()) {
+    if (useTimezone) {
+      var timezoneName = jstz.determine().name();
+      date.tz(timezoneName);
     }
-    return timezoneAbbrev;
-  };
-}]);
+    return date.format(formatString);
+  } else {
+    return dateTime;
+  }
+}
 
 angular.module('bekApp')
-.filter('LocalTimeZoneTimeWithDate', [ '$filter', function($filter) {  
-  return function(datetimeobj) {
-    var utcTime = moment(datetimeobj);
+  .filter('formatDate', [ function(){
+    return function(dateTime, formatString){
+
+    if (!formatString) {
+      formatString = 'YYYY-MM-DD';
+    }
     
-    var timezoneAbbrev = '';
-    if (datetimeobj) {
-      var tzName = jstz.determine().name();
-      var localTime = moment(utcTime).tz(tzName);
-      timezoneAbbrev = localTime.format('l h:mma z'); //CST
-    }
-    return timezoneAbbrev;
+    return getFormattedDateTime(dateTime, formatString);
   };
-}]);
+}])
+  .filter('formatDateWithTimezone', [ function(){
+    return function(dateTime, formatString){
 
-angular.module('bekApp')
-.filter('adjustDatepicker', ['$filter', function($filter){
-    var dateFilter = $filter('date');    
-    return function(dateToFix, formatType){
-      if(!dateToFix || dateToFix === 'N/A'){
-        return dateToFix;
-      }
-        var localDate, localTime, localOffset, adjustedDate;
-        localDate       = new Date(dateToFix);
-        localTime       = localDate.getTime();
-        localOffset     = localDate.getTimezoneOffset() * 60000;
-        adjustedDate    = new Date(localTime + localOffset);    
-        return dateFilter(adjustedDate, formatType);   
-    };
+    if (!formatString) {
+      formatString = 'YYYY-MM-DD h:mma z';
+    }
+    
+    return getFormattedDateTime(dateTime, formatString, true);
+  };
 }]);

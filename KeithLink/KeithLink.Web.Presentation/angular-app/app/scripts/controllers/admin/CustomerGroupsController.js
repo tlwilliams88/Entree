@@ -7,14 +7,12 @@ angular.module('bekApp')
       CustomerGroupService, PagingModel // custom bek service
     ) {
 
-  function setGroups(groups) {
-    $scope.customerGroups = groups;
+  function setGroups(data) {
+    $scope.customerGroups = data.results;
+    $scope.totalGroups = data.totalResults;
   }
-  function appendGroups(groups) {
-    setGroups($scope.customerGroups.concat(groups));
-  }
-  function setTotal(total) {
-    $scope.totalGroups = total;
+  function appendGroups(data) {
+    $scope.customerGroups = $scope.customerGroups.concat(data.results);
   }
   function startLoading() {
     $scope.loadingResults = true;
@@ -28,24 +26,23 @@ angular.module('bekApp')
     sortDescending: false
   };
 
-  var customerGroups = new PagingModel( 
+  var customerGroupsPagingModel = new PagingModel( 
     CustomerGroupService.getGroups, 
     setGroups,
     appendGroups,
-    setTotal,
     startLoading,
     stopLoading,
     sort 
   );
 
-  customerGroups.loadData();
+  customerGroupsPagingModel.loadData();
     
   $scope.searchCustomerGroups = function(searchTerm) {
-    customerGroups.filterData({ name: searchTerm });
+    customerGroupsPagingModel.filterData({ name: searchTerm });
   };
 
   $scope.infiniteScrollLoadMore = function() {
-    customerGroups.loadMoreData($scope.customerGroups, $scope.totalGroups, $scope.loadingResults);
+    customerGroupsPagingModel.loadMoreData($scope.customerGroups, $scope.totalGroups, $scope.loadingResults);
   };
 
 }]);
