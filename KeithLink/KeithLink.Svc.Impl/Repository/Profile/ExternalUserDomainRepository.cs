@@ -11,6 +11,7 @@ using System.Linq;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Authentication;
 using KeithLink.Svc.Core.Enumerations.Authentication;
+using System.Text.RegularExpressions;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -587,7 +588,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         public void JoinGroup(string customerName, string roleName, UserPrincipal user) {
-            string groupOU = string.Format("ou=Groups,ou={0},{1}", customerName.Replace("/","\\/"), Configuration.ActiveDirectoryExternalRootNode);
+			string groupOU = string.Format("ou=Groups,ou={0},{1}", CleanseOfInvalidChars(customerName), Configuration.ActiveDirectoryExternalRootNode);
             string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
             using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
@@ -597,6 +598,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                  Configuration.ActiveDirectoryExternalDomainUserName,
                                                  Configuration.ActiveDirectoryExternalPassword)) {
                 string groupName = string.Join(" ", new string[] { customerName, roleName });
+
+				groupName = CleanseOfInvalidChars(groupName);
+
                 GroupPrincipal group = GetSecurityGroup(principal, groupName);
 
                 // check for root, create if absent; have to use directory entries because the computer making the call is not necessarily on the domain
@@ -627,9 +631,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-        private static void CreateCustomerSecurityGroup(string customerName, string roleName, DirectoryEntry customerContainer, DirectoryEntry groupContainer)
+        private void CreateCustomerSecurityGroup(string customerName, string roleName, DirectoryEntry customerContainer, DirectoryEntry groupContainer)
         {
-            DirectoryEntry newGroup = groupContainer.Children.Add("CN=" + customerName + " " + roleName, "group");
+            DirectoryEntry newGroup = groupContainer.Children.Add("CN=" + CleanseOfInvalidChars(customerName) + " " + roleName, "group");
             newGroup.CommitChanges();
             customerContainer.RefreshCache();
         }
@@ -667,21 +671,27 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         private GroupPrincipal GetSecurityGroup(PrincipalContext principal, string groupName)
         {
             GroupPrincipal group = null;
-
+			//Regex pattern = new Regex(,\t\r ]|[\n]{2}");
+			//pattern.Replace(myString, "\n");
             try
             {
-                group = GroupPrincipal.FindByIdentity(principal, groupName);
+				group = GroupPrincipal.FindByIdentity(principal, CleanseOfInvalidChars(groupName));
             }
             catch (Exception e)
             {
-                _logger.WriteInformationLog("Unabe to read security group: " + groupName, e);
+				_logger.WriteInformationLog("Unabe to read security group: " + groupName, e);
             }
             return group;
         }
 
-        private static DirectoryEntry CreateChildOrganizationalUnit(string customerName, DirectoryEntry parent)
+		private string CleanseOfInvalidChars(string input)
+		{
+			return Regex.Replace(input, @"[""#&\[\]:\<\>+=\*/;,?@\\]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
+		}
+
+        private DirectoryEntry CreateChildOrganizationalUnit(string customerName, DirectoryEntry parent)
         {
-            DirectoryEntry newOU = parent.Children.Add("OU=" + customerName.Replace("/", "\\/"), "OrganizationalUnit");
+			DirectoryEntry newOU = parent.Children.Add("OU=" + CleanseOfInvalidChars(customerName), "OrganizationalUnit");
             newOU.CommitChanges();
             parent.RefreshCache();
             return newOU;
@@ -691,7 +701,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         {
             try
             {
-                return parent.Children.Find("OU=" + childOuName);
+                return parent.Children.Find("OU=" + CleanseOfInvalidChars(childOuName));
             }
             catch
             {
