@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', 'Constants', '$rootScope', 'LocalStorage', 'CustomerService', '$state', 'PagingModel',
-    function ($scope, $filter, $modal, accounts, InvoiceService, Constants, $rootScope, LocalStorage, CustomerService, $state, PagingModel) {
+  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'LocalStorage', 'CustomerService', '$state', 'PagingModel',
+    function ($scope, $filter, $modal, accounts, InvoiceService, $rootScope, LocalStorage, CustomerService, $state, PagingModel) {
 
   var currentUserSelectedContext = {};
 

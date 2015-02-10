@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('TransactionController', ['$scope', '$state', 'TransactionService', 'Constants', 'LocalStorage', 'CustomerService', 'PagingModel',
-    function ($scope, $state, TransactionService, Constants, LocalStorage, CustomerService, PagingModel) {
+  .controller('TransactionController', ['$scope', '$state', 'TransactionService', 'LocalStorage', 'CustomerService', 'PagingModel',
+    function ($scope, $state, TransactionService, LocalStorage, CustomerService, PagingModel) {
 
   // set context to all customers
   var tempContext = {

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('NotificationsController', ['$scope', '$modal', 'Constants', 'NotificationService', 'PagingModel',
-    function ($scope, $modal, Constants, NotificationService, PagingModel) {
+  .controller('NotificationsController', ['$scope', '$modal', 'NotificationService', 'PagingModel',
+    function ($scope, $modal, NotificationService, PagingModel) {
 
   function setNotifications(data) {
     $scope.notifications = data.results;
