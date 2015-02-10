@@ -1006,8 +1006,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		
 		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account)
 		{
-			List<Customer> allCustomers = new List<Customer>();
 			if (string.IsNullOrEmpty(searchTerms)) searchTerms = "";
+
+			if (!string.IsNullOrEmpty(account))
+				return _customerRepo.GetPagedCustomersForAccount(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms, account.ToGuid().ToCommerceServerFormat());
+
+
 			if (IsInternalAddress(user.EmailAddress))
 			{
 				if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber))

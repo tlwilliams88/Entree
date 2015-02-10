@@ -33,5 +33,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
 		PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm);
 		PagedResults<Customer> GetPagedCustomersForBranch(int size, int from, string branchId, string searchTerm);
 		PagedResults<Customer> GetPagedCustomersForUser(int size, int from, Guid userId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForAccount(int size, int from, string searchTerm, string accountId);
+		
     }
 }

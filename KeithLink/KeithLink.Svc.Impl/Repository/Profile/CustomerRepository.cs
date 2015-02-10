@@ -464,6 +464,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			return RetrievePagedResults(size, from, searchTerm, whereClause);
 		}
 
+		public PagedResults<Customer> GetPagedCustomersForAccount(int size, int from, string searchTerm, string accountId)
+		{
+			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_parent_organization = '{0}'", accountId);
+
+			return RetrievePagedResults(size, from, searchTerm, whereClause);
+		}
+
 		private PagedResults<Customer> RetrievePagedResults(int size, int from, string searchTerm, string whereClause)
 		{
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
