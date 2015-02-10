@@ -575,13 +575,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     }
                     foreach (string customerName in customerNames)
                     {
-                        try
-                        {
+						
                             JoinGroup(customerName, roleName, user);
-                        }
-                        catch (Exception ex)
-                        {
-                        }
+						
                     }
                 }
             }
