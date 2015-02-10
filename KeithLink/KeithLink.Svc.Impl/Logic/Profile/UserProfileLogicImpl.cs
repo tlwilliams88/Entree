@@ -791,7 +791,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private void UpdateCustomersForUser(List<Customer> customerList, string roleName, UserProfile existingUser)
         {
-            var customers = GetCustomersForUser(existingUser);
+            var customers = GetNonPagedCustomersForUser(existingUser);
 
             IEnumerable<Guid> custsToAdd = customerList.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
             IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(customerList.Select(c => c.CustomerId));
@@ -806,31 +806,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public Customer GetCustomerByCustomerNumber(string customerNumber, string branchId)
         {
             return _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
-        }
-
-        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
-        {
-			//List<Customer> allCustomers = _customerRepo.GetCustomers();
-            List<Customer> retCustomers = new List<Customer>();
-
-            if (customerFilters != null)
-            {
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
-					retCustomers = _customerRepo.GetCustomersForParentAccountOrganization(customerFilters.AccountId.ToGuid().ToCommerceServerFormat());
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
-                    retCustomers.AddRange(GetCustomersForUser(GetUserProfile(customerFilters.UserId.ToGuid()).UserProfiles[0]));
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
-					retCustomers = _customerRepo.GetCustomersByNameOrNumber(customerFilters.Wildcard);
-                }
-            }
-            else
-                return null;
-            
-            // TODO: add logic to filter down for internal administration versus external owner
-
-            return new CustomerReturn() { Customers = retCustomers == null ? null : retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
         }
 
         public AccountReturn GetAccounts(AccountFilterModel accountFilters)
@@ -1038,20 +1013,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 				if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber))
 				{
 					// lookup customers by their assigned dsr number
-					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber, user.BranchId);
+					return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
+					
 				}
                 if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber))
                 {
                     // lookup customers by their assigned dsr number
-                    allCustomers = _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
+					return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+					
                 }
 				else if (user.RoleName == "branchismanager")
 				{
-					// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
-					if (searchTerms.Length >= 3)
-						allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(searchTerms, user.BranchId); // TODO: reduce list to only the DSM's DSRs
-					else
-						allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+					return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
 				}
 				else
@@ -1061,54 +1034,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			}
 			else // external user
 			{
-				allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
+				return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
 			}
-
-
-			if (!string.IsNullOrEmpty(searchTerms))
-			{
-				//Build filter
-				paging.Filter = new FilterInfo()
-				{
-					Field = "CustomerName",
-					FilterType = "contains",
-					Value = searchTerms,
-					Condition = "||",
-					Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "CustomerNumber", Value = searchTerms, FilterType = "contains" } }
-				};
-			}
-
-			var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerName");
-
-
-			return returnValue;
-
-
-			
-
-			//List<Customer> allCustomers = new List<Customer>();
-			//if (!string.IsNullOrEmpty(account))
-			//	allCustomers = _customerRepo.GetCustomersForAccount(account.ToGuid().ToCommerceServerFormat());
-			//else
-			//	allCustomers = GetCustomersForUser(user, searchTerms);
-			
-			//if (!string.IsNullOrEmpty(searchTerms))
-			//{
-			//	//Build filter
-			//	paging.Filter = new FilterInfo()
-			//	{
-			//		Field = "CustomerName",
-			//		FilterType = "contains",
-			//		Value = searchTerms,
-			//		Condition = "||",
-			//		Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "CustomerNumber", Value = searchTerms, FilterType = "contains" } }
-			//	};
-			//}
-			
-			//var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerName");
-			
-			
-			//return returnValue;
 		}
 
         public List<Customer> GetCustomersForExternalUser(Guid userId)
@@ -1125,7 +1052,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
-		public List<Customer> GetCustomersForUser(UserProfile user, string search = "")
+		public List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "")
 		{
 			List<Customer> allCustomers = new List<Customer>();
 			if (string.IsNullOrEmpty(search)) search = "";
@@ -1195,6 +1122,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			returnModel.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customerId, branchId);
 
 			return returnModel;
+		}
+
+
+		public Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId)
+		{
+			return _customerRepo.GetCustomerForUser(customerNumber, branchId, userId);
 		}
 	}
 }
