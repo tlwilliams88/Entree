@@ -459,7 +459,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 		public PagedResults<Customer> GetPagedCustomersForUser(int size, int from, Guid userId, string searchTerm)
 		{
-			var whereClause = string.Format("inner join [BEK_Commerce_profiles].[dbo].[UserOrganizationObject] uoo on oo.u_org_id = uoo.u_org_id WHERE uoo.u_user_id = '{0}'", userId.ToCommerceServerFormat());
+			var whereClause = string.Format("inner join [BEK_Commerce_profiles].[dbo].[UserOrganizationObject] uoo on oo.u_org_id = uoo.u_org_id WHERE uoo.u_user_id = '{0}' and u_organization_type = '0'", userId.ToCommerceServerFormat());
 
 			return RetrievePagedResults(size, from, searchTerm, whereClause);
 		}
