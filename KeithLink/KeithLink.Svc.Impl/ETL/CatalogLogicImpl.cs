@@ -243,7 +243,7 @@ namespace KeithLink.Svc.Impl.ETL
                     if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
                         continue;
 
-					List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfileLogic.GetCustomersForUser(userProfile);
+					List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfileLogic.GetNonPagedCustomersForUser(userProfile);
 
                     foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
                     {

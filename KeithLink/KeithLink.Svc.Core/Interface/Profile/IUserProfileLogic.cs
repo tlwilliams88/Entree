@@ -30,8 +30,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 		PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
         List<Models.Messaging.ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid);
 
-        // admin functions
-        CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
+		//// admin functions
+		//CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
         Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
 
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
@@ -48,8 +48,10 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         void AddUserToCustomer(Guid customerId, Guid userId);
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
 
-		List<Customer> GetCustomersForUser(UserProfile user, string search = "");
+		List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "");
         List<Customer> GetCustomersForExternalUser(Guid userId);
 		void RemoveUserFromAccount(Guid accountId, Guid userId);
+
+		Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId);
     }
 }

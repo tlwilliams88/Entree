@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
     public interface ICustomerRepository
     {
         List<Customer> GetCustomers();
-		PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm);
+		
 		Customer GetCustomerById(Guid customerId);
         Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
         void AddUserToCustomer(Guid customerId, Guid userId);
@@ -25,5 +25,15 @@ namespace KeithLink.Svc.Core.Interface.Profile
 		List<Customer> GetCustomersByNameOrNumber(string search);
 		List<Customer> GetCustomersForParentAccountOrganization(string accountId);
         void ClearCustomerCache();
+
+		Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId);
+
+		PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForBranch(int size, int from, string branchId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForUser(int size, int from, Guid userId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForAccount(int size, int from, string searchTerm, string accountId);
+		
     }
 }
