@@ -71,11 +71,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 							bool isGuest = _user.RoleName.Equals(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST, StringComparison.InvariantCultureIgnoreCase);
 							bool isCustomerSelected = (!string.IsNullOrEmpty(this.SelectedUserContext.CustomerId));
 
-							var customers = _profileLogic.GetCustomersForUser(_user);
+							var customer = _profileLogic.GetCustomerForUser(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId, _user.UserId);
 
-							bool userHasAccessToCustomer = (customers != null &&
-								customers.Where(c => c.CustomerBranch.Equals(this.SelectedUserContext.BranchId, StringComparison.InvariantCultureIgnoreCase)
-									&& c.CustomerNumber.Equals(this.SelectedUserContext.CustomerId)).Any());
+							bool userHasAccessToCustomer = customer != null;
 
 							if ((isGuest && isCustomerSelected) || (!isGuest && !userHasAccessToCustomer))
 							{

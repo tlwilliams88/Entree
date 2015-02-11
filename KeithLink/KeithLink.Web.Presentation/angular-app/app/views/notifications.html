@@ -29,20 +29,20 @@
       <table class="table table-striped-rows table-border" infinite-scroll="infiniteScrollLoadMore()">
         <thead>
           <tr>
-            <th class="sort-col-header" ng-click="sortNotifications('label', !sortOrder)">
-              <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
+            <th class="sort-col-header" ng-click="sortNotifications('label', !sort.sortDescending)">
+              <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('customernumber', !sortOrder)">
-              <span>Customer <span sort-icons field="'customernumber'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('customernumber', !sort.sortDescending)">
+              <span>Customer <span sort-icons field="'customernumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortNotifications('subject', !sortOrder)">
-              <span>Subject <span sort-icons field="'subject'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
+            <th class="sort-col-header" ng-click="sortNotifications('subject', !sort.sortDescending)">
+              <span>Subject <span sort-icons field="'subject'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('notificationtypedescription', !sortOrder)">
-              <span>Type <span sort-icons field="'notificationtypedescription'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('notificationtypedescription', !sort.sortDescending)">
+              <span>Type <span sort-icons field="'notificationtypedescription'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortNotifications('messagecreatedutc', !sortOrder)">
-              <span>Time <span sort-icons field="'messagecreatedutc'" sortorder="sortOrder" sortby="notificationParams.sort[0].field"></span></span>
+            <th class="sort-col-header" ng-click="sortNotifications('messagecreatedutc', !sort.sortDescending)">
+              <span>Time <span sort-icons field="'messagecreatedutc'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
             <th class="hidden-print large-icon icon-col">
               <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
@@ -82,7 +82,7 @@
             <td class="hidden-mobile-visible-print">{{notification.customernumber}}</td>
             <td>{{notification.subject}}</td>
             <td class="hidden-mobile-visible-print">{{notification.notificationtypedescription}}</td>
-            <td>{{notification.messagecreatedutc | date:'MMM d, y h:mm:ss a' }}</td>
+            <td>{{notification.messagecreatedutc | formatDateWithTimezone:'MMM D, YYYY h:mm:ssa z' }}</td>
             <td class="large-icon icon-col">
               <a ng-if="notification.body" ng-click="showAdditionalInfo(notification)"><span class="text-light icon-ellipsis"></span></a>
             </td>

@@ -21,17 +21,17 @@
         </div>
         <div class="order-item">
           <div class="order-item-title">Order Date</div>
-          <div class="order-item-value-1">{{order.createddate | date:'MM/dd/yyyy'}}</div>
+          <div class="order-item-value-1">{{order.createddate | formatDate:'MM/DD/YYYY'}}</div>
           <div class="order-item-title">Requested Ship Date</div>
-          <div class="order-item-value-2">{{order.requestedshipdate | adjustDatepicker:'MM/dd/yyyy'}}</div>
+          <div class="order-item-value-2">{{order.requestedshipdate | formatDate:'MM/DD/YYYY'}}</div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Delivery Date</div>
-          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | adjustDatepicker:'MM/dd/yyyy'}}</div>
+          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | formatDate:'MM/DD/YYYY'}}</div>
           <div class="order-item-title">Delivered</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime == null && order.actualdeliverytime == null && order.scheduleddeliverytime == null">N/A</div>
-          <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | LocalTimeZoneTime}}</div>
-          <div class="order-item-value-2" ng-if="order.actualdeliverytime != null">{{order.actualdeliverytime | LocalTimeZoneTime}}</div>
+          <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
+          <div class="order-item-value-2" ng-if="order.actualdeliverytime != null">{{order.actualdeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
           <div class="order-item-value-2" ng-if="order.deliveryoutofsequence == true || (order.scheduleddeliverytime != null && order.estimateddeliverytime == null)">N/A</div>
         </div>
         <div class="order-item">
@@ -44,15 +44,6 @@
           <div class="order-item-title">Invoice Status</div>
           <div class="order-item-value-1">{{order.invoicestatus || 'N/A'}}</div>
         </div>
-        <!-- <form name="changeOrderForm" class="hidden-xs hidden-sm hidden-md hidden-lg hidden-print">
-          <input type="text" order-cutoff-date ng-model="cutoffdate">
-        </form>
-        <div ng-if="order.ischangeorderallowed">
-          <hr>
-          <p class="text-green">You can make changes to this order until {{cutoffdate}}.</p>
-          <button class="btn btn-lg btn-primary">Change Order</button>
-          <button class="btn-lg btn btn-danger" ng-confirm-click="Are you sure you want to cancel this order?" confirmed-click="cancelOrder()">Cancel Order</button>
-        </div> -->
         <hr ng-if="order.ischangeorderallowed">
         <div ng-if="order.ischangeorderallowed">
           <a ui-sref="menu.cart.items({ cartId: order.ordernumber })">View Change Order</a>

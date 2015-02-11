@@ -12,7 +12,7 @@
             <tr ng-click="goToCart(cart.id, false)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
               <td><span class="overflow">{{cart.name}}</span></td>
               <td>{{cart.items.length}}</td>
-              <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
+              <td class="nowrap">{{cart.requestedshipdate | formatDate}}</td>
             </tr>
             <tr ng-click="createNewCart()">
               <td colspan="3">Create a Cart...</td>
@@ -24,7 +24,7 @@
             <tr ng-if="order.ordernumber !== currentCart.ordernumber" ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.ordernumber}}</span></td>
               <td>{{order.itemcount}}</td>
-              <td class="nowrap">{{order.requestedshipdate | date:shortDate}}</td>
+              <td class="nowrap">{{order.requestedshipdate | formatDate}}</td>
             </tr>
             <tr ng-if="changeOrders.length === 1 && currentCart.ordernumber === changeOrders[0].ordernumber">
               <td colspan="3">No other change orders.</td>
@@ -138,7 +138,7 @@
           <div class="col-sm-6">
             <div class="btn-group" dropdown is-open="showShipDates">
               <p class="form-control-static">
-                {{currentCart.requestedshipdate | adjustDatepicker:'MM-dd-yyyy'}}
+                {{currentCart.requestedshipdate | formatDate}}
                 <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
                 <div class="dropdown-menu">
                   <table class="table no-margin">
@@ -150,7 +150,7 @@
                     <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
                       <td>{{shipDate.dayofweek}}</td>
                       <td class="nowrap">{{shipDate.shipdate}}</td>
-                      <td class="nowrap">{{shipDate.cutoffDateString}}</td>
+                      <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
                     </tr>
                   </table>
                 </div>
@@ -162,7 +162,7 @@
         <div class="form-group">
           <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
           <div class="col-sm-6">
-            <p class="form-control-static text-light">{{selectedShipDate.cutoffDateString}}</p>
+            <p class="form-control-static text-light">{{selectedShipDate.cutoffdatetime | formatDateWithTimezone}}</p>
             <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
           </div>
         </div>

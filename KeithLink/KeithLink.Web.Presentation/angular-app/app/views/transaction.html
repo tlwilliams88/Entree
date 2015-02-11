@@ -95,7 +95,7 @@
             {{::transaction.amount | currency}}
           </td>
           <td>
-            {{::transaction.date.substr(0,10) | date:short}}
+            {{::transaction.date.substr(0,10) | formatDate:'MMM D, YYYY'}}
           </td>
           <td class="hidden-mobile-visible-print">
             {{::transaction.account}}
@@ -136,7 +136,7 @@
 
       <tfoot ng-show="transactions.length === 0 && !loadingResults">
         <tr>
-          <td colspan="7">There are no transactions to display.</td>
+          <td colspan="8">There are no transactions to display.</td>
         </tr>
       </tfoot>
     </table>

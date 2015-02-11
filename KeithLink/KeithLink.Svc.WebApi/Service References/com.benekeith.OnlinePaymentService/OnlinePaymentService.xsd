@@ -3,9 +3,9 @@
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Customer" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
+  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
   <xs:element name="DeleteInvoice">
     <xs:complexType>
       <xs:sequence>

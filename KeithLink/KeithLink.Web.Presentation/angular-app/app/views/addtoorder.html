@@ -54,7 +54,7 @@
               <tr ng-repeat="cart in carts | orderBy:'name'" ng-click="goToList(selectedList, cart); showCarts=false" ng-hide="cart.id === selectedCart.id">
                 <td><span class="overflow">{{cart.name}}</span></td>
                 <td>{{cart.items.length}}</td>
-                <td class="nowrap">{{cart.requestedshipdate | date:shortDate}}</td>
+                <td class="nowrap">{{cart.requestedshipdate | formatDate}}</td>
               </tr>
               <tr ng-click="createNewCart()" ng-show="selectedCart.id || selectedCart.ordernumber">
                 <td colspan="3">Add Items to New Cart...</td>
@@ -66,7 +66,7 @@
               <tr ng-click="goToList(selectedList, order)" ng-repeat="order in changeOrders">
                 <td><span class="overflow"># {{order.ordernumber}}</span></td>
                 <td>{{order.itemcount}}</td>
-                <td>{{order.requestedshipdate | date:shortDate}}</td>
+                <td>{{order.requestedshipdate | formatDate}}</td>
               </tr>
             </table>
           </div>
@@ -75,7 +75,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12 btn-group info-box hand no-border-right-sm dropdown-toggle" dropdown is-open="showShipDates">
           <span class="nav-description text-light">Ship Date</span>
           <span class="nav-title">
-            {{(selectedCart.requestedshipdate | adjustDatepicker:date:shortDate) || 'Select a date...' }}
+            {{(selectedCart.requestedshipdate | formatDate) || 'Select a date...' }}
           </span>
           <span class="pull-right icon-arrow-down7 text-light"></span>
           <div class="dropdown-menu">
@@ -88,7 +88,7 @@
               <tr ng-repeat="shipDate in shipDates" ng-click="selectedCart.requestedshipdate = shipDate.shipdate">
                 <td>{{shipDate.dayofweek}}</td>
                 <td class="nowrap">{{shipDate.shipdate}}</td>
-                <td class="nowrap">{{shipDate.cutoffDateString}}</td>
+                <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
               </tr>
             </table>
           </div>
@@ -107,7 +107,7 @@
   <div class="visible-print row sub-content">
     <div class="col-xs-3">{{selectedList.name}}</div>
     <div class="col-xs-3">{{selectedCart.name || selectedCart.ordernumber || 'New Cart'}}</div>
-    <div class="col-xs-2">{{(selectedCart.requestedshipdate | date:shortDate) || 'Select a date...' }}</div>
+    <div class="col-xs-2">{{( selectedCart.requestedshipdate | formatDate ) || 'Select a date...' }}</div>
     <div class="col-xs-2">{{getItemCount(selectedCart, selectedList) || '0'}} Items</div>
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>

@@ -57,9 +57,12 @@
           </div>
         </div>
       </div>
-      <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;">
-        <h4 style="margin-left: 15px; margin-top: 0;"><strong>Order Summary Last 6 Months</strong></h4>
-        <span class="text-red" ng-show="ordersMessage">{{ordersMessage}}</span>
+      <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController">
+        <div style="margin-left: 15px;">
+          <h4 class="no-margin-top"><strong>Order Summary Last 6 Months</strong></h4>
+          <div loading-spinner="loadingOrderGraph"></div>
+          <span class="text-red" ng-show="ordersGraphMessage">{{ordersGraphMessage}}</span>
+        </div>
         <div id="chart_div" style="height:140px;width:100%;"></div>
       </div>
     </div> <!-- end Account Summary -->
@@ -90,10 +93,10 @@
             <span>INVOICE #</span>
             <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
             <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
-            <span class="order-col__date" style="font-size:11px;">{{order.createddate | date:'MM/dd/yyyy h:mma'}}</span>
+            <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | date:'MM/dd/yyyy':'UTC'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'MM/DD/YYYY'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">
@@ -106,10 +109,10 @@
           <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null || order.estimateddeliverytime != null 
                                                                       || order.actualdeliverytime != null" style="padding:24px 0">
             <span ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null && order.deliveryoutofsequence != true" class="small-icon icon-truck">
-                <span style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | LocalTimeZoneTime}}</span>
+                <span style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</span>
             </span>
             <span ng-if="order.actualdeliverytime != null">
-              Delivered<span style="white-space: nowrap;"><br />{{order.actualdeliverytime | LocalTimeZoneTimeWithDate}}</span>
+              Delivered<span style="white-space: nowrap;"><br />{{order.actualdeliverytime | formatDateWithTimezone}}</span>
             </span>
             <span ng-if="(order.actualdeliverytime == null && order.estimateddeliverytime == null) || order.deliveryoutofsequence == true" class="small-icon icon-truck">
               <span style="white-space: nowrap;"><br />Out For Delivery</span>
@@ -140,7 +143,7 @@
               <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
             </div>
             <div class="col-xs-6 order-col__date">
-              <span class="icon-calendar"></span> {{order.createddate | date:'MM/dd/yyyy h:mma'}}
+              <span class="icon-calendar"></span> {{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}
             </div>
           </div>
         </div>
@@ -239,14 +242,14 @@
 
     <!-- Recent Activity -->
     <div class="hidden-xs hidden-sm pull-right col-md-4 col-xs-12">
-      <h3 >Recent Activity</h3>  
+      <h3>Recent Activity</h3>
       <p ng-show="dates && dates.length === 0">No recent activity found for this customer.</p>
       <div ng-repeat = "date in dates">
         <div class="notification notification--date">
           <div class="notification__icon">
             <span class="icon-record"></span>
           </div>
-          <div class="notification__date">{{date | date:'EEEE MMMM dd, yyyy'}} </div>
+          <div class="notification__date">{{date | formatDate:'dddd MMMM DD, YYYY'}} </div>
         </div>
         <div ng-repeat = "notification in notificationDates[date]">
           <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
@@ -258,7 +261,7 @@
             </div>
             <div class="notification__message">
               {{notification.subject}}
-              <div class="timestamp"> {{notification.messagecreatedutc | LocalTimeZoneTime}}</div>
+              <div class="timestamp"> {{notification.messagecreatedutc | formatDate: 'h:mma'}}</div>
             </div>
           </div>
         </div>

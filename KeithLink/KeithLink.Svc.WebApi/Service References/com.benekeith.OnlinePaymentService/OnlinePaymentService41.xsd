@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="userprofile">
     <xs:sequence>
@@ -11,7 +10,6 @@
       <xs:element minOccurs="0" name="firstname" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="imageurl" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="lastname" nillable="true" type="xs:string" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" minOccurs="0" name="messagingpreferences" nillable="true" type="q1:ArrayOfProfileMessagingPreferenceModel" />
       <xs:element minOccurs="0" name="passwordexpired" type="xs:boolean" />
       <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="rolename" nillable="true" type="xs:string" />
@@ -30,12 +28,13 @@
       <xs:element minOccurs="0" name="customerNationalId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customerNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="displayname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dsmNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dsr" nillable="true" type="tns:dsr" />
       <xs:element minOccurs="0" name="dsrNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="isPoRequired" type="xs:boolean" />
       <xs:element minOccurs="0" name="isPowerMenu" type="xs:boolean" />
       <xs:element minOccurs="0" name="kpay" type="xs:boolean" />
-      <xs:element minOccurs="0" name="lastorderupdate" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="nationalOrRegionalAccountNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="pointofcontact" nillable="true" type="xs:string" />
@@ -53,6 +52,17 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="address" nillable="true" type="tns:address" />
+  <xs:complexType name="dsr">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branch" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dsrnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="emailaddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="imageurl" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="dsr" nillable="true" type="tns:dsr" />
   <xs:complexType name="CustomerAccountBalanceModel">
     <xs:sequence>
       <xs:element minOccurs="0" name="currentbalance" type="xs:decimal" />

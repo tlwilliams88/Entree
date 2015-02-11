@@ -78,13 +78,13 @@
           infinite-scroll-container="'.infiniteScroll'">
           <thead>
             <tr>
-              <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortAsc);">
+              <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
                 Number
-                <span sort-icons field="'customerNumber'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+                <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
               </th>
-              <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortAsc)">
+              <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
                 Name
-                <span sort-icons field="'customerName'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+                <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
               </th>
               <th></th>
             </tr>

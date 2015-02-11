@@ -1,11 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$q', 'UserProfileService', 'userProfile', 'CustomerService',
-    function ($scope, $state, $stateParams, $q, UserProfileService, userProfile, CustomerService) {
+  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
+    function ($scope, $state, $stateParams, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
 
-  /*---convenience functions---*/
-  var processProfile = function(newProfile){
+  var processProfile = function(newProfile) {
     // rename email <----- NEEDS FIX ON RESPONSE TYPE
     newProfile.email = newProfile.emailaddress;
     delete newProfile.emailaddress;
@@ -14,33 +13,50 @@ angular.module('bekApp')
     newProfile.role = newProfile.rolename;
     delete newProfile.rolename;
 
-    // rename customers <----- NEEDS FIX ON RESPONSE TYPE
-    newProfile.customers = newProfile.user_customers;
-    delete newProfile.user_customers;
-
-    if (!newProfile.customers) {
-      newProfile.customers = [];
-    }
     $scope.profile = newProfile;
+    $scope.profile.customers = userCustomers;
   };
 
-  /*---Init---*/
-  function init() {
-    //$scope.roles = RoleService.getRoles(); //get available roles <----NEEDS ENDPOINT
-    $scope.roles = ['owner', 'accounting', 'approver', 'buyer', 'guest'];
+  function findSelectedCustomers(customers) {
+    // check if customer is selected
+    customers.forEach(function(customer) {
+      $scope.profile.customers.forEach(function(profileCustomer) {
+        if (customer.customerId === profileCustomer.customerId) {
+          customer.selected = true;
+        }
+      });
 
-    processProfile(userProfile);
-
-    $q.all([
-      loadAvailableCustomers(customersConfig).then(setCustomers),
-      
-      UserProfileService.getAllUserCustomers(userProfile.userid).then(function(customers) {
-        $scope.profile.customers = customers;
-      })
-    ]).then(findSelectedCustomers);
+      if (!customer.selected) {
+        customer.selected = false;
+      }
+    });
+    return customers;
   }
 
-  /*---edit profile---*/
+  $scope.groupId = $stateParams.groupId;
+  $scope.customersSortDesc = false;
+  $scope.customersSortField = 'customerName';
+
+  var customerPagingModel = new CustomerPagingModel(
+    setCustomers,
+    appendCustomers,
+    startLoading,
+    stopLoading,
+    $scope.customersSortField,
+    $scope.customersSortDesc
+  );
+  customerPagingModel.accountId = $scope.groupId; 
+
+  // TODO: get available roles <----NEEDS ENDPOINT
+  $scope.roles = ['owner', 'accounting', 'approver', 'buyer', 'guest'];
+
+  processProfile(userProfile);
+  customerPagingModel.loadCustomers(),
+
+  /**********
+  FORM EVENTS
+  **********/
+
   $scope.updateProfile = function () {
     //attaches only selected customers to profile object before it is pushed to the database
     var selectedCustomers = [];
@@ -61,7 +77,6 @@ angular.module('bekApp')
     });
   };
 
-  // TODO: better way to do this?
   $scope.deleteProfile = function (profile) {
     var customerGroupId = $stateParams.groupId;
     UserProfileService.removeUserFromCustomerGroup(profile.userid, customerGroupId).then(function(newProfile){
@@ -75,81 +90,33 @@ angular.module('bekApp')
   /**********
   CUSTOMERS
   **********/
-  $scope.customersSortAsc = true;
-  $scope.customersSortField = 'customerName';
-  var customersConfig = {
-    term: '',
-    size: 30,
-    from: 0,
-    sortField: $scope.customersSortField,
-    sortOrder: 'asc'
-  };
-
-  function loadAvailableCustomers(customersConfig) {
+  
+  function setCustomers(data) {
+    $scope.customers = findSelectedCustomers(data.results);
+    $scope.totalCustomers = data.totalResults;
+  }
+  function appendCustomers(data) {
+    $scope.customers = $scope.customers.concat(findSelectedCustomers(data.results));
+  }
+  function startLoading() {
     $scope.loadingCustomers = true;
-    return CustomerService.getCustomers(
-      customersConfig.term,
-       customersConfig.size,
-       customersConfig.from,
-       customersConfig.sortField,
-       customersConfig.sortOrder
-    ).then(function(data) {
-      $scope.loadingCustomers = false;
-      $scope.totalCustomers = data.totalResults;
-      return data.results;
-    });
   }
-
-  function setCustomers(customers) {
-    $scope.customers = customers;
-  }
-  function appendCustomers(customers) {
-    $scope.customers = $scope.customers.concat(customers);
-  }
-
-  function findSelectedCustomers() {
-    // check if customer is selected
-    $scope.customers.forEach(function(customer) {
-      $scope.profile.customers.forEach(function(profileCustomer) {
-        if (customer.customerId === profileCustomer.customerId) {
-          customer.selected = true;
-        }
-      });
-
-      if (!customer.selected) {
-        customer.selected = false;
-      }
-    });
+  function stopLoading() {
+    $scope.loadingCustomers = false;
   }
 
   $scope.searchCustomers = function (searchTerm) {
-    customersConfig.from = 0;
-    customersConfig.term = searchTerm;
-    loadAvailableCustomers(customersConfig).then(setCustomers);
+    customerPagingModel.filterCustomers(searchTerm);
   };
 
-  $scope.sortCustomers = function(field, order) {
-    customersConfig.from = 0;
-    customersConfig.size = 30;
-    customersConfig.sortField = field;
+  $scope.sortCustomers = function(field, sortDescending) {
+    $scope.customersSortDesc = sortDescending;
     $scope.customersSortField = field;
-
-    $scope.customersSortAsc = order;
-    if (order) {
-      customersConfig.sortOrder = 'asc';
-    } else {
-      customersConfig.sortOrder = 'desc';
-    }
-    
-    loadAvailableCustomers(customersConfig).then(setCustomers);
+    customerPagingModel.sortCustomers(field, sortDescending);
   };
 
   $scope.infiniteScrollLoadMore = function() {
-    if (($scope.customers && $scope.customers.length >= $scope.totalCustomers) || $scope.loadingCustomers) {
-      return;
-    }
-    customersConfig.from += customersConfig.size;
-    loadAvailableCustomers(customersConfig).then(appendCustomers);
+    customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
   };
 
   $scope.selectCustomer = function(customer) {
@@ -168,5 +135,4 @@ angular.module('bekApp')
     customer.selected = false;
   };
 
-  init();
 }]);
