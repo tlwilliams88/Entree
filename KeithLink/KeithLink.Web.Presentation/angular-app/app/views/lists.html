@@ -369,7 +369,7 @@
               </th>
               <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeParlevel" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
-                <span>{{permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span></span>
+                <span>{{selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               
               <th class="list-print-column">Inv / Ord 1</th>
@@ -571,7 +571,7 @@
                       </td>
                     </tr>
                     <tr ng-if="selectedList.permissions.canSeeParlevel">
-                      <td>{{permissions.alternativeParHeader || 'PAR'}}</td>
+                      <td>{{selectedList.permissions.alternativeParHeader || 'PAR'}}</td>
                       <td ng-if="selectedList.permissions.canEditParlevel">
                         <ng-form name="parlevelForm_mobile" class="form-control-group__input">
                           <input 

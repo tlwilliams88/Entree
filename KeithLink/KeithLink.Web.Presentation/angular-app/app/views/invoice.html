@@ -89,7 +89,7 @@
       </div>
     </div>
 
-    <div class="col-sm-12 col-xs-12 padding-top-xs padding-top-sm" ng-class="{'col-md-8': !viewingAllCustomers && !isDsr, 'col-md-12': viewingAllCustomers || isDsr }">
+    <div class="col-sm-12 col-xs-12 padding-top-xs padding-top-sm" ng-class="{'col-md-8': !viewingAllCustomers && !isInternalAccountAdminUser, 'col-md-12': viewingAllCustomers || isInternalAccountAdminUser }">
 
       <div class="text-right">
         Showing {{invoices.length}} of {{totalInvoices}} Invoices

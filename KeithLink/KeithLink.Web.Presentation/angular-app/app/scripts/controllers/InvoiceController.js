@@ -164,9 +164,9 @@ angular.module('bekApp')
     invoicePagingModel.filterData($scope.filterRowFields, $scope.selectedFilterView.filterFields);
   };
 
-  function changeUserContext(stateName, stateParams, customerNumber) {
+  function changeUserContext(stateName, stateParams, customerNumber, customerBranch) {
     //generate and set customer context to customerNumber that user selected
-    CustomerService.getCustomerDetails(customerNumber).then(function (customer) {
+    CustomerService.getCustomerDetails(customerNumber, customerBranch).then(function (customer) {
       var generatedUserContext = {
         id: customer.customerNumber,
         text: customer.displayname,
@@ -189,14 +189,14 @@ angular.module('bekApp')
   }
 
   //change the selected user context to the one the user clicked and refresh the page
-  $scope.changeCustomerOnClick = function (customerNumber) {
-    changeUserContext('menu.invoice', $state.params, customerNumber);
+  $scope.changeCustomerOnClick = function (customerNumber, branch) {
+    changeUserContext('menu.invoice', $state.params, customerNumber, branch);
   };
 
   $scope.linkToReferenceNumber = function(customerNumber, branch, invoiceNumber){
     if ($scope.viewingAllCustomers) {
       // change selected context if viewing all customers
-      changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber);
+      changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
     } else {
       $state.go('menu.invoiceitems', { invoiceNumber: invoiceNumber} );
     }
@@ -269,9 +269,12 @@ angular.module('bekApp')
           return InvoiceService.getExportConfig();
         },
         exportParams: function () {
-          var params = $scope.invoiceParams;
-          params.filter = createFilterObject();
-          return params;
+          return {
+            isViewingAllCustomers: $scope.viewingAllCustomers,
+            paging: {
+              filter: invoicePagingModel.getFilterObject($scope.filterRowFields, $scope.selectedFilterView.filterFields)
+            }
+          };
         }
       }
     });
