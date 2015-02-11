@@ -70,6 +70,7 @@ angular.module('bekApp')
 
     //pushes profile object to database
     UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
+      $scope.$parent.$parent.userProfile = newProfile;   
       $scope.displayMessage('success', 'The user was successfully updated.');
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);

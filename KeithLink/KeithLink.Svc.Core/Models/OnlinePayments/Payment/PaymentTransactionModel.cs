@@ -10,9 +10,10 @@ namespace KeithLink.Svc.Core.Models.OnlinePayments.Payment {
 
 		[DataMember(Name = "customernumber")]
 		public string CustomerNumber { get; set; }
-		[DataMember(Name = "customername")]
-		
+		[DataMember(Name = "customername")]		
 		public string CustomerName { get; set; }
+		[DataMember(Name = "branchid")]
+		public string BranchId { get; set; }
 		[DataMember(Name = "invoicenumber")]
 		public string InvoiceNumber { get; set; }
 		[DataMember(Name = "account")]
