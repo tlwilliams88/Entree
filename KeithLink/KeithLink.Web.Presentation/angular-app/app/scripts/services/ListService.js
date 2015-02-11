@@ -66,12 +66,13 @@ angular.module('bekApp')
           permissions.canDeleteList = true;
           permissions.canReorderItems = true;
 
-        // MANDATORY -- only shown to DSRs
+        // MANDATORY -- only editable by internal users
         } else if (list.ismandatory) {
           permissions.canSeeParlevel = true;
           permissions.alternativeParHeader = 'Required Qty';
           permissions.canDeleteList = true;
           permissions.canAddItems = true;
+          permissions.canEditList = true;
           permissions.canDeleteItems = true;
           permissions.canEditParlevel = true;
           permissions.canDeleteList = true;

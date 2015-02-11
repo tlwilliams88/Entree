@@ -38,9 +38,9 @@ angular.module('bekApp')
   NAVIGATION LINKS 
   ***/
 
-  function changeUserContext(stateName, stateParams, customerNumber) {
+  function changeUserContext(stateName, stateParams, customerNumber, customerBranch) {
     //generate and set customer context to customerNumber that user selected
-    CustomerService.getCustomerDetails(customerNumber).then(function (customer) {
+    CustomerService.getCustomerDetails(customerNumber, customerBranch).then(function (customer) {
       var generatedUserContext = {
         id: customer.customerNumber,
         text: customer.displayname,
@@ -63,17 +63,12 @@ angular.module('bekApp')
   }
 
   //change the selected user context to the one the user clicked and refresh the page
-  $scope.goToInvoicesForCustomer = function(customerNumber) {
-    changeUserContext('menu.invoice', {}, customerNumber);
+  $scope.goToInvoicesForCustomer = function(customerNumber, branch) {
+    changeUserContext('menu.invoice', {}, customerNumber, branch);
   };
 
-  $scope.goToInvoiceDetails = function(customerNumber, invoiceNumber){
-    if ($scope.viewingAllCustomers) {
-      // change selected context if viewing all customers
-      changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber);
-    } else {
-      $state.go('menu.invoiceitems', { invoiceNumber: invoiceNumber} );
-    }
+  $scope.goToInvoiceDetails = function(customerNumber, branch, invoiceNumber){
+    changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
   };
 
   /**********

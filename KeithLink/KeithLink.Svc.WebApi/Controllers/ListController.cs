@@ -78,7 +78,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
 			if (list != null)
-				list.ReadOnly = !this.AuthenticatedUser.IsDSR && list.Type == ListType.RecommendedItems;
+				list.ReadOnly = (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.RecommendedItems) ||
+					(!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.Mandatory);
 
 			return list;
 

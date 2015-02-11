@@ -308,11 +308,6 @@ angular.module('bekApp')
       controller: 'TransactionController',
       data: {
         authorize: 'canPayInvoices'
-      },
-      resolve: {
-        accounts: ['BankAccountService', function(BankAccountService) {
-          return BankAccountService.getAllBankAccounts();
-        }]
       }
     })
 

@@ -80,16 +80,16 @@
 
         <tr ng-repeat-start="transaction in transactions" ng-class="{ odd : $odd, even: $even }">
           <td>
-            <a ng-click="goToInvoicesForCustomer(transaction.customernumber)">{{::transaction.customername}}</a>
+            <a ng-click="goToInvoicesForCustomer(transaction.customernumber, transaction.branchid)">{{::transaction.customername}}</a>
           </td>
           <td class="hidden-mobile-visible-print">
-            <a ng-click="goToInvoicesForCustomer(transaction.customernumber)">{{::transaction.customernumber}}</a>
+            <a ng-click="goToInvoicesForCustomer(transaction.customernumber, transaction.branchid)">{{::transaction.customernumber}}</a>
           </td>
           <td class="hidden-mobile-visible-print">
             {{::transaction.confirmationid}}
           </td>
           <td class=" hidden-mobile-visible-print">
-            <a ng-click="goToInvoiceDetails(transaction.customernumber, transaction.invoicenumber)">{{::transaction.invoicenumber}}</a>
+            <a ng-click="goToInvoiceDetails(transaction.customernumber, transaction.branchid, transaction.invoicenumber)">{{::transaction.invoicenumber}}</a>
           </td>
           <td>
             {{::transaction.amount | currency}}
