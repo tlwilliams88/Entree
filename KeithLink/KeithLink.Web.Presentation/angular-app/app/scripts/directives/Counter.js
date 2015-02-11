@@ -92,34 +92,32 @@ angular.module('bekApp')
          */
         scope.changed = function() {
           // If the user decides to delete the number, we will set it to 0. 
-		  if ( !scope.value ) { setValue( 0 ); }
-          
-		  var curLength = parseInt(scope.value.toString().length);
-		  
+          if ( !scope.value ) { setValue( 0 ); }
+
+          var curLength = parseInt(scope.value.toString().length);
+
           // Check if what's typed is numeric or if it has any letters.
           if ( /\b[0-9]+\b/.test(scope.value) ) {
-			if(length != null){ // jshint ignore:line
-				if(curLength <= length){
-					setValue(scope.value);
-				}
-				else{
-					setValue( parseInt( scope.value.toString().substring(0,length) ) );
-				}
-			}
-			else{
-				setValue(scope.Value);
-			}
+            if(length != null){ // jshint ignore:line
+              if(curLength <= length){
+                setValue(scope.value);
+              } else{
+                setValue( parseInt( scope.value.toString().substring(0,length) ) );
+              }
+            } else{
+              setValue(scope.value);
+            }
           }
           else {
-			setValue( parseInt( scope.value.toString().substring(0,curLength - 1) ) );
+            setValue( parseInt( scope.value.toString().substring(0,curLength - 1) ) );
           }
-          
+
           // If a minimum is set, let's make sure we're within the limit.
           if ( min && (scope.value <= min || scope.value - step <= min) ) {
             setValue( min );
-			return false;
+            return false;
           }
-          
+
           // If a maximum is set, let's make sure we're within the limit.
           if ( max && (scope.value >= max || scope.value + step >= max) ) {
             setValue( max );
