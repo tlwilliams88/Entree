@@ -6,14 +6,12 @@ angular.module('bekApp')
 
   var currentCustomer = $scope.selectedUserContext.customer;
 
-  function setOrders(orders) {
-    $scope.orders = orders;
+  function setOrders(data) {
+    $scope.orders = data.results;
+    $scope.totalOrders = data.totalResults;
   }
-  function appendOrders(orders) {
-    setOrders($scope.orders.concat(orders));
-  }
-  function setTotal(total) {
-    $scope.totalOrders = total;
+  function appendOrders(data) {
+    $scope.orders = $scope.orders.concat(data.results);
   }
   function startLoading() {
     $scope.loadingResults = true;
@@ -31,7 +29,6 @@ angular.module('bekApp')
     OrderService.getOrders, 
     setOrders,
     appendOrders,
-    setTotal,
     startLoading,
     stopLoading,
     $scope.sort
@@ -42,17 +39,13 @@ angular.module('bekApp')
   $scope.filterOrders = function(filterFields) {
     ordersPagingModel.filterData(filterFields);
   };
-
   $scope.clearFilters = function() {
     $scope.filterFields = {};
-    ordersPagingModel.filter = [];
-    ordersPagingModel.loadData();
+    ordersPagingModel.clearFilters();
   };
-
   $scope.infiniteScrollLoadMore = function() {
     ordersPagingModel.loadMoreData($scope.orders, $scope.totalOrders, $scope.loadingResults);
   };
-
   $scope.sortOrders = function(field, sortDescending) {
     $scope.sort = {
       field: field,

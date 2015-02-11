@@ -27,7 +27,7 @@
               datepicker-options="datepickerOptions.options"
               date-disabled="disabled(date, mode)"
               close-text="Close"></a>
-            {{itemusagequery.fromDate | date:shortDate}}
+            {{itemusagequery.fromDate | formatDate}}
           </td>
           <td class="datepicker">
             <label>To: </label>
@@ -42,7 +42,7 @@
               datepicker-options="datepickerOptions.options"
               date-disabled="disabled(date, mode)"
               close-text="Close"></a>
-            {{itemusagequery.toDate | date:shortDate}}
+            {{itemusagequery.toDate | formatDate}}
           </td>
           <td class="hidden-print">
             <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>

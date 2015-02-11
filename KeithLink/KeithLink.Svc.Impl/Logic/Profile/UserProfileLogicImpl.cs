@@ -405,10 +405,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private string GenerateTemporaryPassword()
         {
-            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 0);
-            for (int i = 0; !PasswordMeetsComplexityRequirements(generatedPassword) && i < 8; i++)
-                generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 0);
+            string generatedPassword = NewPassword();
+
+            for (int i = 0; !PasswordMeetsComplexityRequirements( generatedPassword ) && i < 8; i++)
+                generatedPassword = NewPassword(); 
+
             return generatedPassword;
+        }
+
+        private string NewPassword() {
+            Random rnd = new Random();
+            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 1);
+            return Regex.Replace( generatedPassword, @"[^a-zA-Z0-9]", r => rnd.Next( 0, 9 ).ToString() );
         }
 
         /// <summary>

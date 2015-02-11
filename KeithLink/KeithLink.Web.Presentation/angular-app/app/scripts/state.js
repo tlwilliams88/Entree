@@ -362,6 +362,9 @@ angular.module('bekApp')
       resolve: {
         userProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
           return UserProfileService.getUserProfile($stateParams.email);
+        }],
+        userCustomers: ['UserProfileService', 'userProfile', function(UserProfileService, userProfile) {
+          return UserProfileService.getAllUserCustomers(userProfile.userid);
         }]
       }
     })

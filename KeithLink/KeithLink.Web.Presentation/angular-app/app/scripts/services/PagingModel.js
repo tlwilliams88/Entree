@@ -2,44 +2,43 @@
 
 /**
  * @ngdoc function
- * @name bekApp.service:FilterService
+ * @name bekApp.service:PagingModel
  * @description
- * # FilterService
+ * # PagingModel
  * Service of the bekApp
  */
 angular.module('bekApp').factory('PagingModel', ['Constants', function (Constants) {
 
   // $scope.params = {
   //   size: Constants.infiniteScrollPageSize,
-  //   from: 0
-    // sort: [{
-    //   field: 'messagecreatedutc',
-    //   order: 'desc'
-    // }]
-    // filter: {
-    //   field: 'subject',
-    //   value: 'value',
-    //   filter: [
-    //      {
-    //        field: 'name',
-    //        value: 'value'
-    //      }
-    //   ]
-    // }
+  //   from: 0,
+  //   sort: [{
+  //     field: 'messagecreatedutc',
+  //     order: 'desc'
+  //   }],
+  //   filter: {
+  //     field: 'subject',
+  //     value: 'value',
+  //     filter: [
+  //        {
+  //          field: 'name',
+  //          value: 'value'
+  //        }
+  //     ]
+  //   }
   // };
 
   // Define the constructor function.
-  function PagingModel( getData, setData, appendData, setTotal, startLoading, stopLoading, sort, filter  ) {
+  function PagingModel( getData, setData, appendData, startLoading, stopLoading, sort, secondarySort, filter  ) {
     this.pageSize = Constants.infiniteScrollPageSize;
     this.pageIndex = 0;
     this.sort = sort;
-    this.secondarySort = null;//secondarySort;
+    this.secondarySort = secondarySort;
     this.filter = filter;
     
     this.getData = getData;
     this.setData = setData;
     this.appendData = appendData;
-    this.setTotal = setTotal;
     this.startLoading = startLoading;
     this.stopLoading = stopLoading;
   }
@@ -58,21 +57,14 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
     getSortArray: function(sort, secondarySort) {
       var sortObjects = [];
 
-      sortObjects.push(this.getSortObject(sort));
+      if (sort) {
+        sortObjects.push(this.getSortObject(sort));
+      }
       if (secondarySort) {
         sortObjects.push(this.getSortObject(secondarySort));
       }
 
       return sortObjects;
-    },
-
-    extractData: function(data) {
-      this.setTotal(data.totalResults);
-      return data.results;
-    },
-
-    transformData: function(data) {
-      return data;
     },
 
     loadData: function(appendData) {
@@ -91,24 +83,23 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
         filter: this.filter
       };
       return this.getData(params)
-        .then(angular.bind(this, this.transformData))
-        .then(angular.bind(this, this.extractData))
         .then(setData)
         .finally(this.stopLoading);
     },
 
-    // {
-    //   name: 'account name'
-    // }
-    filterData: function(filterFields) {
+    filterData: function(filterFields, baseFilterList) {
       var filterList = [];
+
+      if (baseFilterList) {
+        filterList = angular.copy(baseFilterList);
+      }
+
       for(var propertyName in filterFields) {
         if (filterFields[propertyName] && filterFields[propertyName] !== '') {
-          var filterObject = {
+          filterList.push({
             field: propertyName,
             value: filterFields[propertyName] 
-          };
-          filterList.push(filterObject);  
+          });
         }
       }
 
@@ -127,11 +118,17 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
       }      
 
       this.pageIndex = 0;
-      
+      this.loadData();
+    },
+
+    clearFilters: function() {
+      this.pageIndex = 0;
+      this.filter = [];
       this.loadData();
     },
 
     sortData: function(sort) {
+      this.pageIndex = 0;
       this.sort = sort;
       this.loadData();
     },
@@ -149,18 +146,18 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
   // Define the "class" / "static" methods. These are
   // utility methods on the class itself; they do not
   // have access to the "this" reference.
-  PagingModel.fromFullName = function( fullName ) {
+  // PagingModel.fromFullName = function( fullName ) {
 
-      var parts = trim( fullName || "" ).split( /\s+/gi );
+  //     var parts = trim( fullName || '' ).split( /\s+/gi );
 
-      return(
-          new PagingModel(
-              parts[ 0 ],
-              parts.splice( 0, 1 ) && parts.join( " " )
-          )
-      );
+  //     return(
+  //         new PagingModel(
+  //             parts[ 0 ],
+  //             parts.splice( 0, 1 ) && parts.join( " " )
+  //         )
+  //     );
 
-  };
+  // };
 
 
   // Return constructor - this is what defines the actual

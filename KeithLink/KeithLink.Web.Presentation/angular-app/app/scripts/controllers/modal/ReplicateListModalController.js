@@ -10,66 +10,53 @@ customers : array - list of customer objects the current user has access to shar
 ******/
 
 angular.module('bekApp')
-.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'CustomerService', 'list',
-  function ($scope, $modalInstance, ListService, CustomerService, list) {
+.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'CustomerPagingModel', 'list',
+  function ($scope, $modalInstance, ListService, CustomerPagingModel, list) {
 
   $scope.list = list;
   $scope.selectedShareCustomers = [];
   $scope.selectedCopyCustomers = [];
   $scope.loadingResults = true;
 
-  $scope.customersConfig = {
-    term: '',
-    size: 30,
-    from: 0,
-  };
+  function setCustomers(data) {
+    $scope.totalCustomers = data.totalResults;
 
-  function loadCustomers(customersConfig) {
-    $scope.loadingResults = true;
-    return CustomerService.getCustomers(
-      customersConfig.term,
-      customersConfig.size,
-      customersConfig.from
-    ).then(function(data) {
-      $scope.loadingResults = false;
-      $scope.totalCustomers = data.totalResults;
-      var customers = data.results;
-
-      // select shared customers
-      list.sharedwith.forEach(function(customerNumber) {
-        customers.forEach(function(customer) {
-          if (customerNumber === customer.customerNumber) {
-            $scope.selectedShareCustomers.push(customer);
-          }
-        });
+    // select shared customers
+    list.sharedwith.forEach(function(customerNumber) {
+      data.results.forEach(function(customer) {
+        if (customerNumber === customer.customerNumber) {
+          $scope.selectedShareCustomers.push(customer);
+        }
       });
-
-      return customers;
     });
+    $scope.customers = data.results;
+  }
+  function appendCustomers(data) {
+    $scope.customers = $scope.customers.concat(data.results);
+  }
+  function startLoading() {
+    $scope.loadingResults = true;
+  }
+  function stopLoading() {
+    $scope.loadingResults = false;
   }
 
-  loadCustomers($scope.customersConfig).then(function(customers) {
-    $scope.customers = customers;
-  });
+  var customerPagingModel = new CustomerPagingModel(
+    setCustomers,
+    appendCustomers,
+    startLoading,
+    stopLoading,
+    'customerName',
+    false
+  );
 
-  // INFINITE SCROLL
-  $scope.infiniteScrollLoadMore = function() {
-    if (($scope.customers && $scope.customers.length >= $scope.totalCustomers) || $scope.loadingResults) {
-      return;
-    }
+  customerPagingModel.loadCustomers();
 
-    $scope.customersConfig.from += $scope.customersConfig.size;
-    loadCustomers($scope.customersConfig).then(function(customers) {
-      $scope.customers = $scope.customers.concat(customers);
-    });
+  $scope.filterCustomerList = function (searchTerm) {
+    customerPagingModel.filterCustomers(searchTerm);
   };
-
-  $scope.filterCustomerList = function(searchTerm) {
-    $scope.customersConfig.term = searchTerm;
-    $scope.customersConfig.from = 0;
-    loadCustomers($scope.customersConfig).then(function(customers) {
-      $scope.customers = customers;
-    });
+  $scope.infiniteScrollLoadMore = function() {
+    customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingResults);
   };
 
   $scope.shareList = function(list, customers) {
