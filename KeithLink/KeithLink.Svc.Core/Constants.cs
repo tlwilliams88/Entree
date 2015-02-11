@@ -71,6 +71,32 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_MIS_FAR
         };
 
+        public static readonly List<string> BEK_SYSADMIN_ROLES = new List<string>() {
+           ROLE_CORPORATE_ADMIN, ROLE_CORPORATE_SECURITY 
+        };
+
+        public static readonly List<string> DSR_ROLES = new List<string>() {
+            ROLE_INTERNAL_DSR_FAQ, ROLE_INTERNAL_DSR_FAM,
+            ROLE_INTERNAL_DSR_FDF, ROLE_INTERNAL_DSR_FHS,
+            ROLE_INTERNAL_DSR_FLR, ROLE_INTERNAL_DSR_FSA,
+            ROLE_INTERNAL_DSR_FOK
+        };
+
+        public static readonly List<string> DSM_ROLES = new List<string>() {
+            ROLE_INTERNAL_DSM_FAQ, ROLE_INTERNAL_DSM_FAM,
+            ROLE_INTERNAL_DSM_FDF, ROLE_INTERNAL_DSM_FHS,
+            ROLE_INTERNAL_DSM_FLR, ROLE_INTERNAL_DSM_FSA,
+            ROLE_INTERNAL_DSM_FOK
+        };
+
+
+        public static readonly List<string> MIS_ROLES = new List<string>() {
+            ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM,
+            ROLE_INTERNAL_MIS_FDF, ROLE_INTERNAL_MIS_FHS,
+            ROLE_INTERNAL_MIS_FLR, ROLE_INTERNAL_MIS_FAR,
+            ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK
+        };
+
         // Elastic Search : Indexes
         public const string ES_INDEX_CATEGORIES = "categories";
         public const string ES_INDEX_BRANDS = "brands";

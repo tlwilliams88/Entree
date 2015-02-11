@@ -13,6 +13,6 @@ namespace KeithLink.Svc.Core.Interface.Profile
 
         bool IsInGroup(string userName, string groupName);
 
-        string FirstUserGroup(UserPrincipal user, List<string> groupNames);
+        List<string> GetAllGroupsUserBelongsTo(UserPrincipal user, List<string> groupNames);
     }
 }
