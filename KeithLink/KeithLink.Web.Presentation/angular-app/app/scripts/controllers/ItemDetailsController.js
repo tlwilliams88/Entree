@@ -16,9 +16,9 @@ angular.module('bekApp')
     $scope.item = item;
     $scope.item.quantity = 1;
 
-    $scope.canOrderItem = PricingService.canOrderItem;
-    $scope.hasCasePrice = PricingService.hasCasePrice;
-    $scope.canOrderItem = PricingService.canOrderItem;
+    $scope.canOrderItemInd = PricingService.canOrderItem(item)
+    $scope.casePriceInd = PricingService.hasCasePrice(item)
+    $scope.packagePriceInd = PricingService.hasPackagePrice(item)
     
     ProductService.getProductDetails(item.itemnumber).then(function(item) {
       $scope.item = item;

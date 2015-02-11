@@ -245,6 +245,9 @@
           <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='each';sortOrder=!sortOrder;">
+            <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          </th>
           <th class="hidden-mobile-visible-print"></th>
           <th class="hidden-mobile-visible-print" ng-show="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
             <span>Price <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span></span>
@@ -268,6 +271,12 @@
           </td>
           <td class="hidden-mobile-visible-print">
             {{::item.pack | number}} / {{::item.size}}
+          </td>
+          <td class="input-col hidden-mobile-visible-print">          
+            <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
+              <input type="checkbox" ng-model="item.each" id="each" name="each" />
+              <label for="each"></label>
+            </ng-form>
           </td>
           <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
           </td>
@@ -310,6 +319,14 @@
                   <td>Price</td>
                   <td>{{::item.caseprice}}</td>
                 </tr>
+ 				<tr ng-if="hasPackagePrice(item)">
+                <td>Each</td>
+                <td>
+                  <ng-form name="eachForm_mobile">
+                    <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                  </ng-form>
+                </td>
+              </tr>
               </tbody>
             </table>
           </td>
