@@ -61,14 +61,17 @@ angular.module('bekApp')
         //   "paging": {"size":50,"from":0,"filter":{"filter":[],"field":"statusdescription","value":"Past Due"}},
         //   "export": {"selectedtype": "CSV"}
         // }
-        params.size = null;
-        params.from = null;
         var exportParams = {
-          paging: params,
+          paging: params.paging,
           export: config
         };
 
-        ExportService.export('/invoice/export/', exportParams);
+        var filter = '';
+        if (params.isViewingAllCustomers) {
+          filter = '?forAllCustomers=true';
+        }
+
+        ExportService.export('/invoice/export/' + filter, exportParams);
       },
 
       getDetailExportConfig: function(invoiceNumber) {

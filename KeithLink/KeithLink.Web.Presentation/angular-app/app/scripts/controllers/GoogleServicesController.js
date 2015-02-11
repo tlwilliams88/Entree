@@ -1,5 +1,6 @@
 'use strict';
 
+/* jshint ignore:start */
 angular.module('bekApp')
 .controller('GoogleServicesController', ['$scope', 'ENV',
   	function ($scope, ENV) {
@@ -12,3 +13,4 @@ angular.module('bekApp')
        ga('create', ENV.googleAnalytics, 'auto');
 
 }]);
+/* jshint ignore:end */

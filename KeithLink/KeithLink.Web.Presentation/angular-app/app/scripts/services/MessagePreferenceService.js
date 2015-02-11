@@ -44,7 +44,7 @@ angular.module('bekApp')
             }
           });
 
-          return customerPreferencesFound;;
+          return customerPreferencesFound;
 
         }, function (error) {
           toaster.pop('error', null, 'An error occurred while reading user preferences' + error);
@@ -67,7 +67,7 @@ angular.module('bekApp')
             description: preference.description,
             notificationType: preference.notificationType,
             selectedChannels: []
-          }
+          };
 
           if (preference.channels[0] === true) {
             preferenceTransformed.selectedChannels.push({'Channel': 1}); // Email

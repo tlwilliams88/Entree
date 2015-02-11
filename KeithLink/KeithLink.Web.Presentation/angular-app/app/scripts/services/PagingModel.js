@@ -67,27 +67,7 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
       return sortObjects;
     },
 
-    loadData: function(appendData) {
-      var setData = this.setData;
-      if (appendData) {
-        setData = this.appendData;
-      }
-
-      this.startLoading();
-
-      var params = {
-        size: this.pageSize,
-        from: this.pageIndex,
-        terms: this.searchTerm,
-        sort: this.getSortArray(this.sort, this.secondarySort),
-        filter: this.filter
-      };
-      return this.getData(params)
-        .then(setData)
-        .finally(this.stopLoading);
-    },
-
-    filterData: function(filterFields, baseFilterList) {
+    getFilterObject: function(filterFields, baseFilterList) {
       var filterList = [];
 
       if (baseFilterList) {
@@ -103,20 +83,41 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
         }
       }
 
+      var filterParamObject = null;
       if (filterList.length > 0) {
         var firstFilter = filterList[0];
         filterList.splice(0,1);
 
-        var filterParamObject = {
+        filterParamObject = {
           field: firstFilter.field,
           value: firstFilter.value,
           filter: filterList
         };
-        this.filter = filterParamObject;
-      } else {
-        this.filter = null;
-      }      
+      }
+      return filterParamObject;
+    },
 
+    loadData: function(appendData) {
+      var setData = this.setData;
+      if (appendData) {
+        setData = this.appendData;
+      }
+
+      this.startLoading();
+
+      var params = {
+        size: this.pageSize,
+        from: this.pageIndex,
+        sort: this.getSortArray(this.sort, this.secondarySort),
+        filter: this.filter
+      };
+      return this.getData(params)
+        .then(setData)
+        .finally(this.stopLoading);
+    },
+
+    filterData: function(filterFields, baseFilterList) {
+      this.filter = this.getFilterObject(filterFields, baseFilterList);
       this.pageIndex = 0;
       this.loadData();
     },

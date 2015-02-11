@@ -54,7 +54,7 @@ angular.module('bekApp').factory('CustomerPagingModel', ['Constants', 'CustomerS
 
     sortCustomers: function(sortField, sortDescending) {
       this.pageIndex = 0;
-      this.sortField = sortField,
+      this.sortField = sortField;
       this.sortDescending = sortDescending;
       this.loadCustomers();
     },
