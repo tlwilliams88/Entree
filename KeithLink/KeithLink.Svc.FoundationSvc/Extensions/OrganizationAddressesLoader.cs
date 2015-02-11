@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using KeithLink.Common.Core.Extensions;
 
 namespace KeithLink.Svc.FoundationSvc.Extensions
 {
@@ -89,48 +90,63 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                     String connStr = csResources["Biz Data Service"]["s_BizDataStoreConnectionString"].ToString();
                     //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
                     string fields = string.Join(", ", Array.ConvertAll(this.ProfileEntityMappings.PropertyMappings.ToArray(), p => p.Value));
+					string keys = string.Join(", ", Array.ConvertAll(this.ProfileEntityMappings.PropertyMappings.ToArray(), p => p.Key));
                     CommerceServer.Core.Runtime.Profiles.ProfileContext ctxt = CommerceServer.Foundation.SequenceComponents.ContextProviders.CommerceSiteContexts.Profile[SiteHelper.GetSiteName()];
 
-                    string cmdText = "SELECT " + fields + " FROM Address WHERE GeneralInfo.address_id in " + "(" + String.Join(",", preferredAddressIds.ToArray()) + ")"; // todo: map out specific fields or check if field names are in ProfileEntityMappings
+                    
+					string dataSQLText = "SELECT *  FROM [BEK_Commerce_profiles].[dbo].[Addresses] WHERE u_address_id in (" + String.Join(",", preferredAddressIds.ToArray()) + ")";
 
-                    // Create a new RecordsetClass object.
-                    ADODB.Recordset rs = new ADODB.Recordset();
-
+					
+                   
                     try
                     {
-                        // Open a RecordsetClass instance by executing the SQL statement to the CSOLEDB provider.
-                        rs.Open(
-                        cmdText,
-                        ctxt.CommerceOleDbProvider,
-                        ADODB.CursorTypeEnum.adOpenForwardOnly,
-                        ADODB.LockTypeEnum.adLockReadOnly,
-                        (int)ADODB.CommandTypeEnum.adCmdText);
 
-                        // Iterate through the records.
-                        while (!rs.EOF)
-                        {
-                            CommerceServer.Foundation.CommerceEntity entity = new CommerceServer.Foundation.CommerceEntity("Address");
+						using (System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(connStr))
+						{
+							conn.Open();
 
-                            entity.Id = rs.Fields["GeneralInfo.address_id"].Value.ToString();
-                            foreach (var prop in this.ProfileEntityMappings.PropertyMappings)
-                            {
-                                entity.Properties[prop.Key] = rs.Fields[prop.Value].Value;
-                            }
+							using (System.Data.OleDb.OleDbCommand cmdRead = new System.Data.OleDb.OleDbCommand(dataSQLText, conn))
+							{
+								using (System.Data.OleDb.OleDbDataReader dataReader = cmdRead.ExecuteReader())
+								{
+									while (dataReader.Read())
+									{
+										CommerceServer.Foundation.CommerceEntity entity = new CommerceServer.Foundation.CommerceEntity("Address");
+										entity.Id = dataReader.GetString("u_address_id");
+										entity.SetPropertyValue("LastName", dataReader.GetString("u_last_name"));
+										entity.SetPropertyValue("FirstName", dataReader.GetString("u_first_name"));
+										entity.SetPropertyValue("AddressName", dataReader.GetString("u_address_name"));
+										entity.SetPropertyValue("AddressType", dataReader.GetNullableInt("i_address_type"));
+										entity.SetPropertyValue("Description", dataReader.GetString("u_description"));
+										entity.SetPropertyValue("Line1", dataReader.GetString("u_address_line1"));
+										entity.SetPropertyValue("Line2", dataReader.GetString("u_address_line2"));
+										entity.SetPropertyValue("City", dataReader.GetString("u_city"));
+										entity.SetPropertyValue("StateProvinceCode", dataReader.GetString("u_region_code"));
+										entity.SetPropertyValue("StateProvinceName", dataReader.GetString("u_region_name"));
+										entity.SetPropertyValue("ZipPostalCode", dataReader.GetString("u_postal_code"));
+										entity.SetPropertyValue("CountryRegionCode", dataReader.GetString("u_country_code"));
+										entity.SetPropertyValue("CountryRegionName", dataReader.GetString("u_country_name"));
+										entity.SetPropertyValue("Telephone", dataReader.GetString("u_tel_number"));
+										entity.SetPropertyValue("TelephoneExtension", dataReader.GetString("u_tel_extension"));
+										entity.SetPropertyValue("LocaleId", dataReader.GetString("i_locale"));
+										entity.SetPropertyValue("DateModified", dataReader.GetNullableDateTime("dt_date_last_changed"));
+										entity.SetPropertyValue("DateCreated", dataReader.GetNullableDateTime("dt_date_created"));
+										
 
-                            currentBatch.Where(x => x.Id == (addressToParentIdMap[entity.Id])).FirstOrDefault()
-                                .Properties.Add("PreferredAddress", new CommerceServer.Foundation.CommerceRelationship(entity));
-                            // Move to the next record.
-                            rs.MoveNext();
-                        }
+										currentBatch.Where(x => x.Id == (addressToParentIdMap[entity.Id])).FirstOrDefault()
+											.Properties.Add("PreferredAddress", new CommerceServer.Foundation.CommerceRelationship(entity));
+									}
+									dataReader.Close();
+								}
+							}
+						}
+
                     }
                     catch (Exception ex)
                     {
                         throw new ApplicationException("Error loading organization addresses", ex);
                     }
-                    finally
-                    {
-                        System.Runtime.InteropServices.Marshal.ReleaseComObject(rs);
-                    }
+					
                 }
             }
         }
