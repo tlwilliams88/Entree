@@ -16,8 +16,7 @@ angular.module('bekApp')
       // gets and sets current user profile
       getCurrentUserProfile: function(email) {
 
-        return Service.getUserProfile(email).then(function (profile) {          
-
+        return Service.getUserProfile(email).then(function (profile) {             
           LocalStorage.setProfile(profile);
 
           // check if user is Order entry customer to determine which branch/context to select
@@ -57,8 +56,13 @@ angular.module('bekApp')
         return $http.get('/profile', data).then(function(response){
           var profile = response.data.userProfiles[0];
           $log.debug(profile.data);
-          
-          // set display name for user
+          Service.updateDisplayName(profile);  
+          return profile;
+        });
+      },
+
+      updateDisplayName: function(profile){
+        // set display name for user
           if (profile.firstname === 'guest' && profile.lastname === 'account') {
             profile.displayname = profile.emailaddress;
           } else if (profile.firstname && profile.lastname) {
@@ -68,9 +72,6 @@ angular.module('bekApp')
           } else {
             profile.displayname = profile.emailaddress;
           }
-          
-          return profile;
-        });
       },
 
       getAllUserCustomers: function(userId) {
@@ -117,7 +118,6 @@ angular.module('bekApp')
 
       updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
-
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
           var loggedinprofile = LocalStorage.getProfile(); //Get current users profile from LocalStorage
 
@@ -128,7 +128,8 @@ angular.module('bekApp')
           //to local storage
           if(loggedinprofile.userid === profile.userid){
             LocalStorage.setProfile(profile);
-          }
+          } 
+          Service.updateDisplayName(profile);        
           return profile;
         });
       },
