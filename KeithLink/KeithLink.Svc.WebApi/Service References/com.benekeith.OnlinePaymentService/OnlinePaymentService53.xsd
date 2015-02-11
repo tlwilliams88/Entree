@@ -1,71 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-  <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
-  <xs:complexType name="PagingModel">
+<xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ArrayOfstring">
     <xs:sequence>
-      <xs:element minOccurs="0" name="filter" nillable="true" type="tns:FilterInfo" />
-      <xs:element minOccurs="0" name="from" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="size" nillable="true" type="xs:int" />
-      <xs:element minOccurs="0" name="sort" nillable="true" type="tns:ArrayOfSortInfo" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="PagingModel" nillable="true" type="tns:PagingModel" />
-  <xs:complexType name="FilterInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="condition" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="field" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="filter" nillable="true" type="tns:ArrayOfFilterInfo" />
-      <xs:element minOccurs="0" name="type" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="FilterInfo" nillable="true" type="tns:FilterInfo" />
-  <xs:complexType name="ArrayOfFilterInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="FilterInfo" nillable="true" type="tns:FilterInfo" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfFilterInfo" nillable="true" type="tns:ArrayOfFilterInfo" />
-  <xs:complexType name="ArrayOfSortInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="SortInfo" nillable="true" type="tns:SortInfo" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfSortInfo" nillable="true" type="tns:ArrayOfSortInfo" />
-  <xs:complexType name="SortInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="field" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="order" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="SortInfo" nillable="true" type="tns:SortInfo" />
-  <xs:complexType name="PagedResultsOfInvoicebHFuqxhQ">
-    <xs:annotation>
-      <xs:appinfo>
-        <GenericType Name="PagedResultsOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
-          <GenericParameter Name="Invoice" Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" />
-        </GenericType>
-      </xs:appinfo>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" minOccurs="0" name="results" nillable="true" type="q1:ArrayOfInvoice" />
-      <xs:element minOccurs="0" name="totalResults" type="xs:long" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="PagedResultsOfInvoicebHFuqxhQ" nillable="true" type="tns:PagedResultsOfInvoicebHFuqxhQ" />
-  <xs:complexType name="PagedResultsOfPaymentTransactionModelFtEtFbyE">
-    <xs:annotation>
-      <xs:appinfo>
-        <GenericType Name="PagedResultsOf{0}{#}" Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
-          <GenericParameter Name="PaymentTransactionModel" Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" />
-        </GenericType>
-      </xs:appinfo>
-    </xs:annotation>
-    <xs:sequence>
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" minOccurs="0" name="results" nillable="true" type="q2:ArrayOfPaymentTransactionModel" />
-      <xs:element minOccurs="0" name="totalResults" type="xs:long" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="PagedResultsOfPaymentTransactionModelFtEtFbyE" nillable="true" type="tns:PagedResultsOfPaymentTransactionModelFtEtFbyE" />
+  <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring" />
 </xs:schema>
