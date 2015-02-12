@@ -41,14 +41,16 @@ angular.module('bekApp')
   $scope.filterViews = [{
     name: 'All Invoices',
     filterFields: []
-  }, {
-    name: 'Invoices to Pay',
-    filterFields: [{
-      field: 'ispayable',
-      value: true,
-      type: 'equals'
-    }]
-  }, {
+  }, 
+  // {
+  //   name: 'Invoices to Pay',
+  //   filterFields: [{
+  //     field: 'ispayable',
+  //     value: true,
+  //     type: 'equals'
+  //   }]
+  // }, 
+  {
     name: 'Open Invoices',
     filterFields: [{
       field: 'statusdescription',
@@ -150,7 +152,7 @@ angular.module('bekApp')
 
     if ($scope.viewingAllCustomers) {
 
-      $scope.selectedFilterView = $scope.filterViews[2]; // default to Open Invoices filter view
+      $scope.selectedFilterView = $scope.filterViews[1]; // default to Open Invoices filter view
       setTempContextForViewingAllCustomers();
       invoicePagingModel.getData = InvoiceService.getAllOpenInvoices;
 

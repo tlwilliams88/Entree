@@ -204,10 +204,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-        public string FirstUserGroup(UserPrincipal user, List<string> groupNames)
+        public List<string> GetAllGroupsUserBelongsTo(UserPrincipal user, List<string> groupNames)
         {
             if (user == null) { throw new ArgumentException("user is required", "user"); }
             if (groupNames.Count == 0 || string.IsNullOrEmpty(groupNames.FirstOrDefault())) { throw new ArgumentException("groupName is required", "groupName"); }
+
+            List<string> returnValue = new List<string>();
 
             try
             {
@@ -217,7 +219,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     foreach (string s in groupNames)
                     {
                         if (groupName.Equals(s, StringComparison.InvariantCultureIgnoreCase))
-                            return s;
+                            returnValue.Add(s);
                     }
                 }
             }
@@ -226,7 +228,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 _logger.WriteErrorLog("Error loading group", ex);
             }
 
-            return "guest";
+            // If they belong to no groups, return the default: guest
+            if (returnValue.Count == 0) {
+                returnValue.Add( "guest" );
+            }
+
+            return returnValue;
         }
 
         #endregion

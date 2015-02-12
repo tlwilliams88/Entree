@@ -14,7 +14,7 @@
     </div>
      for 
     <div class="btn-group hidden-print" dropdown is-open="status.isopen2">
-      <button type="button" class="btn-lg btn btn-default dropdown-toggle">{{selectedInvoiceContext.text}} <span class="icon-arrow-down6"></span></button>
+      <button type="button" class="btn-lg btn btn-default dropdown-toggle" ng-disabled="isInternalAccountAdminUser">{{selectedInvoiceContext.text}} <span class="icon-arrow-down6"></span></button>
 
       <ul class="dropdown-menu">
         <li ng-repeat="context in invoiceCustomerContexts" ng-if="selectedInvoiceContext !== context">

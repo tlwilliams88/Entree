@@ -481,39 +481,27 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
                 DirectoryEntry directoryEntry = (DirectoryEntry)user.GetUnderlyingObject();
-                string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
-                /*if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
-                {
-                    userRole = "owner";
-                }
-                 */
-                if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
-                {
-                    dsrRole = internalUserRole;
-                    //TODO:  add checking for dsm / dsr job title -> need to know which ad property to use
-                    dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
-                    userRole = "dsr";
-                    userBranch = internalUserRole.Substring(0, 3);
-                }
-                else if (internalUserRole.ToLower().Contains("sys-ac-dsms"))
-                {
-                    dsmRole = internalUserRole;
-                    userRole = "dsm";
-                    userBranch = internalUserRole.Substring(0, 3);
-                    //TODO:  add checking for dsm / dsr job title -> need to know which ad property to use
-                    dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
-                }
-                else if (internalUserRole.ToLower().Contains("entree_branchis") || internalUserRole.ToLower().Contains("ls-mis-all"))
-                {
-                    userRole = "branchismanager";
-                    userBranch = internalUserRole.Substring(0, 3);
-                }
-                else if (internalUserRole.Equals(Svc.Core.Constants.ROLE_CORPORATE_ADMIN, StringComparison.InvariantCultureIgnoreCase) || internalUserRole.Equals(Svc.Core.Constants.ROLE_CORPORATE_SECURITY, StringComparison.InvariantCultureIgnoreCase))
-                {
+                List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
+
+                if (internalUserRoles.Intersect( Constants.BEK_SYSADMIN_ROLES ).Count() > 0) {
                     userRole = "beksysadmin";
-                }
-                else
+                } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
+                    userRole = "branchismanager";
+                    userBranch = internalUserRoles.Intersect( Constants.MIS_ROLES ).FirstOrDefault().ToString().Substring( 0, 3 );
+                } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
+                    dsmRole = internalUserRoles.Intersect( Constants.DSM_ROLES ).FirstOrDefault().ToString();
+                    userRole = "dsm";
+                    userBranch = dsmRole.Substring( 0, 3 );
+                    dsrNumber = StringExtensions.ToInt( user.Description ) != null ? user.Description : string.Empty;
+                } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
+                    dsrRole = internalUserRoles.Intersect( Constants.DSR_ROLES ).FirstOrDefault().ToString();
+                    userRole = "dsr";
+                    dsrNumber = StringExtensions.ToInt( user.Description ) != null ? user.Description : string.Empty;
+                    userBranch = dsrRole.Substring( 0, 3 );
+                } else {
                     userRole = "guest";
+                }
+
             }
             else
             {
