@@ -220,11 +220,7 @@ angular.module('bekApp')
   function refreshAccessPermissions() {
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
-
     $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
-    // $scope.isBekAdmin = AccessService.isBekAdmin();
-
-    // $scope.isDsr = AccessService.isDsr();
 
     $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
     $scope.canSeePrices = AccessService.canSeePrices();
