@@ -85,14 +85,10 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
 
       var filterParamObject = null;
       if (filterList.length > 0) {
-        var firstFilter = filterList[0];
-        filterList.splice(0,1);
-
-        filterParamObject = {
-          field: firstFilter.field,
-          value: firstFilter.value,
-          filter: filterList
-        };
+        var firstFilter = filterList.splice(0,1)[0];
+        
+        filterParamObject = firstFilter;
+        filterParamObject.filter = filterList;
       }
       return filterParamObject;
     },
