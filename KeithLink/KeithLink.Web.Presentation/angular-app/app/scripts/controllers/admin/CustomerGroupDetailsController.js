@@ -102,12 +102,13 @@ angular.module('bekApp')
 
     // check if user is already in list of selected users
     $scope.customerGroup.adminusers.forEach(function(user) {
+      
       if (user.emailaddress == emailAddress) {
         isDuplicateUser = true;
       }
     });
 
-    if (isDuplicateUser) {
+    if (isDuplicateUser || !UserProfileService.checkEmailLength(emailAddress)) {
       return;
     }
 
