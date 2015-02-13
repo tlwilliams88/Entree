@@ -400,13 +400,12 @@ angular.module('bekApp')
     MODALS
     ******/
 
-    // $scope.openListImportModal = function () {
-
-    //   var modalInstance = $modal.open({
-    //     templateUrl: 'views/modals/listimportmodal.html',
-    //     controller: 'ImportModalController'
-    //   });
-    // };
+    $scope.openListImportModal = function () {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/listimportmodal.html',
+        controller: 'ImportModalController'
+      });
+    };
 
     $scope.openExportModal = function() {
       var modalInstance = $modal.open({

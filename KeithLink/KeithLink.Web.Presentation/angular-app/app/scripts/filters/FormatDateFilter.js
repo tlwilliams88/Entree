@@ -1,13 +1,20 @@
 'use strict';
 
 function getFormattedDateTime(dateTime, formatString, useTimezone) {
+
+  // fix for dates that formatted like 2015-02-13T00:00:00Z
+  // when parsed they are returned at 2015-02-12 but should be 2015-02-13
+  if (dateTime && dateTime.indexOf('T00:00:00Z') > -1) {
+    dateTime = dateTime.substr(0, 10);
+  }
+
   var date = moment(dateTime);
   if (dateTime && date.isValid()) {
     if (useTimezone) {
-      var timezoneName = jstz.determine().name();
+      var timezoneName = 'America/Chicago';
       date.tz(timezoneName);
     }
-    return date.utc().format(formatString);
+    return date.format(formatString);
   } else {
     return dateTime;
   }
