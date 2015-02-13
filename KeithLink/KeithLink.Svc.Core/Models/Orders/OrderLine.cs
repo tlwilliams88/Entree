@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "status")]
         public string Status { 
             get {
-                string mfStatus = MainFrameStatus == null ? string.Empty : MainFrameStatus.ToUpper().Trim();
+                string mfStatus = string.IsNullOrEmpty(MainFrameStatus) ? string.Empty : MainFrameStatus.ToUpper().Trim();
 
                 switch (mfStatus) {
                     case Constants.CONFIRMATION_DETAIL_FILLED_CODE:

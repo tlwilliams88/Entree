@@ -104,6 +104,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 			LookupProductDetails(branchId, returnOrder);
 
+			if (returnOrder.Status == "Submitted" && returnOrder.Items != null)
+			{
+				//Set all item status' to Pending. This is kind of a hack, but the correct fix will require more effort than available at the moment. The Status/Mainframe status changes are what's causing this issue
+				foreach (var item in returnOrder.Items)
+					item.MainFrameStatus = "Pending";
+			}
 
 			return returnOrder;
         }
