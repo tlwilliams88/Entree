@@ -116,7 +116,8 @@ angular.module('bekApp')
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authorize: 'canManageLists'
+        authorize: 'canManageLists',
+        saveLists: true
       },
       resolve: {
         lists: ['ListService', function (ListService) {
@@ -125,20 +126,15 @@ angular.module('bekApp')
         labels: ['ListService', function(ListService) {
           return ListService.getAllLabels();
         }]
-      },
-      controller: ['$scope', 'ListService', function($scope, ListService) {
-        $scope.$on('$destroy', function() {
-          ListService.lists = [];
-          ListService.labels = [];
-        });
-      }]
+      }
     })
     .state('menu.lists.items', {
       url: ':listId/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
-        authorize: 'canManageLists'
+        authorize: 'canManageLists',
+        saveLists: true
       },
       resolve: {
         originalList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
@@ -155,7 +151,8 @@ angular.module('bekApp')
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true
       },
       resolve: {
         carts: ['CartService', function (CartService){
@@ -170,19 +167,15 @@ angular.module('bekApp')
         shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
         }]
-      },
-      controller: ['$scope', 'CartService', function($scope, CartService) {
-        $scope.$on('$destroy', function() {
-          CartService.carts = [];
-        });
-      }]
+      }
     })
     .state('menu.cart.items', {
       url: ':cartId/?renameCart',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true
       },
       resolve: {
         originalBasket: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', 'CartService', function($stateParams, carts, changeOrders, ResolveService, CartService) {
@@ -205,7 +198,9 @@ angular.module('bekApp')
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true,
+        saveLists: true
       },
       resolve: {
         lists: ['ListService', function (ListService){
@@ -221,17 +216,15 @@ angular.module('bekApp')
           return CartService.getShipDates();
         }]
       }
-      // ,
-      // controller: ['$state', 'carts', function($state, carts) {
-      //   $state.go('menu.addtoorder.items', { listId: 123, cartId: 'new' });
-      // }]
     })
     .state('menu.addtoorder.items', {
       url: ':listId/?cartId&useParlevel',
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true,
+        saveLists: true
       },
       resolve: {
         selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
@@ -253,11 +246,6 @@ angular.module('bekApp')
       controller: 'OrderController',
       data: {
         authorize: 'canSubmitOrders'
-      },
-      resolve: {
-        orders: [ 'OrderService', function(OrderService) {
-          return OrderService.getAllOrders();
-        }]
       }
     })
     .state('menu.orderitems', {
@@ -313,11 +301,6 @@ angular.module('bekApp')
       controller: 'TransactionController',
       data: {
         authorize: 'canPayInvoices'
-      },
-      resolve: {
-        accounts: ['BankAccountService', function(BankAccountService) {
-          return BankAccountService.getAllBankAccounts();
-        }]
       }
     })
 
@@ -358,7 +341,7 @@ angular.module('bekApp')
       template: '<ui-view>'
     })
     .state('menu.admin.edituser', {
-      url: 'edituser/:email/',
+      url: 'customergroup/:groupId/edituser/:email/',
       templateUrl: 'views/admin/edituserdetails.html',
       controller: 'EditUserDetailsController',
       data: {
@@ -367,6 +350,9 @@ angular.module('bekApp')
       resolve: {
         userProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
           return UserProfileService.getUserProfile($stateParams.email);
+        }],
+        userCustomers: ['UserProfileService', 'userProfile', function(UserProfileService, userProfile) {
+          return UserProfileService.getAllUserCustomers(userProfile.userid);
         }]
       }
     })

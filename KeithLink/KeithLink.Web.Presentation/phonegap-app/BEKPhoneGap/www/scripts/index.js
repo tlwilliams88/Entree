@@ -55,7 +55,8 @@ var app = {
         console.log("BACK ONLINE!");
         var listService = angular.element($('body')).injector().get('ListService');
         var cartService = angular.element($('body')).injector().get('CartService');
-
+        var toaster = angular.element($('body')).injector().get('toaster');
+        toaster.pop('success', null, "You are now connected to the server.");
         //merge local with server data
         listService.updateListsFromLocal();
         cartService.updateCartsFromLocal();

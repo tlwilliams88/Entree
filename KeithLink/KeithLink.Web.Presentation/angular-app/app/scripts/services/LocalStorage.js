@@ -53,13 +53,6 @@ angular.module('bekApp')
       },
 
       setProfile: function(profile) {
-        // set display name for user
-        if (profile.firstname === 'guest' && profile.lastname === 'account') {
-          profile.displayname = profile.emailaddress;
-        } else {
-          profile.displayname = profile.firstname + ' ' + profile.lastname;
-        }
-
         localStorageService.set(Constants.localStorage.userProfile, profile);
       },
 
@@ -90,8 +83,8 @@ angular.module('bekApp')
       },
 
       setSelectedCustomerInfo: function(customer) { // for order entry users
-        setBranchId(customer.customer == null ? '' : customer.customer.customerBranch);
-        setCustomerNumber(customer.customer == null ? '' : customer.customer.customerNumber);
+        setBranchId(customer.customer === null ? '' : customer.customer.customerBranch);
+        setCustomerNumber(customer.customer === null ? '' : customer.customer.customerNumber);
         setCurrentCustomer(customer);
       }
     };

@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -31,5 +32,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
         List<OrderHeader> GetSubmittedUnconfirmedOrders();
 
         Guid GetUserIdForControlNumber(int controlNumber);
+
+		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging);
 	}
 }

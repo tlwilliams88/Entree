@@ -43,7 +43,7 @@
         <tbody>
           <tr ng-repeat="adminUser in adminUsers | orderBy:sortBy1:sortOrder1"
               ng-class="{ odd : $odd, even: $even }">
-            <td><a class="btn-link" ui-sref="menu.admin.edituser({email: adminUser.emailaddress})">{{adminUser.emailaddress}}</a></td>
+            <td><a class="btn-link" ui-sref="menu.admin.edituser({email: adminUser.emailaddress, groupId: customerGroupId})">{{adminUser.emailaddress}}</a></td>
             <td>{{adminUser.firstname}}</td>
             <td>{{adminUser.lastname}}</td>
             <td>
@@ -103,7 +103,7 @@
         </tr>
         <tr ng-repeat="customerUser in customerUsers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
             ng-class="{ odd : $odd, even: $even }">
-          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: customerUser.emailaddress})">{{customerUser.emailaddress}}</a></td>
+          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: customerUser.emailaddress, groupId: customerGroupId})">{{customerUser.emailaddress}}</a></td>
           <td>{{customerUser.firstname}}</td>
           <td>{{customerUser.lastname}}</td>
           <td class="text-capitalize">{{customerUser.rolename}}</td>
@@ -160,10 +160,10 @@
         <tbody>
         <tr ng-repeat="customer in customers"
             ng-class="{ odd : $odd, even: $even }">
-          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})">{{customer.customerNumber}}</a>
+          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})">{{customer.customerNumber}}</a>
           </td>
           <td>{{customer.customerName}}</td>
-          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber})"><span
+          <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})"><span
             class="glyphicon glyphicon-pencil"></span> Customer Details</a></td>
           <td>
             <a ng-click="addCustomerToRecipients(customer)" class="glyphicon glyphicon-plus"></a>

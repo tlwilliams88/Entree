@@ -22,8 +22,9 @@ namespace KeithLink.Svc.Core.Extensions.OnlinePayments
 				PaymentAmount = payment.PaymentAmount,
 				PaymentDate = payment.ScheduledPaymentDate,
 				SubmittedDate = payment.PaymentDate,
+				BranchId = string.IsNullOrEmpty(payment.Division) ? string.Empty : payment.Division.Substring(0,3),
 				UserName = payment.UserName,
-				Editable = DateTime.Now.Date < payment.ScheduledPaymentDate.Date
+				Editable = !payment.ScheduledPaymentDate.HasValue? false :  DateTime.Now.Date < payment.ScheduledPaymentDate.Value.Date
 			};
 		}
 	}

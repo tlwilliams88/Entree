@@ -78,6 +78,13 @@ namespace KeithLink.Svc.InternalSvc {
         {
             return _orderLogic.GetUserIdForControlNumber(controlNumber);
         }
+		
+
+
+		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
+		{
+			return _historyLogic.GetPagedOrders(userId, customerInfo, paging);
+		}
 		#endregion
 	}		
 }

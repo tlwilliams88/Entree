@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Test.Logic.Order {
 
             _catRepo = new ElasticSearchCatalogRepositoryImpl();
             //_catalogLogic = new SiteCatalogLogicImpl(_catRepo, _priceLogic, _imgRepo, 
-            _unitOfWork = new KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork();
+			_unitOfWork = new KeithLink.Svc.Impl.Repository.EF.Operational.UnitOfWork(new EventLogRepositoryImpl("Entree Tests"));
             _headerRepo = new KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoyrHeaderRepositoryImpl(_unitOfWork);
             _detailRepo = new KeithLink.Svc.Impl.Repository.Orders.History.EF.OrderHistoryDetailRepositoryImpl(_unitOfWork);
             _poRepo = new PurchaseOrderRepositoryImpl();

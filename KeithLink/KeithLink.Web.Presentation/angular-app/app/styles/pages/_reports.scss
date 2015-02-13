@@ -1,0 +1,14 @@
+.item-usage-form {
+  td {
+    padding-right: 15px;
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .item-usage-form label {
+    display: block;
+  }
+}

@@ -30,36 +30,105 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             var d = _dsrRepository.GetDsrByBranchAndDsrNumber( branchId, dsrNumber );
 
             if (d != null) {
-                returnValue.DsrNumber = d.DsrNumber;
-                returnValue.EmailAddress = d.EmailAddress;
-                returnValue.Name = d.Name;
-                returnValue.ImageUrl = d.ImageUrl.Inject( new { baseUrl = Configuration.MultiDocsProxyUrl } );
-                returnValue.PhoneNumber = d.Phone;
+				returnValue = ToDsrModel(d);
             } else {
-                // Will be used to populate branch specific information
-                switch (branchId) {
-                    default:
-                        returnValue.PhoneNumber = "0000000000";
-                        break;
-                }
-
-                returnValue.DsrNumber = "000";
-                returnValue.EmailAddress = String.Concat(branchId, "@benekeith.com");
-                returnValue.Name = "Ben E. Keith";
-                returnValue.ImageUrl = String.Concat(Configuration.MultiDocsProxyUrl, "userimages/", branchId, "@benekeith.com");
+                returnValue = GetDefault( branchId ); 
             }
 
             return returnValue;
         }
 
+        private Dsr GetDefault(string branchId) {
+            return ToDsrModel(_dsrRepository.Read( d => d.DsrNumber == "000" && d.BranchId == branchId ).First());
+        }
+
+		private Dsr ToDsrModel(Core.Models.EF.Dsr d)
+		{
+			return new Dsr()
+			{
+				DsrNumber = d.DsrNumber,
+				EmailAddress = d.EmailAddress,
+				Name = d.Name,
+				ImageUrl = d.ImageUrl.Inject(new { baseUrl = Configuration.MultiDocsProxyUrl }),
+				PhoneNumber = d.Phone == null ? returnDefaultDsrPhone(d.BranchId) : d.Phone,
+				Branch = d.BranchId
+			};
+		}
+
+		public List<Dsr> GetAllDsrInfo()
+		{
+			var dsrs = _dsrRepository.ReadAll();
+
+			return dsrs.Select(d => ToDsrModel(d)).ToList();
+		}
+
         public void CreateOrUpdateDsr(Dsr dsr)
         {
-            var newDsr = DsrExtensions.ToEFDsr(dsr);
-            _dsrRepository.CreateOrUpdate(newDsr);
+			var existingDsr = _dsrRepository.Read(d => d.BranchId.Equals(dsr.Branch, StringComparison.CurrentCultureIgnoreCase) && d.DsrNumber.Equals(dsr.DsrNumber)).FirstOrDefault();
+
+			if (existingDsr == null)
+			{
+				_dsrRepository.Create(DsrExtensions.ToEFDsr(dsr));
+			}
+			else
+			{
+				existingDsr.EmailAddress = dsr.EmailAddress;
+				existingDsr.ImageUrl = dsr.ImageUrl;
+				existingDsr.Name = dsr.Name;
+				existingDsr.Phone = dsr.PhoneNumber;
+				_dsrRepository.Update(existingDsr);
+			}
+
             unitOfWork.SaveChanges();
             
         }
 
+        public void SendImageToMultiDocs( string emailAddress, Byte[] fileBytes ) {
+            _dsrRepository.SendImageToMultiDocs( emailAddress, fileBytes );
+        }
 
-    }
+        #region Helper Methods
+        private string returnDefaultDsrPhone(string branchId)
+        {
+            string phone = "";
+            switch (branchId.ToLower())
+            {
+                case "fam":
+                    phone = "8006589790";
+                    break;
+                case "faq":
+                    phone = "8006752949";
+                    break;
+                case "far":
+                    phone = "8007772356";
+                    break;
+                case "fdf":
+                    phone = "8773176100";
+                    break;
+                case "fhs":
+                    phone = "8553275500";
+                    break;
+                case "flr":
+                    phone = "5019071518";
+                    break;
+                case "fok":
+                    phone = "8004753484";
+                    break;
+                case "fsa":
+                    phone = "8004888456";
+                    break;
+                default:
+                    phone = "8177596800"; //if all else fails, call go
+                    break;
+            }
+                
+            return phone;
+
+        }
+
+        #endregion
+
+
+		
+	}
 }

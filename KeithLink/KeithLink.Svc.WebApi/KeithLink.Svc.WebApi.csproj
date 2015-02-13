@@ -356,12 +356,6 @@
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService53.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService61.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService62.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -375,6 +369,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.OrderService\OrderService7.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">

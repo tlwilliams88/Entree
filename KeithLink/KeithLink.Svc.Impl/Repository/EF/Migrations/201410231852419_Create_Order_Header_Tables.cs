@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Impl.Migrations
                         OrderStatus = c.String(maxLength: 1, fixedLength: true, unicode: false),
                         FutureItems = c.Boolean(nullable: false),
                         ErrorStatus = c.Boolean(nullable: false),
-                        RouteNumber = c.String(maxLength: 3, fixedLength: true, unicode: false),
+                        RouteNumber = c.String(maxLength: 4, fixedLength: false, unicode: false),
                         StropNumber = c.String(maxLength: 3, fixedLength: true, unicode: false),
                         CreatedUtc = c.DateTime(nullable: false),
                         ModifiedUtc = c.DateTime(nullable: false),

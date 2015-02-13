@@ -25,10 +25,10 @@
           </div>
           <div>
             <span><strong>Item #</strong> {{item.itemnumber}} | </span>
-            <span ng-if="hasCasePrice(item)">
+            <span ng-if="casePriceInd">
               <strong>Case:</strong> {{::item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
             </span>
-            <span ng-if="hasPackagePrice(item)">
+            <span ng-if="packagePriceInd">
               <strong>Package:</strong> {{::item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
             </span>
             <span ng-if="item.packsize !== null"><strong>Pack/Size:</strong> {{::item.packsize}}</span>
@@ -40,13 +40,18 @@
             <span ng-if="item.upc !== null && item.upc !== ''"><strong>UPC Vendor:</strong> {{::item.upc}}</span>
           </div>
         </div>
-        <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" class="hidden-print sub-content">
+        <div ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItemInd" class="hidden-print sub-content">
           <div class="context-menu-template btn-primary btn btn-lg" context-menu context-menu-template>
             Add To...
             <span class="icon-arrow-down6"></span>
           </div>
 
           <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
+            <span ng-if="packagePriceInd">Order By Package             
+                  <ng-form name="eachForm_mobile">
+                    <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                  </ng-form>
+                </span>             
         </div>
      </div>
     </div>
@@ -222,7 +227,7 @@
         </tab>
         <tab heading="Images" ng-show="item.productimages.length > 0">
           <div class="hidden-print item-details__images">
-              <a ng-href="{{image.url}}" target="_system" ng-repeat="image in item.productimages">
+              <a ng-click="openExternalLink(image.url)" ng-repeat="image in item.productimages">
                   <img ng-src="{{image.url}}" alt="" style="height:200px;" border="0"/>
               </a>
               <br />

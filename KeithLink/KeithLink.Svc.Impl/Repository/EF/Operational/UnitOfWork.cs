@@ -4,12 +4,17 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Common.Impl.Logging;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 	public class UnitOfWork : IUnitOfWork {
-        #region ctor
-        public UnitOfWork() {
-            this.Context = new BEKDBContext();
+		private IEventLogRepository eventLogRepository;
+		
+		#region ctor
+		public UnitOfWork(IEventLogRepository eventLogRepository)
+		{
+			this.Context = new BEKDBContext(eventLogRepository);
             this.Context.Configuration.LazyLoadingEnabled = true;
         }
 

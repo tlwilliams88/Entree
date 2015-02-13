@@ -20,7 +20,7 @@ angular.module('bekApp')
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
-    $scope.numberListNamesToShow = 5;
+    $scope.numberListNamesToShow = 10;
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -235,16 +235,6 @@ angular.module('bekApp')
       });
     };
 
-    $scope.favoriteAll = function() {
-      $scope.addItemsToList(ListService.getFavoritesList());
-    };
-
-    $scope.unfavoriteAll = function() {
-      var items = getMultipleSelectedItems(),
-        favoritesList = ListService.getFavoritesList();
-
-      ListService.deleteMultipleItems(favoritesList.listid, items);
-    };
 
     /********************
     DRAG HELPERS
@@ -411,7 +401,6 @@ angular.module('bekApp')
     ******/
 
     $scope.openListImportModal = function () {
-
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/listimportmodal.html',
         controller: 'ImportModalController'

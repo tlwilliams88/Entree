@@ -1,7 +1,9 @@
 <div page-header-bar>
 	<div header-message>
 		Product Catalog
+		 <a target="_tab" href="/Assets/help/Glossary.pdf" title="Glossary of Abbreviations" class="large-icon icon-book"></a> 
 	</div>
+
 	<div header-buttons>
 		<button class="btn btn-icon btn-default" title="Print" ng-click="print()"><span class="icon-printer"></span></button>
 		<button class="btn btn-icon btn-default" title="Export" ng-click="openExportModal()"><span class="icon-export"></span></button>
@@ -36,7 +38,7 @@
       <accordion close-others="oneAtATime">
 				<accordion-group is-open="status.openCategories" ng-show="facets.categories.available.length > 0">
 					<accordion-heading>
-						Categories<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
+						Categories<i class="pull-right" ng-class="{'icon-arrow-up6': status.openCategories, 'icon-arrow-down7': !status.openCategories}"></i>
 					</accordion-heading>
 					<div ng-repeat="category in facets.categories.available" class="panel panel-default">
 						<div class="panel-body">
@@ -46,7 +48,7 @@
 				</accordion-group>
 				<accordion-group is-open="status.openBrand" ng-show="facets.brands.available.length > 0">
 					<accordion-heading>
-						Brand<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
+						Brand<i class="pull-right" ng-class="{'icon-arrow-up6': status.openBrand, 'icon-arrow-down7': !status.openBrand}"></i>
 					</accordion-heading>
 					<div ng-repeat="brand in facets.brands.available" class="panel panel-default">
 						<div class="panel-body">
@@ -63,7 +65,7 @@
 
                 <accordion-group is-open="status.openManufacturer" ng-show="facets.mfrname.available.length > 0">
 					<accordion-heading>
-						Manufacturer<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
+						Manufacturer<i class="pull-right" ng-class="{'icon-arrow-up6': status.openManufacturer, 'icon-arrow-down7': !status.openManufacturer}"></i>
 					</accordion-heading>
 					<div ng-repeat="manufacturer in facets.mfrname.available" class="panel panel-default">
 						<div class="panel-body">
@@ -80,7 +82,7 @@
 
 				<accordion-group is-open="status.openDietary" ng-show="facets.dietary.available.length > 0">
 					<accordion-heading>
-						Dietary<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
+						Dietary<i class="pull-right" ng-class="{'icon-arrow-up6': status.openDietary, 'icon-arrow-down7': !status.openDietary}"></i>
 					</accordion-heading>
 					<div ng-repeat="diet in facets.dietary.available" class="panel panel-default">
 						<div class="panel-body">
@@ -95,7 +97,7 @@
 				</accordion-group>
 				<accordion-group is-open="status.openSpecs" ng-show="facets.itemspecs.available.length > 0">
 					<accordion-heading>
-						Item Specifications<i class="pull-right glyphicon" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
+						Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.openSpecs, 'icon-arrow-down7': !status.openSpecs}"></i>
 					</accordion-heading>
 					<div ng-repeat="spec in facets.itemspecs.available" class="panel panel-default">
 						<div class="panel-body">
@@ -231,24 +233,24 @@
 				<tr>
           <th></th>
           <th class="sort-col-header" ng-click="sortTable('itemnumber')">
-            Item #
-            <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span>
+            Item 
+            <span># <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span></span>
           </th>
           <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('brand_description_not_analyzed')">
-            Brand
-            <span sort-icons field="'brand_description_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span>
+            <span>Brand <span sort-icons field="'brand_description_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortTable('name_not_analyzed')">
-            Name
-            <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span>
+            <span>Name <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='each';sortOrder=!sortOrder;">
+            <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          </th>
           <th class="hidden-mobile-visible-print"></th>
           <th class="hidden-mobile-visible-print" ng-show="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
-            Price
-            <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span>
+            <span>Price <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span></span>
           </th>
           <th></th>
         </tr>
@@ -269,6 +271,12 @@
           </td>
           <td class="hidden-mobile-visible-print">
             {{::item.pack | number}} / {{::item.size}}
+          </td>
+          <td class="input-col hidden-mobile-visible-print">          
+            <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
+              <input type="checkbox" ng-model="item.each" id="each" name="each" />
+              <label for="each"></label>
+            </ng-form>
           </td>
           <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
           </td>
@@ -311,6 +319,14 @@
                   <td>Price</td>
                   <td>{{::item.caseprice}}</td>
                 </tr>
+ 				<tr ng-if="hasPackagePrice(item)">
+                <td>Each</td>
+                <td>
+                  <ng-form name="eachForm_mobile">
+                    <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                  </ng-form>
+                </td>
+              </tr>
               </tbody>
             </table>
           </td>

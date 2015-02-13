@@ -11,7 +11,7 @@ angular.module('bekApp')
   .factory('ExportService', [ '$http',
     function ($http) {
     
-    function downloadFile(data, status, headers, fileType) {
+    function downloadFile(data, status, headers, fileType, httpPath) {
 
       var octetStreamMime = 'application/octet-stream';
       var success = false;
@@ -161,7 +161,7 @@ angular.module('bekApp')
               selectedType = config.selectedtype;              
             }
 
-            downloadFile(data, status, headers, selectedType);
+            downloadFile(data, status, headers, selectedType, httpPath);
           });
       },
 

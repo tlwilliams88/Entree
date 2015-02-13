@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -42,5 +43,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         Guid GetUserIdForControlNumber(int controlNumber);
+
+		[OperationContract]
+		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
+
 	}
 }

@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_EXTERNAL_PURCHASINGAPPROVER = "Approver";
         public const string ROLE_EXTERNAL_PURCHASINGBUYER = "Buyer";
 
-        public const string ROLE_CORPORATE_ADMIN = "CORP-DIS-eBusiness";
+        public const string ROLE_CORPORATE_ADMIN = "CORP-LS-SYS-AC-Entree_Admins";
         public const string ROLE_CORPORATE_SECURITY = "CORP-DIS-Security";
 
         public const string ROLE_INTERNAL_CSR_FAQ = "fabq-ls-csv-all";
@@ -52,20 +52,49 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_DSR_FSA = "fsan-ls-sys-ac-dsrs";
         public const string ROLE_INTERNAL_DSR_FOK = "fokc-ls-sys-ac-dsrs";
 
-        public const string ROLE_INTERNAL_MIS_FAQ = "fabq-ls-mis-all";
-        public const string ROLE_INTERNAL_MIS_FAM = "fama-ls-mis-all";
-        public const string ROLE_INTERNAL_MIS_FDF = "fdfw-ls-mis-all";
-        public const string ROLE_INTERNAL_MIS_FHS = "fhst-ls-mis-all";
-        public const string ROLE_INTERNAL_MIS_FLR = "flrk-ls-mis-all";
-        public const string ROLE_INTERNAL_MIS_FSA = "fsan-ls-mis-all";
-        public const string ROLE_INTERNAL_MIS_FOK = "fokc-ls-mis-all";
+        public const string ROLE_INTERNAL_MIS_FAQ = "FABQ-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FAM = "FAMA-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FDF = "FDFW-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FHS = "FHST-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FLR = "FLRK-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FAR = "FLAR-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FSA = "FSAN-LS-SYS-AC-Entree_BranchIS";
+        public const string ROLE_INTERNAL_MIS_FOK = "FOKC-LS-SYS-AC-Entree_BranchIS";
+        
 
         public static readonly List<string> INTERNAL_USER_ROLES = new List<string>() { 
             ROLE_CORPORATE_ADMIN, ROLE_CORPORATE_SECURITY, 
             ROLE_INTERNAL_CSR_FAQ, ROLE_INTERNAL_CSR_FAM, ROLE_INTERNAL_CSR_FDF, ROLE_INTERNAL_CSR_FHS, ROLE_INTERNAL_CSR_FLR, ROLE_INTERNAL_CSR_FSA, ROLE_INTERNAL_CSR_FOK,
             ROLE_INTERNAL_DSM_FAQ, ROLE_INTERNAL_DSM_FAM, ROLE_INTERNAL_DSM_FDF, ROLE_INTERNAL_DSM_FHS, ROLE_INTERNAL_DSM_FLR, ROLE_INTERNAL_DSM_FSA, ROLE_INTERNAL_DSM_FOK,
             ROLE_INTERNAL_DSR_FAQ, ROLE_INTERNAL_DSR_FAM, ROLE_INTERNAL_DSR_FDF, ROLE_INTERNAL_DSR_FHS, ROLE_INTERNAL_DSR_FLR, ROLE_INTERNAL_DSR_FSA, ROLE_INTERNAL_DSR_FOK,
-            ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM, ROLE_INTERNAL_MIS_FDF, ROLE_INTERNAL_MIS_FHS, ROLE_INTERNAL_MIS_FLR, ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK
+            ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM, ROLE_INTERNAL_MIS_FDF, ROLE_INTERNAL_MIS_FHS, ROLE_INTERNAL_MIS_FLR, ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK,
+            ROLE_INTERNAL_MIS_FAR
+        };
+
+        public static readonly List<string> BEK_SYSADMIN_ROLES = new List<string>() {
+           ROLE_CORPORATE_ADMIN, ROLE_CORPORATE_SECURITY 
+        };
+
+        public static readonly List<string> DSR_ROLES = new List<string>() {
+            ROLE_INTERNAL_DSR_FAQ, ROLE_INTERNAL_DSR_FAM,
+            ROLE_INTERNAL_DSR_FDF, ROLE_INTERNAL_DSR_FHS,
+            ROLE_INTERNAL_DSR_FLR, ROLE_INTERNAL_DSR_FSA,
+            ROLE_INTERNAL_DSR_FOK
+        };
+
+        public static readonly List<string> DSM_ROLES = new List<string>() {
+            ROLE_INTERNAL_DSM_FAQ, ROLE_INTERNAL_DSM_FAM,
+            ROLE_INTERNAL_DSM_FDF, ROLE_INTERNAL_DSM_FHS,
+            ROLE_INTERNAL_DSM_FLR, ROLE_INTERNAL_DSM_FSA,
+            ROLE_INTERNAL_DSM_FOK
+        };
+
+
+        public static readonly List<string> MIS_ROLES = new List<string>() {
+            ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM,
+            ROLE_INTERNAL_MIS_FDF, ROLE_INTERNAL_MIS_FHS,
+            ROLE_INTERNAL_MIS_FLR, ROLE_INTERNAL_MIS_FAR,
+            ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK
         };
 
         // Elastic Search : Indexes

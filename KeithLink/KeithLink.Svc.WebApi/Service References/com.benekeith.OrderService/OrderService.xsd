@@ -10,6 +10,7 @@
   <xs:element name="UserSelectedContext" nillable="true" type="tns:UserSelectedContext" />
   <xs:complexType name="BaseProductInfo">
     <xs:sequence>
+      <xs:element minOccurs="0" name="average_weight" type="xs:double" />
       <xs:element minOccurs="0" name="brand" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="brand_control_label" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="brand_extended_description" nillable="true" type="xs:string" />

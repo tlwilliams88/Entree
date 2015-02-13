@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.OleDb;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -153,4 +154,77 @@ namespace KeithLink.Common.Core.Extensions
             return Guid.Parse(row[colName].ToString());
         }
     }
+
+	public static class SQLDataReaderExtentions
+	{
+		public static string GetString(this OleDbDataReader reader, string colName)
+		{
+			return reader[colName] == DBNull.Value ? string.Empty : reader[colName].ToString();
+		}
+
+		public static bool? GetNullableBool(this OleDbDataReader reader, string colName)
+		{
+			return reader[colName] == DBNull.Value ? null : (bool?)reader[colName];
+		}
+
+		public static Guid? GetNullableGuid(this OleDbDataReader reader, string colName)
+		{
+			if (reader[colName] == DBNull.Value)
+				return null;
+
+			return Guid.Parse(reader[colName].ToString());
+		}
+
+		public static int? GetNullableInt(this OleDbDataReader reader, string colName)
+		{
+			if (reader[colName] == DBNull.Value)
+				return null;
+
+			var value = reader[colName].ToString();
+
+			int intValue = 0;
+			int.TryParse(value, out intValue);
+
+			return (int?)intValue;
+
+		}
+
+
+		public static double? GetNullableDouble(this OleDbDataReader reader, string colName)
+		{
+			if (reader[colName] == DBNull.Value)
+				return null;
+
+			var value = reader[colName].ToString();
+
+			double doubleValue = 0;
+			double.TryParse(value, out doubleValue);
+
+			return (double?)doubleValue;
+		}
+
+		public static decimal? GetNullableDecimal(this OleDbDataReader reader, string colName)
+		{
+			if (reader[colName] == DBNull.Value)
+				return null;
+
+			var value = reader[colName].ToString();
+
+			decimal doubleValue = 0;
+			decimal.TryParse(value, out doubleValue);
+
+			return (decimal?)doubleValue;
+		}
+
+		public static DateTime? GetNullableDateTime(this OleDbDataReader reader, string colName)
+		{
+			return reader[colName] == DBNull.Value ? null : (DateTime?)reader[colName];
+		}
+
+		public static Guid GetGuid(this OleDbDataReader reader, string colName)
+		{
+			return Guid.Parse(reader[colName].ToString());
+		}
+	}
+
 }

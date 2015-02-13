@@ -1,15 +1,58 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'orders', 'OrderService',
-  function ($scope, $state, $timeout, $modal, orders, OrderService) {
-
-  $scope.sortBy = 'createddate';
-  $scope.sortOrder = true;
-
-  $scope.orders = orders;
+.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'OrderService', 'PagingModel',
+  function ($scope, $state, $timeout, $modal, OrderService, PagingModel) {
 
   var currentCustomer = $scope.selectedUserContext.customer;
+
+  function setOrders(data) {
+    $scope.orders = data.results;
+    $scope.totalOrders = data.totalResults;
+  }
+  function appendOrders(data) {
+    $scope.orders = $scope.orders.concat(data.results);
+  }
+  function startLoading() {
+    $scope.loadingResults = true;
+  }
+  function stopLoading() {
+    $scope.loadingResults = false;
+  }
+
+  $scope.sort = {
+    field: 'createddate',
+    sortDescending: true
+  };
+
+  var ordersPagingModel = new PagingModel( 
+    OrderService.getOrders, 
+    setOrders,
+    appendOrders,
+    startLoading,
+    stopLoading,
+    $scope.sort
+  );
+
+  ordersPagingModel.loadData();
+    
+  $scope.filterOrders = function(filterFields) {
+    ordersPagingModel.filterData(filterFields);
+  };
+  $scope.clearFilters = function() {
+    $scope.filterFields = {};
+    ordersPagingModel.clearFilters();
+  };
+  $scope.infiniteScrollLoadMore = function() {
+    ordersPagingModel.loadMoreData($scope.orders, $scope.totalOrders, $scope.loadingResults);
+  };
+  $scope.sortOrders = function(field, sortDescending) {
+    $scope.sort = {
+      field: field,
+      sortDescending: sortDescending
+    };
+    ordersPagingModel.sortData($scope.sort);
+  };
 
   var data = { response: {}, calls: 0 };
   var poller = function() {
@@ -30,11 +73,10 @@ angular.module('bekApp')
         }
 
       } else {
-        // update order history
-        OrderService.getAllOrders().then(function(orders) {
-          $scope.displayMessage('success', 'Successfully received lastest order updates.');
-          $scope.orders = orders;
-        });
+        $scope.displayMessage('success', 'Successfully received lastest order updates.');
+        ordersPagingModel.pageIndex = 0;
+        ordersPagingModel.filter = [];
+        ordersPagingModel.loadData();
 
       }
     });      

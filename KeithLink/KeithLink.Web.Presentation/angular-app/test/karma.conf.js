@@ -22,6 +22,7 @@ module.exports = function(config) {
       'app/lib/angular-local-storage/angular-local-storage.js',
       'app/lib/angular-ui-router/angular-ui-router.js',
       'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js',
+      'app/lib/angular-carousel/angular-carousel.js',
       'app/lib/ng-mobile-menu/ng-mobile-menu.js',
       'app/lib/angular-dragdrop/angular-dragdrop.js',
       'app/lib/angular-ui-sortable/sortable.js',

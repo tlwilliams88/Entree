@@ -27,6 +27,7 @@
     <MetadataSource Address="http://localhost:1317/OrderService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
+    <MetadataFile FileName="OrderService7.xsd" MetadataType="Schema" ID="7e3a9303-54d4-4c15-b1d6-ffd481d9c029" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd8" />
     <MetadataFile FileName="OrderService.xsd" MetadataType="Schema" ID="7b61963a-2e31-48b9-9a74-78dbc5f51bac" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd2" />
     <MetadataFile FileName="OrderService1.xsd" MetadataType="Schema" ID="f16d6f9b-c9d4-4b65-8b83-03d417cd7f12" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd3" />
     <MetadataFile FileName="OrderService2.xsd" MetadataType="Schema" ID="e9d5230a-4f0e-4f42-b5d4-c2886b1a5add" SourceId="1" SourceUrl="http://localhost:1317/OrderService.svc?xsd=xsd1" />

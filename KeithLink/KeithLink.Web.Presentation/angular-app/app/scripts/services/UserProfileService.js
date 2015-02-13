@@ -16,8 +16,7 @@ angular.module('bekApp')
       // gets and sets current user profile
       getCurrentUserProfile: function(email) {
 
-        return Service.getUserProfile(email).then(function (profile) {          
-
+        return Service.getUserProfile(email).then(function (profile) {             
           LocalStorage.setProfile(profile);
 
           // check if user is Order entry customer to determine which branch/context to select
@@ -41,6 +40,12 @@ angular.module('bekApp')
         });
       },
 
+          resetPassword: function(email) {          
+        var promise = $http.post('/profile/forgotpassword?emailAddress='+email);
+        return UtilityService.resolvePromise(promise);
+      },
+
+
       getUserProfile: function(email) {
         var data = {
           params: {
@@ -49,9 +54,35 @@ angular.module('bekApp')
         };
 
         return $http.get('/profile', data).then(function(response){
-          $log.debug(response.data);
-          return response.data.userProfiles[0];
+          var profile = response.data.userProfiles[0];
+          $log.debug(profile.data);
+          Service.updateDisplayName(profile);  
+          return profile;
         });
+      },
+
+
+      checkEmailLength: function(email){
+      if(email.indexOf('@')>20){
+        toaster.pop('error', null, 'Please use a shorter e-mail address.');
+        return false;
+      }
+      else{
+        return true;
+      }
+        },
+
+      updateDisplayName: function(profile){
+        // set display name for user
+          if (profile.firstname === 'guest' && profile.lastname === 'account') {
+            profile.displayname = profile.emailaddress;
+          } else if (profile.firstname && profile.lastname) {
+            profile.displayname = profile.firstname + ' ' + profile.lastname;
+          } else if (profile.firstname) {
+            profile.displayname = profile.firstname;
+          } else {
+            profile.displayname = profile.emailaddress;
+          }
       },
 
       getAllUserCustomers: function(userId) {
@@ -91,23 +122,25 @@ angular.module('bekApp')
         });
       },
 
-      updateUserProfile: function(userProfile) {
-        var promise = $http.put('/profile', userProfile);
-
-        return UtilityService.resolvePromise(promise).then(function(successResponse) {
-          var profile = successResponse.userProfiles[0];
-          $log.debug(profile);
-          LocalStorage.setProfile(profile);
-          return profile;
-        });
+      removeUserFromCustomerGroup: function(userId, accountId) {
+        var promise = $http.delete('/profile/' + userId + '/account/' + accountId);
+        return UtilityService.resolvePromise(promise);
       },
 
-      updateUserProfileFromAdmin: function(userProfile) {
+      updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
-
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
+          var loggedinprofile = LocalStorage.getProfile(); //Get current users profile from LocalStorage
+
           var profile = successResponse.userProfiles[0];
           $log.debug(profile);
+          //Only save updated profile back to local storage if the profile being updated is the same as
+          //the currently logged in user. If this is an admin editing another user's profile, don't save
+          //to local storage
+          if(loggedinprofile.userid === profile.userid){
+            LocalStorage.setProfile(profile);
+          } 
+          Service.updateDisplayName(profile);        
           return profile;
         });
       },
@@ -126,7 +159,7 @@ angular.module('bekApp')
 
         return deferred.promise;
       },
-
+      
       /**********
       AVATAR
       **********/

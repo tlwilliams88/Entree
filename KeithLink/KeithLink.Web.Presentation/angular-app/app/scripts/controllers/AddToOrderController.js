@@ -4,24 +4,38 @@ angular.module('bekApp')
   .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService',
     function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService) {
     
+
     function init() {
-      if (selectedCart) {
+      
+      $scope.carts = carts;
+      $scope.lists = lists;
+      $scope.changeOrders = changeOrders;
+      $scope.shipDates = CartService.shipDates;
+      $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
+      
+      $scope.selectedList = selectedList;
+      if ($stateParams.cartId === 'New') { 
+        $scope.createNewCart();
+      } else if (selectedCart) {
         $scope.selectedCart = selectedCart;
         $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
       } else {
         // create new cart if no cart was selected
         $scope.createNewCart();
       }
-      
-      $scope.carts = carts;
-      $scope.lists = lists;
-      $scope.shipDates = CartService.shipDates;
-      $scope.changeOrders = changeOrders;
-      $scope.selectedList = selectedList;
-      $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
 
       $scope.sortBy = 'position';
       $scope.sortOrder = false;
+
+      for (var i = 0; i < $scope.selectedList.items.length - 1; i++) {
+        $scope.$watch('selectedList.items[' + i + '].quantity', function(newVal, oldVal) {
+          var idx = this.exp.substr(this.exp.indexOf('[') + 1, this.exp.indexOf(']') - this.exp.indexOf('[') - 1);
+          var item = $scope.selectedList.items[idx];
+          item.extPrice = PricingService.getPriceForItem(item);
+
+          refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+        });
+      }
     }
 
     // INFINITE SCROLL
@@ -46,11 +60,15 @@ angular.module('bekApp')
     $scope.goToList = function(list, cart) {
       if (cart.id) { // make sure cart is not a change order 
 
-        // TODO: unsaved changes warning happens AFTER selected cart is already set to active
-        CartService.setActiveCart(cart.id).then(function() {
-          // wait until cart is successfuly set to 'active' to redirect so item.quantityincart is updated
+        if (cart.id === 'New') {
           redirect(list.listid, cart.id);
-        });
+        } else {
+          // TODO: unsaved changes warning happens AFTER selected cart is already set to active
+          CartService.setActiveCart(cart.id).then(function() {
+            // wait until cart is successfuly set to 'active' to redirect so item.quantityincart is updated
+            redirect(list.listid, cart.id);
+          });
+        }
       } else {
         redirect(list.listid, cart.ordernumber);
       }
@@ -66,6 +84,7 @@ angular.module('bekApp')
       cart.id = 'New';
       $scope.selectedCart = cart;
       $scope.isChangeOrder = false;
+      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     };
 
     function combineDuplicateItemNumbers(items) {
@@ -178,16 +197,13 @@ angular.module('bekApp')
       }
     };
 
-    $scope.canOrderItem = PricingService.canOrderItem;
-    $scope.hasPackagePrice = PricingService.hasPackagePrice;
-    $scope.getPriceForItem = PricingService.getPriceForItem;
-
-    $scope.getSubtotal = function(cartItems, listItems) {
+    function refreshSubtotal(cartItems, listItems) {
       var listItemsWithQuantity = $scope.getListItemsWithQuantity(listItems);
 
       // get subtotal for cart items and list items with quantity > 0
-      return PricingService.getSubtotalForItems(cartItems) + PricingService.getSubtotalForItems(listItemsWithQuantity);
-    };
+      $scope.subtotal = PricingService.getSubtotalForItems(cartItems) + PricingService.getSubtotalForItemsWithPrice(listItemsWithQuantity);
+      return $scope.subtotal;
+    }
 
     $scope.getItemCount = function(cart, list) {
       if (cart && list) {
@@ -210,6 +226,7 @@ angular.module('bekApp')
       }
     };
 
+    // update quantity from on hand amount and par level
     $scope.updateQuantity = function(item) {
       if (!isNaN(item.onhand)) {
         var quantity = Math.ceil(item.parlevel - item.onhand);

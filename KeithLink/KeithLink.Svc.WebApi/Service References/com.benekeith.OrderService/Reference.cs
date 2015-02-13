@@ -74,6 +74,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetUserIdForControlNumber", ReplyAction="http://tempuri.org/IOrderService/GetUserIdForControlNumberResponse")]
         System.Threading.Tasks.Task<System.Guid> GetUserIdForControlNumberAsync(int controlNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetPagedOrders", ReplyAction="http://tempuri.org/IOrderService/GetPagedOrdersResponse")]
+        KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Orders.Order> GetPagedOrders(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetPagedOrders", ReplyAction="http://tempuri.org/IOrderService/GetPagedOrdersResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Orders.Order>> GetPagedOrdersAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -181,6 +187,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         public System.Threading.Tasks.Task<System.Guid> GetUserIdForControlNumberAsync(int controlNumber) {
             return base.Channel.GetUserIdForControlNumberAsync(controlNumber);
+        }
+        
+        public KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Orders.Order> GetPagedOrders(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.GetPagedOrders(userId, customerInfo, paging);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Orders.Order>> GetPagedOrdersAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.GetPagedOrdersAsync(userId, customerInfo, paging);
         }
     }
 }

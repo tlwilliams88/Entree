@@ -83,7 +83,10 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();
 
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 1 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "CustomerNumber", Order = 1 });
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "CustomerName", Order = 2 });
+			
+			defaultConfig.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 3 });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "TypeDescription", Order = 10 });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "StatusDescription", Order = 20 });
 			defaultConfig.Add(new ExportModelConfiguration() { Field = "DueDate", Order = 30 });

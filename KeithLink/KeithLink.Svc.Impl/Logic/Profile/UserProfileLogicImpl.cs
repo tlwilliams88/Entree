@@ -7,6 +7,7 @@ using KeithLink.Svc.Core;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
+using System.DirectoryServices;
 using System.Linq;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -26,6 +27,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #region attributes
         private const string GUEST_USER_WELCOME = "GuestUserWelcome";
         private const string CREATED_USER_WELCOME = "CreatedUserWelcome";
+        private const string RESET_PASSWORD = "ResetPassword";
+
 		protected string CACHE_GROUPNAME { get { return "Profile"; } }
 		protected string CACHE_NAME { get { return "Profile"; } }
 		protected string CACHE_PREFIX { get { return "Default"; } }
@@ -360,27 +363,60 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // Expire the users password so they can change it at neck login
             _extAd.ExpirePassword( emailAddress );
-
-            try {
-                var template = _messagingServiceRepository.ReadMessageTemplateForKey( CREATED_USER_WELCOME );
-                if (template != null) {
-                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = generatedPassword } );
-                } else { 
-                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", CREATED_USER_WELCOME));
-                };
-            } catch (Exception ex) {
-                _eventLog.WriteErrorLog( "Error sending user created welcome email", ex );
-            }
+            SendPasswordChangeEmail( emailAddress, generatedPassword, CREATED_USER_WELCOME );
 
             return GetUserProfile( emailAddress );
         }
 
+        /// <summary>
+        /// Reset a password administration style (no old password required)
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        public void ResetPassword( string emailAddress ) {
+            if (emailAddress == null)
+                throw new ArgumentException( "EmailAddress cannot be null" );
+
+            string generatedPassword = GenerateTemporaryPassword();
+
+            _extAd.UpdatePassword( emailAddress, generatedPassword );
+            _extAd.ExpirePassword( emailAddress );
+
+            SendPasswordChangeEmail( emailAddress, generatedPassword, RESET_PASSWORD );
+        }
+
+        /// <summary>
+        /// Send Password Change emails with a specific template
+        /// </summary>
+        /// <param name="emailAddress"></param>
+        /// <param name="newPassword"></param>
+        /// <param name="MessageTemplate"></param>
+        private void SendPasswordChangeEmail(string emailAddress, string newPassword, string MessageTemplate) {
+            try {
+                var template = _messagingServiceRepository.ReadMessageTemplateForKey( MessageTemplate );
+                if (template != null) {
+                    _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, new { password = newPassword, url = Configuration.PresentationUrl } );
+                } else { 
+                    throw new Exception(String.Format("Message template: {0} returned null. Message for new user creation could not be sent", MessageTemplate));
+                };
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog( "Error sending user profile email", ex );
+            }
+        }
+
         private string GenerateTemporaryPassword()
         {
-            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
-            for (int i = 0; !PasswordMeetsComplexityRequirements(generatedPassword) && i < 8; i++)
-                generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 3);
+            string generatedPassword = NewPassword();
+
+            for (int i = 0; !PasswordMeetsComplexityRequirements( generatedPassword ) && i < 8; i++)
+                generatedPassword = NewPassword(); 
+
             return generatedPassword;
+        }
+
+        private string NewPassword() {
+            Random rnd = new Random();
+            string generatedPassword = System.Web.Security.Membership.GeneratePassword(8, 1);
+            return Regex.Replace( generatedPassword, @"[^a-zA-Z0-9]", r => rnd.Next( 0, 9 ).ToString() );
         }
 
         /// <summary>
@@ -444,35 +480,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (isInternalUser)
             {
                 UserPrincipal user = _intAd.GetUser(csProfile.Email);
-                string internalUserRole = _intAd.FirstUserGroup(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
-                if (csProfile.Email.ToLower().StartsWith("pabrandt") || csProfile.Email.ToLower().StartsWith("jmmcmillan"))
-                {
-                    userRole = "owner";
-                }
-                else if (internalUserRole.ToLower().Contains("sys-ac-dsrs"))
-                {
-                    dsrRole = internalUserRole;
-                    dsrNumber = KeithLink.Common.Core.Extensions.StringExtensions.ToInt(user.Description) != null ? user.Description : string.Empty; //because AD user description field is also used for job description for non-dsr/dsm employees
-                    userRole = "dsr";
-                    userBranch = internalUserRole.Substring(0, 3);
-                }
-                else if (internalUserRole.ToLower().Contains("sys-ac-dsms"))
-                {
-                    dsmRole = internalUserRole;
-                    userRole = "dsm";
-                    userBranch = internalUserRole.Substring(0, 3);
-                }
-                else if (internalUserRole.ToLower().Contains("ls-csv-all") || internalUserRole.ToLower().Contains("ls-mis-all"))
-                {
-                    userRole = "branchismanager";
-                    userBranch = internalUserRole.Substring(0, 3);
-                }
-                else if (internalUserRole.Equals(Svc.Core.Constants.ROLE_CORPORATE_ADMIN, StringComparison.InvariantCultureIgnoreCase) || internalUserRole.Equals(Svc.Core.Constants.ROLE_CORPORATE_SECURITY, StringComparison.InvariantCultureIgnoreCase))
-                {
+                DirectoryEntry directoryEntry = (DirectoryEntry)user.GetUnderlyingObject();
+                List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
+
+                if (internalUserRoles.Intersect( Constants.BEK_SYSADMIN_ROLES ).Count() > 0) {
                     userRole = "beksysadmin";
-                }
-                else
+                } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
+                    userRole = "branchismanager";
+                    userBranch = internalUserRoles.Intersect( Constants.MIS_ROLES ).FirstOrDefault().ToString().Substring( 0, 3 );
+                } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
+                    dsmRole = internalUserRoles.Intersect( Constants.DSM_ROLES ).FirstOrDefault().ToString();
+                    userRole = "dsm";
+                    userBranch = dsmRole.Substring( 0, 3 );
+                    dsrNumber = StringExtensions.ToInt( user.Description ) != null ? user.Description : string.Empty;
+                } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
+                    dsrRole = internalUserRoles.Intersect( Constants.DSR_ROLES ).FirstOrDefault().ToString();
+                    userRole = "dsr";
+                    dsrNumber = StringExtensions.ToInt( user.Description ) != null ? user.Description : string.Empty;
+                    userBranch = dsrRole.Substring( 0, 3 );
+                } else {
                     userRole = "guest";
+                }
+
             }
             else
             {
@@ -758,7 +787,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private void UpdateCustomersForUser(List<Customer> customerList, string roleName, UserProfile existingUser)
         {
-            var customers = GetCustomersForUser(existingUser);
+            var customers = GetNonPagedCustomersForUser(existingUser);
 
             IEnumerable<Guid> custsToAdd = customerList.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
             IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(customerList.Select(c => c.CustomerId));
@@ -773,31 +802,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public Customer GetCustomerByCustomerNumber(string customerNumber, string branchId)
         {
             return _customerRepo.GetCustomerByCustomerNumber(customerNumber, branchId);
-        }
-
-        public CustomerReturn GetCustomers(CustomerFilterModel customerFilters)
-        {
-			//List<Customer> allCustomers = _customerRepo.GetCustomers();
-            List<Customer> retCustomers = new List<Customer>();
-
-            if (customerFilters != null)
-            {
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.AccountId)) {
-					retCustomers = _customerRepo.GetCustomersForParentAccountOrganization(customerFilters.AccountId.ToGuid().ToCommerceServerFormat());
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.UserId)) {
-                    retCustomers.AddRange(GetCustomersForUser(GetUserProfile(customerFilters.UserId.ToGuid()).UserProfiles[0]));
-                }
-                if (customerFilters != null && !String.IsNullOrEmpty(customerFilters.Wildcard)) {
-					retCustomers = _customerRepo.GetCustomersByNameOrNumber(customerFilters.Wildcard);
-                }
-            }
-            else
-                return null;
-            
-            // TODO: add logic to filter down for internal administration versus external owner
-
-            return new CustomerReturn() { Customers = retCustomers == null ? null : retCustomers.Distinct(new CustomerNumberComparer()).ToList() };
         }
 
         public AccountReturn GetAccounts(AccountFilterModel accountFilters)
@@ -824,6 +828,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
+
+		public PagedResults<Account> GetPagedAccounts(PagingModel paging)
+		{
+			var accounts = _accountRepo.GetAccounts();
+
+			return accounts.AsQueryable().GetPage(paging);
+		}
 
         public Account GetAccount(Guid accountId)
         {
@@ -860,6 +871,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 .GroupBy(u => u.UserId)
                 .Select(grp => grp.First())
                 .ToList();
+
+
+			foreach (var up in usersReturn.CustomerUserProfiles)
+				up.RoleName = GetUserRole(up.EmailAddress); 
+
 
             return usersReturn;
         }
@@ -899,7 +915,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public UserProfileReturn GetUserProfileByGuid(Guid UserId)
         {
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = "{fcbd9217-980f-4030-88c3-9a3e8d459fce}";//UserId.ToString();
+            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
@@ -953,6 +969,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             IEnumerable<Guid> usersToAdd = users.Select(u => u.UserId).Except(existingUsers.Select(u => u.UserId));
             IEnumerable<Guid> usersToDelete = existingUsers.Select(u => u.UserId).Except(users.Select(u => u.UserId));
 
+			//First make sure the customer is not already a member of an account
+			foreach (Guid custId in customersToAdd)
+			{
+				var cust = _customerRepo.GetCustomerById(custId);
+				if (cust != null)
+					if (cust.AccountId != null)
+						throw new Exception(string.Format("Customer {0}-{1} is already a member of a Customer Group", cust.CustomerNumber, cust.CustomerName));
+			}
+
+
+
             foreach (Guid g in customersToAdd)
                 _accountRepo.AddCustomerToAccount(accountId, g);
             foreach (Guid g in customersToDelete)
@@ -975,58 +1002,40 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		
 		public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account)
 		{
-			List<Customer> allCustomers = new List<Customer>();
+			if (string.IsNullOrEmpty(searchTerms)) searchTerms = "";
+
 			if (!string.IsNullOrEmpty(account))
-				allCustomers = _customerRepo.GetCustomersForAccount(account.ToGuid().ToCommerceServerFormat());
-			else
-				allCustomers = GetCustomersForUser(user, searchTerms);
-			
-			if (!string.IsNullOrEmpty(searchTerms))
+				return _customerRepo.GetPagedCustomersForAccount(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms, account.ToGuid().ToCommerceServerFormat());
+
+
+			if (IsInternalAddress(user.EmailAddress))
 			{
-				//Build filter
-				paging.Filter = new FilterInfo()
+				if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber))
 				{
-					Field = "CustomerName",
-					FilterType = "contains",
-					Value = searchTerms,
-					Condition = "||",
-					Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "CustomerNumber", Value = searchTerms, FilterType = "contains" } }
-				};
-			}
-			
-			var returnValue = allCustomers.AsQueryable<Customer>().GetPage<Customer>(paging, "CustomerName");
+					// lookup customers by their assigned dsr number
+					return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
+					
+				}
+                if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber))
+                {
+                    // lookup customers by their assigned dsr number
+					return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+					
+                }
+				else if (user.RoleName == "branchismanager")
+				{
+					return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
-			
-			//Populate the Last order updated date for each customer
-			foreach (var customer in returnValue.Results)
+				}
+				else
+				{ // assume admin user with access to all customers
+					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+				}
+			}
+			else // external user
 			{
-				customer.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber });
-
-				customer.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customer.CustomerNumber, customer.CustomerBranch); 
+				return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
 			}
-			
-
-			//foreach (var cust in returnValue.Results)
-			//{
-			//	if (string.IsNullOrEmpty(cust.TermCode))
-			//		continue;
-
-			//	//Lookup Term info
-			//	var term = _invoiceServiceRepository.ReadTermInformation(cust.CustomerBranch, cust.TermCode);
-
-			//	if (term != null)
-			//	{
-			//		cust.TermDescription = term.Description;
-			//		cust.BalanceAge1Label = string.Format("0 - {0}", term.Age1);
-			//		cust.BalanceAge2Label = string.Format("{0} - {1}", term.Age1, term.Age2);
-			//		cust.BalanceAge3Label = string.Format("{0} - {1}", term.Age2, term.Age3);
-			//		cust.BalanceAge4Label = string.Format("Over {0}", term.Age4);
-			//	}
-
-			//}
-			
-
-			return returnValue;
 		}
 
         public List<Customer> GetCustomersForExternalUser(Guid userId)
@@ -1043,39 +1052,82 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
-		public List<Customer> GetCustomersForUser(UserProfile user, string search = "")
+		public List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "")
 		{
 			List<Customer> allCustomers = new List<Customer>();
+			if (string.IsNullOrEmpty(search)) search = "";
 			if (IsInternalAddress(user.EmailAddress))
 			{
-                if (user.RoleName == "owner") // special case where internal user is designated admin; hard coded to jmcmilland and pabrandt
-                {
-                    allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
-                }
-				if (!String.IsNullOrEmpty(user.DSRNumber))
+                if (!String.IsNullOrEmpty(user.DSRNumber))
 				{
 					// lookup customers by their assigned dsr number
-					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber);
+					allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber, user.BranchId);
 				}
-                else if (!String.IsNullOrEmpty(user.DSMRole) || user.RoleName == "branchismanager")
+                else if (!String.IsNullOrEmpty(user.DSMRole))
+                {
+                    //lookup customers by their assigned dsm number
+                    _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
+                }
+                else if (user.RoleName == "branchismanager")
 				{
-					// lookup customers by DSM; by looking at their DSR's - how to look at their DSRs?
-                    if (search.Length >= 3)
-                        allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId); // TODO: reduce list to only the DSM's DSRs
+					if (search.Length >= 3)
+                        allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId);
+					else
+						allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
 				}
 				else
 				{ // assume admin user with access to all customers
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
-                    // internal owner - special case for phils user
-                    //allCustomers = _customerRepo.GetCustomersForUser(user.UserId); //use the use the user organization object for customer filtering
+                    else
+						allCustomers = _customerRepo.GetCustomers(); //use the use the user organization object for customer filtering
 				}
 			}
 			else // external user
 			{
 				allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
 			}
+
+			
+
 			return allCustomers;
+		}
+
+
+		public void RemoveUserFromAccount(Guid accountId, Guid userId)
+		{
+			List<Account> allAccounts = _accountRepo.GetAccounts();
+			Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
+			acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+
+			AccountUsersReturn usersReturn = new AccountUsersReturn();
+			usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
+			usersReturn.CustomerUserProfiles = new List<UserProfile>();
+
+			foreach (Customer c in acct.Customers)
+			{
+				RemoveUserFromCustomer(c.CustomerId, userId);
+			}
+
+			//Remove directly from account
+			_accountRepo.RemoveUserFromAccount(accountId, userId);
+		}
+
+
+		public CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId)
+		{
+			var returnModel = new CustomerBalanceOrderUpdatedModel();
+
+			returnModel.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
+			returnModel.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customerId, branchId);
+
+			return returnModel;
+		}
+
+
+		public Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId)
+		{
+			return _customerRepo.GetCustomerForUser(customerNumber, branchId, userId);
 		}
 	}
 }

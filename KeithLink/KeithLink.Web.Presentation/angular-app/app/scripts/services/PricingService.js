@@ -59,6 +59,14 @@ angular.module('bekApp')
       return subtotal;
     },
 
+    getSubtotalForItemsWithPrice: function(itemsWithPrice) {
+      var subtotal = 0;
+      angular.forEach(itemsWithPrice, function(item, index) {
+        subtotal += item.extPrice;
+      });
+      return subtotal;
+    },
+
     hasPackagePrice: function(item) {
       return (item.packageprice > 0 || (item.packageprice !== '$0.00' && item.packageprice !== '0'));
     },
@@ -69,6 +77,14 @@ angular.module('bekApp')
 
     canOrderItem: function(item) {
       return Service.hasCasePrice(item);
+    },
+
+    updateCaculatedFields: function(items) {
+      items.forEach(function(item) {
+        item.canOrder = Service.canOrderItem(item);
+        item.hasPackagePrice = Service.hasPackagePrice(item);
+        item.hasCasePrice = Service.hasCasePrice(item);
+      });
     }
 
   };

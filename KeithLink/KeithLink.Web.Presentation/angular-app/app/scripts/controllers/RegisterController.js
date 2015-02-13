@@ -8,10 +8,18 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('RegisterController', ['$scope', '$state', 'ENV', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
-    function ($scope, $state, ENV, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
+  .controller('RegisterController', ['$scope', '$state', 'ENV', 'toaster', 'AuthenticationService', 'AccessService', 'BranchService', 'UserProfileService', 'PhonegapPushService',
+    function ($scope, $state, ENV, toaster, AuthenticationService, AccessService, BranchService, UserProfileService, PhonegapPushService) {
 
     $scope.isMobileApp = ENV.mobileApp;
+
+    if($scope.isMobileApp){
+      $scope.signUpBool=false;
+    }
+    else{
+      $scope.signUpBool=true;
+    }
+
 
     // gets prepopulated login info for dev environment
     $scope.loginInfo = {
@@ -32,13 +40,32 @@ angular.module('bekApp')
         }
         $scope.redirectUserToCorrectHomepage();
       }, function(errorMessage) {
-        $scope.loginErrorMessage = errorMessage;
+        $scope.loginErrorMessage = 'Error authenticating user.';
+        if (errorMessage) {
+          $scope.loginErrorMessage = errorMessage;  
+        }
       });
 
     };
 
+  $scope.forgotPassword = function(email) { 
+    UserProfileService.resetPassword(email).then(function(data){      
+       toaster.pop('success', null, 'Successfully reset password.');
+      },function(error) {
+      toaster.pop('error', null, 'Error resetting password.');        
+      });
+   };
+
+  $scope.setSignUpBool = function(signUpBool) { 
+    $scope.signUpBool = !signUpBool;
+   };
+
     $scope.registerNewUser = function(userProfile) {
       $scope.registrationErrorMessage = null;
+
+    if(!UserProfileService.checkEmailLength(userProfile.email)){
+      return;
+    }
       
       UserProfileService.createUser(userProfile).then(function(data) {
 

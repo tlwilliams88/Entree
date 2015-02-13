@@ -2,7 +2,7 @@
   <div class="col-md-10 col-md-offset-1 col-xs-12">
 
     <div class="row register-header">
-      <div class="col-md-6">
+      <div class="col-md-6"  ng-class="{'text-center':isMobileApp}">
         <img src="images/bek-logo.png" alt="logo" />
       </div>
 
@@ -20,17 +20,18 @@
                 <input id="password" required name="password" type="password" class="form-control" ng-model="loginInfo.password">
               </div>
               <div class="col-md-2 form-group">
-                <button ng-disabled="loginForm.$invalid" class="btn-primary btn" type="submit" ng-click="login(loginInfo)">Login</button>
+                <button ng-disabled="loginForm.$invalid" class="btn-primary btn " ng-class="{'col-xs-12 col-sm-12 btn-lg':isMobileApp}" type="submit" ng-click="login(loginInfo)">Login</button>
               </div>
             </div>
             <div class="row">
               <div class="col-md-5 text-red">
+                <div ng-show="loginErrorMessage.length">
                 {{loginErrorMessage}}
               </div>
-              <div class="col-md-5">
-                <a ng-if="0==1" href=""><strong>Forgot your password?</strong></a><!-- hide until back end support -->
               </div>
-
+              <div class="col-md-5" >
+                <a ng-confirm-click="{{'Are you sure you want to reset your password for the account: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" ><strong>Forgot your password?</strong></a>
+              </div>
             </div>
           </form>
 
@@ -40,9 +41,10 @@
     <div class="register-body sub-content">
 
       <div class="row">
-        <div class="col-xs-12">
-          <h1 class="text-thin">Sign Up Now - It's Free and Easy!</h1>
-          <p>
+        <div class="col-xs-12">          
+          <h1 ng-if="!isMobileApp" class="text-thin">Sign Up Now - It's Free and Easy!</h1>
+          <h1 ng-if="isMobileApp" class="text-center" ng-click="setSignUpBool(signUpBool)"><a class="text-thin">Sign Up Now <br> It's Free and Easy!</a></h1>
+          <p ng-show="signUpBool">
             Please register by completing the form below. Your information is confidential to Ben E. Keith and will not be shared with any outside sources.
           </p>
         </div>
@@ -54,7 +56,7 @@
         </div>
       </div>
 
-      <form name="registrationForm" novalidate class="register-form sub-content style-validation-errors">
+      <form ng-show="signUpBool" name="registrationForm" novalidate class="register-form sub-content style-validation-errors">
         <div class="row">
           <div class="col-md-6 form-group">
             <label for="username">Email Address</label>

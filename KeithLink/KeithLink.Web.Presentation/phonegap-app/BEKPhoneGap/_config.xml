@@ -50,7 +50,10 @@
         <splash src="www/res/screen/ios/screen-iphone-portrait.png"    gap:platform="ios"     width="320" height="480" />
         <splash src="www/res/screen/ios/screen-iphone-portrait-2x.png" gap:platform="ios"     width="640" height="960" />
         <splash src="www/res/screen/ios/screen-ipad-portrait.png"      gap:platform="ios"     width="768" height="1024" />
-        <!-- <splash src="www/res/screen/ios/screen-ipad-landscape.png"     gap:platform="ios"     width="1024" height="768" /> -->
+        <splash src="www/res/screen/ios/Default-568h@2x.png"           gap:platform="ios"     width="640" height="1136" />
+        <splash src="www/res/screen/ios/Default-667h@2x.png"           gap:platform="ios"     width="750" height="1334" />
+        <splash src="www/res/screen/ios/Default-Portrait-736h@3x.png"  gap:platform="ios"     width="1242" height="2208" />
+        <splash src="www/res/screen/ios/Default-Portrait@2x.png"       gap:platform="ios"     width="1536" height="2048" />
     </platform>
 
 </widget>

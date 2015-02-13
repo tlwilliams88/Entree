@@ -12,6 +12,7 @@ using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+using KeithLink.Svc.Impl.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,35 +55,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         #endregion
 
         #region methods
-        private string GetDivision(string branchId) {
-            if (branchId.Length == 5) {
-                return branchId;
-            } else if (branchId.Length == 3) {
-                switch (branchId.ToUpper()) {
-                    case "FAM":
-                        return "FAM04";
-                    case "FAQ":
-                        return "FAQ08";
-                    case "FAR":
-                        return "FAR09";
-                    case "FDF":
-                        return "FDF01";
-                    case "FHS":
-                        return "FHS03";
-                    case "FLR":
-                        return "FLR05";
-                    case "FOK":
-                        return "FOK06";
-                    case "FSA":
-                        return "FSA07";
-                    default:
-                        return null;
-                }
-            } else {
-                return null;
-            }
-        }
-
+        
         private Message GetEmailMessageForNotification(PaymentConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer) {
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTCONFIRMATION);
             MessageTemplateModel detailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_PAYMENTDETAIL);
@@ -90,7 +63,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             StringBuilder orderDetails = new StringBuilder();
 
             foreach(var payment in notification.Payments){
-                var invoice = _invoiceRepo.GetInvoiceHeader(GetDivision(notification.BranchId), notification.CustomerNumber, payment.InvoiceNumber);
+				var invoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, payment.InvoiceNumber);
 
                 orderDetails.Append(detailTemplate.Body.Inject(new { 
                                                                         InvoiceType = invoice.InvoiceType,
@@ -102,7 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                                                                    }));
             }
 
-            var bank = _bankRepo.GetBankAccount(GetDivision(notification.BranchId), notification.CustomerNumber, notification.Payments[0].AccountNumber);
+			var bank = _bankRepo.GetBankAccount(DivisionHelper.GetDivisionFromBranchId(notification.BranchId), notification.CustomerNumber, notification.Payments[0].AccountNumber);
 
             Message message = new Message();
             message.BodyIsHtml = template.IsBodyHtml;

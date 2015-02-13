@@ -32,6 +32,9 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "dsrNumber")]
         public string DsrNumber { get; set; }
 
+        [DataMember(Name = "dsmNumber")]
+        public string DsmNumber { get; set; }
+
         [DataMember( Name = "dsr" )]
         public Dsr Dsr { get; set; }
 
@@ -50,8 +53,7 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "accountId")]
         public Guid? AccountId { get; set; }
 
-		[DataMember(Name="lastorderupdate")]
-		public DateTime? LastOrderUpdate { get; set; }
+		
 
         [DataMember(Name="address")]
         public Address Address { get; set; }
@@ -65,8 +67,7 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "pointofcontact")]
         public string PointOfContact { get; set; }
 
-		[DataMember(Name = "balance")]
-		public CustomerAccountBalanceModel balance { get; set; }
+		
 
 		[DataMember(Name = "termcode")]
 		public string TermCode { get; set; }

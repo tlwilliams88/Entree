@@ -1,0 +1,7 @@
+<div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
+  <img ng-src="{{item.imageurl}}">
+</div>
+<div class="col-xs-8 no-padding featured-item-mobile__detail">
+  {{item.extended_description}}<br />
+  <a ui-sref="menu.catalog.products.list({ type: 'brand', id: item.brand_control_label })" class="text-uppercase">View Details</a>
+</div>

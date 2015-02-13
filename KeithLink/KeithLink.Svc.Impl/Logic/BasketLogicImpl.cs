@@ -28,57 +28,26 @@ namespace KeithLink.Svc.Impl.Logic
 
 		public CS.Basket RetrieveSharedCustomerBasket(UserProfile user, UserSelectedContext catalogInfo, Guid listId)
 		{
-			//Have to find the specific list...try current user first
-			var basket = basketRepository.ReadBasket(user.UserId, listId);
 
-			//Was list found?
-			if (basket != null)
-				return basket;
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-			//Basket belongs to another user for this customer...find it.
-			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId).CustomerId).Where(b => !b.UserId.Equals(user.UserId)).ToList();
+			if (customer == null)
+				return null;
 
+			return basketRepository.ReadBasket(customer.CustomerId, listId);
 
-			foreach (var sharedUser in sharedUsers)
-			{
-				var sharedBasket = basketRepository.ReadBasket(sharedUser.UserId, listId);
-				if (sharedBasket != null)
-					return sharedBasket;
-			}
-
-			return null;
 		}
 
 		public List<CS.Basket> RetrieveAllSharedCustomerBaskets(UserProfile user, UserSelectedContext catalogInfo, BasketType type, bool includeFavorites = false)
 		{
-			var sharedUsers = userProfileRepository.GetUsersForCustomerOrAccount(customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId).CustomerId).ToList();
 
-			var returnBaskets = new List<CS.Basket>();
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-			if (sharedUsers.Any())
-			{
-				foreach (var sharedUser in sharedUsers)
-				{
-					var basket = basketRepository.ReadAllBaskets(sharedUser.UserId, type).Where(l => (l.Shared.Equals(true) || l.UserId.Equals(user.UserId.ToCommerceServerFormat()))
-						&& !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).ToList();
+			if (customer == null)
+				return new List<CS.Basket>();
 
-					returnBaskets.AddRange(basket);
-				}
-			}
-			else
-			{
-				var basket = basketRepository.ReadAllBaskets(user.UserId, type).Where(l => (l.Shared.Equals(true) || l.UserId.Equals(user.UserId.ToCommerceServerFormat()))
-						&& !string.IsNullOrEmpty(l.CustomerId) && l.CustomerId.Equals(catalogInfo.CustomerId)).ToList();
-				returnBaskets.AddRange(basket);
-			}
-
-			if (includeFavorites)
-			{
-				var favorite = basketRepository.ReadAllBaskets(user.UserId, BasketType.Favorite).ToList();
-				returnBaskets.AddRange(favorite);
-			}
-
-			return returnBaskets;
+			return basketRepository.ReadAllBaskets(customer.CustomerId, type).ToList();
+						
 		}
 	}
 }

@@ -26,7 +26,7 @@ angular.module('bekApp')
     },
 
     isInternalAccountAdminUser: function() {
-      return ( Service.isLoggedIn() && ( Service.isDsr() || Service.isDsm() || Service.isSysAdmin() || Service.isBranchManager() ) );
+      return ( Service.isLoggedIn() && ( Service.isDsr() || Service.isDsm() || Service.isSysAdmin() || Service.isBranchManager() || Service.isPowerUser() ) );
     },
 
     // ROLES
@@ -61,6 +61,10 @@ angular.module('bekApp')
       return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
     },
 
+    isPowerUser: function() {
+      return ( LocalStorage.getUserRole() === Constants.roles.POWER_USER );
+    },
+
     isDsr: function() {
       return ( LocalStorage.getUserRole() === Constants.roles.DSR );
     },
@@ -93,15 +97,17 @@ angular.module('bekApp')
     },
 
     canPayInvoices: function() {
-      return ( Service.isOwner() || Service.isAccounting() );
+      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() );
     },
 
+    // user can manage their own account
     canManageAccount: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner() );
+      return ( Service.isBranchManager() || Service.isSysAdmin() || Service.isOwner() );
     },
 
+    // user can manage all accounts and create new accounts
     canManageAccounts: function() {
-      return ( Service.isInternalAccountAdminUser() );
+      return ( Service.isBranchManager() || Service.isSysAdmin() );
     }
 
   };

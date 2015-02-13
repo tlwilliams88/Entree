@@ -176,6 +176,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 					retVal.Status = "Processing";
 					break;
 				default:
+					retVal.Status = "Unknown";
 					break;
 			}
 

@@ -10,6 +10,7 @@ angular.module('bekApp')
 
   function getUsers(customerGroup) {
    if (customerGroup) {
+      $scope.customerGroupId = customerGroup.id;
       $scope.groupName = customerGroup.name;
       
       UserProfileService.getUsersForGroup(customerGroup.id).then(function(data) {
@@ -18,9 +19,8 @@ angular.module('bekApp')
         $scope.customerUsers = data.customerUsers;
       });
     } else {
-      $scope.loadingUsers = false;
-      $scope.adminUsers = [];
-      $scope.customerUsers = [];
+      $scope.displayMessage('error', 'An error occured loading the customer group dashboard page.');
+      $scope.goToAdminLandingPage();
     }
   }
 
@@ -121,7 +121,11 @@ angular.module('bekApp')
   USERS
   **********/
   $scope.userExists = false;
-  $scope.checkUser = function (checkEmail) {
+  $scope.checkUser = function (checkEmail) {  
+    
+    if(!UserProfileService.checkEmailLength(checkEmail)){
+      return;
+    }
     //set email as a parameter
     var data = {
       email: checkEmail
@@ -144,10 +148,10 @@ angular.module('bekApp')
           UserProfileService.createUserFromAdmin(newProfile).then(
             function (profile) {
               //redirects to user profile page
-              $state.go('menu.admin.edituser', {email: checkEmail});
+              $state.go('menu.admin.edituser', {groupId: $scope.customerGroupId, email: checkEmail});
             }, function (errorMessage) {
               console.log(errorMessage);
-              $scope.displayMessage('error', 'An error occurred creating the user: ' + errorMessage)
+              $scope.displayMessage('error', 'An error occurred creating the user: ' + errorMessage);
             });
         }
       }, function (errorMessage) {

@@ -23,19 +23,19 @@
           <div class="order-item-title">Invoice Status</div>
           <div class="order-item-value-1">{{invoice.statusdescription || 'N/A'}}</div>
           <div class="order-item-title">Due Date</div>
-          <div class="order-item-value-2">{{invoice.duedate | date:short}}</div>
+          <div class="order-item-value-2">{{invoice.duedate | formatDate:'MMM D, YYYY'}}</div>
         </div>
         <div class="order-item">
-          <div class="order-item-title">Total Cost</div>
+          <div class="order-item-title">Amount Due</div>
           <div class="order-item-value-1">{{invoice.amount | currency}}</div>
           <div class="order-item-title">Items</div>
           <div class="order-item-value-2">{{invoice.items.length}}</div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Order Date</div>
-          <div class="order-item-value-1">{{invoice.orderdate | date:short}}</div>
+          <div class="order-item-value-1">{{invoice.orderdate | formatDate:'MMM D, YYYY'}}</div>
           <div class="order-item-title">Ship Date</div>
-          <div class="order-item-value-2">{{invoice.invoicedate | date:short}}</div>
+          <div class="order-item-value-2">{{invoice.invoicedate | formatDate:'MMM D, YYYY'}}</div>
         </div>
       </div>
     </div>
@@ -51,7 +51,7 @@
           </tr>
         </thead>
         <tr ng-repeat="transaction in invoice.transactions" ng-class="{ odd : $odd, even: $even}">
-          <td>{{transaction.invoicedate | date:short}}</td>
+          <td>{{transaction.invoicedate | formatDate:'MMM D, YYYY'}}</td>
           <td>{{transaction.typedescription}}</td>
           <td>{{transaction.amount | currency}}</td>
         </tr>
@@ -69,49 +69,43 @@
     <thead>
       <tr>
         <th class="sort-col-header" ng-click="sortBy='linenumber';sortOrder=!sortOrder;">
-          Line #
-          <span sort-icons field="'linenumber'" sortorder="sortOrder" sortby="sortBy"></span>
+          <span># <span sort-icons field="'linenumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
-          Item #
-          <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+          Item
+          <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='notes';sortOrder=!sortOrder;">
-          Notes
-          <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+          <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-xs hidden-sm"></th>
         <th class="hidden-mobile-visible-print">
           Pack/Size
         </th>
         <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
-          Brand
-          <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+          <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder;">
-          Name
-          <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+          <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-mobile-visible-print"></th>
         <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='quantityordered';sortOrder=!sortOrder;">
-          # Ordered
-          <span sort-icons field="'quantityordered'" sortorder="sortOrder" sortby="sortBy"></span>
+          #
+          <span>Ordered<span sort-icons field="'quantityordered'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='quantityshipped';sortOrder=!sortOrder;">
-          # Shipped
-          <span sort-icons field="'quantityshipped'" sortorder="sortOrder" sortby="sortBy"></span>
+          #
+          <span>Shipped<span sort-icons field="'quantityshipped'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='each';sortOrder=!sortOrder;">
-          Each
-          <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span>
+          <span>Each <span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy='price';sortOrder=!sortOrder;">
-          Price
-          <span sort-icons field="'price'" sortorder="sortOrder" sortby="sortBy"></span>
+          <span>Price <span sort-icons field="'price'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy='linetotal';sortOrder=!sortOrder;">
-          Ext Price
-          <span sort-icons field="'linetotal'" sortorder="sortOrder" sortby="sortBy"></span>
+          Ext
+          <span>Price<span sort-icons field="'linetotal'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="large-icon icon-col">
           <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>

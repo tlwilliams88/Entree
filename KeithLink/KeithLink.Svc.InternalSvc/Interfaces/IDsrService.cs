@@ -12,5 +12,8 @@ namespace KeithLink.Svc.InternalSvc {
     public interface IDsrService {
         [OperationContract]
         Dsr GetDsr( string branchId, string dsrNumber );
+
+		[OperationContract]
+		List<Dsr> GetAllDsrInfo();
     }
 }

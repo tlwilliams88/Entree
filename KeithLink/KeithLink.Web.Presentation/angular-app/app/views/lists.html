@@ -28,7 +28,7 @@
 
     </div>
 
-    <form name="renameListForm" class="style-validation-errors inline-header-form" ng-show="selectedList.isRenaming">
+    <form name="renameListForm" class="style-validation-errors inline-header-form nowrap" ng-show="selectedList.isRenaming">
       <input 
         check-duplicate-field="name" 
         collection="lists" 
@@ -112,8 +112,8 @@
       </li>
       <li><a ng-click="createList()">Create a List...</a></li>
 
-      <li ng-if="isDsr && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
-      <li ng-if="isDsr && !hideRecommendedListCreateButton"><a ng-click="createRecommendedList()">Create Recommended List...</a></li>
+      <li ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
+      <li ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"><a ng-click="createRecommendedList()">Create Recommended List...</a></li>
 
     </ul>
   </div>
@@ -188,7 +188,7 @@
             data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
             jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}" 
             class="btn btn-default btn-list text-left text-light btn-lg"
-            ng-if="isDsr && !hideMandatoryListCreateButton"
+            ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"
             title="Create Mandatory Items List for Customer">
             Create <br>Mandatory...
           </button>
@@ -200,7 +200,7 @@
             data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
             jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}" 
             class="btn btn-default btn-list text-left text-light btn-lg"
-            ng-if="isDsr && !hideRecommendedListCreateButton"
+            ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"
             title="Create Recommended Items List for Customer">
             Create <br>Recommended...
           </button>
@@ -282,16 +282,6 @@
               <span class="icon-trash large-icon text-light"></span>
             </button>
           </div>
-          <div class="btn-group" dropdown is-open="showMoreMenu">
-            <button type="button" class="btn btn-default btn-lg dropdown-toggle text-light">
-              More
-              <span class="icon-arrow-down6 text-light"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-              <li ng-click="favoriteAll()"><a>Star Selected</a></li>
-              <li ng-click="unfavoriteAll()"><a>Unstar Selected</a></li>
-            </ul>
-          </div>
         </div>
         <div class="col-xs-8 col-sm-4" ng-show="multiSelect.addingNewLabel">
           <input 
@@ -352,16 +342,13 @@
                 </span>
               </th>
               <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('itemnumber',sortOrder)">
-                Item
-                <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Item <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="sort-col-header" ng-click="sortOrder=!sortOrder;sortList('name',sortOrder)">
-                Name
-                <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header"ng-click="sortOrder=!sortOrder;sortList('brand',sortOrder)">
-                Brand
-                <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
@@ -371,21 +358,18 @@
                 # in Cart
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.alternativeFieldHeader" ng-click="sortOrder=!sortOrder;sortList(selectedList.permissions.alternativeFieldName,sortOrder)">
-                {{selectedList.permissions.alternativeFieldHeader}}
-                <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>{{selectedList.permissions.alternativeFieldHeader}}
+                <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
-                Label
-                <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
-                Notes
-                <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeParlevel" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
-                {{permissions.alternativeParHeader || 'PAR'}}
-                <span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span>
+                <span>{{selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
               
               <th class="list-print-column">Inv / Ord 1</th>
@@ -587,7 +571,7 @@
                       </td>
                     </tr>
                     <tr ng-if="selectedList.permissions.canSeeParlevel">
-                      <td>{{permissions.alternativeParHeader || 'PAR'}}</td>
+                      <td>{{selectedList.permissions.alternativeParHeader || 'PAR'}}</td>
                       <td ng-if="selectedList.permissions.canEditParlevel">
                         <ng-form name="parlevelForm_mobile" class="form-control-group__input">
                           <input 

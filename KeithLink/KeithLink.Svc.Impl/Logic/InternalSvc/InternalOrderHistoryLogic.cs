@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Interface.Orders.History;
+﻿using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -7,38 +9,367 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Orders;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
+using KeithLink.Svc.Core.Extensions.Orders.History;
+using System.Collections.Concurrent;
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Enumerations;
+using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
+using KeithLink.Svc.Core.Extensions.Enumerations;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using Newtonsoft.Json;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
     public class InternalOrderHistoryLogic : IInternalOrderHistoryLogic {
         #region attributes
-        private readonly IOrderHistoryLogic _histLogic;
+		private const int RECORDTYPE_LENGTH = 1;
+		private const int RECORDTYPE_STARTPOS = 0;
+		private const int THREAD_SLEEP_DURATION = 2000;
+
+
+        
+		private readonly IOrderHistoryHeaderRepsitory _headerRepo;
+		private readonly IPurchaseOrderRepository _poRepo;
+		private readonly IKPayInvoiceRepository _kpayInvoiceRepository;
+		private readonly ICatalogLogic _catalogLogic;
+		private readonly IUnitOfWork _unitOfWork;
+		private readonly IEventLogRepository _log;
+		private readonly IGenericQueueRepository _queue;
+		private readonly IOrderConversionLogic _conversionLogic;
+		private readonly ICustomerRepository _customerRepository;
+
+		private bool _keepListening;
+		private Task _queueTask;
         #endregion
 
         #region ctor
-        public InternalOrderHistoryLogic(IOrderHistoryLogic orderHistoryLogic) {
-            _histLogic = orderHistoryLogic;
+		public InternalOrderHistoryLogic(IOrderHistoryHeaderRepsitory headerRepo,
+			IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic,
+			IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, ICustomerRepository customerRepository)
+		{
+			_headerRepo = headerRepo;
+			_poRepo = poRepo;
+			_kpayInvoiceRepository = kpayInvoiceRepository;
+			_catalogLogic = catalogLogic;
+			_unitOfWork = unitOfWork;
+			_log = log;
+			_queue = queue;
+			_conversionLogic = conversionLogic;
+			_keepListening = true;
+			_customerRepository = customerRepository;
         }
         #endregion
 
         #region methods
         public Order GetOrder(string branchId, string invoiceNumber) {
-            return _histLogic.ReadOrder(branchId, invoiceNumber);
+
+			EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+																  h.InvoiceNumber.Equals(invoiceNumber),
+															 d => d.OrderDetails).FirstOrDefault();
+			Order returnOrder = null;
+
+			if (myOrder == null)
+			{
+				PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
+				returnOrder = po.ToOrder();
+			}
+			else
+			{
+				returnOrder = myOrder.ToOrder();
+				if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0)
+				{
+					var po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
+					if (po != null)
+					{
+						returnOrder.Status = po.Status;
+					}
+
+					if (myOrder.ActualDeliveryTime != null)
+					{
+						returnOrder.Status = "Delivered";
+					}
+
+				}
+				
+			}
+
+			LookupProductDetails(branchId, returnOrder);
+
+			if (returnOrder.Status == "Submitted" && returnOrder.Items != null)
+			{
+				//Set all item status' to Pending. This is kind of a hack, but the correct fix will require more effort than available at the moment. The Status/Mainframe status changes are what's causing this issue
+				foreach (var item in returnOrder.Items)
+					item.MainFrameStatus = "Pending";
+			}
+
+			return returnOrder;
         }
 
         public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
-			return _histLogic.GetOrders(userId, customerInfo);
+			return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
         }
 		
 		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate){
-			return _histLogic.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate);
+			var customer = _customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId, customerInfo.BranchId);
+
+			var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
+			var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(customer.CustomerId, customerInfo.CustomerId, startDate, endDate);
+
+			return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
 		}
 
         public void SaveOrder(OrderHistoryFile historyFile) {
-            _histLogic.Save(historyFile);
+			Create(historyFile);
+
+			_unitOfWork.SaveChanges();
         }
-        #endregion
 
+		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
+		{
+			var headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+																			  h.CustomerNumber.Equals(customerInfo.CustomerId),
+																			d => d.OrderDetails);
 
+			return LookupControlNumberAndStatus(headers).AsQueryable().GetPage(paging);
+		}
+
+		public void StopListening()
+		{
+			_keepListening = false;
+
+			if (_queueTask != null && _queueTask.Status == TaskStatus.Running)
+			{
+				_queueTask.Wait();
+			}
+		}
+        
+		public void ListenForQueueMessages()
+		{
+			_queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
+		}
+
+		private void ListenForQueueMessagesInTask()
+		{
+			while (_keepListening)
+			{
+				System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
+
+				int loopCnt = 0;
+				
+
+				try
+				{
+					var rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+
+					while (!string.IsNullOrEmpty(rawOrder))
+					{
+						OrderHistoryFile historyFile = new OrderHistoryFile();
+
+						historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
+
+						_log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
+
+						Create(historyFile);
+						_conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
+
+						rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+
+						if (loopCnt++ == 100)
+						{
+							_unitOfWork.SaveChangesAndClearContext();
+							loopCnt = 0;
+						}
+					}
+
+					if (loopCnt > 0)
+					{
+						_unitOfWork.SaveChangesAndClearContext();
+						
+						loopCnt = 0;
+					}
+				}
+				catch (Exception ex)
+				{
+					_log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
+				}
+			}
+
+		}
+
+		private void Create(OrderHistoryFile currentFile)
+		{
+			// first attempt to find the order, look by branch and invoice number
+			EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+
+			// second attempt to find the order, look by confirmation number
+			if (header == null) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
+
+			// last ditch effort is to create a new header
+			if (header == null)
+			{
+				header = new EF.OrderHistoryHeader();
+				header.OrderDetails = new List<EF.OrderHistoryDetail>();
+			}
+
+			currentFile.Header.MergeWithEntity(ref header);
+
+			foreach (OrderHistoryDetail currentDetail in currentFile.Details)
+			{
+
+				EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+
+				if (detail == null)
+				{
+					EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
+					tempDetail.BranchId = header.BranchId;
+					tempDetail.InvoiceNumber = header.InvoiceNumber;
+
+					header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+				}
+				else
+				{
+					currentDetail.MergeWithEntityFrameworkModel(ref detail);
+
+					detail.BranchId = header.BranchId;
+					detail.InvoiceNumber = header.InvoiceNumber;
+				}
+			}
+
+			_headerRepo.CreateOrUpdate(header);
+		}
 		
+		private List<Order> LookupControlNumberAndStatus(IEnumerable<EF.OrderHistoryHeader> headers)
+		{
+			var customerOrders = new BlockingCollection<Order>();
+			foreach (var h in headers)
+			{
+				Order currentOrder = h.ToOrderHeaderOnly();
+				var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(h.BranchId), h.CustomerNumber, h.InvoiceNumber.Trim());
+				if (invoice != null)
+					currentOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+
+				if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+				{
+					PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+					if (po != null)
+					{
+						currentOrder.OrderNumber = h.ControlNumber;
+                        currentOrder.Status = po.Status;
+					}
+
+                    if (currentOrder.ActualDeliveryTime != null) {
+                        currentOrder.Status = "Delivered";
+                    }
+
+				}
+
+				customerOrders.Add(currentOrder);
+			}
+
+			return customerOrders.ToList();
+		}
+
+		private void LookupProductDetails(string branchId, Order order)
+		{
+			if (order.Items == null) { return; }
+
+			var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber).ToList());
+
+			var productDict = products.Products.ToDictionary(p => p.ItemNumber);
+
+			Parallel.ForEach(order.Items, item =>
+			{
+				var prod = productDict.ContainsKey(item.ItemNumber) ? productDict[item.ItemNumber] : null;
+				if (prod != null)
+				{
+					item.Name = prod.Name;
+					item.Description = prod.Description;
+					item.Pack = prod.Pack;
+					item.Size = prod.Size;
+					item.StorageTemp = prod.Nutritional.StorageTemp;
+					item.Brand = prod.Brand;
+					item.BrandExtendedDescription = prod.BrandExtendedDescription;
+					item.ReplacedItem = prod.ReplacedItem;
+					item.ReplacementItem = prod.ReplacementItem;
+					item.NonStock = prod.NonStock;
+					item.ChildNutrition = prod.ChildNutrition;
+					item.CatchWeight = prod.CatchWeight;
+					item.TempZone = prod.TempZone;
+					item.ItemClass = prod.ItemClass;
+					item.CategoryId = prod.CategoryId;
+					item.CategoryName = prod.CategoryName;
+					item.UPC = prod.UPC;
+					item.VendorItemNumber = prod.VendorItemNumber;
+					item.Cases = prod.Cases;
+					item.Kosher = prod.Kosher;
+					item.ManufacturerName = prod.ManufacturerName;
+					item.ManufacturerNumber = prod.ManufacturerNumber;
+					item.Nutritional = new Nutritional()
+					{
+						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+						GrossWeight = prod.Nutritional.GrossWeight,
+						HandlingInstructions = prod.Nutritional.HandlingInstructions,
+						Height = prod.Nutritional.Height,
+						Length = prod.Nutritional.Length,
+						Ingredients = prod.Nutritional.Ingredients,
+						Width = prod.Nutritional.Width
+					};
+				}
+				//if (price != null) {
+				//    item.PackagePrice = price.PackagePrice.ToString();
+				//    item.CasePrice = price.CasePrice.ToString();
+				//}
+			});
+
+		}
+
+		private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo)
+		{
+			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+																			   h.CustomerNumber.Equals(customerInfo.CustomerId),
+																		  d => d.OrderDetails);
+			return LookupControlNumberAndStatus(headers);
+		}
+		
+		private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
+		{
+			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
+			return LookupControlNumberAndStatus(headers);
+		}
+		
+		private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders)
+		{
+			System.Collections.Concurrent.BlockingCollection<Order> mergedOrdeList = new System.Collections.Concurrent.BlockingCollection<Order>();
+
+			Parallel.ForEach(orderHistoryOrders, ohOrder =>
+			{
+				mergedOrdeList.Add(ohOrder);
+			});
+
+			Parallel.ForEach(commerceServerOrders, csOrder =>
+			{
+				if (mergedOrdeList.Where(o => o.InvoiceNumber.Equals(csOrder.InvoiceNumber)).Count() == 0)
+				{ 
+					mergedOrdeList.Add(csOrder);
+				}
+				//if (csOrder.InvoiceNumber.Equals("pending", StringComparison.InvariantCultureIgnoreCase)) {
+				//    mergedOrdeList.Add(csOrder);
+				//}
+			});
+
+			return mergedOrdeList.ToList();
+		}
+
+		#endregion
 	}
 }
