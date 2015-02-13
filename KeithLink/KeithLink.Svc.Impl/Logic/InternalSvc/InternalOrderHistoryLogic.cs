@@ -84,21 +84,22 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			}
 			else
 			{
+				returnOrder = myOrder.ToOrder();
 				if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0)
 				{
 					var po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
 					if (po != null)
 					{
-						myOrder.OrderStatus = po.Status;
+						returnOrder.Status = po.Status;
 					}
 
 					if (myOrder.ActualDeliveryTime != null)
 					{
-						myOrder.OrderStatus = "Delivered";
+						returnOrder.Status = "Delivered";
 					}
 
 				}
-				returnOrder = myOrder.ToOrder();
+				
 			}
 
 			LookupProductDetails(branchId, returnOrder);
