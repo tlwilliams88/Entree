@@ -14,7 +14,7 @@ function getFormattedDateTime(dateTime, formatString, useTimezone) {
       var timezoneName = 'America/Chicago';
       date.tz(timezoneName);
     }
-    return date.utc().format(formatString);
+    return date.format(formatString);
   } else {
     return dateTime;
   }
