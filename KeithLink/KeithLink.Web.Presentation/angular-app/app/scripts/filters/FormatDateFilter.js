@@ -7,7 +7,7 @@ function getFormattedDateTime(dateTime, formatString, useTimezone) {
       var timezoneName = jstz.determine().name();
       date.tz(timezoneName);
     }
-    return date.format(formatString);
+    return date.utc().format(formatString);
   } else {
     return dateTime;
   }
@@ -16,7 +16,6 @@ function getFormattedDateTime(dateTime, formatString, useTimezone) {
 angular.module('bekApp')
   .filter('formatDate', [ function(){
     return function(dateTime, formatString){
-
     if (!formatString) {
       formatString = 'YYYY-MM-DD';
     }

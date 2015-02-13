@@ -41,21 +41,19 @@ angular.module('bekApp')
   $scope.filterViews = [{
     name: 'All Invoices',
     filterFields: []
-  }, 
-  // {
-  //   name: 'Invoices to Pay',
-  //   filterFields: [{
-  //     field: 'ispayable',
-  //     value: true,
-  //     type: 'equals'
-  //   }]
-  // }, 
-  {
+  }, {
     name: 'Open Invoices',
-    filterFields: [{
-      field: 'statusdescription',
-      value: 'Open'
-    }]
+    filterFields: [],
+    specialFitler: {
+      condition: 'or',
+      filter: [{
+        field: 'statusdescription',
+        value: 'Open'
+      }, {
+        field: 'statusdescription',
+        value: 'Past Due'
+      }]
+    }
   }, {
     name: 'Invoices Pending Payment',
     filterFields: [{
@@ -104,16 +102,33 @@ angular.module('bekApp')
     $scope.loadingResults = false;
   }
 
+  function getInvoicesFilterObject(filterFields, filterView) {
+    var filter = invoicePagingModel.getFilterObject(filterFields, filterView.filterFields);
+    if (filterView.specialFitler) {
+      if (filter) {
+        filter.filter.push(filterView.specialFitler);
+      } else {
+        filter = filterView.specialFitler;
+      }
+    }
+    invoicePagingModel.filter = filter;
+    invoicePagingModel.pageIndex = 0;
+    return filter;
+  }
+
   $scope.filterInvoices = function(filterFields) {
-    invoicePagingModel.filterData(filterFields, $scope.selectedFilterView.filterFields);
+    getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
+    invoicePagingModel.loadData();
   };
   $scope.clearFilters = function() {
-    $scope.filterFields = {};
-    invoicePagingModel.clearFilters();
+    $scope.filterRowFields = {};
+    getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
+    invoicePagingModel.loadData();
   };
   $scope.selectFilterView = function (filterView) {
     $scope.selectedFilterView = filterView;
-    invoicePagingModel.filterData($scope.filterRowFields, $scope.selectedFilterView.filterFields);
+    getInvoicesFilterObject($scope.filterRowFields, filterView);
+    invoicePagingModel.loadData();
   };
   $scope.infiniteScrollLoadMore = function() {
     invoicePagingModel.loadMoreData($scope.invoices, $scope.totalInvoices, $scope.loadingResults);
@@ -274,7 +289,7 @@ angular.module('bekApp')
           return {
             isViewingAllCustomers: $scope.viewingAllCustomers,
             paging: {
-              filter: invoicePagingModel.getFilterObject($scope.filterRowFields, $scope.selectedFilterView.filterFields)
+              filter: getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView)
             }
           };
         }

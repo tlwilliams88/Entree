@@ -121,7 +121,11 @@ angular.module('bekApp')
   USERS
   **********/
   $scope.userExists = false;
-  $scope.checkUser = function (checkEmail) {
+  $scope.checkUser = function (checkEmail) {  
+    
+    if(!UserProfileService.checkEmailLength(checkEmail)){
+      return;
+    }
     //set email as a parameter
     var data = {
       email: checkEmail
@@ -147,7 +151,7 @@ angular.module('bekApp')
               $state.go('menu.admin.edituser', {groupId: $scope.customerGroupId, email: checkEmail});
             }, function (errorMessage) {
               console.log(errorMessage);
-              $scope.displayMessage('error', 'An error occurred creating the user: ' + errorMessage)
+              $scope.displayMessage('error', 'An error occurred creating the user: ' + errorMessage);
             });
         }
       }, function (errorMessage) {

@@ -112,8 +112,8 @@
       </li>
       <li><a ng-click="createList()">Create a List...</a></li>
 
-      <li ng-if="isDsr && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
-      <li ng-if="isDsr && !hideRecommendedListCreateButton"><a ng-click="createRecommendedList()">Create Recommended List...</a></li>
+      <li ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"><a ng-click="createMandatoryList()">Create Mandatory List...</a></li>
+      <li ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"><a ng-click="createRecommendedList()">Create Recommended List...</a></li>
 
     </ul>
   </div>
@@ -188,7 +188,7 @@
             data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
             jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}" 
             class="btn btn-default btn-list text-left text-light btn-lg"
-            ng-if="isDsr && !hideMandatoryListCreateButton"
+            ng-if="isInternalAccountAdminUser && !hideMandatoryListCreateButton"
             title="Create Mandatory Items List for Customer">
             Create <br>Mandatory...
           </button>
@@ -200,7 +200,7 @@
             data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
             jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}" 
             class="btn btn-default btn-list text-left text-light btn-lg"
-            ng-if="isDsr && !hideRecommendedListCreateButton"
+            ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"
             title="Create Recommended Items List for Customer">
             Create <br>Recommended...
           </button>
