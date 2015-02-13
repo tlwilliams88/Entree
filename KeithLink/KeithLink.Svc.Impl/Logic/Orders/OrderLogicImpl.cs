@@ -81,6 +81,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			var returnOrder = ToOrder(order, false);
 			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
             
+
 			LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
 
             // handel special change order logic to hide deleted line items
