@@ -159,7 +159,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             List<Order> changeOrders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext, header: header);
 
             Models.OperationReturnModel<List<Order>> ret = new Models.OperationReturnModel<List<Order>>();
-            ret.SuccessResponse = changeOrders.Where(x => x.IsChangeOrderAllowed).ToList();
+            ret.SuccessResponse = changeOrders.Where(x => x.IsChangeOrderAllowed).OrderByDescending(o => o.InvoiceNumber).ToList();
             return ret;
         }
 
@@ -198,7 +198,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return new Models.OperationReturnModel<bool>() 
                 {
-                    SuccessResponse = _orderLogic.ResendUnconfirmedOrder(this.AuthenticatedUser, controlNumber) 
+                    SuccessResponse = _orderLogic.ResendUnconfirmedOrder(this.AuthenticatedUser, controlNumber, this.SelectedUserContext) 
                 };
         }
 

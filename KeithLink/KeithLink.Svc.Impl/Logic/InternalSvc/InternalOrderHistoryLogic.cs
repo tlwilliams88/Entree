@@ -26,6 +26,7 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 using Newtonsoft.Json;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
     public class InternalOrderHistoryLogic : IInternalOrderHistoryLogic {
@@ -44,6 +45,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 		private readonly IEventLogRepository _log;
 		private readonly IGenericQueueRepository _queue;
 		private readonly IOrderConversionLogic _conversionLogic;
+		private readonly ICustomerRepository _customerRepository;
 
 		private bool _keepListening;
 		private Task _queueTask;
@@ -52,7 +54,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #region ctor
 		public InternalOrderHistoryLogic(IOrderHistoryHeaderRepsitory headerRepo,
 			IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic,
-			IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic)
+			IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, ICustomerRepository customerRepository)
 		{
 			_headerRepo = headerRepo;
 			_poRepo = poRepo;
@@ -63,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			_queue = queue;
 			_conversionLogic = conversionLogic;
 			_keepListening = true;
+			_customerRepository = customerRepository;
         }
         #endregion
 
@@ -82,6 +85,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			else
 			{
 				returnOrder = myOrder.ToOrder();
+				if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0)
+				{
+					var po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
+					if (po != null)
+					{
+						returnOrder.Status = po.Status;
+					}
+
+					if (myOrder.ActualDeliveryTime != null)
+					{
+						returnOrder.Status = "Delivered";
+					}
+
+				}
+				
 			}
 
 			LookupProductDetails(branchId, returnOrder);
@@ -95,8 +113,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 		
 		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate){
+			var customer = _customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId, customerInfo.BranchId);
+
 			var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
-			var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(userId, customerInfo.CustomerId, startDate, endDate);
+			var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(customer.CustomerId, customerInfo.CustomerId, startDate, endDate);
 
 			return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
 		}

@@ -21,11 +21,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic
 {
 	public class ShoppingCartLogicImpl: IShoppingCartLogic {
         #region attributes
+		private readonly ICustomerRepository customerRepository;
         private readonly IBasketRepository basketRepository;
 		private readonly ICatalogLogic catalogLogic;
 		private readonly IPriceLogic priceLogic;
@@ -39,8 +41,9 @@ namespace KeithLink.Svc.Impl.Logic
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
-									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository, 
-                                     IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository) {
+									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
+									 IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, ICustomerRepository customerRepository)
+		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
 			this.priceLogic = priceLogic;
@@ -50,6 +53,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.basketLogic = basketLogic;
             this.orderQueueLogic = orderQueueLogic;
 			this.orderServiceRepository = orderServiceRepository;
+			this.customerRepository = customerRepository;
 		}
         #endregion
 
@@ -80,6 +84,9 @@ namespace KeithLink.Svc.Impl.Logic
         
         public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
 		{
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+
 			var newBasket = new CS.Basket();
 			newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = cart.Name;
@@ -90,7 +97,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
 
-			return basketRepository.CreateOrUpdateBasket(user.UserId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
+			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
 		}
 
 		public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
@@ -238,6 +245,7 @@ namespace KeithLink.Svc.Impl.Logic
 		
         public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 			//Check that RequestedShipDate
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 
@@ -249,7 +257,7 @@ namespace KeithLink.Svc.Impl.Logic
 			//Save to Commerce Server
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
 			var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), cartId);
-			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(basket.UserId.ToGuid(), orderNumber);
+			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
             orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
             orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue

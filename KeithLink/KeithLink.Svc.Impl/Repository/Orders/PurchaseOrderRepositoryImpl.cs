@@ -40,10 +40,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
-		public PurchaseOrder ReadPurchaseOrder(Guid userId, string orderNumber)
+		public PurchaseOrder ReadPurchaseOrder(Guid customerId, string orderNumber)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToCommerceServerFormat();
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
 			queryBaskets.SearchCriteria.Model.Properties["OrderNumber"] = orderNumber;
 
@@ -90,12 +90,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
-		public List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId, bool header = false)
+		public List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToCommerceServerFormat();
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerId;
+			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerNumber;
 
 			queryBaskets.QueryOptions.RefreshBasket = false;
 
@@ -113,18 +113,18 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
             return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null && 
-                                                                                     c.Properties["CustomerId"].ToString().Equals(customerId)
+                                                                                     c.Properties["CustomerId"].ToString().Equals(customerNumber)
                                                                                 ).Select(p => (PurchaseOrder)p).ToList();
             //return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 		}
 
 
-		public List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid userId, string customerId, DateTime startDate, DateTime endDate)
+		public List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid customerId, string customerNumber, DateTime startDate, DateTime endDate)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
-			queryBaskets.SearchCriteria.Model.Properties["UserId"] = userId.ToString("B");
+			queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToCommerceServerFormat();
 			queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
-			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerId;
+			queryBaskets.SearchCriteria.Model.Properties["CustomerId"] = customerNumber;
 			queryBaskets.SearchCriteria.Model.Properties["CreatedDateStart"] = startDate;
 			queryBaskets.SearchCriteria.Model.Properties["CreatedDateEnd"] = endDate;
 
@@ -139,7 +139,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
 
 			return basketResponse.CommerceEntities.Cast<CommerceEntity>().Where(c => c.Properties["CustomerId"] != null &&
-																					 c.Properties["CustomerId"].ToString().Equals(customerId)
+																					 c.Properties["CustomerId"].ToString().Equals(customerNumber)
 																					 && c.Properties["RequestedShipDate"].ToString().ToDateTime().Value >= startDate && c.Properties["RequestedShipDate"].ToString().ToDateTime().Value <= endDate
 																				).Select(p => (PurchaseOrder)p).ToList();
 			//return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();

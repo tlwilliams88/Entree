@@ -61,6 +61,17 @@ angular.module('bekApp')
         });
       },
 
+
+      checkEmailLength: function(email){
+      if(email.indexOf('@')>20){
+        toaster.pop('error', null, 'Please use a shorter e-mail address.');
+        return false;
+      }
+      else{
+        return true;
+      }
+        },
+
       updateDisplayName: function(profile){
         // set display name for user
           if (profile.firstname === 'guest' && profile.lastname === 'account') {
