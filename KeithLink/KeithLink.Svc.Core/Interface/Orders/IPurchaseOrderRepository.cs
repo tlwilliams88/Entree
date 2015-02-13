@@ -9,16 +9,16 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
 	public interface IPurchaseOrderRepository
 	{
-		PurchaseOrder ReadPurchaseOrder(Guid userId, string orderNumber);
+		PurchaseOrder ReadPurchaseOrder(Guid customerId, string orderNumber);
 
         PurchaseOrder ReadPurchaseOrderByTrackingNumber(string confirmationNumber);
 
-		List<PurchaseOrder> ReadPurchaseOrders(Guid userId, string customerId, bool header = false);
+		List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false);
         
         string UpdatePurchaseOrder(PurchaseOrder order);
         
         string SubmitChangeOrder(Guid userId, Guid orderGroupId);
 
-		List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid userId, string customerId, DateTime startDate, DateTime endDate);
+		List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid customerId, string customerNumber, DateTime startDate, DateTime endDate);
 	}
 }

@@ -26,10 +26,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private IPriceLogic priceLogic;
         private IEventLogRepository eventLogRepository;
         private IUserProfileLogic userProfileLogic;
+		private ICustomerRepository customerRepository;
 
 		public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, IOrderServiceRepository orderServiceRepository,
             IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository,
-            IUserProfileLogic userProfileLogic)
+			IUserProfileLogic userProfileLogic, ICustomerRepository customerRepository)
 		{
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogLogic = catalogLogic;
@@ -39,11 +40,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             this.priceLogic = priceLogic;
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
+			this.customerRepository = customerRepository;
 		}
 
 		public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false)
 		{
-            var orders = purchaseOrderRepository.ReadPurchaseOrders(userProfile.UserId, catalogInfo.CustomerId, header);
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+            var orders = purchaseOrderRepository.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, header);
 
 			var returnOrders = orders.Select(p => ToOrder(p)).ToList();
 			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
@@ -71,7 +75,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 		public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber, bool omitDeletedItems = true)
 		{
-			var order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber);
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+			var order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 			var returnOrder = ToOrder(order);
 			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
             
@@ -229,7 +235,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             foreach (OrderLine line in existingOrder.Items)
             {
                 //itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
-                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
+                itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.ChangeOrderStatus, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
             }
             var orderNumber = client.UpdatePurchaseOrder(user.UserId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
@@ -248,12 +254,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     {
                         existingLine.Quantity = newLine.Quantity;
                         existingLine.Each = newLine.Each;
-                        existingLine.MainFrameStatus = "changed";
+						existingLine.ChangeOrderStatus = "changed";
                     }
                 }
                 else
                 { // new line
-                    existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, MainFrameStatus = "added" });
+					existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, ChangeOrderStatus = "added" });
                 }
             }
             // handle deletes
@@ -262,7 +268,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 OrderLine newLine = order.Items.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
                 if (newLine == null)
                 {
-                    existingLine.MainFrameStatus = "deleted";
+					existingLine.ChangeOrderStatus = "deleted";
                     eventLogRepository.WriteInformationLog("Deleting line: " + existingLine.ItemNumber);
                 }
             }
@@ -270,12 +276,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public NewOrderReturn SubmitChangeOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber)
         {
-            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, orderNumber); // TODO: incorporate multi user query
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
+            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber); // TODO: incorporate multi user query
 
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.SaveOrderAsChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
 
-            order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, newOrderNumber);
+			order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
             orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder);
 
@@ -284,11 +292,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
-        public bool ResendUnconfirmedOrder(UserProfile userProfile, int controlNumber)
+        public bool ResendUnconfirmedOrder(UserProfile userProfile, int controlNumber, UserSelectedContext catalogInfo)
         {
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
             string controlNumberMainFrameFormat = controlNumber.ToString("0000000.##");
             Guid userId = orderServiceRepository.GetUserIdForControlNumber(controlNumber);
-            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(userId, controlNumberMainFrameFormat);
+            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, controlNumberMainFrameFormat);
             string originalOrderNumber = order.Properties["OriginalOrderNumber"].ToString();
             OrderType type = originalOrderNumber == controlNumberMainFrameFormat ? OrderType.NormalOrder : OrderType.ChangeOrder;
             orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, controlNumberMainFrameFormat, order, type); // TODO, logic to compare original order number and control number
@@ -297,9 +307,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         public NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId)
         {
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.CancelPurchaseOrder(userProfile.UserId, commerceId);
-            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(userProfile.UserId, newOrderNumber);
+			CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
             orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder);
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }

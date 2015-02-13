@@ -198,7 +198,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             return new Models.OperationReturnModel<bool>() 
                 {
-                    SuccessResponse = _orderLogic.ResendUnconfirmedOrder(this.AuthenticatedUser, controlNumber) 
+                    SuccessResponse = _orderLogic.ResendUnconfirmedOrder(this.AuthenticatedUser, controlNumber, this.SelectedUserContext) 
                 };
         }
 
