@@ -54,7 +54,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #region ctor
 		public InternalOrderHistoryLogic(IOrderHistoryHeaderRepsitory headerRepo,
 			IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic,
-			IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, ICustomerRepository _customerRepository)
+			IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, ICustomerRepository customerRepository)
 		{
 			_headerRepo = headerRepo;
 			_poRepo = poRepo;
@@ -65,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			_queue = queue;
 			_conversionLogic = conversionLogic;
 			_keepListening = true;
+			_customerRepository = customerRepository;
         }
         #endregion
 
