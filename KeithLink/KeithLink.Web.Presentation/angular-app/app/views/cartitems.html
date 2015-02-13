@@ -11,7 +11,7 @@
             <caption class="text-left">Carts</caption>
             <tr ng-click="goToCart(cart.id, false)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
               <td><span class="overflow">{{cart.name}}</span></td>
-              <td>{{cart.items.length}}</td>
+              <td><!-- {{cart.items.length}} --></td>
               <td class="nowrap">{{cart.requestedshipdate | formatDate}}</td>
             </tr>
             <tr ng-click="createNewCart()">

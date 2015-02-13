@@ -57,8 +57,8 @@ angular
   $tooltipProvider.options({animation: false});
 
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, $window, $location, PhonegapServices, PhonegapPushService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', 'ListService', 'CartService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, ListService, CartService, $window, $location, PhonegapServices, PhonegapPushService) {
 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -133,6 +133,19 @@ angular
       return;
     }
     $window.ga('send', 'pageview', { page: $location.path() });
+
+    // remove lists and carts from memory
+    if (fromState.data && toState.data) {
+      if (fromState.data.saveLists && !toState.data.saveLists) {
+        $log.debug('erasing lists and labels');
+        ListService.lists = [];
+        ListService.labels = [];
+      }
+      if (fromState.data.saveCarts && !toState.data.saveCarts) {
+        $log.debug('erasing carts');
+        CartService.carts = [];
+      }
+    }
   });
 
 }]);

@@ -30,11 +30,13 @@
   z-index: 5;
 }
 #sp-page {
-  position: absolute;
+  /*position: absolute;
   width: 100%;
   min-height: 100%;
   float: right;
-  z-index: 10;
+  z-index: 10;*/
+  -webkit-transform: translateX(0);
+  transform: translateX(0);
 }
 #sp-nav.show,
 #sp-nav.show.wide {
