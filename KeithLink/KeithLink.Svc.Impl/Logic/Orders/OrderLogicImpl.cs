@@ -47,9 +47,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 		{
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-            var orders = purchaseOrderRepository.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, header);
+            var orders = purchaseOrderRepository.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
 
-			var returnOrders = orders.Select(p => ToOrder(p)).ToList();
+			var returnOrders = orders.Select(p => ToOrder(p, header)).ToList();
 			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
             
 			returnOrders.ForEach(delegate(Order order)
@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
 			var order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
-			var returnOrder = ToOrder(order);
+			var returnOrder = ToOrder(order, false);
 			var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
             
 			LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
@@ -89,7 +89,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			return returnOrder;
 		}
 
-		private Order ToOrder(CS.PurchaseOrder purchaseOrder)
+		private Order ToOrder(CS.PurchaseOrder purchaseOrder, bool headerOnly)
 		{
 			return new Order()
 			{
@@ -100,7 +100,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
                 Status = System.Text.RegularExpressions.Regex.Replace(purchaseOrder.Status, "([a-z])([A-Z])", "$1 $2"),
                 RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)purchaseOrder.Properties["RequestedShipDate"],
-				Items = purchaseOrder.Properties["LineItems"] == null ? new List<OrderLine>() : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
+				Items = purchaseOrder.Properties["LineItems"] == null || headerOnly ? new List<OrderLine>() : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
+				ItemCount = purchaseOrder.Properties["LineItems"] == null ? 0 : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Count,
                 CommerceId = Guid.Parse(purchaseOrder.Id)
 			};
 		}
