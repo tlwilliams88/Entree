@@ -222,6 +222,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 throw new ApplicationException("Cannot submit an order with zero line items");
             }
              * */
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
             Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber, false);
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
@@ -237,7 +238,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 //itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.Status, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
                 itemUpdates.Add(new com.benekeith.FoundationService.PurchaseOrderLineItemUpdate() { ItemNumber = line.ItemNumber, Quantity = line.Quantity, Status = line.ChangeOrderStatus, Catalog = catalogInfo.BranchId, Each = line.Each, CatchWeight = line.CatchWeight });
             }
-            var orderNumber = client.UpdatePurchaseOrder(user.UserId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
+            var orderNumber = client.UpdatePurchaseOrder(customer.CustomerId, existingOrder.CommerceId, order.RequestedShipDate, itemUpdates.ToArray());
 
             return this.ReadOrder(user, catalogInfo, order.OrderNumber);
         }
@@ -281,13 +282,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber); // TODO: incorporate multi user query
 
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
-            string newOrderNumber = client.SaveOrderAsChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
+			string newOrderNumber = client.SaveOrderAsChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
 			order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
             orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder);
 
-            client.CleanUpChangeOrder(userProfile.UserId, Guid.Parse(order.Id));
+			client.CleanUpChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
@@ -310,7 +311,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
-            string newOrderNumber = client.CancelPurchaseOrder(userProfile.UserId, commerceId);
+            string newOrderNumber = client.CancelPurchaseOrder(customer.CustomerId, commerceId);
 			CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
             orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder);
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
