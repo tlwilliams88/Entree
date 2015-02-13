@@ -65,7 +65,6 @@
               <caption class="text-left">Change Orders</caption>
               <tr ng-click="goToList(selectedList, order)" ng-repeat="order in changeOrders">
                 <td><span class="overflow"># {{order.invoicenumber}}</span></td>
-                <td>{{order.itemcount}}</td>
                 <td>{{order.requestedshipdate | formatDate}}</td>
               </tr>
             </table>
