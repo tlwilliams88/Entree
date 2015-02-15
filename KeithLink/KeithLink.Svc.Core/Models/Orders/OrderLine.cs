@@ -18,7 +18,27 @@ namespace KeithLink.Svc.Core.Models.Orders
         public int LineNumber { get; set; }
 
 		[DataMember(Name = "linetotal")]
-        public double LineTotal { get { return this.Quantity * this.Price; } set { } }
+        public double LineTotal { 
+            get {
+                if (this.CatchWeight)
+                {
+                    if (this.Each) //package catchweight
+                    {
+                        return ((this.AverageWeight / Int32.Parse(this.Pack)) * this.QantityShipped) * this.Price;
+                    }
+                    else //case catchweight
+                    {
+                        return (this.AverageWeight * this.QantityShipped) * this.Price;
+                    }
+                }
+                else
+                {
+                    return this.Quantity * this.Price; 
+                }
+                
+            } 
+            set { } 
+        }
 
 		[DataMember(Name = "quantity")]
 		[Description("# Requested")]
