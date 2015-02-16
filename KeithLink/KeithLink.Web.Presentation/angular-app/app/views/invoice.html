@@ -168,9 +168,9 @@
             </td>
           </tr> <!-- end Filter Row -->
 
-          <tr ng-repeat-start="invoice in invoices" ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, 'invoice__late':  invoice.status === 2}">
+          <tr ng-repeat-start="invoice in invoices" ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected || (invoice.paymentAmount.length && invoice.paymentAmount != 0), 'invoice__late':  invoice.status === 2}">
             <td ng-if="!viewingAllCustomers">
-              <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
+              <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-checked ="invoice.paymentAmount.length && invoice.paymentAmount != 0" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
               <a ng-click="changeCustomerOnClick(invoice.customernumber, invoice.branchid)">{{::invoice.customername}}</a>
@@ -213,7 +213,8 @@
                   'min': {{invoice.amount > 0 ? 0 : invoice.amount}}
                 }"
                 ng-required="invoice.isSelected"
-                ng-disabled="!invoice.isSelected">
+                ng-blur="toggleSelect(invoice)"
+                >
             </td>
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a

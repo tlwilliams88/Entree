@@ -223,7 +223,20 @@ angular.module('bekApp')
     $scope.selectedAccount = account;
   };
 
+  $scope.toggleSelect = function (invoice) {
+    
+    if(invoice.paymentAmount && invoice.paymentAmount!= 0){ 
+      invoice.isSelected = true;
+    }
+    else{
+      invoice.isSelected = false;
+    }  
+    if(invoice.amount<0 && invoice.paymentAmount.slice(0,1) != '-')
+     {invoice.paymentAmount = "";}  
+  };
+
   $scope.selectInvoice = function (invoice, isSelected) {
+
     if (isSelected) {
       if (!invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.amount.toString();
