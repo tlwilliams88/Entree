@@ -27,14 +27,17 @@ angular.module('bekApp')
   function calculateQuantityPrice(item) {
     var unitPrice = 0;
 
+    if (!item.quantity) {
+      item.quantity = 0;
+    }
+
     if (item.price) { // check if change order item
       unitPrice = item.price;
     } else {
       // determine if using case price or package price
       unitPrice = item.each ? item.packageprice : item.caseprice;
     }
-
-    return unitPrice * item.quantity;
+    return parseFloat(unitPrice) * item.quantity;
   }
 
   var Service = {
@@ -47,7 +50,6 @@ angular.module('bekApp')
       } else {
         price = calculateQuantityPrice(item);
       }
-
       return price;
     },
 

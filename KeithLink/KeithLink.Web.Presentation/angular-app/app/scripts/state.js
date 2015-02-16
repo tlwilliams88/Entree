@@ -31,6 +31,9 @@ angular.module('bekApp')
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
           return BranchService.getBranches();
+        }],
+        selectedUserContext: ['LocalStorage', function(LocalStorage) {
+          LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
         }]
       }
     })

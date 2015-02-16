@@ -9,13 +9,13 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService',
     function (
       $scope, $timeout, $rootScope, $state, $log, $window,  // built in angular services
       $modal,                         // ui-bootstrap library
       ENV,                            // environment config, see configenv.js file which is generated from Grunt
       branches,                       // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService // bek custom services
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -32,7 +32,7 @@ angular.module('bekApp')
   $scope.displayGlobalMessage = true;
 
   $scope.userProfile = LocalStorage.getProfile();
-  refreshAccessPermissions();
+  refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
   /**********
@@ -40,6 +40,7 @@ angular.module('bekApp')
   **********/
 
   $scope.setSelectedUserContext = function(selectedUserContext) {
+    console.log('set selected context');
     $scope.selectedUserContext = selectedUserContext;
   };
 
@@ -143,14 +144,10 @@ angular.module('bekApp')
 
   // change context menu selection for order-entry customers
   $scope.changeCustomerLocation = function(selectedUserContext) {
-    LocalStorage.setSelectedCustomerInfo(selectedUserContext);
-
-    // reset ship dates in cache
-    angular.copy([], CartService.shipDates);
-
+    LocalStorage.setTempContext(selectedUserContext);
     refreshPage();
   };
-
+  
   /**********
   MENU BUTTON CLICK HANDLERS
   **********/
@@ -217,7 +214,8 @@ angular.module('bekApp')
   also used in state.js to determine if the user has access to a state
   **********/
 
-  function refreshAccessPermissions() {
+  function refreshAccessPermissions(userProfile) {
+    $scope.displayRole = AccessService.getRoleDisplayString(userProfile.rolename);
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
     $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();

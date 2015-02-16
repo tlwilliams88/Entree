@@ -95,7 +95,7 @@
 
         <div class="col-md-3 col-sm-6 col-xs-12 info-box">
           <span class="nav-description text-light">Cart Info</span>
-          <span class="nav-title">{{getItemCount(selectedCart, selectedList) || '0'}} Items</span>
+          <span class="nav-title">{{itemCount || '0'}} Items</span>
           <span class="nav-subtotal pull-right text-green">{{subtotal | currency}}</span>
         </div>
 
@@ -107,7 +107,7 @@
     <div class="col-xs-3">{{selectedList.name}}</div>
     <div class="col-xs-3">{{selectedCart.name || selectedCart.ordernumber || 'New Cart'}}</div>
     <div class="col-xs-2">{{( selectedCart.requestedshipdate | formatDate ) || 'Select a date...' }}</div>
-    <div class="col-xs-2">{{getItemCount(selectedCart, selectedList) || '0'}} Items</div>
+    <div class="col-xs-2">{{itemCount || '0'}} Items</div>
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
 
@@ -257,7 +257,7 @@
           </td>
           <td class="input-col hidden-mobile-visible-print">
             <ng-form name="eachForm" ng-if="item.hasPackagePrice">
-              <input type="checkbox" ng-model="item.each" id="each" name="each" />
+              <input type="checkbox" ng-change="changeEach(item)" ng-model="item.each" id="each" name="each" />
               <label for="each"></label>
             </ng-form>
           </td>
@@ -327,7 +327,7 @@
                 <td>Each</td>
                 <td>
                   <ng-form name="eachForm_mobile">
-                    <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                    <input type="checkbox" ng-model="item.each" ng-change="changeEach(item)" id="each" name="each" />
                   </ng-form>
                 </td>
               </tr>
