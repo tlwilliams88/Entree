@@ -74,15 +74,15 @@ angular.module('bekApp')
 
       updateDisplayName: function(profile){
         // set display name for user
-          if (profile.firstname === 'guest' && profile.lastname === 'account') {
-            profile.displayname = profile.emailaddress;
-          } else if (profile.firstname && profile.lastname) {
-            profile.displayname = profile.firstname + ' ' + profile.lastname;
-          } else if (profile.firstname) {
-            profile.displayname = profile.firstname;
-          } else {
-            profile.displayname = profile.emailaddress;
-          }
+        if (profile.firstname === 'guest' && profile.lastname === 'account') {
+          profile.displayname = profile.emailaddress;
+        } else if (profile.firstname && profile.lastname) {
+          profile.displayname = profile.firstname + ' ' + profile.lastname;
+        } else if (profile.firstname) {
+          profile.displayname = profile.firstname;
+        } else {
+          profile.displayname = profile.emailaddress;
+        }
       },
 
       getAllUserCustomers: function(userId) {

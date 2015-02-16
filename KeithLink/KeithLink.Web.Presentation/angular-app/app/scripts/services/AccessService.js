@@ -13,6 +13,28 @@ angular.module('bekApp')
 
   var Service = {
 
+    getRoleDisplayString: function(role) {
+      var displayRole = role;
+      switch (role) {
+        case Constants.roles.DSR:
+          displayRole = 'DSR';
+          break;
+        case Constants.roles.DSM: 
+          displayRole = 'DSM';
+          break;
+        case Constants.roles.BRANCH_MANAGER:
+          displayRole = 'Branch IS Manager';
+          break;
+        case Constants.roles.POWER_USER:
+          displayRole = 'Power User';
+          break;
+        case Constants.roles.SYS_ADMIN:
+          displayRole = 'Sys Admin';
+          break;
+      }
+      return displayRole;
+    },
+
     isLoggedIn: function() {
       return !!(LocalStorage.getToken() && LocalStorage.getProfile() && isValidToken());
     },

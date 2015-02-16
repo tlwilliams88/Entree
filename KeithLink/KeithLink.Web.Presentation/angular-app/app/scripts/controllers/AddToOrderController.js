@@ -27,13 +27,14 @@ angular.module('bekApp')
       $scope.sortBy = 'position';
       $scope.sortOrder = false;
 
-      for (var i = 0; i < $scope.selectedList.items.length - 1; i++) {
+      for (var i = 0; i < $scope.selectedList.items.length; i++) {
         $scope.$watch('selectedList.items[' + i + '].quantity', function(newVal, oldVal) {
           var idx = this.exp.substr(this.exp.indexOf('[') + 1, this.exp.indexOf(']') - this.exp.indexOf('[') - 1);
           var item = $scope.selectedList.items[idx];
           item.extPrice = PricingService.getPriceForItem(item);
 
           refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+          $scope.getItemCount($scope.selectedCart, $scope.selectedList);
         });
       }
     }
@@ -197,6 +198,12 @@ angular.module('bekApp')
       }
     };
 
+    $scope.changeEach = function(item) {
+      item.extPrice = PricingService.getPriceForItem(item);
+      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+      $scope.getItemCount($scope.selectedCart, $scope.selectedList);
+    };
+
     function refreshSubtotal(cartItems, listItems) {
       var listItemsWithQuantity = $scope.getListItemsWithQuantity(listItems);
 
@@ -222,6 +229,7 @@ angular.module('bekApp')
             uniqueItemNumbers.push(item.itemnumber);
           }
         });
+        $scope.itemCount = total;
         return total;
       }
     };
