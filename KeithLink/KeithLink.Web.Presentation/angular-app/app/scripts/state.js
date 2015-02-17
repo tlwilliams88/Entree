@@ -33,7 +33,9 @@ angular.module('bekApp')
           return BranchService.getBranches();
         }],
         selectedUserContext: ['LocalStorage', function(LocalStorage) {
-          LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          if (LocalStorage.getTempContext()) {
+            LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          }
         }]
       }
     })
