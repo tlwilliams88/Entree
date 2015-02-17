@@ -67,12 +67,10 @@ angular.module('bekApp')
       *************/
 
       getTempContext: function() {
-        console.log('get temp context');
         return localStorageService.get(Constants.localStorage.tempContext);
       },
 
       setTempContext: function(context) {
-        console.log('set temp context');
         localStorageService.set(Constants.localStorage.tempContext, context);
       },
 
