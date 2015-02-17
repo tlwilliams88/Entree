@@ -183,6 +183,7 @@ angular.module('bekApp')
 
       $scope.selectedList.items.splice(deletedIndex, 1);
       updateItemPositions();
+      $scope.listForm.$setDirty();
     };
 
     $scope.deleteMultipleItems = function() {
