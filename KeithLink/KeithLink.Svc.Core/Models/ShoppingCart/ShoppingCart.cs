@@ -22,8 +22,11 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		public DateTime? RequestedShipDate
 		{
 			get { return _requestedShipDate; }
-			set { 
-				_requestedShipDate = DateTime.SpecifyKind(value.Value, DateTimeKind.Local); 
+			set {
+				if (value == null)
+					_requestedShipDate = null;
+				else
+					_requestedShipDate = DateTime.SpecifyKind(value.Value, DateTimeKind.Local); 
 			}
 		}
 		[DataMember(Name="ponumber")]
