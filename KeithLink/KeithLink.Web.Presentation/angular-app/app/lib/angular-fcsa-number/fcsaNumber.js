@@ -82,7 +82,7 @@ noFormat            boolean
       };
       makeMaxNumber = function(maxNumber) {
         return function(val, number) {
-          return number <= maxNumber;
+          return number <= maxNumber || !maxNumber;
         };
       };
       makeMinNumber = function(minNumber) {
