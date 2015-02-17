@@ -61,7 +61,8 @@
           <div class="col-md-6 form-group">
             <label for="username">Email Address</label>
             <span ng-show="registrationForm.username.$error.required && registrationForm.username.$dirty" class="text-red">Email is required</span>
-            <input required ng-trim class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
+            <span ng-show="registrationForm.username.$error.emailLengthValidation && registrationForm.username.$dirty" class="text-red">Please choose a shorter email address</span>
+            <input required email-length-validation ng-trim class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmUsername">Confirm Email</label>
