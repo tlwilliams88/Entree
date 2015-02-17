@@ -40,7 +40,7 @@ angular.module('bekApp')
         });
       },
 
-          resetPassword: function(email) {          
+        resetPassword: function(email) {          
         var promise = $http.post('/profile/forgotpassword?emailAddress='+email);
         return UtilityService.resolvePromise(promise);
       },
@@ -60,17 +60,6 @@ angular.module('bekApp')
           return profile;
         });
       },
-
-
-      checkEmailLength: function(email){
-      if(email.indexOf('@')>20){
-        toaster.pop('error', null, 'Please use a shorter e-mail address.');
-        return false;
-      }
-      else{
-        return true;
-      }
-        },
 
       updateDisplayName: function(profile){
         // set display name for user
