@@ -86,7 +86,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 orderHistoryRepository.Update(order);
             }
+
             unitOfWork.SaveChanges();
+
             // send out notifications by customer - this may be enabled eventually, but for now, we just display the data in the UI
             //List<string> customerNumbers = orders
             //    .GroupBy(o => o.CustomerNumber)
