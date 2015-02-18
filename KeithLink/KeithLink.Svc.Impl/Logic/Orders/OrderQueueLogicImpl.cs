@@ -258,7 +258,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     ReplacedOriginalItemNumber = string.Empty
                 };
 
-                if (orderType == OrderType.NormalOrder) {
+                if (orderType == OrderType.ChangeOrder) {
                     switch (item.Status) {
                         case "added":
                             detail.ItemChange = LineType.Add;
