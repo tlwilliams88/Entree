@@ -19,6 +19,7 @@ angular.module('bekApp')
         localStorageService.remove(Constants.localStorage.currentCustomer);
         localStorageService.remove(Constants.localStorage.branchId);
         localStorageService.remove(Constants.localStorage.customerNumber);
+        localStorageService.remove(Constants.localStorage.tempContext);
       },
 
       /*************
@@ -67,12 +68,10 @@ angular.module('bekApp')
       *************/
 
       getTempContext: function() {
-        console.log('get temp context');
         return localStorageService.get(Constants.localStorage.tempContext);
       },
 
       setTempContext: function(context) {
-        console.log('set temp context');
         localStorageService.set(Constants.localStorage.tempContext, context);
       },
 

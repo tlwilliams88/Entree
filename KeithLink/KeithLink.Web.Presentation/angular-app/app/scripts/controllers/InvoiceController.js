@@ -178,7 +178,8 @@ angular.module('bekApp')
       invoicePagingModel.getData = InvoiceService.getInvoices;
     }
 
-    invoicePagingModel.filterData($scope.filterRowFields, $scope.selectedFilterView.filterFields);
+    getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
+    invoicePagingModel.loadData();
   };
 
   function changeUserContext(stateName, stateParams, customerNumber, customerBranch) {
@@ -224,19 +225,17 @@ angular.module('bekApp')
   };
 
   $scope.toggleSelect = function (invoice) {
-    
-    if(invoice.paymentAmount && invoice.paymentAmount!= 0){ 
+    if (invoice.paymentAmount && invoice.paymentAmount != 0) { 
       invoice.isSelected = true;
-    }
-    else{
+    } else {
       invoice.isSelected = false;
-    }  
-    if(invoice.amount<0 && invoice.paymentAmount.slice(0,1) != '-')
-     {invoice.paymentAmount = "";}  
+    }
+    if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) {
+      invoice.isSelected = false;
+    }
   };
 
   $scope.selectInvoice = function (invoice, isSelected) {
-
     if (isSelected) {
       if (!invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.amount.toString();
@@ -265,17 +264,23 @@ angular.module('bekApp')
   $scope.totalPaymentAmount = function () {
     var total = 0;
     $scope.invoices.forEach(function (invoice) {
-      total += parseFloat(invoice.paymentAmount || 0);
+      if (invoice.isSelected) {
+        total += parseFloat(invoice.paymentAmount || 0);
+      }
     });
     $scope.total = total;
     return total;
+  };
+
+  $scope.getInvoicesSelectedInvoices = function() {
+    return $filter('filter')($scope.invoices, {isSelected: true});
   };
 
   var processingPayInvoices = false;
   $scope.payInvoices = function () {
     if (!processingPayInvoices) {
       processingPayInvoices = true;
-      var payments = $filter('filter')($scope.invoices, {isSelected: true});
+      var payments = $scope.getInvoicesSelectedInvoices();
       InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
         $state.go('menu.transaction');
       }).finally(function () {

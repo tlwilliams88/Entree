@@ -40,7 +40,6 @@ angular.module('bekApp')
   **********/
 
   $scope.setSelectedUserContext = function(selectedUserContext) {
-    console.log('set selected context');
     $scope.selectedUserContext = selectedUserContext;
   };
 
