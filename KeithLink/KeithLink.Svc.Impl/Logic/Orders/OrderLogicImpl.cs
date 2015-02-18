@@ -103,7 +103,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)purchaseOrder.Properties["RequestedShipDate"],
 				Items = purchaseOrder.Properties["LineItems"] == null || headerOnly ? new List<OrderLine>() : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
 				ItemCount = purchaseOrder.Properties["LineItems"] == null ? 0 : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Count,
-                CommerceId = Guid.Parse(purchaseOrder.Id)
+                CommerceId = Guid.Parse(purchaseOrder.Id),
 			};
 		}
 
@@ -132,7 +132,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				Price = (double)lineItem.PlacedPrice,
                 QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
-                //Status = lineItem.Status,
+                ChangeOrderStatus = lineItem.Status,
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"]
