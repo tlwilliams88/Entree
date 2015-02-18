@@ -86,7 +86,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             // handel special change order logic to hide deleted line items
             if (returnOrder.IsChangeOrderAllowed && omitDeletedItems) // change order eligible - remove lines marked as 'deleted'
-                returnOrder.Items = returnOrder.Items.Where(x => x.MainFrameStatus != "deleted").ToList();
+                returnOrder.Items = returnOrder.Items.Where(x => x.ChangeOrderStatus != "deleted").ToList();
 			return returnOrder;
 		}
 
