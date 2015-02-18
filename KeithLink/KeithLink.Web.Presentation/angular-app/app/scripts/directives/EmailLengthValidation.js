@@ -17,7 +17,7 @@ angular.module('bekApp')
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
         
-        if ((viewValue.indexOf('@') < 21)) {
+        if (viewValue === undefined || viewValue.indexOf('@') < 21) {
           ctrl.$setValidity('emailLengthValidation', true);
           return viewValue;         
         } else {
