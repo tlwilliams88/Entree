@@ -19,6 +19,7 @@ angular.module('bekApp')
         localStorageService.remove(Constants.localStorage.currentCustomer);
         localStorageService.remove(Constants.localStorage.branchId);
         localStorageService.remove(Constants.localStorage.customerNumber);
+        localStorageService.remove(Constants.localStorage.tempContext);
       },
 
       /*************
