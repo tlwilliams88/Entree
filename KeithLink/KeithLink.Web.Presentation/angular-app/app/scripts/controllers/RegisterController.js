@@ -63,9 +63,6 @@ angular.module('bekApp')
     $scope.registerNewUser = function(userProfile) {
       $scope.registrationErrorMessage = null;
 
-    if(!UserProfileService.checkEmailLength(userProfile.email)){
-      return;
-    }
       
       UserProfileService.createUser(userProfile).then(function(data) {
 

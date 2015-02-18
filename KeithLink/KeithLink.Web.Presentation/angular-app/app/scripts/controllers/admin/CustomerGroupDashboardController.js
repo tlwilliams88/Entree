@@ -122,10 +122,6 @@ angular.module('bekApp')
   **********/
   $scope.userExists = false;
   $scope.checkUser = function (checkEmail) {  
-    
-    if(!UserProfileService.checkEmailLength(checkEmail)){
-      return;
-    }
     //set email as a parameter
     var data = {
       email: checkEmail
