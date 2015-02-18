@@ -24,16 +24,23 @@ namespace KeithLink.Svc.Core.Models.Orders
                 {
                     if (this.Each) //package catchweight
                     {
-                        return ((this.AverageWeight / Int32.Parse(this.Pack)) * this.QantityShipped) * this.Price;
+                        return ((this.AverageWeight / Int32.Parse(this.Pack)) * this.QantityShipped) * Double.Parse(this.PackagePrice);
                     }
                     else //case catchweight
                     {
-                        return (this.AverageWeight * this.QantityShipped) * this.Price;
+                        return (this.AverageWeight * this.QantityShipped) * Double.Parse(this.CasePrice);
                     }
                 }
                 else
                 {
-                    return this.Quantity * this.Price; 
+                    if (this.Each)
+                    {
+                        return this.QantityShipped * Double.Parse(this.PackagePrice);
+                    }
+                    else
+                    {
+                        return this.QantityShipped * Double.Parse(this.CasePrice);
+                    }
                 }
                 
             } 
