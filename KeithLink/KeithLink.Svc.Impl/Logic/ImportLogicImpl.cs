@@ -6,6 +6,7 @@ using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.ImportFiles;
 using Excel;
 using DocumentFormat;
 using DocumentFormat.OpenXml;
@@ -46,37 +47,68 @@ namespace KeithLink.Svc.Impl.Logic {
             _warnings = new StringBuilder();
         }
         
-        public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, string csvFile)
+        public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file)
 		{
 			try
 			{
 				var importReturn = new ListImportModel();
-				var newList = new ListModel() { Name = string.Format("Imported List - {0}", DateTime.Now.ToShortDateString()), BranchId = catalogInfo.BranchId};
 
-				var rows = csvFile.Split('\n');
+                var newList = new ListModel() { Name = string.Format( "Imported List - {0}", DateTime.Now.ToShortDateString() ), BranchId = catalogInfo.BranchId };
 
-				var items = rows.Skip(1).Select(i => i.Split(',')).Select(l => new ListItemModel() { ItemNumber = l[0].ToString() }).Where(x => !string.IsNullOrEmpty(x.ItemNumber)).ToList();
+                //var rows = csvFile.Split('\n');
 
-				//Verify the user has these products in their catalog
-				var prods = catalogLogic.GetProductsByIds(catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList());
+                //var items = rows.Skip(1).Select(i => i.Split(',')).Select(l => new ListItemModel() { ItemNumber = l[0].ToString() }).Where(x => !string.IsNullOrEmpty(x.ItemNumber)).ToList();
 
-				//Item counts don't match, which means there are items in the import that don't belong to this catalog
-				if (prods.Products.Select(p => p.ItemNumber).Distinct().Count() != items.Select(i => i.ItemNumber).Distinct().Count())
-				{
-					importReturn.WarningMessage = "Some items were not imported because they were not found in the current catalog.";
+                ////Verify the user has these products in their catalog
+                //var prods = catalogLogic.GetProductsByIds(catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList());
 
-					newList.Items = new List<ListItemModel>();
-					foreach (var item in items)
-						if (prods.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).Any())
-							newList.Items.Add(item);
-				}
-				else
-					newList.Items = items; //All items are in the user's catalog
+                ////Item counts don't match, which means there are items in the import that don't belong to this catalog
+                //if (prods.Products.Select(p => p.ItemNumber).Distinct().Count() != items.Select(i => i.ItemNumber).Distinct().Count())
+                //{
+                //    importReturn.WarningMessage = "Some items were not imported because they were not found in the current catalog.";
+
+                //    newList.Items = new List<ListItemModel>();
+                //    foreach (var item in items)
+                //        if (prods.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).Any())
+                //            newList.Items.Add(item);
+                //}
+                //else
+                //    newList.Items = items; //All items are in the user's catalog
 
 
-				importReturn.ListId = 	listServiceRepository.CreateList(user.UserId, catalogInfo, newList, ListType.Custom);
+                //importReturn.ListId = 	listServiceRepository.CreateList(user.UserId, catalogInfo, newList, ListType.Custom);
 
-				importReturn.Success = true;
+                //importReturn.Success = true;
+
+                List<ListItemModel> items = new List<ListItemModel>();
+
+                switch (file.FileFormat) {
+                    case FileFormat.CSV:
+                        items = parseListDelimited( file, CSV_DELIMITER, user, catalogInfo );
+                        break;
+                    case FileFormat.Tab:
+                        items = parseListDelimited( file, TAB_DELIMITER, user, catalogInfo );
+                        break;
+                    case FileFormat.Excel:
+                        items = parseListExcel( file, user, catalogInfo );
+                        break;
+                }
+
+                var validProducts = catalogLogic.GetProductsByIds( catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList() );
+
+                if (items.Select( p => p.ItemNumber ).Distinct().Count() != validProducts.Products.Select( o => o.ItemNumber ).Distinct().Count()) {
+                    Warning( "Some items were not imported because they were not found in the current catalog." );
+                    foreach (var item in items)
+                        if (validProducts.Products.Where( p => p.ItemNumber.Equals( item.ItemNumber ) ).Any())
+                            newList.Items.Add( item );
+                } else {
+                    newList.Items = items;
+                }
+
+                importReturn.Success = true;
+                importReturn.ListId = listServiceRepository.CreateList( user.UserId, catalogInfo, newList, ListType.Custom );
+                importReturn.WarningMessage = _warnings.ToString();
+                importReturn.ErrorMessage = _errors.ToString();
 
 				return importReturn;
 			}
@@ -86,6 +118,36 @@ namespace KeithLink.Svc.Impl.Logic {
 				return new ListImportModel() { Success = false, ErrorMessage = "An error has occurred while processing the import file" };
 			}
 		}
+
+        private List<ListItemModel> parseListDelimited( ListImportFileModel file, char delimiter, UserProfile user, UserSelectedContext catalogInfo ) {
+            List<ListItemModel> returnValue = new List<ListItemModel>();
+
+            var items = file.Contents.Split( '\n' ).Select( i => i.Split( delimiter ) ).Select( i => new ListItemModel() { ItemNumber = i[0].ToString() } ).Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
+
+            return returnValue;
+        }
+
+        private List<ListItemModel> parseListExcel( ListImportFileModel file, UserProfile user, UserSelectedContext catalogInfo ) {
+            List<ListItemModel> returnValue = new List<ListItemModel>() { };
+
+            IExcelDataReader rdr = null;
+
+            if (System.IO.Path.GetExtension( file.FileName ).Equals( BINARY_EXCEL_EXTENSION, StringComparison.InvariantCultureIgnoreCase )) {
+                rdr = ExcelReaderFactory.CreateBinaryReader( file.Stream );
+            } else {
+                rdr = ExcelReaderFactory.CreateOpenXmlReader( file.Stream );
+            }
+
+            rdr.Read(); // Skip the first line
+
+            while (rdr.Read()) {
+                returnValue.Add( new ListItemModel() {
+                    ItemNumber = rdr.GetString( 0 )
+                } );
+            }
+
+            return returnValue;
+        }
 
         public OrderImportModel ImportOrder( UserProfile user, UserSelectedContext catalogInfo, OrderImportFileModel file ) {
             var returnModel = new OrderImportModel();

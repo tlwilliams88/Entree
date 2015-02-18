@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface
 {
 	public interface IImportLogic
 	{
-		ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, string csvFile);
+		ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file);
         OrderImportModel ImportOrder( UserProfile user, UserSelectedContext catalogInfo, OrderImportFileModel file );
 	}
 }

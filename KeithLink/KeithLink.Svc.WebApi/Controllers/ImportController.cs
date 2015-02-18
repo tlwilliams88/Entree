@@ -35,17 +35,33 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var provider = new MultipartMemoryStreamProvider();
 			await Request.Content.ReadAsMultipartAsync(provider);
 
-			var file = provider.Contents.First();
-			var filename = file.Headers.ContentDisposition.FileName.Trim('\"');
-			var buffer = await file.ReadAsByteArrayAsync();
-			var stream = new MemoryStream(buffer);
+            ListImportFileModel fileModel = new ListImportFileModel();
 
-			using (var s = new StreamReader(stream))
-			{
-				var fileContents = s.ReadToEnd();
+            foreach (var content in provider.Contents) {
+                var file = content;
+                var paramName = file.Headers.ContentDisposition.Name.Trim( '\"' );
+                var buffer = await file.ReadAsByteArrayAsync();
+                var stream = new MemoryStream( buffer );
 
-				return importLogic.ImportList(this.AuthenticatedUser, this.SelectedUserContext, fileContents);
-			}
+                using (var s = new StreamReader( stream )) {
+                    switch (paramName) {
+                        case "file":
+                            stream.CopyTo( fileModel.Stream );
+                            fileModel.FileName = file.Headers.ContentDisposition.FileName.Trim( '\"' );
+                            stream.Seek( 0, SeekOrigin.Begin );
+                            fileModel.Contents = s.ReadToEnd();
+                            break;
+                        case "options":
+                            // Figure out what to do here
+                            break;
+                    }
+                }
+            }
+
+            if (string.IsNullOrEmpty( fileModel.Contents ))
+                return new ListImportModel() { Success = false, ErrorMessage = "Invalid request" };
+
+            return importLogic.ImportList( this.AuthenticatedUser, this.SelectedUserContext, fileModel );
 		}
 
 
