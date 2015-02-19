@@ -76,11 +76,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 																  h.InvoiceNumber.Equals(invoiceNumber),
 															 d => d.OrderDetails).FirstOrDefault();
 			Order returnOrder = null;
-
+				
 			if (myOrder == null)
 			{
 				PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
+				
 				returnOrder = po.ToOrder();
+				
 			}
 			else
 			{
@@ -91,6 +93,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					if (po != null)
 					{
 						returnOrder.Status = po.Status;
+						var poOrder = po.ToOrder();
+						foreach (var item in returnOrder.Items)
+						{
+							//Get the unit price from the PO
+							var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+							if (poLine != null)
+								item.Price = poLine.Price;
+						}
 					}
 
 					if (myOrder.ActualDeliveryTime != null)
@@ -110,6 +120,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 				foreach (var item in returnOrder.Items)
 					item.MainFrameStatus = "Pending";
 			}
+
+
+			returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 
 			return returnOrder;
         }

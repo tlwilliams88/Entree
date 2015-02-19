@@ -371,18 +371,19 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (linePosition)).FirstOrDefault();
 
                 if (orderFormLineItem != null) {
-                    SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem));
+                    SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem), detail.PriceNet);
                     _log.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"] + ", confirmation status: _" + detail.DisplayStatus() + "_");
                 } else
                     _log.WriteWarningLog("No CS line found for MainFrame line " + linePosition + " on order: " + confirmation.Header.InvoiceNumber);
             }
         }
 
-        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber) {
+        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber, double placedPrice ) {
             orderFormLineItem["QuantityOrdered"] = quantityOrdered;
             orderFormLineItem["QuantityShipped"] = quantityShipped;
             orderFormLineItem["MainFrameStatus"] = displayStatus;
             orderFormLineItem["SubstitutedItemNumber"] = substitutedItemNumber;
+			orderFormLineItem.PlacedPrice = (decimal)placedPrice;
             orderFormLineItem.ProductId = currentItemNumber;
         }
 
