@@ -21,13 +21,6 @@ namespace KeithLink.Svc.Core.Models.Orders
         ItemQtyBrokenCase
 	}
 
-	public enum FileFormat
-	{
-		CSV,
-		Tab,
-		Excel
-	}
-
 
 	[DataContract]
 	public class OrderImportOptions
@@ -39,7 +32,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 		public FileContentType Contents { get; set; }
 
 		[DataMember(Name = "fileformat")]
-		public FileFormat FileFormat { get; set; }
+		public KeithLink.Svc.Core.Models.ImportFiles.FileFormat FileFormat { get; set; }
 
 		[DataMember(Name = "ignorezero")]
 		public bool IgnoreZeroQuantities { get; set; }
