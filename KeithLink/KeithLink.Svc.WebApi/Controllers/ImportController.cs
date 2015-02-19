@@ -53,6 +53,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                             break;
                         case "options":
                             // Figure out what to do here
+                            fileModel = Newtonsoft.Json.JsonConvert.DeserializeObject<ListImportFileModel>(s.ReadToEnd());
                             break;
                     }
                 }
