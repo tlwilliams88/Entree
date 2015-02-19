@@ -99,7 +99,7 @@
         <thead>
           <tr>
             <th ng-if="!viewingAllCustomers" class="input-col">
-              <input ng-if="!isInternalAccountAdminUser" type="checkbox" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
+              <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
             </th>
             <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customername', !sort.sortDescending)">
               Customer 
@@ -127,9 +127,9 @@
               Amount
               <span>Due<span sort-icons field="'amount'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="text-left hidden-mobile-visible-print">Invoice Image</th>
-            <th ng-show="!viewingAllCustomers && !isInternalAccountAdminUser" >Payment Amt</th>
-            <th ng-show="!viewingAllCustomers && !isInternalAccountAdminUser" class="hidden-mobile-visible-print">Schedule Date</th>
+            <th class="text-center hidden-mobile-visible-print">Invoice Image</th>
+            <th ng-show="!viewingAllCustomers">Payment Amt</th>
+            <th ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print">Schedule Date</th>
             <th class="large-icon icon-col">
               <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
             </th>
@@ -170,7 +170,7 @@
 
           <tr ng-repeat-start="invoice in invoices" ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, 'invoice__late':  invoice.status === 2}">
             <td ng-if="!viewingAllCustomers">
-              <input no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
+              <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
               <a ng-click="changeCustomerOnClick(invoice.customernumber, invoice.branchid)">{{::invoice.customername}}</a>
@@ -194,13 +194,15 @@
             <td>
               {{::invoice.amount | currency}}
             </td>
-            <td class="icon-col large-icon hidden-mobile-visible-print">
+            <td class="text-center icon-col large-icon hidden-mobile-visible-print">
               <a ng-if="invoice.invoicelink" ng-click="openExternalLink(invoice.invoicelink)" class="icon-camera"></a>
             </td>
-            <td ng-if="!viewingAllCustomers && !isInternalAccountAdminUser" class="input-col">
+            <td ng-if="!viewingAllCustomers" class="input-col">
               <input
+                remove-positive-numbers
                 name="paymentAmount"
                 id="paymentAmount"
+                invoice-amount = "invoice.amount"
                 ng-if="invoice.userCanPayInvoice"
                 class="text-right"
                 type="text"
@@ -210,14 +212,13 @@
                   'addMissingDecimals': true,
                   'preventInvalidInput': true,
                   'prepend': '$',
-                  'min': {{invoice.amount > 0 ? 0 : invoice.amount}},
-                  'max': {{invoice.amount < 0 ? 0 : false}}
+                  'min': {{invoice.amount > 0 ? 0 : invoice.amount}}                  
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice)"
                 >
             </td>
-            <td ng-if="!viewingAllCustomers && !isInternalAccountAdminUser" class="hidden-mobile-visible-print datepicker">
+            <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
                 ng-click="openDatepicker = true"
                 ng-if="invoice.userCanPayInvoice && invoice.isSelected"
