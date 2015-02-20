@@ -33,7 +33,7 @@ namespace KeithLink.Svc.Core.Models.Orders
                 }
                 else
                 {
-                    return this.Quantity * this.Price; 
+					return this.QantityShipped * this.Price; 
                 }
                 
             } 

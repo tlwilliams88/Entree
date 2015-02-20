@@ -15,6 +15,7 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Models.Reports;
+using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -30,6 +31,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IListShareRepository listShareRepository;
 		private readonly IUserActiveCartRepository userActiveCartRepository;
 		private readonly IBasketRepository basketRepository;
+		private readonly ICustomerRepository customerRepository;
 
 		private const string CACHE_GROUPNAME = "UserList";
 		private const string CACHE_NAME = "UserList";
@@ -40,7 +42,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository,
 			ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
-			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository)
+			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository, ICustomerRepository customerRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -52,6 +54,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.listShareRepository = listShareRepository;
 			this.userActiveCartRepository = userActiveCartRepository;
 			this.basketRepository = basketRepository;
+			this.customerRepository = customerRepository;
 		}
         #endregion
 
@@ -390,12 +393,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private Core.Models.Generated.Basket GetUserActiveCart(UserSelectedContext catalogInfo, UserProfile user)
 		{
 			var userActiveCart = userActiveCartRepository.Read(u => u.UserId == user.UserId && u.CustomerId.Equals(catalogInfo.CustomerId) && u.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
+			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
 			KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
 
-			if (userActiveCart != null)
+			if (userActiveCart != null && customer != null)
 			{
-				activeCart = basketRepository.ReadBasket(userActiveCart.UserId, userActiveCart.CartId);
+				activeCart = basketRepository.ReadBasket(customer.CustomerId, userActiveCart.CartId);
 			}
 			return activeCart;
 		}

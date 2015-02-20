@@ -241,12 +241,13 @@ angular.module('bekApp')
           });
         },
 
-        importList: function(file) {
+        importList: function(file, options) {
           var deferred = $q.defer();
 
           $upload.upload({
             url: '/import/list',
             method: 'POST',
+            data: { options: options },
             file: file, // or list of files ($files) for html5 only
           }).then(function(response) {
             var data = response.data;
