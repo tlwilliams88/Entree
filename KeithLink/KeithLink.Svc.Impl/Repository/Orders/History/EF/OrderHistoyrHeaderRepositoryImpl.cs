@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
     public class OrderHistoyrHeaderRepositoryImpl : EFBaseRepository<OrderHistoryHeader>, IOrderHistoryHeaderRepsitory {
@@ -32,7 +33,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
         }
 
         public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
-            return Entities.Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
+            return Entities.Include(d => d.OrderDetails).Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
         }
 
         public DateTime? ReadLatestOrderDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
