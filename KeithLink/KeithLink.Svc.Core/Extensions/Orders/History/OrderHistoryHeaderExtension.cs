@@ -184,14 +184,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			return retVal;
 		}
 
-        private double CalculateSalesPrice(ICollection<EF.OrderHistoryDetail> detail)
-        {
-            double d = 0;
-
-            return d;
-        }
-        
-
 		public static Order ToOrderHeaderOnly(this EF.OrderHistoryHeader value)
 		{
 			Order retVal = new Order();
