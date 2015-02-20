@@ -12,10 +12,12 @@ angular.module('bekApp')
     function ($scope, $state, ReportService, $modal) {
         $scope.itemusagequery = {};
         $scope.itemUsageForm = {};
-        var initialFromDate = new Date();
-        initialFromDate.setMonth(initialFromDate.getMonth() - 6);
-        $scope.itemusagequery.fromDate = initialFromDate;
-        $scope.itemusagequery.toDate = new Date();
+        
+        var initialFromDate = moment().subtract(6, 'month'),
+          initialToDate = moment();
+        $scope.itemusagequery.fromDate = initialFromDate.format('YYYY-MM-DD');
+        $scope.itemusagequery.toDate = initialToDate.format('YYYY-MM-DD');
+        
         $scope.sortField = 'TotalQuantityOrdered';
         $scope.sortReverse = true;
 

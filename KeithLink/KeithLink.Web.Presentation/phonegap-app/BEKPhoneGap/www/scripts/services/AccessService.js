@@ -11,7 +11,64 @@ angular.module('bekApp')
     return (now < new Date(token.expires_at));
   }
 
+  // ROLES
+
+  // EXTERNAL
+  function isOwner() {
+    return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
+  }
+  function isAccounting() {
+    return ( LocalStorage.getUserRole() === Constants.roles.ACCOUNTING );
+  }
+  function isApprover() {
+    return ( LocalStorage.getUserRole() === Constants.roles.APPROVER );
+  }
+  function isBuyer() {
+    return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
+  }
+  function isGuest() {
+    return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
+  }
+  // INTERNAL
+  function isSysAdmin() {
+    return ( LocalStorage.getUserRole() === Constants.roles.SYS_ADMIN );
+  }
+  function isBranchManager() {
+    return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
+  }
+  function isPowerUser() {
+    return ( LocalStorage.getUserRole() === Constants.roles.POWER_USER );
+  }
+  function isDsr() {
+    return ( LocalStorage.getUserRole() === Constants.roles.DSR );
+  }
+  function isDsm() {
+    return ( LocalStorage.getUserRole() === Constants.roles.DSM );
+  }
+
   var Service = {
+
+    getRoleDisplayString: function(role) {
+      var displayRole = role;
+      switch (role) {
+        case Constants.roles.DSR:
+          displayRole = 'DSR';
+          break;
+        case Constants.roles.DSM: 
+          displayRole = 'DSM';
+          break;
+        case Constants.roles.BRANCH_MANAGER:
+          displayRole = 'Branch IS Manager';
+          break;
+        case Constants.roles.POWER_USER:
+          displayRole = 'Power User';
+          break;
+        case Constants.roles.SYS_ADMIN:
+          displayRole = 'Sys Admin';
+          break;
+      }
+      return displayRole;
+    },
 
     isLoggedIn: function() {
       return !!(LocalStorage.getToken() && LocalStorage.getProfile() && isValidToken());
@@ -22,86 +79,53 @@ angular.module('bekApp')
     },
 
     isOrderEntryCustomer: function() {
-      return ( Service.isLoggedIn() && ( Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isInternalAccountAdminUser() ) );
+      return ( Service.isLoggedIn() && ( isOwner() || isAccounting() || isApprover() || isBuyer() || Service.isInternalAccountAdminUser() ) );
     },
 
     isInternalAccountAdminUser: function() {
-      return ( Service.isLoggedIn() && ( Service.isDsr() || Service.isDsm() || Service.isSysAdmin() || Service.isBranchManager() ) );
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isBranchManager() || isPowerUser() ) );
     },
-
-    // ROLES
-
-    // EXTERNAL
-    isOwner: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
-    },
-
-    isAccounting: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.ACCOUNTING );
-    },
-
-    isApprover: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.APPROVER );
-    },
-
-    isBuyer: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
-    },
-
-    isGuest: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
-    },
-
-    // INTERNAL
-    isSysAdmin: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.SYS_ADMIN );
-    },
-
-    isBranchManager: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
-    },
-
-    isDsr: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.DSR );
-    },
-
-    isDsm: function() {
-      return ( LocalStorage.getUserRole() === Constants.roles.DSM );
-    },
-
 
     // PRIVILEDGES
 
     canBrowseCatalog: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() || Service.isGuest() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() );
     },
 
     canSeePrices: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     },
 
     canManageLists: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isAccounting() || Service.isApprover() || Service.isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     },
 
     canCreateOrders: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner()  || Service.isApprover() || Service.isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || isOwner()  || isApprover() || isBuyer() );
     },
 
     canSubmitOrders: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner() || Service.isApprover() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isApprover() );
     },
 
     canPayInvoices: function() {
-      return ( Service.isOwner() || Service.isAccounting() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() );
     },
 
-    canManageAccount: function() {
-      return ( Service.isInternalAccountAdminUser() || Service.isOwner() );
-    },
-
-    canManageAccounts: function() {
+    canViewCustomerGroups: function() {
       return ( Service.isInternalAccountAdminUser() );
+    },
+
+    canManageCustomerGroups: function() {
+      return ( isSysAdmin() || isBranchManager() );
+    },
+
+    canViewCustomerGroupDashboard: function() {
+      return ( Service.isInternalAccountAdminUser() || isOwner() );
+    },
+
+    canEditUsers: function() {
+      return ( isSysAdmin() || isBranchManager() || isOwner() );
     }
 
   };

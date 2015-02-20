@@ -19,10 +19,12 @@
     <div class="col-md-6" ng-if="!isNew">
       <h3>Admin Users</h3>
 
-      <ng-form name="addUserForm" class="form-inline search-form">
+      <ng-form name="addNewAdminUserForm" class="form-inline search-form">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="Email address" ng-model="adminUserEmail"/>
-          <button type="submit" class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add New Admin User</button>
+          <span class="text-red" ng-show="addNewAdminUserForm.newAdminUserEmail.$dirty && addNewAdminUserForm.newAdminUserEmail.$error.emailLengthValidation">Please choose a shorter email address</span>
+          <br ng-if"addNewAdminUserForm.newAdminUserEmail.$dirty && addNewAdminUserForm.newAdminUserEmail.$error.emailLengthValidation">
+          <input email-length-validation type="text" class="form-control" name ="newAdminUserEmail" placeholder="Email address" ng-model="adminUserEmail"/>
+          <button ng-disabled="addNewAdminUserForm.$invalid" type="submit" class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add New Admin User</button>
         </div>
       </ng-form>
 
@@ -78,13 +80,13 @@
           infinite-scroll-container="'.infiniteScroll'">
           <thead>
             <tr>
-              <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortAsc);">
+              <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
                 Number
-                <span sort-icons field="'customerNumber'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+                <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
               </th>
-              <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortAsc)">
+              <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
                 Name
-                <span sort-icons field="'customerName'" sortorder="customersSortAsc" sortby="customersSortField"></span>
+                <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
               </th>
               <th></th>
             </tr>

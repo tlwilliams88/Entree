@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'toaster', 'UtilityService', 'Cart',
-    function ($http, $q, $upload, toaster, UtilityService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'toaster', 'UtilityService', 'PricingService', 'Cart',
+    function ($http, $q, $upload, toaster, UtilityService, PricingService, Cart) {
 
     var Service = {
       carts: [],
@@ -39,6 +39,7 @@ angular.module('bekApp')
         return Cart.get({ 
           cartId: cartId,
         }).$promise.then(function(cart) {
+          PricingService.updateCaculatedFields(cart.items);
           // update cart in cache
           var existingCart = UtilityService.findObjectByField(Service.carts, 'id', cart.id);
           if (existingCart) {
@@ -244,14 +245,6 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
-
-            data.shipdates.forEach(function(date) {
-              // 2013-01-01 00:00
-              var tzName = jstz.determine().name();
-              var localTime = moment(date.cutoffdatetime).tz(tzName);
-              date.cutoffDateString = localTime.format('YYYY-MM-DD hh:mmA z');
-            });
-
             angular.copy(data.shipdates, Service.shipDates);
             deferred.resolve(data.shipdates);
             return data.shipdates;
@@ -260,18 +253,17 @@ angular.module('bekApp')
         return deferred.promise;
       },
 
-      findCutoffDate: function(obj) {
-        var cutoffdate;
-        if (obj && obj.requestedshipdate) {
+      findCutoffDate: function(cart) {
+        var shipDateFound;
+        if (cart && cart.requestedshipdate) {
+          var selectedShipDate = cart.requestedshipdate.substr(0, 10);
           angular.forEach(Service.shipDates, function(shipDate) {
-            var requestedShipDateString = new Date(obj.requestedshipdate).toDateString(),
-              shipDateString = new Date(shipDate.shipdate + ' 00:00').toDateString();
-            if (requestedShipDateString === shipDateString) {
-              cutoffdate = shipDate;
+            if (selectedShipDate === shipDate.shipdate) {
+              shipDateFound = shipDate;
             }
           });
         }
-        return cutoffdate;
+        return shipDateFound;
       },
 
       submitOrder: function(cartId) {

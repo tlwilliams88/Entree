@@ -37,18 +37,24 @@ angular.module('bekApp')
     //   });
     // },
 
-    searchGroups: function(searchTerm) {
-      var config = {
-        params: {
-          wildcard: searchTerm
-        }
-      };
-      
-      var promise = $http.get('/profile/accounts', config);
-      return UtilityService.resolvePromise(promise).then(function(successResponse) {
-        return successResponse.accounts;
+    getGroups: function(params) {
+      return $http.post('/profile/accounts', params).then(function(response) {
+        return response.data;
       });
     },
+
+    // searchGroups: function(searchTerm) {
+    //   var config = {
+    //     params: {
+    //       wildcard: searchTerm
+    //     }
+    //   };
+      
+    //   var promise = $http.get('/profile/accounts', config);
+    //   return UtilityService.resolvePromise(promise).then(function(successResponse) {
+    //     return successResponse.accounts;
+    //   });
+    // },
 
     createGroup: function(customerGroup) {
       var promise = $http.post('/profile/account', customerGroup);

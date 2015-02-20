@@ -4,8 +4,11 @@ angular.module('bekApp')
 .controller('InvoiceItemsController', ['$scope', '$stateParams', '$modal', 'invoice', 'InvoiceService',
   function ($scope, $stateParams, $modal, invoice, InvoiceService) {
 
-  $scope.invoice = invoice;
+  $scope.sortOrder = false;
+  $scope.sortBy = 'linenumber';
 
+  $scope.invoice = invoice;
+  
   $scope.openExportModal = function() {
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/exportmodal.html',

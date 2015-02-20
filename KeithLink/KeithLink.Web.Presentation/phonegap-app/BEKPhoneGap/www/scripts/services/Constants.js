@@ -9,7 +9,8 @@ angular.module('bekApp')
       branchId: 'branchId',
       customerNumber: 'customerNumber',
       leadGenInfo: 'leadGenInfo',
-      currentCustomer: 'currentCustomer'
+      currentCustomer: 'currentCustomer',
+      tempContext: 'tempContext'
     },
 
     servicelocatorUrl: '../servicelocator', // DEPRECATED
@@ -26,6 +27,7 @@ angular.module('bekApp')
       DSR: 'dsr',
       DSM: 'dsm',
       SYS_ADMIN: 'beksysadmin',
+      POWER_USER: '',
       BRANCH_MANAGER: 'branchismanager'
     },
 
