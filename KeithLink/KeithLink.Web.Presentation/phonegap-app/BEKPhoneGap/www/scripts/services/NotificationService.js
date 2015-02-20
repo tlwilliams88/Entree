@@ -28,15 +28,20 @@ angular.module('bekApp')
             switch (notification.notificationtype) {
               case 0: // My order is confirmed
               case 1: // My order is shipped
+              case 32://ETA
                 notification.displayType = 'Order';
                 break;
-              case 64:
+              case 64: //Payment confirmation
               case 2: // My invoices need attention
+              case 4: // My invoices need attention
                 notification.displayType = 'Invoice';
                 break;
               case 3: // Ben E Keith has news for me
-              case 8:
+              case 8: // Ben E Keith has news for me
                notification.displayType = 'News';
+               break;
+              case 16: //Mail
+              notification.displayType = 'Mail';
               break;
             }
           });

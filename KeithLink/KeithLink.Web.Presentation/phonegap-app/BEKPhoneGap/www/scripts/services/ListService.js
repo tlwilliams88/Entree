@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UserProfileService', 'UtilityService', 'ExportService', 'List',
-    function($http, $q, $filter, $upload, toaster, UserProfileService, UtilityService, ExportService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List',
+    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -66,12 +66,13 @@ angular.module('bekApp')
           permissions.canDeleteList = true;
           permissions.canReorderItems = true;
 
-        // MANDATORY -- only shown to DSRs
+        // MANDATORY -- only editable by internal users
         } else if (list.ismandatory) {
           permissions.canSeeParlevel = true;
           permissions.alternativeParHeader = 'Required Qty';
           permissions.canDeleteList = true;
           permissions.canAddItems = true;
+          permissions.canEditList = true;
           permissions.canDeleteItems = true;
           permissions.canEditParlevel = true;
           permissions.canDeleteList = true;
@@ -152,9 +153,12 @@ angular.module('bekApp')
         // accepts listId (guid)
         // returns list object
         getList: function(listId) {
-          return List.get({
-            listId: listId,
-          }).$promise.then(function(list) {
+          return $http.get('/list/' + listId).then(function(response) {
+            var list = response.data;
+            if (!list) {
+              return $q.reject('No list found.');
+            }
+            PricingService.updateCaculatedFields(list.items);
             updateListPermissions(list);
 
             // update new list in cache object
@@ -237,12 +241,13 @@ angular.module('bekApp')
           });
         },
 
-        importList: function(file) {
+        importList: function(file, options) {
           var deferred = $q.defer();
 
           $upload.upload({
             url: '/import/list',
             method: 'POST',
+            data: { options: options },
             file: file, // or list of files ($files) for html5 only
           }).then(function(response) {
             var data = response.data;
@@ -459,7 +464,12 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getCriticalItems().$promise;
+          return List.getCriticalItems().$promise.then(function(criticalLists) {
+            criticalLists.forEach(function(list) {
+              PricingService.updateCaculatedFields(list.items);
+            });
+            return criticalLists;
+          });
         },
 
         findMandatoryList: function() {

@@ -1,3 +1,12 @@
+.list-name {
+  /*overflow: hidden;
+  max-width: 300px;
+  height: 40px;
+  text-overflow: ellipsis;*/
+  display: inline-block;
+  vertical-align: middle;
+}
+
 .lists {
   width: 160px;
   .list-names {
@@ -100,6 +109,9 @@
 }
 .custom-lists__table td {
   background-clip: padding-box; // firefox border fix for position: relative table elements
+  &.input-col input[type="text"].edit-label{
+  width: 80%;
+  }
 }
 
 /*SHARE/COPY LIST MODAL*/

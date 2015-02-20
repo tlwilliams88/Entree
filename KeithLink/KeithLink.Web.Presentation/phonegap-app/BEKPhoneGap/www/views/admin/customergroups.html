@@ -26,20 +26,23 @@
     <div class="row">
       <div class="col-md-6">
 
-        <a ui-sref="menu.admin.customergroupdetails({ groupId: 'new'})">Add New Customer Group...</a>
+        <p>
+          <a ui-sref="menu.admin.customergroupdetails({ groupId: 'new'})" ng-if="canManageCustomerGroups">Add New Customer Group...</a>
+          <span class="pull-right">Showing {{customerGroups.length}} of {{totalGroups}} Customer Groups</span>
+        </p>
 
-        <table class="table table-striped-rows table-border" ng-show="customerGroups.length > 0">
+        <table class="table table-striped-rows table-border" ng-show="customerGroups.length > 0" infinite-scroll="infiniteScrollLoadMore()">
           <thead>
             <tr>
               <th>Customer Group Name</th>
-              <th></th>
+              <th ng-if="canManageCustomerGroups"></th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="customerGroup in customerGroups | orderBy:'name'" ng-class="{ odd : $odd, even: $even }">
               <td>{{customerGroup.name}}</td>
-              <td>
+              <td ng-if="canManageCustomerGroups">
                 <a ui-sref="menu.admin.customergroupdetails({groupId: customerGroup.id})">Edit Details</a>
               </td>
               <td>
@@ -50,6 +53,8 @@
         </table>
 
         <div ng-show="customerGroups && customerGroups.length === 0">No customer groups found.</div>  
+
+        <div loading-spinner="loadingResults"></div>
       </div>
     </div>
     

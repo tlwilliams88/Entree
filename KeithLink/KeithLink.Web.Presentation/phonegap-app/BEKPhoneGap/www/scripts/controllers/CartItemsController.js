@@ -11,16 +11,41 @@ angular.module('bekApp')
   .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
     function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
 
+    var basketId = originalBasket.id || originalBasket.ordernumber
+    if ($stateParams.cartId !== basketId.toString()) {
+      $state.go('menu.cart.items', {cartId: basketId, renameCart: null}, {location:'replace', inherit:false, notify: false});
+    }
+
+    function onQuantityChange(newVal, oldVal) {
+      var changedExpression = this.exp; // jshint ignore:line
+      var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
+      var item = $scope.currentCart.items[idx];
+      if (item) {
+        item.extPrice = PricingService.getPriceForItem(item);
+      }
+
+      $scope.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
+    }
+
     $scope.loadingResults = false;
     $scope.sortBy = null;
     $scope.sortOrder = false;
     
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
-    $scope.changeOrders = changeOrders;
+    $scope.changeOrders = angular.copy(changeOrders);
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+    if (!$scope.isChangeOrder) {
+      CartService.setActiveCart($scope.currentCart.id);
+    }
+
+    for (var i = 0; i < $scope.currentCart.items.length; i++) {
+      $scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange);
+      $scope.$watch('currentCart.items[' + i + '].each', onQuantityChange);
+    }
 
     // set mandatory and reminder lists
     criticalItemsLists.forEach(function(list) {
@@ -54,14 +79,9 @@ angular.module('bekApp')
 
     $scope.goToCart = function(cartId, isChangeOrder) {
       if (!cartId) {
-        // TODO: clean this up, probably just redirect to cart.items page without params
         cartId = selectNextCartId();
       }
-      $state.go('menu.cart.items', {cartId: cartId, renameCart: null}).then(function() {
-        if (!isChangeOrder && cartId) {
-          CartService.setActiveCart(cartId);
-        }
-      });
+      $state.go('menu.cart.items', {cartId: cartId, renameCart: null} );
     };
 
     $scope.startEditCartName = function(cartName) {
@@ -92,7 +112,7 @@ angular.module('bekApp')
 
         // delete items if quantity is 0 or price is 0
   		  updatedCart.items = $filter('filter')( updatedCart.items, function(item){ 
-          return item.quantity > 0 && (item.caseprice > 0 || item.packageprice > 0); 
+          return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 
         });
 
         return CartService.updateCart(updatedCart).then(function() {
@@ -144,7 +164,6 @@ angular.module('bekApp')
 
     $scope.createNewCart = function() {
       CartService.createCart().then(function(newCart) {
-        CartService.setActiveCart(newCart.id);
         $state.go('menu.cart.items', {cartId: newCart.id, renameCart: true});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
@@ -160,11 +179,6 @@ angular.module('bekApp')
         $scope.displayMessage('error', 'Error deleting cart.');
       });
     };
-
-    $scope.getPriceForItem = PricingService.getPriceForItem;
-    $scope.getSubtotal = PricingService.getSubtotalForItems;
-    $scope.canOrderItem = PricingService.canOrderItem;
-    $scope.hasPackagePrice = PricingService.hasPackagePrice;
 
     $scope.deleteItem = function(item) {
       var idx = $scope.currentCart.items.indexOf(item);
@@ -182,7 +196,9 @@ angular.module('bekApp')
         processingSaveChangeOrder = true;
 
         var changeOrder = angular.copy(order);
-        changeOrder.items = $filter('filter')(changeOrder.items, {quantity: '!0'});
+        changeOrder.items = $filter('filter')( changeOrder.items, function(item){ 
+          return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 
+        });
 
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
@@ -276,11 +292,20 @@ angular.module('bekApp')
           item.quantity = Math.ceil(item.parlevel - item.qtyInCart) || 1;
         });
 
+        var originalItemCount = $scope.currentCart.items.length;
         $scope.currentCart.items = $scope.currentCart.items.concat(items);
+        for (var i = originalItemCount; i < $scope.currentCart.items.length; i++) {
+          $scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange);
+          $scope.$watch('currentCart.items[' + i + '].each', onQuantityChange);
+        }
 
         $scope.cartForm.$setDirty();
-        $scope.reminderList.allSelected = false;
-        $scope.mandatoryList.allSelected = false;
+        if ($scope.reminderList) {
+          $scope.reminderList.allSelected = false;
+        }
+        if ($scope.mandatoryList) {
+          $scope.mandatoryList.allSelected = false;
+        }
         $scope.changeAllSelectedItems(items, false);
       }    
     };
