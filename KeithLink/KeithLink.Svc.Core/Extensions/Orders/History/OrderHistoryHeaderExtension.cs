@@ -142,22 +142,14 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             foreach (EF.OrderHistoryDetail detail in value.OrderDetails)
             {
                 double lineTotal = 0;
-                OrderLine orderLine = detail.ToOrderLine();
 
-                if (orderLine.CatchWeight)
+                if (detail.CatchWeight)
                 {
-                    if (orderLine.Each) //package catchweight
-                    {
-                        lineTotal = ((orderLine.AverageWeight / Int32.Parse(orderLine.Pack)) * orderLine.QantityShipped) * orderLine.Price;
-                    }
-                    else //case catchweight
-                    {
-                        lineTotal = (orderLine.AverageWeight * orderLine.QantityShipped) * orderLine.Price;
-                    }
+                    lineTotal = Convert.ToDouble(detail.TotalShippedWeight * detail.SellPrice);
                 }
                 else
                 {
-                    lineTotal = orderLine.QantityShipped * orderLine.Price;
+                    lineTotal = Convert.ToDouble(detail.ShippedQuantity * detail.SellPrice);
                 }
 
                 orderTotal += lineTotal;
@@ -215,22 +207,14 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             foreach (EF.OrderHistoryDetail detail in value.OrderDetails)
             {
                 double lineTotal = 0;
-                OrderLine orderLine = detail.ToOrderLine();
-
-                if (orderLine.CatchWeight)
+                
+                if (detail.CatchWeight)
                 {
-                    if (orderLine.Each) //package catchweight
-                    {
-                        lineTotal = ((orderLine.AverageWeight / Int32.Parse(orderLine.Pack)) * orderLine.QantityShipped) * orderLine.Price;
-                    }
-                    else //case catchweight
-                    {
-                        lineTotal = (orderLine.AverageWeight * orderLine.QantityShipped) * orderLine.Price;
-                    }
+                    lineTotal = Convert.ToDouble(detail.TotalShippedWeight * detail.SellPrice);
                 }
                 else
                 {
-                    lineTotal = orderLine.QantityShipped * orderLine.Price;
+                    lineTotal = Convert.ToDouble(detail.ShippedQuantity * detail.SellPrice);
                 }
 
                 orderTotal += lineTotal;
