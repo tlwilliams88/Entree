@@ -203,7 +203,10 @@ angular.module('bekApp')
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
           $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+          $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
+        }, function(error) {
+          $scope.displayMessage('error', 'Error updating change order ' + order.ordernumber + '.');
         }).finally(function() {
           processingSaveChangeOrder = false;
         });
@@ -218,7 +221,7 @@ angular.module('bekApp')
         $scope.saveChangeOrder(order)
           .then(OrderService.resubmitOrder)
           .then(function(orderNumber) {
-            // update changeOrders object
+            // update changeOrders object in cache
             angular.forEach($scope.changeOrders, function(changeOrder) {
               if (changeOrder.ordernumber === $scope.currentCart.ordernumber) {
                 changeOrder.ordernumber = orderNumber;
