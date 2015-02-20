@@ -99,7 +99,7 @@
         <thead>
           <tr>
             <th ng-if="!viewingAllCustomers" class="input-col">
-              <input type="checkbox" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
+              <input type="checkbox" ng-if="!isInternalAccountAdminUser" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
             </th>
             <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customername', !sort.sortDescending)">
               Customer 

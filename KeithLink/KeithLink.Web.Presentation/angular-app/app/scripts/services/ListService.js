@@ -153,9 +153,11 @@ angular.module('bekApp')
         // accepts listId (guid)
         // returns list object
         getList: function(listId) {
-          return List.get({
-            listId: listId,
-          }).$promise.then(function(list) {
+          return $http.get('/list/' + listId).then(function(response) {
+            var list = response.data;
+            if (!list) {
+              return $q.reject('No list found.');
+            }
             PricingService.updateCaculatedFields(list.items);
             updateListPermissions(list);
 
@@ -462,7 +464,12 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getCriticalItems().$promise;
+          return List.getCriticalItems().$promise.then(function(criticalLists) {
+            criticalLists.forEach(function(list) {
+              PricingService.updateCaculatedFields(list.items);
+            });
+            return criticalLists;
+          });
         },
 
         findMandatoryList: function() {

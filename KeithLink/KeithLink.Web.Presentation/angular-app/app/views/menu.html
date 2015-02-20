@@ -130,7 +130,7 @@
         </button>
         <button
           class="btn-no-style"
-          ng-if="canManageAccount"
+          ng-if="canViewCustomerGroupDashboard || canViewCustomerGroups"
           ng-click="goToAdminLandingPage()"
           ng-class="{'is-selected': $state.includes('menu.admin')}">
           <li>
@@ -249,7 +249,7 @@
         </button>
         <button
           class="btn-no-style"
-          ng-if="canManageAccount"
+          ng-if="canViewCustomerGroupDashboard || canViewCustomerGroups"
           ng-click="goToAdminLandingPage()"
           ng-class="{'is-selected': $state.includes('menu.admin') }" >
           <li>
@@ -292,11 +292,11 @@
   <div class="row main-content">
     <div class="col-sm-12">
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
-        <ul class="left-mobile-menu" style="float: left;">
+        <ul class="left-mobile-menu">
           <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li><span class="icon-back"></span></li></a>
           <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
         </ul>
-        <ul class="right-mobile-menu" style="float: right;">
+        <ul class="right-mobile-menu">
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
           <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
         </ul>

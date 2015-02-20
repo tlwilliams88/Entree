@@ -8,15 +8,17 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService', 'PricingService',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService, PricingService) {
-    
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'PricingService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService) {
+
+    if ($stateParams.listId !== originalList.listid.toString()) {
+      $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
+    }
+
     var orderBy = $filter('orderBy');
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
-
-    $scope.canOrderItem = PricingService.canOrderItem;
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;

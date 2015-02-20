@@ -4,6 +4,24 @@ angular.module('bekApp')
   .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService',
     function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService) {
     
+    // redirect to url with correct parameters
+    var basketId;
+    if ($stateParams.cartId !== 'New') {
+      basketId = selectedCart.id || selectedCart.ordernumber;
+    }
+    if ((basketId && $stateParams.cartId !== basketId.toString()) || $stateParams.listId !== selectedList.listid.toString()) {
+      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
+    }
+
+    function onQuantityChange(newVal, oldVal) {
+      var changedExpression = this.exp; // jshint ignore:line
+      var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
+      var item = $scope.selectedList.items[idx];
+      item.extPrice = PricingService.getPriceForItem(item);
+
+      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+      $scope.getItemCount($scope.selectedCart, $scope.selectedList);
+    }
 
     function init() {
       
@@ -28,14 +46,7 @@ angular.module('bekApp')
       $scope.sortOrder = false;
 
       for (var i = 0; i < $scope.selectedList.items.length; i++) {
-        $scope.$watch('selectedList.items[' + i + '].quantity', function(newVal, oldVal) {
-          var idx = this.exp.substr(this.exp.indexOf('[') + 1, this.exp.indexOf(']') - this.exp.indexOf('[') - 1);
-          var item = $scope.selectedList.items[idx];
-          item.extPrice = PricingService.getPriceForItem(item);
-
-          refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-          $scope.getItemCount($scope.selectedCart, $scope.selectedList);
-        });
+        $scope.$watch('selectedList.items[' + i + '].quantity', onQuantityChange);
       }
     }
 

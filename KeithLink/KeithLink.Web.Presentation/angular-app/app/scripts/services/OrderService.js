@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', 'UtilityService', 'ExportService', 'Order', 
-    function ($http, $q, UtilityService, ExportService, Order) {
+  .factory('OrderService', ['$http', '$q', 'UtilityService', 'ExportService', 'PricingService', 'Order', 
+    function ($http, $q, UtilityService, ExportService, PricingService, Order) {
     
     var Service = {
       
@@ -44,7 +44,12 @@ angular.module('bekApp')
         var promise = $http.get('/order/changeorder', {
           header: true
         });
-        return UtilityService.resolvePromise(promise);
+        return UtilityService.resolvePromise(promise).then(function(changeOrders) {
+          changeOrders.forEach(function(changeOrder) {
+            PricingService.updateCaculatedFields(changeOrder.items);
+          });
+          return changeOrders;
+        });
       },
 
       resubmitOrder: function(orderNumber) {
@@ -56,7 +61,10 @@ angular.module('bekApp')
       },
 
       updateOrder: function(order, params) {
-        return Order.update(params, order).$promise;
+        return Order.update(params, order).$promise.then(function(changeOrder) {
+          PricingService.updateCaculatedFields(changeOrder.items);
+          return changeOrder;
+        });
       },
 
       findChangeOrderByOrderNumber: function(changeOrders, orderNumber) {
