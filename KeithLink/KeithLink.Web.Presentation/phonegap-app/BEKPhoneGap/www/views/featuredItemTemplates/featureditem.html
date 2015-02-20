@@ -5,7 +5,7 @@
   <div>{{item.tagline}}</div>
   <a 
     ng-if="item.targeturl" 
-    ng-href="{{item.targeturl}}" 
+    ng-click="openExternalLink(item.targeturl)"
     class="text-uppercase"
     target="_system">
     {{item.targeturltext}}
