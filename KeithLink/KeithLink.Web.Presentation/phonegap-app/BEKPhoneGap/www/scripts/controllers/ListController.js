@@ -8,19 +8,21 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'UtilityService', 'PricingService',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, UtilityService, PricingService) {
-    
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'PricingService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService) {
+
+    if ($stateParams.listId !== originalList.listid.toString()) {
+      $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
+    }
+
     var orderBy = $filter('orderBy');
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
 
-    $scope.canOrderItem = PricingService.canOrderItem;
-
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
-    $scope.numberListNamesToShow = 5;
+    $scope.numberListNamesToShow = 10;
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -183,6 +185,7 @@ angular.module('bekApp')
 
       $scope.selectedList.items.splice(deletedIndex, 1);
       updateItemPositions();
+      $scope.listForm.$setDirty();
     };
 
     $scope.deleteMultipleItems = function() {
@@ -235,16 +238,6 @@ angular.module('bekApp')
       });
     };
 
-    $scope.favoriteAll = function() {
-      $scope.addItemsToList(ListService.getFavoritesList());
-    };
-
-    $scope.unfavoriteAll = function() {
-      var items = getMultipleSelectedItems(),
-        favoritesList = ListService.getFavoritesList();
-
-      ListService.deleteMultipleItems(favoritesList.listid, items);
-    };
 
     /********************
     DRAG HELPERS
@@ -411,7 +404,6 @@ angular.module('bekApp')
     ******/
 
     $scope.openListImportModal = function () {
-
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/listimportmodal.html',
         controller: 'ImportModalController'

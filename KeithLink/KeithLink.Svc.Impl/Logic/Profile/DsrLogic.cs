@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 				EmailAddress = d.EmailAddress,
 				Name = d.Name,
 				ImageUrl = d.ImageUrl.Inject(new { baseUrl = Configuration.MultiDocsProxyUrl }),
-				PhoneNumber = d.Phone == null ? returnDefaultDsrPhone(d.BranchId) : d.Phone,
+				PhoneNumber = String.IsNullOrEmpty(d.Phone) ? returnDefaultDsrPhone(d.BranchId) : d.Phone,
 				Branch = d.BranchId
 			};
 		}

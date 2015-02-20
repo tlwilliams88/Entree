@@ -18,8 +18,9 @@ namespace KeithLink.Svc.Core.Models.Orders
         public int LineNumber { get; set; }
 
 		[DataMember(Name = "linetotal")]
-        public double LineTotal { 
-            get {
+        public double LineTotal {
+            get
+            {
                 if (this.CatchWeight)
                 {
                     if (this.Each) //package catchweight
@@ -35,8 +36,7 @@ namespace KeithLink.Svc.Core.Models.Orders
                 {
 					return this.QantityShipped * this.Price; 
                 }
-                
-            } 
+            }
             set { } 
         }
 

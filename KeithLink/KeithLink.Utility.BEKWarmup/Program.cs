@@ -45,7 +45,6 @@ namespace KeithLink.Utility.BEKWarmup
 					System.Diagnostics.EventLog.WriteEntry(sSource, sEvent, System.Diagnostics.EventLogEntryType.Warning, 234);
 				}
 
-
 				//Get User Profile
 				var profileRequest = new RestRequest("/profile?email=" + userName, Method.GET);
 				profileRequest.AddHeader("Authorization", string.Format("Bearer {0}", authResponse.Data.access_token));
@@ -57,8 +56,6 @@ namespace KeithLink.Utility.BEKWarmup
 				customerRequest.AddHeader("apiKey", ConfigurationManager.AppSettings.Get("APIKey"));
 				var customerResponse = client.Execute<PagedCustomerResponse>(customerRequest);
 
-
-				Dictionary<string, TimeSpan> timePerCustomer = new Dictionary<string, TimeSpan>();
 				foreach (var customer in customerResponse.Data.results)
 				{
 					DateTime startTime = DateTime.Now;
@@ -73,13 +70,6 @@ namespace KeithLink.Utility.BEKWarmup
 					// change orders
 					var changeOrderRequest = new RestRequest("/order/changeorder", Method.GET);
 					var changeOrderResponse = MakeGetRequest(client, authResponse.Data.access_token, changeOrderRequest, customer.customerNumber, customer.customerBranch);
-					timePerCustomer.Add(customer.customerNumber, DateTime.Now - startTime);
-				}
-
-				Console.WriteLine("Overall run time: " + (DateTime.Now - overallStartTime).ToString());
-				foreach (var entry in timePerCustomer)
-				{
-					Console.WriteLine("Customer " + entry.Key + " took " + entry.Value.ToString());
 				}
 			}
 			catch (Exception ex)

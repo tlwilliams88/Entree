@@ -9,13 +9,13 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$rootScope', '$state', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'CartService', 'NotificationService', 'ProductService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService',
     function (
-      $scope, $rootScope, $state, $log, $window,  // built in angular services
+      $scope, $timeout, $rootScope, $state, $log, $window,  // built in angular services
       $modal,                         // ui-bootstrap library
       ENV,                            // environment config, see configenv.js file which is generated from Grunt
       branches,                       // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, CartService, NotificationService, ProductService // bek custom services
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -32,7 +32,7 @@ angular.module('bekApp')
   $scope.displayGlobalMessage = true;
 
   $scope.userProfile = LocalStorage.getProfile();
-  refreshAccessPermissions();
+  refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
   /**********
@@ -70,59 +70,65 @@ angular.module('bekApp')
 
   var firstPageCustomers; // used to cache the first page of customer results
   // populates upper-left customer dropdown infinite scroll
+  var searchTerm;
+
+  var getData = function(query) {
+    $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
+
+    if (query.page === 1 && firstPageCustomers && !query.term) { // use cache if getting first page
+      query.callback(firstPageCustomers);
+    } else {
+      CustomerService.getCustomers(
+        query.term, 
+        $scope.customerInfiniteScroll.size, 
+        $scope.customerInfiniteScroll.from
+      ).then(function(data) {
+        // convert data to match select2 data object
+        var customerList = {
+          results: [],
+          more: query.page * $scope.customerInfiniteScroll.size < data.totalResults // boolean if there are more results to display using infinite scroll
+        };
+
+        data.results.forEach(function(customer) {
+          customerList.results.push({
+            id: customer.customerNumber, // value
+            text: customer.displayname,  // display text
+            customer: customer
+          });
+        });
+
+        if (query.page === 1 && !query.term) {
+          firstPageCustomers = customerList;
+        }
+        query.callback(customerList);
+      });
+    }
+  };
+
   $scope.customerSelectOptions = {
     query: function (query){
-      $scope.customerInfiniteScroll.from = (query.page - 1) * $scope.customerInfiniteScroll.size;
-
-      if (query.page === 1 && firstPageCustomers && !query.term) { // use cache if getting first page
-        query.callback(firstPageCustomers);
-      } else {
-        CustomerService.getCustomers(
-          query.term, 
-          $scope.customerInfiniteScroll.size, 
-          $scope.customerInfiniteScroll.from
-        ).then(function(data) {
-          // convert data to match select2 data object
-          var customerList = {
-            results: [],
-            more: query.page * 15 < data.totalResults // boolean if there are more results to display using infinite scroll
-          };
-
-          data.results.forEach(function(customer) {
-            customerList.results.push({
-              id: customer.customerNumber, // value
-              text: customer.displayname,  // display text
-              customer: customer
-            });
-          });
-
-          if (query.page === 1 && !query.term) {
-            firstPageCustomers = customerList;
-          }
-          query.callback(customerList);
-        });
-      }
-
+      $timeout(function() {
+        if (searchTerm === query.term) {
+          getData(query);
+        }
+      }, 500);
+      searchTerm = query.term;
     }
   };
 
   $scope.goToAdminLandingPage = function() {
     // internal bek admin user
-    if (AccessService.isInternalAccountAdminUser()) {
+    if ($scope.canViewCustomerGroups) {
       $state.go('menu.admin.customergroup');
       
     // external owner admin
-    } else {  
+    } else {
       $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
     }
   };
 
   function refreshPage() {
-    $state.transitionTo($state.current, $state.params, {
-      reload: true,
-      inherit: false,
-      notify: true
-    });
+    location.reload();
   }
 
   // change context menu selection for guest users
@@ -133,14 +139,10 @@ angular.module('bekApp')
 
   // change context menu selection for order-entry customers
   $scope.changeCustomerLocation = function(selectedUserContext) {
-    LocalStorage.setSelectedCustomerInfo(selectedUserContext);
-
-    // reset ship dates in cache
-    angular.copy([], CartService.shipDates);
-
+    LocalStorage.setTempContext(selectedUserContext);
     refreshPage();
   };
-
+  
   /**********
   MENU BUTTON CLICK HANDLERS
   **********/
@@ -207,14 +209,11 @@ angular.module('bekApp')
   also used in state.js to determine if the user has access to a state
   **********/
 
-  function refreshAccessPermissions() {
+  function refreshAccessPermissions(userProfile) {
+    $scope.displayRole = AccessService.getRoleDisplayString(userProfile.rolename);
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
-
-    // $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
-    // $scope.isBekAdmin = AccessService.isBekAdmin();
-
-    $scope.isDsr = AccessService.isDsr();
+    $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
 
     $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
     $scope.canSeePrices = AccessService.canSeePrices();
@@ -222,9 +221,9 @@ angular.module('bekApp')
     $scope.canCreateOrders = AccessService.canCreateOrders();
     $scope.canSubmitOrders = AccessService.canSubmitOrders();
     $scope.canPayInvoices = AccessService.canPayInvoices();
-    $scope.canManageAccount = AccessService.canManageAccount();
-    $scope.canManageAccounts = AccessService.canManageAccounts();
-
-
+    $scope.canManageCustomerGroups = AccessService.canManageCustomerGroups();
+    $scope.canViewCustomerGroups = AccessService.canViewCustomerGroups();
+    $scope.canViewCustomerGroupDashboard = AccessService.canViewCustomerGroupDashboard();
+    $scope.canEditUsers = AccessService.canEditUsers();
   }
 }]);

@@ -31,6 +31,11 @@ angular.module('bekApp')
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
           return BranchService.getBranches();
+        }],
+        selectedUserContext: ['LocalStorage', function(LocalStorage) {
+          if (LocalStorage.getTempContext()) {
+            LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          }
         }]
       }
     })
@@ -116,7 +121,8 @@ angular.module('bekApp')
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authorize: 'canManageLists'
+        authorize: 'canManageLists',
+        saveLists: true
       },
       resolve: {
         lists: ['ListService', function (ListService) {
@@ -125,24 +131,22 @@ angular.module('bekApp')
         labels: ['ListService', function(ListService) {
           return ListService.getAllLabels();
         }]
-      },
-      controller: ['$scope', 'ListService', function($scope, ListService) {
-        $scope.$on('$destroy', function() {
-          ListService.lists = [];
-          ListService.labels = [];
-        });
-      }]
+      }
     })
     .state('menu.lists.items', {
       url: ':listId/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
-        authorize: 'canManageLists'
+        authorize: 'canManageLists',
+        saveLists: true
       },
       resolve: {
-        originalList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          return ResolveService.selectDefaultList($stateParams.listId);
+        validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
+          return ResolveService.validateList($stateParams.listId);
+        }],
+        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', function($stateParams, validListId, lists, ListService) {
+          return ListService.getList(validListId);
         }]
       }
     })
@@ -155,7 +159,8 @@ angular.module('bekApp')
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true
       },
       resolve: {
         carts: ['CartService', function (CartService){
@@ -170,29 +175,22 @@ angular.module('bekApp')
         shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
         }]
-      },
-      controller: ['$scope', 'CartService', function($scope, CartService) {
-        $scope.$on('$destroy', function() {
-          CartService.carts = [];
-        });
-      }]
+      }
     })
     .state('menu.cart.items', {
-      url: ':cartId/?renameCart',
+      url: ':cartId?renameCart',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true
       },
       resolve: {
-        originalBasket: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', 'CartService', function($stateParams, carts, changeOrders, ResolveService, CartService) {
-          var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
-          if (selectedBasket) {
-            return selectedBasket;
-          } else {
-            // no existing carts found, create a new cart and redirect to it
-            return CartService.createCart();
-          }
+        validBasketId: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
+          return ResolveService.validateBasket($stateParams.cartId, changeOrders);
+        }],
+        originalBasket: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
+          return ResolveService.selectValidBasket(validBasketId, changeOrders);
         }]
       }
     })
@@ -205,7 +203,9 @@ angular.module('bekApp')
       abstract: true,
       template: '<ui-view/>',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true,
+        saveLists: true
       },
       resolve: {
         lists: ['ListService', function (ListService){
@@ -221,25 +221,30 @@ angular.module('bekApp')
           return CartService.getShipDates();
         }]
       }
-      // ,
-      // controller: ['$state', 'carts', function($state, carts) {
-      //   $state.go('menu.addtoorder.items', { listId: 123, cartId: 'new' });
-      // }]
     })
     .state('menu.addtoorder.items', {
       url: ':listId/?cartId&useParlevel',
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
-        authorize: 'canCreateOrders'
+        authorize: 'canCreateOrders',
+        saveCarts: true,
+        saveLists: true
       },
       resolve: {
-        selectedList: [ '$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          return ResolveService.selectDefaultList($stateParams.listId);
+        validBasketId: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
+          return ResolveService.validateBasket($stateParams.cartId, changeOrders);
         }],
-        selectedCart: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
-          var selectedBasket = ResolveService.selectDefaultBasket($stateParams.cartId, changeOrders);
-          return selectedBasket;
+        selectedCart: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
+          if ($stateParams.cartId !== 'New') {
+            return ResolveService.selectValidBasket(validBasketId, changeOrders);
+          }
+        }],
+        validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
+          return ResolveService.validateList($stateParams.listId);
+        }],
+        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', function($stateParams, lists, validListId, ListService) {
+          return ListService.getList(validListId);
         }]
       }
     })
@@ -253,11 +258,6 @@ angular.module('bekApp')
       controller: 'OrderController',
       data: {
         authorize: 'canSubmitOrders'
-      },
-      resolve: {
-        orders: [ 'OrderService', function(OrderService) {
-          return OrderService.getAllOrders();
-        }]
       }
     })
     .state('menu.orderitems', {
@@ -313,11 +313,6 @@ angular.module('bekApp')
       controller: 'TransactionController',
       data: {
         authorize: 'canPayInvoices'
-      },
-      resolve: {
-        accounts: ['BankAccountService', function(BankAccountService) {
-          return BankAccountService.getAllBankAccounts();
-        }]
       }
     })
 
@@ -357,25 +352,54 @@ angular.module('bekApp')
       url: '/admin/',
       template: '<ui-view>'
     })
-    .state('menu.admin.edituser', {
-      url: 'edituser/:email/',
+
+    .state('menu.admin.user', {
+      url: 'customergroup/:groupId/user/:email/',
+      abstract: true,
+      template: '<ui-view/>',
+      data: {
+        authorize: 'canViewCustomerGroupDashboard'
+      }
+    })
+    .state('menu.admin.user.edit', {
+      url: 'edit/',
       templateUrl: 'views/admin/edituserdetails.html',
       controller: 'EditUserDetailsController',
       data: {
-        authorize: 'canManageAccount'
+        authorize: 'canEditUsers'
       },
       resolve: {
         userProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
           return UserProfileService.getUserProfile($stateParams.email);
+        }],
+        userCustomers: ['UserProfileService', 'userProfile', function(UserProfileService, userProfile) {
+          return UserProfileService.getAllUserCustomers(userProfile.userid);
         }]
       }
     })
+    .state('menu.admin.user.view', {
+      url: 'view/',
+      templateUrl: 'views/admin/viewuserdetails.html',
+      controller: 'ViewUserDetailsController',
+      data: {
+        authorize: 'canViewCustomerGroupDashboard'
+      },
+      resolve: {
+        userProfile: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+          return UserProfileService.getUserProfile($stateParams.email);
+        }],
+        userCustomers: ['UserProfileService', 'userProfile', function(UserProfileService, userProfile) {
+          return UserProfileService.getAllUserCustomers(userProfile.userid);
+        }]
+      }
+    })
+
     .state('menu.admin.customer', {
       url: 'customers/:customerNumber/:branchNumber/',
       templateUrl: 'views/admin/customerdetails.html',
       controller: 'CustomerDetailsController',
       data: {
-        authorize: 'canManageAccount'
+        authorize: 'canViewCustomerGroupDashboard'
       }
     })
     .state('menu.admin.ordermanagement', {
@@ -393,7 +417,7 @@ angular.module('bekApp')
       templateUrl: 'views/admin/customergroupdashboard.html',
       controller: 'CustomerGroupDashboardController',
       data: {
-        authorize: 'canManageAccount'
+        authorize: 'canViewCustomerGroupDashboard'
       }
     })
     .state('menu.admin.customergroup', {
@@ -401,7 +425,7 @@ angular.module('bekApp')
       templateUrl: 'views/admin/customergroups.html',
       controller: 'CustomerGroupsController',
       data: {
-        authorize: 'canManageAccount'
+        authorize: 'canViewCustomerGroups'
       }
     })
     .state('menu.admin.customergroupdetails', {
@@ -409,7 +433,7 @@ angular.module('bekApp')
       templateUrl: 'views/admin/customergroupdetails.html',
       controller: 'CustomerGroupDetailsController',
       data: {
-        authorize: 'canManageAccount'
+        authorize: 'canManageCustomerGroups'
       },
       resolve: {
         originalCustomerGroup: ['$stateParams', 'CustomerGroupService', function($stateParams, CustomerGroupService) {
@@ -433,10 +457,10 @@ angular.module('bekApp')
   $urlRouterProvider.when('/', '/register');
   
   // redirect when user tries to go to an abstract state
-  $urlRouterProvider.when('/lists', '/lists/1');
-  $urlRouterProvider.when('/lists/', '/lists/1');
-  $urlRouterProvider.when('/cart/', '/cart/1');
-  $urlRouterProvider.when('/cart/', '/cart/1');
+  // $urlRouterProvider.when('/lists', '/lists/0');
+  // $urlRouterProvider.when('/lists/', '/lists/0');
+  $urlRouterProvider.when('/cart/', '/cart/0');
+  $urlRouterProvider.when('/cart/', '/cart/0');
 
   $urlRouterProvider.otherwise('/404');
   

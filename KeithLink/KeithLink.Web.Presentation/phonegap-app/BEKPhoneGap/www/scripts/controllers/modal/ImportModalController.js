@@ -20,16 +20,16 @@ angular.module('bekApp')
     }
   };
 
-  $scope.startListUpload = function() {
+  $scope.startListUpload = function(options) {
     var file = files[0];
-    ListService.importList(file).then(function(data) {
+
+    ListService.importList(file, options).then(function(data) {
       goToImportedPage('menu.lists.items', { listId: data.listid });
     });
   };
 
   $scope.startOrderUpload = function(options) {
     var file = files[0];
-    console.log(options);
 
     CartService.importCart(file, options).then(function(data) {
       $state.go('menu.cart.items', { cartId: data.id }).then(function() {
