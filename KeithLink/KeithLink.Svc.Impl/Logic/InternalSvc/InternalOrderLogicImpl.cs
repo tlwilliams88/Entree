@@ -126,25 +126,30 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public List<Core.Models.Orders.OrderHeader> GetSubmittedUnconfirmedOrders()
         {
-            var manager = Helpers.CommerceServerCore.GetOrderManagementContext().PurchaseOrderManager;
-            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
-            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
-            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", "Submitted");
-            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
+			//var manager = Helpers.CommerceServerCore.GetOrderManagementContext().PurchaseOrderManager;
+			//System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+			//SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+			//SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", "Submitted");
+			//DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
 
-            int c = results.Tables.Count;
+			//int c = results.Tables.Count;
 
-            // Get the value of the OrderGroupId property of each
-            // purchase order.
-            List<Guid> poIds = new List<Guid>();
-            foreach (DataRow row in results.Tables[0].Rows)
-            {
-                poIds.Add(new Guid(row["OrderGroupId"].ToString()));
-            }
+			//// Get the value of the OrderGroupId property of each
+			//// purchase order.
+			//List<Guid> poIds = new List<Guid>();
+			//foreach (DataRow row in results.Tables[0].Rows)
+			//{
+			//	poIds.Add(new Guid(row["OrderGroupId"].ToString()));
+			//}
 
-            // Get the XML representation of the purchase orders.
-            System.Xml.XmlElement poXml = manager.GetPurchaseOrdersAsXml(poIds.ToArray());
-            System.Xml.XmlNodeList nodes = poXml.SelectNodes("/OrderGroups/PurchaseOrder");
+			//// Get the XML representation of the purchase orders.
+			//System.Xml.XmlElement poXml = manager.GetPurchaseOrdersAsXml(poIds.ToArray());
+			//System.Xml.XmlNodeList nodes = poXml.SelectNodes("/OrderGroups/PurchaseOrder");
+
+			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+			var poXml = client.GetUnconfirmatedOrders();
+			System.Xml.XmlNodeList nodes = poXml.SelectNodes("/PurchaseOrder");
+			//return poXml.SelectNodes("/OrderGroups/PurchaseOrder");
             List<Core.Models.Orders.OrderHeader> orders = new List<Core.Models.Orders.OrderHeader>();
             foreach (System.Xml.XmlNode p in nodes)
             {

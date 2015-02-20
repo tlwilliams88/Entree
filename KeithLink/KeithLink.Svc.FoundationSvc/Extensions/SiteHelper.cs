@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using CommerceServer.Foundation;
 using CommerceServer.Foundation.SequenceComponents.Utility;
+using CommerceServer.Core.Orders;
 
 namespace KeithLink.Svc.FoundationSvc.Extensions
 {
@@ -33,5 +34,17 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
             }
             return orderContext;
         }
+
+		static CommerceServer.Core.Orders.OrderManagementContext orderMgmtContext = null;
+		public static CommerceServer.Core.Orders.OrderManagementContext GetOrderManageContext()
+		{
+			if (orderMgmtContext == null)
+			{
+				var ordersAgent = new OrderSiteAgent(GetSiteName());
+				orderMgmtContext = OrderManagementContext.Create(ordersAgent);
+			}
+			return orderMgmtContext;
+		}
+
     }
 }

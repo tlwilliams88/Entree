@@ -14,6 +14,7 @@ using KeithLink.Svc.FoundationSvc.Interface;
 using System.ServiceModel.Activation;
 using System.Configuration;
 using System.Data.SqlClient;
+using CommerceServer.Core;
 
 namespace KeithLink.Svc.FoundationSvc
 {
@@ -238,5 +239,26 @@ namespace KeithLink.Svc.FoundationSvc
                 throw ex;
             }
         }
+
+		public System.Xml.XmlElement GetUnconfirmatedOrders()
+		{
+			var manager = Extensions.SiteHelper.GetOrderManageContext().PurchaseOrderManager;
+			System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+			SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+			SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", "Submitted");
+			DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
+
+			int c = results.Tables.Count;
+
+			// Get the value of the OrderGroupId property of each
+			// purchase order.
+			List<Guid> poIds = new List<Guid>();
+			foreach (DataRow row in results.Tables[0].Rows)
+			{
+				poIds.Add(new Guid(row["OrderGroupId"].ToString()));
+			}
+			// Get the XML representation of the purchase orders.
+			return manager.GetPurchaseOrdersAsXml(poIds.ToArray());
+		}
     }	
 }
