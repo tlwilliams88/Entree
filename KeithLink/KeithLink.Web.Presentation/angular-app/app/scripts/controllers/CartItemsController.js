@@ -11,7 +11,7 @@ angular.module('bekApp')
   .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
     function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
 
-    var basketId = originalBasket.id || originalBasket.ordernumber
+    var basketId = originalBasket.id || originalBasket.ordernumber;
     if ($stateParams.cartId !== basketId.toString()) {
       $state.go('menu.cart.items', {cartId: basketId, renameCart: null}, {location:'replace', inherit:false, notify: false});
     }
