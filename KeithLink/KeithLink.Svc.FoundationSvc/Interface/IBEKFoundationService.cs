@@ -24,6 +24,9 @@ namespace KeithLink.Svc.FoundationSvc.Interface
 
         [OperationContract]
         string CancelPurchaseOrder(Guid userId, Guid orderId);
+
+		[OperationContract]
+		System.Xml.XmlElement GetUnconfirmatedOrders();
 	}
 
     public class PurchaseOrderLineItemUpdate
