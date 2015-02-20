@@ -195,6 +195,7 @@
     <Compile Include="Helpers\DivisionHelper.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
     <Compile Include="Helpers\FoundationService.cs" />
+    <Compile Include="Helpers\RetryHelper.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />

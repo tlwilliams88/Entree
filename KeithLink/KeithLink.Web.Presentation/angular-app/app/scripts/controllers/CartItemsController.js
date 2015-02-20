@@ -203,7 +203,10 @@ angular.module('bekApp')
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
           $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+          $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
+        }, function(error) {
+          $scope.displayMessage('error', 'Error updating change order ' + order.ordernumber + '.');
         }).finally(function() {
           processingSaveChangeOrder = false;
         });
@@ -218,14 +221,8 @@ angular.module('bekApp')
         $scope.saveChangeOrder(order)
           .then(OrderService.resubmitOrder)
           .then(function(orderNumber) {
-            // update changeOrders object
-            angular.forEach($scope.changeOrders, function(changeOrder) {
-              if (changeOrder.ordernumber === $scope.currentCart.ordernumber) {
-                changeOrder.ordernumber = orderNumber;
-              }
-            });
-            $scope.currentCart.ordernumber = orderNumber;
             $scope.displayMessage('success', 'Successfully submitted change order.');
+            $state.go('menu.orderitems', { orderNumber: orderNumber });
           }, function(error) {
             $scope.displayMessage('error', 'Error re-submitting order.');
           }).finally(function() {

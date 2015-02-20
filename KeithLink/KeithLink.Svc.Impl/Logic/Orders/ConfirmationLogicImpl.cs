@@ -200,7 +200,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                             _log.WriteInformationLog(string.Format("Pulling confirmation from queue using message ({0})", confirmation.MessageId));
 
                             ProcessIncomingConfirmation(confirmation);
-                            _conversionLogic.SaveConfirmationAsOrderHistory(confirmation);
+
+							//Try to save the confirmation 5 times. Several threads are modifying the order history table, so there are occasional concurrency errors.
+                            KeithLink.Svc.Impl.Helpers.Retry.Do(() => _conversionLogic.SaveConfirmationAsOrderHistory(confirmation), TimeSpan.FromSeconds(1), 5);
                         } catch (Exception e) {
                             _log.WriteErrorLog("Error processing confirmation in internal service", e);
                             KeithLink.Common.Core.Email.ExceptionEmail.Send(e);
