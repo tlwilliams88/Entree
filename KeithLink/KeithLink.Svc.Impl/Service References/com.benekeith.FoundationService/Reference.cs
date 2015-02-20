@@ -5034,6 +5034,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrderResponse")]
         System.Threading.Tasks.Task<string> CancelPurchaseOrderAsync(System.Guid userId, System.Guid orderId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrders", ReplyAction="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrdersResponse")]
+        System.Xml.XmlElement GetUnconfirmatedOrders();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrders", ReplyAction="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrdersResponse")]
+        System.Threading.Tasks.Task<System.Xml.XmlElement> GetUnconfirmatedOrdersAsync();
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -5215,6 +5221,14 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         
         public System.Threading.Tasks.Task<string> CancelPurchaseOrderAsync(System.Guid userId, System.Guid orderId) {
             return base.Channel.CancelPurchaseOrderAsync(userId, orderId);
+        }
+        
+        public System.Xml.XmlElement GetUnconfirmatedOrders() {
+            return base.Channel.GetUnconfirmatedOrders();
+        }
+        
+        public System.Threading.Tasks.Task<System.Xml.XmlElement> GetUnconfirmatedOrdersAsync() {
+            return base.Channel.GetUnconfirmatedOrdersAsync();
         }
     }
 }

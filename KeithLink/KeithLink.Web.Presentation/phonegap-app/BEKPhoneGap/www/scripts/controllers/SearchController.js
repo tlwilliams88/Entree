@@ -22,6 +22,7 @@ angular.module('bekApp')
 
     $scope.canOrderItem = PricingService.canOrderItem;
     $scope.hasCasePrice = PricingService.hasCasePrice;
+    $scope.hasPackagePrice = PricingService.hasPackagePrice;
 
     $scope.paramType = $stateParams.type;
     $scope.paramId = $stateParams.id;

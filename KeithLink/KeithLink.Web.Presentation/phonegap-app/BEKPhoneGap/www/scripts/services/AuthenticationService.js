@@ -28,7 +28,7 @@ angular.module('bekApp')
           LocalStorage.setToken(token);
           return username;
         }, function(error) {
-          return $q.reject('Error authenticating user.');
+          return $q.reject(error.data.error_description);
         });
       },
 

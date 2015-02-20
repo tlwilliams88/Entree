@@ -8,13 +8,19 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$filter', 'UtilityService', 'ExportService', 'Order', 
-    function ($http, $filter, UtilityService, ExportService, Order) {
+  .factory('OrderService', ['$http', '$q', 'UtilityService', 'ExportService', 'PricingService', 'Order', 
+    function ($http, $q, UtilityService, ExportService, PricingService, Order) {
     
     var Service = {
       
       getAllOrders: function() {
         return Order.query().$promise;
+      },
+
+      getOrders: function(params) {
+        return $http.post('/order', params).then(function(response) {
+          return response.data;
+        });
       },
 
       getOrderDetails: function(orderNumber) {
@@ -35,8 +41,15 @@ angular.module('bekApp')
       *************/
 
       getChangeOrders: function() {
-        var promise = $http.get('/order/changeorder');
-        return UtilityService.resolvePromise(promise);
+        var promise = $http.get('/order/changeorder', {
+          header: true
+        });
+        return UtilityService.resolvePromise(promise).then(function(changeOrders) {
+          changeOrders.forEach(function(changeOrder) {
+            PricingService.updateCaculatedFields(changeOrder.items);
+          });
+          return changeOrders;
+        });
       },
 
       resubmitOrder: function(orderNumber) {
@@ -48,7 +61,10 @@ angular.module('bekApp')
       },
 
       updateOrder: function(order, params) {
-        return Order.update(params, order).$promise;
+        return Order.update(params, order).$promise.then(function(changeOrder) {
+          PricingService.updateCaculatedFields(changeOrder.items);
+          return changeOrder;
+        });
       },
 
       findChangeOrderByOrderNumber: function(changeOrders, orderNumber) {

@@ -627,6 +627,7 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
+    <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -42,7 +42,7 @@
               {{ item.customerNumber}} - {{ item.branch }}
             </td>
             <td> 
-              {{ item.orderCreateDateTime | LocalTimeZoneTimeWithDate }}
+              {{ item.orderCreateDateTime | formatDateWithTimezone }}
             </td>
             <td>
               <a href="javascript:void(0);" ng-click="resendUnconfirmedOrder(item)">Re-Submit</a>

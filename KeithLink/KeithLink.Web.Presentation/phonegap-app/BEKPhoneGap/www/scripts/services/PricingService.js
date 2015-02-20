@@ -27,27 +27,30 @@ angular.module('bekApp')
   function calculateQuantityPrice(item) {
     var unitPrice = 0;
 
+    if (!item.quantity) {
+      item.quantity = 0;
+    }
+
     if (item.price) { // check if change order item
       unitPrice = item.price;
     } else {
       // determine if using case price or package price
       unitPrice = item.each ? item.packageprice : item.caseprice;
     }
-
-    return unitPrice * item.quantity;
+    return parseFloat(unitPrice) * item.quantity;
   }
 
   var Service = {
     
     getPriceForItem: function(item) {
       var price = 0;
-      
-      if (item.catchweight) {
-        price = calculateCatchWeightPrice(item);     
-      } else {
-        price = calculateQuantityPrice(item);
+      if (item) {
+        if (item.catchweight) {
+          price = calculateCatchWeightPrice(item);     
+        } else {
+          price = calculateQuantityPrice(item);
+        }
       }
-
       return price;
     },
 
@@ -55,6 +58,14 @@ angular.module('bekApp')
       var subtotal = 0;
       angular.forEach(items, function(item, index) {
         subtotal += Service.getPriceForItem(item);
+      });
+      return subtotal;
+    },
+
+    getSubtotalForItemsWithPrice: function(itemsWithPrice) {
+      var subtotal = 0;
+      angular.forEach(itemsWithPrice, function(item, index) {
+        subtotal += item.extPrice;
       });
       return subtotal;
     },
@@ -69,6 +80,16 @@ angular.module('bekApp')
 
     canOrderItem: function(item) {
       return Service.hasCasePrice(item);
+    },
+
+    updateCaculatedFields: function(items) {
+      if (items && items.length) {
+        items.forEach(function(item) {
+          item.canOrder = Service.canOrderItem(item);
+          item.hasPackagePrice = Service.hasPackagePrice(item);
+          item.hasCasePrice = Service.hasCasePrice(item);
+        });
+      }
     }
 
   };
