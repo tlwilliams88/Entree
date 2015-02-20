@@ -28,6 +28,11 @@ angular.module('bekApp')
     loadCustomers(customersConfig).then(setCustomers);
 
     $scope.loadingUsers = true;
+    $scope.userDetailState = 'menu.admin.user.view';
+
+    if ($scope.canEditUsers) {
+      $scope.userDetailState = 'menu.admin.user.edit';
+    }
 
     if ($stateParams.customerGroupId) {
       // internal bek admins

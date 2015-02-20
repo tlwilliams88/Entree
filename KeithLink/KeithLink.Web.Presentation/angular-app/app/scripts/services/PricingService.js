@@ -44,11 +44,12 @@ angular.module('bekApp')
     
     getPriceForItem: function(item) {
       var price = 0;
-      
-      if (item.catchweight) {
-        price = calculateCatchWeightPrice(item);     
-      } else {
-        price = calculateQuantityPrice(item);
+      if (item) {
+        if (item.catchweight) {
+          price = calculateCatchWeightPrice(item);     
+        } else {
+          price = calculateQuantityPrice(item);
+        }
       }
       return price;
     },
@@ -82,11 +83,13 @@ angular.module('bekApp')
     },
 
     updateCaculatedFields: function(items) {
-      items.forEach(function(item) {
-        item.canOrder = Service.canOrderItem(item);
-        item.hasPackagePrice = Service.hasPackagePrice(item);
-        item.hasCasePrice = Service.hasCasePrice(item);
-      });
+      if (items && items.length) {
+        items.forEach(function(item) {
+          item.canOrder = Service.canOrderItem(item);
+          item.hasPackagePrice = Service.hasPackagePrice(item);
+          item.hasCasePrice = Service.hasCasePrice(item);
+        });
+      }
     }
 
   };

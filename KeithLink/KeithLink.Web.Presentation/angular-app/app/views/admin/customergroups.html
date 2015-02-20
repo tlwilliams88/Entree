@@ -27,7 +27,7 @@
       <div class="col-md-6">
 
         <p>
-          <a ui-sref="menu.admin.customergroupdetails({ groupId: 'new'})">Add New Customer Group...</a>
+          <a ui-sref="menu.admin.customergroupdetails({ groupId: 'new'})" ng-if="canManageCustomerGroups">Add New Customer Group...</a>
           <span class="pull-right">Showing {{customerGroups.length}} of {{totalGroups}} Customer Groups</span>
         </p>
 
@@ -35,14 +35,14 @@
           <thead>
             <tr>
               <th>Customer Group Name</th>
-              <th></th>
+              <th ng-if="canManageCustomerGroups"></th>
               <th></th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="customerGroup in customerGroups | orderBy:'name'" ng-class="{ odd : $odd, even: $even }">
               <td>{{customerGroup.name}}</td>
-              <td>
+              <td ng-if="canManageCustomerGroups">
                 <a ui-sref="menu.admin.customergroupdetails({groupId: customerGroup.id})">Edit Details</a>
               </td>
               <td>

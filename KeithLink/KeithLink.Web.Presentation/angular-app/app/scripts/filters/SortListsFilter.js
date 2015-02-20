@@ -15,8 +15,10 @@ angular.module('bekApp')
         item.sortPriority = 3;
       } else if (item.isreminder) {
         item.sortPriority = 4;
-      } else if (item.isrecommended) {
+      } else if (item.ismandatory) {
         item.sortPriority = 5;
+      } else if (item.isrecommended) {
+        item.sortPriority = 6;
       } else {
         item.sortPriority = 10;
       }

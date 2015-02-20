@@ -7,7 +7,7 @@
 
 <div class="page-content">
 <h2 ng-if="groupName">Customer Group: {{groupName}}</h2>
-<form name="addNewUserForm">
+<form name="addNewUserForm" ng-show="canEditUsers">
 <div class="row">
   <div class="col-md-6">
     <div class="form-inline">
@@ -46,7 +46,7 @@
         <tbody>
           <tr ng-repeat="adminUser in adminUsers | orderBy:sortBy1:sortOrder1"
               ng-class="{ odd : $odd, even: $even }">
-            <td><a class="btn-link" ui-sref="menu.admin.edituser({email: adminUser.emailaddress, groupId: customerGroupId})">{{adminUser.emailaddress}}</a></td>
+            <td><a class="btn-link" ui-sref="{{userDetailState}}({email: adminUser.emailaddress, groupId: customerGroupId})">{{adminUser.emailaddress}}</a></td>
             <td>{{adminUser.firstname}}</td>
             <td>{{adminUser.lastname}}</td>
             <td>
@@ -106,7 +106,7 @@
         </tr>
         <tr ng-repeat="customerUser in customerUsers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
             ng-class="{ odd : $odd, even: $even }">
-          <td><a class="btn-link" ui-sref="menu.admin.edituser({email: customerUser.emailaddress, groupId: customerGroupId})">{{customerUser.emailaddress}}</a></td>
+          <td><a class="btn-link" ui-sref="{{userDetailState}}({email: customerUser.emailaddress, groupId: customerGroupId})">{{customerUser.emailaddress}}</a></td>
           <td>{{customerUser.firstname}}</td>
           <td>{{customerUser.lastname}}</td>
           <td class="text-capitalize">{{customerUser.rolename}}</td>
@@ -192,7 +192,7 @@
     <br>
     <label for="bodyContent" class="control-label">Body Content</label>
     <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
-    <button class="btn btn-primary top-buffer" ng-click="sendMessage()">Send Message</button>
+    <button class="btn btn-primary btn-lg top-buffer" ng-click="sendMessage()">Send Message</button>
   </div>
   <div class="col-md-6">
     <label class="control-label">Broadcast Recipients <span style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span></label>

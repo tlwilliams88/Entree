@@ -55,7 +55,7 @@ angular.module('bekApp')
 
         return $http.get('/profile', data).then(function(response){
           var profile = response.data.userProfiles[0];
-          $log.debug(profile.data);
+          $log.debug(profile);
           Service.updateDisplayName(profile);  
           return profile;
         });

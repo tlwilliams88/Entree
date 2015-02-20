@@ -1,10 +1,12 @@
 <div page-header-bar>
   <div header-message>
     <div ng-hide="selectedList.isRenaming">
-      <span>{{selectedList.name}}</span>
+      <div class="list-name">{{selectedList.name}}</div>
 
-      <span ng-if="selectedList.issharing" class="large-icon icon-user-add" tooltip="You are sharing this list."></span>
-      <span ng-if="selectedList.isshared" class="large-icon icon-users" tooltip="This list is shared with you."></span>
+      <div style="display:inline-block;">
+        <span ng-if="selectedList.issharing" class="large-icon icon-user-add" tooltip="You are sharing this list."></span>
+        <span ng-if="selectedList.isshared" class="large-icon icon-users" tooltip="This list is shared with you."></span>
+      </div>
 
       <div 
         style="display:inline-block;" 
@@ -490,7 +492,7 @@
 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
                 <div 
-                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder" 
                   context-menu-template
                   class="context-menu-template context-menu__in-list hidden-print"
                 >
@@ -510,7 +512,7 @@
 
             </tr>
             <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
-              <td colspan="11">
+              <td colspan="10">
                 <table>
                   <colgroup>
                     <col width="25%" />
@@ -602,7 +604,7 @@
 
           <tfoot ng-show="filteredItems.length === 0">
             <tr>
-              <td colspan="10">
+              <td colspan="12">
                 No products to display.
               </td>
             </tr>

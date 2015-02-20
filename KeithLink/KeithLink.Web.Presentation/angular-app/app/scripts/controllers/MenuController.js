@@ -118,21 +118,17 @@ angular.module('bekApp')
 
   $scope.goToAdminLandingPage = function() {
     // internal bek admin user
-    if (AccessService.isInternalAccountAdminUser()) {
+    if ($scope.canViewCustomerGroups) {
       $state.go('menu.admin.customergroup');
       
     // external owner admin
-    } else {  
+    } else {
       $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
     }
   };
 
   function refreshPage() {
-    $state.transitionTo($state.current, $state.params, {
-      reload: true,
-      inherit: false,
-      notify: true
-    });
+    location.reload();
   }
 
   // change context menu selection for guest users
@@ -225,9 +221,9 @@ angular.module('bekApp')
     $scope.canCreateOrders = AccessService.canCreateOrders();
     $scope.canSubmitOrders = AccessService.canSubmitOrders();
     $scope.canPayInvoices = AccessService.canPayInvoices();
-    $scope.canManageAccount = AccessService.canManageAccount();
-    $scope.canManageAccounts = AccessService.canManageAccounts();
-
-
+    $scope.canManageCustomerGroups = AccessService.canManageCustomerGroups();
+    $scope.canViewCustomerGroups = AccessService.canViewCustomerGroups();
+    $scope.canViewCustomerGroupDashboard = AccessService.canViewCustomerGroupDashboard();
+    $scope.canEditUsers = AccessService.canEditUsers();
   }
 }]);
