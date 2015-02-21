@@ -265,7 +265,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			var customerOrders = new BlockingCollection<Order>();
 			foreach (var h in headers)
 			{
-				Order currentOrder = h.ToOrderHeaderOnly();
+				/*
+                 * Order currentOrder = h.ToOrderHeaderOnly();
 				var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(h.BranchId), h.CustomerNumber, h.InvoiceNumber.Trim());
 				if (invoice != null)
 					currentOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
@@ -286,6 +287,45 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 				}
 
 				customerOrders.Add(currentOrder);
+                 * */
+
+                
+                Order returnOrder = null;
+                var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(h.BranchId), h.CustomerNumber, h.InvoiceNumber.Trim());
+                
+                returnOrder = h.ToOrder();
+                if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+                {
+                    var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+                    if (po != null)
+                    {
+                        returnOrder.Status = po.Status;
+                        returnOrder.OrderNumber = h.ControlNumber;
+
+                        var poOrder = po.ToOrder();
+                        foreach (var item in returnOrder.Items)
+                        {
+                            //Get the unit price from the PO
+                            var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+                            if (poLine != null)
+                                item.Price = poLine.Price;
+                        }
+                    }
+
+                    if (returnOrder.ActualDeliveryTime != null)
+                    {
+                        returnOrder.Status = "Delivered";
+                    }
+                }
+
+                if (invoice != null)
+                    returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+
+                LookupProductDetails(h.BranchId, returnOrder);
+
+                returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+
+                customerOrders.Add(returnOrder);
 			}
 
 			return customerOrders.ToList();
