@@ -137,7 +137,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceNumber = value.InvoiceNumber;
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-            //TODO:  determine if we can get order total here
+            retVal.OrderTotal = 0; //TODO:  put formula here if necessary
             retVal.CreatedDate = value.CreatedUtc;
 			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
 			retVal.IsChangeOrderAllowed = false;
@@ -184,8 +184,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-			//TODO:  determine if we can get order total here
-            
+            retVal.OrderTotal = 0; //TODO:  put formula here if necessary
 			retVal.CreatedDate = value.CreatedUtc;
             retVal.RequestedShipDate = (DateTime)(value.DeliveryDate.HasValue ? value.DeliveryDate : DateTime.Now);
 			retVal.IsChangeOrderAllowed = false;
