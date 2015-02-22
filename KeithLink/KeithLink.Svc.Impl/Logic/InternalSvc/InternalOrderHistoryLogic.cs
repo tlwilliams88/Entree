@@ -265,34 +265,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			var customerOrders = new BlockingCollection<Order>();
 			foreach (var h in headers)
 			{
-				/*
-                 * Order currentOrder = h.ToOrderHeaderOnly();
-				var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(h.BranchId), h.CustomerNumber, h.InvoiceNumber.Trim());
-				if (invoice != null)
-					currentOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
-
-				if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
-				{
-					PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
-					if (po != null)
-					{
-						currentOrder.OrderNumber = h.ControlNumber;
-                        currentOrder.Status = po.Status;
-					}
-
-                    if (currentOrder.ActualDeliveryTime != null) {
-                        currentOrder.Status = "Delivered";
-                    }
-
-				}
-
-				customerOrders.Add(currentOrder);
-                 * */
-
-                
+			               
                 Order returnOrder = null;
-                var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(h.BranchId), h.CustomerNumber, h.InvoiceNumber.Trim());
-                
+
                 returnOrder = h.ToOrder();
                 if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
                 {
@@ -316,16 +291,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     {
                         returnOrder.Status = "Delivered";
                     }
+
+                    if (returnOrder != null)
+                    {
+                        LookupProductDetails(h.BranchId, returnOrder);
+                        if (returnOrder.Items != null && returnOrder.Items.Count > 0)
+                        {
+                            returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+                        }
+                        else
+                        {
+                            returnOrder.OrderTotal = 0;
+                        }
+
+
+                        customerOrders.Add(returnOrder);
+                    }
                 }
-
-                if (invoice != null)
-                    returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
-
-                LookupProductDetails(h.BranchId, returnOrder);
-
-                returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
-
-                customerOrders.Add(returnOrder);
 			}
 
 			return customerOrders.ToList();
