@@ -265,49 +265,58 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			var customerOrders = new BlockingCollection<Order>();
 			foreach (var h in headers)
 			{
-			               
-                Order returnOrder = null;
-
-                returnOrder = h.ToOrder();
-                if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+                try
                 {
-                    var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
-                    if (po != null)
-                    {
-                        returnOrder.Status = po.Status;
-                        returnOrder.OrderNumber = h.ControlNumber;
+                    Order returnOrder = null;
 
-                        var poOrder = po.ToOrder();
-                        foreach (var item in returnOrder.Items)
-                        {
-                            //Get the unit price from the PO
-                            var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-                            if (poLine != null)
-                                item.Price = poLine.Price;
-                        }
-                    }
-
-                    if (returnOrder.ActualDeliveryTime != null)
+                    returnOrder = h.ToOrder();
+                    if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
                     {
-                        returnOrder.Status = "Delivered";
-                    }
+                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+                        if (po != null)
+                        {
+                            returnOrder.Status = po.Status;
+                            returnOrder.OrderNumber = h.ControlNumber;
 
-                    if (returnOrder != null)
-                    {
-                        LookupProductDetails(h.BranchId, returnOrder);
-                        if (returnOrder.Items != null && returnOrder.Items.Count > 0)
-                        {
-                            returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
-                        }
-                        else
-                        {
-                            returnOrder.OrderTotal = 0;
+                            if (po.Properties["LineItems"] != null)
+                            {
+                                var poOrder = po.ToOrder();
+                                foreach (var item in returnOrder.Items)
+                                {
+                                    //Get the unit price from the PO
+                                    var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+                                    if (poLine != null)
+                                        item.Price = poLine.Price;
+                                }
+                            }
                         }
 
+                        if (returnOrder.ActualDeliveryTime != null)
+                        {
+                            returnOrder.Status = "Delivered";
+                        }
 
-                        customerOrders.Add(returnOrder);
+                        if (returnOrder != null)
+                        {
+                            LookupProductDetails(h.BranchId, returnOrder);
+                            if (returnOrder.Items != null && returnOrder.Items.Count > 0)
+                            {
+                                returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+                            }
+                            else
+                            {
+                                returnOrder.OrderTotal = 0;
+                            }
+
+                            customerOrders.Add(returnOrder);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    _log.WriteErrorLog("Error proceesing order history for order: " + h.InvoiceNumber  + ".  " + ex.StackTrace);
+                }
+                
 			}
 
 			return customerOrders.ToList();
