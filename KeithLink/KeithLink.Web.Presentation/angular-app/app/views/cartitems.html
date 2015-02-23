@@ -295,23 +295,21 @@
               Item
               <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='notes';sortOrder=!sortOrder">
-              <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
-            </th>
-            <th class="hidden-mobile-visible-print"></th>
-            <th class="hidden-mobile-visible-print">
-              Pack/Size
-            </th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
-              <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
-            </th>
             <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder">
               Name
               <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
             </th>
-            <th class="hidden-mobile-visible-print">
-              
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
+              <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
+            <th class="hidden-mobile-visible-print">
+              Pack/Size
+            </th>
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='notes';sortOrder=!sortOrder">
+              <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print"></th>
+            <th class="hidden-mobile-visible-print"></th>
             <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder">
               <span>Qty <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
@@ -333,17 +331,17 @@
           <!-- Filter row -->
           <tr class="filter-row hidden-print" ng-show="showFilter">
             <td></td>
+            <td class="input-col">
+              <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
+            </td>
+            <td class="hidden-xs hidden-sm input-col">
+              <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
+            </td>
+            <td class="hidden-xs hidden-sm"></td>
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
             </td>
             <td class="hidden-xs hidden-sm"></td>
-            <td class="hidden-xs hidden-sm"></td>
-            <td class="hidden-xs hidden-sm input-col">
-              <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
-            </td>
-            <td class="input-col">
-              <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
-            </td>
             <td class="hidden-xs hidden-sm"></td>
             <td></td>
             <td class="hidden-xs hidden-sm"></td>
@@ -359,20 +357,20 @@
             <td>
               <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
             </td>
+            <td>
+              {{item.name}}
+            </td>
+            <td class="hidden-mobile-visible-print ">
+              {{item.brand}}
+            </td>
+            <td class="hidden-mobile-visible-print ">
+              {{item.packsize}}
+            </td>
             <td class="hidden-mobile-visible-print notes-col">
               {{item.notes}}
             </td>
             <td class="hidden-mobile-visible-print">
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
-            </td>
-            <td class="hidden-mobile-visible-print ">
-              {{item.packsize}}
-            </td>
-            <td class="hidden-mobile-visible-print ">
-              {{item.brand}}
-            </td>
-            <td>
-              {{item.name}}
             </td>
             <td class="hidden-mobile-visible-print " item-icons>
             </td>
