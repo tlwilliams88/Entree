@@ -275,7 +275,7 @@ angular.module('bekApp')
     return total;
   };
 
-  $scope.getInvoicesSelectedInvoices = function() {
+  $scope.getSelectedInvoices = function() {
     return $filter('filter')($scope.invoices, {isSelected: true});
   };
 
@@ -283,7 +283,7 @@ angular.module('bekApp')
   $scope.payInvoices = function () {
     if (!processingPayInvoices) {
       processingPayInvoices = true;
-      var payments = $scope.getInvoicesSelectedInvoices();
+      var payments = $scope.getSelectedInvoices();
       InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
         $state.go('menu.transaction');
       }).finally(function () {

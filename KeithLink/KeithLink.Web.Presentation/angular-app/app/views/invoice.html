@@ -84,7 +84,7 @@
 
       <div class="row sub-content" ng-if="hasPayableInvoices">
         <div class="col-xs-12 text-right">
-          <button ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getInvoicesSelectedInvoices() <= 0" ng-click="payInvoices()" class="btn btn-primary btn-lg">Pay Invoice(s)</button>
+          <button ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0" ng-click="payInvoices()" class="btn btn-primary btn-lg">Pay Invoice(s)</button>
         </div>
       </div>
     </div>
