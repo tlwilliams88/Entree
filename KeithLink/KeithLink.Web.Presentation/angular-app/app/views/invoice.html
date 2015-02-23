@@ -221,13 +221,13 @@
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
                 ng-click="openDatepicker = true"
-                ng-if="invoice.userCanPayInvoice && invoice.isSelected"
+                ng-if="invoice.userCanPayInvoice"
                 class="icon-calendar"
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                 ng-model="invoice.date"
                 is-open="openDatepicker"
                 min-date="datepickerOptions.minDate"
-                max-date="datepickerOptions.maxDate"
+                max-date="invoice.maxPaymentDate"
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
