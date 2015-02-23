@@ -115,16 +115,16 @@ angular.module('bekApp')
           return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 
         });
 
-        return CartService.updateCart(updatedCart).then(function() {
+        return CartService.updateCart(updatedCart).then(function(savedCart) {
           $scope.currentCart.isRenaming = false;
           $scope.sortBy = null;
           $scope.sortOrder = false;
-          $scope.currentCart = updatedCart;
+          $scope.currentCart = savedCart;
           $scope.cartForm.$setPristine();
-          $scope.displayMessage('success', 'Successfully saved cart ' + cart.name);
-          return updatedCart.id;
+          $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
+          return savedCart.id;
         }, function() {
-          $scope.displayMessage('error', 'Error saving cart ' + cart.name);
+          $scope.displayMessage('error', 'Error saving cart ' + savedCart.name);
         }).finally(function() {
           processingSaveCart = false;
         });
