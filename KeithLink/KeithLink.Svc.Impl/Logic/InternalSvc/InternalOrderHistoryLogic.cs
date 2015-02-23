@@ -265,27 +265,58 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			var customerOrders = new BlockingCollection<Order>();
 			foreach (var h in headers)
 			{
-				Order currentOrder = h.ToOrderHeaderOnly();
-				var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(h.BranchId), h.CustomerNumber, h.InvoiceNumber.Trim());
-				if (invoice != null)
-					currentOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+                try
+                {
+                    Order returnOrder = null;
 
-				if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
-				{
-					PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
-					if (po != null)
-					{
-						currentOrder.OrderNumber = h.ControlNumber;
-                        currentOrder.Status = po.Status;
-					}
+                    returnOrder = h.ToOrder();
+                    if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+                    {
+                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+                        if (po != null)
+                        {
+                            returnOrder.Status = po.Status;
+                            returnOrder.OrderNumber = h.ControlNumber;
 
-                    if (currentOrder.ActualDeliveryTime != null) {
-                        currentOrder.Status = "Delivered";
+                            if (po.Properties["LineItems"] != null)
+                            {
+                                var poOrder = po.ToOrder();
+                                foreach (var item in returnOrder.Items)
+                                {
+                                    //Get the unit price from the PO
+                                    var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+                                    if (poLine != null)
+                                        item.Price = poLine.Price;
+                                }
+                            }
+                        }
+
+                        if (returnOrder.ActualDeliveryTime != null)
+                        {
+                            returnOrder.Status = "Delivered";
+                        }
+
+                        if (returnOrder != null)
+                        {
+                            LookupProductDetails(h.BranchId, returnOrder);
+                            if (returnOrder.Items != null && returnOrder.Items.Count > 0)
+                            {
+                                returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+                            }
+                            else
+                            {
+                                returnOrder.OrderTotal = 0;
+                            }
+
+                            customerOrders.Add(returnOrder);
+                        }
                     }
-
-				}
-
-				customerOrders.Add(currentOrder);
+                }
+                catch (Exception ex)
+                {
+                    _log.WriteErrorLog("Error proceesing order history for order: " + h.InvoiceNumber  + ".  " + ex.StackTrace);
+                }
+                
 			}
 
 			return customerOrders.ToList();

@@ -137,34 +137,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceNumber = value.InvoiceNumber;
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-
-            double orderTotal = 0;
-            foreach (EF.OrderHistoryDetail detail in value.OrderDetails)
-            {
-                double lineTotal = 0;
-                OrderLine orderLine = detail.ToOrderLine();
-
-                if (orderLine.CatchWeight)
-                {
-                    if (orderLine.Each) //package catchweight
-                    {
-                        lineTotal = ((orderLine.AverageWeight / Int32.Parse(orderLine.Pack)) * orderLine.QantityShipped) * orderLine.Price;
-                    }
-                    else //case catchweight
-                    {
-                        lineTotal = (orderLine.AverageWeight * orderLine.QantityShipped) * orderLine.Price;
-                    }
-                }
-                else
-                {
-                    lineTotal = orderLine.QantityShipped * orderLine.Price;
-                }
-
-                orderTotal += lineTotal;
-            }
-            retVal.OrderTotal = orderTotal;
-            
-			retVal.CreatedDate = value.CreatedUtc;
+            retVal.OrderTotal = 0; //TODO:  put formula here if necessary
+            retVal.CreatedDate = value.CreatedUtc;
 			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
@@ -210,32 +184,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-			//retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.SellPrice);
-            double orderTotal = 0;
-            foreach (EF.OrderHistoryDetail detail in value.OrderDetails)
-            {
-                double lineTotal = 0;
-                OrderLine orderLine = detail.ToOrderLine();
-
-                if (orderLine.CatchWeight)
-                {
-                    if (orderLine.Each) //package catchweight
-                    {
-                        lineTotal = ((orderLine.AverageWeight / Int32.Parse(orderLine.Pack)) * orderLine.QantityShipped) * orderLine.Price;
-                    }
-                    else //case catchweight
-                    {
-                        lineTotal = (orderLine.AverageWeight * orderLine.QantityShipped) * orderLine.Price;
-                    }
-                }
-                else
-                {
-                    lineTotal = orderLine.QantityShipped * orderLine.Price;
-                }
-
-                orderTotal += lineTotal;
-            }
-            retVal.OrderTotal = orderTotal;
+            retVal.OrderTotal = 0; //TODO:  put formula here if necessary
 			retVal.CreatedDate = value.CreatedUtc;
             retVal.RequestedShipDate = (DateTime)(value.DeliveryDate.HasValue ? value.DeliveryDate : DateTime.Now);
 			retVal.IsChangeOrderAllowed = false;
