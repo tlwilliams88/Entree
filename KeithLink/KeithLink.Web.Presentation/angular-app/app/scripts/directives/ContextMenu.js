@@ -84,9 +84,9 @@ angular.module('bekApp')
 
         OrderService.updateOrder(order).then(function(data) {
           $scope.$broadcast('closeContextMenu');
-          $scope.displayMessage('success', 'Successfully added item to Order #' + order.ordernumber + '.');
+          $scope.displayMessage('success', 'Successfully added item to Order #' + order.invoicenumber + '.');
         }, function() {
-          $scope.displayMessage('error', 'Error adding item to Order #' + order.ordernumber + '.');
+          $scope.displayMessage('error', 'Error adding item to Order #' + order.invoicenumber + '.');
         });
       };
 

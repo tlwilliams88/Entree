@@ -139,7 +139,7 @@ angular.module('bekApp')
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
-            $state.go('menu.orderitems', { orderNumber: data.ordernumber });
+            $state.go('menu.orderitems', { invoiceNumber: data.ordernumber });
             $scope.displayMessage('success', 'Successfully submitted order.');
           }, function(error) {
             $scope.displayMessage('error', 'Error submitting order.');
@@ -206,7 +206,7 @@ angular.module('bekApp')
           $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
         }, function(error) {
-          $scope.displayMessage('error', 'Error updating change order ' + order.ordernumber + '.');
+          $scope.displayMessage('error', 'Error updating change order ' + order.invoicenumber + '.');
         }).finally(function() {
           processingSaveChangeOrder = false;
         });
@@ -220,9 +220,9 @@ angular.module('bekApp')
 
         $scope.saveChangeOrder(order)
           .then(OrderService.resubmitOrder)
-          .then(function(orderNumber) {
+          .then(function(invoiceNumber) {
             $scope.displayMessage('success', 'Successfully submitted change order.');
-            $state.go('menu.orderitems', { orderNumber: orderNumber });
+            $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
           }, function(error) {
             $scope.displayMessage('error', 'Error re-submitting order.');
           }).finally(function() {

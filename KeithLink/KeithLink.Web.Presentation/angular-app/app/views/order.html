@@ -74,8 +74,8 @@
 
       <tr ng-repeat-start="order in orders" ng-class="{ odd : $odd, even: $even }">
         <td>
-          <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({orderNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
-          <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({orderNumber: order.ordernumber})">{{order.invoicenumber}}</a>
+          <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
+          <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">{{order.invoicenumber}}</a>
         </td>
         <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
