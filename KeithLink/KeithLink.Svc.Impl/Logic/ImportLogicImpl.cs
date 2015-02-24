@@ -55,31 +55,6 @@ namespace KeithLink.Svc.Impl.Logic {
 
                 var newList = new ListModel() { Name = string.Format( "Imported List - {0}", DateTime.Now.ToShortDateString() ), BranchId = catalogInfo.BranchId };
 
-                //var rows = csvFile.Split('\n');
-
-                //var items = rows.Skip(1).Select(i => i.Split(',')).Select(l => new ListItemModel() { ItemNumber = l[0].ToString() }).Where(x => !string.IsNullOrEmpty(x.ItemNumber)).ToList();
-
-                ////Verify the user has these products in their catalog
-                //var prods = catalogLogic.GetProductsByIds(catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList());
-
-                ////Item counts don't match, which means there are items in the import that don't belong to this catalog
-                //if (prods.Products.Select(p => p.ItemNumber).Distinct().Count() != items.Select(i => i.ItemNumber).Distinct().Count())
-                //{
-                //    importReturn.WarningMessage = "Some items were not imported because they were not found in the current catalog.";
-
-                //    newList.Items = new List<ListItemModel>();
-                //    foreach (var item in items)
-                //        if (prods.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).Any())
-                //            newList.Items.Add(item);
-                //}
-                //else
-                //    newList.Items = items; //All items are in the user's catalog
-
-
-                //importReturn.ListId = 	listServiceRepository.CreateList(user.UserId, catalogInfo, newList, ListType.Custom);
-
-                //importReturn.Success = true;
-
                 List<ListItemModel> items = new List<ListItemModel>();
 
                 switch (file.FileFormat) {
@@ -96,11 +71,17 @@ namespace KeithLink.Svc.Impl.Logic {
 
                 var validProducts = catalogLogic.GetProductsByIds( catalogInfo.BranchId, items.Select(i => i.ItemNumber).Distinct().ToList() );
 
-                if (items.Select( p => p.ItemNumber ).Distinct().Count() != validProducts.Products.Select( o => o.ItemNumber ).Distinct().Count()) {
+                List<ListItemModel> mergedItems = (from x in items
+                                            join y in validProducts.Products on x.ItemNumber.Trim() equals y.ItemNumber.Trim()
+                                            select x).ToList();
+
+                //if (items.Select( p => p.ItemNumber ).Distinct().Count() != validProducts.Products.Select( o => o.ItemNumber ).Distinct().Count()) {
+                if (items.Distinct().Count() != mergedItems.Distinct().Count()) {
                     Warning( "Some items were not imported because they were not found in the current catalog." );
-                    foreach (var item in items)
-                        if (validProducts.Products.Where( p => p.ItemNumber.Equals( item.ItemNumber ) ).Any())
-                            newList.Items.Add( item );
+                    newList.Items = mergedItems;
+                    //foreach (var item in items)
+                    //    if (validProducts.Products.Where( p => p.ItemNumber.Equals( item.ItemNumber ) ).Any())
+                    //        newList.Items.Add( item );
                 } else {
                     newList.Items = items;
                 }
@@ -122,7 +103,15 @@ namespace KeithLink.Svc.Impl.Logic {
         private List<ListItemModel> parseListDelimited( ListImportFileModel file, char delimiter, UserProfile user, UserSelectedContext catalogInfo ) {
             List<ListItemModel> returnValue = new List<ListItemModel>();
 
-            var items = file.Contents.Split( '\n' ).Select( i => i.Split( delimiter ) ).Select( i => new ListItemModel() { ItemNumber = i[0].ToString() } ).Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
+            var rows = file.Contents.Split( new string[] { Environment.NewLine }, StringSplitOptions.None );
+            returnValue = rows
+                        .Skip( 1 )
+                        .Where( line => !String.IsNullOrWhiteSpace( line ) )
+                        .Select( i => i.Split( delimiter ) )
+                        .Select( l => new ListItemModel() {
+                            ItemNumber = l[0]
+                        } )
+                        .Where( x => !String.IsNullOrEmpty( x.ItemNumber ) ).ToList();
 
             return returnValue;
         }
