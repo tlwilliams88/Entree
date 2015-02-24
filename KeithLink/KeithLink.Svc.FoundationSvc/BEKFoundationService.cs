@@ -168,9 +168,17 @@ namespace KeithLink.Svc.FoundationSvc
                         li["Notes"] = string.Empty;
                         li["LinePosition"] = linePosition;
                         li.ProductCatalog = i.Catalog;
+						li.Status = "added";
                         linePosition++;
                         po.OrderForms[0].LineItems.Add(li);
                     }
+					if (i.Status == "added" && lineItem != null)
+					{
+						lineItem.Quantity = i.Quantity;
+						lineItem["Each"] = i.Each;
+						lineItem["CatchWeight"] = i.CatchWeight;
+					}
+
                 }
 
                 PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());

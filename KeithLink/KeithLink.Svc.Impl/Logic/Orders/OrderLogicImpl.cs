@@ -266,7 +266,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 }
                 else
                 { // new line
-					existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, ChangeOrderStatus = "added" });
+					existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, Each = newLine.Each,  ChangeOrderStatus = "added" });
                 }
             }
             // handle deletes
