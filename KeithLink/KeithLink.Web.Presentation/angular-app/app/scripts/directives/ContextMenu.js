@@ -78,7 +78,8 @@ angular.module('bekApp')
        $scope.addItemToChangeOrder = function(order, item) {
         var orderItem = {
           quantity: 1,
-          itemnumber: item.itemnumber
+          itemnumber: item.itemnumber,
+          each: item.each
         };
         order.items.push(orderItem);
 

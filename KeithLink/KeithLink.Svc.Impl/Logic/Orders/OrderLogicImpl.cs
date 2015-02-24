@@ -256,14 +256,17 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 { // compare and update if necessary
                     if (existingLine.Quantity != newLine.Quantity || existingLine.Each != newLine.Each)
                     {
-                        existingLine.Quantity = newLine.Quantity;
-                        existingLine.Each = newLine.Each;
-						existingLine.ChangeOrderStatus = "changed";
+						existingLine.Quantity = newLine.Quantity;
+						existingLine.Each = newLine.Each;
+						if (!string.IsNullOrEmpty(existingLine.MainFrameStatus))//If this hasn't been sent to the mainframe yet, then it's still an add, not a change
+						{
+							existingLine.ChangeOrderStatus = "changed";
+						}
                     }
                 }
                 else
                 { // new line
-					existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, ChangeOrderStatus = "added" });
+					existingOrder.Items.Add(new OrderLine() { ItemNumber = newLine.ItemNumber, Quantity = newLine.Quantity, Each = newLine.Each,  ChangeOrderStatus = "added" });
                 }
             }
             // handle deletes
