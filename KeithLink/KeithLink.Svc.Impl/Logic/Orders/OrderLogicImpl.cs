@@ -256,10 +256,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 { // compare and update if necessary
                     if (existingLine.Quantity != newLine.Quantity || existingLine.Each != newLine.Each)
                     {
+						existingLine.Quantity = newLine.Quantity;
+						existingLine.Each = newLine.Each;
 						if (!string.IsNullOrEmpty(existingLine.MainFrameStatus))//If this hasn't been sent to the mainframe yet, then it's still an add, not a change
 						{
-							existingLine.Quantity = newLine.Quantity;
-							existingLine.Each = newLine.Each;
 							existingLine.ChangeOrderStatus = "changed";
 						}
                     }
