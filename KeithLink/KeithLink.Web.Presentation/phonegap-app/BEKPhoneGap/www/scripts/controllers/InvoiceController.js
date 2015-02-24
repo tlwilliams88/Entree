@@ -20,7 +20,6 @@ angular.module('bekApp')
 
   $scope.datepickerOptions = {
     minDate: new Date(),
-    maxDate: '2015-06-22',
     options: {
       dateFormat: 'yyyy-MM-dd',
       showWeeks: false
@@ -81,8 +80,8 @@ angular.module('bekApp')
     $scope.hasPayableInvoices = data.haspayableinvoices;
     $scope.totalAmountDue = data.totaldue;
 
-    // determine which invoices are payable
     data.pagedresults.results.forEach(function(invoice) {
+      // determine which invoices are payable
       if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
         invoice.userCanPayInvoice = true;
         invoice.paymentAmount = invoice.pendingtransaction.amount;
@@ -90,6 +89,10 @@ angular.module('bekApp')
       } else if (invoice.ispayable) {
         invoice.userCanPayInvoice = true;
       }
+
+      // calculate max payment date
+      var date = moment(invoice.duedate).add(2, 'd');
+      invoice.maxPaymentDate = date.format('YYYY-MM-DD');
     });
   }
   function appendInvoices(data) {
@@ -272,7 +275,7 @@ angular.module('bekApp')
     return total;
   };
 
-  $scope.getInvoicesSelectedInvoices = function() {
+  $scope.getSelectedInvoices = function() {
     return $filter('filter')($scope.invoices, {isSelected: true});
   };
 
@@ -280,7 +283,7 @@ angular.module('bekApp')
   $scope.payInvoices = function () {
     if (!processingPayInvoices) {
       processingPayInvoices = true;
-      var payments = $scope.getInvoicesSelectedInvoices();
+      var payments = $scope.getSelectedInvoices();
       InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
         $state.go('menu.transaction');
       }).finally(function () {
