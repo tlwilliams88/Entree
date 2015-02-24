@@ -317,7 +317,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         </tr>
         <tr ng-if="hasCasePrice(item)" ng-show="canSeePrices">
           <td>Price</td>
-          <td>{{::item.caseprice}}</td>
+          <td>{{item.each ? item.packageprice : item.caseprice}}</td>
         </tr>
         <tr ng-if="hasPackagePrice(item)">
           <td>Each</td>
