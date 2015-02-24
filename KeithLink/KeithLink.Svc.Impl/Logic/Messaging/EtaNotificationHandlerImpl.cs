@@ -92,7 +92,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 
             foreach (var order in orders)
             {
-                orderHistoryRepository.Update(order);
+                try
+                {
+                    orderHistoryRepository.Update(order);
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepository.WriteErrorLog("Error saving ETA notification for : " + order.InvoiceNumber + ".  " + ex.Message + ".  " + ex.StackTrace);
+                } 
             }
 
             unitOfWork.SaveChanges();
