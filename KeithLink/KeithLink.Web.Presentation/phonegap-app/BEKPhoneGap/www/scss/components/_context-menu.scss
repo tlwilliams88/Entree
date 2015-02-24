@@ -2,17 +2,23 @@
   display: inline-block;
 }
 
+.context-menu__in-list {
+  position: relative;
+  .context-menu {
+    right: 0;
+  }
+}
 .context-menu {
   display: none;
+  // border-radius: 5px;
+  // position: fixed;
+  z-index: 2;
+  font-family: 'Open Sans', sans-serif;
+  position: absolute;
 
   &.open {
     display: block;
   }
-
-  // border-radius: 5px;
-  position: fixed;
-  z-index: 2;
-  font-family: 'Open Sans', sans-serif;
   
   .btn-group-vertical {
     box-shadow: 0px 0px 15px $color-border;

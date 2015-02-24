@@ -115,16 +115,16 @@ angular.module('bekApp')
           return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 
         });
 
-        return CartService.updateCart(updatedCart).then(function() {
+        return CartService.updateCart(updatedCart).then(function(savedCart) {
           $scope.currentCart.isRenaming = false;
           $scope.sortBy = null;
           $scope.sortOrder = false;
-          $scope.currentCart = updatedCart;
+          $scope.currentCart = savedCart;
           $scope.cartForm.$setPristine();
-          $scope.displayMessage('success', 'Successfully saved cart ' + cart.name);
-          return updatedCart.id;
+          $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
+          return savedCart.id;
         }, function() {
-          $scope.displayMessage('error', 'Error saving cart ' + cart.name);
+          $scope.displayMessage('error', 'Error saving cart ' + savedCart.name);
         }).finally(function() {
           processingSaveCart = false;
         });
@@ -139,7 +139,7 @@ angular.module('bekApp')
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
-            $state.go('menu.orderitems', { orderNumber: data.ordernumber });
+            $state.go('menu.orderitems', { invoiceNumber: data.ordernumber });
             $scope.displayMessage('success', 'Successfully submitted order.');
           }, function(error) {
             $scope.displayMessage('error', 'Error submitting order.');
@@ -203,7 +203,10 @@ angular.module('bekApp')
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
           $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+          $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
+        }, function(error) {
+          $scope.displayMessage('error', 'Error updating change order ' + order.invoicenumber + '.');
         }).finally(function() {
           processingSaveChangeOrder = false;
         });
@@ -217,15 +220,9 @@ angular.module('bekApp')
 
         $scope.saveChangeOrder(order)
           .then(OrderService.resubmitOrder)
-          .then(function(orderNumber) {
-            // update changeOrders object
-            angular.forEach($scope.changeOrders, function(changeOrder) {
-              if (changeOrder.ordernumber === $scope.currentCart.ordernumber) {
-                changeOrder.ordernumber = orderNumber;
-              }
-            });
-            $scope.currentCart.ordernumber = orderNumber;
+          .then(function(invoiceNumber) {
             $scope.displayMessage('success', 'Successfully submitted change order.');
+            $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
           }, function(error) {
             $scope.displayMessage('error', 'Error re-submitting order.');
           }).finally(function() {
