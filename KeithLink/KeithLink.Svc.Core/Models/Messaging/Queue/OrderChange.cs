@@ -24,5 +24,8 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
 
         [DataMember(Name = "items")]
         public List<OrderLineChange> Items { get; set; }
+
+		[DataMember(Name = "specialinstructions")]
+		public string SpecialInstructions { get; set; }
     }
 }
