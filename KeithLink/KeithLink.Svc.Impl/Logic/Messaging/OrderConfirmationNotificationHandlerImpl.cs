@@ -57,7 +57,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private Message GetEmailMessageForNotification(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
         { // TODO: plugin message templates so some of this text can come from the database
             string statusString = String.IsNullOrEmpty(notification.OrderChange.OriginalStatus)
-                ? "Order confirmed with status: " + notification.OrderChange.CurrentStatus
+                ? notification.OrderChange.CurrentStatus.Equals("rejected", StringComparison.CurrentCultureIgnoreCase) ? "Order Rejected: " + notification.OrderChange.SpecialInstructions :  "Order confirmed with status: " + notification.OrderChange.CurrentStatus
                 : "Order updated from status: " + notification.OrderChange.OriginalStatus + " to " + notification.OrderChange.CurrentStatus;
 
             string orderLineChanges = string.Empty;
@@ -72,7 +72,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 originalOrderInfo += line.ItemNumber + ", " + line.ItemDescription + " (" + line.QuantityOrdered + ")" + System.Environment.NewLine;
 
             Message message = new Message();
-            message.MessageSubject = "BEK: Order Confirmation for " + notification.CustomerNumber + " (" + notification.OrderChange.OrderName + ")";
+
+			if (!string.IsNullOrEmpty(notification.OrderChange.CurrentStatus) && notification.OrderChange.CurrentStatus.Equals("rejected", StringComparison.CurrentCultureIgnoreCase))
+				message.MessageSubject = "BEK: Order Rejected for " + notification.CustomerNumber + " (" + notification.OrderChange.OrderName + ")";
+			else
+				message.MessageSubject = "BEK: Order Confirmation for " + notification.CustomerNumber + " (" + notification.OrderChange.OrderName + ")";
+
             message.MessageBody = statusString + System.Environment.NewLine + orderLineChanges + System.Environment.NewLine + originalOrderInfo;
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerNumber = customer.CustomerNumber;

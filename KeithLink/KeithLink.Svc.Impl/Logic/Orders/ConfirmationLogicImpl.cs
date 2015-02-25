@@ -98,14 +98,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region methods/functions
-        private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, string originalStatus) {
+        private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, string originalStatus, string specialInstructions) {
             Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
             orderChange.OrderName = (string)po["DisplayName"];
             orderChange.OriginalStatus = originalStatus;
             orderChange.CurrentStatus = po.Status;
             orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
             orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
-
+			orderChange.SpecialInstructions = specialInstructions;
+			
             foreach (LineItem origItem in origLineItems) {
                 LineItem newItem = currLineItems.Where(i => i.ProductId == origItem.ProductId).FirstOrDefault();
                 if (newItem != null) {
@@ -282,7 +283,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 string originalStatus = po.Status;
 
                 if (confirmation.Header.ConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE, StringComparison.InvariantCultureIgnoreCase)) {
-                    // do not update the line items if the order is rejected
+                    // Update line item status' to rejected
+					foreach (var item in currLineItems)
+						item["MainFrameStatus"] = "Rejected";
                 } else {
                     SetCsLineInfo(currLineItems, confirmation);
                 }
@@ -292,12 +295,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 po.Save();
 
                 // use internal messaging logic to put order up message on the queue
-                Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus);
+                Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions);
                 if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0) {
                     Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
                     orderConfNotification.OrderChange = orderChange;
                     orderConfNotification.CustomerNumber = (string)po["CustomerId"];
                     orderConfNotification.BranchId = (string)po["BranchId"];
+					
                     genericeQueueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
                         Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
                         Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
@@ -355,7 +359,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
 
             if (confirmation.Header.ConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE, StringComparison.InvariantCultureIgnoreCase)){
-                po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
+                //po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
             } else {
                 po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
             }
