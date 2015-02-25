@@ -556,7 +556,7 @@ namespace KeithLink.Svc.Impl.ETL
             data.CatchWeight = row.GetString("HowPrice") == "3";
 			data.IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId"));
 			data.ProprietaryCustomers = BuildPropritaryCustomerList(row.GetString("ItemId"), proprietaryItems);
-            data.AverageWeight = (row.GetInt("FPNetWt") > 0 ? row.GetInt("FPNetWt") / 100 : (row.GetInt("GrossWt") > 0 ? row.GetInt("GrossWt") / 100 : 0));
+            data.AverageWeight = (row.GetDouble("FPNetWt") > 0 ? row.GetDouble("FPNetWt") / 100 : (row.GetDouble("GrossWt") > 0 ? row.GetDouble("GrossWt") / 100 : 0));
             data.Nutritional = nutInfo;
 
             RootData index = new RootData();

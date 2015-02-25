@@ -65,19 +65,19 @@
           Item
           <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
-        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='notes';sortOrder=!sortOrder;">
-          <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
-        </th>
-        <th class="hidden-xs hidden-sm"></th>
-        <th class="hidden-mobile-visible-print">
-          Pack/Size
+        <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder;">
+          <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
           <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
-        <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder;">
-          <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
+        <th class="hidden-mobile-visible-print">
+          Pack/Size
         </th>
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='notes';sortOrder=!sortOrder;">
+          <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
+        </th>
+        <th class="hidden-xs hidden-sm"></th>
         <th class="hidden-mobile-visible-print"></th>
         <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
           #
@@ -113,17 +113,17 @@
       <!-- Filter Row -->
       <tr class="filter-row" ng-show="showFilter">
         <td></td>
+        <td class="input-col">
+          <input type="text" placeholder="Filter..." ng-model="filterFields.name">
+        </td>
+        <td class="hidden-mobile-visible-print input-col">
+          <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
+        </td>
+        <td class="hidden-mobile-visible-print"></td>
         <td class="hidden-mobile-visible-print input-col">
           <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
         </td>
         <td class="hidden-xs hidden-sm"></td>
-        <td class="hidden-mobile-visible-print"></td>
-        <td class="hidden-mobile-visible-print input-col">
-          <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
-        </td>
-        <td class="input-col">
-          <input type="text" placeholder="Filter..." ng-model="filterFields.name">
-        </td>
         <td class="hidden-mobile-visible-print"></td>
         <td class="hidden-mobile-visible-print"></td>
         <td class="hidden-mobile-visible-print"></td>
@@ -141,13 +141,13 @@
         <td ng-class="{ 'red-border': item.substituteditemnumber }">
           <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
         </td>
+        <td>{{item.name}}</td>
+        <td class="hidden-mobile-visible-print">{{item.brand}}</td>
+        <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
         <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
         <td class="hidden-xs hidden-sm">
           <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
         </td>
-        <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
-        <td class="hidden-mobile-visible-print">{{item.brand}}</td>
-        <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print" item-icons></td>
         <td class="hidden-mobile-visible-print">{{item.quantity}}</td>
         <td class="hidden-mobile-visible-print">{{item.quantityordered}}</td>

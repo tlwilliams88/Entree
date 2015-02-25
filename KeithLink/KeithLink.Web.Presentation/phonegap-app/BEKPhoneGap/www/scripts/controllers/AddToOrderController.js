@@ -174,9 +174,9 @@ angular.module('bekApp')
         OrderService.updateOrder(order).then(function(cart) {
           $scope.selectedCart = cart;
           $scope.addToOrderForm.$setPristine();
-          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to Order # ' + order.ordernumber + '.');
+          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to Order # ' + order.invoicenumber + '.');
         }, function() {
-          $scope.displayMessage('error', 'Error adding items to Order # ' + order.ordernumber + '.');
+          $scope.displayMessage('error', 'Error adding items to Order # ' + order.invoicenumber + '.');
         }).finally(function() {
           processingSaveChangeOrder = false;
         });

@@ -277,7 +277,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                 newOrderFile.Details.Add(detail);
             }
-			
+
+			_log.WriteInformationLog(string.Format("Writing order to queue: {0}", JsonConvert.SerializeObject(newOrderFile)));
+
 			_orderQueue.PublishToQueue(JsonConvert.SerializeObject(newOrderFile), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Normal));
       
         }

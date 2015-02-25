@@ -261,7 +261,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.orderitems', {
-      url: '/order/:orderNumber/',
+      url: '/order/:invoiceNumber/',
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
       data: {
@@ -269,7 +269,7 @@ angular.module('bekApp')
       },
       resolve: {
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
-          return OrderService.getOrderDetails($stateParams.orderNumber);
+          return OrderService.getOrderDetails($stateParams.invoiceNumber);
         }]
       }
     })

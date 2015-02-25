@@ -270,6 +270,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     Order returnOrder = null;
 
                     returnOrder = h.ToOrder();
+
                     if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
                     {
                         var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
@@ -290,27 +291,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                                 }
                             }
                         }
-
-                        if (returnOrder.ActualDeliveryTime != null)
-                        {
-                            returnOrder.Status = "Delivered";
-                        }
-
-                        if (returnOrder != null)
-                        {
-                            LookupProductDetails(h.BranchId, returnOrder);
-                            if (returnOrder.Items != null && returnOrder.Items.Count > 0)
-                            {
-                                returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
-                            }
-                            else
-                            {
-                                returnOrder.OrderTotal = 0;
-                            }
-
-                            customerOrders.Add(returnOrder);
-                        }
                     }
+
+                    if (returnOrder.ActualDeliveryTime != null)
+                    {
+                        returnOrder.Status = "Delivered";
+                    }
+                    
+                    LookupProductDetails(h.BranchId, returnOrder);
+                    if(h.OrderSystem.Equals(OrderSource.Entree.ToShortString()))
+                    {
+                        returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+                    }
+
+                    customerOrders.Add(returnOrder);
                 }
                 catch (Exception ex)
                 {
