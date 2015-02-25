@@ -18,12 +18,39 @@ angular.module('bekApp')
     replace: true,
     transclude: true,
     link: function($scope, $element, $attrs) {
+
+      $scope.mouseenterEvent = function(e) {
+        var doc = $document[0].documentElement;
+        var element = angular.element(e.target).siblings('.dropdown-menu');
+        var elementHeight = element.height();
+
+        var totalHeight = event.clientY + elementHeight;
+
+        // check that the bottom of the element is not off the screen and that the element is smaller than the height of the screen 
+        if (totalHeight > doc.clientHeight && elementHeight < doc.clientHeight) {
+          element.find('div.btn-group-vertical').css('top', -1 * elementHeight + 37);
+        } else {
+          element.find('div.btn-group-vertical').removeAttr('style');
+        }
+
+      };
+
       var opened = false;
 
       function openOnDesktop(event, menuElement) {
         menuElement.addClass('open');
 
-        // var doc = $document[0].documentElement;
+        var doc = $document[0].documentElement;
+
+        var elementHeight = menuElement[0].scrollHeight;
+        var totalHeight = event.clientY + elementHeight;
+
+        if (totalHeight > doc.clientHeight) {
+          // add bottom 0
+          menuElement.css('bottom', '0');
+        } else {
+          menuElement.removeAttr('style');
+        }
         
         // // doc offset on screen
         // var docLeft = (window.pageXOffset || doc.scrollLeft) -

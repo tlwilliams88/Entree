@@ -355,6 +355,10 @@
               <th class="hidden-mobile-visible-print">
                 Pack/Size
               </th>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
+                <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
+              </th>
+              <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print"></th>
               <th class="hidden-mobile-visible-print">
                 # in Cart
@@ -366,10 +370,6 @@
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeLabels" ng-click="sortOrder=!sortOrder;sortList('label',sortOrder)">
                 <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortOrder=!sortOrder;sortList('notes',sortOrder)">
-                <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
-              </th>
-              <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="selectedList.permissions.canSeeParlevel" ng-click="sortOrder=!sortOrder;sortList('parlevel',sortOrder)">
                 <span>{{selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sortOrder" sortby="sortBy"></span></span>
               </th>
@@ -418,6 +418,12 @@
               <td class="hidden-mobile-visible-print bek-drag-handle">
                 {{item.packsize}}
               </td>
+              <!-- Notes -->
+              <td class="hidden-mobile-visible-print notes-col hidden-drag">
+                {{item.notes}}
+              </td>
+              <td class="hidden-sm hidden-xs hidden-drag">
+                <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
               <td class="hidden-mobile-visible-print" item-icons></td>
               <td class="text-center hidden-drag hidden-mobile-visible-print bek-drag-handle">
                 {{item.quantityincart}}
@@ -455,12 +461,6 @@
               <td class="visible-print" ng-show="selectedList.permissions.canSeeLabels">
                 {{item.label}}
               </td>
-              <!-- Notes -->
-              <td class="hidden-mobile-visible-print notes-col hidden-drag">
-                {{item.notes}}
-              </td>
-              <td class="hidden-sm hidden-xs hidden-drag">
-                <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
               </td>
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel">

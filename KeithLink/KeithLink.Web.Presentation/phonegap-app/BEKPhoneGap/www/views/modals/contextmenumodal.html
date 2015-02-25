@@ -27,7 +27,7 @@
   <div ng-if="changeOrders.length > 0 && item.nonstock !== 'Y'">
     <h3>Change Orders</h3>
     <ul class="list-group">
-      <li ng-repeat="order in changeOrders" ng-click="addItemToChangeOrder(order, item)" class="hand list-group-item"># {{order.ordernumber}}</li>
+      <li ng-repeat="order in changeOrders" ng-click="addItemToChangeOrder(order, item)" class="hand list-group-item"># {{order.invoicenumber}}</li>
     </ul>
   </div>
 

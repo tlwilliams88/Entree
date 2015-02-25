@@ -78,15 +78,16 @@ angular.module('bekApp')
        $scope.addItemToChangeOrder = function(order, item) {
         var orderItem = {
           quantity: 1,
-          itemnumber: item.itemnumber
+          itemnumber: item.itemnumber,
+          each: item.each
         };
         order.items.push(orderItem);
 
         OrderService.updateOrder(order).then(function(data) {
           $scope.$broadcast('closeContextMenu');
-          $scope.displayMessage('success', 'Successfully added item to Order #' + order.ordernumber + '.');
+          $scope.displayMessage('success', 'Successfully added item to Order #' + order.invoicenumber + '.');
         }, function() {
-          $scope.displayMessage('error', 'Error adding item to Order #' + order.ordernumber + '.');
+          $scope.displayMessage('error', 'Error adding item to Order #' + order.invoicenumber + '.');
         });
       };
 
