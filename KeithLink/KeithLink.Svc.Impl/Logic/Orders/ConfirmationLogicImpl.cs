@@ -283,7 +283,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 string originalStatus = po.Status;
 
                 if (confirmation.Header.ConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE, StringComparison.InvariantCultureIgnoreCase)) {
-                    // do not update the line items if the order is rejected
+                    // Update line item status' to rejected
+					foreach (var item in currLineItems)
+						item["MainFrameStatus"] = "Rejected";
                 } else {
                     SetCsLineInfo(currLineItems, confirmation);
                 }
@@ -357,7 +359,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
 
             if (confirmation.Header.ConfirmationStatus.Equals(Constants.CONFIRMATION_HEADER_REJECTED_CODE, StringComparison.InvariantCultureIgnoreCase)){
-                po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
+                //po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
             } else {
                 po[Constants.CS_PURCHASE_ORDER_MASTER_NUMBER] = confirmation.Header.InvoiceNumber; // read this from the confirmation file
             }

@@ -147,7 +147,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             lineItem.LineNumber = value.LineNumber;
             lineItem.ItemNumber = value.ItemNumber;
             lineItem.Quantity = (short)value.ShippedQuantity;
-			//lineItem.Price = (double)value.SellPrice;
+			lineItem.Price = (double)value.SellPrice;
             lineItem.QuantityOrdered = value.OrderQuantity;
             lineItem.QantityShipped = value.ShippedQuantity;
             if (!string.IsNullOrWhiteSpace(value.ReplacedOriginalItemNumber)) {

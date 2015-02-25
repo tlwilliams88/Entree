@@ -850,6 +850,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                     .GroupBy(x => x.UserId)
                                     .Select(grp => grp.First())
                                     .ToList();
+
+			foreach (var up in acct.CustomerUsers)
+				up.RoleName = GetUserRole(up.EmailAddress); 
+
             return acct;
         }
 

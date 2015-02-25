@@ -93,14 +93,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					if (po != null)
 					{
 						returnOrder.Status = po.Status;
-						var poOrder = po.ToOrder();
-						foreach (var item in returnOrder.Items)
-						{
-							//Get the unit price from the PO
-							var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-							if (poLine != null)
-								item.Price = poLine.Price;
-						}
 					}
 
 					if (myOrder.ActualDeliveryTime != null)
