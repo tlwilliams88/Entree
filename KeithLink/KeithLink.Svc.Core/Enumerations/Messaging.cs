@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Core.Enumerations.Messaging
         [Description("Ben E. Keith Has News For Me")]
 		[EnumMember]
 		HasNews = 8,
-		//[Description("Mail")] - no need for description; no preference for this type
+		[Description("Mail")]
 		[EnumMember]
 		Mail = 16,
         //[Description("ETA")] - no need for description; no preference for this type
