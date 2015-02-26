@@ -23,14 +23,19 @@ namespace KeithLink.Svc.Core.Models.Orders
             {
                 if (this.CatchWeight)
                 {
-                    if (this.Each) //package catchweight
-                    {
-                        return ((this.AverageWeight / Int32.Parse(this.Pack)) * this.QantityShipped) * this.Price;
-                    }
-                    else //case catchweight
-                    {
-                        return (this.AverageWeight * this.QantityShipped) * this.Price;
-                    }
+					if (!string.IsNullOrEmpty(this.OrderStatus) && this.OrderStatus.Equals("i", StringComparison.CurrentCultureIgnoreCase) && this.TotalShippedWeight > 0)
+						return (double)this.TotalShippedWeight * this.Price;
+					else
+					{
+						if (this.Each) //package catchweight
+						{
+							return ((this.AverageWeight / Int32.Parse(this.Pack)) * this.QantityShipped) * this.Price;
+						}
+						else //case catchweight
+						{
+							return (this.AverageWeight * this.QantityShipped) * this.Price;
+						}
+					}
                 }
                 else
                 {
@@ -104,6 +109,12 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "substituteditemnumber")]
         public string SubstitutedItemNumber { get; set; }
+
+		[DataMember(Name = "totalshippedqeight")]
+		public decimal TotalShippedWeight { get; set; }
+
+		[DataMember(Name = "orderstatus")]
+		public string OrderStatus { get; set; }
 
 		public List<ExportModelConfiguration> DefaultExportConfiguration()
 		{

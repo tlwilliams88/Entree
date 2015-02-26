@@ -149,7 +149,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 				System.Collections.Concurrent.BlockingCollection<OrderLine> lineItems = new System.Collections.Concurrent.BlockingCollection<OrderLine>();
 
                 Parallel.ForEach(value.OrderDetails, d => {
-                    lineItems.Add(d.ToOrderLine());
+                    lineItems.Add(d.ToOrderLine(value.OrderStatus));
                 });
 
 				retVal.Items = lineItems.OrderBy(i => i.LineNumber).ToList();
