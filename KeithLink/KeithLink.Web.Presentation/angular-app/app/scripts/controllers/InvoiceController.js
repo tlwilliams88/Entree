@@ -74,13 +74,8 @@ angular.module('bekApp')
   }];
   $scope.selectedFilterView = $scope.filterViews[0];
 
-  function setInvoices(data) {
-    $scope.invoices = data.pagedresults.results;
-    $scope.totalInvoices = data.pagedresults.totalResults;
-    $scope.hasPayableInvoices = data.haspayableinvoices;
-    $scope.totalAmountDue = data.totaldue;
-
-    data.pagedresults.results.forEach(function(invoice) {
+  function calculateInvoiceFields(invoices) {
+    invoices.forEach(function(invoice) {
       // determine which invoices are payable
       if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
         invoice.userCanPayInvoice = true;
@@ -95,8 +90,18 @@ angular.module('bekApp')
       invoice.maxPaymentDate = date.format('YYYY-MM-DD');
     });
   }
+
+  function setInvoices(data) {
+    $scope.invoices = data.pagedresults.results;
+    $scope.totalInvoices = data.pagedresults.totalResults;
+    $scope.hasPayableInvoices = data.haspayableinvoices;
+    $scope.totalAmountDue = data.totaldue;
+
+    calculateInvoiceFields(data.pagedresults.results);
+  }
   function appendInvoices(data) {
     $scope.invoices = $scope.invoices.concat(data.pagedresults.results);
+    calculateInvoiceFields(data.pagedresults.results);
   }
   function startLoading() {
     $scope.loadingResults = true;

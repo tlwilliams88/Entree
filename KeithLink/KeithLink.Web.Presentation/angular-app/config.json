@@ -1,0 +1,59 @@
+{
+  "name": "Ben E. Keith Entree",
+  "homepage": "",
+  "author": {
+    "name": "Credera",
+    "email": "",
+    "href": ""
+  },
+  "version": "0.0.1",
+  "environment": {
+    "debug": {
+      "name": "debug",
+      "apiKey": "web_dev_v1",
+      "apiEndpoint": "http://localhost:60606",
+      "loggingEnabled": true,
+      "username": "sabroussard@somecompany.com",
+      "password": "L1ttleStev1e",
+      "googleAnalytics": "UA-58495462-2"
+    },
+    "dev": {
+      "name": "dev",
+      "apiKey": "web_dev_v1",
+      "apiEndpoint": "https://shopapidev.benekeith.com",
+      "loggingEnabled": true,
+      "username": "sabroussard@somecompany.com",
+      "password": "L1ttleStev1e",
+      "googleAnalytics": "UA-58495462-2"
+    },
+    "test": {
+      "name": "test",
+      "apiKey": "web_test_v1",
+      "apiEndpoint": "https://shopqa.benekeith.com/api",
+      "loggingEnabled": true,
+      "googleAnalytics": "UA-58495462-2"
+    },
+    "prod": {
+      "name": "prod",
+      "apiKey": "web_prod_v1",
+      "apiEndpoint": "https://shop.benekeith.com/api",
+      "loggingEnabled": false,
+      "googleAnalytics": "UA-58495462-1"
+    },
+    "stage": {
+      "name": "stage",
+      "apiKey": "web_stage_v1",
+      "apiEndpoint": "https://shopstaging.benekeith.com/api",
+      "loggingEnabled": false,
+      "googleAnalytics": "UA-58495303-1"
+    }
+  },
+  "build": {
+    "angular": {
+      "description": "Ben E Keith eCommerce Angular Web App"
+    },
+    "phonegap": {
+      "description": "Phone Gap mobile project"
+    }
+  }
+}

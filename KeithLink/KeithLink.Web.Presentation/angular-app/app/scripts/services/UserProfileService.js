@@ -29,7 +29,7 @@ angular.module('bekApp')
             LocalStorage.setSelectedCustomerInfo(userSelectedContext);
 
           } else {
-            LocalStorage.setSelectedBranchInfo(profile.branchid);
+            LocalStorage.setSelectedBranchInfo(profile.branchid || 'FDF'); // default to DFW branch
           }
 
           return profile;
@@ -92,11 +92,6 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
           return successResponse.userProfiles;
         });
-      },
-
-      getUsersForGroup: function(accountId) {
-        var promise = $http.get('/profile/account/' + accountId + '/users');
-        return UtilityService.resolvePromise(promise);
       },
 
       createUser: function(userProfile) {

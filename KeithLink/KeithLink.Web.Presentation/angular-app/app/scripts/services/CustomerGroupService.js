@@ -26,7 +26,7 @@ angular.module('bekApp')
 
       var promise = $http.get('/profile/accounts', config);
       return UtilityService.resolvePromise(promise).then(function(successResponse) {
-        return successResponse.accounts[0]; // a user can only be admin on one account
+        return successResponse.accounts[0]; // a user can only be on one account
       });
     },
 
@@ -41,6 +41,11 @@ angular.module('bekApp')
       return $http.post('/profile/accounts', params).then(function(response) {
         return response.data;
       });
+    },
+
+    getUsersForGroup: function(accountId) {
+      var promise = $http.get('/profile/account/' + accountId + '/users');
+      return UtilityService.resolvePromise(promise);
     },
 
     // searchGroups: function(searchTerm) {
