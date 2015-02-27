@@ -199,7 +199,7 @@ angular.module('bekApp')
           $scope.displayMessage('error', 'Error with scan product request.');
         });
     }, function (error) {
-      console.log('Scanning failed: ' + error);
+      $log.debug('Scanning failed: ' + error);
     });
   };
 
