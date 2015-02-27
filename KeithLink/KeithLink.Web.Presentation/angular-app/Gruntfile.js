@@ -22,11 +22,14 @@ module.exports = function (grunt) {
     dev: '../app',
   };
 
+  var config = grunt.file.readJSON('config.json');
+
   // Define the configuration for all the tasks
   grunt.initConfig({
 
       // Project settings
       yeoman: appConfig,
+      config: config,
 
       // Watches files for changes and runs tasks based on the changed files
       watch: {
@@ -108,7 +111,7 @@ module.exports = function (grunt) {
           all: {
               src: [
                 'Gruntfile.js',
-                '<%= yeoman.app %>/scripts/{,*/}*.js'
+                '<%= yeoman.app %>/scripts/**/*.js'
               ]
           },
           test: {
@@ -447,7 +450,7 @@ module.exports = function (grunt) {
           // Options for all targets
           options: {
               space: '  ',
-              wrap: '"use strict";\n\n {%= __ngModule %}',
+              wrap: '\'use strict\';\n\n {%= __ngModule %}',
               name: 'configenv',
               dest: '<%= yeoman.app %>/scripts/configenv.js'
           },
@@ -455,53 +458,52 @@ module.exports = function (grunt) {
           debug: {
               constants: {
                   ENV: {
-                      name: 'debug',
-                      apiKey: 'web_dev_v1',
-                      apiEndpoint: 'http://localhost:60606',
-                      //apiEndpoint: 'http://localhost:8080/api',
-                      loggingEnabled: true,
-                      username: 'sabroussard@somecompany.com',
-                      password: 'L1ttleStev1e',
-                      googleAnalytics: 'UA-58495462-2',
-                      mobileApp: false
+                    name: '<%= config.environment.debug.name %>',
+                    apiKey: '<%= config.environment.debug.apiKey %>',
+                    apiEndpoint: '<%= config.environment.debug.apiEndpoint %>',
+                    loggingEnabled: config.environment.debug.loggingEnabled,
+                    googleAnalytics: '<%= config.environment.debug.googleAnalytics %>',
+                    username: 'sabroussard@somecompany.com',
+                    password: 'L1ttleStev1e',
+                    mobileApp: false
                   }
               }
           },
           dev: {
               constants: {
                   ENV: {
-                      name: 'dev',
-                      apiKey: 'web_dev_v1',
-                      apiEndpoint: 'https://shopapidev.benekeith.com',
-                      loggingEnabled: true,
-                      username: 'sabroussard@somecompany.com',
-                      password: 'L1ttleStev1e',
-                      googleAnalytics: 'UA-58495462-2',
-                      mobileApp: false
+                    name: '<%= config.environment.dev.name %>',
+                    apiKey: '<%= config.environment.dev.apiKey %>',
+                    apiEndpoint: '<%= config.environment.dev.apiEndpoint %>',
+                    loggingEnabled: config.environment.dev.loggingEnabled,
+                    googleAnalytics: '<%= config.environment.dev.googleAnalytics %>',
+                    username: 'sabroussard@somecompany.com',
+                    password: 'L1ttleStev1e',
+                    mobileApp: false
                   }
               }
           },
           test: {
               constants: {
                   ENV: {
-                      name: 'test',
-                      apiKey: 'web_test_v1',
-                      apiEndpoint: 'https://shopqa.benekeith.com/api',
-                      loggingEnabled: true,
-                      googleAnalytics: 'UA-58495462-2',
-                      mobileApp: false
+                    name: '<%= config.environment.test.name %>',
+                    apiKey: '<%= config.environment.test.apiKey %>',
+                    apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
+                    loggingEnabled: config.environment.test.loggingEnabled,
+                    googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
+                    mobileApp: false
                   }
               }
           },
           prod: {
               constants: {
                   ENV: {
-                      name: 'prod',
-                      apiKey: 'web_prod_v1',
-                      apiEndpoint: 'https://shop.benekeith.com/api',
-                      loggingEnabled: false,
-                      googleAnalytics: 'UA-58495462-1',
-                      mobileApp: false
+                    name: '<%= config.environment.prod.name %>',
+                    apiKey: '<%= config.environment.prod.apiKey %>',
+                    apiEndpoint: '<%= config.environment.prod.apiEndpoint %>',
+                    loggingEnabled: config.environment.prod.loggingEnabled,
+                    googleAnalytics: '<%= config.environment.prod.googleAnalytics %>',
+                    mobileApp: false
                   }
               }
           },

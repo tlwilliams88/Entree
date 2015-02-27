@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 
 angular.module('bekApp')
   .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'LocalStorage', 'CustomerService', '$state', 'PagingModel',
@@ -233,12 +233,12 @@ angular.module('bekApp')
   };
 
   $scope.toggleSelect = function (invoice) {
-    if (invoice.paymentAmount && invoice.paymentAmount != 0) { 
+    if (invoice.paymentAmount && invoice.paymentAmount != 0) { // jshint ignore:line
       invoice.isSelected = true;
     } else {
       invoice.isSelected = false;
     }
-    if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) {
+    if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) { // jshint ignore:line
       invoice.isSelected = false;
     }
   };

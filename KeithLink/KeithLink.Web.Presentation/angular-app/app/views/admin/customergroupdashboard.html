@@ -185,21 +185,23 @@
   </div>
 </div>
 <h3>Broadcast a Message</h3>
-<div class="row">
-  <div class="col-md-6">
-    <label for="subjectHeader" class="control-label">Subject Header</label>
-    <input type="text" id="subjectHeader" ng-model="broadcast.subject" class="form-control" placeholder="Enter Subject Header Here">
-    <br>
-    <label for="bodyContent" class="control-label">Body Content</label>
-    <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
-    <button class="btn btn-primary btn-lg top-buffer" ng-click="sendMessage(broadcast, customerRecipients, userRecipients)">Send Message</button>
+<form name="broadcastMessageForm">
+  <div class="row">
+    <div class="col-md-6">
+      <label for="subjectHeader" class="control-label">Subject Header <span class="text-red">*</span></label>
+      <input type="text" id="subjectHeader" required ng-model="broadcast.subject" class="form-control" placeholder="Enter Subject Header Here">
+      <br>
+      <label for="bodyContent" class="control-label">Body Content</label>
+      <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
+      <button class="btn btn-primary btn-lg top-buffer" ng-disabled="broadcastMessageForm.$invalid || (customerRecipients.length === 0 && userRecipients.length === 0)" ng-click="sendMessage(broadcast, customerRecipients, userRecipients)">Send Message</button>
+    </div>
+    <div class="col-md-6 padding-top-xs padding-top-sm">
+      <label class="control-label">Broadcast Recipients <span class="text-red">*</span> <span style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span></label>
+      <ul class="form-control list-unstyled infiniteScroll" style="min-height: 135px;">
+        <li ng-repeat="recipient in customerRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, customerRecipients)"></span> {{recipient.displayName}} (Customer)</li>
+        <li ng-repeat="recipient in userRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, userRecipients)"></span> {{recipient.displayName}} (User)</li>
+      </ul>
+    </div>
   </div>
-  <div class="col-md-6">
-    <label class="control-label">Broadcast Recipients <span style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span></label>
-    <ul class="form-control list-unstyled infiniteScroll" style="min-height: 135px;">
-      <li ng-repeat="recipient in customerRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, customerRecipients)"></span> {{recipient.displayName}} (Customer)</li>
-      <li ng-repeat="recipient in userRecipients"><span class="hand text-red glyphicon glyphicon-minus" ng-click="removeFromRecipients(recipient.id, userRecipients)"></span> {{recipient.displayName}} (User)</li>
-    </ul>
-  </div>
-</div>
+</form>
 </div>

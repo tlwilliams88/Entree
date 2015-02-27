@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$stateParams', '$state', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService', 'CustomerPagingModel',
+  .controller('CustomerGroupDashboardController', ['$scope', '$log', '$stateParams', '$state', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService', 'CustomerPagingModel',
     function (
-      $scope, // angular
+      $scope, $log, // angular
       $stateParams, $state, // ui router
       UserProfileService, CustomerService, CustomerGroupService, BroadcastService, CustomerPagingModel // custom bek services
     ) {
@@ -104,7 +104,7 @@ angular.module('bekApp')
         //redirects to user profile page
         $state.go('menu.admin.user.edit', { groupId: $scope.customerGroup.id, email: email });
       }, function (errorMessage) {
-        console.log(errorMessage);
+        $log.debug(errorMessage);
         $scope.displayMessage('error', 'An error occurred creating the user: ' + errorMessage);
       }).finally(function() {
         processingCreateUser = false;
@@ -141,7 +141,7 @@ angular.module('bekApp')
     $scope.broadcast = {};
     $scope.customerRecipients = [];
     $scope.userRecipients = [];
-  }
+  };
 
   resetMessageFields();
 
@@ -154,7 +154,7 @@ angular.module('bekApp')
 
   $scope.addUserToRecipients = function (user) {
     var newEntry = {};
-    newEntry.displayName = user.firstname + " " + user.lastname;
+    newEntry.displayName = user.firstname + '   ' + user.lastname;
     newEntry.id = user.userid;
     $scope.userRecipients.push(newEntry);
   };
@@ -164,13 +164,13 @@ angular.module('bekApp')
       if (recipientId === current.id){
         recipientList.splice(index, 1);
       }
-    })
+    });
   };
 
   $scope.sendMessage = function (broadcast, customerRecipients, userRecipients) {
     var payload = {
-      customers: customerRecipients,
-      users: userRecipients,
+      customers: [],
+      users: [],
       message: {
         label: 'Admin Message', // ??
         subject: broadcast.subject,
@@ -178,8 +178,15 @@ angular.module('bekApp')
         mandatory: false // ??
       }
     };
+
+    customerRecipients.forEach(function(customer) {
+      payload.customers.push(customer.id);
+    });
+    userRecipients.forEach(function(user) {
+      payload.users.push(user.id);
+    });
     
-    console.log(payload);
+    // $log.debug(payload);
     BroadcastService.broadcastMessage(payload).then(function (success) {
       $scope.displayMessage('success', 'The message was sent successfully.');
       resetMessageFields(); //reset message inputs

@@ -124,7 +124,7 @@ angular.module('bekApp')
           $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
           return savedCart.id;
         }, function() {
-          $scope.displayMessage('error', 'Error saving cart ' + savedCart.name);
+          $scope.displayMessage('error', 'Error saving cart ' + updatedCart.name);
         }).finally(function() {
           processingSaveCart = false;
         });

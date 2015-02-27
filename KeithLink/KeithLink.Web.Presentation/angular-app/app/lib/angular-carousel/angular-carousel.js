@@ -409,6 +409,7 @@ angular.module('angular-carousel').run(['$templateCache', function($templateCach
                         }
 
                         function swipeStart(coords, event) {
+                            event.stopPropagation();
                             // console.log('swipeStart', coords, event);
                             if (locked || currentSlides.length <= 1) {
                                 return;
