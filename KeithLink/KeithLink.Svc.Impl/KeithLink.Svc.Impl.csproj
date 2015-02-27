@@ -460,6 +460,10 @@
     <Compile Include="Repository\EF\Migrations\201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.Designer.cs">
       <DependentUpon>201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201502262045258_change column widths for DSRs.cs" />
+    <Compile Include="Repository\EF\Migrations\201502262045258_change column widths for DSRs.Designer.cs">
+      <DependentUpon>201502262045258_change column widths for DSRs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -545,6 +549,7 @@
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
+    <Compile Include="Repository\Queue\DemoQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Reports\ReportRepository.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />
@@ -959,6 +964,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.resx">
       <DependentUpon>201502041735040_201502032124119_20150203_change_route_number_maxlength_to_four.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201502262045258_change column widths for DSRs.resx">
+      <DependentUpon>201502262045258_change column widths for DSRs.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
