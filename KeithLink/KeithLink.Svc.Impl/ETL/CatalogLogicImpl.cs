@@ -554,7 +554,8 @@ namespace KeithLink.Svc.Impl.ETL
 			data.NonStock = row.GetString("NonStock");
             data.TempZone = row.GetString("TempZone");
             data.CatchWeight = row.GetString("HowPrice") == "3";
-			data.IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId"));
+			//data.IsProprietary = proprietaryItems.ContainsKey(row.GetString("ItemId"));
+            data.IsProprietary = row.GetString("ItemType").Equals("P") ? true : false;
 			data.ProprietaryCustomers = BuildPropritaryCustomerList(row.GetString("ItemId"), proprietaryItems);
             data.AverageWeight = (row.GetDouble("FPNetWt") > 0 ? row.GetDouble("FPNetWt") / 100 : (row.GetDouble("GrossWt") > 0 ? row.GetDouble("GrossWt") / 100 : 0));
             data.Nutritional = nutInfo;

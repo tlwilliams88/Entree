@@ -141,7 +141,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             return retVal;
         }
 
-        public static OrderLine ToOrderLine(this EF.OrderHistoryDetail value) {
+        public static OrderLine ToOrderLine(this EF.OrderHistoryDetail value, string orderStatus) {
             OrderLine lineItem = new OrderLine();
 
             lineItem.LineNumber = value.LineNumber;
@@ -150,6 +150,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			lineItem.Price = (double)value.SellPrice;
             lineItem.QuantityOrdered = value.OrderQuantity;
             lineItem.QantityShipped = value.ShippedQuantity;
+			lineItem.OrderStatus = orderStatus;
+			lineItem.TotalShippedWeight = value.TotalShippedWeight;
+			
             if (!string.IsNullOrWhiteSpace(value.ReplacedOriginalItemNumber)) {
                 lineItem.SubstitutedItemNumber = value.ReplacedOriginalItemNumber.Trim();
             } else if (!string.IsNullOrWhiteSpace(value.SubbedOriginalItemNumber)) {
