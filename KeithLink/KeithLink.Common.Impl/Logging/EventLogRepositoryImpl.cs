@@ -53,6 +53,7 @@ namespace KeithLink.Common.Impl.Logging
             {
                 ex = ex.InnerException;
 
+				msg.AppendLine(ex.Message);
                 msg.AppendLine("  Inner Stack:");
                 msg.AppendLine(ex.StackTrace);
                 msg.AppendLine();

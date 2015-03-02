@@ -103,7 +103,7 @@ angular.module('bekApp')
     // check if user is already in list of selected users
     $scope.customerGroup.adminusers.forEach(function(user) {
       
-      if (user.emailaddress == emailAddress) {
+      if (user.emailaddress === emailAddress) {
         isDuplicateUser = true;
       }
     });
@@ -148,13 +148,12 @@ angular.module('bekApp')
         $scope.displayMessage('success', 'Successfully created a new customer group.');
         $state.go('menu.admin.customergroupdetails', { groupId: newGroup.id });
       }, function(error) {
-        $log.debug(error);
         $scope.displayMessage('error', 'Error creating new customer group.');
       }).finally(function() {
         processingCreateCustomerGroup = false;
       });
     }
-  };
+  }
 
   var processingSaveCustomerGroup = false;
   function saveCustomerGroup(group) {
@@ -169,7 +168,7 @@ angular.module('bekApp')
         processingSaveCustomerGroup = false;
       });
     }
-  };
+  }
 
   $scope.submitForm = function(group) {
     if ($scope.isNew) {
@@ -177,6 +176,6 @@ angular.module('bekApp')
     } else {
       saveCustomerGroup(group);
     }
-  }
+  };
 
 }]);
