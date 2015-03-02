@@ -11,11 +11,13 @@ angular.module('bekApp')
   .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
     function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
 
+    // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
     if ($stateParams.cartId !== basketId.toString()) {
       $state.go('menu.cart.items', {cartId: basketId, renameCart: null}, {location:'replace', inherit:false, notify: false});
     }
 
+    var watches = [];
     function onQuantityChange(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
@@ -25,6 +27,18 @@ angular.module('bekApp')
       }
 
       $scope.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
+    }
+    function addItemWatches(startingIndex) {
+      for (var i = startingIndex; i < $scope.currentCart.items.length; i++) {
+        watches.push($scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange));
+        watches.push($scope.$watch('currentCart.items[' + i + '].each', onQuantityChange));
+      }
+    }
+    function clearItemWatches() {
+      watches.forEach(function(watch) {
+        watch();
+      });
+      watches = [];
     }
 
     $scope.loadingResults = false;
@@ -42,11 +56,8 @@ angular.module('bekApp')
       CartService.setActiveCart($scope.currentCart.id);
     }
 
-    for (var i = 0; i < $scope.currentCart.items.length; i++) {
-      $scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange);
-      $scope.$watch('currentCart.items[' + i + '].each', onQuantityChange);
-    }
-
+    addItemWatches(0);    
+   
     // set mandatory and reminder lists
     criticalItemsLists.forEach(function(list) {
       if (list.ismandatory) {
@@ -119,7 +130,12 @@ angular.module('bekApp')
           $scope.currentCart.isRenaming = false;
           $scope.sortBy = null;
           $scope.sortOrder = false;
+
+          // clear and reapply all watches on item quantity and each fields
+          clearItemWatches();
           $scope.currentCart = savedCart;
+          addItemWatches(0);
+
           $scope.cartForm.$setPristine();
           $scope.displayMessage('success', 'Successfully saved cart ' + savedCart.name);
           return savedCart.id;
@@ -289,12 +305,10 @@ angular.module('bekApp')
           item.quantity = Math.ceil(item.parlevel - item.qtyInCart) || 1;
         });
 
+        // add watches to new items to update price
         var originalItemCount = $scope.currentCart.items.length;
         $scope.currentCart.items = $scope.currentCart.items.concat(items);
-        for (var i = originalItemCount; i < $scope.currentCart.items.length; i++) {
-          $scope.$watch('currentCart.items[' + i + '].quantity', onQuantityChange);
-          $scope.$watch('currentCart.items[' + i + '].each', onQuantityChange);
-        }
+        addItemWatches(originalItemCount);
 
         $scope.cartForm.$setDirty();
         if ($scope.reminderList) {
