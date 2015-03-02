@@ -137,7 +137,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceNumber = value.InvoiceNumber;
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-            retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.ShippedQuantity * d.SellPrice); 
             retVal.CreatedDate = value.CreatedUtc;
 			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
 			retVal.IsChangeOrderAllowed = false;

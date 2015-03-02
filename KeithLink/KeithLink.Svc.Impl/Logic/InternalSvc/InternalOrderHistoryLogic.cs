@@ -271,17 +271,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
 
-                            if (po.Properties["LineItems"] != null)
-                            {
-                                var poOrder = po.ToOrder();
-                                foreach (var item in returnOrder.Items)
-                                {
-                                    //Get the unit price from the PO
-                                    var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-                                    if (poLine != null)
-                                        item.Price = poLine.Price;
-                                }
-                            }
+							//if (po.Properties["LineItems"] != null)
+							//{
+							//	var poOrder = po.ToOrder();
+							//	foreach (var item in returnOrder.Items)
+							//	{
+							//		//Get the unit price from the PO
+							//		var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+							//		if (poLine != null)
+							//			item.Price = poLine.Price;
+							//	}
+							//}
                         }
                     }
 
@@ -295,6 +295,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     {
                         returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
+
+					returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 
                     customerOrders.Add(returnOrder);
                 }
