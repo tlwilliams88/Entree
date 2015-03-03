@@ -48,19 +48,44 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 		public void CreateEmptyIndex(string branchId)
 		{
 			var request = new RestRequest(branchId, Method.PUT);
-            System.Dynamic.ExpandoObject snowballAnalyzer = new System.Dynamic.ExpandoObject();
-            (snowballAnalyzer as IDictionary<string, object>).Add("default", new { type = "snowball", language = "English" } );
-            dynamic indexSettings = 
-                new { settings = 
-                    new { 
-                        index = 
-                        new { number_of_replicas = 1, number_of_shards = 1, analysis =
-                            new { analyzer = 
-                                snowballAnalyzer
-                            }
-                        }
-                    }
-                };
+			//System.Dynamic.ExpandoObject snowballAnalyzer = new System.Dynamic.ExpandoObject();
+			//(snowballAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>(){ "standard", "lowercase", "snowball", "my_synonym_filter" }, tokenizer = "standar", language = "English" } );
+			//dynamic indexSettings = 
+			//	new { settings = 
+			//		new { 
+			//			index = 
+			//			new { number_of_replicas = 1, number_of_shards = 1, analysis =
+			//				new { analyzer = 
+			//					snowballAnalyzer
+			//				}
+			//			}
+			//		}
+			//	};
+
+			dynamic filterDynamic = new { my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" } };
+			System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
+			(dynamicAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>() { "lowercase", "snowball", "my_synonym_filter" }, tokenizer = "standard" });
+
+
+			dynamic indexSettings =
+				new
+				{
+					settings =
+						new
+						{
+							index =
+							new
+							{
+								number_of_replicas = 1,
+								number_of_shards = 1,
+								analysis = new
+								{
+									filter = filterDynamic,
+									analyzer = dynamicAnalyzer
+								}
+							}
+						}
+				};
 
             request.RequestFormat = DataFormat.Json;
             request.AddBody(indexSettings);
