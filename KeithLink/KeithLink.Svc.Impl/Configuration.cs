@@ -114,6 +114,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_PATH_ORDERUPDATES = "OrderUpdateWatchPath";
         private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
         private const string KEY_URL_WEBNOW = "WebNowUrl";
+        private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
 
 
 		//Email
@@ -830,6 +831,12 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static bool IsDemoEnvironment {
+            get {
+                var value = GetValue(KEY_ENVIRONMENT_DEMO, "false");
+				return ValueParsingUtil.ParseBool(value, "false");
+            }
+        }
         #endregion
     }
 }

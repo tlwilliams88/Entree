@@ -132,10 +132,11 @@ angular.module('bekApp')
         CartService.addItemsToCart(updatedCart, items).then(function(cart) {
           $scope.selectedCart = cart;
 
-          // reset quantities
+          // reset quantities and each
           angular.forEach($scope.selectedList.items, function(item) {
             item.quantityincart += item.quantity; 
             item.quantity = 0;
+            item.each = false;
           });
 
           $scope.addToOrderForm.$setPristine();
