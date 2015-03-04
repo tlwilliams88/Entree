@@ -1,0 +1,400 @@
+# blank lines and lines starting with pound are comments.
+
+#Explicit mappings match any token sequence on the LHS of "=>"
+#and replace with all alternatives on the RHS.  These types of mappings
+#ignore the expand parameter in the schema.
+#Examples:
+#i-pod, i pod => ipod,
+#sea biscuit, sea biscit => seabiscuit
+
+#Equivalent synonyms may be separated with commas and give
+#no explicit mapping.  In this case the mapping behavior will
+#be taken from the expand parameter in the schema.  This allows
+#the same synonym file to be used in different synonym handling strategies.
+#Examples:
+#ipod, i-pod, i pod
+#foozball , foosball
+#universe , cosmos
+
+# If expand==true, "ipod, i-pod, i pod" is equivalent
+# to the explicit mapping:
+#ipod, i-pod, i pod => ipod, i-pod, i pod
+# If expand==false, "ipod, i-pod, i pod" is equivalent
+# to the explicit mapping:
+#ipod, i-pod, i pod => ipod
+
+#multiple synonym mapping entries are merged.
+#foo => foo bar
+#foo => baz
+#is equivalent to
+#foo => foo bar, baz
+
+
+##
+#NOTE: SYNONYMS MUST BE ENTERED AS ALL LOWERCASE
+##
+
+
+#Changes made to this file are not reflected in ES until the index has been re-created
+
+
+added , ad
+angus , ang
+asparagus , asp
+assort, assorted,assortment , asst
+automatic , auto
+bacon , bcn
+bag – n- box , b-n-b
+bake , baked , bkd
+banana , bananas , ban
+bar-b-q, barbecue, barbeque, bar-b-que, bbq
+basket , bkt
+batter , btr
+battered , btrd
+bavarian , bav
+bean , beans , bn
+beef , bf
+beige , bge
+belgian , blgn
+berry , berries , bry
+beverage , bev
+biscuit , biscuits , bisc
+black , blk
+blackeye , blackeyed , blkey
+blend, blended, blender , bld
+blue , blu
+boneless , bnls
+boston , bstn
+bottle , btl
+bottom , btm
+bouillon , bouillion , buln
+box, boxed, boxes , bx
+blanch , blanched , blnch
+breaded , brd
+breakfast , bkfst
+breast , brst
+brisket , brsk
+broccoli , broc
+broth , brth
+brown , brn
+bushel , bu
+buttermilk , btrmlk
+butterscotch , btrsch
+buffet , buf
+butter , but
+butterfly , bfy
+cabbage , cab
+california, calif, cal ,  ca
+candle , cdl
+cantaloupe , cant
+cappuccino , cap
+caramel , crml
+carton , ctn
+case , cs
+casserole , csrl
+cauliflower , caul
+center , centerpiece , ctr
+champagne , chmp
+charbroiled , chrbrl 
+cheddar , chdr
+cheese , chs
+cheeseburgers , chzbrgr
+cheesecake , chsck
+cherry , cherries , chry
+chicken , chkn 
+child nutrition , cn
+chocolate , choc
+choice , cho
+chopped , chpd
+chowder , chwdr
+christmas , xmas
+chrome , chrm
+chunk , chunky , cnk
+cinnamon , cinn
+circle , cir
+citrus , cit
+classic , clsc
+clean , cln
+clear , clr
+clipped , clpd
+cocktail , cktl
+coffee , cof
+combination , comb
+compartment , comp
+concentrate , conc
+container , cont
+cooked , ckd
+cotton , cot
+count , ct
+country , ctry
+cover , cvr
+cranberry , crnbry
+cream , crm
+creamer , crmr
+creamy , crmy
+crispy , crspy
+crumble, crumbles , crumbled , crmbl
+crush , crushed , crsh
+crust , crst
+cube, cubes, cubed , cb
+cutlet , cutl
+dark , dk
+dehydrated , dhy
+deluxe , dlx
+diced , dice
+dinner , dnr
+dome, domes, domed , dm
+double , dbl
+dozen , dz
+dressing , dr
+easy , ez
+edible , edb
+electric , elec
+embossed , emb
+enchilada , ench
+england , english , eng
+european , euro
+escalloped , escalpd
+extra , ex
+extra fancy , xf
+extra large , xl 
+fancy , fcy
+fashion , fash
+filet , flt
+flavor , flv
+freeze , freezer , fz
+fresh , fsh
+fritter , frtr
+frozen , fzn
+fryer , fried , fry
+fully cooked , ckd
+gallon , gal
+garden , grdn
+garlic , grlc
+gelatin , gel
+german , ger
+glass , glas
+grain , grain
+gram , gm
+granular, granules, granulated , gran
+grapefruit , gpfrt
+gravy , grvy 
+green , grn
+grill , grilled , grl
+ground , grnd
+hamburger , hamb
+hashbrown , hbrn
+hawaiian , haw
+hazelnut , hzn
+headless , hdls
+health , hlt
+healthy , hlty
+hearty , hrty
+heavy , hvy
+herb , hrb
+hickory , hky
+high , hi
+hinge , hinged , hng
+homestyle , hmsty
+house , hse
+hour , hr
+imitation , imit
+inch , “
+individual , ind
+individually wrapped , iw
+individually quick frozen , iqf
+irregular , irr
+italian , ital
+jalapeno , jal
+japanese , jap
+juice , jce
+juicy , jcy
+julienne , jul
+jumbo , jmb
+junior , jr
+kitchen , kit
+kosher , k
+large , lg
+lettuce , let
+light , lt
+light syrup , ls
+louisiana , la
+macaroni , mac
+maple , mpl
+margarine , marg
+medium , med
+mesquite , mesq
+mexican , mex
+monosodium glutamate , msg
+monterey jack , mont jack
+mozzarella , mozz
+mushroom , mush
+mustard , must
+napkin , nap
+natural , nat
+nectar , nect
+non-fat , nf
+noodle , ndl
+northern , n
+northwest , nw
+nugget , nug
+oatmeal , otml
+oblong , obl
+omelet , oml
+orange , or
+organic , org
+original , orig
+ounce , oz
+oven ready , or
+package , pack , pk
+packet , pkt
+patty , pattie , pty
+peanut butter , pntbtr
+pecan , pcn
+peeled , pld
+peeled and deveined , p&d
+perforated , perf
+pieces , pcs
+piece , pce
+pickle , pkl
+pineapple , pnapl
+pint , pt
+pizza , pz
+plastic , plas
+platter , pltr
+polish , pol
+pollack , plk
+popcorn , pcrn
+portabella , port
+portion , prt
+portion control , pc
+portion pack , prtnpk
+potato , pot
+pound , lb
+precooked , ckd
+pc , ckd
+preckd , ckd
+premium , prem
+prepared , prep
+preserve , preserved , presv
+pudding , pudd
+quart , qt
+quarter , qtr
+quesadilla , qsdla
+quick , quik
+raisin , rsn
+raspberry , rasp
+ravioli , rav
+ready to cook , rtc
+ready to bake , rtb
+ready to serve , rts
+ready set serve , rss
+red , rd 
+red tart pitted , rtp
+reduced , rdu
+refrigerate , refrigerated , rfrg
+regular , reg
+replace , replacement , repl
+restaurant , rest
+roast , rst
+roasted , rstd
+romaine , rom
+rosemary , rsmry
+round , rnd
+sack , sk
+salisbury , salsb
+salmon , salm
+sandwich , sand
+sanitary, sanitize, sanitizer , sani
+sauce , sc
+sausage , saus
+scramble , scrambled , scr
+season , seasoned , seas
+seedless , sdls
+select , selections , sel
+serve , srv
+shake , sk
+shaker , skr
+sieve , sv
+shape , shp
+shred , shredded , shrd
+silverware , silvw
+size , sz
+skinless , sknls
+skin on , sk on
+slice, sliced  , slices , sl
+small , sm
+smoke , smoked , smk
+smoky , smky
+south , so
+southwest , southwestern , sw
+southern style , sthrn sty
+spaghetti , spag
+sparkling , sprk
+spears , spr
+spinach , spin
+square , sq
+squat , sqt
+squeeze , sqz
+stainless , stnls
+standard , std
+steak , stk
+stick , stix
+storage , stor
+strained , str
+strawberry , stwbry
+stuff , stuffed , stfd
+substitute , sub
+sugar , sug
+sunkist , skst
+super , sup
+supplement , supl
+sweet , swt
+syrup , syr
+tablespoon , tbs
+tamale , tam
+tarragon , targ
+teaspoon , tsp
+temperature , temp
+tender , tndr
+tenderloin , tndrln
+teriyaki , trki
+texas , tx
+thousand , m
+through , thru
+tidbits , td bt
+toilet , tlt
+tomato , tomatoes , tom
+toothpick , tpk
+tortilla , tortl
+traditional , trad
+tray pack , tr pk
+tropical , trop
+truffles , tfl
+tumbler , tumb
+turkey , turk
+turnover , tnvr
+unbaked , unbkd
+unbreaded , unbrd
+uniform , unif
+unsalted , unsltd
+unsliced , unsl
+unsweetened , unswt
+unwrapped , unwrp
+utility , utl 
+vanilla , van
+variety , var
+vegetable , veg
+vinegar , vine
+waffle , wfl
+weight , wgt
+whipped , whip
+with , w/
+white , wht
+whole , whl
+whole grain , wg
+whole wheat , ww
+wrapped , wrp
+yellow , yel
+yogurt , yogr
+zucchini , zucc

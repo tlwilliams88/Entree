@@ -15,23 +15,17 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="com.benekeith.MessagingService.IMessagingService")]
     public interface IMessagingService {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateMailMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateMailMessageResponse")]
+        void CreateMailMessage(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateMailMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateMailMessageResponse")]
+        System.Threading.Tasks.Task CreateMailMessageAsync(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateUserMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateUserMessageResponse")]
         long CreateUserMessage(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Messaging.UserMessageModel userMessage);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateUserMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateUserMessageResponse")]
         System.Threading.Tasks.Task<long> CreateUserMessageAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Messaging.UserMessageModel userMessage);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadUserMessagesResponse")]
-        KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] ReadUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadUserMessagesResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessageModel[]> ReadUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse")]
-        void MarkAsReadUserMessages(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse")]
-        System.Threading.Tasks.Task MarkAsReadUserMessagesAsync(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount", ReplyAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse")]
         int GetUnreadMessagesCount(System.Guid userId);
@@ -39,11 +33,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount", ReplyAction="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse")]
         System.Threading.Tasks.Task<int> GetUnreadMessagesCountAsync(System.Guid userId);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse")]
-        void UpdateMessagingPreferences(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse")]
+        void MarkAsReadUserMessages(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse")]
-        System.Threading.Tasks.Task UpdateMessagingPreferencesAsync(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse")]
+        System.Threading.Tasks.Task MarkAsReadUserMessagesAsync(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse")]
         KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[] ReadMessagingPreferences(System.Guid userId);
@@ -51,11 +45,23 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[]> ReadMessagingPreferencesAsync(System.Guid userId);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey", ReplyAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse")]
+        KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey", ReplyAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadPagedUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadPagedUserMessagesResponse")]
         KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel> ReadPagedUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadPagedUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadPagedUserMessagesResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel>> ReadPagedUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadUserMessagesResponse")]
+        KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] ReadUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/ReadUserMessagesResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessageModel[]> ReadUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/RegisterPushDevice", ReplyAction="http://tempuri.org/IMessagingService/RegisterPushDeviceResponse")]
         bool RegisterPushDevice(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel);
@@ -63,17 +69,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/RegisterPushDevice", ReplyAction="http://tempuri.org/IMessagingService/RegisterPushDeviceResponse")]
         System.Threading.Tasks.Task<bool> RegisterPushDeviceAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey", ReplyAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse")]
-        KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse")]
+        void UpdateMessagingPreferences(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey", ReplyAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateMailMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateMailMessageResponse")]
-        void CreateMailMessage(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage);
-        
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/CreateMailMessage", ReplyAction="http://tempuri.org/IMessagingService/CreateMailMessageResponse")]
-        System.Threading.Tasks.Task CreateMailMessageAsync(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage);
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse")]
+        System.Threading.Tasks.Task UpdateMessagingPreferencesAsync(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -103,28 +103,20 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
                 base(binding, remoteAddress) {
         }
         
+        public void CreateMailMessage(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage) {
+            base.Channel.CreateMailMessage(mailMessage);
+        }
+        
+        public System.Threading.Tasks.Task CreateMailMessageAsync(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage) {
+            return base.Channel.CreateMailMessageAsync(mailMessage);
+        }
+        
         public long CreateUserMessage(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Messaging.UserMessageModel userMessage) {
             return base.Channel.CreateUserMessage(userId, catalogInfo, userMessage);
         }
         
         public System.Threading.Tasks.Task<long> CreateUserMessageAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Messaging.UserMessageModel userMessage) {
             return base.Channel.CreateUserMessageAsync(userId, catalogInfo, userMessage);
-        }
-        
-        public KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] ReadUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
-            return base.Channel.ReadUserMessages(user);
-        }
-        
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessageModel[]> ReadUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
-            return base.Channel.ReadUserMessagesAsync(user);
-        }
-        
-        public void MarkAsReadUserMessages(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages) {
-            base.Channel.MarkAsReadUserMessages(userMessages);
-        }
-        
-        public System.Threading.Tasks.Task MarkAsReadUserMessagesAsync(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages) {
-            return base.Channel.MarkAsReadUserMessagesAsync(userMessages);
         }
         
         public int GetUnreadMessagesCount(System.Guid userId) {
@@ -135,12 +127,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
             return base.Channel.GetUnreadMessagesCountAsync(userId);
         }
         
-        public void UpdateMessagingPreferences(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user) {
-            base.Channel.UpdateMessagingPreferences(messagingPreferenceModel, user);
+        public void MarkAsReadUserMessages(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages) {
+            base.Channel.MarkAsReadUserMessages(userMessages);
         }
         
-        public System.Threading.Tasks.Task UpdateMessagingPreferencesAsync(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user) {
-            return base.Channel.UpdateMessagingPreferencesAsync(messagingPreferenceModel, user);
+        public System.Threading.Tasks.Task MarkAsReadUserMessagesAsync(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages) {
+            return base.Channel.MarkAsReadUserMessagesAsync(userMessages);
         }
         
         public KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[] ReadMessagingPreferences(System.Guid userId) {
@@ -151,12 +143,28 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
             return base.Channel.ReadMessagingPreferencesAsync(userId);
         }
         
+        public KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key) {
+            return base.Channel.ReadMessageTemplateForKey(key);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key) {
+            return base.Channel.ReadMessageTemplateForKeyAsync(key);
+        }
+        
         public KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel> ReadPagedUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
             return base.Channel.ReadPagedUserMessages(user, paging);
         }
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Messaging.UserMessageModel>> ReadPagedUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
             return base.Channel.ReadPagedUserMessagesAsync(user, paging);
+        }
+        
+        public KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] ReadUserMessages(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            return base.Channel.ReadUserMessages(user);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Messaging.UserMessageModel[]> ReadUserMessagesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            return base.Channel.ReadUserMessagesAsync(user);
         }
         
         public bool RegisterPushDevice(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.Messaging.PushDeviceRegistrationModel deviceRegistrationModel) {
@@ -167,20 +175,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
             return base.Channel.RegisterPushDeviceAsync(user, deviceRegistrationModel);
         }
         
-        public KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key) {
-            return base.Channel.ReadMessageTemplateForKey(key);
+        public void UpdateMessagingPreferences(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            base.Channel.UpdateMessagingPreferences(messagingPreferenceModel, user);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel> ReadMessageTemplateForKeyAsync(string key) {
-            return base.Channel.ReadMessageTemplateForKeyAsync(key);
-        }
-        
-        public void CreateMailMessage(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage) {
-            base.Channel.CreateMailMessage(mailMessage);
-        }
-        
-        public System.Threading.Tasks.Task CreateMailMessageAsync(KeithLink.Svc.Core.Models.Messaging.MailMessageModel mailMessage) {
-            return base.Channel.CreateMailMessageAsync(mailMessage);
+        public System.Threading.Tasks.Task UpdateMessagingPreferencesAsync(KeithLink.Svc.Core.Models.Messaging.ProfileMessagingPreferenceModel messagingPreferenceModel, KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            return base.Channel.UpdateMessagingPreferencesAsync(messagingPreferenceModel, user);
         }
     }
 }

@@ -12,6 +12,7 @@
       <xs:enumeration value="ContractItemsDeleted" />
       <xs:enumeration value="Reminder" />
       <xs:enumeration value="Mandatory" />
+      <xs:enumeration value="RecommendedItems" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ListType" nillable="true" type="tns:ListType" />

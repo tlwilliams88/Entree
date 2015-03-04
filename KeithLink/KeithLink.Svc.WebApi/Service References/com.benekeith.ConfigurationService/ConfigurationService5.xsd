@@ -6,6 +6,9 @@
       <xs:enumeration value="Invoice" />
       <xs:enumeration value="Order" />
       <xs:enumeration value="Products" />
+      <xs:enumeration value="OrderDetail" />
+      <xs:enumeration value="InvoiceDetail" />
+      <xs:enumeration value="ItemUsage" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ExportType" nillable="true" type="tns:ExportType" />

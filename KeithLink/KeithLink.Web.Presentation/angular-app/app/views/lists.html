@@ -491,15 +491,15 @@
               <td class="list-print-column">|</td>
 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
-                <div 
-                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder" 
+                <div               
+                  ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
                   context-menu-template
                   class="context-menu-template context-menu__in-list hidden-print"
                 >
                   <a class="icon-plus2"></a>
                 </div>
 
-                <a ng-if="selectedList.permissions.canDeleteItems" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+                <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
                 
                 <span 
                   ng-if="!listSearchTerm && selectedList.permissions.canReorderItems" 

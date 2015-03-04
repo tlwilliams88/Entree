@@ -421,12 +421,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
         public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Notes, i => i.Items).ToList();
+			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
 
-			if (list == null)
-				return null;
+			if (notes == null)
+				return new List<ListItemModel>();
 
-			return list.SelectMany(i => i.Items.Select(x => new ListItemModel() { ItemNumber = x.ItemNumber, Notes = x.Note })).ToList();
+			return notes.Items.Select(x => new ListItemModel() { ItemNumber = x.ItemNumber, Notes = x.Note }).ToList();
 		}
 
 		public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)

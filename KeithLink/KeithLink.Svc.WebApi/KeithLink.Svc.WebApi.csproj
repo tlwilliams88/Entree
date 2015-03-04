@@ -301,9 +301,6 @@
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService61.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
@@ -399,13 +396,13 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <Content Include="Service References\com.benekeith.ReportService\ReportService.disco" />
-    <Content Include="Service References\com.benekeith.ReportService\configuration91.svcinfo" />
-    <Content Include="Service References\com.benekeith.ReportService\configuration.svcinfo" />
-    <Content Include="Service References\com.benekeith.ReportService\Reference.svcmap">
+    <None Include="Service References\com.benekeith.ReportService\ReportService.disco" />
+    <None Include="Service References\com.benekeith.ReportService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.ReportService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.ReportService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
-    </Content>
+    </None>
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -617,7 +614,7 @@
     <None Include="Service References\com.benekeith.OrderService\OrderService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Service References\com.benekeith.ReportService\ReportService.wsdl" />
+    <None Include="Service References\com.benekeith.ReportService\ReportService.wsdl" />
     <None Include="Service References\com.benekeith.ReportService\ReportService.xsd">
       <SubType>Designer</SubType>
     </None>

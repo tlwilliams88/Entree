@@ -1,92 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Invoices" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" />
-  <xs:import schemaLocation="http://localhost:1317/InvoiceService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-  <xs:complexType name="ArrayOfInvoice">
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="PaymentTransactionModel">
     <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Invoice" nillable="true" type="tns:Invoice" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfInvoice" nillable="true" type="tns:ArrayOfInvoice" />
-  <xs:complexType name="Invoice">
-    <xs:sequence>
+      <xs:element minOccurs="0" name="account" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="amount" type="xs:decimal" />
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="confirmationid" type="xs:int" />
+      <xs:element minOccurs="0" name="customername" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="duedate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="id" type="xs:long" />
-      <xs:element minOccurs="0" name="invoicedate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="invoicelink" nillable="true" type="xs:anyURI" />
+      <xs:element minOccurs="0" name="date" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="editable" type="xs:boolean" />
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="ispayable" type="xs:boolean" />
-      <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfInvoiceItem" />
-      <xs:element minOccurs="0" name="itemsequence" type="xs:int" />
-      <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
-      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="status" type="q1:InvoiceStatus" />
-      <xs:element minOccurs="0" name="statusdescription" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="transactions" nillable="true" type="tns:ArrayOfInvoiceTransactionModel" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q2:InvoiceType" />
-      <xs:element minOccurs="0" name="typedescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="submittedby" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="submittedon" type="xs:dateTime" />
     </xs:sequence>
   </xs:complexType>
-  <xs:element name="Invoice" nillable="true" type="tns:Invoice" />
-  <xs:complexType name="ArrayOfInvoiceItem">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="InvoiceItem" nillable="true" type="tns:InvoiceItem" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfInvoiceItem" nillable="true" type="tns:ArrayOfInvoiceItem" />
-  <xs:complexType name="InvoiceItem">
-    <xs:complexContent mixed="false">
-      <xs:extension xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" base="q3:BaseProductInfo">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="catchweight" type="xs:boolean" />
-          <xs:element minOccurs="0" name="classcode" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="extcatchweight" nillable="true" type="xs:decimal" />
-          <xs:element minOccurs="0" name="id" type="xs:long" />
-          <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="itemprice" nillable="true" type="xs:decimal" />
-          <xs:element minOccurs="0" name="linenumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="quantityordered" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="quantityshipped" nillable="true" type="xs:int" />
-          <xs:element minOccurs="0" name="salesnet" nillable="true" type="xs:decimal" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="InvoiceItem" nillable="true" type="tns:InvoiceItem" />
-  <xs:complexType name="ArrayOfInvoiceTransactionModel">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="InvoiceTransactionModel" nillable="true" type="tns:InvoiceTransactionModel" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfInvoiceTransactionModel" nillable="true" type="tns:ArrayOfInvoiceTransactionModel" />
-  <xs:complexType name="InvoiceTransactionModel">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="amount" type="xs:decimal" />
-      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="duedate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="invoicedate" nillable="true" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="itemsequence" type="xs:int" />
-      <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
-      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="type" type="q4:InvoiceType" />
-      <xs:element minOccurs="0" name="typedescription" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="InvoiceTransactionModel" nillable="true" type="tns:InvoiceTransactionModel" />
-  <xs:complexType name="TermModel">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Age1" type="xs:int" />
-      <xs:element minOccurs="0" name="Age2" type="xs:int" />
-      <xs:element minOccurs="0" name="Age3" type="xs:int" />
-      <xs:element minOccurs="0" name="Age4" type="xs:int" />
-      <xs:element minOccurs="0" name="BranchId" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="TermCode" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="TermModel" nillable="true" type="tns:TermModel" />
+  <xs:element name="PaymentTransactionModel" nillable="true" type="tns:PaymentTransactionModel" />
 </xs:schema>
