@@ -541,6 +541,7 @@
     <Compile Include="Repository\Profile\CustomerRepository.cs" />
     <Compile Include="Repository\Orders\ShipDateRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
+    <Compile Include="Repository\Profile\DemoExternalUserDomainRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
