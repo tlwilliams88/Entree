@@ -4,32 +4,26 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
-      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Messaging" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
       <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Messaging" />
-      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
-      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration" />
-      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd8" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Configuration" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+      <xsd:import schemaLocation="http://localhost:1317/MessagingService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="IMessagingService_CreateMailMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateMailMessage" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_CreateMailMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateMailMessageResponse" />
+  </wsdl:message>
   <wsdl:message name="IMessagingService_CreateUserMessage_InputMessage">
     <wsdl:part name="parameters" element="tns:CreateUserMessage" />
   </wsdl:message>
   <wsdl:message name="IMessagingService_CreateUserMessage_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateUserMessageResponse" />
-  </wsdl:message>
-  <wsdl:message name="IMessagingService_ReadUserMessages_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadUserMessages" />
-  </wsdl:message>
-  <wsdl:message name="IMessagingService_ReadUserMessages_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadUserMessagesResponse" />
-  </wsdl:message>
-  <wsdl:message name="IMessagingService_MarkAsReadUserMessages_InputMessage">
-    <wsdl:part name="parameters" element="tns:MarkAsReadUserMessages" />
-  </wsdl:message>
-  <wsdl:message name="IMessagingService_MarkAsReadUserMessages_OutputMessage">
-    <wsdl:part name="parameters" element="tns:MarkAsReadUserMessagesResponse" />
   </wsdl:message>
   <wsdl:message name="IMessagingService_GetUnreadMessagesCount_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUnreadMessagesCount" />
@@ -37,11 +31,11 @@
   <wsdl:message name="IMessagingService_GetUnreadMessagesCount_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetUnreadMessagesCountResponse" />
   </wsdl:message>
-  <wsdl:message name="IMessagingService_UpdateMessagingPreferences_InputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateMessagingPreferences" />
+  <wsdl:message name="IMessagingService_MarkAsReadUserMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:MarkAsReadUserMessages" />
   </wsdl:message>
-  <wsdl:message name="IMessagingService_UpdateMessagingPreferences_OutputMessage">
-    <wsdl:part name="parameters" element="tns:UpdateMessagingPreferencesResponse" />
+  <wsdl:message name="IMessagingService_MarkAsReadUserMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MarkAsReadUserMessagesResponse" />
   </wsdl:message>
   <wsdl:message name="IMessagingService_ReadMessagingPreferences_InputMessage">
     <wsdl:part name="parameters" element="tns:ReadMessagingPreferences" />
@@ -49,11 +43,23 @@
   <wsdl:message name="IMessagingService_ReadMessagingPreferences_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadMessagingPreferencesResponse" />
   </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadMessageTemplateForKey_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadMessageTemplateForKey" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadMessageTemplateForKey_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadMessageTemplateForKeyResponse" />
+  </wsdl:message>
   <wsdl:message name="IMessagingService_ReadPagedUserMessages_InputMessage">
     <wsdl:part name="parameters" element="tns:ReadPagedUserMessages" />
   </wsdl:message>
   <wsdl:message name="IMessagingService_ReadPagedUserMessages_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadPagedUserMessagesResponse" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadUserMessages_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadUserMessages" />
+  </wsdl:message>
+  <wsdl:message name="IMessagingService_ReadUserMessages_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadUserMessagesResponse" />
   </wsdl:message>
   <wsdl:message name="IMessagingService_RegisterPushDevice_InputMessage">
     <wsdl:part name="parameters" element="tns:RegisterPushDevice" />
@@ -61,82 +67,67 @@
   <wsdl:message name="IMessagingService_RegisterPushDevice_OutputMessage">
     <wsdl:part name="parameters" element="tns:RegisterPushDeviceResponse" />
   </wsdl:message>
-  <wsdl:message name="IMessagingService_ReadMessageTemplateForKey_InputMessage">
-    <wsdl:part name="parameters" element="tns:ReadMessageTemplateForKey" />
+  <wsdl:message name="IMessagingService_UpdateMessagingPreferences_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMessagingPreferences" />
   </wsdl:message>
-  <wsdl:message name="IMessagingService_ReadMessageTemplateForKey_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ReadMessageTemplateForKeyResponse" />
-  </wsdl:message>
-  <wsdl:message name="IMessagingService_CreateMailMessage_InputMessage">
-    <wsdl:part name="parameters" element="tns:CreateMailMessage" />
-  </wsdl:message>
-  <wsdl:message name="IMessagingService_CreateMailMessage_OutputMessage">
-    <wsdl:part name="parameters" element="tns:CreateMailMessageResponse" />
+  <wsdl:message name="IMessagingService_UpdateMessagingPreferences_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateMessagingPreferencesResponse" />
   </wsdl:message>
   <wsdl:portType name="IMessagingService">
+    <wsdl:operation name="CreateMailMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/CreateMailMessage" message="tns:IMessagingService_CreateMailMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/CreateMailMessageResponse" message="tns:IMessagingService_CreateMailMessage_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="CreateUserMessage">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/CreateUserMessage" message="tns:IMessagingService_CreateUserMessage_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/CreateUserMessageResponse" message="tns:IMessagingService_CreateUserMessage_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="ReadUserMessages">
-      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadUserMessages" message="tns:IMessagingService_ReadUserMessages_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadUserMessagesResponse" message="tns:IMessagingService_ReadUserMessages_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="MarkAsReadUserMessages">
-      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages" message="tns:IMessagingService_MarkAsReadUserMessages_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse" message="tns:IMessagingService_MarkAsReadUserMessages_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetUnreadMessagesCount">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCount" message="tns:IMessagingService_GetUnreadMessagesCount_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/GetUnreadMessagesCountResponse" message="tns:IMessagingService_GetUnreadMessagesCount_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="UpdateMessagingPreferences">
-      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences" message="tns:IMessagingService_UpdateMessagingPreferences_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse" message="tns:IMessagingService_UpdateMessagingPreferences_OutputMessage" />
+    <wsdl:operation name="MarkAsReadUserMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages" message="tns:IMessagingService_MarkAsReadUserMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse" message="tns:IMessagingService_MarkAsReadUserMessages_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ReadMessagingPreferences">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences" message="tns:IMessagingService_ReadMessagingPreferences_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse" message="tns:IMessagingService_ReadMessagingPreferences_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="ReadMessageTemplateForKey">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey" message="tns:IMessagingService_ReadMessageTemplateForKey_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse" message="tns:IMessagingService_ReadMessageTemplateForKey_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ReadPagedUserMessages">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadPagedUserMessages" message="tns:IMessagingService_ReadPagedUserMessages_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadPagedUserMessagesResponse" message="tns:IMessagingService_ReadPagedUserMessages_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadUserMessages">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadUserMessages" message="tns:IMessagingService_ReadUserMessages_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadUserMessagesResponse" message="tns:IMessagingService_ReadUserMessages_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="RegisterPushDevice">
       <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/RegisterPushDevice" message="tns:IMessagingService_RegisterPushDevice_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/RegisterPushDeviceResponse" message="tns:IMessagingService_RegisterPushDevice_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ReadMessageTemplateForKey">
-      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey" message="tns:IMessagingService_ReadMessageTemplateForKey_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/ReadMessageTemplateForKeyResponse" message="tns:IMessagingService_ReadMessageTemplateForKey_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="CreateMailMessage">
-      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/CreateMailMessage" message="tns:IMessagingService_CreateMailMessage_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/CreateMailMessageResponse" message="tns:IMessagingService_CreateMailMessage_OutputMessage" />
+    <wsdl:operation name="UpdateMessagingPreferences">
+      <wsdl:input wsaw:Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferences" message="tns:IMessagingService_UpdateMessagingPreferences_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IMessagingService/UpdateMessagingPreferencesResponse" message="tns:IMessagingService_UpdateMessagingPreferences_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IMessagingService" type="tns:IMessagingService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateMailMessage">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/CreateMailMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="CreateUserMessage">
       <soap:operation soapAction="http://tempuri.org/IMessagingService/CreateUserMessage" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ReadUserMessages">
-      <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadUserMessages" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="MarkAsReadUserMessages">
-      <soap:operation soapAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessages" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -153,8 +144,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateMessagingPreferences">
-      <soap:operation soapAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferences" style="document" />
+    <wsdl:operation name="MarkAsReadUserMessages">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessages" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -171,8 +162,26 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ReadMessageTemplateForKey">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="ReadPagedUserMessages">
       <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadPagedUserMessages" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadUserMessages">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadUserMessages" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -189,17 +198,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ReadMessageTemplateForKey">
-      <soap:operation soapAction="http://tempuri.org/IMessagingService/ReadMessageTemplateForKey" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="CreateMailMessage">
-      <soap:operation soapAction="http://tempuri.org/IMessagingService/CreateMailMessage" style="document" />
+    <wsdl:operation name="UpdateMessagingPreferences">
+      <soap:operation soapAction="http://tempuri.org/IMessagingService/UpdateMessagingPreferences" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

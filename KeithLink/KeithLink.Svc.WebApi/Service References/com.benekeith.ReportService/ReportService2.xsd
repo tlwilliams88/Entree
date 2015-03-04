@@ -4,8 +4,10 @@
   <xs:complexType name="ItemUsageReportQueryModel">
     <xs:sequence>
       <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="UserSelectedContext" nillable="true" type="q1:UserSelectedContext" />
-      <xs:element minOccurs="0" name="fromDate" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="toDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="fromDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="sortDir" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="sortField" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="toDate" nillable="true" type="xs:dateTime" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ItemUsageReportQueryModel" nillable="true" type="tns:ItemUsageReportQueryModel" />
@@ -17,9 +19,11 @@
   <xs:element name="ArrayOfreportitemusage" nillable="true" type="tns:ArrayOfreportitemusage" />
   <xs:complexType name="reportitemusage">
     <xs:sequence>
+      <xs:element minOccurs="0" name="each" nillable="true" type="xs:string" />
       <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q2:ArrayOfProductImage" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="totalquantityordered" type="xs:int" />
       <xs:element minOccurs="0" name="totalquantityshipped" type="xs:int" />
     </xs:sequence>
