@@ -477,6 +477,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             string userBranch = string.Empty;
             bool isInternalUser = IsInternalAddress( csProfile.Email );
             UserPrincipal adUser = null;
+            bool isKbitCustomer = false;
 
             if (isInternalUser)
             {
@@ -509,6 +510,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 adUser = _extAd.GetUser(csProfile.Email);
                 userRole = GetUserRole(csProfile.Email);
                 userBranch = csProfile.DefaultBranch;
+                isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
             }
 
             string userNameToken = string.Concat(adUser.SamAccountName, "-", DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -531,7 +533,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 //UserCustomers = userCustomers,
                 ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
                 UserName = adUser.SamAccountName,
-                UserNameToken = tokenBase64
+                UserNameToken = tokenBase64,
+                IsKBITCustomer = isKbitCustomer
             };
         }
 
