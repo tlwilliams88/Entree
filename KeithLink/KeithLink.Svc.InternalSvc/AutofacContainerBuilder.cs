@@ -86,9 +86,18 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<CacheService>();
             builder.RegisterType<DsrService>();
 
-            builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
+			#if DEMO
+				builder.RegisterType<DemoStagingRepositoryImpl>().As<IStagingRepository>();
+				builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+			#else
+				builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
+				builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+			#endif
+
+
+				builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
-            builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
+            
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
             builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
@@ -140,7 +149,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
             builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+            
             builder.RegisterType<NotificationQueueConsumerImpl>().As<INotificationQueueConsumer>();
             builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
 

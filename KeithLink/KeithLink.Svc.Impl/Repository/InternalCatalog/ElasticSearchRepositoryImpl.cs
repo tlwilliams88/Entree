@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 
 			dynamic filterDynamic = new { my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" } };
 			System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
-			(dynamicAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>() { "lowercase", "snowball", "my_synonym_filter" }, tokenizer = "standard" });
+			(dynamicAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>() {"my_synonym_filter", "standard", "lowercase"}, tokenizer = "whitespace" });
 
 
 			dynamic indexSettings =
@@ -86,6 +86,8 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 							}
 						}
 				};
+
+			var test = Newtonsoft.Json.JsonConvert.SerializeObject(indexSettings);
 
             request.RequestFormat = DataFormat.Json;
             request.AddBody(indexSettings);
