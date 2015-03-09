@@ -19,21 +19,24 @@ namespace KeithLink.Svc.WebApi.Controllers
     public class ProfileController : BaseController
     {
         #region attributes
+        private IAvatarRepository               _avatarRepository;
         private ICustomerContainerRepository    _custRepo;
+        private ICustomerDomainRepository       _extAd;
         private IEventLogRepository             _log;
         private IUserProfileLogic               _profileLogic;
-        private IAvatarRepository               _avatarRepository;
         #endregion
 
         #region ctor
         public ProfileController(ICustomerContainerRepository customerRepo, 
                                  IEventLogRepository logRepo,
                                  IUserProfileLogic profileLogic,
-                                 IAvatarRepository avatarRepository) : base(profileLogic) {
+                                 IAvatarRepository avatarRepository,
+                                 ICustomerDomainRepository customerADRepo) : base(profileLogic) {
             _custRepo = customerRepo;
             _profileLogic = profileLogic;
             _log = logRepo;
             _avatarRepository = avatarRepository;
+            _extAd = customerADRepo;
         }
         #endregion
 
@@ -544,6 +547,74 @@ namespace KeithLink.Svc.WebApi.Controllers
         public OperationReturnModel<bool> GetSalesRep() {
             // Get the DSR
             return new OperationReturnModel<bool>() { SuccessResponse = true };
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute("profile/{email}/access/{appname}")]
+        public OperationReturnModel<bool> GrantKbitAccess(string email, string appname) {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try {
+                string appRoleName = null;
+
+                switch (appname.ToLower()) {
+                    case "kbit":
+                        appRoleName = Impl.Configuration.AccessGroupKbitCustomer;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (appRoleName == null) {
+                    retVal.SuccessResponse = false;
+                    retVal.ErrorMessage = "Could not grant access to unknown application.";
+                } else {
+                    _extAd.GrantAccess(email, appRoleName);
+
+                    retVal.SuccessResponse = true;
+                }
+            } catch (Exception ex) {
+                retVal.SuccessResponse = false;
+                retVal.ErrorMessage = "Could grant access";
+                _log.WriteErrorLog("Could not grant access to application.", ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [ApiKeyedRoute("profile/{email}/access/{appname}")]
+        public OperationReturnModel<bool> RevokeKbitAccess(string email, string appname) {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try {
+                string appRoleName = null;
+
+                switch (appname.ToLower()) {
+                    case "kbit":
+                        appRoleName = Impl.Configuration.AccessGroupKbitCustomer;
+                        break;
+                    default:
+                        break;
+                }
+
+                if (appRoleName == null) {
+                    retVal.SuccessResponse = false;
+                    retVal.ErrorMessage = "Could not revoke access from unknown application.";
+                } else {
+                    _extAd.RevokeAccess(email, appRoleName);
+
+                    retVal.SuccessResponse = true;
+                }
+            } catch (Exception ex) {
+                retVal.SuccessResponse = false;
+                retVal.ErrorMessage = "Could revoke access";
+                _log.WriteErrorLog("Could not revoke access to application.", ex);
+            }
+
+            return retVal;
         }
         #endregion
     }
