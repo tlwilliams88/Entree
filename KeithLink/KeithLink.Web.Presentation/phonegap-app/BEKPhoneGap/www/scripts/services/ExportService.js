@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ExportService', [ '$http',
-    function ($http) {
+  .factory('ExportService', [ '$http', '$log',
+    function ($http, $log) {
     
     function downloadFile(data, status, headers, fileType, httpPath) {
 
@@ -39,7 +39,7 @@ angular.module('bekApp')
 
       try {
         // Try using msSaveBlob if supported
-        console.log('Trying saveBlob method ...');
+        $log.debug('Trying saveBlob method ...');
         var blob = new Blob([data], { type: contentType });
         if(navigator.msSaveBlob) {
           navigator.msSaveBlob(blob, filename);
@@ -52,11 +52,11 @@ angular.module('bekApp')
           }
           saveBlob(blob, filename);
         }
-        console.log('saveBlob succeeded');
+        $log.debug('saveBlob succeeded');
         success = true;
       } catch(ex) {
-        console.log('saveBlob method failed with the following exception:');
-        console.log(ex);
+        $log.debug('saveBlob method failed with the following exception:');
+        $log.debug(ex);
       }
 
       if(!success) {
@@ -69,7 +69,7 @@ angular.module('bekApp')
             // Try to simulate a click
             try {
               // Prepare a blob URL
-              console.log('Trying download link method with simulated click ...');
+              $log.debug('Trying download link method with simulated click ...');
               var blob = new Blob([data], { type: contentType }); // jshint ignore:line
               var url = urlCreator.createObjectURL(blob);
               link.setAttribute('href', url);
@@ -81,12 +81,12 @@ angular.module('bekApp')
               var event = document.createEvent('MouseEvents');
               event.initMouseEvent('click', true, true, window, 1, 0, 0, 0, 0, false, false, false, false, 0, null);
               link.dispatchEvent(event);
-              console.log('Download link method with simulated click succeeded');
+              $log.debug('Download link method with simulated click succeeded');
               success = true;
 
             } catch(ex) {
-              console.log('Download link method with simulated click failed with the following exception:');
-              console.log(ex);
+              $log.debug('Download link method with simulated click failed with the following exception:');
+              $log.debug(ex);
             }
           }
 
@@ -95,15 +95,15 @@ angular.module('bekApp')
             try {
               // Prepare a blob URL
               // Use application/octet-stream when using window.location to force download
-              console.log('Trying download link method with window.location ...');
+              $log.debug('Trying download link method with window.location ...');
               var blob = new Blob([data], { type: octetStreamMime }); // jshint ignore:line
               var url = urlCreator.createObjectURL(blob); // jshint ignore:line
               window.location = url;
-              console.log('Download link method with window.location succeeded');
+              $log.debug('Download link method with window.location succeeded');
               success = true;
             } catch(ex) {
-              console.log('Download link method with window.location failed with the following exception:');
-              console.log(ex);
+              $log.debug('Download link method with window.location failed with the following exception:');
+              $log.debug(ex);
             }
           }
         }
@@ -111,7 +111,7 @@ angular.module('bekApp')
 
       if(!success) {
         // Fallback to window.open method
-        console.log('No methods worked for saving the arraybuffer, using last resort window.open');
+        $log.debug('No methods worked for saving the arraybuffer, using last resort window.open');
         window.open(httpPath, '_blank', '');
       }
     }

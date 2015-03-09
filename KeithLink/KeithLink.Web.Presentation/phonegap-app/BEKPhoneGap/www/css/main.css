@@ -8403,17 +8403,20 @@ form.style-validation-errors .form-error-message {
   font-size: 12px;
   padding: 0;
   min-width: 0;
-  border-radius: 4px;
+  /*border-radius: 4px;*/
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
-/* line 35, ../scss/components/_context-menu.scss */
+/* line 38, ../scss/components/_context-menu.scss */
 .context-menu .dropdown-menu a, .context-menu .dropdown-menu .nav-tabs li a:hover, .nav-tabs li .context-menu .dropdown-menu a:hover {
   color: #a0947f;
 }
-/* line 39, ../scss/components/_context-menu.scss */
+/* line 42, ../scss/components/_context-menu.scss */
 .context-menu .btn-group {
   max-width: 150px;
 }
-/* line 42, ../scss/components/_context-menu.scss */
+/* line 45, ../scss/components/_context-menu.scss */
 .context-menu .btn {
   color: #a0947f;
   font-size: 12px;
@@ -8424,19 +8427,19 @@ form.style-validation-errors .form-error-message {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-/* line 53, ../scss/components/_context-menu.scss */
+/* line 56, ../scss/components/_context-menu.scss */
 .context-menu .btn:hover {
   color: #fff !important;
   background-color: #489ecf !important;
   border-color: #489ecf !important;
 }
-/* line 66, ../scss/components/_context-menu.scss */
+/* line 69, ../scss/components/_context-menu.scss */
 .context-menu .btn-group.open > button {
   box-shadow: none;
   color: #fff;
 }
 
-/* line 78, ../scss/components/_context-menu.scss */
+/* line 81, ../scss/components/_context-menu.scss */
 .context-menu__in-list .dropdown-menu {
   left: -100%;
 }
@@ -9716,90 +9719,95 @@ ul.horizontal-slide .product-placeholder-image {
   border: 1px solid #489ecf;
 }
 
-/* line 59, ../scss/pages/_lists.scss */
+/* line 57, ../scss/pages/_lists.scss */
+.hidden-icon {
+  visibility: hidden;
+}
+
+/* line 62, ../scss/pages/_lists.scss */
 .btn-trash {
   margin-top: 10px;
   display: block;
 }
-/* line 63, ../scss/pages/_lists.scss */
+/* line 66, ../scss/pages/_lists.scss */
 .btn-trash.bek-drag-active {
   border: 1px dashed #dc6a6a;
 }
-/* line 68, ../scss/pages/_lists.scss */
+/* line 71, ../scss/pages/_lists.scss */
 .btn-trash.bek-drag-hover {
   border: 2px solid #dc6a6a;
   cursor: copy;
 }
 
-/* line 75, ../scss/pages/_lists.scss */
+/* line 78, ../scss/pages/_lists.scss */
 .custom-lists__multi-actions .multi-action-btn {
   height: 40px;
 }
 
 /* DRAG AND DROP */
-/* line 81, ../scss/pages/_lists.scss */
+/* line 84, ../scss/pages/_lists.scss */
 .ui-draggable-handle {
   cursor: move;
 }
 
-/* line 84, ../scss/pages/_lists.scss */
+/* line 87, ../scss/pages/_lists.scss */
 .ui-draggable-dragging {
   border-right: 1px solid #c3bc9c !important;
   border-left: 1px solid #c3bc9c !important;
   box-shadow: 0px 0px 10px #c3bc9c;
 }
-/* line 88, ../scss/pages/_lists.scss */
+/* line 91, ../scss/pages/_lists.scss */
 .ui-draggable-dragging td {
   background-color: #fff !important;
 }
-/* line 92, ../scss/pages/_lists.scss */
+/* line 95, ../scss/pages/_lists.scss */
 .ui-draggable-dragging .hidden-drag {
   display: none;
 }
 
-/* line 96, ../scss/pages/_lists.scss */
+/* line 99, ../scss/pages/_lists.scss */
 .ui-sortable-placeholder {
   display: block !important;
 }
 
-/* line 99, ../scss/pages/_lists.scss */
+/* line 102, ../scss/pages/_lists.scss */
 .ui-sortable-helper tr {
   box-shadow: 0px 0px 10px #c3bc9c;
 }
-/* line 102, ../scss/pages/_lists.scss */
+/* line 105, ../scss/pages/_lists.scss */
 .ui-sortable-helper tr td {
   border-top: #c3bc9c;
   background-color: #fff !important;
 }
 
-/* line 107, ../scss/pages/_lists.scss */
+/* line 110, ../scss/pages/_lists.scss */
 .bek-reordered-item td {
   background-color: #f8f8c4 !important;
 }
 
-/* line 110, ../scss/pages/_lists.scss */
+/* line 113, ../scss/pages/_lists.scss */
 .custom-lists__table td {
   background-clip: padding-box;
 }
-/* line 112, ../scss/pages/_lists.scss */
+/* line 115, ../scss/pages/_lists.scss */
 .custom-lists__table td.input-col input[type="text"].edit-label {
   width: 80%;
 }
 
 /*SHARE/COPY LIST MODAL*/
-/* line 118, ../scss/pages/_lists.scss */
+/* line 121, ../scss/pages/_lists.scss */
 .share-customers, .copy-customers {
   max-height: 250px;
   overflow-y: auto;
 }
 @media print {
-  /* line 118, ../scss/pages/_lists.scss */
+  /* line 121, ../scss/pages/_lists.scss */
   .share-customers, .copy-customers {
     max-height: none;
   }
 }
 
-/* line 122, ../scss/pages/_lists.scss */
+/* line 125, ../scss/pages/_lists.scss */
 .list-print-column {
   border: 1px solid #c3bc9c;
   white-space: nowrap;
@@ -9807,13 +9815,13 @@ ul.horizontal-slide .product-placeholder-image {
 }
 
 @media (min-width: 768px) {
-  /* line 132, ../scss/pages/_lists.scss */
+  /* line 135, ../scss/pages/_lists.scss */
   .list-names {
     max-height: 463px;
     overflow-y: auto;
   }
 
-  /* line 136, ../scss/pages/_lists.scss */
+  /* line 139, ../scss/pages/_lists.scss */
   .list-form {
     max-height: 523px;
     overflow-y: auto;
@@ -9821,19 +9829,19 @@ ul.horizontal-slide .product-placeholder-image {
   }
 }
 @media (min-width: 992px) {
-  /* line 145, ../scss/pages/_lists.scss */
+  /* line 148, ../scss/pages/_lists.scss */
   table.custom-lists__table tbody tr:hover td {
     background-color: #EBE7D9;
   }
 }
 @media (max-width: 991px) {
-  /* line 151, ../scss/pages/_lists.scss */
+  /* line 154, ../scss/pages/_lists.scss */
   .items {
     width: 100%;
     padding-left: 15px;
   }
 
-  /* line 155, ../scss/pages/_lists.scss */
+  /* line 158, ../scss/pages/_lists.scss */
   .custom-lists {
     position: absolute;
     z-index: 3;

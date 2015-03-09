@@ -65,6 +65,8 @@ var app = {
     },
     onOffline: function(){
         console.log("Taken Offline");
+        var toaster = angular.element($('body')).injector().get('toaster');
+        toaster.pop('warning', null, "You are now offline.");
     },
     onPause: function() {
         console.log("Paused.")

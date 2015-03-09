@@ -131,12 +131,20 @@ angular.module('bekApp')
         lists: [],
         labels: [],
 
+        updateListPermissions: updateListPermissions,
+
+        eraseCachedLists: function() {
+          Service.lists = [];
+          Service.labels = [];
+        },
+
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
           if (!params) {
             params = {};
           }
+          debugger;
           return List.query(params).$promise.then(function(lists) {
             lists.forEach(function(list) {
               updateListPermissions(list);
@@ -175,7 +183,10 @@ angular.module('bekApp')
         },
 
         findListById: function(listId) {
-          return UtilityService.findObjectByField(Service.lists, 'listid', parseInt(listId));
+          if (!isNaN(parseInt(listId))) {
+            listId = parseInt(listId);
+          }
+          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
         },
 
         /********************
@@ -202,11 +213,8 @@ angular.module('bekApp')
         /********************
         EDIT LIST
         ********************/
-
-        // items: accepts null, item object, or array of item objects
-        // params: isMandatory param for creating mandatory list
-        // returns promise and new list object
-        createList: function(items, params) {
+        
+        beforeCreateList: function(items, params) {
           if (!params) {
             params = {};
           }
@@ -230,6 +238,18 @@ angular.module('bekApp')
             newList.name = 'Recommended';
           } else {
             newList.name = UtilityService.generateName('List', Service.lists);
+          }
+          
+          return newList;
+        },
+
+        // items: accepts null, item object, or array of item objects
+        // params: isMandatory param for creating mandatory list
+        // returns promise and new list object
+        createList: function(items, params) {
+          var newList = Service.beforeCreateList(items, params);
+          if (!params) {
+            params = {};
           }
           
           return List.save(params, newList).$promise.then(function(response) {

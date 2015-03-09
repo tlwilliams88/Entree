@@ -34,6 +34,7 @@ angular.module('bekApp')
     $scope.loginErrorMessage = '';
     
     AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
+      debugger;
       if (ENV.mobileApp) { // ask to allow push notifications
         PhonegapPushService.register();
       }
