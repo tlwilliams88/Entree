@@ -5,3 +5,14 @@
   @extend .visible-md;
   @extend .visible-lg;
 }
+
+@media print {
+  @include make-grid(sm);
+
+  @include responsive-visibility('.visible-xs');
+  @include responsive-visibility('.hidden-xs');
+  @include responsive-visibility('.visible-sm');
+  @include responsive-invisibility('.hidden-xs.hidden-print');
+  @include responsive-invisibility('.hidden-sm');
+  @include responsive-invisibility('.visible-sm.hidden-print');
+}
