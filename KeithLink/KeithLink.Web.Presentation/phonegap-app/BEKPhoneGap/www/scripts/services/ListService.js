@@ -144,7 +144,6 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-          debugger;
           return List.query(params).$promise.then(function(lists) {
             lists.forEach(function(list) {
               updateListPermissions(list);
@@ -231,6 +230,10 @@ angular.module('bekApp')
 
           // remove irrelevant properties from items
           UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
+
+          newList.items.forEach(function(item) {
+            item.position = 0;
+          });
 
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';

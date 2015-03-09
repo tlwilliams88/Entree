@@ -143,11 +143,9 @@ angular.module('bekApp')
       },
       resolve: {
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          debugger;
           return ResolveService.validateList($stateParams.listId);
         }],
         originalList: ['$stateParams', 'validListId', 'lists', 'ListService', function($stateParams, validListId, lists, ListService) {
-          debugger;
           return ListService.getList(validListId);
         }]
       }

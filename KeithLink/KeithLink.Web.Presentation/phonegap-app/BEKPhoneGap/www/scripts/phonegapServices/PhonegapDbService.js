@@ -7,19 +7,23 @@ angular.module('bekApp')
   //
   var dbName = 'bek_offline_storage';
 
+  var db = null;
+
   function openDB() {
-    return window.sqlitePlugin.openDatabase({
-      name: dbName,
-      location: 1
-    });
+    if (!db) {
+      db = window.openDatabase(dbName, '1.0', 'Ben E Keith Entree', 1000000); 
+    }
+    return db;
   };
 
-  var Service = {
+  function convertKeyToString(key) {
+    if (typeof key !== 'string') {
+      key = key.toString();
+    }
+    return key;
+  }
 
-    dropDatabase: function() {
-      var db = openDB();
-      debugger;
-    },
+  var Service = {
 
     dropTable: function(table) {
       console.log('PhonegapDbService: drop table ' + table);
@@ -41,15 +45,12 @@ angular.module('bekApp')
         tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
         return tx.executeSql("select data from " + table + ";", [], function(tx, res) {
           if (res.rows.length > 0) {
-            console.log('found items');
-            console.log(res);
-
             var lists = [];
             for (var i = 0; i < res.rows.length; i++) {
               var list = JSON.parse(res.rows.item(i).data);
               lists.push(list);
             }
-            console.log(lists);
+            console.log('found ' + lists.length + ' lists');
 
             return deferred.resolve(lists);
           } else {
@@ -63,11 +64,13 @@ angular.module('bekApp')
       console.log('PhonegapDbService: get item');
       var deferred = $q.defer();
       var db = openDB();
+      key = convertKeyToString(key);
       db.transaction(function(tx) {
-        tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
+        // tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
         return tx.executeSql("select data from " + table + " where key='" + key + "';", [], function(tx, res) {
           if (res.rows.length > 0) {
             var list = JSON.parse(res.rows.item(0).data);
+            console.log('found list');
             console.log(list);
             return deferred.resolve(list);
           } else {
@@ -80,6 +83,7 @@ angular.module('bekApp')
     setItem: function(table, key, data) {
       console.log('PhonegapDbService: set item');
       data = JSON.stringify(data);
+      key = convertKeyToString(key);
       var db = openDB();
       db.transaction(function(tx) {
         tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
@@ -101,22 +105,24 @@ angular.module('bekApp')
     },
     removeItem: function(table, key) {
       var db = openDB();
+      key = convertKeyToString(key);
       db.transaction(function(tx) {
         return tx.executeSql("DELETE FROM " + table + " WHERE key = '" + key + "';", [], function(tx, res) {
           return true;
         });
       });
       return false;
-    },
-    removeAll: function(table) {
-      var db = openDB();
-      db.transaction(function(tx) {
-        return tx.executeSql("DROP TABLE " + table, [], function(tx, res) {
-          return true;
-        });
-      });
-      return false;
     }
+    // ,
+    // removeAll: function(table) {
+    //   var db = openDB();
+    //   db.transaction(function(tx) {
+    //     return tx.executeSql("DROP TABLE IF" + table, [], function(tx, res) {
+    //       return true;
+    //     });
+    //   });
+    //   return false;
+    // }
   };
 
   return Service;
