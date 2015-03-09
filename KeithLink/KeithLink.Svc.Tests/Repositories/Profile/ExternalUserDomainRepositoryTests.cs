@@ -60,7 +60,12 @@ namespace KeithLink.Svc.Test.Repositories.Profile
             AuthenticationModel authentication = _custUserRepo.AuthenticateUser( "lockeduser@somecompany.com", "badpassword" );
             Assert.IsTrue(authentication.Status.Equals(AuthenticationStatus.Locked));
         }
-        
+
+        [TestMethod]
+        public void UserDoesNotHaveRequestedGroup() {
+            Assert.IsFalse(_custUserRepo.HasAccess("sabroussard@somecompany.com", "Invalid Group Name"));
+        }
+
         [TestMethod]
         public void BelongsToGroup() {
             string roleName = _custUserRepo.GetUserGroup("sabroussard@somecompany.com", new System.Collections.Generic.List<string>() { "owner" });
@@ -77,6 +82,11 @@ namespace KeithLink.Svc.Test.Repositories.Profile
             } catch {
                 Assert.IsTrue(false);
             }
+        }
+
+        [TestMethod]
+        public void GoodUserWithKbitAccess() {
+            Assert.IsTrue(_custUserRepo.HasAccess("sabroussard@somecompany.com", "Dev Kbit Customer"));
         }
 
         [TestMethod]

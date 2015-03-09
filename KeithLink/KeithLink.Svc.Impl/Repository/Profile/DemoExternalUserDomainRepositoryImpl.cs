@@ -73,5 +73,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public bool HasAccess(string userName, string roleName) {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Impl
         #region attributes
         // General site settings
         private const string PRESENTATION_URL = "PresentationUrl";
-        private const string DEFAULT_APPNAME = "KeithCom";
+        private const string DEFAULT_APPNAME = "Entree";
         private const string DEFAULT_CATEGORY_RETURN_SIZE = "2000";
         private const string DEFAULT_ELASTIC_SEARCH_BATCH_SIZE = "500";
         private const string DEFAULT_PRODUCT_RETURN_SIZE = "500";
@@ -20,6 +20,7 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
 
         // Active Directory Constants
+        private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER = "ADExtAccessGroupKbitCustomer";
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
         private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
@@ -141,6 +142,11 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+        public static string AccessGroupKbitCustomer {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER, string.Empty);
+            }
+        }
 
         public static string ActiveDirectoryExternalDomain { 
             get { 

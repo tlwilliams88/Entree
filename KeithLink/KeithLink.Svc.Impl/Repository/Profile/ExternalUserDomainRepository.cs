@@ -44,6 +44,28 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         #endregion
 
         #region methods
+        private void AddUserToGroup(UserPrincipal user, string groupName, DirectoryEntry group) {
+            group.Properties["member"].Add(user.DistinguishedName);
+
+            try {
+                group.CommitChanges();
+            } catch (Exception ex) {
+                _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", user.Name, groupName), ex);
+                throw;
+            }
+        }
+
+        private void AddUserToOu(UserPrincipal user, string groupName, DirectoryEntry ou) {
+            //DirectoryEntry userInGroup = ou.Container.Add(user.GetUnderlyingObject());
+
+            try {
+                ou.CommitChanges();
+            } catch (Exception ex) {
+                _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", user.Name, groupName), ex);
+                throw;
+            }
+        }
+
         /// <summary>
         /// authenticates the user to the benekeith.com domain and throws an exception for any problems encountered
         /// </summary>
@@ -185,10 +207,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-        private void SetExpiredPassword(DirectoryEntry entry, PassworedExpiredFlag status) {
-            entry.Properties["pwdLastSet"].Value = status;
-            entry.CommitChanges();
-        }
 
 
         public void ExpirePassword( string emailAddress ) {
@@ -217,6 +235,23 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                 return (user.LastPasswordSet.Equals( null )) ? true : false;
             }
+        }
+
+        private string CleanseOfInvalidChars(string input) {
+            return Regex.Replace(input, @"[""#&\[\]:\<\>+=\*/;,?@\\]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
+        }
+
+        private DirectoryEntry CreateChildOrganizationalUnit(string customerName, DirectoryEntry parent) {
+            DirectoryEntry newOU = parent.Children.Add("OU=" + CleanseOfInvalidChars(customerName), "OrganizationalUnit");
+            newOU.CommitChanges();
+            parent.RefreshCache();
+            return newOU;
+        }
+
+        private void CreateCustomerSecurityGroup(string customerName, string roleName, DirectoryEntry customerContainer, DirectoryEntry groupContainer) {
+            DirectoryEntry newGroup = groupContainer.Children.Add("CN=" + CleanseOfInvalidChars(customerName) + " " + roleName, "group");
+            newGroup.CommitChanges();
+            customerContainer.RefreshCache();
         }
 
         /// <summary>
@@ -391,6 +426,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return userName;
         }
 
+        private DirectoryEntry FindChildOu(DirectoryEntry parent, string childOuName) {
+            try {
+                return parent.Children.Find("OU=" + CleanseOfInvalidChars(childOuName));
+            } catch {
+                return null;
+            }
+        }
+
         /// <summary>
         /// get a unique user name for AD based on the user name in the email address
         /// </summary>
@@ -431,6 +474,18 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             } else {
                 return userName;
             }
+        }
+
+        private GroupPrincipal GetSecurityGroup(PrincipalContext principal, string groupName) {
+            GroupPrincipal group = null;
+            //Regex pattern = new Regex(,\t\r ]|[\n]{2}");
+            //pattern.Replace(myString, "\n");
+            try {
+                group = GroupPrincipal.FindByIdentity(principal, CleanseOfInvalidChars(groupName));
+            } catch (Exception e) {
+                _logger.WriteInformationLog("Unabe to read security group: " + groupName, e);
+            }
+            return group;
         }
 
         /// <summary>
@@ -520,66 +575,39 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return "guest";
         }
 
-        public void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail)
-        {
-            // clear & recreate roles?  or, call isingroup and only add if necessary?  not sure...  what to do about account users?
-            // talked to jeremy, guess we are stuck doing per-customer role stuff...  
-            // will be a little messy when updating accounts or adding customers to accounts; at one point, Jeremy said we could
-            // just put them in the first customer, but since changed his story and we will be double record keeping, so need to synch
-            // CS and AD... :(  Could be slow for users with a lot of customers assigned; hopefully that isn't the common case.
-            // may fall back to what Jeremy said and just put a user in the first OU....
-            // 
-            
-            // 1st, check all groups user is in, and clear all but authenticated domain users...
-            using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
-                                                                        Configuration.ActiveDirectoryExternalServerName,
-                                                                        Configuration.ActiveDirectoryExternalRootNode,
-                                                                        ContextOptions.Negotiate,
-                                                                        Configuration.ActiveDirectoryExternalDomainUserName,
-                                                                        Configuration.ActiveDirectoryExternalPassword))
-            {
-                UserPrincipal user = UserPrincipal.FindByIdentity(principal, userEmail);
+        public bool HasAccess(string userName, string roleName) {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (roleName.Length == 0) { throw new ArgumentException("roleName is required", "roleName"); }
+            if (roleName == null) { throw new ArgumentNullException("roleName", "roleName is null"); }
 
-                if (user == null)
-                    throw new ApplicationException("Unable to read user for role assignment");
-                else
-                {
-                    // remove user from all but authenticated user roles
-                    DirectoryEntry de = (DirectoryEntry)user.GetUnderlyingObject();
-                    object groups = de.Invoke("Groups");
-                    string tmp = string.Empty;
+            try {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryExternalPassword)) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
 
-                    List<DirectoryEntry> groupsUserIsMemberOf = new List<DirectoryEntry>();
-                    foreach (object g in (IEnumerable)groups)
-                        groupsUserIsMemberOf.Add(new DirectoryEntry(g));
+                    if (user == null) { return false; }
 
-                    groupsUserIsMemberOf.Select(g => tmp += "\r\n" + g);
-                    foreach (DirectoryEntry g in groupsUserIsMemberOf)
-                    {
-                        g.Properties["member"].Remove(user.DistinguishedName);
-                        g.CommitChanges();
-                    }
-                    // then add them back to all of the new customer by role, then done
-                    if (customerNames.Count > 0)
-                    {
-                        try
-                        {
-                            de.Properties["company"].Value = customerNames.FirstOrDefault();
-                            de.CommitChanges();
-                        }
-                        catch (Exception ex)
-                        {
-                            _logger.WriteErrorLog("Updating Roles, Could not set company name.", ex);
-                            throw;
+                    bool groupFound = false;
+
+                    foreach (string g in ((DirectoryEntry)user.GetUnderlyingObject()).Properties["memberOf"]) {
+                        string groupName = g.Substring(3, (g.ToLower().IndexOf(",ou=") - 3)); // format is CN=company name role,OU=groups...
+
+                        if (groupName.Equals(roleName, StringComparison.InvariantCultureIgnoreCase)) {
+                            groupFound = true;
+                            break;
                         }
                     }
-                    foreach (string customerName in customerNames)
-                    {
-						
-                            JoinGroup(customerName, roleName, user);
-						
-                    }
+
+                    return groupFound;   
                 }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog("Could not get lookup users's role membership", ex);
+                return false;
             }
         }
 
@@ -627,82 +655,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-        private void CreateCustomerSecurityGroup(string customerName, string roleName, DirectoryEntry customerContainer, DirectoryEntry groupContainer)
-        {
-            DirectoryEntry newGroup = groupContainer.Children.Add("CN=" + CleanseOfInvalidChars(customerName) + " " + roleName, "group");
-            newGroup.CommitChanges();
-            customerContainer.RefreshCache();
-        }
-
-        private void AddUserToGroup(UserPrincipal user, string groupName, DirectoryEntry group)
-        {
-            group.Properties["member"].Add(user.DistinguishedName);
-
-            try
-            {
-                group.CommitChanges();
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", user.Name, groupName), ex);
-                throw;
-            }
-        }
-
-        private void AddUserToOu(UserPrincipal user, string groupName, DirectoryEntry ou)
-        {
-            //DirectoryEntry userInGroup = ou.Container.Add(user.GetUnderlyingObject());
-
-            try
-            {
-                ou.CommitChanges();
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", user.Name, groupName), ex);
-                throw;
-            }
-        }
-
-        private GroupPrincipal GetSecurityGroup(PrincipalContext principal, string groupName)
-        {
-            GroupPrincipal group = null;
-			//Regex pattern = new Regex(,\t\r ]|[\n]{2}");
-			//pattern.Replace(myString, "\n");
-            try
-            {
-				group = GroupPrincipal.FindByIdentity(principal, CleanseOfInvalidChars(groupName));
-            }
-            catch (Exception e)
-            {
-				_logger.WriteInformationLog("Unabe to read security group: " + groupName, e);
-            }
-            return group;
-        }
-
-		private string CleanseOfInvalidChars(string input)
-		{
-			return Regex.Replace(input, @"[""#&\[\]:\<\>+=\*/;,?@\\]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
-		}
-
-        private DirectoryEntry CreateChildOrganizationalUnit(string customerName, DirectoryEntry parent)
-        {
-			DirectoryEntry newOU = parent.Children.Add("OU=" + CleanseOfInvalidChars(customerName), "OrganizationalUnit");
-            newOU.CommitChanges();
-            parent.RefreshCache();
-            return newOU;
-        }
-
-        private DirectoryEntry FindChildOu(DirectoryEntry parent, string childOuName)
-        {
-            try
-            {
-                return parent.Children.Find("OU=" + CleanseOfInvalidChars(childOuName));
-            }
-            catch
-            {
-                return null;
-            }
+        private void SetExpiredPassword(DirectoryEntry entry, PassworedExpiredFlag status) {
+            entry.Properties["pwdLastSet"].Value = status;
+            entry.CommitChanges();
         }
 
         /// <summary>
@@ -779,7 +734,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 throw;
             }
         }
-
 
         /// <summary>
         /// the original update password method that is still used to aid in network testing
@@ -872,6 +826,60 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             } catch (Exception ex) {
                 _logger.WriteErrorLog("Could not update user", ex);
                 throw;
+            }
+        }
+
+        public void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail) {
+            // clear & recreate roles?  or, call isingroup and only add if necessary?  not sure...  what to do about account users?
+            // talked to jeremy, guess we are stuck doing per-customer role stuff...  
+            // will be a little messy when updating accounts or adding customers to accounts; at one point, Jeremy said we could
+            // just put them in the first customer, but since changed his story and we will be double record keeping, so need to synch
+            // CS and AD... :(  Could be slow for users with a lot of customers assigned; hopefully that isn't the common case.
+            // may fall back to what Jeremy said and just put a user in the first OU....
+            // 
+
+            // 1st, check all groups user is in, and clear all but authenticated domain users...
+            using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                        Configuration.ActiveDirectoryExternalServerName,
+                                                                        Configuration.ActiveDirectoryExternalRootNode,
+                                                                        ContextOptions.Negotiate,
+                                                                        Configuration.ActiveDirectoryExternalDomainUserName,
+                                                                        Configuration.ActiveDirectoryExternalPassword)) {
+                UserPrincipal user = UserPrincipal.FindByIdentity(principal, userEmail);
+
+                if (user == null)
+                    throw new ApplicationException("Unable to read user for role assignment");
+                else {
+                    // remove user from all but authenticated user roles
+                    DirectoryEntry de = (DirectoryEntry)user.GetUnderlyingObject();
+                    object groups = de.Invoke("Groups");
+                    string tmp = string.Empty;
+
+                    List<DirectoryEntry> groupsUserIsMemberOf = new List<DirectoryEntry>();
+                    foreach (object g in (IEnumerable)groups)
+                        groupsUserIsMemberOf.Add(new DirectoryEntry(g));
+
+                    groupsUserIsMemberOf.Select(g => tmp += "\r\n" + g);
+                    foreach (DirectoryEntry g in groupsUserIsMemberOf) {
+                        g.Properties["member"].Remove(user.DistinguishedName);
+                        g.CommitChanges();
+                    }
+                    // then add them back to all of the new customer by role, then done
+                    if (customerNames.Count > 0) {
+                        try {
+                            de.Properties["company"].Value = customerNames.FirstOrDefault();
+                            de.CommitChanges();
+                        } catch (Exception ex) {
+                            _logger.WriteErrorLog("Updating Roles, Could not set company name.", ex);
+                            throw;
+                        }
+                    }
+                    foreach (string customerName in customerNames) {
+
+                        JoinGroup(customerName, roleName, user);
+
+                    }
+                }
             }
         }
 
