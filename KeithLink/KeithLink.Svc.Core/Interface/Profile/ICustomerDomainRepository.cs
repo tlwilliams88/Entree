@@ -17,11 +17,15 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         
         string GetUserGroup(string userName, List<string> groupNames);
 
+        void GrantAccess(string userName, string roleName);
+
         bool HasAccess(string userName, string roleName);
 
         bool IsPasswordExpired( string emailAddress );
 
         void JoinGroup(string customerName, string roleName, UserPrincipal user);
+
+        void RevokeAccess(string userName, string roleName);
 
         void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail);
 

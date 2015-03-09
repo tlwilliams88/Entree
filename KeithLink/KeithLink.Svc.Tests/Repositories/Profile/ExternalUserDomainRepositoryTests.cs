@@ -89,6 +89,16 @@ namespace KeithLink.Svc.Test.Repositories.Profile
             Assert.IsTrue(_custUserRepo.HasAccess("sabroussard@somecompany.com", "Dev Kbit Customer"));
         }
 
+        //[TestMethod]
+        //public void SucessAddUserToGroup() {
+        //    _custUserRepo.GrantAccess("sabroussard@somecompany.com", "Dev Kbit Customer");
+        //}
+
+        //[TestMethod]
+        //public void SuccessRemoveUserFromGroup() {
+        //    _custUserRepo.RevokeAccess("sabroussard@somecompany.com", "Dev Kbit Customer");
+        //}
+
         [TestMethod]
         public void UpdateUserPasswordGood() {
             Assert.IsTrue(_custUserRepo.UpdatePassword("jeremy@jeremyschickenshack.com", "Ab12345", "Ab12345"));
