@@ -207,8 +207,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-
-
         public void ExpirePassword( string emailAddress ) {
             using (PrincipalContext boundServer = new PrincipalContext( ContextType.Domain,
                                                             Configuration.ActiveDirectoryExternalServerName,
@@ -575,6 +573,37 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return "guest";
         }
 
+        public void GrantAccess(string userName, string roleName) {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (roleName.Length == 0) { throw new ArgumentException("roleName is required", "roleName"); }
+            if (roleName == null) { throw new ArgumentNullException("roleName", "roleName is null"); }
+
+            try {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryExternalPassword)) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+                    GroupPrincipal group = GroupPrincipal.FindByIdentity(principal, IdentityType.Name, roleName);
+
+                    if (userName == null || group == null) {
+                        return;
+                    } else {
+                        DirectoryEntry groupDE = (DirectoryEntry) group.GetUnderlyingObject();
+
+                        groupDE.Properties["member"].Add(user.DistinguishedName);
+
+                        groupDE.CommitChanges();
+                    }
+                }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", userName, roleName), ex);
+            }
+        }
+
         public bool HasAccess(string userName, string roleName) {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
@@ -652,6 +681,37 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 }
                 AddUserToGroup(user, groupName, (DirectoryEntry)group.GetUnderlyingObject());
                 AddUserToOu(user, "users", userContainer);
+            }
+        }
+
+        public void RevokeAccess(string userName, string roleName) {
+            if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
+            if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
+            if (roleName.Length == 0) { throw new ArgumentException("roleName is required", "roleName"); }
+            if (roleName == null) { throw new ArgumentNullException("roleName", "roleName is null"); }
+
+            try {
+                using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
+                                                                         Configuration.ActiveDirectoryExternalServerName,
+                                                                         Configuration.ActiveDirectoryExternalRootNode,
+                                                                         ContextOptions.Negotiate,
+                                                                         Configuration.ActiveDirectoryExternalDomainUserName,
+                                                                         Configuration.ActiveDirectoryExternalPassword)) {
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, userName);
+                    GroupPrincipal group = GroupPrincipal.FindByIdentity(principal, IdentityType.Name, roleName);
+
+                    if (userName == null || group == null) {
+                        return;
+                    } else {
+                        DirectoryEntry groupDE = (DirectoryEntry)group.GetUnderlyingObject();
+
+                        groupDE.Properties["member"].Remove(user.DistinguishedName);
+
+                        groupDE.CommitChanges();
+                    }
+                }
+            } catch (Exception ex) {
+                _logger.WriteErrorLog(string.Format("Could not add user ({0}) to group ({1}).", userName, roleName), ex);
             }
         }
 
