@@ -9,17 +9,23 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName);
 
+        void ExpirePassword( string emailAddress );
+        
         string GetNewUserName(string emailAddress);
 
         UserPrincipal GetUser(string userName);
+        
+        string GetUserGroup(string userName, List<string> groupNames);
 
-        void ExpirePassword( string emailAddress );
+        void GrantAccess(string userName, string roleName);
+
+        bool HasAccess(string userName, string roleName);
 
         bool IsPasswordExpired( string emailAddress );
 
-        string GetUserGroup(string userName, List<string> groupNames);
-
         void JoinGroup(string customerName, string roleName, UserPrincipal user);
+
+        void RevokeAccess(string userName, string roleName);
 
         void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail);
 

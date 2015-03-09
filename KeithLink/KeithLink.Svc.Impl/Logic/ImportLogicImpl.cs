@@ -103,7 +103,7 @@ namespace KeithLink.Svc.Impl.Logic {
         private List<ListItemModel> parseListDelimited( ListImportFileModel file, char delimiter, UserProfile user, UserSelectedContext catalogInfo ) {
             List<ListItemModel> returnValue = new List<ListItemModel>();
 
-            var rows = file.Contents.Split( new string[] { Environment.NewLine }, StringSplitOptions.None );
+            var rows = file.Contents.Split( new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None ).Skip( file.IgnoreFirstLine ? 1 : 0 );
             returnValue = rows
                         .Skip( 1 )
                         .Where( line => !String.IsNullOrWhiteSpace( line ) )
@@ -127,7 +127,9 @@ namespace KeithLink.Svc.Impl.Logic {
                 rdr = ExcelReaderFactory.CreateOpenXmlReader( file.Stream );
             }
 
-            rdr.Read(); // Skip the first line
+            if (file.IgnoreFirstLine) {
+                rdr.Read(); // Skip the first line
+            } 
 
             while (rdr.Read()) {
                 returnValue.Add( new ListItemModel() {
@@ -184,7 +186,7 @@ namespace KeithLink.Svc.Impl.Logic {
         private List<ShoppingCartItem> ParseDelimitedFile(OrderImportFileModel file, char Delimiter, UserProfile user, UserSelectedContext catalogInfo) {
             List<ShoppingCartItem> returnValue = new List<ShoppingCartItem>() {};
 
-            var rows = file.Contents.Split( new string[] { Environment.NewLine }, StringSplitOptions.None );
+            var rows = file.Contents.Split( new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None );
             returnValue = rows
                         .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
                         .Where( line => !String.IsNullOrWhiteSpace(line) )

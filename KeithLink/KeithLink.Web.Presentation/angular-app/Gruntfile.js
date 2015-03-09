@@ -463,6 +463,7 @@ module.exports = function (grunt) {
                     apiEndpoint: '<%= config.environment.debug.apiEndpoint %>',
                     loggingEnabled: config.environment.debug.loggingEnabled,
                     googleAnalytics: '<%= config.environment.debug.googleAnalytics %>',
+                    cognosUrl: '<%= config.environment.debug.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: false
@@ -477,6 +478,7 @@ module.exports = function (grunt) {
                     apiEndpoint: '<%= config.environment.dev.apiEndpoint %>',
                     loggingEnabled: config.environment.dev.loggingEnabled,
                     googleAnalytics: '<%= config.environment.dev.googleAnalytics %>',
+                    cognosUrl: '<%= config.environment.dev.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: false
@@ -491,6 +493,7 @@ module.exports = function (grunt) {
                     apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
                     loggingEnabled: config.environment.test.loggingEnabled,
                     googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
+                    cognosUrl: '<%= config.environment.test.cognosUrl %>',
                     mobileApp: false
                   }
               }
@@ -503,6 +506,7 @@ module.exports = function (grunt) {
                     apiEndpoint: '<%= config.environment.prod.apiEndpoint %>',
                     loggingEnabled: config.environment.prod.loggingEnabled,
                     googleAnalytics: '<%= config.environment.prod.googleAnalytics %>',
+                    cognosUrl: '<%= config.environment.prod.cognosUrl %>',
                     mobileApp: false
                   }
               }
@@ -513,8 +517,9 @@ module.exports = function (grunt) {
                       name: 'stage',
                       apiKey: 'web_stage_v1',
                       apiEndpoint: 'https://shopstaging.benekeith.com/api',
+                      googleAnalytics: '<%= config.environment.stage.cognosUrl %>',
                       loggingEnabled: false,
-                      googleAnalytics: 'UA-58495303-1'
+                      cognosUrl: 'UA-58495303-1'
                   }
               }
           }

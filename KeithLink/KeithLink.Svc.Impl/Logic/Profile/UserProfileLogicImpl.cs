@@ -476,12 +476,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             string userRole = string.Empty;
             string userBranch = string.Empty;
             bool isInternalUser = IsInternalAddress( csProfile.Email );
+            UserPrincipal adUser = null;
+            bool isKbitCustomer = false;
 
             if (isInternalUser)
             {
-                UserPrincipal user = _intAd.GetUser(csProfile.Email);
-                DirectoryEntry directoryEntry = (DirectoryEntry)user.GetUnderlyingObject();
-                List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(user, Svc.Core.Constants.INTERNAL_USER_ROLES);
+                adUser = _intAd.GetUser(csProfile.Email);
+                DirectoryEntry directoryEntry = (DirectoryEntry)adUser.GetUnderlyingObject();
+                List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Svc.Core.Constants.INTERNAL_USER_ROLES);
 
                 if (internalUserRoles.Intersect( Constants.BEK_SYSADMIN_ROLES ).Count() > 0) {
                     userRole = "beksysadmin";
@@ -492,11 +494,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     dsmRole = internalUserRoles.Intersect( Constants.DSM_ROLES ).FirstOrDefault().ToString();
                     userRole = "dsm";
                     userBranch = dsmRole.Substring( 0, 3 );
-                    dsrNumber = StringExtensions.ToInt( user.Description ) != null ? user.Description : string.Empty;
+                    dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
                 } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
                     dsrRole = internalUserRoles.Intersect( Constants.DSR_ROLES ).FirstOrDefault().ToString();
                     userRole = "dsr";
-                    dsrNumber = StringExtensions.ToInt( user.Description ) != null ? user.Description : string.Empty;
+                    dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
                     userBranch = dsrRole.Substring( 0, 3 );
                 } else {
                     userRole = "guest";
@@ -505,11 +507,16 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
             else
             {
+                adUser = _extAd.GetUser(csProfile.Email);
                 userRole = GetUserRole(csProfile.Email);
                 userBranch = csProfile.DefaultBranch;
+                isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
             }
 
-			
+            string userNameToken = string.Concat(adUser.SamAccountName, "-", DateTime.Now.ToString("yyyyMMddHHmmss"));
+            byte[] tokenBytes = System.Text.Encoding.UTF8.GetBytes(userNameToken);
+            string tokenBase64 = Convert.ToBase64String(tokenBytes);
+
             return new UserProfile() {
                 UserId = Guid.Parse(csProfile.Id),
 				IsInternalUser = IsInternalAddress(csProfile.Email),
@@ -524,7 +531,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 				DSMRole = dsmRole,
 				DSRNumber = dsrNumber,
                 //UserCustomers = userCustomers,
-                ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id))
+                ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
+                UserName = adUser.SamAccountName,
+                UserNameToken = tokenBase64,
+                IsKBITCustomer = isKbitCustomer
             };
         }
 

@@ -1,0 +1,79 @@
+<html>
+
+<head>
+    <meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+    <title>KBit Authentication</title>
+</head>
+
+<body>
+
+<h3>Redirecting to KBit...</h3>
+
+<script language="JavaScript">
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+function setCookie(cookieName,cookieValue) {
+ document.cookie = cookieName+"="+escape(cookieValue);
+}
+
+function addLeadingZeros(num) {
+	if (num < 10) {
+		num = '0' + num;
+	}
+	return num
+}
+// subtract 1 day and convert today's date to same format as the passed in timestamp
+function getFormatedDate() {
+	var now = new Date();
+	now.setDate(now.getDate() - 1); // subtract one day for comparison
+	var month = (now.getMonth()+1),
+		day = now.getDate(),
+		year = now.getFullYear(),
+		hours = now.getHours(),
+		minutes = now.getMinutes(),
+		seconds = now.getSeconds();
+
+	month = addLeadingZeros(month);
+	day = addLeadingZeros(day);
+	hours = addLeadingZeros(hours);
+	minutes = addLeadingZeros(minutes);
+	seconds = addLeadingZeros(seconds);
+
+	return parseInt(year + '' + month + '' + day + '' + hours + '' + minutes + '' + seconds, 10);
+}
+
+(function() {
+   var characterSeparator = '-';
+
+   var encodedUsernameAndTimestamp = getParameterByName('username');
+   var decodedUsernameAndTimestamp = atob(encodedUsernameAndTimestamp); // decode base64 string
+   // console.log(decodedUsernameAndTimestamp);
+
+   // separate username and timestamp
+   var username = decodedUsernameAndTimestamp.substr(0, decodedUsernameAndTimestamp.indexOf(characterSeparator)),
+   	  timestamp = decodedUsernameAndTimestamp.substr(decodedUsernameAndTimestamp.indexOf(characterSeparator) + 1);
+
+   // check timestamp
+   var yesterday = getFormatedDate();
+   // console.log('yesterday: ' + yesterday);
+   // console.log('timestamp: ' + timestamp);
+
+   // valid if timestamp is more recent than yesterday
+   if (yesterday < parseInt(timestamp, 10)) {
+   	 // console.log('redirecting');
+   	 setCookie('TRUSTED_SIGNON_USER', username);
+     parent.location='index.html';
+   }
+
+})();
+
+</script>
+
+</body>
+
+</html>

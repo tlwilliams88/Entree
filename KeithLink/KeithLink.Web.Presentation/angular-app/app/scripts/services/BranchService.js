@@ -8,9 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('BranchService', ['$http', function ($http) {
-    
-  var branches;
+  .factory('BranchService', ['$http', '$q', 'localStorageService', function ($http, $q, localStorageService) {
 
   var Service = {
 
@@ -39,12 +37,19 @@ angular.module('bekApp')
     ]
     */
     getBranches: function() {
+      var deferred = $q.defer();
+
+      var branches = localStorageService.get('branches');
       if (!branches) {
-        branches = $http.get('/catalog/divisions').then(function (response) {
-          return response.data;
+        $http.get('/catalog/divisions').then(function (response) {
+          localStorageService.set('branches', response.data);
+          return deferred.resolve(response.data);
         });
+      } else {
+        deferred.resolve(branches);
       }
-      return branches;
+
+      return deferred.promise;
     }
   };
  

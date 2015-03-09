@@ -1,150 +1,20 @@
 <div page-header-bar>
   <div header-message>
-    Item Usage
+    Reports
   </div>
   <div header-buttons>
-    <button class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></button>
-    <button title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></button>    
   </div>
 </div>
 
 <div class="page-content">
   <div class="row">
-    <form id="itemUsageForm" class="item-usage-form col-md-6">
-      <div class="info-box" style="display:inline-block;">
-      <table>            
-        <tr>              
-          <td class="datepicker">
-            <label>From: </label>
-            <a
-              ng-click="openDatepickerFrom = true"
-              class="icon-calendar"
-              datepicker-popup="{{datepickerOptions.options.dateFormat}}"
-              ng-model="itemusagequery.fromDate"
-              is-open="openDatepickerFrom"
-              min-date="datepickerOptions.minDate"
-              max-date="datepickerOptions.maxDate"
-              datepicker-options="datepickerOptions.options"
-              date-disabled="disabled(date, mode)"
-              close-text="Close"></a>
-            {{itemusagequery.fromDate | formatDate}}
-          </td>
-          <td class="datepicker">
-            <label>To: </label>
-            <a
-              ng-click="openDatepickerTo = true"
-              class="icon-calendar"
-              datepicker-popup="{{datepickerOptions.options.dateFormat}}"
-              ng-model="itemusagequery.toDate"
-              is-open="openDatepickerTo"
-              min-date="datepickerOptions.minDate"
-              max-date="datepickerOptions.maxDate"
-              datepicker-options="datepickerOptions.options"
-              date-disabled="disabled(date, mode)"
-              close-text="Close"></a>
-            {{itemusagequery.toDate | formatDate}}
-          </td>
-          <td class="hidden-print">
-            <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
-          </td>
-        </tr>
-      </table>
+    <div class="col-xs-12">
+      
+      <div class="info-box" style="display: inline-block;">
+        <h3><a ng-click="openExternalLink(cognosUrl)">KBit</a></h3>
+        <h3><a ui-sref="menu.itemusagereport">Item Usage Report</a></h3>
       </div>
-    </form>
-
-  	<div class="col-xs-12 col-md-12 col-lg-9">
-  		<div class="row">
-  			<h2 class="col-xs-6">Item Usage</h2>
-        <span class="sub-content col-xs-6 text-right">{{itemusages.length}} results</span>
-  		</div>
-  		
-  		<table class="table table-striped-rows table-border">
-  			<thead>
-  				<tr>
-            <th class="sort-col-header" ng-click="sortTable('ItemNumber')">
-              Item
-              <span># <span sort-icons field="'ItemNumber'" sortorder="sortReverse" sortby="sortField"></span></span>
-            </th>
-            <th class="sort-col-header" ng-click="sortTable('Name')" >
-              <span>Name <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span></span>
-            </th>
-            <th class="hidden-mobile-visible-print">
-              Pack/Size
-            </th>
-            <th class="sort-col-header hidden-mobile-visible-print text-center" ng-click="sortTable('Each')">
-              <span>Each <span sort-icons field="'Each'" sortorder="sortReverse" sortby="sortField"></span></span>
-            </th>
-            <th class="sort-col-header hidden-mobile-visible-print text-center" ng-click="sortTable('TotalQuantityOrdered')">
-              #
-              <span>Ordered<span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span></span>
-            </th>
-            <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('TotalQuantityShipped')">
-              #
-  			       <span>Shipped <span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span></span>
-            </th>
-            <th></th>
-          </tr>
-  			</thead>
-  			<tbody>
-  				<tr ng-repeat-start="item in itemusages" ng-class="{ odd : $odd, even: $even }">
-            <td>
-              <a ng-if="item.name != 'Special Item'" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
-              <span ng-if="item.name == 'Special Item'">{{item.itemnumber}}</span>
-            </td>
-            <td>
-              {{item.name}}
-            </td>
-            <td class="hidden-mobile-visible-print">
-              {{item.packsize}}
-            </td>
-            <td class="hidden-mobile-visible-print text-center">
-              {{item.each}}
-            </td>
-            <td class="text-center hidden-mobile-visible-print">
-              {{item.totalquantityordered}}
-            </td>
-            <td class="text-center hidden-mobile-visible-print">
-              {{item.totalquantityshipped}}
-            </td>
-            <td class="large-icon icon-col">
-              <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-            </td>
-          </tr>
-          <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
-            <td colspan="5">
-              <table>
-                <colgroup>
-                  <col width="25%" />
-                  <col width="75%" />
-                </colgroup>
-                <tr>
-                  <td># Ordered</td>
-                  <td>{{item.totalquantityordered}}</td>
-                </tr>
-                <tr>
-                  <td># Shipped</td>
-                  <td>{{item.totalquantityshipped}}</td>
-                </tr>
-                <tr>
-                  <td>Pack/Size</td>
-                  <td>{{item.packsize}}</td>
-                </tr>
-                <tr>
-                  <td>Each</td>
-                  <td>{{item.each}}</td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-  			</tbody>
-  			<tfoot>
-  				<tr ng-show="itemusages.length === 0 && !loadingResults">
-  					<td colspan="8">No orders found.</td>
-  				</tr>
-  			</tfoot>
-  		</table>
-
-  		<div class="text-center" loading-spinner="loadingResults"></div>
-  	</div>
+      
+    </div>
   </div>
 </div>

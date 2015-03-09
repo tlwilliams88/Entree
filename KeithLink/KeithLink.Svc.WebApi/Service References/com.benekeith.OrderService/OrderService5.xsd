@@ -40,11 +40,13 @@
     <xs:complexContent mixed="false">
       <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" base="q1:BaseProductInfo">
         <xs:sequence>
+          <xs:element minOccurs="0" name="changeorderstatus" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="each" type="xs:boolean" />
           <xs:element minOccurs="0" name="eachyn" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="linenumber" type="xs:int" />
           <xs:element minOccurs="0" name="linetotal" type="xs:double" />
           <xs:element minOccurs="0" name="mainframestatus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="orderstatus" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="price" type="xs:double" />
           <xs:element minOccurs="0" name="quantity" type="xs:int" />
           <xs:element minOccurs="0" name="quantityordered" type="xs:int" />
@@ -52,6 +54,7 @@
           <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="storagetemp" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="substituteditemnumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="totalshippedqeight" type="xs:decimal" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>

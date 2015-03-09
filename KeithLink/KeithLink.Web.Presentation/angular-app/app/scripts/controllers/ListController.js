@@ -32,15 +32,21 @@ angular.module('bekApp')
     }
 
     function resetPage(list) {
-      $scope.selectedList = list;
+      $scope.selectedList = angular.copy(list);
+      originalList = list;
       // $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
       $scope.sortList('position', false);
-      
+
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
       }
+    }
+
+    $scope.setLabel = function(item, label) {
+      ListService.labels.push(label);
+      item.label = label;
     }
 
     // LIST INTERACTIONS
@@ -142,6 +148,9 @@ angular.module('bekApp')
 
         angular.forEach(updatedList.items, function(item, itemIndex) {
           if (item.listitemid) {
+            if (item.editLabel && item.isEditing) {
+              item.label = item.editLabel;
+            }
             item.position = item.editPosition;
             item.isEditing = false;
           }

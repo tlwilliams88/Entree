@@ -437,7 +437,7 @@
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels">
                     <option value="">Select A Label...</option>
                   </select>
-                  <a ng-click="item.isEditing = true; item.label = '';" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                  <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
 
                 <ng-form class="hidden-print bek-no-drag" name="addLabelForm" ng-show="item.isEditing">
@@ -449,9 +449,9 @@
                     focus-me="item.isEditing" 
                     placeholder="New Label..." 
                     ng-required="item.isEditing" 
-                    ng-model="item.label" />
+                    ng-model="item.editLabel" />
 
-                  <a ng-click="item.isEditing = false; item.label = item.label;"><span class="large-icon text-red icon-cross"></span></a>
+                  <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
               <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle" ng-show="selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels">
@@ -551,7 +551,7 @@
                               <option value="">Select A Label...</option>
                             </select>
                           </div>
-                          <a ng-click="item.isEditing = true; item.label = '';" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                          <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                         </div>
 
                         <ng-form 
@@ -564,8 +564,8 @@
                             class="form-control edit-label bek-no-drag" 
                             placeholder="New Label..." 
                             ng-required="item.isEditing" 
-                            ng-model="item.label" />
-                          <a ng-click="item.isEditing = false; item.label = item.label;"><span class="large-icon text-red icon-cross"></span></a>
+                            ng-model="item.editLabel" />
+                          <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
                       <td ng-if="!selectedList.permissions.canEditLabels">
