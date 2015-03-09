@@ -112,8 +112,15 @@
 }
 .custom-lists__table td {
   background-clip: padding-box; // firefox border fix for position: relative table elements
-  &.input-col input[type="text"].edit-label{
-  width: 80%;
+  input[type="text"].edit-label{
+    width: 80%;
+  }
+  .form-control.edit-label {
+    max-width: 175px;
+    display: inline-block;
+  }
+  .select-div {
+    max-width: 175px;
   }
 }
 
