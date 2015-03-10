@@ -575,16 +575,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				}
 				else
 				{
-					if (list.Type == ListType.Favorite && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
-					var existintItem = currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).FirstOrDefault();
-					if (existintItem == null)
-						currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
-					else
-					{
-						existintItem.Label = updateItem.Label;
-						existintItem.Par = updateItem.ParLevel;
-						existintItem.Position = updateItem.Position;
-					}
+					if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
+						continue;
+						
+					currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
+					
 				}
 			}
 
