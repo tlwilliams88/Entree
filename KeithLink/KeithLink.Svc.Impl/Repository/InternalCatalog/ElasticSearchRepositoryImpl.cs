@@ -45,6 +45,16 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 			return response == null ? false : response.StatusCode == System.Net.HttpStatusCode.OK;
 		}
 
+		public void RefreshSynonyms(string branchId)
+		{
+			//Close then open the index. This will cause it to see any changes made to the synonyms file
+			var requestClose = new RestRequest(string.Format("{0}/_close",branchId.ToLower()), Method.POST);
+			client.Execute(requestClose);
+
+			var requestOpen = new RestRequest(string.Format("{0}/_open", branchId.ToLower()), Method.POST);
+			client.Execute(requestOpen);
+		}
+
 		public void CreateEmptyIndex(string branchId)
 		{
 			var request = new RestRequest(branchId, Method.PUT);
@@ -64,7 +74,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 
 			dynamic filterDynamic = new { my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" } };
 			System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
-			(dynamicAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>() { "lowercase", "snowball", "my_synonym_filter" }, tokenizer = "standard" });
+			(dynamicAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>() {"my_synonym_filter", "standard", "lowercase"}, tokenizer = "whitespace" });
 
 
 			dynamic indexSettings =
@@ -87,9 +97,14 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog
 						}
 				};
 
+			var test = Newtonsoft.Json.JsonConvert.SerializeObject(indexSettings);
+
             request.RequestFormat = DataFormat.Json;
             request.AddBody(indexSettings);
 			IRestResponse res = client.Execute(request);
 		}
+
+
+		
 	}
 }

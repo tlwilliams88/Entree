@@ -13,5 +13,6 @@ namespace KeithLink.Svc.Core.Interface.InternalCatalog
 		void DeleteBranch(string branchId);
 		bool CheckIfIndexExist(string branchId);
 		void CreateEmptyIndex(string branchId);
+		void RefreshSynonyms(string branchId);
     }
 }

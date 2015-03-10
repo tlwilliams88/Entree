@@ -76,6 +76,9 @@
 }
 
 @media(max-width: $screen-sm-max) {
+  .page-header-bar .page-header-bar__message {
+    width: 100%;
+  }
   .page-subheader-bar {
     @include header-bar($color-white, 0px);
 
@@ -83,7 +86,6 @@
       padding-top: 10px;
       padding-bottom: 4px;
       display: inline-block;
-      // width: 75%;
       overflow-x: hidden;
       text-overflow: ellipsis;
     }
