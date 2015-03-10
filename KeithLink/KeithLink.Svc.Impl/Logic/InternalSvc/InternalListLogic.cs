@@ -95,7 +95,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			foreach (var item in items)
 			{
-				if (list.Type == ListType.Favorite && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
+				if ((list.Type == ListType.Favorite || list.Type == ListType.Reminder) && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
 					continue;
 
 				list.Items.Add(new ListItem() { ItemNumber = item.ItemNumber, Label = item.Label, Par = item.ParLevel });
@@ -574,8 +574,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					item.Position = updateItem.Position;
 				}
 				else
-					currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
-
+				{
+					if (list.Type == ListType.Favorite && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
+					var existintItem = currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).FirstOrDefault();
+					if (existintItem == null)
+						currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
+					else
+					{
+						existintItem.Label = updateItem.Label;
+						existintItem.Par = updateItem.ParLevel;
+						existintItem.Position = updateItem.Position;
+					}
+				}
 			}
 
 			unitOfWork.SaveChanges();
