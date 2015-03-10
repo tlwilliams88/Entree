@@ -291,7 +291,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     }
                     
                     LookupProductDetails(h.BranchId, returnOrder);
-                    if(h.OrderSystem.Equals(OrderSource.Entree.ToShortString()))
+                    if(h.OrderSystem.Equals(OrderSource.Entree.ToShortString()) && returnOrder.Items != null)
                     {
                         returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
