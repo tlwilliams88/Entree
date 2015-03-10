@@ -108,9 +108,9 @@ namespace KeithLink.Svc.Impl.ETL
 			//For right now this will use option 2
 
 
-			return new DataTable();
+			//return new DataTable();
 
-			/*
+			
 			var demoCustomerScript = "select " +
 									"	ec.CO AS BranchNumber, " +
 									"	ec.CustomerNumber, " +
@@ -170,7 +170,7 @@ namespace KeithLink.Svc.Impl.ETL
 
 
 			return PopulateDataTable(demoCustomerScript);
-			 */
+			
 		}
 
 		public DataTable ReadCSUsers()
