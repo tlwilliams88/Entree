@@ -55,22 +55,18 @@ namespace KeithLink.Svc.Impl.Repository.Cache
 
 		public void RemoveItem(string cacheGroupName, string cachePrefix, string cacheName, string key)
 		{
-            CachingProvider(cacheGroupName).RemoveData(cachePrefix, cacheName, key);
+            //CachingProvider(cacheGroupName).RemoveData(cachePrefix, cacheName, key);
 
-            ////Trigger refresh item on all servers
-            //var servers = Configuration.CacheServersEndpoints;
+            //Trigger refresh item on all servers
+            var servers = Configuration.CacheServersEndpoints;
 
-            //foreach (var server in servers)
-            //{
-            //    using (HttpClient client = new HttpClient())
-            //    {
-            //        try
-            //        {
-            //            var r = client.GetAsync(string.Format("{0}/Cache/RefreshCacheItem?cacheGroupName={1}&cachePrefix={2}&cacheName={3}&key={4}", server, cacheGroupName, cachePrefix, cacheName, key)).Result;
-            //        }
-            //        catch (Exception ex) {  }//Log?
-            //    }
-            //}
+            foreach (var server in servers) {
+                using (HttpClient client = new HttpClient()) {
+                    try {
+                        var r = client.GetAsync(string.Format("{0}/Cache/RefreshCacheItem?cacheGroupName={1}&cachePrefix={2}&cacheName={3}&key={4}", server, cacheGroupName, cachePrefix, cacheName, key)).Result;
+                    } catch (Exception ex) { }//Log?
+                }
+            }
 		}
 
 
