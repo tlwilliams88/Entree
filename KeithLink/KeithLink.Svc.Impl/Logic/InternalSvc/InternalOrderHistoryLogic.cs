@@ -291,13 +291,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     }
                     
                     LookupProductDetails(h.BranchId, returnOrder);
-                    if(h.OrderSystem.Equals(OrderSource.Entree.ToShortString()) && returnOrder.Items != null)
+                    if(returnOrder.Items != null)
                     {
                         returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
-
-					returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
-
+					
                     customerOrders.Add(returnOrder);
                 }
                 catch (Exception ex)
