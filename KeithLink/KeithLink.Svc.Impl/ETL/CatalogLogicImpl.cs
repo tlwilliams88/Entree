@@ -283,6 +283,8 @@ namespace KeithLink.Svc.Impl.ETL
 					elasticSearchRepository.CreateEmptyIndex(row.GetString("BranchId").ToLower());
 					elasticSearchRepository.MapProductProperties(row.GetString("BranchId").ToLower(), ProductMapping);
 				}
+				else
+					elasticSearchRepository.RefreshSynonyms(row.GetString("BranchId").ToLower());
 			}
 
             var dataTable = stagingRepository.ReadFullItemForElasticSearch();

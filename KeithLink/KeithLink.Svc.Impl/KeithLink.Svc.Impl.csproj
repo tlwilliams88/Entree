@@ -58,6 +58,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Demo|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Demo\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -188,6 +197,7 @@
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="ETL\InvoiceLogicImpl.cs" />
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
@@ -222,8 +232,6 @@
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
-    <Compile Include="Logic\Orders\DemoOrderHistoryRequestLogicImpl.cs" />
-    <Compile Include="Logic\Orders\DemoOrderQueueLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
@@ -520,7 +528,6 @@
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\CustomerTopicRepositoryImpl.cs" />
-    <Compile Include="Repository\Orders\DemoOrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Network\SocketListenerRepositoryImpl.cs" />
@@ -553,7 +560,7 @@
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\CatalogInternalRepositoryImpl.cs" />
     <Compile Include="Repository\InternalCatalog\ElasticSearchRepositoryImpl.cs" />
-    <Compile Include="Repository\Queue\DemoQueueRepositoryImpl.cs" />
+    <Compile Include="Repository\Queue\DemoGenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Reports\ReportRepository.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />

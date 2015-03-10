@@ -12,7 +12,7 @@ namespace KeithLink.Common.Core.Email {
             using (MailMessage msg = new MailMessage()) {
                 msg.To.Add(Configuration.FailureEmailAddress);
                 msg.From = new MailAddress(Configuration.FromEmailAddress);
-                msg.Subject = EMAIL_FAILURE_SUBJECT;
+                msg.Subject = Configuration.IsProduction ? "PRODUCTION EXCEPTION: " : "" + EMAIL_FAILURE_SUBJECT;
                 msg.Priority = MailPriority.High;
 
                 StringBuilder body = new StringBuilder();

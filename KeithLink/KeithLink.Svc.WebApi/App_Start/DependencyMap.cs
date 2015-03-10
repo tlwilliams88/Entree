@@ -84,17 +84,19 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
-			if (Configuration.IsDemoEnvironment) {
-                builder.RegisterType<DemoOrderQueueLogicImpl>().As<IOrderQueueLogic>();
-	    		builder.RegisterType<DemoQueueRepositoryImpl>().As<IGenericQueueRepository>();
-                builder.RegisterType<DemoOrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
-                builder.RegisterType<DemoOrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
-            } else {
-                builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
-    			builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-                builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
-                builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
-            }
+
+			#if DEMO
+				builder.RegisterType<DemoExternalUserDomainRepositoryImpl>().As<ICustomerDomainRepository>();
+				builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+			#else
+				builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
+				builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+			#endif
+			
+            builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
+            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
+            builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
+            
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
