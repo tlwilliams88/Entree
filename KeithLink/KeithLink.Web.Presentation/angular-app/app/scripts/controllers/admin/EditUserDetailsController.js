@@ -4,10 +4,12 @@ angular.module('bekApp')
   .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
     function ($scope, $state, $stateParams, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
 
+  var email;
   var processProfile = function(newProfile) {
     // rename email <----- NEEDS FIX ON RESPONSE TYPE
     newProfile.email = newProfile.emailaddress;
     delete newProfile.emailaddress;
+    email = newProfile.email;
 
     // rename role <----- NEEDS FIX ON RESPONSE TYPE
     newProfile.role = newProfile.rolename;
@@ -70,7 +72,9 @@ angular.module('bekApp')
 
     //pushes profile object to database
     UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
-      $scope.$parent.$parent.userProfile = newProfile;   
+      if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {
+        $scope.$parent.$parent.userProfile = newProfile;
+      }
       $scope.displayMessage('success', 'The user was successfully updated.');
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);
@@ -86,6 +90,10 @@ angular.module('bekApp')
       $scope.displayMessage('error', 'An error occurred: ' + error);
     });
   };
+
+  $scope.changeKbitAccess = function(isGrantingAccess, program) {
+    UserProfileService.changeProgramAccess(email, program, isGrantingAccess);
+  }
 
   /**********
   CUSTOMERS
