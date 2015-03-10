@@ -5,53 +5,71 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IUserProfileLogic {
+        void AddCustomerToAccount(Guid accountId, Guid customerId);
+        
+        void AddUserToCustomer(Guid customerId, Guid userId);
+        
+        AccountReturn CreateAccount(string name);
+
         void CreateBekUserProfile(string emailAddress);
-		CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId);
 
         UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId);
-        UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId );
-
+		
         UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
-        void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName);
+
+        PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
 
         //UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
-		UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false);
+        UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false);
+
+        Account GetAccount(Guid id);
+        
+        AccountReturn GetAccounts(AccountFilterModel accountFilters);
+        
+        AccountUsersReturn GetAccountUsers(Guid id);
+
+        CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId);
+
+        //CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
+        
+        Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
+
+        List<Customer> GetCustomersForExternalUser(Guid userId);
+
+        Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId);
+
+        List<Models.Messaging.ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid);
+
+        List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "");
+
+        PagedResults<Account> GetPagedAccounts(PagingModel paging);
 
         UserProfileReturn GetUserProfile(string emailAddress, bool includeTermInformation = false);
+        
         UserProfileReturn GetUserProfile(Guid userId, bool includeLastOrderDate = true);
+
+        UserProfileReturn GetUsers(UserFilterModel userFilters);
+
+        void GrantRoleAccess(string emailAddress, string roleName);
 
         bool IsInternalAddress(string emailAddress);
 
+        void RemoveUserFromAccount(Guid accountId, Guid userId);
+
+        void RemoveUserFromCustomer(Guid customerId, Guid userId);
+
+        void ResetPassword(string emailAddress);
+
+        void RevokeRoleAccess(string emailAddress, string roleName);
+
+        bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
+
         bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
-        void ResetPassword( string emailAddress );
 
         void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName);
 
-		PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
-        List<Models.Messaging.ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid);
-
-		//// admin functions
-		//CustomerReturn GetCustomers(CustomerFilterModel customerFilters);
-        Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
-
-        AccountReturn GetAccounts(AccountFilterModel accountFilters);
-
-		PagedResults<Account> GetPagedAccounts(PagingModel paging);
-
-        Account GetAccount(Guid id);
-        AccountUsersReturn GetAccountUsers(Guid id);
-        UserProfileReturn GetUsers(UserFilterModel userFilters);
-        AccountReturn CreateAccount(string name);
-
-        bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
-        void AddCustomerToAccount(Guid accountId, Guid customerId);
-        void AddUserToCustomer(Guid customerId, Guid userId);
-        void RemoveUserFromCustomer(Guid customerId, Guid userId);
-
-		List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "");
-        List<Customer> GetCustomersForExternalUser(Guid userId);
-		void RemoveUserFromAccount(Guid accountId, Guid userId);
-
-		Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId);
+        void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName);
+        
+        UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId );
     }
 }
