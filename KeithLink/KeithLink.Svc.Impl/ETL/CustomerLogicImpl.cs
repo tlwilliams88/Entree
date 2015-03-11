@@ -120,7 +120,7 @@ namespace KeithLink.Svc.Impl.ETL
                         addressProfile = ctxt.GetProfile((string)prof.Properties["GeneralInfo.preferred_address"].Value, "Address");
                     }
 
-                    AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber).FirstOrDefault();
+                    AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber && x.AddressType == org.BranchNumber).FirstOrDefault();
                     addressProfile.Properties["GeneralInfo.address_name"].Value = address.AddressName;
                     addressProfile.Properties["GeneralInfo.address_line1"].Value = address.Line1;
                     addressProfile.Properties["GeneralInfo.address_line2"].Value = address.Line2;
@@ -173,6 +173,7 @@ namespace KeithLink.Svc.Impl.ETL
             return new AddressProfiles()
             {
                 Description = row.GetString("CustomerNumber"), // use the customer number in description to look up the addy when creating the profile
+				AddressType = row.GetString("BranchNumber"), //Use AddressType for branch Id for look up when addy is created
                 AddressName = "Preferred",
                 Line1 = row.GetString("Address1"),
                 Line2 = row.GetString("Address2"),
@@ -180,6 +181,7 @@ namespace KeithLink.Svc.Impl.ETL
                 StateProvinceCode = row.GetString("State"),
                 ZipPostalCode = row.GetString("ZipCode"),
                 Telephone = row.GetString("Telephone")
+				
             };
         }
 

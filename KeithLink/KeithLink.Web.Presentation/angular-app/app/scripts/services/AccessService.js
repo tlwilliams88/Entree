@@ -112,6 +112,10 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() );
     },
 
+    canGrantAccessToOtherServices: function() {
+      return ( isSysAdmin() );
+    },
+
     canViewCustomerGroups: function() {
       return ( Service.isInternalAccountAdminUser() );
     },

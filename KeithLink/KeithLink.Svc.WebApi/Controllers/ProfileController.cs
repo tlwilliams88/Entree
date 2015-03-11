@@ -552,7 +552,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [ApiKeyedRoute("profile/{email}/access/{appname}")]
-        public OperationReturnModel<bool> GrantKbitAccess(string email, string appname) {
+        public OperationReturnModel<bool> GrantApplicationAccess(string email, string appname) {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
@@ -570,7 +570,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     retVal.SuccessResponse = false;
                     retVal.ErrorMessage = "Could not grant access to unknown application.";
                 } else {
-                    _extAd.GrantAccess(email, appRoleName);
+                    _profileLogic.GrantRoleAccess(email, appRoleName);
 
                     retVal.SuccessResponse = true;
                 }
@@ -586,7 +586,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpDelete]
         [ApiKeyedRoute("profile/{email}/access/{appname}")]
-        public OperationReturnModel<bool> RevokeKbitAccess(string email, string appname) {
+        public OperationReturnModel<bool> RevokeApplicationAccess(string email, string appname) {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
@@ -604,7 +604,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     retVal.SuccessResponse = false;
                     retVal.ErrorMessage = "Could not revoke access from unknown application.";
                 } else {
-                    _extAd.RevokeAccess(email, appRoleName);
+                    _profileLogic.RevokeRoleAccess(email, appRoleName);
 
                     retVal.SuccessResponse = true;
                 }

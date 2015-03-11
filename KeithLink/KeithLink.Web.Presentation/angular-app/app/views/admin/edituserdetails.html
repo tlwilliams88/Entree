@@ -60,6 +60,14 @@
       
       </div>
 
+      <div class="form-group" ng-if="canGrantAccessToOtherServices">
+        <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
+        <div class="col-md-4">
+          <input type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeKbitAccess(profile.iskbitcustomer, 'kbit')" />
+        </div>
+      
+      </div>
+
       <a 
         class="col-md-offset-2 btn-link" 
         confirmed-click="deleteProfile(profile)" 
