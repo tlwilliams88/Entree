@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('PhonegapListService', ['$http', '$q', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'UserProfileService', 'PricingService', 'List', 'UtilityService',
-  function($http, $q, ListService, PhonegapDbService, PhonegapLocalStorageService, UserProfileService, PricingService, List, UtilityService) {
+.factory('PhonegapListService', ['$http', '$q', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'PricingService', 'List',
+  function($http, $q, ListService, PhonegapDbService, PhonegapLocalStorageService, PricingService, List) {
 
     var originalListService = angular.copy(ListService);
 
@@ -26,9 +26,6 @@ angular.module('bekApp')
       if (navigator.connection.type === 'none') {
         console.log('getting lists from DB');
         // TEST: keep db lists up to date while online
-        // if (Service.lists) {
-        //   localStorageService.set('labels', Service.labels);
-        // }
         return PhonegapDbService.getAllItems(db_table_name_lists).then(function(data) {
           angular.copy(data, Service.lists);
           return data;
@@ -47,7 +44,6 @@ angular.module('bekApp')
           return list;
         });
       } else {
-        console.log('getting list');
         return originalListService.getList(listId);
       }
     };
@@ -85,6 +81,7 @@ angular.module('bekApp')
           list.isChanged = true;
         }
 
+        // flag new items and give them a temp id 
         list.items.forEach(function(item) {
           if (!item.listitemid) {
             item.listitemid = generateId();
@@ -194,6 +191,7 @@ angular.module('bekApp')
       }
     };
 
+    // NOT USED? 3/10/15
     Service.addMultipleItems = function(listId, items) {
       if (navigator.connection.type === 'none') {
 

@@ -45,14 +45,14 @@ angular.module('bekApp')
         tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
         return tx.executeSql("select data from " + table + ";", [], function(tx, res) {
           if (res.rows.length > 0) {
-            var lists = [];
+            var items = [];
             for (var i = 0; i < res.rows.length; i++) {
-              var list = JSON.parse(res.rows.item(i).data);
-              lists.push(list);
+              var item = JSON.parse(res.rows.item(i).data);
+              items.push(item);
             }
-            console.log('found ' + lists.length + ' lists');
+            console.log('found ' + items.length + ' items');
 
-            return deferred.resolve(lists);
+            return deferred.resolve(items);
           } else {
             return deferred.resolve(false);
           }
@@ -69,10 +69,10 @@ angular.module('bekApp')
         // tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
         return tx.executeSql("select data from " + table + " where key='" + key + "';", [], function(tx, res) {
           if (res.rows.length > 0) {
-            var list = JSON.parse(res.rows.item(0).data);
-            console.log('found list');
-            console.log(list);
-            return deferred.resolve(list);
+            var item = JSON.parse(res.rows.item(0).data);
+            console.log('found item');
+            console.log(item);
+            return deferred.resolve(item);
           } else {
             return deferred.resolve(false);
           }

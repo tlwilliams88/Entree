@@ -14,6 +14,7 @@ angular.module('bekApp')
                         "ecb":"onNotification"
                     });
                 } else {
+                    debugger;
                     window.plugins.pushNotification.register(
                     tokenHandler,
                     errorHandler,
@@ -27,14 +28,14 @@ angular.module('bekApp')
             };
 
             var sendTo = function (token) {
+                debugger;
                 var deferred = $q.defer();
 
                 var object = {};
 
                 if(device.platform === 'iOS'){
                     object.deviceos = 1;
-                }
-                if(device.platform === 'Android'){
+                } else if(device.platform === 'Android'){
                     object.deviceos = 2;
                 }
 

@@ -332,17 +332,20 @@ angular.module('bekApp')
     REPORT
     **********/
     .state('menu.reports', {
-        url: '/reports/',
-        templateUrl: 'views/reports.html',
-        controller: 'ReportsController',
-        data: {
-            authorize: 'canPayInvoices'
-        },
-        resolve: {
-            /*items: [ '$stateParams', 'ReportService', function($stateParams, ReportService) {
-              return loadItemUsage();
-            }]*/
-        }
+      url: '/reports/',
+      templateUrl: 'views/reports.html',
+      controller: 'ReportsController',
+      // data: {
+      //     authorize: 'canPayInvoices'
+      // }
+    })
+    .state('menu.itemusagereport', {
+      url: '/reports/itemusage',
+      templateUrl: 'views/itemusagereport.html',
+      controller: 'ItemUsageReportController',
+      data: {
+        authorize: 'canPayInvoices'
+      }
     })
 
     /**********

@@ -407,11 +407,16 @@ angular.module('bekApp')
         // params: allowDuplicates
         addMultipleItems: function(listId, items) {
           
-          UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
+          var newItems = [];
+          items.forEach(function(item) {
+            newItems.push({
+              itemnumber: item.itemnumber
+            });
+          });
 
           return List.addMultipleItems({
             listId: listId
-          }, items).$promise.then(function() {
+          }, newItems).$promise.then(function() {
             // TODO: favorite all items if favorites list
             toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
             return Service.getList(listId);

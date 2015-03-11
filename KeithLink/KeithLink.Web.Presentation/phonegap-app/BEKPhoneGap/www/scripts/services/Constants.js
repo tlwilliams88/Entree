@@ -15,7 +15,9 @@ angular.module('bekApp')
 
     offlineLocalStorage: {
       labels: 'labels',
-      deletedListGuids: 'deletedListGuids'
+      deletedListGuids: 'deletedListGuids',
+      shipDates: 'shipDates',
+      deletedCartGuids: 'deletedCartGuids'
     },
 
     servicelocatorUrl: '../servicelocator', // DEPRECATED
