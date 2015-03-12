@@ -171,7 +171,7 @@ namespace KeithLink.Svc.Core.Extensions
 					return string.Format("{0}.EndsWith({1})", propertyExpression, formattedValue);
 				case Operator.Contains:
 					CheckForStringTypeOperator(propertyExpression, fieldType, Operator.Contains);
-					return string.Format("{0}.ToUpper().Contains({1})", propertyExpression, formattedValue.ToUpper());
+					return string.Format("({0} != null AND {0}.ToUpper().Contains({1}))", propertyExpression, formattedValue.ToUpper());
 				case Operator.NotContains:
 					CheckForStringTypeOperator(propertyExpression, fieldType, Operator.NotContains);
 					return string.Format("!{0}.ToUpper().Contains({1})", propertyExpression, formattedValue.ToUpper());
