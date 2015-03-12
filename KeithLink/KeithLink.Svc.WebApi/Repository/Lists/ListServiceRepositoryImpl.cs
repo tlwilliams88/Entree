@@ -157,5 +157,11 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 				return null;
 			return list.ToList();
 		}
+
+
+		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
+		{
+			return serviceClient.ReadPagedList(user, catalogInfo, Id, paging);
+		}
 	}
 }

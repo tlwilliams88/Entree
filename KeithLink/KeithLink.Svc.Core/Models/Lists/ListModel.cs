@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "UserList")]
-    public class ListModel
+    public class ListModel: ICloneable
     {
         [DataMember(Name = "listid")]
         public long ListId { get; set; }
@@ -56,8 +56,57 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		[DataMember]
 		public ListType Type { get; set; }
-			
 
+		object ICloneable.Clone()
+		{
+			return this.Clone();
+		}
+
+		public ListModel Clone()
+		{
+			var clonedList = new ListModel()
+			{
+				BranchId = this.BranchId,
+				IsContractList = this.IsContractList,
+				IsFavorite = this.IsFavorite,
+				IsMandatory = this.IsMandatory,
+				IsRecommended = this.IsRecommended,
+				IsReminder = this.IsReminder,
+				IsShared = this.IsShared,
+				IsSharing = this.IsSharing,
+				IsWorksheet = this.IsWorksheet,
+				ListId = this.ListId,
+				Name = this.Name,
+				ReadOnly = this.ReadOnly,
+				SharedWith = this.SharedWith,
+				Type = this.Type,
+				Items = new List<ListItemModel>()
+			};
+
+			if(this.Items != null)
+				foreach (var item in this.Items)
+				{
+					clonedList.Items.Add(new ListItemModel() { 
+						ListItemId = item.ListItemId,
+						Name = item.Name,
+						ItemNumber = item.ItemNumber,
+						PackSize = item.PackSize,
+						Label = item.Label,
+						ParLevel = item.ParLevel,
+						Position = item.Position,
+						StorageTemp = item.StorageTemp,
+						Category = item.Category,
+						FromDate = item.FromDate,
+						ToDate = item.ToDate,
+						CreatedUtc = item.CreatedUtc,
+						ModifiedUtc = item.ModifiedUtc,
+						CasePrice = item.CasePrice,
+						PackagePrice = item.PackagePrice
+					});
+				}
+
+			return clonedList;
+		}
 	}
 }
 

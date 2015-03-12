@@ -17,43 +17,43 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[Description("Item")]
 		public string ItemNumber { get; set; }
 
-		[DataMember(Name = "description")]
+		[DataMember(Name = "description", EmitDefaultValue = false)]
 		public string Description { get; set; }
 
-		[DataMember(Name = "nonstock")]
+		[DataMember(Name = "nonstock", EmitDefaultValue = false)]
 		public string NonStock { get; set; }
 
-		[DataMember(Name = "caseprice")]
+		[DataMember(Name = "caseprice", EmitDefaultValue = false)]
 		[Description("Price")]
 		public string CasePrice { get; set; }
 
         [IgnoreDataMember]
         public double CasePriceNumeric { get; set; }
 
-		[DataMember(Name = "packageprice")]
+		[DataMember(Name = "packageprice", EmitDefaultValue = false)]
 		public string PackagePrice { get; set; }
 
-		[DataMember(Name = "replacementitem")]
+		[DataMember(Name = "replacementitem", EmitDefaultValue = false)]
 		public string ReplacementItem { get; set; }
 
-		[DataMember(Name = "replaceditem")]
+		[DataMember(Name = "replaceditem", EmitDefaultValue = false)]
 		public string ReplacedItem { get; set; }
 
-		[DataMember(Name = "childnutrition")]
+		[DataMember(Name = "childnutrition", EmitDefaultValue = false)]
 		public string ChildNutrition { get; set; }
 
-		[DataMember(Name = "brand")]
+		[DataMember(Name = "brand", EmitDefaultValue = false)]
 		[Description("Brand")]
 		public string Brand { get; set; }
 
-        [DataMember(Name = "brand_extended_description")]
+		[DataMember(Name = "brand_extended_description", EmitDefaultValue = false)]
 		[Description("Brand")]
         public string BrandExtendedDescription { get; set; }
 
-        [DataMember(Name = "brand_control_label")]
+		[DataMember(Name = "brand_control_label", EmitDefaultValue = false)]
         public string BrandControlLabel { get; set; }
 
-		[DataMember(Name = "name")]
+		[DataMember(Name = "name", EmitDefaultValue = false)]
 		[Description("Name")]
 		public string Name { get; set; }
 
@@ -64,45 +64,45 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[Description("Note")]
 		public string Notes { get; set; }
 
-        [DataMember(Name = "catchweight")]
+		[DataMember(Name = "catchweight", EmitDefaultValue = false)]
 		[Description("Catch Weight")]
         public bool CatchWeight { get; set; }
 
-        [DataMember(Name = "sellsheet")]
+		[DataMember(Name = "sellsheet", EmitDefaultValue = false)]
         public string SellSheet { get; set; }
 
-        [DataMember(Name="deviatedcost")]
+		[DataMember(Name = "deviatedcost", EmitDefaultValue = false)]
         public string DeviatedCost { get; set; }
 
-        [DataMember(Name = "temp_zone")]
+		[DataMember(Name = "temp_zone")]
         public string TempZone { get; set; }
 
-		[DataMember(Name = "categoryId")]
+		[DataMember(Name = "categoryId", EmitDefaultValue = false)]
 		[Description("Category")]
 		public string CategoryId { get; set; }
 
-		[DataMember(Name = "categoryname")]
+		[DataMember(Name = "categoryname", EmitDefaultValue = false)]
 		[Description("Category Desc")]
 		public string CategoryName { get; set; }
 
-		[DataMember(Name = "class")]
+		[DataMember(Name = "class", EmitDefaultValue = false)]
 		[Description("Class")]
 		public string ItemClass { get; set; }
 
-		[DataMember(Name = "vendor_num")]
+		[DataMember(Name = "vendor_num", EmitDefaultValue = false)]
 		[Description("Vendor Item #")]
 		public string VendorItemNumber { get; set; }
 
-		[DataMember(Name = "upc")]
+		[DataMember(Name = "upc", EmitDefaultValue = false)]
 		public string UPC { get; set; }
 
-		[DataMember(Name = "size")]
+		[DataMember(Name = "size", EmitDefaultValue = false)]
 		public string Size { get; set; }
 
-		[DataMember(Name = "pack")]
+		[DataMember(Name = "pack", EmitDefaultValue = false)]
 		public string Pack
 		{
-			get { return string.IsNullOrEmpty(pack) ? string.Empty : pack.TrimStart(new char[] { '0' }); }
+			get { return string.IsNullOrEmpty(pack) ? null : pack.TrimStart(new char[] { '0' }); }
 			set { pack = value; }
 		}
 
@@ -110,25 +110,25 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[Description("Pack/Size")]
         public string PackSize { get { return string.Format("{0} / {1}", this.Pack, this.Size); } set { } }
 
-		[DataMember(Name = "cases")]
+		[DataMember(Name = "cases", EmitDefaultValue = false)]
 		[Description("Cases")]
 		public string Cases { get; set; }
 
-		[DataMember(Name = "nutritional")]
+		[DataMember(Name = "nutritional", EmitDefaultValue = false)]
 		public Nutritional Nutritional { get; set; }
 
-		[DataMember(Name = "kosher")]
+		[DataMember(Name = "kosher", EmitDefaultValue = false)]
 		public string Kosher { get; set; }
 
-		[DataMember(Name = "manufacturer_number")]
+		[DataMember(Name = "manufacturer_number", EmitDefaultValue = false)]
 		[Description("Manufacturer Number")]
 		public string ManufacturerNumber { get; set; }
 
-		[DataMember(Name = "manufacturer_name")]
+		[DataMember(Name = "manufacturer_name", EmitDefaultValue = false)]
 		[Description("Manufacturer Name")]
 		public string ManufacturerName { get; set; }
 
-        [DataMember(Name = "average_weight")]
+		[DataMember(Name = "average_weight", EmitDefaultValue = false)]
         [Description("Average Weight")]
         public double AverageWeight { get; set; }
     }

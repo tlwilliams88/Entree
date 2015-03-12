@@ -296,6 +296,9 @@ namespace KeithLink.Svc.Impl.Logic.Export
 
 		private string GetFieldValue(object item, PropertyInfo property)
 		{
+			if (item == null)
+				return string.Empty;
+
 			var value = property.GetValue(item);
 			if (value == null)
 				return string.Empty;

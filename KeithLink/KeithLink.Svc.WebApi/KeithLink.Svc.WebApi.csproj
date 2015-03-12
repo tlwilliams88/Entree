@@ -228,6 +228,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Profile.Dsr.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.OrderHeader.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Lists.PagedListModel.datasource" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
@@ -308,6 +309,9 @@
     <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
     <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.ListService\ListServcie7.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie71.xsd">
       <SubType>Designer</SubType>
     </None>
