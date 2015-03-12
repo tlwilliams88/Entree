@@ -28,7 +28,6 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
   ListPagingModel.prototype = {
 
     loadList: function(appendData) {
-      console.log('loading items')
       var setData = this.setListItems;
       if (appendData) {
         setData = this.appendListItems;
@@ -79,7 +78,6 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
     },
 
     filterListItems: function(searchTerm) {
-      console.log('filter items')
       this.searchTerm = searchTerm;
       this.pageIndex = 0;
       this.loadList();
@@ -99,14 +97,12 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
     },
 
     sortListItems: function(sort) {
-      console.log('sort items')
       this.pageIndex = 0;
       this.sort = sort;
       this.loadList();
     },
 
     loadMoreData: function(results, total, loading, deletedItems) {
-      console.log('load more items')
       if ( (!results || (results.length + deletedItems.length) < total) && !loading ) {
         this.pageIndex += this.pageSize;
         this.loadList(true);

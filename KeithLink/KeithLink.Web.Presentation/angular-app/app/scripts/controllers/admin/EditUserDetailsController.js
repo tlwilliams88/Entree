@@ -93,7 +93,7 @@ angular.module('bekApp')
 
   $scope.changeKbitAccess = function(isGrantingAccess, program) {
     UserProfileService.changeProgramAccess(email, program, isGrantingAccess);
-  }
+  };
 
   /**********
   CUSTOMERS
