@@ -10,11 +10,10 @@ angular.module('bekApp')
                     successHandler,
                     errorHandler,
                     {
-                        "senderID":"replace_with_sender_id",
+                        "senderID":"918254462216",
                         "ecb":"onNotification"
                     });
-                } else {
-                    debugger;
+                } else {                    
                     window.plugins.pushNotification.register(
                     tokenHandler,
                     errorHandler,
@@ -27,8 +26,7 @@ angular.module('bekApp')
                 }
             };
 
-            var sendTo = function (token) {
-                debugger;
+            var sendTo = function (token) {                
                 var deferred = $q.defer();
 
                 var object = {};
