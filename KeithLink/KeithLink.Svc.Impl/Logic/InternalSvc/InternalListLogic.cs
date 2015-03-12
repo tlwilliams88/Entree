@@ -247,7 +247,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).ToList());
 			var pricesEndTime = DateTime.Now;
 
-			eventLogRepository.WriteInformationLog(string.Format("Lookup Details for List {0}. ItemCount: {1}, ProductInfo Took: {2}, Prices Took: {3}", list.ListId, list.Items.Count, (productEndTime - productStartTime).ToString("h'h 'm'm 's's'"), (pricesEndTime - pricesStartTime).ToString("h'h 'm'm 's's'")));
+			eventLogRepository.WriteInformationLog(string.Format("Lookup Details for List {0}. ItemCount: {1}, ProductInfo Took: {2}, Prices Took: {3}", list.ListId, list.Items.Count, (productEndTime - productStartTime).ToString("h'h 'm'm 's's 'fff'ms'"), (pricesEndTime - pricesStartTime).ToString("h'h 'm'm 's's 'fff'ms'")));
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
 			var priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
