@@ -73,7 +73,7 @@ angular.module('bekApp')
         var carts = results[2];
         var shipDates = results[3];
 
-        debugger;
+        
         clearOfflineStorageTables().then(function() {
           saveAllItems(lists, db_table_name_lists, 'listid');
           PhonegapLocalStorageService.setLabels(labels);  
