@@ -400,7 +400,7 @@
            
             <tr ng-class="{ odd : $odd, even: $even}">
               <td class="hidden-drag bek-drag-handle large-icon icon-col">
-                <input type="checkbox" class="hidden-print bek-no-drag" ng-model="item.isSelected" no-dirty-check>
+                <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model="item.isSelected" no-dirty-check>
                 <span style="font-size:11px;">
                   {{item.position}}
                 </span>
@@ -437,7 +437,7 @@
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels">
                     <option value="">Select A Label...</option>
                   </select>
-                  <a ng-click="item.isEditing = true; item.label = '';" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                  <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
 
                 <ng-form class="hidden-print bek-no-drag" name="addLabelForm" ng-show="item.isEditing">
@@ -449,9 +449,9 @@
                     focus-me="item.isEditing" 
                     placeholder="New Label..." 
                     ng-required="item.isEditing" 
-                    ng-model="item.label" />
+                    ng-model="item.editLabel" />
 
-                  <a ng-click="item.isEditing = false; item.label = item.label;"><span class="large-icon text-red icon-cross"></span></a>
+                  <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
               <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle" ng-show="selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels">
@@ -491,15 +491,15 @@
               <td class="list-print-column">|</td>
 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
-                <div 
-                  ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder" 
+                <div               
+                  ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
                   context-menu-template
                   class="context-menu-template context-menu__in-list hidden-print"
                 >
                   <a class="icon-plus2"></a>
                 </div>
 
-                <a ng-if="selectedList.permissions.canDeleteItems" class="hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+                <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
                 
                 <span 
                   ng-if="!listSearchTerm && selectedList.permissions.canReorderItems" 
@@ -551,7 +551,7 @@
                               <option value="">Select A Label...</option>
                             </select>
                           </div>
-                          <a ng-click="item.isEditing = true; item.label = '';" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                          <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                         </div>
 
                         <ng-form 
@@ -564,8 +564,8 @@
                             class="form-control edit-label bek-no-drag" 
                             placeholder="New Label..." 
                             ng-required="item.isEditing" 
-                            ng-model="item.label" />
-                          <a ng-click="item.isEditing = false; item.label = item.label;"><span class="large-icon text-red icon-cross"></span></a>
+                            ng-model="item.editLabel" />
+                          <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
                       <td ng-if="!selectedList.permissions.canEditLabels">

@@ -21,6 +21,7 @@ module.exports = function(grunt) {
             'org.apache.cordova.console',
             'org.apache.cordova.inappbrowser',
             'https://github.com/wildabeast/BarcodeScanner.git'
+            // ,'https://github.com/brodysoft/Cordova-SQLitePlugin.git'
         ],
         maxBuffer: 500,
         platforms: ['ios', 'android'],

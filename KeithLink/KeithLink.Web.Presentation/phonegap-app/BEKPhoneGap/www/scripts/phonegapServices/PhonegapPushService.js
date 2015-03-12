@@ -10,10 +10,10 @@ angular.module('bekApp')
                     successHandler,
                     errorHandler,
                     {
-                        "senderID":"replace_with_sender_id",
+                        "senderID":"918254462216",
                         "ecb":"onNotification"
                     });
-                } else {
+                } else {                    
                     window.plugins.pushNotification.register(
                     tokenHandler,
                     errorHandler,
@@ -26,15 +26,14 @@ angular.module('bekApp')
                 }
             };
 
-            var sendTo = function (token) {
+            var sendTo = function (token) {                
                 var deferred = $q.defer();
 
                 var object = {};
 
                 if(device.platform === 'iOS'){
                     object.deviceos = 1;
-                }
-                if(device.platform === 'Android'){
+                } else if(device.platform === 'Android'){
                     object.deviceos = 2;
                 }
 

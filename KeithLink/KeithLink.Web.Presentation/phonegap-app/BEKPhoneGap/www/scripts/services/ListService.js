@@ -131,6 +131,13 @@ angular.module('bekApp')
         lists: [],
         labels: [],
 
+        updateListPermissions: updateListPermissions,
+
+        eraseCachedLists: function() {
+          Service.lists = [];
+          Service.labels = [];
+        },
+
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
@@ -175,7 +182,10 @@ angular.module('bekApp')
         },
 
         findListById: function(listId) {
-          return UtilityService.findObjectByField(Service.lists, 'listid', parseInt(listId));
+          if (!isNaN(parseInt(listId))) {
+            listId = parseInt(listId);
+          }
+          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
         },
 
         /********************
@@ -202,11 +212,8 @@ angular.module('bekApp')
         /********************
         EDIT LIST
         ********************/
-
-        // items: accepts null, item object, or array of item objects
-        // params: isMandatory param for creating mandatory list
-        // returns promise and new list object
-        createList: function(items, params) {
+        
+        beforeCreateList: function(items, params) {
           if (!params) {
             params = {};
           }
@@ -224,12 +231,28 @@ angular.module('bekApp')
           // remove irrelevant properties from items
           UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
 
+          newList.items.forEach(function(item) {
+            item.position = 0;
+          });
+
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';
           } else if (params.isRecommended === true) {
             newList.name = 'Recommended';
           } else {
             newList.name = UtilityService.generateName('List', Service.lists);
+          }
+          
+          return newList;
+        },
+
+        // items: accepts null, item object, or array of item objects
+        // params: isMandatory param for creating mandatory list
+        // returns promise and new list object
+        createList: function(items, params) {
+          var newList = Service.beforeCreateList(items, params);
+          if (!params) {
+            params = {};
           }
           
           return List.save(params, newList).$promise.then(function(response) {
@@ -384,11 +407,16 @@ angular.module('bekApp')
         // params: allowDuplicates
         addMultipleItems: function(listId, items) {
           
-          UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
+          var newItems = [];
+          items.forEach(function(item) {
+            newItems.push({
+              itemnumber: item.itemnumber
+            });
+          });
 
           return List.addMultipleItems({
             listId: listId
-          }, items).$promise.then(function() {
+          }, newItems).$promise.then(function() {
             // TODO: favorite all items if favorites list
             toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
             return Service.getList(listId);

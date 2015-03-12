@@ -51,7 +51,7 @@ angular.module('bekApp')
   $scope.roles = ['owner', 'accounting', 'approver', 'buyer', 'guest'];
 
   processProfile(userProfile);
-  customerPagingModel.loadCustomers(),
+  customerPagingModel.loadCustomers();
 
   /**********
   FORM EVENTS

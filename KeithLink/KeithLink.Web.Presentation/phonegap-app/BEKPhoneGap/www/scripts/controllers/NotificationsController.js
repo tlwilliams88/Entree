@@ -4,15 +4,17 @@ angular.module('bekApp')
   .controller('NotificationsController', ['$scope', '$modal', 'NotificationService', 'PagingModel',
     function ($scope, $modal, NotificationService, PagingModel) {
 
+  function markMessagesRead(messages) {
+    NotificationService.updateUnreadMessages(angular.copy(messages));
+  }
   function setNotifications(data) {
     $scope.notifications = data.results;
     $scope.totalNotifications = data.totalResults;
-
-    // mark messages read
-    NotificationService.updateUnreadMessages(angular.copy(data.results));
+    markMessagesRead(data.results);
   }
   function appendNotifications(data) {
     $scope.notifications = $scope.notifications.concat(data.results);
+    markMessagesRead(data.results);
   }
   function startLoading() {
     $scope.loadingResults = true;
