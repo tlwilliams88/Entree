@@ -151,12 +151,12 @@ angular.module('bekApp')
         console.log('updating carts after back online');
 
         PhonegapDbService.getAllItems(db_table_name_carts).then(function(storedCarts) {
-          debugger;
+         
           var promises = [];
           angular.forEach(storedCarts, function(cart, index) {
             
             if (cart.isNew) { // create carts
-              debugger;
+             
               var newItems = [];
               cart.items.forEach(function(item) {
                 if (item.itemnumber) {
@@ -191,7 +191,7 @@ angular.module('bekApp')
             promises.push(Service.deleteMultipleCarts(deletedCartGuids));
           }
 
-          debugger;
+          
           $q.all(promises).then(function() {
             console.log('carts updated!');
             

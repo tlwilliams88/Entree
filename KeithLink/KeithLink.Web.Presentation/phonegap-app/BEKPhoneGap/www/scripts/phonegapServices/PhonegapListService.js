@@ -208,7 +208,7 @@ angular.module('bekApp')
           updatedList.isChanged = true;
         }
         // TEST: does this update Service.lists?
-        debugger;
+       
 
         PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
 
@@ -239,12 +239,12 @@ angular.module('bekApp')
       console.log('updating lists after back online');
       
       PhonegapDbService.getAllItems(db_table_name_lists).then(function(storedLists) {
-        debugger;
+       
         var promises = [];
         angular.forEach(storedLists, function(list, index) {
           
           if (list.isNew) { // create lists
-            debugger;
+            
             var newItems = [];
             list.items.forEach(function(item) {
               if (item.itemnumber) {
@@ -280,7 +280,7 @@ angular.module('bekApp')
           promises.push(Service.deleteMultipleLists(deletedListGuids));
         }
 
-        debugger;
+        
         $q.all(promises).then(function() {
           console.log('lists updated!');
           
