@@ -138,6 +138,20 @@ angular.module('bekApp')
           Service.labels = [];
         },
 
+        updateCache: function(list) {
+          // update new list in cache object
+          var cacheList = angular.copy(list);
+          cacheList.items = null;
+
+          var existingList = UtilityService.findObjectByField(Service.lists, 'listid', cacheList.listid);
+          if (existingList) {
+            var idx = Service.lists.indexOf(existingList);
+            angular.copy(cacheList, Service.lists[idx]);
+          } else {
+            Service.lists.push(cacheList);
+          }
+        },
+
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
@@ -159,7 +173,7 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getList: function(listId) {
+        getListWithItems: function(listId) {
           return $http.get('/list/' + listId).then(function(response) {
             var list = response.data;
             if (!list) {
@@ -168,14 +182,36 @@ angular.module('bekApp')
             PricingService.updateCaculatedFields(list.items);
             updateListPermissions(list);
 
-            // update new list in cache object
-            var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
-            if (existingList) {
-              var idx = Service.lists.indexOf(existingList);
-              angular.copy(list, Service.lists[idx]);
-            } else {
-              Service.lists.push(list);
+            Service.updateCache(list);
+
+            return list;
+          });
+        },
+
+        // accepts listId (guid), paging params
+        // returns paged list object
+        getList: function(listId, params) {
+          if (!params) {
+            params = {
+              size: 30,
+              from: 0
+            };
+          }
+          return $http.post('/list/' + listId, params).then(function(response) {
+            var list = response.data;
+            if (!list) {
+              return $q.reject('No list found.');
             }
+            
+            // transform paged data
+            list.itemCount = list.items.totalResults;
+            list.items = list.items.results;
+
+            // get calculated fields
+            PricingService.updateCaculatedFields(list.items);
+            updateListPermissions(list);
+
+            Service.updateCache(list);
 
             return list;
           });
