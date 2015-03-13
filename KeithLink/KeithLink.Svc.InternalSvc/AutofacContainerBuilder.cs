@@ -1,4 +1,6 @@
-﻿#region using__common
+﻿#define DEMO
+
+#region using__common
 using System;
 using System.Collections.Generic;
 using System.Linq;

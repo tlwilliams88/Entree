@@ -28,6 +28,11 @@
           <FullPath>ETLProcess_RELEASE.dtsx</FullPath>
           <References />
         </DtsPackage>
+        <DtsPackage FormatVersion="0">
+          <Name>ETLProcess_DEMO.dtsx</Name>
+          <FullPath>ETLProcess_DEMO.dtsx</FullPath>
+          <References />
+        </DtsPackage>
       </DTSPackages>
     </Manifest>
   </DeploymentModelSpecificContent>
