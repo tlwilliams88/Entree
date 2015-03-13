@@ -91,8 +91,8 @@
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <span>INVOICE #</span>
-            <a ng-if="order.invoicenumber !== 'Pending' && order.invoicenumber !== 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
-            <a ng-if="order.invoicenumber === 'Pending' || order.invoicenumber === 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">{{order.invoicenumber}}</a>
+            <a ng-if="order.invoicenumber !== 'Pending' && order.invoicenumber !== 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
+            <a ng-if="order.invoicenumber === 'Pending' || order.invoicenumber === 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">

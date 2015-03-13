@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService',
-    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'carts', 'lists', 'changeOrders', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel',
+    function ($scope, $state, $stateParams, $filter, carts, lists, changeOrders, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel) {
     
     // redirect to url with correct parameters
     var basketId;
@@ -23,6 +23,19 @@ angular.module('bekApp')
       $scope.getItemCount($scope.selectedCart, $scope.selectedList);
     }
 
+   function setSelectedList(list) {
+      $scope.selectedList = list;
+    }
+    function appendListItems(list) {
+      $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
+    }
+    function startLoading() {
+      $scope.loadingResults = true;
+    }
+    function stopLoading() {
+      $scope.loadingResults = false;
+    }
+
     function init() {
       
       $scope.carts = carts;
@@ -31,7 +44,7 @@ angular.module('bekApp')
       $scope.shipDates = CartService.shipDates;
       $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
       
-      $scope.selectedList = selectedList;
+      setSelectedList(selectedList);
       if ($stateParams.cartId === 'New') { 
         $scope.createNewCart();
       } else if (selectedCart) {
@@ -42,22 +55,46 @@ angular.module('bekApp')
         $scope.createNewCart();
       }
 
-      $scope.sortBy = 'position';
-      $scope.sortOrder = false;
-
       for (var i = 0; i < $scope.selectedList.items.length; i++) {
         $scope.$watch('selectedList.items[' + i + '].quantity', onQuantityChange);
       }
     }
 
-    // INFINITE SCROLL
-    var itemsPerPage = Constants.infiniteScrollPageSize;
-    $scope.itemsToDisplay = itemsPerPage;
-    $scope.infiniteScrollLoadMore = function() {
-      if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
-        $scope.itemsToDisplay += itemsPerPage;
-      }
+    $scope.sort = {
+      field: 'position',
+      sortDescending: false
     };
+    var listPagingModel = new ListPagingModel( 
+      selectedList.listid,
+      setSelectedList,
+      appendListItems,
+      startLoading,
+      stopLoading,
+      $scope.sort
+    );
+
+    /**********
+    PAGING
+    **********/
+
+    $scope.filterItems = function(filterFields) {
+      listPagingModel.filterListItemsByMultipleFields(filterFields);
+    };
+    $scope.clearFilters = function() {
+      $scope.filterFields = {};
+      listPagingModel.clearFilters();
+    };
+    $scope.sortList = function(sortBy, sortOrder) {
+      $scope.sort = {
+        field: sortBy,
+        sortDescending: sortOrder
+      };
+      listPagingModel.sortListItems($scope.sort);
+    };
+    $scope.infiniteScrollLoadMore = function() {
+      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, []);
+    };
+
 
     $scope.getListItemsWithQuantity = function(listItems) {
       return $filter('filter')(listItems, function(value, index) {
@@ -86,9 +123,9 @@ angular.module('bekApp')
       }
     };
 
-    $scope.sortByPrice = function(item) {
-      return item.each ? item.packageprice : item.caseprice;
-    };
+    // $scope.sortByPrice = function(item) {
+    //   return item.each ? item.packageprice : item.caseprice;
+    // };
 
     $scope.createNewCart = function() {
       var cart = {};

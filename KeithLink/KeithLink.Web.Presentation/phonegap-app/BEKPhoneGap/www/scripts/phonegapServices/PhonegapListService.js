@@ -235,6 +235,32 @@ angular.module('bekApp')
     //     }
     // }
 
+    Service.getCriticalItemsLists = function() {
+      debugger;
+      if (navigator.connection.type === 'none') {
+        var deferred = $q.defer();
+        PhonegapDbService.getAllItems(db_table_name_lists).then(function(lists) {
+          
+          // find mandatory and reminder lists
+          var criticalItems = [];
+          lists.forEach(function(list) {
+            if (list.ismandatory) {
+              criticalItems.push(list);
+            } else if (list.isreminder) {
+              criticalItems.push(list);
+            }
+          });
+
+          deferred.resolve(criticalItems);
+        }, function(err) {
+          deferred.reject(err);
+        });
+        return deferred.promise;
+      } else {
+        return originalListService.getCriticalItemsList();
+      }
+    };
+
     Service.updateListsFromLocal = function() {
       console.log('updating lists after back online');
       

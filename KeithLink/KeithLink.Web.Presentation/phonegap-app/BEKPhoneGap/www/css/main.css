@@ -9050,38 +9050,50 @@ form.style-validation-errors .form-error-message {
 }
 /* line 67, ../scss/components/_user-bar.scss */
 .user-bar-mobile .logo-mobile {
-  height: 45px;
-  padding-bottom: 5px;
+  height: 50px;
+  padding: 5px 0;
   display: inline-block;
 }
-/* line 73, ../scss/components/_user-bar.scss */
+/* line 72, ../scss/components/_user-bar.scss */
+.user-bar-mobile .logo-mobile.logo-margin-left {
+  margin-left: 45px;
+}
+/* line 77, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul {
   padding: 0;
   float: right;
   margin: 0;
 }
-/* line 78, ../scss/components/_user-bar.scss */
+/* line 82, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a, .user-bar-mobile ul .nav-tabs li a:hover, .nav-tabs li .user-bar-mobile ul a:hover {
   font-size: 24px;
   color: #9E987E;
   text-decoration: none;
 }
-/* line 82, ../scss/components/_user-bar.scss */
+/* line 86, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a li, .user-bar-mobile ul .nav-tabs li a:hover li, .nav-tabs li .user-bar-mobile ul a:hover li {
   display: inline-block;
-  padding: 3px 10px 8px 10px;
+  padding: 8px 10px;
 }
-/* line 89, ../scss/components/_user-bar.scss */
+/* line 93, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.left-mobile-menu {
   float: left;
 }
-/* line 97, ../scss/components/_user-bar.scss */
+/* line 96, ../scss/components/_user-bar.scss */
+.user-bar-mobile ul.left-mobile-menu a li, .user-bar-mobile ul.left-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.left-mobile-menu a:hover li {
+  border-right: 1px solid #c3bc9c;
+}
+/* line 101, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.right-mobile-menu {
   float: right;
 }
+/* line 105, ../scss/components/_user-bar.scss */
+.user-bar-mobile ul.right-mobile-menu a li, .user-bar-mobile ul.right-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.right-mobile-menu a:hover li {
+  border-left: 1px solid #c3bc9c;
+}
 
 @media (max-width: 991px) {
-  /* line 108, ../scss/components/_user-bar.scss */
+  /* line 113, ../scss/components/_user-bar.scss */
   .hide-searchbar {
     display: none;
   }
@@ -9120,7 +9132,7 @@ form.style-validation-errors .form-error-message {
   bottom: -22px;
   left: 9px;
 }
-/* line 11, ../scss/components/_page-header-bar.scss */
+/* line 7, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header-bar__message {
   font-size: 25px;
   font-weight: 300;
@@ -9131,13 +9143,13 @@ form.style-validation-errors .form-error-message {
   padding-left: 15px;
   padding-right: 15px;
 }
-/* line 23, ../scss/components/_page-header-bar.scss */
+/* line 18, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header-bar__message form input {
   display: inline-block;
   width: 70%;
   vertical-align: middle;
 }
-/* line 31, ../scss/components/_page-header-bar.scss */
+/* line 26, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header-bar__actions {
   padding-left: 15px;
   padding-right: 15px;
@@ -9145,11 +9157,11 @@ form.style-validation-errors .form-error-message {
   display: inline-block;
   vertical-align: middle;
 }
-/* line 39, ../scss/components/_page-header-bar.scss */
+/* line 34, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header__buttons {
   display: inline-block;
 }
-/* line 43, ../scss/components/_page-header-bar.scss */
+/* line 38, ../scss/components/_page-header-bar.scss */
 .page-header-bar .page-header__orders {
   margin-left: 10px;
   margin-top: 5px;
@@ -9157,28 +9169,28 @@ form.style-validation-errors .form-error-message {
   display: inline-block;
 }
 
-/* line 51, ../scss/components/_page-header-bar.scss */
+/* line 46, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar {
   background-color: #fff;
   border-bottom: 1px solid #c3bc9c;
   padding-top: 14px;
   padding-bottom: 14px;
 }
-/* line 57, ../scss/components/_page-header-bar.scss */
+/* line 52, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__message > div {
   display: inline-block;
 }
-/* line 59, ../scss/components/_page-header-bar.scss */
+/* line 54, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__message > div:last-child span {
   display: none;
 }
-/* line 65, ../scss/components/_page-header-bar.scss */
+/* line 60, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container {
   padding-left: 15px;
   padding-right: 0px;
   color: #A1A1A1;
 }
-/* line 70, ../scss/components/_page-header-bar.scss */
+/* line 65, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container a, .page-subheader-bar .page-subheader-bar__container .nav-tabs li a:hover, .nav-tabs li .page-subheader-bar .page-subheader-bar__container a:hover {
   font-weight: 600;
   padding-left: 10px;
@@ -9186,22 +9198,28 @@ form.style-validation-errors .form-error-message {
 }
 
 @media (max-width: 991px) {
-  /* line 79, ../scss/components/_page-header-bar.scss */
+  /* line 74, ../scss/components/_page-header-bar.scss */
+  .page-header-bar .page-header-bar__message {
+    width: 100%;
+  }
+
+  /* line 77, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar {
     background-color: #fff;
     border-bottom: 1px solid #c3bc9c;
     padding-top: 0px;
     padding-bottom: 0px;
   }
-  /* line 82, ../scss/components/_page-header-bar.scss */
+  /* line 80, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__message {
     padding-top: 10px;
     padding-bottom: 4px;
     display: inline-block;
+    width: 100%;
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  /* line 90, ../scss/components/_page-header-bar.scss */
+  /* line 88, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__button {
     font-weight: 400;
     cursor: pointer;
@@ -9209,18 +9227,18 @@ form.style-validation-errors .form-error-message {
     text-align: center;
     width: 80px;
   }
-  /* line 97, ../scss/components/_page-header-bar.scss */
+  /* line 95, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__button.button-left {
     border-right: 1px solid #c3bc9c;
     float: left;
   }
-  /* line 101, ../scss/components/_page-header-bar.scss */
+  /* line 99, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__button.button-right {
     border-left: 1px solid #c3bc9c;
     float: right;
   }
 }
-/* line 109, ../scss/components/_page-header-bar.scss */
+/* line 107, ../scss/components/_page-header-bar.scss */
 .global-message {
   box-shadow: inset 0 0px 12px -5px black;
   -webkit-box-shadow: inset 0 0px 12px -5px black;
@@ -9230,20 +9248,20 @@ form.style-validation-errors .form-error-message {
   padding-bottom: 15px;
   color: #fff;
 }
-/* line 118, ../scss/components/_page-header-bar.scss */
+/* line 116, ../scss/components/_page-header-bar.scss */
 .global-message > .global-message__text {
   width: calc(100% - 40px);
   vertical-align: middle;
   display: inline-block;
   padding-left: 15px;
 }
-/* line 126, ../scss/components/_page-header-bar.scss */
+/* line 124, ../scss/components/_page-header-bar.scss */
 .global-message > .global-message__close {
   width: 35px;
   vertical-align: middle;
   display: inline-block;
 }
-/* line 130, ../scss/components/_page-header-bar.scss */
+/* line 128, ../scss/components/_page-header-bar.scss */
 .global-message > .global-message__close a, .global-message > .global-message__close .nav-tabs li a:hover, .nav-tabs li .global-message > .global-message__close a:hover {
   border: 1px solid #fff;
   padding: 5px 7px;
@@ -10191,25 +10209,25 @@ ul.horizontal-slide .product-placeholder-image {
 
   /* line 146, ../scss/pages/_lists.scss */
   .list-form {
-    max-height: 523px;
+    height: 523px;
     overflow-y: auto;
     overflow-x: auto;
   }
 }
 @media (min-width: 992px) {
-  /* line 155, ../scss/pages/_lists.scss */
+  /* line 156, ../scss/pages/_lists.scss */
   table.custom-lists__table tbody tr:hover td {
     background-color: #EBE7D9;
   }
 }
 @media (max-width: 991px) {
-  /* line 161, ../scss/pages/_lists.scss */
+  /* line 162, ../scss/pages/_lists.scss */
   .items {
     width: 100%;
     padding-left: 15px;
   }
 
-  /* line 165, ../scss/pages/_lists.scss */
+  /* line 166, ../scss/pages/_lists.scss */
   .custom-lists {
     position: absolute;
     z-index: 3;

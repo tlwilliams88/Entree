@@ -87,8 +87,8 @@ angular.module('bekApp')
           },
           exportParams: function() {
             var params = {
-                fromdate: $scope.itemusagequery.fromDate.toISOString(),
-                todate: $scope.itemusagequery.toDate.toISOString(),
+                fromdate: $scope.itemusagequery.fromDate,
+                todate: $scope.itemusagequery.toDate,
                 sortfield: $scope.sortField,
                 sortdir: $scope.sortReverse === true ? 'desc' : 'asc'
                };
