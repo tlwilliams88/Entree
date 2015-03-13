@@ -49,7 +49,18 @@ angular.module('bekApp')
         }
       };
 
+      Service.setActiveCart = function(cartId) {
+        if (navigator.connection.type === 'none') {
+          var deferred = $q.defer();
+          deferred.resolve();
+          return deferred.promise;
+        } else {
+          return originalCartService.setActiveCart(cartId);
+        }
+      };
+
       Service.createCart = function(items, shipDate) {
+        debugger;
         if (navigator.connection.type === 'none') {
 
           var newCart = originalCartService.beforeCreateCart(items, shipDate);
@@ -57,9 +68,12 @@ angular.module('bekApp')
           newCart.isNew = true;
 
           newCart.items.forEach(function(item) {
-            item.cartitemid = generateId()
+            item.cartitemid = generateId();
             item.isNew = true;
           });
+
+          PhonegapDbService.setItem(db_table_name_carts, newCart.id, newCart);
+          Service.carts.push(newCart);
 
           //return a promise
           var deferred = $q.defer();
@@ -149,6 +163,26 @@ angular.module('bekApp')
         }
       };
 
+      Service.addItemsToCart = function(cart, items) {
+        if (navigator.connection.type === 'none') {
+          var deferred = $q.defer();
+          PhonegapDbService.getItem(db_table_name_carts, cart.id).then(function(cartFound) {
+            cartFound.isChanged = true;
+            
+            items.forEach(function(item) {
+              item.cartitemid = generateId();
+              item.isNew = true;
+            })
+            cartFound.items = cartFound.items.concat(items);
+            PhonegapDbService.setItem(db_table_name_carts, cartFound.id, cartFound);
+            deferred.resolve(cartFound);
+          });
+          return deferred.promise;
+        } else {
+          return originalCartService.addItemToCart(cart, items);
+        }
+      }
+
       Service.updateCartsFromLocal = function() {
         console.log('updating carts after back online');
 
@@ -200,7 +234,7 @@ angular.module('bekApp')
             PhonegapDbService.dropTable(db_table_name_carts)
               .then(Service.getAllCarts);
 
-            PhonegapLocalStorageService.removeDeletedCartsGuids();
+            PhonegapLocalStorageService.removeDeletedCartGuids();
           }, function() {
             console.log('error updating carts');
           });
