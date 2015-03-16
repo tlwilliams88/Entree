@@ -859,6 +859,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
 				var cachedPagedList = ToPagedList(paging, cachedReturnList);
+				LookupPrices(user, cachedPagedList.Items.Results, catalogInfo);
 
 				return cachedPagedList;
 			}
