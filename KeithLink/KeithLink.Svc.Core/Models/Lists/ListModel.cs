@@ -2,11 +2,14 @@
 using KeithLink.Svc.Core.Models.ModelExport;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.Lists
 {
@@ -64,6 +67,19 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 		public ListModel Clone()
 		{
+			using (var ms = new MemoryStream())
+			{
+				XmlSerializer xs = new XmlSerializer(typeof(ListModel));
+				xs.Serialize(ms, this);
+				ms.Position = 0;
+
+				return (ListModel)xs.Deserialize(ms);
+			}
+		}
+
+
+		public ListModel ShallowCopy()
+		{
 			var clonedList = new ListModel()
 			{
 				BranchId = this.BranchId,
@@ -83,10 +99,11 @@ namespace KeithLink.Svc.Core.Models.Lists
 				Items = new List<ListItemModel>()
 			};
 
-			if(this.Items != null)
+			if (this.Items != null)
 				foreach (var item in this.Items)
 				{
-					clonedList.Items.Add(new ListItemModel() { 
+					clonedList.Items.Add(new ListItemModel()
+					{
 						ListItemId = item.ListItemId,
 						Name = item.Name,
 						ItemNumber = item.ItemNumber,
@@ -94,9 +111,10 @@ namespace KeithLink.Svc.Core.Models.Lists
 						Label = item.Label,
 						ParLevel = item.ParLevel,
 						Position = item.Position,
-						StorageTemp = item.StorageTemp,
+						TempZone = item.TempZone,
 						Category = item.Category,
 						FromDate = item.FromDate,
+						BrandExtendedDescription = item.BrandExtendedDescription,
 						ToDate = item.ToDate,
 						CreatedUtc = item.CreatedUtc,
 						ModifiedUtc = item.ModifiedUtc,

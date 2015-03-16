@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.SiteCatalog;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Models.SiteCatalog.Schemas;
 using System;
@@ -11,8 +12,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class PriceRepositoryImpl : IPriceRepository
     {
-        public PriceRepositoryImpl()
+		private IEventLogRepository eventLogRepository;
+        public PriceRepositoryImpl(IEventLogRepository eventLogRepository)
         {
+			this.eventLogRepository = eventLogRepository;
         }
 
         /// <summary>
@@ -55,8 +58,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
 
                 // call the pricing service and get the response XML
+				var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
+				stopWatch.Start();
                 PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
-
+				stopWatch.Stop();
+				var priceCall = stopWatch.ElapsedMilliseconds;
+				stopWatch.Reset();
+				stopWatch.Start();
                 foreach (PricingResponseMain.ItemRow item in pricingResponse.Item) {
                     Price itemPrice = new Price();
 
@@ -72,10 +80,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
                     prices.Add(itemPrice);
                 }
-
+				stopWatch.Stop();
+				var buildList = stopWatch.ElapsedMilliseconds;
+				eventLogRepository.WriteInformationLog(string.Format("Retrieve Price: {0} Items, Web Service Call: {1}, Populate List {2}", products.Count, priceCall, buildList));
+           
             }
 
-            return prices;
+			 return prices;
         }
 
         /// <summary>
