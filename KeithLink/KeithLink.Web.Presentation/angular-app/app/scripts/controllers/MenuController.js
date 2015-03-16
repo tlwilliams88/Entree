@@ -64,9 +64,9 @@ angular.module('bekApp')
   function downloadDataForOfflineStorage() {
     return $q.all([
       ListService.getAllLists(),
-      ListService.getAllLabels()//,
-      // CartService.getAllCarts(),
-      // CartService.getShipDates()
+      ListService.getAllLabels(),
+      CartService.getAllCarts(),
+      CartService.getShipDates()
       ]).then(function(results) {
         var lists = results[0];
         var labels = results[1];
@@ -76,11 +76,10 @@ angular.module('bekApp')
         
         clearOfflineStorageTables().then(function() {
           saveAllItems(lists, db_table_name_lists, 'listid');
+          saveAllItems(carts, db_table_name_carts, 'id');
           PhonegapLocalStorageService.setLabels(labels);  
+          PhonegapLocalStorageService.setShipDates(shipDates);
         });
-    
-        // localStorageService.set('carts', carts);
-        // localStorageService.set('shipDates', shipDates);
       });
   }
 

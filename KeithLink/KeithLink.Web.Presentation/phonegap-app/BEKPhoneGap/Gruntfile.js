@@ -12,16 +12,16 @@ module.exports = function(grunt) {
     phonegap: {
       config: {
         plugins: [
-            'https://github.com/apache/cordova-plugin-network-information.git',
-            'https://github.com/phonegap-build/PushPlugin.git',
-            'org.apache.cordova.device',
-            'org.apache.cordova.dialogs',
-            'org.apache.cordova.vibration',
-            'org.apache.cordova.statusbar',
-            'org.apache.cordova.console',
-            'org.apache.cordova.inappbrowser',
-            'https://github.com/wildabeast/BarcodeScanner.git'
-            // ,'https://github.com/brodysoft/Cordova-SQLitePlugin.git'
+          'https://github.com/apache/cordova-plugin-network-information.git',
+          'https://github.com/phonegap-build/PushPlugin.git',
+          'org.apache.cordova.device',
+          'org.apache.cordova.dialogs',
+          'org.apache.cordova.vibration',
+          'org.apache.cordova.statusbar',
+          'org.apache.cordova.console',
+          'org.apache.cordova.inappbrowser',
+          'https://github.com/wildabeast/BarcodeScanner.git'
+          // ,'https://github.com/brodysoft/Cordova-SQLitePlugin.git'
         ],
         maxBuffer: 500,
         platforms: ['ios', 'android'],
@@ -59,15 +59,13 @@ module.exports = function(grunt) {
     ],
     sass: {
       dist: {
-        files: [
-          {
-            expand: true,
-            cwd: '<%= meta.phonegapPath %>/scss/',
-            src: '**/*.scss',
-            dest: '<%= meta.phonegapPath %>/css',
-            ext: '.css'
-          }
-        ]
+        files: [{
+          expand: true,
+          cwd: '<%= meta.phonegapPath %>/scss/',
+          src: '**/*.scss',
+          dest: '<%= meta.phonegapPath %>/css',
+          ext: '.css'
+        }]
       }
     },
     connect: {
@@ -86,70 +84,70 @@ module.exports = function(grunt) {
     copy: {
       all: {
         files: [{
-          cwd: '<%= meta.angularPath %>/images/',  // set working folder / root to copy
-          src: '**/*',                           // copy all files and subfolders
-          dest: '<%= meta.phonegapPath %>/images/',                   // destination folder
-          expand: true                           // required when using cwd
-        },{
+          cwd: '<%= meta.angularPath %>/images/', // set working folder / root to copy
+          src: '**/*', // copy all files and subfolders
+          dest: '<%= meta.phonegapPath %>/images/', // destination folder
+          expand: true // required when using cwd
+        }, {
           cwd: '<%= meta.angularPath %>/fonts/',
           src: '**/*',
           dest: '<%= meta.phonegapPath %>/fonts/',
           expand: true
-        },{
+        }, {
           cwd: '<%= meta.angularPath %>/lib/',
           src: '**/*',
           dest: '<%= meta.phonegapPath %>/lib/',
           expand: true
-        },{
+        }, {
           cwd: '<%= meta.angularPath %>/scripts/',
-          src: ['app.js', 'state.js'],           
-          dest: '<%= meta.phonegapPath %>/scripts/',    
-          expand: true           
-        },{
+          src: ['app.js', 'state.js'],
+          dest: '<%= meta.phonegapPath %>/scripts/',
+          expand: true
+        }, {
           cwd: '<%= meta.angularPath %>/',
-          src: 'index.html',           
-          dest: '<%= meta.phonegapPath %>/',    
-          expand: true           
-        },{
+          src: 'index.html',
+          dest: '<%= meta.phonegapPath %>/',
+          expand: true
+        }, {
           cwd: '<%= meta.angularPath %>/scripts/controllers/',
-          src: '**/*',           
-          dest: '<%= meta.phonegapPath %>/scripts/controllers/',    
-          expand: true           
-        },{
+          src: '**/*',
+          dest: '<%= meta.phonegapPath %>/scripts/controllers/',
+          expand: true
+        }, {
           cwd: '<%= meta.angularPath %>/scripts/directives/',
-          src: '**/*',           
-          dest: '<%= meta.phonegapPath %>/scripts/directives/',    
+          src: '**/*',
+          dest: '<%= meta.phonegapPath %>/scripts/directives/',
           expand: true
-        },{
+        }, {
           cwd: '<%= meta.angularPath %>/scripts/services/',
-          src: '**/*',           
-          dest: '<%= meta.phonegapPath %>/scripts/services/',    
+          src: '**/*',
+          dest: '<%= meta.phonegapPath %>/scripts/services/',
           expand: true
-        },{
+        }, {
           cwd: '<%= meta.angularPath %>/scripts/animations/',
-          src: '**/*',           
-          dest: '<%= meta.phonegapPath %>/scripts/animations/',    
+          src: '**/*',
+          dest: '<%= meta.phonegapPath %>/scripts/animations/',
           expand: true
-        },{
+        }, {
           cwd: '<%= meta.angularPath %>/scripts/resources/',
           src: '**/*',
           dest: '<%= meta.phonegapPath %>/scripts/resources/',
-          expand: true 
-        },{
+          expand: true
+        }, {
           cwd: '<%= meta.angularPath %>/scripts/filters/',
           src: '**/*',
           dest: '<%= meta.phonegapPath %>/scripts/filters/',
-          expand: true 
-        },{
+          expand: true
+        }, {
           cwd: '<%= meta.angularPath %>/views/',
           src: '**/*',
           dest: '<%= meta.phonegapPath %>/views/',
-          expand: true 
-        },{
+          expand: true
+        }, {
           cwd: '<%= meta.angularPath %>/styles/',
           src: '**/*',
           dest: '<%= meta.phonegapPath %>/scss/',
-          expand: true 
+          expand: true
         }]
       }
     },
@@ -194,8 +192,8 @@ module.exports = function(grunt) {
             loggingEnabled: config.environment.test.loggingEnabled,
             googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
             mobileApp: true,
-            username:'bek.qa.user@gmail.com',
-            password:'Ab12345'
+            username: 'bek.qa.user@gmail.com',
+            password: 'Ab12345'
           }
         }
       },
@@ -215,18 +213,19 @@ module.exports = function(grunt) {
   });
 
   grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.loadNpmTasks('grunt-contrib-watch'); 
-  grunt.loadNpmTasks('grunt-contrib-connect'); 
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-phonegap');
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-ng-constant');
-  
-  grunt.registerTask('update',[
+
+  grunt.registerTask('update', [
     'clean',
     'copy:all',
-    'compass:all']);
+    'compass:all'
+  ]);
 
   grunt.registerTask('server', function() {
     grunt.task.run('connect:server');
