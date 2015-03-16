@@ -12,10 +12,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class PriceRepositoryImpl : IPriceRepository
     {
-		private IEventLogRepository eventLogRepository;
-        public PriceRepositoryImpl(IEventLogRepository eventLogRepository)
+		public PriceRepositoryImpl()
         {
-			this.eventLogRepository = eventLogRepository;
+			
         }
 
         /// <summary>
@@ -82,7 +81,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 }
 				stopWatch.Stop();
 				var buildList = stopWatch.ElapsedMilliseconds;
-				eventLogRepository.WriteInformationLog(string.Format("Retrieve Price: {0} Items, Web Service Call: {1}, Populate List {2}", products.Count, priceCall, buildList));
+				//eventLogRepository.WriteInformationLog(string.Format("Retrieve Price: {0} Items, Web Service Call: {1}, Populate List {2}", products.Count, priceCall, buildList));
            
             }
 
