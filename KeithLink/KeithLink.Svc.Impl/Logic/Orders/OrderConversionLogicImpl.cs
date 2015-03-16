@@ -92,7 +92,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 foreach (OrderHistoryDetail currentDetail in currentFile.Details) {
 
-                    EF.OrderHistoryDetail detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+                    EF.OrderHistoryDetail detail = null;
+
+                    if (header.OrderDetails != null && header.OrderDetails.Count > 0) {
+                        detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
+                    }
 
                     if (detail == null) {
                         EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
