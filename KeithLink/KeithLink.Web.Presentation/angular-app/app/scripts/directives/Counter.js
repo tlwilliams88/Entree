@@ -21,18 +21,18 @@ angular.module('bekApp')
           // throw "Missing the value attribute on the counter directive.";
         }
         
-        if (attributes.allowdropdown === 'true') {
-          scope.allowDropdown = true;
-        }
+        // if (attributes.allowdropdown === 'true') {
+        //   scope.allowDropdown = true;
+        // }
 
-        if (!scope.value) {
-          scope.value = 0;
-        }
+        // if (!scope.value) {
+        //   scope.value = 0;
+        // }
         
-		var min = angular.isUndefined(attributes.min) ? null : parseInt(attributes.min);
+		    var min = angular.isUndefined(attributes.min) ? null : parseInt(attributes.min);
         var max = angular.isUndefined(attributes.max) ? null : parseInt(attributes.max);
         var step = angular.isUndefined(attributes.step) ? 1 : parseInt(attributes.step);
-		var length = angular.isUndefined(attributes.length) ? null : parseInt(attributes.length);
+		    var length = angular.isUndefined(attributes.length) ? null : parseInt(attributes.length);
 		  
         // If the 'editable' attribute is set, we will make the field editable.
         scope.readonly = angular.isUndefined(attributes.editable) ? true : false;
@@ -51,6 +51,9 @@ angular.module('bekApp')
         scope.newValue = setValue;
 
         var disableButtons = function(val) {
+          if (!val) {
+            val = 0;
+          }
           if (min !== null) {
             scope.disabledMinus = (val <= min);
           }
@@ -71,7 +74,8 @@ angular.module('bekApp')
             setValue( min );
             return false;
           }
-          setValue( scope.value - step );
+          var val = scope.value ? scope.value : 0; // default to value of 0 if undefined
+          setValue( val - step );
         };
         
         /**
@@ -82,7 +86,8 @@ angular.module('bekApp')
             setValue( max );
             return false;
           }
-          setValue( scope.value + step );
+          var val = scope.value ? parseInt(scope.value, 10) : 0; // default to value of 0 if undefined
+          setValue( val + step );
         };
         
         /**
@@ -91,42 +96,44 @@ angular.module('bekApp')
          * correct values from within the restrictions.
          */
         scope.changed = function() {
-          // If the user decides to delete the number, we will set it to 0. 
-          if ( !scope.value ) { setValue( 0 ); }
-
-          var curLength = parseInt(scope.value.toString().length);
+          var val = scope.value ? scope.value : 0; // default to value of 0 if undefined
+          
+          var curLength = parseInt(val.toString().length);
 
           // Check if what's typed is numeric or if it has any letters.
-          if ( /\b[0-9]+\b/.test(scope.value) ) {
+          if ( /\b[0-9]+\b/.test(val) ) {
             if(length != null){ // jshint ignore:line
               if(curLength <= length){
-                setValue(scope.value);
+                if (val === 0) {
+                  val = null;
+                }
+                setValue(val);
               } else{
-                setValue( parseInt( scope.value.toString().substring(0,length) ) );
+                setValue( parseInt( val.toString().substring(0,length), 10 ) );
               }
             } else{
-              setValue(scope.value);
+              setValue(val);
             }
           }
           else {
-            setValue( parseInt( scope.value.toString().substring(0,curLength - 1) ) );
+            setValue( parseInt( val.toString().substring(0,curLength - 1), 10 ) );
           }
 
           // If a minimum is set, let's make sure we're within the limit.
-          if ( min && (scope.value <= min || scope.value - step <= min) ) {
+          if ( min && (val <= min || val - step <= min) ) {
             setValue( min );
             return false;
           }
 
           // If a maximum is set, let's make sure we're within the limit.
-          if ( max && (scope.value >= max || scope.value + step >= max) ) {
+          if ( max && (val >= max || val + step >= max) ) {
             setValue( max );
             return false;
           }
 		  
           
           // Re-set the value as an integer.
-          setValue( scope.value );
+          setValue( val );
         };
 
         scope.confirmQuantity = function(qty) {
