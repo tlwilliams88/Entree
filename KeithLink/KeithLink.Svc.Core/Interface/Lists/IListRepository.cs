@@ -12,6 +12,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
 	public interface IListRepository : IBaseEFREpository<List>
 	{
 		IEnumerable<List> ReadListForCustomer(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
-		IEnumerable<List> ReadListForUser(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly);
+		
 	}
 }

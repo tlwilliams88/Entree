@@ -474,6 +474,10 @@
     <Compile Include="Repository\EF\Migrations\201502262045258_change column widths for DSRs.Designer.cs">
       <DependentUpon>201502262045258_change column widths for DSRs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201503131531233_Create_List_Index.cs" />
+    <Compile Include="Repository\EF\Migrations\201503131531233_Create_List_Index.Designer.cs">
+      <DependentUpon>201503131531233_Create_List_Index.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -978,6 +982,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201502262045258_change column widths for DSRs.resx">
       <DependentUpon>201502262045258_change column widths for DSRs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503131531233_Create_List_Index.resx">
+      <DependentUpon>201503131531233_Create_List_Index.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

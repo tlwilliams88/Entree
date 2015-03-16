@@ -150,8 +150,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 					Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = paging.Terms, FilterType = "contains" }, new FilterInfo() { Condition = "||", Field = "Name", Value = paging.Terms, FilterType = "contains" } }
 				};
 			}
+			var stopWatch = new System.Diagnostics.Stopwatch(); //Temp: Remove
+			stopWatch.Start();
+			var list =  listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, paging);
+			stopWatch.Stop();
+			elRepo.WriteInformationLog(string.Format("Total time to retrieve List {0}: {1}ms", listId, stopWatch.ElapsedMilliseconds));
 
-			return listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, paging);
+			return list;
 		}
 
 		
