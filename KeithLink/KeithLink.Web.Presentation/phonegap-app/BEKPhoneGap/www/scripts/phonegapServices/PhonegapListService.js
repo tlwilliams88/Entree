@@ -236,7 +236,7 @@ angular.module('bekApp')
     // }
 
     Service.getCriticalItemsLists = function() {
-      debugger;
+      
       if (navigator.connection.type === 'none') {
         var deferred = $q.defer();
         PhonegapDbService.getAllItems(db_table_name_lists).then(function(lists) {

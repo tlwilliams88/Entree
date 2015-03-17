@@ -269,7 +269,7 @@ angular.module('bekApp')
     function getIconDisplayInfo(name) {
       var itemSpec = {};
       switch (name) {
-        case 'itembeingreplac':
+        case 'itembeingreplaced':
           itemSpec.displayname = 'Item Being Replaced';
           itemSpec.iconclass = 'text-red icon-cycle';
           break;
@@ -277,7 +277,7 @@ angular.module('bekApp')
           itemSpec.displayname = 'Replacement Item';
           itemSpec.iconclass = 'text-green icon-cycle';
           break;
-        case 'childnutrit':
+        case 'childnutrition':
           itemSpec.displayname = 'Child Nutrition Sheet';
           itemSpec.iconclass = 'text-regular icon-apple';
           break;

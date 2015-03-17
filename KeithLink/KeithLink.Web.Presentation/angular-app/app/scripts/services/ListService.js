@@ -256,19 +256,17 @@ angular.module('bekApp')
 
           var newList = {};
 
-          if (!items) { // if null
-            newList.items = [];
-          } else if (Array.isArray(items)) { // if multiple items
-            newList.items = items;
+          var newItems = [];
+          if (Array.isArray(items)) { // if multiple items
+            newItems = items;
           } else if (typeof items === 'object') { // if one item
-            newList.items = [items];
+            newItems = [items];
           }
 
-          // remove irrelevant properties from items
-          UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
-
-          newList.items.forEach(function(item) {
-            item.position = 0;
+          newList.items = newItems.map(function(item) {
+            return {
+              itemnumber: item.itemnumber
+            };
           });
 
           if (params.isMandatory === true) {
@@ -507,8 +505,8 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.getList(favoritesList.listid).then(function() {
-            var itemToDelete = $filter('filter')(favoritesList.items, {itemnumber: itemNumber})[0];
+          return Service.getListWithItems(favoritesList.listid).then(function(list) {
+            var itemToDelete = $filter('filter')(list.items, {itemnumber: itemNumber})[0];
 
             return Service.deleteItem(itemToDelete.listitemid);
           });

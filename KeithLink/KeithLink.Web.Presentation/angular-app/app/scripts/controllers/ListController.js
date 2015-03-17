@@ -44,6 +44,10 @@ angular.module('bekApp')
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
       }
+
+      $scope.selectedList.items.forEach(function(item) {
+        item.editPosition = item.position;
+      });
     }
     function appendListItems(list) {
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
@@ -325,7 +329,9 @@ angular.module('bekApp')
 
     $scope.changeAllSelectedItems = function() {
       angular.forEach($scope.selectedList.items, function(item, index) {
-        item.isSelected = $scope.selectedList.allSelected;
+        if (item.itemnumber) {
+          item.isSelected = $scope.selectedList.allSelected;
+        }
       });
     };
 
