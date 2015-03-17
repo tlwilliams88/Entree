@@ -316,14 +316,14 @@
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
                 <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
-                <button ng-if="isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
+                <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>
           </form>
         </div>
         <div class="col-md-4 hidden-sm hidden-xs text-right nowrap pull-right">
           <div>
-            <a ng-if="isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
+            <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
               <span class="icon-bell"></span>
               <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
