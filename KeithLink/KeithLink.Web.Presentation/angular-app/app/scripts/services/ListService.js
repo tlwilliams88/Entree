@@ -505,8 +505,8 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.getList(favoritesList.listid).then(function() {
-            var itemToDelete = $filter('filter')(favoritesList.items, {itemnumber: itemNumber})[0];
+          return Service.getListWithItems(favoritesList.listid).then(function(list) {
+            var itemToDelete = $filter('filter')(list.items, {itemnumber: itemNumber})[0];
 
             return Service.deleteItem(itemToDelete.listitemid);
           });
