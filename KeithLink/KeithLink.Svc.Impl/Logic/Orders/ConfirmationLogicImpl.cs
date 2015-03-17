@@ -205,8 +205,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 							//Try to save the confirmation 5 times. Several threads are modifying the order history table, so there are occasional concurrency errors.
                             KeithLink.Svc.Impl.Helpers.Retry.Do(() => _conversionLogic.SaveConfirmationAsOrderHistory(confirmation), TimeSpan.FromSeconds(1), 5);
                         } catch (Exception e) {
-                            _log.WriteErrorLog("Error processing confirmation in internal service", e);
-                            KeithLink.Common.Core.Email.ExceptionEmail.Send(e);
+                            _log.WriteErrorLog("Error processing confirmation in Queue service", e);
+                            KeithLink.Common.Core.Email.ExceptionEmail.Send(e, subject: "Exception processing Confirmation in Queue Service");
 
                             confirmation.ErrorMessage = e.Message;
                             confirmation.ErrorStack = e.StackTrace;

@@ -572,6 +572,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             returnList.ForEach(delegate(ListModel listItem) {
                 LookupProductDetails(user, listItem, catalogInfo);
+				LookupPrices(user, listItem.Items, catalogInfo);
             });
 
             return returnList;

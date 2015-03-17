@@ -204,6 +204,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 				}
 				catch (Exception ex)
 				{
+					KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, subject: "Exception processing Order History in Queue Service");
+
 					_log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
 				}
 			}
