@@ -144,10 +144,11 @@ angular.module('bekApp')
         } 
       }
 
+      var timer;
       function closeTimeout(menuElement) {
         mouseenter = false;
         if (opened) {
-          var timer = $timeout(function() {
+          timer = $timeout(function() {
             if (!mouseenter) {
               closeDesktop(menuElement);
             }
@@ -189,6 +190,7 @@ angular.module('bekApp')
         $element.unbind('mouseenter', openContextMenuMouseoverEvent);
         $element.unbind('click', openContextMenuClickEvent);
         $element.unbind('mouseleave', closeContextMenuEvent);
+        $timeout.cancel( timer );
       });
     },
     templateUrl: 'views/directives/contextmenu.html'
