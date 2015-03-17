@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+
+	<?define AppName="Entree Queue Service"?>
+	<?define MfgName="Ben E. Keith Company"?>
+	<?define SourcePath="..\KeithLink.Svc.Windows.QueueService\bin\$(var.Configuration)"?>
+	<?define AppDescription="Polls Rabbit MQ for notificaitons, order updates, and confirmations" ?>
+
+
+	<Product Id="*" Name="$(var.AppName)" Language="1033" Version="1.0.0.0" Manufacturer="$(var.MfgName)" UpgradeCode="7bc0ff18-339a-4939-a70f-d8c6ce9d6627">
+		
+		<Package Id="*" Keywords="Installer" Description="$(var.AppName) Installer"
+            Manufacturer="$(var.MfgName)" Comments="$(var.AppDescription)"
+            InstallerVersion="200" Compressed="yes" InstallScope="perMachine" SummaryCodepage="1252" />
+
+		<!--<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />-->
+
+		<Feature Id="MainFeature" Title="$(var.AppName) Setup" Level="1">
+			<ComponentRef Id="ServiceFile"/>
+		</Feature>
+
+		<InstallExecuteSequence>
+			<RemoveExistingProducts After="InstallInitialize"/>
+			<InstallExecute After="RemoveExistingProducts"/>
+		</InstallExecuteSequence>
+
+		<Media Id="1" Cabinet="setup.cab" EmbedCab="yes" DiskPrompt="CD-ROM #1"/>
+		<Property Id="DiskPrompt" Value="$(var.AppName) Installer [1]"/>
+
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder" Name="PFiles">
+				<Directory Id="CompanyFolder" Name="$(var.MfgName)">
+					<Directory Id="INSTALLFOLDER" Name="$(var.AppName)">
+						<Component Id="ServiceFile" Guid="DF0B5F68-4788-4785-A76F-B43D1B4B4604">
+							<File Id="AutoFac" Name="Autofac.dll" DiskId="1" Source="$(var.SourcePath)\Autofac.dll" KeyPath="no" Vital="yes"/>
+							<File Id="Awssdk" Name="AWSSDK.dll" DiskId="1" Source="$(var.SourcePath)\AWSSDK.dll" KeyPath="no" Vital="yes"/>
+							<File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
+							<File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
+							<File Id="EF" Name="EntityFramework.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.dll" KeyPath="no" Vital="yes"/>
+							<File Id="EF_SqlServer" Name="EntityFramework.SqlServer.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.SqlServer.dll" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Common_Core_DLL" Name="KeithLink.Common.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.dll" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Common_Core_PDB" Name="KeithLink.Common.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.pdb" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Common_Impl_DLL" Name="KeithLink.Common.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.dll" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Common_Impl_PDB" Name="KeithLink.Common.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.pdb" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Svc_Core_DLL" Name="KeithLink.Svc.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Core.dll" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Svc_Core_PDB" Name="KeithLink.Svc.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Core.pdb" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Svc_Impl_DLL" Name="KeithLink.Svc.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.dll" KeyPath="no" Vital="yes"/>
+							<File Id="KeithLink_Svc_Impl_PDB" Name="KeithLink.Svc.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.pdb" KeyPath="no" Vital="yes"/>
+							<File Id="Nest" Name="Nest.dll" DiskId="1" Source="$(var.SourcePath)\Nest.dll" KeyPath="no" Vital="yes"/>
+							<File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
+							<File Id="RabbitMQ_Client" Name="RabbitMQ.Client.dll" DiskId="1" Source="$(var.SourcePath)\RabbitMQ.Client.dll" KeyPath="no" Vital="yes"/>
+							<File Id="RestSharp" Name="RestSharp.dll" DiskId="1" Source="$(var.SourcePath)\RestSharp.dll" KeyPath="no" Vital="yes"/>
+							<File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe" KeyPath="yes" Vital="yes"/>
+							<File Id="Service_PDB" Name="KeithLink.Svc.Windows.OrderService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.pdb" KeyPath="no" Vital="yes"/>
+							<File Id="Config" Name="KeithLink.Svc.Windows.OrderService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe.config" KeyPath="no" Vital="yes"/>
+							<File Id="Linq" Name="System.Linq.Dynamic.dll" DiskId="1" Source="$(var.SourcePath)\System.Linq.Dynamic.dll" KeyPath="no" Vital="yes"/>
+
+							<ServiceInstall Id="InstallService" Name="$(var.AppName)" Type="ownProcess" ErrorControl="normal" Start="auto"
+                              DisplayName="$(var.AppName)" Description="$(var.AppDescription)">
+								<ServiceConfig OnInstall="yes" DelayedAutoStart="yes" />
+							</ServiceInstall>
+							<ServiceControl Id="ControlService" Name="MyService" Remove="both" Stop="both" Wait="no"/>
+						</Component>
+					</Directory>
+				</Directory>
+			</Directory>
+		</Directory>
+		
+	</Product>	
+</Wix>

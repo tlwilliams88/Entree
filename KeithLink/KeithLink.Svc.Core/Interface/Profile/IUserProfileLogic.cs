@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Paging;
+﻿using KeithLink.Svc.Core.Enumerations.SingleSignOn;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using System;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         UserProfileReturn GetUsers(UserFilterModel userFilters);
 
-        void GrantRoleAccess(string emailAddress, string roleName);
+        void GrantRoleAccess(string emailAddress, RequestedApplication requestedApp);
 
         bool IsInternalAddress(string emailAddress);
 
@@ -60,7 +61,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void ResetPassword(string emailAddress);
 
-        void RevokeRoleAccess(string emailAddress, string roleName);
+        void RevokeRoleAccess(string emailAddress, RequestedApplication requestedApp);
 
         bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
 

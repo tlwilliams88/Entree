@@ -1,17 +1,18 @@
 ﻿using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Logic.Profile;
-using KeithLink.Svc.Impl.Repository.Profile;
-using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Messaging;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-using KeithLink.Svc.WebApi.Repository.Messaging;
-using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Invoices;
+using KeithLink.Svc.Impl.Repository.Messaging;
+using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.OnlinePayments;
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.WebApi.Repository.Messaging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -46,7 +47,7 @@ namespace KeithLink.Svc.Test.Logic {
 
             _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach, dsrService);
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository());
+            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository(), new GenericQueueRepositoryImpl());
         }
         #endregion
 

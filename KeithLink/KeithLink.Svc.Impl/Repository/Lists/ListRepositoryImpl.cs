@@ -27,12 +27,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 					(l.Shares.Any(s => s.CustomerId.Equals(catalogInfo.CustomerId) && s.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase))));
 		}
         
-		public IEnumerable<List> ReadListForUser(Core.Models.Profile.UserProfile user, Core.Models.SiteCatalog.UserSelectedContext catalogInfo,  bool headerOnly)
-		{
-			if (headerOnly)
-				return this.Entities.Where(l => l.UserId.Equals(user.UserId) && (l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)));
-			else
-				return this.Entities.Include(i => i.Items).Where(l => l.UserId.Equals(user.UserId) && (l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)));
-		}
+		
+		
 	}
 }
