@@ -617,20 +617,13 @@ module.exports = function (grunt) {
   ]);
   
   grunt.registerTask('build-for-demo', [
-    'clean:dist',
-    // 'includeSource:dist',
+    // 'npm-install',
+    'clean:dev',
     'ngconstant:demo',
-    'useminPrepare',
-    'concurrent:dist',
-    'autoprefixer',
-    'concat',
-    'ngmin',
-    'copy:dist',
-    'cssmin',
-    'uglify',
-    'filerev',
-    'usemin',
-    'htmlmin'
+    // 'includeSource:dev',
+    'compass:server',
+    'copy:dev',
+    'karma'
   ]);
 
   grunt.registerTask('build-for-stage', [
