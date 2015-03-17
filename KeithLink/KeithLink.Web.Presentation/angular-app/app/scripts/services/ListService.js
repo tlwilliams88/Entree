@@ -256,19 +256,17 @@ angular.module('bekApp')
 
           var newList = {};
 
-          if (!items) { // if null
-            newList.items = [];
-          } else if (Array.isArray(items)) { // if multiple items
-            newList.items = items;
+          var newItems = [];
+          if (Array.isArray(items)) { // if multiple items
+            newItems = items;
           } else if (typeof items === 'object') { // if one item
-            newList.items = [items];
+            newItems = [items];
           }
 
-          // remove irrelevant properties from items
-          UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
-
-          newList.items.forEach(function(item) {
-            item.position = 0;
+          newList.items = newItems.map(function(item) {
+            return {
+              itemnumber: item.itemnumber
+            };
           });
 
           if (params.isMandatory === true) {
