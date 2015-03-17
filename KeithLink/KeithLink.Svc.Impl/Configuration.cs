@@ -67,6 +67,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_MF_TRANS_HISTORY = "MfTransHistory";
 
         // Rabbit MQ Constants
+        private const string KEY_RABBITMQ_EXCHANGE_ACCESS = "RabbitMQAccessExchange";
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES = "RabbitMQOrderUpdateExchange";
@@ -76,6 +77,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS = "RabbitMQOrderReprocessExchange";
         private const string KEY_RABBITMQ_EXCHANGE_NOTIFICATION = "RabbitMQNotificationExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestExchange";
+        private const string KEY_RABBITMQ_QUEUE_ACCESS = "RabbitMQAccessQueue";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
@@ -85,9 +87,14 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_QUEUE_ORDER_REPROCESS = "RabbitMQOrderReprocessQueue";
         private const string KEY_RABBITMQ_QUEUE_NOTIFICATION = "RabbitMQNotificationQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestQueue";
+        private const string KEY_RABBITMQ_SERVER_ACCESS = "RabbitMQAccessServer";
         private const string KEY_RABBITMQ_SERVER_ORDER = "RabbitMQOrderServer";
         private const string KEY_RABBITMQ_SERVER_CONFIRMATION = "RabbitMQConfirmationServer";
         private const string KEY_RABBITMQ_SERVER_NOTIFICATION = "RabbitMQNotificationServer";
+        private const string KEY_RABBITMQ_USER_ACCESS_CONSUMEPASS = "RabbitMQAccessConsumerUserPassword";
+        private const string KEY_RABBITMQ_USER_ACCESS_CONSUMEUSER = "RabbitMQAccessConsumerUserName";
+        private const string KEY_RABBITMQ_USER_ACCESS_PUBLISHPASS = "RabbitMQAccessPublisherUserPassword";
+        private const string KEY_RABBITMQ_USER_ACCESS_PUBLISHUSER = "RabbitMQAccessPublisherUserName";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEPASS = "RabbitMQOrderConsumerUserPassword";
         private const string KEY_RABBITMQ_USER_ORDER_CONSUMEUSER = "RabbitMQOrderConsumerUserName";
         private const string KEY_RABBITMQ_USER_ORDER_PUBLISHPASS = "RabbitMQOrderPublisherUserPassword";
@@ -96,6 +103,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEUSER = "RabbitMQNotificationConsumerUserName";
         private const string KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHPASS = "RabbitMQNotificationPublisherUserPassword";
         private const string KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHUSER = "RabbitMQNotificationPublisherUserName";
+        private const string KEY_RABBITMQ_VHOST_ACCESS = "RabbitMQAccessVHost";
         private const string KEY_RABBITMQ_VHOST_CONFIRMATION = "RabbitMQConfirmationVHost";
         private const string KEY_RABBITMQ_VHOST_NOTIFICATION = "RabbitMQNotificationVHost";
         private const string KEY_RABBITMQ_VHOST_ORDER = "RabbitMQOrderVHost";
@@ -130,6 +138,8 @@ namespace KeithLink.Svc.Impl
 		private const string KEY_ADD_SERVERNAME_TO_HEADER = "AddServerNameToHeaderResponse";
 		private const string KEY_CACHE_SERVERSENDPOINTS = "CacheServerEndpoints";
 
+        //Single Sign On
+        private const string KEY_SSO_KBIT_CONNECTIONSTRING = "KbitCustomer";
         #endregion
 
         #region methods
@@ -429,6 +439,12 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
         }
 
+        public static string KbitConnectionString {
+            get {
+                return GetConnectionString(KEY_SSO_KBIT_CONNECTIONSTRING);
+            }
+        }
+
         public static string MainframeIPAddress
         {
             get
@@ -512,6 +528,12 @@ namespace KeithLink.Svc.Impl
             get { return GetValue( PRESENTATION_URL, string.Empty ); }
         }
 
+        public static string RabbitMQExchangeAccess {
+            get {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_ACCESS, string.Empty);
+            }
+        }
+
         public static string RabbitMQExchangeConfirmation {
             get {
                 return GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION, string.Empty);
@@ -566,6 +588,12 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQQueueAccess {
+            get {
+                return GetValue(KEY_RABBITMQ_QUEUE_ACCESS, string.Empty);
+            }
+        }
+
         public static string RabbitMQQueueConfirmation {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION, string.Empty);
@@ -617,6 +645,30 @@ namespace KeithLink.Svc.Impl
         public static string RabbitMQQueueOrderUpdateRequest {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST, string.Empty);
+            }
+        }
+
+        public static string RabbitMQAccessUserNameConsumer {
+            get {
+                return GetValue(KEY_RABBITMQ_USER_ACCESS_CONSUMEUSER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQAccessUserNamePublisher {
+            get {
+                return GetValue(KEY_RABBITMQ_USER_ACCESS_PUBLISHUSER, string.Empty);
+            }
+        }
+
+        public static string RabbitMQAccessUserPasswordConsumer {
+            get {
+                return GetValue(KEY_RABBITMQ_USER_ACCESS_CONSUMEPASS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQAccessUserPasswordPublisher {
+            get {
+                return GetValue(KEY_RABBITMQ_USER_ACCESS_PUBLISHPASS, string.Empty);
             }
         }
 
@@ -680,11 +732,9 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQOrderServer
-        {
-            get
-            {
-                return GetValue(KEY_RABBITMQ_SERVER_ORDER, string.Empty);
+        public static string RabbitMQAccessServer {
+            get {
+                return GetValue(KEY_RABBITMQ_SERVER_ACCESS, string.Empty);
             }
         }
 
@@ -696,6 +746,14 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RabbitMQOrderServer
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_SERVER_ORDER, string.Empty);
+            }
+        }
+
         public static string RabbitMQNotificationServer
         {
             get
@@ -704,10 +762,16 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQVHostConfirmation
+        public static string RabbitMQVHostAccess
         {
             get
             {
+                return GetValue(KEY_RABBITMQ_VHOST_ACCESS, string.Empty);
+            }
+        }
+
+        public static string RabbitMQVHostConfirmation {
+            get {
                 return GetValue(KEY_RABBITMQ_VHOST_CONFIRMATION, string.Empty);
             }
         }
