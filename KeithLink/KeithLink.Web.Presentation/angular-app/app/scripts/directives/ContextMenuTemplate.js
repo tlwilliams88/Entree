@@ -11,8 +11,8 @@ angular.module('bekApp')
         menuElement: null
       };
     })
-.directive('contextMenuTemplate', [ '$modal', '$document', 'ContextMenuService',
-  function($modal, $document, ContextMenuService){
+.directive('contextMenuTemplate', [ '$modal', '$document', '$timeout', 'ContextMenuService',
+  function($modal, $document, $timeout, ContextMenuService){
   
   return {
     replace: true,
@@ -35,7 +35,8 @@ angular.module('bekApp')
 
       };
 
-      var opened = false;
+      var opened = false,
+        mouseenter = false;
 
       function openOnDesktop(event, menuElement) {
         menuElement.addClass('open');
@@ -107,10 +108,11 @@ angular.module('bekApp')
       }
 
       function openContextMenuMouseoverEvent(event) {
+        mouseenter = true;
         // desktop
         if (!isMobileDevice() && !opened) {
           if (ContextMenuService.menuElement !== null) {
-            close(ContextMenuService.menuElement);
+            closeDesktop(ContextMenuService.menuElement);
           }
           ContextMenuService.menuElement = angular.element(event.target).closest('.context-menu-template').find('.context-menu');
           ContextMenuService.element = event.target;
@@ -142,16 +144,27 @@ angular.module('bekApp')
         } 
       }
 
-      function close(menuElement) {
-        menuElement.removeClass('open');
+      var timer;
+      function closeTimeout(menuElement) {
+        mouseenter = false;
+        if (opened) {
+          timer = $timeout(function() {
+            if (!mouseenter) {
+              closeDesktop(menuElement);
+            }
+          }, 500);
+        }
+      }
 
+      function closeDesktop(menuElement) {
+        menuElement.removeClass('open');
         opened = false;
       }
 
       function closeContextMenuEvent(event) {
         if (ContextMenuService.menuElement) {
           $scope.$apply(function() {
-            close(ContextMenuService.menuElement);
+            closeTimeout(ContextMenuService.menuElement);
           });
         }
       }
@@ -164,7 +177,7 @@ angular.module('bekApp')
 
       $scope.$on('closeContextMenu', function(event) {
         if (ContextMenuService.menuElement) {
-          close(ContextMenuService.menuElement);
+          closeDesktop(ContextMenuService.menuElement);
         }
         closeContextMenuModal();
       });
@@ -177,6 +190,7 @@ angular.module('bekApp')
         $element.unbind('mouseenter', openContextMenuMouseoverEvent);
         $element.unbind('click', openContextMenuClickEvent);
         $element.unbind('mouseleave', closeContextMenuEvent);
+        $timeout.cancel( timer );
       });
     },
     templateUrl: 'views/directives/contextmenu.html'
