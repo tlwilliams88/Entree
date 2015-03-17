@@ -12,11 +12,13 @@ angular.module('bekApp')
     controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService',
     function($scope, $state, $q, $modal, toaster, ListService, CartService, OrderService){
 
-      $scope.lists = ListService.lists;
-      ListService.getListHeaders();
+      ListService.getListHeaders().then(function(lists) {
+        $scope.lists = lists;
+      });
 
-      $scope.carts = CartService.carts;
-      CartService.getCartHeaders();
+      CartService.getCartHeaders().then(function(carts) {
+        $scope.carts = carts;
+      });
 
       OrderService.getChangeOrders().then(function(orders) {
         $scope.changeOrders = orders;
