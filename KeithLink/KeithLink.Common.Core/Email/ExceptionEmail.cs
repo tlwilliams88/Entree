@@ -8,11 +8,11 @@ namespace KeithLink.Common.Core.Email {
         private const string EMAIL_FAILURE_SUBJECT = "Exception encountered in KeithLink Order Service";
         #endregion
 
-        public static void Send(Exception currentExcpetion, string additionalMessage = null) {
+        public static void Send(Exception currentExcpetion, string additionalMessage = null, string subject = null) {
             using (MailMessage msg = new MailMessage()) {
                 msg.To.Add(Configuration.FailureEmailAddress);
                 msg.From = new MailAddress(Configuration.FromEmailAddress);
-                msg.Subject = Configuration.IsProduction ? "PRODUCTION EXCEPTION: " : "" + EMAIL_FAILURE_SUBJECT;
+				msg.Subject = string.Format("{0} Exception: {1}", ConfigurationHelper.GetActiveConfiguration(), string.IsNullOrEmpty(subject) ? EMAIL_FAILURE_SUBJECT : subject);
                 msg.Priority = MailPriority.High;
 
                 StringBuilder body = new StringBuilder();

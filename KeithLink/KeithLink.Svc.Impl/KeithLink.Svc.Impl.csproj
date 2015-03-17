@@ -243,6 +243,8 @@
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
+    <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
+    <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
@@ -567,6 +569,7 @@
     <Compile Include="Repository\Queue\DemoGenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Reports\ReportRepository.cs" />
+    <Compile Include="Repository\SingleSignOn\KbitRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />

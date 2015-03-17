@@ -9,9 +9,12 @@ using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Messaging;
+using KeithLink.Svc.Impl.Repository.OnlinePayments;
+using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
@@ -19,8 +22,6 @@ using KeithLink.Svc.WebApi.Repository.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using KeithLink.Svc.Impl.Repository.Cache;
-using KeithLink.Svc.Impl.Repository.OnlinePayments;
 
 namespace KeithLink.Svc.Test.Repositories.Order
     {
@@ -56,7 +57,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
 
             _acct = new AccountRepository(_log);
             _cust = new CustomerRepository(_log, _custCach, dsrService);
-            _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository());
+            _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository(), new GenericQueueRepositoryImpl());
             //_orderHistoryRepo = new OrderHistoryHeaderRepositoryImpl(
         
         }
