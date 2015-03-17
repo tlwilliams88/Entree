@@ -1,36 +1,36 @@
 <!-- Replacement Item -->
-<a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="item.replacementitem > 0">
+<a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="::item.replacementitem > 0">
   <span tooltip="Item is replacing item # {{item.replacementitem}}" class="text-green icon-cycle"></span>
 </a>
-<a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="item.replaceditem > 0">
+<a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="::item.replaceditem > 0">
   <span tooltip="Item is being replaced by item # {{item.replaceditem}}" class="text-red icon-cycle"></span>
 </a>
 <!-- Substituted Item (orders only) -->
-<a ng-if="item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item subtituted for Item # {{item.substituteditemnumber}}"></span></a>
+<a ng-if="::item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item subtituted for Item # {{item.substituteditemnumber}}"></span></a>
 <!-- Deviated Cost -->
-<a ng-if="item.deviatedcost === 'Y'">
+<a ng-if="::item.deviatedcost === 'Y'">
   <span tooltip="Deviated Price" class="text-regular icon-dollar"></span>
 </a>
 <!-- Sell Sheet -->
-<a ng-if="item.sellsheet === 'Y'" ng-click="openExternalLink('http://multidocs.benekeith.com/SellSheet/GetFile?ItemNumber=' + item.itemnumber)">
+<a ng-if="::item.sellsheet === 'Y'" ng-click="openExternalLink('http://multidocs.benekeith.com/SellSheet/GetFile?ItemNumber=' + item.itemnumber)">
   <span tooltip="Product information sheet" class="text-regular icon-sellsheet"></span>
 </a>
 <!-- Child Nutrition -->
-<a ng-if="item.childnutrition === 'Y'" ng-click="openExternalLink('http://multidocs.benekeith.com/ChildNutrition/GetFile?ItemNumber=' + item.itemnumber)">
+<a ng-if="::item.childnutrition === 'Y'" ng-click="openExternalLink('http://multidocs.benekeith.com/ChildNutrition/GetFile?ItemNumber=' + item.itemnumber)">
   <span tooltip="Child nutrition information" class="text-regular icon-apple"></span>
 </a>
 <!-- Non-Stock -->
-<a ng-if="item.nonstock === 'Y'">
+<a ng-if="::item.nonstock === 'Y'">
   <span tooltip="Contact your DSR to order this item" class="text-regular icon-user"></span>
 </a>
 <!-- MSDS -->
 <!--TEMP ZONE-->
-<a ng-if="item.temp_zone === 'F'">
+<a ng-if="::item.temp_zone === 'F'">
   <span tooltip="Frozen" class="text-regular icon-snowflake"></span>
 </a>
-<a ng-if="item.temp_zone === 'C'">
+<a ng-if="::item.temp_zone === 'C'">
   <span tooltip="Refrigerated" class="text-regular icon-thermometer"></span>
 </a>
-<a ng-if="item.temp_zone === 'D'">
+<a ng-if="::item.temp_zone === 'D'">
   <span tooltip="Dry" class="text-regular icon-air"></span>
 </a>
