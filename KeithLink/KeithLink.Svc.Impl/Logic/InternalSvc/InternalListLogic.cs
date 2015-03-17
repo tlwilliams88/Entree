@@ -16,6 +16,10 @@ using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -32,6 +36,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IUserActiveCartRepository userActiveCartRepository;
 		private readonly IBasketRepository basketRepository;
 		private readonly ICustomerRepository customerRepository;
+		private readonly IEventLogRepository eventLogRepository;
+
 
 		private const string CACHE_GROUPNAME = "UserList";
 		private const string CACHE_NAME = "UserList";
@@ -42,7 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository,
 			ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
-			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository, ICustomerRepository customerRepository)
+			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository, ICustomerRepository customerRepository, IEventLogRepository eventLogRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -55,6 +61,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.userActiveCartRepository = userActiveCartRepository;
 			this.basketRepository = basketRepository;
 			this.customerRepository = customerRepository;
+			this.eventLogRepository = eventLogRepository;
 		}
         #endregion
 
@@ -227,37 +234,68 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				unitOfWork.SaveChanges();
 			}
 		}
-        
+
+		private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
+		{
+			if (listItems == null || listItems.Count == 0)
+				return;
+			var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
+			
+			stopWatch.Start();
+
+			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), listItems.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).ToList());
+			stopWatch.Stop();
+			var priceTime = stopWatch.ElapsedMilliseconds;
+
+			var priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
+
+			Parallel.ForEach(listItems, listItem =>
+			{
+				var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;				
+				if (price != null)
+				{
+					listItem.PackagePrice = price.PackagePrice.ToString();
+					listItem.CasePrice = price.CasePrice.ToString();
+				}
+			});
+
+			eventLogRepository.WriteInformationLog(string.Format("Lookup Prices for {0} Items. Price Time: {1}ms", listItems.Count, priceHash));
+
+		}
+
+
         private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
 		{
 			if (list.Items == null || list.Items.Count == 0)
 				return;
-
+			var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
+			stopWatch.Start();
 			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), list.Items.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).ToList());
+			stopWatch.Stop();
 
+			var productsTime = stopWatch.ElapsedMilliseconds;
 
+			stopWatch.Reset();
+
+			stopWatch.Start();
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
-			var priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
-
+			
 			Parallel.ForEach(list.Items, listItem =>
 			{
 				var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
-				var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
-					listItem.Description = prod.Description;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					listItem.StorageTemp = prod.Nutritional.StorageTemp;
-					listItem.Brand = prod.BrandExtendedDescription;
 					listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
+					listItem.Description = prod.Description;
+					listItem.Brand = prod.BrandExtendedDescription;
+					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
 					listItem.CatchWeight = prod.CatchWeight;
-                    listItem.TempZone = prod.TempZone;
 					listItem.ItemClass = prod.ItemClass;
 					listItem.CategoryId = prod.CategoryId;
 					listItem.CategoryName = prod.CategoryName;
@@ -267,7 +305,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.Kosher = prod.Kosher;
 					listItem.ManufacturerName = prod.ManufacturerName;
 					listItem.ManufacturerNumber = prod.ManufacturerNumber;
-                    listItem.AverageWeight = prod.AverageWeight;
+					listItem.AverageWeight = prod.AverageWeight;
 					listItem.Nutritional = new Nutritional()
 					{
 						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
@@ -280,32 +318,99 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					};
 
 				}
-				if (price != null)
-				{
-					listItem.PackagePrice = price.PackagePrice == null ? null : price.PackagePrice.ToString();
-					listItem.CasePrice = price.CasePrice == null ? null : price.CasePrice.ToString();
-				}
+				
 			});
+			stopWatch.Stop();
+
+			var mappingTime = stopWatch.ElapsedMilliseconds;
+
+			eventLogRepository.WriteInformationLog(string.Format("Lookup Details for List {0}. ItemCount: {1}, ProductInfo: {2}ms, Mapping: {3}ms", list.ListId, list.Items.Count, productsTime, mappingTime));
+
 
 		}
 
+		//private void LookupAdditionalInfoForExport(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
+		//{
+		//	if (list.Items == null || list.Items.Count == 0)
+		//		return;
+
+		//	var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
+			
+		//	var productHash = products.Products.ToDictionary(p => p.ItemNumber);
+			
+		//	Parallel.ForEach(list.Items, listItem =>
+		//	{
+		//		var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+		//		if (prod != null)
+		//		{
+		//			listItem.Description = prod.Description;
+		//			listItem.Brand = prod.BrandExtendedDescription;
+		//			listItem.StorageTemp = prod.Nutritional.StorageTemp;
+		//			listItem.ReplacedItem = prod.ReplacedItem;
+		//			listItem.ReplacementItem = prod.ReplacementItem;
+		//			listItem.NonStock = prod.NonStock;
+		//			listItem.ChildNutrition = prod.ChildNutrition;
+		//			listItem.CatchWeight = prod.CatchWeight;
+		//			listItem.ItemClass = prod.ItemClass;
+		//			listItem.CategoryId = prod.CategoryId;
+		//			listItem.CategoryName = prod.CategoryName;
+		//			listItem.UPC = prod.UPC;
+		//			listItem.VendorItemNumber = prod.VendorItemNumber;
+		//			listItem.Cases = prod.Cases;
+		//			listItem.Kosher = prod.Kosher;
+		//			listItem.ManufacturerName = prod.ManufacturerName;
+		//			listItem.ManufacturerNumber = prod.ManufacturerNumber;
+		//			listItem.AverageWeight = prod.AverageWeight;
+		//			listItem.Nutritional = new Nutritional()
+		//			{
+		//				CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+		//				GrossWeight = prod.Nutritional.GrossWeight,
+		//				HandlingInstructions = prod.Nutritional.HandlingInstructions,
+		//				Height = prod.Nutritional.Height,
+		//				Length = prod.Nutritional.Length,
+		//				Ingredients = prod.Nutritional.Ingredients,
+		//				Width = prod.Nutritional.Width
+		//			};
+
+		//		}
+				
+		//	});
+
+		//}
+
 		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Generated.Basket activeCart)
 		{
-			if (list.Items == null)
+			if (list.Items == null || list.Items.Count == 0)
 				return;
 
-			var notes = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
-			var favorites = listRepository.ReadListForCustomer(user, catalogInfo, false).Where(l => l.Type.Equals(ListType.Favorite) && l.UserId.Equals(user.UserId)).FirstOrDefault();
+			var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
+
+
+			stopWatch.Start();
+			var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Notes, i => i.Items).FirstOrDefault();
+			stopWatch.Stop();
+			var readNotes = stopWatch.ElapsedMilliseconds;
+			stopWatch.Reset();
+			stopWatch.Start();
+			var favorites = listRepository.Read(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Favorite, i => i.Items).FirstOrDefault();
+			stopWatch.Stop();
+			var readFav = stopWatch.ElapsedMilliseconds;
 
 			var notesHash = new Dictionary<string, ListItem>();
 			var favHash = new Dictionary<string, ListItem>();
 			var cartHash = new Dictionary<string, decimal>();
 
+			stopWatch.Reset();
+			stopWatch.Start();
 			if (notes != null && notes.Items != null)
 				notesHash = notes.Items.ToDictionary(n => n.ItemNumber);
 			if (favorites != null && favorites.Items != null)
 				favHash = favorites.Items.ToDictionary(f => f.ItemNumber);
+			stopWatch.Stop();
+			var createHashes = stopWatch.ElapsedMilliseconds;
 
+			stopWatch.Reset();
+			stopWatch.Start();
 			if (activeCart != null && activeCart.LineItems != null)
 			{
 				foreach (var item in activeCart.LineItems)
@@ -314,7 +419,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					else
 						cartHash.Add(item.ProductId, item.Quantity.HasValue ? item.Quantity.Value : 0);
 			}
+			stopWatch.Stop();
+			var cartHashTime = stopWatch.ElapsedMilliseconds;
 
+			stopWatch.Reset();
+			stopWatch.Start();
 			Parallel.ForEach(list.Items, listItem =>
 			{
 				listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);// favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
@@ -327,6 +436,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				
 			});
+			stopWatch.Stop();
+			var mapTime = stopWatch.ElapsedMilliseconds;
+
+			eventLogRepository.WriteInformationLog(string.Format("Lookup Fav/Notes for List {0}. Read Notes: {1}ms, Read Fav: {2}ms, Hash Notes/Fav: {3}ms, Hash Cart Items: {4}ms, Map Value: {5}ms", list.ListId, readNotes, readFav, createHashes, cartHashTime, mapTime ));
+
 
 		}
 		
@@ -366,14 +480,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
 			if (cachedList != null)
 			{
-				MarkFavoritesAndAddNotes(user, cachedList, catalogInfo, activeCart);
+				var clonedList = cachedList.Clone();
 
+				MarkFavoritesAndAddNotes(user, clonedList, catalogInfo, activeCart);
+				
 				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-				cachedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
-				cachedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
-												
-				return cachedList;
+				clonedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
+				clonedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+				LookupPrices(user, clonedList.Items, catalogInfo);
+				return clonedList;
 			}
 
 			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
@@ -382,12 +498,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return null;
 
 			var returnList = list.ToListModel(catalogInfo);
-			
+
+
 			LookupProductDetails(user, returnList, catalogInfo);
 			listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), returnList);
-	
-			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
-			return returnList;
+
+			var listClone = returnList.Clone();
+
+			MarkFavoritesAndAddNotes(user, listClone, catalogInfo, activeCart);
+			LookupPrices(user, listClone.Items, catalogInfo);
+			return listClone;
 		}
 
 		private Core.Models.Generated.Basket GetUserActiveCart(UserSelectedContext catalogInfo, UserProfile user)
@@ -452,6 +572,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             returnList.ForEach(delegate(ListModel listItem) {
                 LookupProductDetails(user, listItem, catalogInfo);
+				LookupPrices(user, listItem.Items, catalogInfo);
             });
 
             return returnList;
@@ -549,11 +670,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (userList.Items == null)
 				userList.Items = new List<ListItemModel>();
 
-			if (currentList.Items != null)
-				currentList.Items.Where(i => !userList.Items.Any(l => l.ListItemId.Equals(i.Id))).ToList().ForEach(delegate(ListItem item)
-				{
-					listItemRepository.Delete(item);
-				});
+			//if (currentList.Items != null)
+			//	currentList.Items.Where(i => !userList.Items.Any(l => l.ListItemId.Equals(i.Id))).ToList().ForEach(delegate(ListItem item)
+			//	{
+			//		listItemRepository.Delete(item);
+			//	});
+
+
 
 
 			if (currentList.Items == null && userList.Items != null)
@@ -562,24 +685,33 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			foreach (var updateItem in userList.Items)
 			{
-				if (string.IsNullOrEmpty(updateItem.ItemNumber))
-					continue;
-
-				if (updateItem.ListItemId != 0)
+				if (updateItem.IsDelete)
 				{
-					var item = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
-					item.ItemNumber = updateItem.ItemNumber;
-					item.Label = updateItem.Label;
-					item.Par = updateItem.ParLevel;
-					item.Position = updateItem.Position;
+					var itemToDelete = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
+					if(itemToDelete != null)
+						listItemRepository.Delete(itemToDelete);
 				}
 				else
 				{
-					if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
+					if (string.IsNullOrEmpty(updateItem.ItemNumber))
 						continue;
-						
-					currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
-					
+
+					if (updateItem.ListItemId != 0)
+					{
+						var item = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
+						item.ItemNumber = updateItem.ItemNumber;
+						item.Label = updateItem.Label;
+						item.Par = updateItem.ParLevel;
+						item.Position = updateItem.Position;
+					}
+					else
+					{
+						if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
+							continue;
+
+						currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
+
+					}
 				}
 			}
 
@@ -707,6 +839,101 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 
+
+		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
+		{
+			var totalStopWatch = new System.Diagnostics.Stopwatch();
+			var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
+			totalStopWatch.Start();
+			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
+
+			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
+			if (cachedList != null)
+			{
+				var cachedReturnList = cachedList.ShallowCopy();
+
+				MarkFavoritesAndAddNotes(user, cachedReturnList, catalogInfo, activeCart);
+
+				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+
+				cachedReturnList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
+				cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+
+				var cachedPagedList = ToPagedList(paging, cachedReturnList);
+				LookupPrices(user, cachedPagedList.Items.Results, catalogInfo);
+
+				return cachedPagedList;
+			}
+
+			stopWatch.Start();
+			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+			stopWatch.Stop();
+
+			var dbReadTime = stopWatch.ElapsedMilliseconds;
+
+			if (list == null)
+				return null;
+
+			var tempList = list.ToListModel(catalogInfo);
+
+
+			LookupProductDetails(user, tempList, catalogInfo);
+			listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
+
+			var returnList = tempList.ShallowCopy();
+
+			stopWatch.Reset();
+			stopWatch.Start();
+			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
+			stopWatch.Stop();
+			var favTime = stopWatch.ElapsedMilliseconds;
+
+			stopWatch.Reset();
+			stopWatch.Start();
+			var pagedList = ToPagedList(paging, returnList);
+			stopWatch.Stop();
+			var pagingTime = stopWatch.ElapsedMilliseconds;
+			totalStopWatch.Stop();
+
+			
+			LookupPrices(user, pagedList.Items.Results, catalogInfo);
+
+			eventLogRepository.WriteInformationLog(string.Format("Read Paged List {0}. ItemCount: {1}, Total Time In InternalService: {2}ms, DB Read: {3}ms, Map Fav/Notes: {4}ms, Paging: {5}ms", returnList.ListId, returnList.Items.Count, totalStopWatch.ElapsedMilliseconds, dbReadTime, favTime, pagingTime));
+
+
+			return pagedList;
+		}
+
+		private PagedListModel ToPagedList(PagingModel paging, ListModel returnList)
+		{
+			var pagedList = new PagedListModel()
+			{
+				BranchId = returnList.BranchId,
+				IsContractList = returnList.IsContractList,
+				IsFavorite = returnList.IsFavorite,
+				IsMandatory = returnList.IsMandatory,
+				IsRecommended = returnList.IsRecommended,
+				IsReminder = returnList.IsReminder,
+				IsShared = returnList.IsShared,
+				IsSharing = returnList.IsSharing,
+				IsWorksheet = returnList.IsWorksheet,
+				ListId = returnList.ListId,
+				Name = returnList.Name,
+				ReadOnly = returnList.ReadOnly,
+				SharedWith = returnList.SharedWith,
+				Type = returnList.Type
+			};
+
+			if (returnList.Items != null)
+				pagedList.Items = returnList.Items.AsQueryable<ListItemModel>().GetPage<ListItemModel>(paging, "Position");
+
+			return pagedList;
+		}
+
+
 		#endregion
+
+
+		
 	}
 }

@@ -53,9 +53,9 @@ var app = {
     },
     onOnline: function(){
         console.log("BACK ONLINE!");
-        var listService = angular.element($('body')).injector().get('ListService');
-        var cartService = angular.element($('body')).injector().get('CartService');
-        var toaster = angular.element($('body')).injector().get('toaster');
+        var listService = angular.element(jQuery('body')).injector().get('ListService');
+        var cartService = angular.element(jQuery('body')).injector().get('CartService');
+        var toaster = angular.element(jQuery('body')).injector().get('toaster');
         toaster.pop('success', null, "You are now connected to the server.");
         //merge local with server data
         listService.updateListsFromLocal();
@@ -65,6 +65,8 @@ var app = {
     },
     onOffline: function(){
         console.log("Taken Offline");
+        var toaster = angular.element(jQuery('body')).injector().get('toaster');
+        toaster.pop('warning', null, "You are now offline.");
     },
     onPause: function() {
         console.log("Paused.")

@@ -146,6 +146,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/GetBarcodeForList", ReplyAction="http://tempuri.org/IListServcie/GetBarcodeForListResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel[]> GetBarcodeForListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadPagedList", ReplyAction="http://tempuri.org/IListServcie/ReadPagedListResponse")]
+        KeithLink.Svc.Core.Models.Lists.PagedListModel ReadPagedList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadPagedList", ReplyAction="http://tempuri.org/IListServcie/ReadPagedListResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.PagedListModel> ReadPagedListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -349,6 +355,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel[]> GetBarcodeForListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
             return base.Channel.GetBarcodeForListAsync(user, catalogInfo, Id);
+        }
+        
+        public KeithLink.Svc.Core.Models.Lists.PagedListModel ReadPagedList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.ReadPagedList(user, catalogInfo, Id, paging);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.PagedListModel> ReadPagedListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
+            return base.Channel.ReadPagedListAsync(user, catalogInfo, Id, paging);
         }
     }
 }

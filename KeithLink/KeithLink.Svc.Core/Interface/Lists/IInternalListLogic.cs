@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -56,5 +57,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
 		List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+
+		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, PagingModel paging);
 	}
 }

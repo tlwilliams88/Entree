@@ -85,10 +85,7 @@ angular.module('bekApp')
       CREATE CART
       ********************/
 
-      // accepts null, item object, or array of item objects and shipDate
-      // returns promise and new cart object
-      createCart: function(items, shipDate) {
-
+      beforeCreateCart: function(items, shipDate) {
         var newCart = {};
     
         if (!items) { // if null
@@ -99,9 +96,9 @@ angular.module('bekApp')
           newCart.items = [items];
         }
 
+        // TODO: move this out of here
         // set default quantity to 1
         angular.forEach(newCart.items, function (item, index) {
-      
           if (!item.quantity || item.quantity === 0) {
             item.quantity = 1;
           }
@@ -114,6 +111,13 @@ angular.module('bekApp')
         if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
           newCart.requestedshipdate = Service.shipDates[0].shipdate;
         }
+        return newCart;
+      },
+
+      // accepts null, item object, or array of item objects and shipDate
+      // returns promise and new cart object
+      createCart: function(items, shipDate) {
+        var newCart = Service.beforeCreateCart(items, shipDate);        
 
         return Cart.save({}, newCart).$promise.then(function(response) {
           newCart.id = response.listitemid;

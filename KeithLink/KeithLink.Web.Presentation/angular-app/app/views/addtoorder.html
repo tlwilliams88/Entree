@@ -26,7 +26,7 @@
       <label for="useParlevel">Use PAR Level</label>
     </div>
     <div class="col-xs-7 text-right">
-      Showing {{filteredItems.length}} of {{selectedList.items.length}} Items
+      Showing {{selectedList.items.length}} of {{selectedList.itemCount}} Items
     </div>
   </div>
 
@@ -127,31 +127,31 @@
 
       <thead>
         <tr>
-          <th class="sort-col-header" ng-click="sortBy='position';sortOrder=!sortOrder;">
-            <span># <span sort-icons field="'position'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th class="sort-col-header" ng-click="sortList('position',!sort.sortDescending)">
+            <span># <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
-          <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
+          <th class="sort-col-header" ng-click="sortList('itemnumber',!sort.sortDescending)">
             Item
-            <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
+            <span># <span sort-icons field="'itemnumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
-          <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder;">
-            <span>Name <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th class="sort-col-header" ng-click="sortList('name',!sort.sortDescending)">
+            <span>Name <span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
-          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
-            <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand',!sort.sortDescending)">
+            <span>Brand <span sort-icons field="'brand'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
-          <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortBy='notes';sortOrder=!sortOrder;">
-            <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortList('notes',!sort.sortDescending)">
+            <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-xs hidden-sm"></th>
           <th class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'">
             # in Cart
           </th>
-          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='label';sortOrder=!sortOrder;">
-            <span>Label <span sort-icons field="'label'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',!sort.sortDescending)">
+            <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-mobile-visible-print" ng-show="useParlevel">
             PAR
@@ -159,14 +159,14 @@
           <th class="hidden-mobile-visible-print" ng-show="useParlevel">
             On Hand
           </th>
-          <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder;">
-            <span>Qty <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th>
+            Qty
           </th>
-          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='each';sortOrder=!sortOrder;">
-            <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th class="hidden-mobile-visible-print">
+            Each
           </th>
-          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy=sortByPrice;sortOrder=!sortOrder;">
-            <span>Price <span sort-icons field="sortByPrice" sortorder="sortOrder" sortby="sortBy"></span></span>
+          <th class="hidden-mobile-visible-print">
+            Price
           </th>
           <th class="hidden-mobile-visible-print">
             Ext Price
@@ -192,7 +192,7 @@
             <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.notes">
           </td>
           <td class="hidden-xs hidden-sm"></td>
-          <td class="hidden-mobile-visible-print"></td>
+          <td class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'"></td>
           <td class="hidden-mobile-visible-print input-col">
             <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.label">
           </td>
@@ -202,43 +202,44 @@
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print"></td>
           <td class="hidden-mobile-visible-print"></td>
-          <td class="large-icon icon-col">
-            <a ng-click="filterFields = {}"><span class="text-light icon-cross3"></span></a>
+          <td class="input-col">
+            <button type="button" class="btn btn-primary btn-sm" ng-click="filterItems(filterFields)">Filter</button>
+            <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters()">Clear</button>
           </td>
         </tr> <!-- end Filter Row -->
 
         <tr 
-          ng-repeat-start="item in (filteredItems = (selectedList.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo: itemsToDisplay)) track by item.listitemid" 
+          ng-repeat-start="item in  selectedList.items track by item.listitemid" 
           ng-class="{ odd : $odd, even: $even }">
           <td>
-            {{item.position}}
+            {{::item.position}}
           </td>
           <td>
-            <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+            <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
           </td>
           <td>
-            {{item.name}}
+            {{::item.name}}
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.brand}}
+            {{::item.brand}}
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.packsize}}
+            {{::item.packsize}}
           </td>
           <td class="hidden-mobile-visible-print notes-col">
-            {{item.notes}}
+            {{::item.notes}}
           </td>
           <td class="hidden-xs hidden-sm">
             <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
           </td>
           <td class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'" >
-            {{item.quantityincart}}
+            {{::item.quantityincart}}
           </td>
           <td class="hidden-mobile-visible-print">
-            {{item.label}}
+            {{::item.label}}
           </td>
           <td ng-show="useParlevel" class="hidden-mobile-visible-print">
-            {{item.parlevel}}
+            {{::item.parlevel}}
           </td>
           <td ng-show="useParlevel" class="hidden-mobile-visible-print input-col">
             <ng-form name="parlevelForm">
@@ -287,30 +288,30 @@
               </colgroup>
               <tr>
                 <td>Notes</td>
-                <td>{{item.notes}}</td>
+                <td>{{::item.notes}}</td>
               </tr>
               <tr>
                 <td>Label</td>
-                <td>{{item.label}}</td>
+                <td>{{::item.label}}</td>
               </tr>
               <tr>
                 <td>Pack/Size</td>
-                <td>{{item.packsize}}</td>
+                <td>{{::item.packsize}}</td>
               </tr>
               <tr>
                 <td>Brand</td>
-                <td>{{item.brand}}</td>
+                <td>{{::item.brand}}</td>
               </tr>
               <tr ng-hide="isChangeOrder || selectedCart.id === 'New'">
                 <td># in Cart</td>
-                <td>{{item.quantityincart}}</td>
+                <td>{{::item.quantityincart}}</td>
               </tr>
               <tr>
                 <td item-icons></td>
               </tr>
               <tr ng-show="useParlevel">
                 <td>PAR Level</td>
-                <td>{{item.parlevel}}</td>
+                <td>{{::item.parlevel}}</td>
               </tr>
               <tr ng-show="useParlevel">
                 <td>On Hand Amount</td>
@@ -348,7 +349,7 @@
           </td>
         </tr>
       </tbody>
-      <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items || filteredItems.length === 0) && selectedList">
+      <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
         <tr>
           <td colspan="16">
             There are no products to display.
@@ -357,4 +358,5 @@
       </tfoot>
     </table>
   </form>
+  <div loading-spinner="loadingResults"></div>
 </div>

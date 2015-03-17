@@ -1,4 +1,4 @@
-'use strict';
+  'use strict';
 
 angular.module('bekApp')
   .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'LocalStorage', 'CustomerService', '$state', 'PagingModel',
@@ -74,13 +74,8 @@ angular.module('bekApp')
   }];
   $scope.selectedFilterView = $scope.filterViews[0];
 
-  function setInvoices(data) {
-    $scope.invoices = data.pagedresults.results;
-    $scope.totalInvoices = data.pagedresults.totalResults;
-    $scope.hasPayableInvoices = data.haspayableinvoices;
-    $scope.totalAmountDue = data.totaldue;
-
-    data.pagedresults.results.forEach(function(invoice) {
+  function calculateInvoiceFields(invoices) {
+    invoices.forEach(function(invoice) {
       // determine which invoices are payable
       if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
         invoice.userCanPayInvoice = true;
@@ -95,8 +90,18 @@ angular.module('bekApp')
       invoice.maxPaymentDate = date.format('YYYY-MM-DD');
     });
   }
+
+  function setInvoices(data) {
+    $scope.invoices = data.pagedresults.results;
+    $scope.totalInvoices = data.pagedresults.totalResults;
+    $scope.hasPayableInvoices = data.haspayableinvoices;
+    $scope.totalAmountDue = data.totaldue;
+
+    calculateInvoiceFields(data.pagedresults.results);
+  }
   function appendInvoices(data) {
     $scope.invoices = $scope.invoices.concat(data.pagedresults.results);
+    calculateInvoiceFields(data.pagedresults.results);
   }
   function startLoading() {
     $scope.loadingResults = true;
@@ -228,12 +233,12 @@ angular.module('bekApp')
   };
 
   $scope.toggleSelect = function (invoice) {
-    if (invoice.paymentAmount && invoice.paymentAmount != 0) { 
+    if (invoice.paymentAmount && invoice.paymentAmount != 0) { // jshint ignore:line
       invoice.isSelected = true;
     } else {
       invoice.isSelected = false;
     }
-    if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) {
+    if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) { // jshint ignore:line
       invoice.isSelected = false;
     }
   };

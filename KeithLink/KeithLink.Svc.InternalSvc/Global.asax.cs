@@ -23,24 +23,13 @@ using System.Web.SessionState;
 namespace KeithLink.Svc.InternalSvc
 {
     public class Global : System.Web.HttpApplication {
-        #region attributes
-        private IConfirmationLogic _confirmationLogic;
-        private IInternalOrderHistoryLogic _orderHistoryLogic;
-        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _notificationQueueConsumer;
-        #endregion
-
-        #region events
+       #region events
         protected void Application_Start(object sender, EventArgs e)
         {
             IContainer container = AutofacContainerBuilder.BuildContainer();
             AutofacHostFactory.Container = container;
 
-            if (Svc.Impl.Configuration.RunInternalServiceQueues)
-            {
-				InitializeConfirmationMoverThread();
-				InitializeNotificationsThread();
-				InitializeOrderUpdateThread();
-            }
+            
         }
 
         protected void Session_Start(object sender, EventArgs e)
@@ -70,47 +59,8 @@ namespace KeithLink.Svc.InternalSvc
 
         protected void Application_End(object sender, EventArgs e)
         {
-            TerminateConfirmationThread();
-            TerminateOrderHistoryThread();
-            TerminateNotificationsThread();
+           
         }
-        #endregion
-
-        #region methods
-        private void InitializeConfirmationMoverThread() {
-            _confirmationLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IConfirmationLogic>();
-            _confirmationLogic.ListenForQueueMessages();
-        }
-
-        private void InitializeNotificationsThread()
-        {
-            _notificationQueueConsumer = ((IContainer)AutofacHostFactory.Container).Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
-            _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
-        }
-
-        private void InitializeOrderUpdateThread() {
-            //System.Diagnostics.Debugger.Launch();
-
-			_orderHistoryLogic = ((IContainer)AutofacHostFactory.Container).Resolve<IInternalOrderHistoryLogic>();
-            _orderHistoryLogic.ListenForQueueMessages();
-        }
-
-        private void TerminateConfirmationThread() {
-            if (_confirmationLogic != null)
-                _confirmationLogic.Stop();
-        }
-
-        private void TerminateOrderHistoryThread() {
-            if (_orderHistoryLogic != null)
-                _orderHistoryLogic.StopListening();
-        }
-
-        private void TerminateNotificationsThread()
-        {
-            if (_notificationQueueConsumer != null)
-                _notificationQueueConsumer.Stop();
-        }
+        #endregion		       
 	}
-
-    #endregion
 }

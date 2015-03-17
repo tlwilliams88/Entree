@@ -40,10 +40,10 @@ angular.module('bekApp')
       CHANGE ORDERS
       *************/
 
-      getChangeOrders: function() {
-        var promise = $http.get('/order/changeorder', {
+      getChangeOrders: function(params) {
+        var promise = $http.get('/order/changeorder', { params: {
           header: true
-        });
+        }});
         return UtilityService.resolvePromise(promise).then(function(changeOrders) {
           changeOrders.forEach(function(changeOrder) {
             PricingService.updateCaculatedFields(changeOrder.items);

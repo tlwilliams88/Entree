@@ -131,9 +131,6 @@ namespace KeithLink.Svc.InternalSvc
 			listLogic.ShareList(shareListModel);
 		}
 		
-		#endregion
-
-
 		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
 		{
 			return listLogic.ReadRecommendedItemsList(catalogInfo);
@@ -144,5 +141,13 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return listLogic.GetBarcodeForList(user, catalogInfo, Id);
 		}
+
+
+		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
+		{
+			return listLogic.ReadPagedList(user, catalogInfo, Id, paging);
+		}
+		
+		#endregion
 	}
 }

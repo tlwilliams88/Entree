@@ -9,13 +9,13 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'PhonegapDbService', 'PhonegapLocalStorageService',
     function (
-      $scope, $timeout, $rootScope, $state, $log, $window,  // built in angular services
+      $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
       $modal,                         // ui-bootstrap library
       ENV,                            // environment config, see configenv.js file which is generated from Grunt
       branches,                       // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService // bek custom services
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, PhonegapDbService, PhonegapLocalStorageService // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -35,6 +35,54 @@ angular.module('bekApp')
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
+  /**********
+  PHONEGAP OFFLINE STORAGE
+  **********/
+
+  var db_table_name_lists = 'lists',
+    db_table_name_carts = 'carts';
+
+  if (ENV.mobileApp) {
+    console.log('clearing tables and downloading data');  
+    downloadDataForOfflineStorage();
+  }
+
+  function saveAllItems(items, tableName, keyField) {
+    items.forEach(function(item) {
+      PhonegapDbService.setItem(tableName, item[keyField], item);
+    });
+  }
+
+  function clearOfflineStorageTables() {
+    console.log('clearing tables');
+    return $q.all([
+      PhonegapDbService.dropTable(db_table_name_lists),
+      PhonegapDbService.dropTable(db_table_name_carts)
+    ]);
+  }
+
+  function downloadDataForOfflineStorage() {
+    return $q.all([
+      ListService.getAllLists(),
+      ListService.getAllLabels(),
+      CartService.getAllCarts(),
+      CartService.getShipDates()
+      ]).then(function(results) {
+        var lists = results[0];
+        var labels = results[1];
+        var carts = results[2];
+        var shipDates = results[3];
+
+        
+        clearOfflineStorageTables().then(function() {
+          saveAllItems(lists, db_table_name_lists, 'listid');
+          saveAllItems(carts, db_table_name_carts, 'id');
+          PhonegapLocalStorageService.setLabels(labels);  
+          PhonegapLocalStorageService.setShipDates(shipDates);
+        });
+      });
+  }
+
   /**********
   SELECTED USER CONTEXT
   **********/

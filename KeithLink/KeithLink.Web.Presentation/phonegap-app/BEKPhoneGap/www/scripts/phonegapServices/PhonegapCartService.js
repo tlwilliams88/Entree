@@ -1,231 +1,265 @@
 'use strict';
 
 angular.module('bekApp')
-    .factory('PhonegapCartService', ['$http', '$q', 'CartService', 'localStorageService', 'UserProfileService', 'UtilityService', 'Cart',
-        function($http, $q, CartService, localStorageService, UserProfileService, UtilityService, Cart) {
+  .factory('PhonegapCartService', ['$http', '$q', 'CartService', 'PhonegapLocalStorageService', 'PhonegapDbService', 'PricingService', 'Cart',
+    function($http, $q, CartService, PhonegapLocalStorageService, PhonegapDbService, PricingService, Cart) {
 
-            var originalCartService = angular.copy(CartService);
+      var originalCartService = angular.copy(CartService);
 
-            var Service = angular.extend(CartService, {});
+      var Service = angular.extend(CartService, {});
 
-            Service.getAllCarts = function() {
-                if (navigator.connection.type === 'none') {
-                    if (Service.carts) {
-                        localStorageService.set('carts', Service.carts);
-                    }
-                    var localCarts = localStorageService.get("carts");
-                    angular.copy(localCarts, Service.carts);
-                    return localCarts;
-                } else {
-                    return originalCartService.getAllCarts().then(function(allCarts) {
-                        localStorageService.set('carts', allCarts);
-                        return allCarts;
-                    });
+      var db_table_name_carts = 'carts';
 
-                }
+      function generateId() {
+        return 'a' + Math.floor((1 + Math.random()) * 0x10000).toString(16); // generate 5 digit id
+      }
 
-            };
+      function updateCachedCarts(updatedCart) {
+        Service.carts.forEach(function(cart, index) {
+          if (cart.id === updatedCart.id) {
+            Service.carts[index] = updatedCart;
+          }
+        });
+      }
 
-            Service.getCart = function(cartId) {
-                if (navigator.connection.type === 'none') {
-                    return Service.findCartById(cartId);
-                } else {
-                    return originalCartService.getCart(cartId);
-                }
-            };
-
-            Service.createCart = function(items, shipDate) {
-                if (navigator.connection.type === 'none') {
-                    var newCart = {};
-                    if (!items) { // if null
-                        newCart.items = [];
-                    } else if (Array.isArray(items)) { // if multiple items
-                        newCart.items = items;
-                    } else if (typeof items === 'object') { // if one item
-                        newCart.items = [items];
-                    }
-
-                    // set default quantity to 1
-                    angular.forEach(newCart.items, function(item, index) {
-                        if (!item.quantity || item.quantity === 0) {
-                            item.quantity = 1;
-                        }
-                    });
-
-                    newCart.name = UtilityService.generateName('Cart', Service.carts);
-                    newCart.requestedshipdate = shipDate;
-                    newCart.isNew = true;
-
-                    var localCarts = localStorageService.get('carts');
-                    newCart.cartid = newCart.name;
-                    localCarts.push(newCart);
-                    localStorageService.set('carts', localCarts);
-                    Service.carts.push(newCart);
-
-                    //return a promise
-                    var deferred = $q.defer();
-                    deferred.resolve(newCart);
-                    return deferred.promise;
-
-                } else {
-                    return originalCartService.createCart(items, shipDate).then(function(response) {
-                        localStorageService.set('carts', Service.carts);
-                        return response;
-                    });
-                }
-
-            };
-
-            Service.updateCart = function(cart, params) {
-                if (navigator.connection.type === 'none') {
-                    var localCarts = localStorageService.get('carts');
-                    var updatedCart = cart;
-                    angular.forEach(localCarts, function(item, index) {
-                        if (item.id === cart.id) {
-                            if (cart.items[0].cartitemid) {
-                                //if on cart page
-                                localCarts[index] = cart;
-                            } else {
-
-                                angular.forEach(cart.items, function(newCartItem, index2) {
-                                    var foundItem = false;
-                                    angular.forEach(item.items, function(localCartItem, index3) {
-                                        if (localCartItem.itemnumber === newCartItem.itemnumber) {
-                                            foundItem = true;
-                                            //if item found on local, change quantities
-                                            localCarts[index].items[index3].quantity = newCartItem.quantity + localCartItem.quantity;
-                                        }
-                                    });
-                                    //if item never is found, add it
-                                    if (!foundItem) {
-                                        localCarts[index].items.push(newCartItem);
-                                    }
-                                });
-                            }
-                            localCarts[index].isChanged = true;
-                            updatedCart = localCarts[index];
-                        }
-                    });
-                    localStorageService.set('carts', localCarts);
-                    angular.copy(localCarts, Service.carts);
-                    var deferred = $q.defer();
-                    deferred.resolve(updatedCart);
-                    return deferred.promise;
-                } else {
-                    return originalCartService.updateCart(cart, params).then(function(response) {
-                        localStorageService.set('carts', Service.carts);
-                        return response;
-                    });
-                }
-            };
-
-            Service.deleteCart = function(cartId) {
-                if (navigator.connection.type === 'none') {
-                    var localCarts = localStorageService.get('carts');
-
-                    angular.forEach(localCarts, function(item, index) {
-                        if (item.id === cartId) {
-                            localCarts.splice(index, 1);
-                            if (item.isNew) {
-                                var isNew = true;
-                            }
-
-                            localStorageService.set('carts', localCarts);
-                            angular.copy(localCarts, Service.carts);
-                            if (!isNew) {
-                                var deletedCartGuids = localStorageService.get('deletedCartGuids');
-                                if (deletedCartGuids) {
-                                    deletedCartGuids.push(cartId);
-                                    localStorageService.set('deletedCartGuids', deletedCartGuids);
-                                } else {
-                                    var deletedArray = [];
-                                    deletedArray.push(cartId);
-                                    localStorageService.set('deletedCartGuids', deletedCartGuids);
-                                }
-                            }
-                        }
-                    });
-                    var deferred = $q.defer();
-                    deferred.resolve();
-                    return deferred.promise;
-
-                } else {
-                    return originalCartService.deleteCart(cartId);
-                }
-            };
-
-            Service.addItemToCart = function(cartId, item) {
-                if (navigator.connection.type === 'none') {
-                    if (!item.quantity || item.quantity === 0) {
-                        item.quantity = 1;
-                    }
-
-                    var updatedCart = Service.findCartById(cartId);
-                    if (updatedCart && updatedCart.items) {
-                        updatedCart.items.push(item);
-                        updatedCart.isChanged = true;
-                    }
-                    localStorageService.set('carts', Service.carts);
-
-                } else {
-                    return originalCartService.addItemToCart(cartId, item);
-                }
-            };
-
-            Service.updateCartsFromLocal = function() {
-                var promises = [];
-                var localCarts = localStorageService.get('carts');
-                angular.forEach(localCarts, function(cart, index) {
-                    if (cart.isNew) {
-                        delete cart.id;
-                        delete cart.isNew;
-                        promises.push(Service.createCartFromLocal(cart));
-                    }
-                    if (cart.isChanged) {
-                        delete cart.isChanged;
-                        promises.push(Service.updateCart(cart).then(null, function(rejection) {
-                            console.log(rejection);
-                        }));
-                    }
-
-                });
-                var deletedCartGuids = localStorageService.get('deletedCartGuids');
-                if (deletedCartGuids) {
-                    promises.push(Service.deleteMultipleCarts(deletedCartGuids));
-                }
-
-                $q.all(promises).then(function() {
-                    //update from server and remove deleted array
-                    Service.getAllCarts();
-                    console.log('carts updated!');
-                    localStorageService.remove('deletedCartGuids');
-                });
-
-
-
-            };
-
-            Service.createCartFromLocal = function(newCart) {
-                return Cart.save({}, newCart).$promise.then(function(response) {
-                    return Service.getCart(response.listitemid);
-                });
-            };
-
-            Service.getShipDates = function() {
-                if (navigator.connection.type === 'none') {
-                    var shipDates = localStorageService.get('shipDates')
-                    var deferred = $q.defer();
-                    deferred.resolve(shipDates);
-                    return deferred.promise;
-                } else {
-                    return originalCartService.getShipDates().then(function(response) {
-                        localStorageService.set('shipDates', response);
-                        return response;
-                    });
-                }
-            };
-
-            return Service;
-
+      Service.getAllCarts = function() {
+        if (navigator.connection.type === 'none') {
+          console.log('getting carts from DB');
+          // TEST: keep db carts up to date while online
+          return PhonegapDbService.getAllItems(db_table_name_carts).then(function(data) {
+            angular.copy(data, Service.carts);
+            return data;
+          });
+        } else {
+          console.log('getting all carts from server');
+          return originalCartService.getAllCarts();
         }
-    ]);
+      };
+
+      Service.getCart = function(cartId) {
+        if (navigator.connection.type === 'none') {
+          return PhonegapDbService.getItem(db_table_name_carts, cartId).then(function(cart) {
+            console.log('found cart');
+            console.log(cart);
+            PricingService.updateCaculatedFields(cart.items);
+            return cart;
+          });
+        } else {
+          return originalCartService.getCart(cartId);
+        }
+      };
+
+      Service.setActiveCart = function(cartId) {
+        if (navigator.connection.type === 'none') {
+          var deferred = $q.defer();
+          deferred.resolve();
+          return deferred.promise;
+        } else {
+          return originalCartService.setActiveCart(cartId);
+        }
+      };
+
+      Service.createCart = function(items, shipDate) {
+        debugger;
+        if (navigator.connection.type === 'none') {
+
+          var newCart = originalCartService.beforeCreateCart(items, shipDate);
+          newCart.id = generateId();
+          newCart.isNew = true;
+
+          newCart.items.forEach(function(item) {
+            item.cartitemid = generateId();
+            item.isNew = true;
+          });
+
+          PhonegapDbService.setItem(db_table_name_carts, newCart.id, newCart);
+          Service.carts.push(newCart);
+
+          //return a promise
+          var deferred = $q.defer();
+          deferred.resolve(newCart);
+          return deferred.promise;
+
+        } else {
+          return originalCartService.createCart(items, shipDate);
+        }
+      };
+
+      Service.updateCart = function(cart, params) {
+        if (navigator.connection.type === 'none') {
+          var deferred = $q.defer();
+
+          if (!cart.isNew) {
+            cart.isChanged = true;
+          }
+
+          // flag new items and give them a temp id 
+          cart.items.forEach(function(item) {
+            if (!item.cartitemid) {
+              item.cartitemid = generateId();
+              item.isNew = true;
+            }
+          });
+
+          PhonegapDbService.setItem(db_table_name_carts, cart.id, cart);
+          updateCachedCarts(cart); // update Service.carts
+
+          deferred.resolve(cart);
+          return deferred.promise;
+        } else {
+          return originalCartService.updateCart(cart, params);
+        }
+      };
+
+      Service.deleteCart = function(cartId) {
+        if (navigator.connection.type === 'none') {
+          console.log('deleting cart offline');
+
+          Service.carts.forEach(function(cart, index) {
+            if (cart.id === cartId) {
+              Service.carts.splice(index, 1);
+              PhonegapDbService.removeItem(db_table_name_carts, cartId);
+
+              // add cartId to cart of deleted carts for deleting on the server when back online
+              var deletedCartGuids = PhonegapLocalStorageService.getDeletedCartGuids();
+              if (!deletedCartGuids) {
+                deletedCartGuids = [];
+              }
+              if (!cart.isNew) { // carts created while offline don't need to be sent to the server
+                deletedCartGuids.push(cartId);
+                PhonegapLocalStorageService.setDeletedCartGuids(deletedCartGuids);
+              }
+            }
+          });
+
+          // what do i need to return??? 
+          var deferred = $q.defer();
+          deferred.resolve();
+          return deferred.promise;
+
+        } else {
+          return originalCartService.deleteCart(cartId);
+        }
+      };
+
+      Service.addItemToCart = function(cartId, item) {
+        if (navigator.connection.type === 'none') {
+          if (!item.quantity || item.quantity === 0) {
+            item.quantity = 1;
+          }
+          delete item.cartitemid;
+          item.cartitemid = generateId();
+
+          var updatedCart = Service.findCartById(cartId);
+          if (updatedCart && updatedCart.items) {
+            updatedCart.items.push(item);
+            updatedCart.isChanged = true;
+          }
+
+          PhonegapDbService.setItem(db_table_name_carts, cartId, updatedCart);
+          return item;
+        } else {
+          return originalCartService.addItemToCart(cartId, item);
+        }
+      };
+
+      Service.addItemsToCart = function(cart, items) {
+        if (navigator.connection.type === 'none') {
+          var deferred = $q.defer();
+          PhonegapDbService.getItem(db_table_name_carts, cart.id).then(function(cartFound) {
+            cartFound.isChanged = true;
+            
+            items.forEach(function(item) {
+              item.cartitemid = generateId();
+              item.isNew = true;
+            })
+            cartFound.items = cartFound.items.concat(items);
+            PhonegapDbService.setItem(db_table_name_carts, cartFound.id, cartFound);
+            deferred.resolve(cartFound);
+          });
+          return deferred.promise;
+        } else {
+          return originalCartService.addItemToCart(cart, items);
+        }
+      }
+
+      Service.updateCartsFromLocal = function() {
+        console.log('updating carts after back online');
+
+        PhonegapDbService.getAllItems(db_table_name_carts).then(function(storedCarts) {
+          debugger;
+          var promises = [];
+          angular.forEach(storedCarts, function(cart, index) {
+
+            if (cart.isNew) { // create carts
+              debugger;
+              var newItems = [];
+              cart.items.forEach(function(item) {
+                if (item.itemnumber) {
+                  newItems.push({
+                    itemnumber: item.itemnumber,
+                    quantity: item.quantity,
+                    each: item.each
+                  });
+                }
+              });
+              var newCart = {
+                name: cart.name,
+                items: newItems
+              };
+              promises.push(Service.createCartFromLocal(newCart));
+            } else if (cart.isChanged) { // update carts
+              delete cart.isChanged;
+              cart.items.forEach(function(item) {
+                if (item.isNew) {
+                  delete item.cartitemid;
+                }
+              });
+              promises.push(originalCartService.updateCart(cart));
+            }
+
+          });
+
+          // delete carts
+          var deletedCartGuids = PhonegapLocalStorageService.getDeletedCartGuids();
+          if (deletedCartGuids) {
+            promises.push(Service.deleteMultipleCarts(deletedCartGuids));
+          }
+
+          debugger;
+          $q.all(promises).then(function() {
+            console.log('carts updated!');
+
+            //update from server and remove deleted array
+            PhonegapDbService.dropTable(db_table_name_carts)
+              .then(Service.getAllCarts);
+
+            PhonegapLocalStorageService.removeDeletedCartGuids();
+          }, function() {
+            console.log('error updating carts');
+          });
+        });
+      };
+
+      Service.createCartFromLocal = function(newCart) {
+        return Cart.save({}, newCart).$promise;
+      };
+
+      Service.getShipDates = function() {
+        if (navigator.connection.type === 'none') {
+          var shipDates = PhonegapLocalStorageService.getShipDates();
+          var deferred = $q.defer();
+          deferred.resolve(shipDates);
+          return deferred.promise;
+        } else {
+          return originalCartService.getShipDates().then(function(response) {
+            PhonegapLocalStorageService.setShipDates(response);
+            return response;
+          });
+        }
+      };
+
+      return Service;
+
+    }
+  ]);

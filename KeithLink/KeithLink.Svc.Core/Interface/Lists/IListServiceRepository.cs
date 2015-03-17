@@ -61,5 +61,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
 		List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+
+		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
 	}
 }

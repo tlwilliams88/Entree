@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[DataMember(Name = "packsize")]
 		[Description("Pack/Size")]
 		public string PackSize { get; set; }
-		[DataMember(Name = "storagetemp")]
+		[DataMember(Name = "storagetemp", EmitDefaultValue = false)]
 		public string StorageTemp { get; set; }
 		[DataMember(Name = "quantityincart")]
 		[Description("# In Cart")]
@@ -45,6 +45,8 @@ namespace KeithLink.Svc.Core.Models.Lists
         public DateTime CreatedUtc { get; set; }
         public DateTime ModifiedUtc { get; set; }
 
+		[DataMember(Name = "isdeleted")]
+		public bool IsDelete { get; set; }
 		[DataMember]
 		public ListType Type { get; set; }
 
@@ -87,5 +89,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 			return defaultConfig;
 
 		}
+
+		
 	}
 }

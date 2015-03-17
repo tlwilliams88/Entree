@@ -8,14 +8,16 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'PricingService',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService, ListPagingModel) {
 
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
 
     var orderBy = $filter('orderBy');
+
+    var deletedItems = []; // keep track of deleted items
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;
@@ -32,16 +34,39 @@ angular.module('bekApp')
     }
 
     function resetPage(list) {
-      $scope.selectedList = list;
-      // $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
+      $scope.selectedList = angular.copy(list);
+      originalList = list;
+      $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
-      $scope.sortList('position', false);
-      
+      // $scope.sortList('position', false);
+
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
       }
     }
+    function appendListItems(list) {
+      $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
+    }
+    function startLoading() {
+      $scope.loadingResults = true;
+    }
+    function stopLoading() {
+      $scope.loadingResults = false;
+    }
+
+    $scope.sort = {
+      field: 'position',
+      sortDescending: false
+    };
+    var listPagingModel = new ListPagingModel( 
+      originalList.listid,
+      resetPage,
+      appendListItems,
+      startLoading,
+      stopLoading,
+      $scope.sort
+    );
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
@@ -56,6 +81,25 @@ angular.module('bekApp')
 
     $scope.undoChanges = function() {
       resetPage(angular.copy(originalList));
+    };
+
+    /**********
+    PAGING
+    **********/
+
+    $scope.filterItems = function(searchTerm) {
+      $scope.hideDragToReorder = !!searchTerm.length;
+      listPagingModel.filterListItems(searchTerm);
+    };
+    $scope.sortList = function(sortBy, sortOrder) {
+      $scope.sort = {
+        field: sortBy,
+        sortDescending: sortOrder
+      };
+      listPagingModel.sortListItems($scope.sort);
+    };
+    $scope.infiniteScrollLoadMore = function() {
+      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems);
     };
 
     /**********
@@ -142,10 +186,19 @@ angular.module('bekApp')
 
         angular.forEach(updatedList.items, function(item, itemIndex) {
           if (item.listitemid) {
+            if (item.editLabel && item.isEditing) {
+              item.label = item.editLabel;
+            }
             item.position = item.editPosition;
             item.isEditing = false;
           }
         });
+
+        // mark deleted items
+        deletedItems.forEach(function(item) {
+          item.isdeleted = true;
+        });
+        updatedList.items = updatedList.items.concat(deletedItems);
         
         ListService.updateList(updatedList)
           .then(resetPage)
@@ -183,13 +236,15 @@ angular.module('bekApp')
         });
       }
 
-      $scope.selectedList.items.splice(deletedIndex, 1);
+      deletedItems = deletedItems.concat($scope.selectedList.items.splice(deletedIndex, 1));
       updateItemPositions();
       $scope.listForm.$setDirty();
     };
 
     $scope.deleteMultipleItems = function() {
-      $scope.selectedList.items = $filter('filter')($scope.filteredItems, {isSelected: '!true'});
+      deletedItems = deletedItems.concat($filter('filter')($scope.selectedList.items, {isSelected: 'true'}));
+
+      $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
       $scope.selectedList.allSelected = false;
       $scope.listForm.$setDirty();
     };
@@ -244,7 +299,7 @@ angular.module('bekApp')
     ********************/
 
     function getMultipleSelectedItems() {
-      return $filter('filter')($scope.filteredItems, {isSelected: 'true'});
+      return $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
     }
 
     // determines if user is dragging one or multiple items and returns the selected item(s)
@@ -269,7 +324,7 @@ angular.module('bekApp')
     }
 
     $scope.changeAllSelectedItems = function() {
-      angular.forEach($scope.filteredItems, function(item, index) {
+      angular.forEach($scope.selectedList.items, function(item, index) {
         item.isSelected = $scope.selectedList.allSelected;
       });
     };
@@ -295,7 +350,7 @@ angular.module('bekApp')
 
       var helperElement;
       if (multipleSelectedItems.length > 0 && draggedRow.hasClass('item-selected')) {
-        helperElement = angular.element('<div style="padding:10px;background-color:white;">' + multipleSelectedItems.length + ' Items</div>');
+        helperElement = angular.element('<div style="padding:10px;background-color:white;border:1px solid #c3bc9c;">' + multipleSelectedItems.length + ' Items</div>');
       } else {
         helperElement = angular.element(draggedRow).clone();
       }
@@ -320,7 +375,7 @@ angular.module('bekApp')
     };
 
     /********************
-    ORDERING/SORTING LIST
+    DRAG TO REORDER
     ********************/
 
     // saves new item indexes in cached editPosition field after sorting or ordering the list items
@@ -350,54 +405,54 @@ angular.module('bekApp')
       updateItemPositions();
     };
 
-    // sort list by column
-    $scope.sortList = function(sortBy, sortOrder) {
-      var sortField = sortBy;
+    // // sort list by column
+    // $scope.sortList = function(sortBy, sortOrder) {
+    //   var sortField = sortBy;
 
-      if ($scope.selectedList.items.length > 0 && !$scope.selectedList.items[0].hasOwnProperty('position')) {
-        $scope.selectedList.items.splice(0,1);
-      }
+    //   if ($scope.selectedList.items.length > 0 && !$scope.selectedList.items[0].hasOwnProperty('position')) {
+    //     $scope.selectedList.items.splice(0,1);
+    //   }
 
-      $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
-        // move items with position 0 to bottom of list
-        if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
-          return 1000;
-        }
+    //   $scope.selectedList.items = orderBy($scope.selectedList.items, function(item) {
+    //     // move items with position 0 to bottom of list
+    //     if ((sortField === 'editPosition' || sortField === 'position') && item[sortField] === 0) {
+    //       return 1000;
+    //     }
 
-        return item[sortField];
-      }, sortOrder);
+    //     return item[sortField];
+    //   }, sortOrder);
 
-      $scope.selectedList.items.unshift({});
+    //   $scope.selectedList.items.unshift({});
 
-      $scope.sortBy = sortBy;
-      updateItemPositions();
-    };
+    //   $scope.sortBy = sortBy;
+    //   updateItemPositions();
+    // };
 
-    // FILTER LIST
-    $scope.listSearchTerm = '';
-    $scope.search = function (row) {
-      var term = $scope.listSearchTerm.toLowerCase(),
-        itemnumberMatch,
-        nameMatch,
-        labelMatch;
+    // // FILTER LIST
+    // $scope.listSearchTerm = '';
+    // $scope.search = function (row) {
+    //   var term = $scope.listSearchTerm.toLowerCase(),
+    //     itemnumberMatch,
+    //     nameMatch,
+    //     labelMatch;
 
-      if (row.itemnumber) {
-        itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1;
-        nameMatch = row.name && (row.name.toLowerCase().indexOf(term || '') !== -1);
-        labelMatch = row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);  
-      }
+    //   if (row.itemnumber) {
+    //     itemnumberMatch = row.itemnumber.toLowerCase().indexOf(term || '') !== -1;
+    //     nameMatch = row.name && (row.name.toLowerCase().indexOf(term || '') !== -1);
+    //     labelMatch = row.label && (row.label.toLowerCase().indexOf(term || '') !== -1);  
+    //   }
 
-      return !!(itemnumberMatch || nameMatch || labelMatch);
-    };
+    //   return !!(itemnumberMatch || nameMatch || labelMatch);
+    // };
 
-    // INFINITE SCROLL
-    var itemsPerPage = Constants.infiniteScrollPageSize;
-    $scope.itemsToDisplay = itemsPerPage;
-    $scope.infiniteScrollLoadMore = function() {
-      if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
-        $scope.itemsToDisplay += itemsPerPage;
-      }
-    };
+    // // INFINITE SCROLL
+    // var itemsPerPage = Constants.infiniteScrollPageSize;
+    // $scope.itemsToDisplay = itemsPerPage;
+    // $scope.infiniteScrollLoadMore = function() {
+    //   if ($scope.itemsToDisplay < $scope.selectedList.items.length) {
+    //     $scope.itemsToDisplay += itemsPerPage;
+    //   }
+    // };
 
     /******
     MODALS
@@ -442,10 +497,6 @@ angular.module('bekApp')
           list: function() {
             return list;
           }
-          // ,
-          // customers: ['LocalStorage', function(LocalStorage) {
-          //   return LocalStorage.getProfile().user_customers;
-          // }]
         }
       });
 

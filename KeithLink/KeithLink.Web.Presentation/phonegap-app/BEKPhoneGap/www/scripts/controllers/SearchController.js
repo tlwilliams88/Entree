@@ -20,12 +20,13 @@ angular.module('bekApp')
       $scope.userBar.universalSearchTerm = '';
     }
 
+    // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
     $scope.hasCasePrice = PricingService.hasCasePrice;
     $scope.hasPackagePrice = PricingService.hasPackagePrice;
 
-    $scope.paramType = $stateParams.type;
-    $scope.paramId = $stateParams.id;
+    $scope.paramType = $stateParams.type; // Category, Search, Brand
+    $scope.paramId = $stateParams.id; // search term, brand id, category id
 
     $scope.loadingResults = false;
     $scope.sortField = null;
@@ -51,9 +52,9 @@ angular.module('bekApp')
         showMore: true // display Show More button for this facet
       },
       mfrname:{
-          available: [],
-          selected: [],
-          showMore: true // display Show More button for this facet
+        available: [],
+        selected: [],
+        showMore: true
       },
       itemspecs: {
         available: [],
@@ -142,14 +143,14 @@ angular.module('bekApp')
       // manufacturers
       if ($scope.facets.mfrname.selected.length > 0) {
           breadcrumbs.push({
-              click: function (data) {
-                  $scope.facets.mfrname.selected = data;
-                  $scope.facets.dietary.selected = [];
-                  $scope.facets.itemspecs.selected = [];
-                  loadProducts().then(refreshFacets);
-              },
-              clickData: $scope.facets.brands.selected,
-              displayText: 'Manufacturers: ' + $scope.facets.mfrname.selected.join(breadcrumbSeparator)
+            click: function (data) {
+              $scope.facets.mfrname.selected = data;
+              $scope.facets.dietary.selected = [];
+              $scope.facets.itemspecs.selected = [];
+              loadProducts().then(refreshFacets);
+            },
+            clickData: $scope.facets.mfrname.selected,
+            displayText: 'Manufacturers: ' + $scope.facets.mfrname.selected.join(breadcrumbSeparator)
           });
           filterCount += $scope.facets.mfrname.selected.length;
       }

@@ -13,6 +13,13 @@ angular.module('bekApp')
       tempContext: 'tempContext'
     },
 
+    offlineLocalStorage: {
+      labels: 'labels',
+      deletedListGuids: 'deletedListGuids',
+      shipDates: 'shipDates',
+      deletedCartGuids: 'deletedCartGuids'
+    },
+
     servicelocatorUrl: '../servicelocator', // DEPRECATED
 
     roles: {
