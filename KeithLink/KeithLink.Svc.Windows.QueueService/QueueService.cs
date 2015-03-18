@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using System;
@@ -18,6 +19,7 @@ namespace KeithLink.Svc.Windows.QueueService
 		private IConfirmationLogic _confirmationLogic;
 		private IInternalOrderHistoryLogic _orderHistoryLogic;
 		private Svc.Core.Interface.Messaging.INotificationQueueConsumer _notificationQueueConsumer;
+        private IEventLogRepository _log;
         
 		public QueueService(IContainer container)
 		{
@@ -27,6 +29,9 @@ namespace KeithLink.Svc.Windows.QueueService
 
 		protected override void OnStart(string[] args)
 		{
+            _log = container.Resolve<IEventLogRepository>();
+            _log.WriteInformationLog("Service starting");
+
 			InitializeNotificationsThread();
 			InitializeConfirmationMoverThread();
 			InitializeOrderUpdateThread();
@@ -37,6 +42,8 @@ namespace KeithLink.Svc.Windows.QueueService
 			TerminateConfirmationThread();
 			TerminateOrderHistoryThread();
 			TerminateNotificationsThread();
+
+            _log.WriteInformationLog("Service stopped");
 		}
 
 		private void InitializeConfirmationMoverThread()

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
-	<?define AppName="KeithLink Queue Service"?>
+	<?define AppName="Entree Queue Service"?>
 	<?define MfgName="Ben E. Keith Company"?>
 	<?define SourcePath="..\KeithLink.Svc.Windows.QueueService\bin\$(var.Configuration)"?>
 	<?define AppDescription="Polls Rabbit MQ for notificaitons, order updates, and confirmations" ?>
