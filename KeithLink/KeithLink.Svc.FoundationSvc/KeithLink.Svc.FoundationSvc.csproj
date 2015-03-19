@@ -239,10 +239,14 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="KeithLink.Svc.FoundationSvc.snk" />
+    <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Demo.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Dev.config">

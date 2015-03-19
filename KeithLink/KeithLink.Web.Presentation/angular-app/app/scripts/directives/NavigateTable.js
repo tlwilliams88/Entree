@@ -18,7 +18,7 @@ angular.module('bekApp')
     function rowHasInput(moveToRow, pos) {
       var hasInput = false;
       if (moveToRow && moveToRow.length) {
-        var inputCell = angular.element(moveToRow[0].cells[pos])
+        var inputCell = angular.element(moveToRow[0].cells[pos]);
         if (inputCell.length) {
           var input = inputCell.find('input,textarea');
           if (input.length && input.is(':visible')) {

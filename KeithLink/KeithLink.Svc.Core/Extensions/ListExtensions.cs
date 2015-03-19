@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Core.Extensions
 				DisplayName = list.Name,
 				Type = ListType.Custom,
 				ReadOnly = list.ReadOnly,
-				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes}).ToArray()
+				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes, Each = i.Each.Equals(null) ? false : (bool)i.Each}).ToArray()
 			};
 		}
 
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Core.Extensions
                 IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId)) : false,
 				IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
-                    list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc, FromDate = i.FromDate, ToDate = i.ToDate }).ToList()
+                    list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc, FromDate = i.FromDate, ToDate = i.ToDate, Each = i.Each.Equals(null) ? false : (bool)i.Each }).ToList()
 			};
 		}
 

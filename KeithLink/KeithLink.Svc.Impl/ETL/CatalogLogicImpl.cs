@@ -880,7 +880,8 @@ namespace KeithLink.Svc.Impl.ETL
                                 {
                                     ItemNumber = itemRow.GetString("ItemNumber"),
                                     Position = itemRow.GetInt("BidLineNumber"),
-                                    Category = itemRow.GetString("CategoryDescription")
+                                    Category = itemRow.GetString("CategoryDescription"),
+                                    Each = itemRow.GetString("BrokenCaseCode").Equals("Y") ? true : false
                                 }).ToList();
             return contractItems;
         }
@@ -897,6 +898,7 @@ namespace KeithLink.Svc.Impl.ETL
                                 new ListItemModel
                                 {
                                     ItemNumber = itemRow.GetString("ItemNumber"),
+                                    Each = itemRow.GetString("BrokenCaseCode").Equals("Y") ? true : false
                                 }).ToList();
             return contractItems;
         }
@@ -907,9 +909,9 @@ namespace KeithLink.Svc.Impl.ETL
             
             foreach (ListItemModel lim in listItems)
             {
-                if (!itemDictionary.ContainsKey(lim.ItemNumber))
+                if (!itemDictionary.ContainsKey(lim.ItemNumber + lim.Each.ToString()))
                 {
-                    itemDictionary.Add(lim.ItemNumber, lim);
+                    itemDictionary.Add(lim.ItemNumber + lim.Each.ToString(), lim);
                 }
             }
 

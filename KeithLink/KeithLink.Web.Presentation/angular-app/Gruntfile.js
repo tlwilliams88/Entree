@@ -470,6 +470,19 @@ module.exports = function (grunt) {
                   }
               }
           },
+		  demo: {
+              constants: {
+                  ENV: {
+                    name: '<%= config.environment.demo.name %>',
+                    apiKey: '<%= config.environment.demo.apiKey %>',
+                    apiEndpoint: '<%= config.environment.demo.apiEndpoint %>',
+                    loggingEnabled: config.environment.demo.loggingEnabled,
+                    googleAnalytics: '<%= config.environment.demo.googleAnalytics %>',
+                    cognosUrl: '<%= config.environment.demo.cognosUrl %>',
+                    mobileApp: false
+                  }
+              }
+          },
           dev: {
               constants: {
                   ENV: {
@@ -601,6 +614,16 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin'
+  ]);
+  
+  grunt.registerTask('build-for-demo', [
+    // 'npm-install',
+    'clean:dev',
+    'ngconstant:demo',
+    // 'includeSource:dev',
+    'compass:server',
+    'copy:dev',
+    'karma'
   ]);
 
   grunt.registerTask('build-for-stage', [

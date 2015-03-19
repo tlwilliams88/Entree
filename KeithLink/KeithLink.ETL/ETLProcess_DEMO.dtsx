@@ -10,10 +10,10 @@
   DTS:ExecutableType="SSIS.Package.3"
   DTS:LastModifiedProductVersion="11.0.5058.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="ETLProcess_QA"
+  DTS:ObjectName="ETLProcess_DEMO"
   DTS:PackageType="5"
-  DTS:VersionBuild="337"
-  DTS:VersionGUID="{435958E2-4A4F-434C-BC6F-51B18BCFD803}">
+  DTS:VersionBuild="339"
+  DTS:VersionGUID="{7975BB40-E927-44ED-9B26-9F9B18A73BB2}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\bidContractDetail.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\bidContractDetail.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -139,7 +139,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\bidContractHeader.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\bidContractHeader.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerFile.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -223,7 +223,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{17233D8F-5534-4BA7-A9BF-B719EBC96B9B}"
+              DTS:DTSID="{F81CDAC0-2C56-4824-9AEC-3C8BA79AC52D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -231,7 +231,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CO"
-              DTS:DTSID="{7B52F7CB-F483-4CD7-A463-434270A6B176}"
+              DTS:DTSID="{4A99C372-3AAB-4D09-BFE2-DD6FFE1C75F1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -239,7 +239,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DIV"
-              DTS:DTSID="{7A5A5734-1950-4838-B98A-8E0F4797B305}"
+              DTS:DTSID="{F4184127-8984-4F12-95EC-880535411F94}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -247,7 +247,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DEPT"
-              DTS:DTSID="{27759421-FEFE-449F-BACE-96EDD1FB00C3}"
+              DTS:DTSID="{B5C68AAC-914A-4F75-AFBA-C07883DFE015}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -255,7 +255,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{031C4142-AFC0-42D2-AA43-D01C4856D222}"
+              DTS:DTSID="{0ED24D94-AC30-4AB1-A556-72195A652747}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -263,7 +263,7 @@
               DTS:MaximumWidth="40"
               DTS:DataType="129"
               DTS:ObjectName="CustomerName"
-              DTS:DTSID="{CFFF2163-9FBD-472C-8D4F-EE43410B223C}"
+              DTS:DTSID="{821B6C2A-2FEA-4792-B38C-AD6F4BF4B701}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -271,7 +271,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address1"
-              DTS:DTSID="{54BE5BFC-85DE-43C6-87BA-B85840F6D85C}"
+              DTS:DTSID="{2C02F840-9A2C-4944-BC2B-2762BC9B406D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -279,7 +279,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address2"
-              DTS:DTSID="{9A43D6E6-C050-4C64-9D47-45B03B875B60}"
+              DTS:DTSID="{0BCA8DF1-5168-470B-B3F8-A0B021307027}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -287,7 +287,7 @@
               DTS:MaximumWidth="30"
               DTS:DataType="129"
               DTS:ObjectName="City"
-              DTS:DTSID="{8761ED18-5FAE-4BB2-B1D9-E40E9C0C295F}"
+              DTS:DTSID="{BC39F21B-47EE-4679-8574-B147D5A102EA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -295,7 +295,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="State"
-              DTS:DTSID="{36EE5EC5-5B17-4016-83EF-6A8DF719112A}"
+              DTS:DTSID="{98FF913A-AC8C-402B-B775-4087D030FB7C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -303,7 +303,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ZipCode"
-              DTS:DTSID="{10947203-B430-4515-BE6A-256126845EB6}"
+              DTS:DTSID="{734DF297-8222-4B80-A799-426FB4019CAB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -311,7 +311,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WhsnNumber"
-              DTS:DTSID="{B2DAE099-59FB-445F-AECD-DD600F7E1508}"
+              DTS:DTSID="{3F3B5B5F-26B9-45B9-96A9-159C055BDB0E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -319,7 +319,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Telephone"
-              DTS:DTSID="{E748F16B-B6EF-41FA-A19A-DA52433F81D6}"
+              DTS:DTSID="{51E70A7C-C27F-4FAA-B7F6-6FF5136ED073}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -327,7 +327,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{01634C88-BFF8-406D-8814-CBB1D939FA96}"
+              DTS:DTSID="{4AD42D3E-9950-4A04-BB38-31ADDE14E175}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -335,7 +335,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{610E346B-0B9C-4DB2-BF68-93E9E251AAD8}"
+              DTS:DTSID="{6082E322-E078-4E63-AA75-5E0E74CF476F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -343,7 +343,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TermCode"
-              DTS:DTSID="{6A37373A-168C-4BBF-98F7-8EB851963789}"
+              DTS:DTSID="{FB797898-5B1A-462E-A86A-72A6A1DB9900}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -351,7 +351,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="CreditLimit"
-              DTS:DTSID="{17BE256F-9F31-4D67-8599-138CB199CFEF}"
+              DTS:DTSID="{366D35E7-865F-412A-8E91-8728F46E5161}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -359,7 +359,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditHoldFlag"
-              DTS:DTSID="{549F285C-B06A-43A6-9C40-1FF25B5DE981}"
+              DTS:DTSID="{45EF2FFF-EDED-49CA-A9C0-CB2DE627EB80}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -367,7 +367,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DONOTUSE"
-              DTS:DTSID="{4B1ECFC8-8813-4B8D-9669-610389647648}"
+              DTS:DTSID="{D49CBE57-818C-45C1-8016-BA50B3F21675}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -375,7 +375,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="StoreNumber"
-              DTS:DTSID="{3C9F83FF-AF45-4871-AD43-D7E5233638B9}"
+              DTS:DTSID="{FD78947B-A7F6-4994-B320-036B88827D63}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -383,7 +383,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ContractOnly"
-              DTS:DTSID="{970B8C97-26F5-4722-BE5A-CFCF9C71673A}"
+              DTS:DTSID="{04E079A4-48D0-4B5B-9918-ADDA537C7065}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -391,7 +391,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="LocationAuth"
-              DTS:DTSID="{102F0BDA-8306-44F1-B787-8017940B0D9C}"
+              DTS:DTSID="{1B626482-1FC3-431F-BBD3-6F63B42AA26F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -399,7 +399,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateLastPay"
-              DTS:DTSID="{6F8314A8-08EE-4E96-9479-36DE8D2A1C38}"
+              DTS:DTSID="{A9B45090-F0BB-4326-B24A-F7A5E3B7F599}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -407,7 +407,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CustAmountDue"
-              DTS:DTSID="{143C5D36-323E-420E-92A3-7E16316CC718}"
+              DTS:DTSID="{245A883B-D0A1-4A04-A65C-278B2008F89D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -415,7 +415,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CurrentBalance"
-              DTS:DTSID="{56592F46-61DB-4159-9DE1-8510AB9FC75F}"
+              DTS:DTSID="{E9EFA79F-752B-4210-A57E-D5D83981928B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -423,7 +423,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge1"
-              DTS:DTSID="{6FF748B2-0EAE-452A-9C7F-59FACF97CC2B}"
+              DTS:DTSID="{1DBCC8EF-BDE8-468E-B1CF-501BA9848127}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -431,7 +431,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge2"
-              DTS:DTSID="{2219B400-03AF-41CB-BC1A-3CFFAAD4CE4D}"
+              DTS:DTSID="{67401369-EEA5-4E5B-A42D-9C95F00AA8A8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -439,7 +439,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge3"
-              DTS:DTSID="{E9B26A07-C6AE-429F-B734-95250928DA7F}"
+              DTS:DTSID="{B23BA4A2-1F67-4AFB-A61E-459E08FB2B6F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -447,7 +447,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge4"
-              DTS:DTSID="{C5A6692E-E107-42A9-9F0F-96A08E9B3356}"
+              DTS:DTSID="{0731BE76-BC04-458A-A5A5-A59D8BDD7E4A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -455,7 +455,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ActiveFlag"
-              DTS:DTSID="{A9793B1B-5CC9-4DE0-AE9F-80C7A115C3E0}"
+              DTS:DTSID="{293DE38D-1139-4326-B0A1-E77118278247}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -463,7 +463,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="MondayRoutNum"
-              DTS:DTSID="{808510F3-DBED-4973-943D-1C282CEDF9E7}"
+              DTS:DTSID="{42D8EB2F-F592-4DD0-851F-554959208016}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -471,7 +471,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MondayStopNum"
-              DTS:DTSID="{6AD6F444-4E69-4FA0-817F-A44EDBD59B52}"
+              DTS:DTSID="{70B18E89-A953-4742-9F82-4FBEF3B94D20}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -479,7 +479,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayRoutNum"
-              DTS:DTSID="{B1FBD7C9-A185-481C-B496-954B42323018}"
+              DTS:DTSID="{EA805341-4BA0-42AD-9A36-19707BCFD252}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -487,7 +487,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayStopNum"
-              DTS:DTSID="{782294E4-F433-4CD4-AE16-94A06FEFBD70}"
+              DTS:DTSID="{D2B19CFD-13CE-444F-8294-456BB879858B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -495,7 +495,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="WedRoutNum"
-              DTS:DTSID="{BB280714-CA35-4AF9-B525-A5D29E19132C}"
+              DTS:DTSID="{E02C1182-6F38-44EF-B2B5-8FF80B2A7A04}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -503,7 +503,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WedStopNum"
-              DTS:DTSID="{D85B341B-C13C-4AC0-8ABF-FFB8B4BFC649}"
+              DTS:DTSID="{E348837F-324F-42D8-A7F4-6D7B50675EE3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -511,7 +511,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayRoutNum"
-              DTS:DTSID="{872149C5-5C1A-4571-BDC6-E6AA25768CFA}"
+              DTS:DTSID="{E9EA9363-CD23-406A-8074-127770338E66}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -519,7 +519,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayStopNum"
-              DTS:DTSID="{8CE4B9C2-3F32-403A-B190-3EF110E8BA8F}"
+              DTS:DTSID="{6F1D725D-0302-4F0B-A152-BE70BCDCC1C2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -527,7 +527,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="FridayRoutNum"
-              DTS:DTSID="{FBDA6B5B-26A4-432B-AAF3-7A2D8DE149DA}"
+              DTS:DTSID="{75AE5791-4811-4C1D-9330-CA7B33BD064B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -535,7 +535,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="FridayStopNum"
-              DTS:DTSID="{D9F4A624-8F90-4160-916D-6784A4A710F6}"
+              DTS:DTSID="{19A03997-01A6-486F-BDC8-1A0FC4DF5878}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -543,7 +543,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayRoutNum"
-              DTS:DTSID="{6D422D1B-25BC-4032-8D31-DA8DD8F3FD97}"
+              DTS:DTSID="{B06BD650-8E9E-4D9B-8CA5-437D4C799C91}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -551,7 +551,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayStopNum"
-              DTS:DTSID="{32DDD154-6B93-411C-B3D6-859C23A15572}"
+              DTS:DTSID="{8C47C145-1559-4F52-B736-2CA3F89CB458}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -559,7 +559,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SundayRoutNum"
-              DTS:DTSID="{3890E5CE-EED6-4FD2-AE80-4C93326BF151}"
+              DTS:DTSID="{15FD77E5-9E58-4EF4-8032-37BD220A5E57}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -567,7 +567,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SundayStopNum"
-              DTS:DTSID="{D7F72A2D-4289-420A-8C50-94D40814815D}"
+              DTS:DTSID="{EE8712D0-EC93-4CB6-92A3-111103CA6EA3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -575,7 +575,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CSR"
-              DTS:DTSID="{E70FBC89-380A-4A46-8A51-8DD4124FF8A8}"
+              DTS:DTSID="{DD1DE099-34F8-4D79-9781-A2E3BB0B49F1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -583,7 +583,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Contract"
-              DTS:DTSID="{E3526AFE-FD7B-40BC-AFF5-FA8D9377B171}"
+              DTS:DTSID="{86C106D6-EEE8-4636-BC14-1CBE59005D74}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -591,7 +591,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PORequiredFlag"
-              DTS:DTSID="{C97588A7-6988-48CD-A3DC-962F8E5B2A78}"
+              DTS:DTSID="{AE17B3B1-088B-42DB-9CED-1FE383E27825}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -599,7 +599,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNU"
-              DTS:DTSID="{641C6BB0-D4EF-4DCA-9445-B0F5D44A39CC}"
+              DTS:DTSID="{293FC861-73FE-4416-AEDB-599EAB8F6D57}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -607,7 +607,7 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNUB"
-              DTS:DTSID="{B9C4013E-94A3-49E0-A3A5-44A88E373378}"
+              DTS:DTSID="{56EFD599-0B82-4916-B9F5-F02ACB234632}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -615,7 +615,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty1"
-              DTS:DTSID="{D79D6B51-867D-4484-809C-1867779AC083}"
+              DTS:DTSID="{7B2422FC-E1EC-4F25-9828-2E541FA4A8F4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -623,7 +623,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty2"
-              DTS:DTSID="{73D6D62F-DA6D-4741-9C48-7CB53D57F56F}"
+              DTS:DTSID="{69534367-33BC-4206-B8C4-48174AD55498}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -631,7 +631,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PowerMenu"
-              DTS:DTSID="{D667D82D-B298-4314-925C-E8C0B9D03FAB}"
+              DTS:DTSID="{2ECED587-28A7-466B-BC74-A23E4952A550}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -639,7 +639,15 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="AchType"
-              DTS:DTSID="{7F6B8147-633A-46E5-B7ED-C353A992BD82}"
+              DTS:DTSID="{2B4B83F5-E9F9-4B6F-97ED-C1364FF5775B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnDelimiter=""
+              DTS:ColumnWidth="2"
+              DTS:MaximumWidth="2"
+              DTS:DataType="129"
+              DTS:ObjectName="DsmNumber"
+              DTS:DTSID="{693AD128-B716-44B5-8373-2C57113BA3AE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -647,7 +655,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="CRLF"
-              DTS:DTSID="{1C5A69DF-C27A-4358-B47E-C86C4E34446A}"
+              DTS:DTSID="{EF9D205A-49B3-4E8F-8F2B-332BC567BAB4}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -667,7 +675,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerBid.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\customerBid.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -751,7 +759,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerWorksheet.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\customerWorksheet.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -759,7 +767,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{994ECC02-3C91-4A4F-B392-A7A48799ABB1}"
+              DTS:DTSID="{00E10828-BD7C-4442-9EA2-0B07A133F627}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -767,7 +775,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CompanyNumber"
-              DTS:DTSID="{0411E87F-6A45-4EBE-B9C7-AAF17C726047}"
+              DTS:DTSID="{3337C230-234A-4A2D-84DB-3F544F634986}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -775,7 +783,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DivisionNumber"
-              DTS:DTSID="{D8F9D9DE-D2D8-4D7E-8F91-C3F08A190898}"
+              DTS:DTSID="{39F471EC-A2A2-4718-989B-983FA501E34F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -783,7 +791,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DepartmentNumber"
-              DTS:DTSID="{7D0C9D65-B5FA-4FD4-A408-77E9A092B70E}"
+              DTS:DTSID="{8502831B-A19F-4907-AB91-86C5FD198C89}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -791,7 +799,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{2D3DC21D-9A17-45F6-9CF7-1D7F060095CD}"
+              DTS:DTSID="{657A2804-01A9-466E-8386-AC2E13E3EF07}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -799,7 +807,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ItemNumber"
-              DTS:DTSID="{19063C66-4574-4ABD-BDA4-DFED3F7D6704}"
+              DTS:DTSID="{F6831E3B-EB97-4C0A-9CFA-7690F5ED8696}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -807,7 +815,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="BrokenCaseCode"
-              DTS:DTSID="{F1E53CF1-6A71-48A6-82F6-053ECB56055F}"
+              DTS:DTSID="{F6310D5E-AB8C-4E65-A60F-C346F0FAA68E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -815,7 +823,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ItemPrice"
-              DTS:DTSID="{94F5AC9C-FD94-481E-B6C7-20168A3AD672}"
+              DTS:DTSID="{8294802B-5E03-4A34-A66E-AEC6F5E19309}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -823,7 +831,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="QtyOrdered"
-              DTS:DTSID="{0EE21593-3386-4A57-A1C5-F22F3DC1ACA3}"
+              DTS:DTSID="{AB1DB311-3D13-4F9B-B822-047044F44061}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -831,7 +839,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateOfLastOrder"
-              DTS:DTSID="{547CE715-643A-4745-91E2-F1279F2D5F75}"
+              DTS:DTSID="{59FBA768-1E33-463C-9CA8-D9D003EEC3DB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -839,7 +847,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="CrLf"
-              DTS:DTSID="{89AE5737-E113-4F35-A61B-0A945A133D0F}"
+              DTS:DTSID="{B1A7786B-2D03-44C0-B451-9C6F48A0464E}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -858,7 +866,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\keithNetInvoice.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\keithNetInvoice.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1182,7 +1190,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\openDetailAR.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\openDetailAR.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1330,7 +1338,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\paidDetailFile.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\paidDetailFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1477,7 +1485,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\propCustomer.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\propCustomer.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1552,7 +1560,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\propItem.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\propItem.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1628,7 +1636,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerTerms.SSIS">
+          DTS:ConnectionString="\\BEKBACKUP\ftproot\eBusiness\Demo\customerTerms.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1720,17 +1728,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://corpkecqas1:9876/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://192.168.16.43:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://corpkecqas1:9876/ETLService.svc?wsdl">
+            DTS:ServerURL="http://192.168.16.43:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAAsaEGxLiURxfjpLfbbUG7AAAAAASAAACgAAAAEAAAAIo0e+NhC9KpORipGKdGBMwIAAAACmNfrXfh5AYUAAAAndXeiW6LhW3mO9h5rNsKUx6HONU</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACr13ffQZwspQW5GfmQgmbjAAAAAASAAACgAAAAEAAAAFcp1HtlOyDqMaNekaL6HHIIAAAADGQ9YxyUl74UAAAAPD4Nto4oxDYECrx1MC9S3UbFCbg</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACyHbkvMTJMo7nPODXmpSe1AAAAAASAAACgAAAAEAAAAGQny0aA/cH7vg554dWn4kkIAAAAcHe+MUy1ZRcUAAAAtu1A1etohphSAemO8/WrWfuo73o</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC9HGf/MdkDPoWEdiECnuVqAAAAAASAAACgAAAAEAAAAH8cSTvRK8NdUhtN0xIqr6sIAAAAebIIGMTG5c4UAAAA+PlmsICgnq67oZRy6C+k9VPMwKE</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1742,11 +1750,11 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=corpkecqdb1;User Id=ecom;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;">
+          DTS:ConnectionString="Data Source=corpkecqdb1\stage;User Id=ecom_stg;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;">
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC7ZrH1td3jYidI3YhLG//UAAAAAASAAACgAAAAEAAAAIInNT+irBuRdFyaXvhtc8UYAAAATi7YXRsB2s/y5Ml2v33+HyPZx4ZHN17EFAAAAPgfZZkwAwr1gMcIJSVhUhVE78KG</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACHkUONhSVt+SJmaSZTs5DHAAAAAASAAACgAAAAEAAAAG8R/l2v8CMTcOdUQPGaMhsYAAAAVyIvdxNdPdWuJp3YSsAHlOFzix56D2K3FAAAAArjK2es5m5ica7VwZA0LQz75vYm</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1771,7 +1779,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAD/iUxLu6thD3SqZbarzjdmAAAAAASAAACgAAAAEAAAADDVhc0xgVGqPci+dOK/nggQAAAA9vMiBQCR1zMrPyv0qCimLxQAAADKMvFeGrIkhB4R586iM6O2/VjVOg</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADSE7o0PAU8tK7ivKkf8l0YAAAAAASAAACgAAAAEAAAAPscifHuyOX2wxVrEZPUquAQAAAARO3RLj3AEG221J896JUpZBQAAAD2qdr99+58GnOc8f9NCquZXsZTow</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1806,7 +1814,7 @@
           <DTS:Password
             DTS:Name="Password"
             Sensitive="1"
-            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACZGmUBpjyRrWaAtHgIvFS/AAAAAASAAACgAAAAEAAAABDS/qYUmCDMTG4lMhpgdAEQAAAAq3B4X0yAuxL1GwHZCDh6AxQAAACVvXhGkgEz0MhqsT5EokCt4Yu5RA</DTS:Password>
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAARGsGZnKKz02wvj/cd7gz+QAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACvByBtWFhfkYHsHktYkne8AAAAAASAAACgAAAAEAAAACCuYxJH5JUZcHAwb2Je//4QAAAAfaGgTYu79tPBgXCZyH1JLBQAAACEyB3+xkDq+Kz8tVHdyOlHvXqiEw</DTS:Password>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
@@ -1823,7 +1831,7 @@
   </DTS:ConnectionManagers>
   <DTS:Configurations>
     <DTS:Configuration
-      DTS:ConfigurationString="C:\SSIS_XML\ECOM\ETLProcess_QA.dtsConfig"
+      DTS:ConfigurationString="C:\SSIS_XML\ECOM\ETLProcess_DEMO.dtsConfig"
       DTS:ConfigurationType="1"
       DTS:CreationName=""
       DTS:DTSID="{F374CBAA-9369-4ACD-A51D-0BBA0B0BB85F}"
@@ -1849,7 +1857,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
       <DTS:VariableValue
-        DTS:DataType="8">\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\</DTS:VariableValue>
+        DTS:DataType="8">\\BEKBACKUP\ftproot\eBusiness\Demo\</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -2040,6 +2048,7 @@
           DTS:refId="Package\Application Data Processing\Process All ETL Tasks (Serial)"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Web Service Task"
+          DTS:Disabled="True"
           DTS:DTSID="{1c30db7c-0af0-4c35-afbc-088b20c0cd62}"
           DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:LocaleID="-1"
@@ -2053,23 +2062,23 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEMO.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
               <WSTask:MethodInfo
-                WSTask:MethodName="ProcessETLData"
+                WSTask:MethodName="ProcessETLDataSerial"
                 WSTask:MessageName="">
                 <WSTask:Documentation></WSTask:Documentation>
                 <WSTask:ParamInfo
-                  WSTask:Name="ProcessETLDataResult"
+                  WSTask:Name="ProcessETLDataSerialResult"
                   WSTask:Datatype="Boolean&amp;"
                   WSTask:ParamType="Variable"
                   WSTask:SeqNumber="0">
                   <WSTask:VariableValue></WSTask:VariableValue>
                 </WSTask:ParamInfo>
                 <WSTask:ParamInfo
-                  WSTask:Name="ProcessETLDataResultSpecified"
+                  WSTask:Name="ProcessETLDataSerialResultSpecified"
                   WSTask:Datatype="Boolean&amp;"
                   WSTask:ParamType="Variable"
                   WSTask:SeqNumber="1">
@@ -2083,7 +2092,6 @@
           DTS:refId="Package\Application Data Processing\Process Catalog Data"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Web Service Task"
-          DTS:Disabled="True"
           DTS:DTSID="{DF72B00D-EEF2-43C8-A94B-FCE5D29F2EDB}"
           DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:LocaleID="-1"
@@ -2097,7 +2105,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEMO.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2140,7 +2148,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEMO.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2170,7 +2178,6 @@
           DTS:refId="Package\Application Data Processing\Process Customer Data"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Web Service Task"
-          DTS:Disabled="True"
           DTS:DTSID="{043137ed-44c6-4ed1-aa1c-375e69b9b80a}"
           DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:LocaleID="-1"
@@ -2184,7 +2191,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEMO.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2227,7 +2234,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEMO.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2271,7 +2278,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEMO.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -5289,6 +5296,28 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                                   name="UseBinaryFormat">false</property>
                               </properties>
                             </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[DsmNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              errorOrTruncationOperation="Conversion"
+                              errorRowDisposition="FailComponent"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[DsmNumber]"
+                              length="2"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[DsmNumber]"
+                              name="DsmNumber"
+                              truncationRowDisposition="FailComponent">
+                              <properties>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                                  name="FastParse">false</property>
+                                <property
+                                  dataType="System.Boolean"
+                                  description="Indicates whether the data is in binary format."
+                                  name="UseBinaryFormat">false</property>
+                              </properties>
+                            </outputColumn>
                           </outputColumns>
                           <externalMetadataColumns
                             isUsed="True">
@@ -5616,6 +5645,12 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               dataType="str"
                               length="2"
                               name="CRLF" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[DsmNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              name="DsmNumber" />
                           </externalMetadataColumns>
                         </output>
                         <output
@@ -6120,6 +6155,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               cachedName="AchType"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[AchType]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[AchType]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[DsmNumber]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="DsmNumber"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DsmNumber]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[DsmNumber]" />
                           </inputColumns>
                           <externalMetadataColumns
                             isUsed="True">
@@ -6253,7 +6296,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DateOfLastPayment]"
                               codePage="1252"
                               dataType="str"
-                              length="8"
+                              length="50"
                               name="DateOfLastPayment" />
                             <externalMetadataColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[AmountDue]"
@@ -6423,6 +6466,12 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               dataType="str"
                               length="1"
                               name="AchType" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DsmNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              name="DsmNumber" />
                           </externalMetadataColumns>
                         </input>
                       </inputs>
@@ -7428,6 +7477,24 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                                   name="NewSortKeyPosition">0</property>
                               </properties>
                             </inputColumn>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[DsmNumber]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="DsmNumber"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[DsmNumber]">
+                              <properties>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the comparison options for character data."
+                                  name="NewComparisonFlags">0</property>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the sort order of the column."
+                                  name="NewSortKeyPosition">0</property>
+                              </properties>
+                            </inputColumn>
                           </inputColumns>
                           <externalMetadataColumns />
                         </input>
@@ -8232,6 +8299,21 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                                   dataType="System.Int32"
                                   description="Specifies the lineage identifier of the input column that is associated with this output column."
                                   name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[AchType]}</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[DsmNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[DsmNumber]"
+                              name="DsmNumber">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                  name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[DsmNumber]}</property>
                               </properties>
                             </outputColumn>
                           </outputColumns>
@@ -23765,36 +23847,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
-          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -23913,6 +23965,35 @@ using System.Runtime.CompilerServices;
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -24237,34 +24318,35 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
 //
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_8b38e1c04cd142498eb6973136894e60")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Settings.settings"
             Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
@@ -24503,8 +24585,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           SendMailTask:SMTPServer="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
           SendMailTask:From="CORPMISDEV2C@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_QA has failed on CORPMISDEV2C"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_QA has failed on CORPMISDEV2C.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_DEMO has failed on CORPMISDEV2C"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_DEMO has failed on CORPMISDEV2C.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -25471,7 +25553,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="199.661611468159,-15.7490234375,30.4826953125,9.7490234375"
+              BoundingBox="156.313822515006,-15.7490234375,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -25762,7 +25844,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="159,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
@@ -25806,9 +25888,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -25842,9 +25922,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <mssgm:EdgeLabel
-              BoundingBox="0,0,0,0"
-              RelativePosition="Any" />
+            <EdgeLabelCollection />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>

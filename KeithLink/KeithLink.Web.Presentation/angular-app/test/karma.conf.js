@@ -15,7 +15,6 @@ module.exports = function(config) {
       'app/lib/angular/angular.js',
       'app/lib/angular-mocks/angular-mocks.js',
       'app/lib/angular-animate/angular-animate.js',
-      'app/lib/angular-cookies/angular-cookies.js',
       'app/lib/angular-resource/angular-resource.js',
       'app/lib/angular-touch/angular-touch.js',
       'app/lib/angular-sanitize/angular-sanitize.js',
@@ -23,7 +22,6 @@ module.exports = function(config) {
       'app/lib/angular-ui-router/angular-ui-router.js',
       'app/lib/angular-ui-bootstrap/ui-bootstrap-tpls.js',
       'app/lib/angular-carousel/angular-carousel.js',
-      'app/lib/ng-mobile-menu/ng-mobile-menu.js',
       'app/lib/angular-dragdrop/angular-dragdrop.js',
       'app/lib/angular-ui-sortable/sortable.js',
       'app/lib/ng-infinite-scroll/ng-infinite-scroll.js',
@@ -32,7 +30,6 @@ module.exports = function(config) {
       'app/lib/angular-loading-bar/loading-bar.js',
       'app/lib/angular-file-upload/angular-file-upload.js',
       'app/lib/angular-fcsa-number/fcsaNumber.js',
-      'app/lib/angular-base64-upload/angular-base64-upload.js',
       'app/lib/angular-ui-select2/select2.js',
       
       'app/scripts/*.js',
