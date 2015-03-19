@@ -171,8 +171,8 @@ angular.module('bekApp')
 
           // reset quantities and each
           angular.forEach($scope.selectedList.items, function(item) {
-            item.quantityincart += item.quantity; 
-            item.quantity = 0;
+            item.quantityincart += item.quantity ? parseInt(item.quantity, 10) : 0; 
+            item.quantity = null;
             item.each = false;
           });
 
