@@ -1,3 +1,6 @@
+@import "compass/css3/transform";
+@import "compass/css3/transition";
+
 $sidebar__background--light: #433c35;
 $sidebar__background--dark: #373029;
 $sidebar__text: #9f8e7c;
@@ -137,25 +140,13 @@ $sidebar-nav__text--selected: $color-white;
     background-image: none;
     background-color: $sidebar-nav__background--selected;
 
-    -moz-transform: translate(-200px, 0);
-    -ms-transform: translate(-200px, 0);
-    -webkit-transform: translate(-200px, 0);
-    transform: translate(-200px, 0);
-    -moz-transition: ease-in-out 0.5s;
-    -o-transition: ease-in-out 0.5s;
-    -webkit-transition: ease-in-out 0.5s;
-    transition: ease-in-out 0.5s;
+    @include transform(translate(-200px,0));
+    @include transition(0.5s ease-in-out);
 
     &.open {
       z-index: 15;
-      -moz-transform: translate(200px, 0);
-      -ms-transform: translate(200px, 0);
-      -webkit-transform: translate(200px, 0);
-      transform: translate(200px, 0);
-      -moz-transition: ease-in-out 0.5s;
-      -o-transition: ease-in-out 0.5s;
-      -webkit-transition: ease-in-out 0.5s;
-      transition: ease-in-out 0.5s;
+      @include transform(translate(200px,0));
+      @include transition(0.5s ease-in-out);
     }
 
     .person-info {
