@@ -257,8 +257,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                 KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic =
                 new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(),
-                                                                              new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(_log),
-																														  new NoCacheRepositoryImpl(), _log),
+                                                                              new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
+																														  new NoCacheRepositoryImpl()),
                                                                               new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(),
                                                                               new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
                                                                               divRepo,
@@ -353,8 +353,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                             KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic = 
                             new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(), 
-                                                                                          new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(_log),
-																																	  new NoCacheRepositoryImpl(), _log),
+                                                                                          new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
+																																	  new NoCacheRepositoryImpl() ),
                                                                                           new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(), 
                                                                                           new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
                                                                                           divRepo,
