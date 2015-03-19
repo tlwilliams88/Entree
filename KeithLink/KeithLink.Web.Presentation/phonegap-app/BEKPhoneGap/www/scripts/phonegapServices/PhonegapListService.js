@@ -83,7 +83,7 @@ angular.module('bekApp')
 
         // flag new items and give them a temp id 
         list.items.forEach(function(item) {
-          if (!item.listitemid) {
+          if (!item.listitemid && item.name) {
             item.listitemid = generateId();
             item.isNew = true;
           }
