@@ -9,8 +9,8 @@ angular.module('bekApp')
   return {
     restrict: 'A',
     // scope: true,
-    controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService',
-    function($scope, $state, $q, $modal, toaster, ListService, CartService, OrderService){
+    controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService',
+    function($scope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService){
 
       ListService.getListHeaders().then(function(lists) {
         $scope.lists = lists;
@@ -24,6 +24,18 @@ angular.module('bekApp')
         $scope.changeOrders = orders;
       });
 
+      function closeModal() {
+        $scope.$broadcast('closeContextMenu');
+
+        // if (ContextMenuService.menuElement) {
+        //   ContextMenuService.menuElement.removeClass('open');
+        // }
+
+        if (ContextMenuService.modalElement) {
+          ContextMenuService.modalElement.close();
+        }
+      }
+
       /*************
       LISTS
       *************/
@@ -34,7 +46,7 @@ angular.module('bekApp')
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
           item.favorite = true;
-          $scope.$broadcast('closeContextMenu');
+          closeModal();
         });
       };
 
@@ -43,7 +55,7 @@ angular.module('bekApp')
           ListService.createList(item),
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
-          $scope.$broadcast('closeContextMenu');
+          closeModal();
           $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
         });
       };
@@ -54,7 +66,7 @@ angular.module('bekApp')
 
       $scope.addItemToCart = function(cartId, item) {
         CartService.addItemToCart(cartId, item).then(function(data) {
-          $scope.$broadcast('closeContextMenu');
+          closeModal();
           item.quantityincart += 1;
           $scope.displayMessage('success', 'Successfully added item to cart.');
         }, function() {
@@ -65,7 +77,7 @@ angular.module('bekApp')
       $scope.createCartWithItem = function(item) {
         var items = [item];
         CartService.createCart(items).then(function(data) {
-          $scope.$broadcast('closeContextMenu');
+          closeModal();
           $state.go('menu.cart.items', { cartId: data.id, renameCart: true });
           $scope.displayMessage('success', 'Successfully created new cart.');
         }, function() {
@@ -86,7 +98,7 @@ angular.module('bekApp')
         order.items.push(orderItem);
 
         OrderService.updateOrder(order).then(function(data) {
-          $scope.$broadcast('closeContextMenu');
+          closeModal();
           $scope.displayMessage('success', 'Successfully added item to Order #' + order.invoicenumber + '.');
         }, function() {
           $scope.displayMessage('error', 'Error adding item to Order #' + order.invoicenumber + '.');

@@ -11,7 +11,7 @@
   <div ng-if="item.nonstock !== 'Y'">
     <h3>Carts</h3>
     <ul class="list-group">
-      <li ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)" class="hand list-group-item">{{::cart.name}}</li>
+      <li ng-repeat="cart in ::carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)" class="hand list-group-item">{{::cart.name}}</li>
       <li class="hand list-group-item" ng-click="createCartWithItem(item)">Create New Cart...</li>
     </ul>
   </div>
@@ -19,7 +19,7 @@
   <div>
     <h3>Lists</h3>
     <ul class="list-group">
-      <li ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{::list.name}}</li>
+      <li ng-repeat="list in ::lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" ng-click="addItemToList(list.listid, item)" class="hand list-group-item">{{::list.name}}</li>
       <li class="hand list-group-item" ng-click="createListWithItem(item)">Create New List...</li>
     </ul>
   </div>
@@ -27,7 +27,7 @@
   <div ng-if="changeOrders.length > 0 && item.nonstock !== 'Y'">
     <h3>Change Orders</h3>
     <ul class="list-group">
-      <li ng-repeat="order in changeOrders" ng-click="addItemToChangeOrder(order, item)" class="hand list-group-item"># {{::order.invoicenumber}}</li>
+      <li ng-repeat="order in ::changeOrders" ng-click="addItemToChangeOrder(order, item)" class="hand list-group-item"># {{::order.invoicenumber}}</li>
     </ul>
   </div>
 
