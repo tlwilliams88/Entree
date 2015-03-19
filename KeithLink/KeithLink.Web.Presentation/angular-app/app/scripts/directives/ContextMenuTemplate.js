@@ -7,8 +7,8 @@ to be used in conjunction with contextMenu directive
 angular.module('bekApp')
 .factory('ContextMenuService', function() {
       return {
-        element: null,
-        menuElement: null
+        menuElement: null,
+        modalElement: null
       };
     })
 .directive('contextMenuTemplate', [ '$modal', '$document', '$timeout', 'ContextMenuService',
@@ -53,39 +53,6 @@ angular.module('bekApp')
           menuElement.removeAttr('style');
         }
         
-        // // doc offset on screen
-        // var docLeft = (window.pageXOffset || doc.scrollLeft) -
-        //     (doc.clientLeft || 0), 
-        //   docTop = (window.pageYOffset || doc.scrollTop) -
-        //     (doc.clientTop || 0),
-        //   // context menu width and height
-        //   elementWidth = menuElement[0].scrollWidth,
-        //   elementHeight = menuElement[0].scrollHeight;
-
-        // // document width and height including offset
-        // var docWidth = doc.clientWidth + docLeft,
-        //   docHeight = doc.clientHeight + docTop,
-        //   // location of click event + element size (where the edge of the element will be)
-        //   totalWidth = elementWidth + event.pageX,
-        //   totalHeight = elementHeight + event.pageY,
-        //   // location of click event on screen including doc offset, min 0
-        //   left = Math.max(event.pageX - docLeft, 0),
-        //   top = Math.max(event.pageY - docTop, 0);
-
-        // // if location of edge of context menu greater than total doc width (context menu will be off screen)
-        // if (totalWidth > docWidth) {
-        //   // subtract excess pixels to get the max left value
-        //   left = left - (totalWidth - docWidth);
-        // }
-
-        // if (totalHeight > docHeight) {
-        //   top = top - (totalHeight - docHeight);
-        // }
-        // // subtract scroll offset
-        // top = top + $document.scrollTop();
-
-        // menuElement.css('top', top + 'px');
-        // menuElement.css('left', left + 'px');
         opened = true;
       }
 
@@ -115,8 +82,7 @@ angular.module('bekApp')
             closeDesktop(ContextMenuService.menuElement);
           }
           ContextMenuService.menuElement = angular.element(event.target).closest('.context-menu-template').find('.context-menu');
-          ContextMenuService.element = event.target;
-
+          
           event.preventDefault();
           event.stopPropagation();
           $scope.$apply(function() {
@@ -125,11 +91,10 @@ angular.module('bekApp')
         }
       }
 
-      var modalInstance;
       function openContextMenuClickEvent(event) {
         if (isMobileDevice()) {
           // open modal
-          modalInstance = $modal.open({
+          ContextMenuService.modalElement = $modal.open({
             templateUrl: 'views/modals/contextmenumodal.html',
             controller: 'ContextMenuModalController',
             // inserts modal on the scope where the context menu click handlers are so the modal has access to those methods,
@@ -169,17 +134,10 @@ angular.module('bekApp')
         }
       }
 
-      function closeContextMenuModal() {
-        if (modalInstance) {
-          modalInstance.close();
-        }
-      }
-
       $scope.$on('closeContextMenu', function(event) {
         if (ContextMenuService.menuElement) {
           closeDesktop(ContextMenuService.menuElement);
         }
-        closeContextMenuModal();
       });
 
       $element.bind('mouseenter', openContextMenuMouseoverEvent);

@@ -51,9 +51,9 @@
 							<File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
 							<File Id="RabbitMQ_Client" Name="RabbitMQ.Client.dll" DiskId="1" Source="$(var.SourcePath)\RabbitMQ.Client.dll" KeyPath="no" Vital="yes"/>
 							<File Id="RestSharp" Name="RestSharp.dll" DiskId="1" Source="$(var.SourcePath)\RestSharp.dll" KeyPath="no" Vital="yes"/>
-							<File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe" KeyPath="yes" Vital="yes"/>
-							<File Id="Service_PDB" Name="KeithLink.Svc.Windows.OrderService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.pdb" KeyPath="no" Vital="yes"/>
-							<File Id="Config" Name="KeithLink.Svc.Windows.OrderService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe.config" KeyPath="no" Vital="yes"/>
+							<File Id="Service_EXE" Name="KeithLink.Svc.Windows.QueueService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe" KeyPath="yes" Vital="yes"/>
+							<File Id="Service_PDB" Name="KeithLink.Svc.Windows.QueueService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.pdb" KeyPath="no" Vital="yes"/>
+							<File Id="Config" Name="KeithLink.Svc.Windows.QueueService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.QueueService.exe.config" KeyPath="no" Vital="yes"/>
 							<File Id="Linq" Name="System.Linq.Dynamic.dll" DiskId="1" Source="$(var.SourcePath)\System.Linq.Dynamic.dll" KeyPath="no" Vital="yes"/>
 
 							<ServiceInstall Id="InstallService" Name="$(var.AppName)" Type="ownProcess" ErrorControl="normal" Start="auto"

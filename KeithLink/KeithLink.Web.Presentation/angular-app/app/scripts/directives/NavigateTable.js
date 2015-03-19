@@ -17,11 +17,11 @@ angular.module('bekApp')
     
     function rowHasInput(moveToRow, pos) {
       var hasInput = false;
-      if (moveToRow) {
-        var inputCell = angular.element(moveToRow[0].cells[pos])
+      if (moveToRow && moveToRow.length) {
+        var inputCell = angular.element(moveToRow[0].cells[pos]);
         if (inputCell.length) {
           var input = inputCell.find('input,textarea');
-          if (input.length) {
+          if (input.length && input.is(':visible')) {
             hasInput = true;
           }
         }
@@ -50,9 +50,9 @@ angular.module('bekApp')
             moveToRow = nextRow.next('tr');
           }
 
-          if (!moveToRow.length) { // go to first row
-            moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').first();
-          }
+          // if (!moveToRow.length) { // go to first row
+          //   moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').first();
+          // }
         } else {
           if (navigateTableType === 'mobile') {
             moveToRow = nextRow.prev('tr').prev('tr');
@@ -71,7 +71,11 @@ angular.module('bekApp')
         count++;
       }
 
-      return angular.element(moveToRow[0].cells[pos]);
+      if (moveToRow && moveToRow.length) {
+        return angular.element(moveToRow[0].cells[pos]);  
+      } else {
+        return;
+      }      
     }
 
 
