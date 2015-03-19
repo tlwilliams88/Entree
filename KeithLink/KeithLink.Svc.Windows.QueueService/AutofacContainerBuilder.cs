@@ -122,7 +122,7 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
 			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 
-			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
 			builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 
