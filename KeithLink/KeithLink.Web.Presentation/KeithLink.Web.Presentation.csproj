@@ -94,6 +94,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="angular-app\package.json" />
+    <None Include="Properties\PublishProfiles\Demo.pubxml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\PublishProfiles\Stage.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -104,6 +107,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
+    <None Include="Web.Demo.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
