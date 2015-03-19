@@ -105,7 +105,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				if ((list.Type == ListType.Favorite || list.Type == ListType.Reminder) && list.Items.Where(i => i.ItemNumber.Equals(item.ItemNumber)).Any())
 					continue;
 
-				list.Items.Add(new ListItem() { ItemNumber = item.ItemNumber, Label = item.Label, Par = item.ParLevel });
+                list.Items.Add(
+                    new ListItem() { 
+                        ItemNumber = item.ItemNumber, 
+                        Label = item.Label, 
+                        Par = item.ParLevel, 
+                        Each = !item.Each.Equals(null) ? item.Each : false 
+                    });
 			}
 
 			listRepository.CreateOrUpdate(list);
@@ -689,45 +695,60 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			//	});
 
 
-
-
 			if (currentList.Items == null && userList.Items != null)
 				currentList.Items = new List<ListItem>();
 
+            //if contract of history, replace all items with new items
+            if (userList.Type == ListType.Worksheet || userList.Type == ListType.Contract)
+            {
+                foreach (var li in currentList.Items.ToList())
+                {
+                    listItemRepository.Delete(li);
+                }
+                
+                foreach (var li in userList.Items.ToList())
+                {
+                    currentList.Items.Add(new ListItem() { ItemNumber = li.ItemNumber, Par = li.ParLevel, Label = li.Label, Each = li.Each });
+                }
+            }
 
-			foreach (var updateItem in userList.Items)
-			{
-				if (updateItem.IsDelete)
-				{
-					var itemToDelete = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
-					if(itemToDelete != null)
-						listItemRepository.Delete(itemToDelete);
-				}
-				else
-				{
-					if (string.IsNullOrEmpty(updateItem.ItemNumber))
-						continue;
+            if (userList.Type != ListType.Worksheet && userList.Type != ListType.Contract)
+            {
+                foreach (var updateItem in userList.Items)
+                {
+                    if (updateItem.IsDelete)
+                    {
+                        var itemToDelete = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
+                        if (itemToDelete != null)
+                            listItemRepository.Delete(itemToDelete);
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(updateItem.ItemNumber))
+                            continue;
 
-					if (updateItem.ListItemId != 0)
-					{
-						var item = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
-						item.ItemNumber = updateItem.ItemNumber;
-						item.Label = updateItem.Label;
-						item.Par = updateItem.ParLevel;
-						item.Position = updateItem.Position;
-					}
-					else
-					{
-						if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
-							continue;
+                        if (updateItem.ListItemId != 0)
+                        {
+                            var item = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
+                            item.ItemNumber = updateItem.ItemNumber;
+                            item.Label = updateItem.Label;
+                            item.Par = updateItem.ParLevel;
+                            item.Position = updateItem.Position;
+                            item.Each = updateItem.Each;
+                        }
+                        else
+                        {
+                            if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
+                                continue;
 
-						currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label });
+                            currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label, Each = updateItem.Each });
 
-					}
-				}
-			}
+                        }
+                    }
+                }
+            }
 
-			unitOfWork.SaveChanges();
+            unitOfWork.SaveChanges();
 			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
 		}
 
@@ -854,7 +875,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
 		{
-			this.unitOfWork.Context.Configuration.AutoDetectChangesEnabled = false;
 			var totalStopWatch = new System.Diagnostics.Stopwatch();
 			var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
 			totalStopWatch.Start();

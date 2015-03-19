@@ -24,6 +24,11 @@ angular.module('bekApp')
     ListService.printBarcodes(list.listid);
   };
 
+  $scope.printList = function(list)
+  {
+    ListService.printList(list.listid);
+  };
+
   $scope.cancel = function () {
     $modalInstance.dismiss('cancel');
   };
