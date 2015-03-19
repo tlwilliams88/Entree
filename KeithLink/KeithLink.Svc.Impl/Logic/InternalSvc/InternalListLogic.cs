@@ -854,7 +854,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
 		{
-			this.unitOfWork.Context.Configuration.AutoDetectChangesEnabled = false;
 			var totalStopWatch = new System.Diagnostics.Stopwatch();
 			var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
 			totalStopWatch.Start();

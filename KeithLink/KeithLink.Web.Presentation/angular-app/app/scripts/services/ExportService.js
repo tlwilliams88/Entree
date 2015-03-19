@@ -25,13 +25,13 @@ angular.module('bekApp')
       var filename;
 
       if (fileType === 'CSV') {
-        filename = 'export.csv';
+        filename = 'entree.csv';
       } else if (fileType === 'EXCEL') {
-        filename = 'export.xlsx';
+        filename = 'entree.xlsx';
       } else if (fileType === 'PDF') {
-        filename = 'export.pdf';
+        filename = 'entree.pdf';
       }else {
-        filename = 'export.txt';
+        filename = 'entree.txt';
       }
 
       // Determine the content type from the header or default to 'application/octet-stream'

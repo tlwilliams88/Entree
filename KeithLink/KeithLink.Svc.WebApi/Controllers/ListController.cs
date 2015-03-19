@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -214,7 +215,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 					return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };
 
 
-				//TODO: Cleanup, some is test code
 				ReportViewer rv = new ReportViewer();
 
 				rv.ProcessingMode = ProcessingMode.Local;
@@ -224,9 +224,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 				Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.Itembarcode5160.rdlc");
 				rv.LocalReport.LoadReportDefinition(rdlcStream);
 				rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", list));
-				
+
 				var bytes = rv.LocalReport.Render("PDF");
-				
+
 				Stream stream = new MemoryStream(bytes);
 
 				HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
@@ -248,39 +248,75 @@ namespace KeithLink.Svc.WebApi.Controllers
 				if (ex.InnerException != null)
 				{
 					elRepo.WriteErrorLog("b", ex.InnerException);
-					if(ex.InnerException.InnerException != null)
+					if (ex.InnerException.InnerException != null)
 						elRepo.WriteErrorLog("c", ex.InnerException.InnerException);
 				}
 			}
 			return null;
-			
+
 
 		}
-		//public HttpResponseMessage ExportModel<T>(List<T> model, ExportRequestModel exportRequest) where T : class, IExportableModel
-		//{
-		//	var exportLogic = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IModelExportLogic<T>)) as IModelExportLogic<T>;
 
-		//	MemoryStream stream;
-		//	if (exportRequest.Fields == null)
-		//		stream = exportLogic.Export(model, exportRequest.SelectedType);// new ModelExporter<T>(model).Export(exportRequest.SelectedType);
-		//	else
-		//	{
-		//		stream = exportLogic.Export(model, exportRequest.Fields, exportRequest.SelectedType); //new ModelExporter<T>(model, exportRequest.Fields).Export(exportRequest.SelectedType);
-		//	}
-		//	HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-		//	result.Content = new StreamContent(stream);
-		//	result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+		[HttpGet]
+		[ApiKeyedRoute("list/print/{listId}")]
+		public HttpResponseMessage Print(long listId)
+		{
+			try
+			{
+				var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
-		//	if (exportRequest.SelectedType.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
-		//		result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-		//	else if (exportRequest.SelectedType.Equals("tab", StringComparison.CurrentCultureIgnoreCase))
-		//		result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/tab-separated-values");
-		//	else
-		//		result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("text/csv");
+				if (list == null)
+					return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };
 
-		//	return result;
-		//}
+				var printModel = list.ToReportModel();
 
+				//TODO: Cleanup, some is test code
+				ReportViewer rv = new ReportViewer();
+
+				rv.ProcessingMode = ProcessingMode.Local;
+				//rv.LocalReport.ReportPath = "Report1.rdlc";
+
+				Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+				Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
+				rv.LocalReport.LoadReportDefinition(rdlcStream);
+				ReportParameter[] parameters = new ReportParameter[1];
+				parameters[0] = new ReportParameter("ListName", printModel.Name);
+
+				rv.LocalReport.SetParameters(parameters);
+				rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", printModel.Items));
+
+				var bytes = rv.LocalReport.Render("PDF");
+
+				Stream stream = new MemoryStream(bytes);
+
+				HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+				result.Content = new StreamContent(stream);
+				result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+
+
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+
+				return result;
+
+
+
+			}
+			catch (Exception ex)
+			{
+				//TODO: This is test code to determine issue in dev. This should be removed.
+				elRepo.WriteErrorLog("e", ex);
+				if (ex.InnerException != null)
+				{
+					elRepo.WriteErrorLog("b", ex.InnerException);
+					if (ex.InnerException.InnerException != null)
+						elRepo.WriteErrorLog("c", ex.InnerException.InnerException);
+				}
+			}
+			return null;
+
+
+		}
+		
 		
 		
         #endregion

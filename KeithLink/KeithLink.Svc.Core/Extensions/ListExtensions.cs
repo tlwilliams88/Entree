@@ -45,6 +45,16 @@ namespace KeithLink.Svc.Core.Extensions
                     list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc, FromDate = i.FromDate, ToDate = i.ToDate }).ToList()
 			};
 		}
-		
+
+
+		public static ListReportModel ToReportModel(this ListModel list)
+		{
+			return new ListReportModel()
+			{
+				Name = list.Name,
+				Items = list.Items == null ? null :
+					list.Items.Select(i => new ListItemReportModel() { Brand = i.BrandExtendedDescription, ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList()
+			};
+		}
 	}
 }
