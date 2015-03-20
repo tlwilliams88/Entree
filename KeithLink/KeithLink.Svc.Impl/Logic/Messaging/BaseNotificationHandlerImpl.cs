@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 {
                     // first, check for customer specific prefs
                     IEnumerable<UserMessagingPreference> prefsToUse = customerMessagingPreferences.Where(
-                        p => p.UserId == userProfile.UserId); // check for customer specific prefs first
+                        p => p.UserId == userProfile.UserId).ToList(); // check for customer specific prefs first
                     if (prefsToUse == null || prefsToUse.Count() == 0) // then check for defaults
                         prefsToUse = userDefaultMessagingPreferences.Where(p => p.UserId == userProfile.UserId);
                     
@@ -97,9 +97,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         protected void SendMessage(List<Recipient> recipients, Message message)
         {
             // TODO: Turn this into one line of code that doesn't depend on specific channels...
-            messageProviderFactory(Channel.Email).SendMessage(recipients.Where(r => r.Channel == Channel.Email), message);
-            messageProviderFactory(Channel.MobilePush).SendMessage(recipients.Where(r => r.Channel == Channel.MobilePush), message);
-            messageProviderFactory(Channel.Web).SendMessage(recipients.Where(r => r.Channel == Channel.Web), message);
+            messageProviderFactory(Channel.Email).SendMessage(recipients.Where(r => r.Channel == Channel.Email).ToList(), message);
+			messageProviderFactory(Channel.MobilePush).SendMessage(recipients.Where(r => r.Channel == Channel.MobilePush).ToList(), message);
+			messageProviderFactory(Channel.Web).SendMessage(recipients.Where(r => r.Channel == Channel.Web).ToList(), message);
         }
     }
 }

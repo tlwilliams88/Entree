@@ -20,6 +20,8 @@ namespace KeithLink.Common.Core
 
 #elif STAGE
 			return "Staging";
+#elif DEV
+			return "Dev";
 #elif DEBUG
 			return "Local Development";
 #endif
