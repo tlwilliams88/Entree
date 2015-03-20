@@ -20,8 +20,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.eventLogRepository = eventLogRepository;
         }
 
-        public void SendMessage(IEnumerable<Recipient> recipients, Message message)
+		public void SendMessage(List<Recipient> recipients, Message message)
         {
+			if (recipients == null)
+				return;
+
             foreach (var recipient in recipients)
             {
                 try

@@ -20,8 +20,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.eventLog = eventLog;
         }
 
-        public void SendMessage(IEnumerable<Recipient> recipients, Message message)
+		public void SendMessage(List<Recipient> recipients, Message message)
         {
+			if (recipients == null)
+				return;
+
             AmazonSNS.IAmazonSimpleNotificationService client =
                 Amazon.AWSClientFactory.CreateAmazonSimpleNotificationServiceClient(
                     new Amazon.Runtime.BasicAWSCredentials(Configuration.AmazonSnsAccessKey, Configuration.AmazonSnsSecretKey), // TODO: Config

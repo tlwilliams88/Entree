@@ -10,6 +10,6 @@ namespace KeithLink.Svc.Core.Interface.Messaging
 {
     public interface IMessageProvider
     {
-        void SendMessage(IEnumerable<Recipient> recipients, Message message);
+        void SendMessage(List<Recipient> recipients, Message message);
     }
 }
