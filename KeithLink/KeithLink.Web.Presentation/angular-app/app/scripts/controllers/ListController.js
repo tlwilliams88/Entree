@@ -96,6 +96,11 @@ angular.module('bekApp')
       listPagingModel.filterListItems(searchTerm);
     };
     $scope.sortList = function(sortBy, sortOrder) {
+      if (sortBy === $scope.sort.field) {
+        sortOrder = !sortOrder;
+      } else {
+        sortOrder = false;
+      }
       $scope.sort = {
         field: sortBy,
         sortDescending: sortOrder

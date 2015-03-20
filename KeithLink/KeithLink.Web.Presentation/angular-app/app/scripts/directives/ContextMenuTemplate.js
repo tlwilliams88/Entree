@@ -117,7 +117,7 @@ angular.module('bekApp')
             if (!mouseenter) {
               closeDesktop(menuElement);
             }
-          }, 500);
+          }, 250);
         }
       }
 

@@ -571,6 +571,14 @@ angular.module('bekApp')
           return UtilityService.findObjectByField(Service.lists, 'isrecommended', true);
         },
 
+        /**********************
+        OTHER SPECIAL LISTS
+        ***********************/
+
+        findList: function(field, value) {
+          return UtilityService.findObjectByField(Service.lists, field, value);
+        },
+
         /***************
         SHARING/COPYING
         ***************/

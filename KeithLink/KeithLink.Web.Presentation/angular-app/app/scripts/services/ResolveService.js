@@ -45,7 +45,7 @@ angular.module('bekApp')
       },
 
       // determines selected basket from id
-      selectValidBasket: function(basketId, changeOrders) {
+      selectValidBasket: function(basketId) {
         var selectedBasket;
         // check valid cart id
         var selectedCart = CartService.findCartById(basketId);
@@ -54,7 +54,7 @@ angular.module('bekApp')
         }
 
         // check valid change order number
-        var selectedChangeOrder = OrderService.findChangeOrderByOrderNumber(changeOrders, basketId);
+        var selectedChangeOrder = OrderService.getOrderDetails(basketId);
         if (!selectedCart && selectedChangeOrder) {
           selectedBasket = selectedChangeOrder;
         }
@@ -62,8 +62,11 @@ angular.module('bekApp')
       },
 
       // returns valid list id
-      validateList: function(listId) {
+      validateList: function(listId, defaultList) {
         var selectedList = ListService.findListById(listId);
+        if (defaultList) {
+          selectedList = ListService.findList(defaultList, true);
+        }
         if (!selectedList) {
           selectedList = ListService.getFavoritesList();
         }

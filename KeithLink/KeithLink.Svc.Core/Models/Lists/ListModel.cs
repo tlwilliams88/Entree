@@ -119,7 +119,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 						CreatedUtc = item.CreatedUtc,
 						ModifiedUtc = item.ModifiedUtc,
 						CasePrice = item.CasePrice,
-						PackagePrice = item.PackagePrice
+						PackagePrice = item.PackagePrice,
+                        Each = item.Each
 					});
 				}
 
