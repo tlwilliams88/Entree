@@ -257,7 +257,7 @@ angular.module('bekApp')
         });
         return deferred.promise;
       } else {
-        return originalListService.getCriticalItemsList();
+        return originalListService.getCriticalItemsLists();
       }
     };
 
