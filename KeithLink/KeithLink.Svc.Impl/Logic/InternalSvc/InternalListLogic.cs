@@ -286,7 +286,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				var tempProducts = catalogLogic.GetProductsByIds(list.BranchId, batch);
 
 				products.Products.AddRange(tempProducts.Products);
-				totalProcessed += Configuration.ElasticSearchBatchSize;
+				totalProcessed += 50;
 			}
 
 			stopWatch.Stop();
