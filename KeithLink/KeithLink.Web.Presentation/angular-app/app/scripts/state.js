@@ -241,7 +241,7 @@ angular.module('bekApp')
           }
         }],
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          return ResolveService.validateList($stateParams.listId);
+          return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
         selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', function($stateParams, lists, validListId, ListService) {
           return ListService.getList(validListId);

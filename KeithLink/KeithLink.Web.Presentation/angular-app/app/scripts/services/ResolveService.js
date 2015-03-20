@@ -62,8 +62,11 @@ angular.module('bekApp')
       },
 
       // returns valid list id
-      validateList: function(listId) {
+      validateList: function(listId, defaultList) {
         var selectedList = ListService.findListById(listId);
+        if (defaultList) {
+          selectedList = ListService.findList(defaultList, true);
+        }
         if (!selectedList) {
           selectedList = ListService.getFavoritesList();
         }
