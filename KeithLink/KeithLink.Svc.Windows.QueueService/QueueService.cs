@@ -48,20 +48,27 @@ namespace KeithLink.Svc.Windows.QueueService
 
 		private void InitializeConfirmationMoverThread()
 		{
-			_confirmationLogic = container.Resolve<IConfirmationLogic>();
-			_confirmationLogic.ListenForQueueMessages();
+            using (var threadLifetime = container.BeginLifetimeScope()) {
+			    _confirmationLogic = container.Resolve<IConfirmationLogic>();
+			    _confirmationLogic.ListenForQueueMessages();
+
+            }
 		}
 
 		private void InitializeNotificationsThread()
 		{
-			_notificationQueueConsumer = container.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
-			_notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            using (var threadLifetime = container.BeginLifetimeScope()) {
+                _notificationQueueConsumer = container.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+                _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
+            }
 		}
 
 		private void InitializeOrderUpdateThread()
 		{
-			_orderHistoryLogic = container.Resolve<IInternalOrderHistoryLogic>();
-			_orderHistoryLogic.ListenForQueueMessages();
+            using (var threadLifetime = container.BeginLifetimeScope()) {
+                _orderHistoryLogic = container.Resolve<IInternalOrderHistoryLogic>();
+                _orderHistoryLogic.ListenForQueueMessages();
+            }
 		}
 
 		private void TerminateConfirmationThread()
