@@ -480,6 +480,10 @@
     <Compile Include="Repository\EF\Migrations\201503131531233_Create_List_Index.Designer.cs">
       <DependentUpon>201503131531233_Create_List_Index.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.cs" />
+    <Compile Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.Designer.cs">
+      <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -818,6 +822,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>
@@ -988,6 +993,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201503131531233_Create_List_Index.resx">
       <DependentUpon>201503131531233_Create_List_Index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.resx">
+      <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

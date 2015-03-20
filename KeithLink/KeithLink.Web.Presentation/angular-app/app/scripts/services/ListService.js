@@ -54,8 +54,17 @@ angular.module('bekApp')
           permissions.alternativeFieldName = 'category';
           permissions.alternativeFieldHeader = 'Category';
 
-        // WORKSHEET
+        // WORKSHEET / HISTORY
         } else if (list.isworksheet) {
+
+          permissions.alternativeFieldName = 'eachString';
+          permissions.alternativeFieldHeader = 'Each';
+
+          if (list.items) {
+            list.items.forEach(function(item) {
+              item.eachString = item.each ? 'Y' : 'N';
+            });
+          }
 
         // RECOMMENDED
         } else if (list.isrecommended) {
@@ -240,6 +249,13 @@ angular.module('bekApp')
 
         printBarcodes: function(listId) {
           var promise = $http.get('/list/barcode/' + listId, {
+            responseType: 'arraybuffer'
+          });
+          return ExportService.print(promise);
+        },
+
+        printList: function(listId) {
+          var promise = $http.get('/list/print/' + listId, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);

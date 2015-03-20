@@ -21,14 +21,12 @@ angular
     'ui.bootstrap',
     'ui.sortable',            // jquery ui list sorting (used on lists page)
     'angular-carousel',
-    'shoppinpal.mobile-menu', // mobile sidebar menu
     'ngDragDrop',             // jquery ui drag and drop (used on lists page)
     'infinite-scroll',
     'unsavedChanges',         // throws warning to user when navigating away from an unsaved form
     'toaster',                // user notification messages
     'angular-loading-bar',    // loading indicator in the upper left corner
     'angularFileUpload',      // csv file uploads for lists and orders
-    'naif.base64',            // base64 file uploads for images
     'fcsa-number',            // used for number validation
     'ui.select2',             // used for context menu dropdown in upper left corner
     'configenv'               // used to inject environment variables into angular through Grunt

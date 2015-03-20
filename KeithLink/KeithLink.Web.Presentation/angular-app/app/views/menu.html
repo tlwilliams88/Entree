@@ -8,263 +8,164 @@
 .goog-tooltip:hover{ display: none !important;}
 .goog-text-highlight{ background-color: transparent !important; border: none !important; box-shadow: none !important;}></style>
 <!-- End CSS -->
-<div id="sp-nav" ng-swipe-left="$spMenu.hide()" class="sidebar sidebar-mobile">
- <div class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
-    <div class="person-info__section"><img ng-src="{{::userProfile.imageurl}}" alt=""></div>
-    <div class="person-info__section person-info__details">
-      <div>
-        <span class="text-white user-info__name">{{userProfile.displayname}}</span>
-      </div>
-      <div>
-        <span class="user-info__job-title text-capitalize">{{displayRole}}</span>
-      </div>
-    </div>
-    <div class="person-info__section text-white">
-      <span class="icon-arrow-down7"></span>
-    </div>
-  </div>
 
-  <nav class="sidebar-nav">
-    <ul class="list-unstyled">
-
-      <div ng-show="displayUserMenu">
-        <button
-          class="btn-no-style"
-          ng-click="$spMenu.hide()"
-          ui-sref="menu.userprofile">
-          <li>Profile Settings</li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-click="$spMenu.hide(); openTechnicalSupportModal()">
-          <li>Technical Support</li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-click="logout()">
-          <li>Sign Out</li>
-        </button>
-        <!-- <a> -->
-          <li>
-            <!-- <div class="select-div"> -->
-              <select class="input-lg form-control" ng-show="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
-            <!-- </div> -->
-
-            <div ui-select2="customerSelectOptions" ng-if="::isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
-            </div>
-          </li>
-        <!-- </a> -->
-      </div>
-
-      <!-- MOBILE MENU -->
-      <div ng-click="$spMenu.hide()">
-        <button
-          class="btn-no-style"
-          ng-disabled="::!isOrderEntryCustomer"
-          ui-sref="menu.home"
-          ui-sref-active="is-selected" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-house"></span></div>
-            Home
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canCreateOrders"
-          ui-sref="menu.order"
-          ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-clipboard"></span></div>
-            Order History
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canBrowseCatalog"
-          ui-sref="menu.catalog.home"
-          ng-class="{'is-selected': $state.includes('menu.catalog')}" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-book2"></span></div>
-            Product Catalog
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canPayInvoices"
-          ui-sref="menu.reports"
-          ng-class="{'is-selected': $state.includes('menu.reports')}" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-pie"></span></div>
-            Reports
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canPayInvoices"
-          ui-sref="menu.invoice"
-          ui-sref-active="is-selected" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-dollar"></span></div>
-            Invoices
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canManageLists"
-          ui-sref="menu.lists.items({listId: 0})"
-          ng-class="{'is-selected': $state.includes('menu.lists')}" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-text"></span></div>
-            My Lists
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canCreateOrders"
-          ui-sref="menu.addtoorder.items({ listId: 0 })"
-          ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-add-to-list"></span></div>
-            Add to Order
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
-          ng-click="goToAdminLandingPage()"
-          ng-class="{'is-selected': $state.includes('menu.admin')}">
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-cog"></span></div>
-            Admin
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!isOrderEntryCustomer"
-          ui-sref="menu.notifications"
-          ui-sref-active="is-selected" >
-          <li>
-            <div class="sidebar-nav__icon"><span class="icon-bell"></span></div>
-            <span ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" class="badge">{{userBar.userNotificationsCount.unread}}</span>
-            Notifications
-          </li>
-        </button>
-      </div> <!-- END MOBILE MENU -->
-
-    </ul>
-  </nav>
-  <div class="person-info sidebar-dsr" ng-if="::isOrderEntryCustomer && selectedUserContext">
-    <div class="person-info__section"><img ng-src="{{::selectedUserContext.customer.dsr.imageurl}}" alt="dsr image"></div>
-    <div class="person-info__section person-info__details">
-      <span class="text-white">{{::selectedUserContext.customer.dsr.name}}</span>
-      <a ng-href="{{::'tel:' + selectedUserContext.customer.dsr.phonenumber}}" class="text-white">{{::selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</a>
-      <span><a class="text-uppercase" ng-show="::selectedUserContext.customer.dsr.emailaddress" href="mailto:{{::selectedUserContext.customer.dsr.emailaddress}}">Email Me</a></span>
-    </div>
-  </div>
-</div> <!-- end Mobile Sidebar -->
-
-<div id="sp-page" ng-swipe-left="$spMenu.hide()" ng-swipe-right="$spMenu.show()" class="desktop-wrapper">
+<div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" class="sidebar-menu-wrapper">
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar sidebar-desktop hidden-print hidden-sm hidden-xs">
-    <div class="sidebar-logo text-center">
+  <div class="sidebar hidden-print" ng-class="{'open': isSidebarOpen}">
+    <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu = !displayUserMenu">
+      <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
+      <div class="person-info__section person-info__details">
+        <div>
+          <span class="text-white user-info__name">{{userProfile.displayname}}</span>
+        </div>
+        <div>
+          <span class="user-info__job-title text-capitalize">{{displayRole}}</span>
+        </div>
+      </div>
+      <div class="person-info__section text-white">
+        <span class="icon-arrow-down7"></span>
+      </div>
+    </div>
+    <div class="sidebar-logo text-center hidden-xs hidden-sm">
       <img src="images/bek-logo.png" alt="logo" />
     </div>
 
     <!-- DESKTOP MENU -->
     <nav class="sidebar-nav">
       <ul class="list-unstyled">
-        <button
-          class="btn-no-style"
-          ng-disabled="::!isOrderEntryCustomer"
-          ui-sref="menu.home"
-          ui-sref-active="is-selected" >
+        
+        <div ng-show="displayUserMenu" class="hidden-md hidden-lg">
+          <button
+            class="btn-no-style"
+            ng-click="isSidebarOpen = false"
+            ui-sref="menu.userprofile">
+            <li>Profile Settings</li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
+            <li>Technical Support</li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-click="logout()">
+            <li>Sign Out</li>
+          </button>
           <li>
-            <span class="icon-house sidebar-nav__icon"></span>
-            Home
+            <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
+          
+            <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
+            </div>
           </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canCreateOrders"
-          ui-sref="menu.order"
-          ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
-          <li>
-            <span class="icon-clipboard sidebar-nav__icon"></span>
-            Order History
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canBrowseCatalog"
-          ui-sref="menu.catalog.home"
-          ng-class="{'is-selected': $state.includes('menu.catalog')}" >
-          <li>
-            <span class="icon-book2 sidebar-nav__icon"></span>
-            Product Catalog
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canPayInvoices"
-          ui-sref="menu.reports"
-          ng-class="{'is-selected': $state.includes('menu.reports')}" >
-          <li>
-            <span class="icon-pie sidebar-nav__icon"></span>
-            Reports
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canPayInvoices"
-          ui-sref="menu.invoice"
-          ui-sref-active="is-selected" >
-          <li>
-            <span class="icon-dollar sidebar-nav__icon"></span>
-            Invoices
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canManageLists"
-          ui-sref="menu.lists.items({listId: 0})"
-          ng-class="{'is-selected': $state.includes('menu.lists')}" >
-          <li>
-            <span class="icon-text sidebar-nav__icon"></span>
-            My Lists
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-disabled="::!canCreateOrders"
-          ui-sref="menu.addtoorder.items({ listId: 0 })"
-          ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
-          <li>
-            <span class="icon-add-to-list sidebar-nav__icon"></span>
-            Add to Order
-          </li>
-        </button>
-        <button
-          class="btn-no-style"
-          ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
-          ng-click="goToAdminLandingPage()"
-          ng-class="{'is-selected': $state.includes('menu.admin') }" >
-          <li>
-            <span class="icon-cog sidebar-nav__icon"></span>
-            Admin
-          </li>
-        </button>
+        </div>
+
+        <div ng-click="isSidebarOpen = false">
+          <button
+            class="btn-no-style"
+            ng-disabled="::!isOrderEntryCustomer"
+            ui-sref="menu.home"
+            ui-sref-active="is-selected" >
+            <li>
+              <span class="icon-house sidebar-nav__icon"></span>
+              Home
+            </li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-disabled="::!canCreateOrders"
+            ui-sref="menu.order"
+            ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
+            <li>
+              <span class="icon-clipboard sidebar-nav__icon"></span>
+              Order History
+            </li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-disabled="::!canBrowseCatalog"
+            ui-sref="menu.catalog.home"
+            ng-class="{'is-selected': $state.includes('menu.catalog')}" >
+            <li>
+              <span class="icon-book2 sidebar-nav__icon"></span>
+              Product Catalog
+            </li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-disabled="::!canPayInvoices"
+            ui-sref="menu.reports"
+            ng-class="{'is-selected': $state.includes('menu.reports')}" >
+            <li>
+              <span class="icon-pie sidebar-nav__icon"></span>
+              Reports
+            </li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-disabled="::!canPayInvoices"
+            ui-sref="menu.invoice"
+            ui-sref-active="is-selected" >
+            <li>
+              <span class="icon-dollar sidebar-nav__icon"></span>
+              Invoices
+            </li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-disabled="::!canManageLists"
+            ui-sref="menu.lists.items({listId: 0})"
+            ng-class="{'is-selected': $state.includes('menu.lists')}" >
+            <li>
+              <span class="icon-text sidebar-nav__icon"></span>
+              My Lists
+            </li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-disabled="::!canCreateOrders"
+            ui-sref="menu.addtoorder.items({ listId: 0 })"
+            ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
+            <li>
+              <span class="icon-add-to-list sidebar-nav__icon"></span>
+              Add to Order
+            </li>
+          </button>
+          <button
+            class="btn-no-style"
+            ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
+            ng-click="goToAdminLandingPage()"
+            ng-class="{'is-selected': $state.includes('menu.admin') }" >
+            <li>
+              <span class="icon-cog sidebar-nav__icon"></span>
+              Admin
+            </li>
+          </button>
+          <button
+            class="btn-no-style hidden-md hidden-lg"
+            ng-disabled="!isOrderEntryCustomer"
+            ui-sref="menu.notifications"
+            ui-sref-active="is-selected" >
+            <li>
+              <div class="sidebar-nav__icon"><span class="icon-bell"></span></div>
+              <span ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0" class="badge">{{userBar.userNotificationsCount.unread}}</span>
+              Notifications
+            </li>
+          </button>
+        </div>
       </ul>
     </nav> <!-- END DESKTOP MENU -->
 
-    <div class="sidebar-dsr text-center" ng-if="::isOrderEntryCustomer && selectedUserContext.customer.dsr">
-      <p>Your Sales Rep</p>
+    <div class="sidebar-dsr" ng-if="::isOrderEntryCustomer && selectedUserContext.customer.dsr">
+      <p class="hidden-xs hidden-sm">Your Sales Rep</p>
       <img ng-src="{{::selectedUserContext.customer.dsr.imageurl}}" alt="dsr image" />
-      <p class="contact-info">
-        <span>{{::selectedUserContext.customer.dsr.name}}</span>
-        <span>{{::selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</span>
-      </p>
-      <a class="text-uppercase" ng-show="::selectedUserContext.customer.dsr.emailaddress" href="mailto:{{::selectedUserContext.customer.dsr.emailaddress}}">Email Me</a>
+      <div class="contact-info-wrapper">
+        <p class="contact-info">
+          <span>{{::selectedUserContext.customer.dsr.name}}</span>
+          <a ng-href="{{::'tel:' + selectedUserContext.customer.dsr.phonenumber}}">{{::selectedUserContext.customer.dsr.phonenumber | phoneNumber}}</a>
+        </p>
+        <a class="text-uppercase" ng-show="::selectedUserContext.customer.dsr.emailaddress" href="mailto:{{::selectedUserContext.customer.dsr.emailaddress}}">Email Me</a>
+      </div>
     </div>
 
     <div class="text-center sidebar-meta">
@@ -291,7 +192,7 @@
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
         <ul class="left-mobile-menu">
           <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li><span class="icon-back"></span></li></a>
-          <a ng-click="$spMenu.toggle()"><li><span class="icon-list2"></span></li></a>
+          <a ng-click="isSidebarOpen = !isSidebarOpen"><li><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu">
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
