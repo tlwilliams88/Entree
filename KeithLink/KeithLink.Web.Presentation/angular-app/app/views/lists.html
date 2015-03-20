@@ -385,7 +385,7 @@
           </thead>
 
           <tbody ng-class="{ 'item-selected': item.isSelected }" 
-              ng-repeat="item in selectedList.items | filter:{listitemid: '!!'} track by item.listitemid" 
+              ng-repeat="item in selectedList.items | filter:{listitemid: '!!', isdeleted:false} track by item.listitemid" 
               data-product="{{item}}" 
               data-drag="isDragEnabled()" 
               data-jqyoui-options="{
