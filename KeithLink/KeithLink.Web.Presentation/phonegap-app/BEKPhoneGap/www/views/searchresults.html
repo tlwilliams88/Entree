@@ -245,11 +245,11 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         <th class="hidden-mobile-visible-print">
           Pack/Size
         </th>
-        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='each';sortOrder=!sortOrder;">
+        <th class="hidden-mobile-visible-print"></th>
+        <th class="sort-col-header hidden-mobile-visible-print" ng-if="canSeePrices" ng-click="sortBy='each';sortOrder=!sortOrder;">
           <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
-        <th class="hidden-mobile-visible-print"></th>
-        <th class="hidden-mobile-visible-print" ng-show="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
+        <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
           <span>Price <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span></span>
         </th>
         <th></th>
@@ -270,17 +270,17 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
           {{::item.brand_extended_description}}
         </td>
         <td class="hidden-mobile-visible-print">
-          {{::item.pack | number}} / {{::item.size}}
+          {{::item.packsize}}
         </td>
-        <td class="input-col hidden-mobile-visible-print">          
+        <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
+        </td>
+        <td class="input-col hidden-mobile-visible-print" ng-if="canSeePrices">
           <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
-          <input type="checkbox" ng-model="item.each" id="each" name="each" />
-          <label for="each"></label>
-        </ng-form>
-      </td>
-      <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
-      </td>
-      <td class="hidden-mobile-visible-print" ng-show="canSeePrices">
+            <input type="checkbox" ng-model="item.each" id="each" name="each" />
+            <label for="each"></label>
+          </ng-form>
+        </td>
+      <td class="hidden-mobile-visible-print" ng-if="canSeePrices">
         <span ng-if="hasCasePrice(item)">{{item.each ? item.packageprice : item.caseprice}}</span>
         <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
       </td>

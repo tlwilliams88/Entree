@@ -54,8 +54,17 @@ angular.module('bekApp')
           permissions.alternativeFieldName = 'category';
           permissions.alternativeFieldHeader = 'Category';
 
-        // WORKSHEET
+        // WORKSHEET / HISTORY
         } else if (list.isworksheet) {
+
+          permissions.alternativeFieldName = 'eachString';
+          permissions.alternativeFieldHeader = 'Each';
+
+          if (list.items) {
+            list.items.forEach(function(item) {
+              item.eachString = item.each ? 'Y' : 'N';
+            });
+          }
 
         // RECOMMENDED
         } else if (list.isrecommended) {
@@ -131,6 +140,27 @@ angular.module('bekApp')
         lists: [],
         labels: [],
 
+        updateListPermissions: updateListPermissions,
+
+        eraseCachedLists: function() {
+          Service.lists = [];
+          Service.labels = [];
+        },
+
+        updateCache: function(list) {
+          // update new list in cache object
+          var cacheList = angular.copy(list);
+          cacheList.items = null;
+
+          var existingList = UtilityService.findObjectByField(Service.lists, 'listid', cacheList.listid);
+          if (existingList) {
+            var idx = Service.lists.indexOf(existingList);
+            angular.copy(cacheList, Service.lists[idx]);
+          } else {
+            Service.lists.push(cacheList);
+          }
+        },
+
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
@@ -152,7 +182,7 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getList: function(listId) {
+        getListWithItems: function(listId) {
           return $http.get('/list/' + listId).then(function(response) {
             var list = response.data;
             if (!list) {
@@ -161,21 +191,46 @@ angular.module('bekApp')
             PricingService.updateCaculatedFields(list.items);
             updateListPermissions(list);
 
-            // update new list in cache object
-            var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
-            if (existingList) {
-              var idx = Service.lists.indexOf(existingList);
-              angular.copy(list, Service.lists[idx]);
-            } else {
-              Service.lists.push(list);
+            Service.updateCache(list);
+
+            return list;
+          });
+        },
+
+        // accepts listId (guid), paging params
+        // returns paged list object
+        getList: function(listId, params) {
+          if (!params) {
+            params = {
+              size: 30,
+              from: 0
+            };
+          }
+          return $http.post('/list/' + listId, params).then(function(response) {
+            var list = response.data;
+            if (!list) {
+              return $q.reject('No list found.');
             }
+            
+            // transform paged data
+            list.itemCount = list.items.totalResults;
+            list.items = list.items.results;
+
+            // get calculated fields
+            PricingService.updateCaculatedFields(list.items);
+            updateListPermissions(list);
+
+            Service.updateCache(list);
 
             return list;
           });
         },
 
         findListById: function(listId) {
-          return UtilityService.findObjectByField(Service.lists, 'listid', parseInt(listId));
+          if (!isNaN(parseInt(listId))) {
+            listId = parseInt(listId);
+          }
+          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
         },
 
         /********************
@@ -199,30 +254,36 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
+        printList: function(listId) {
+          var promise = $http.get('/list/print/' + listId, {
+            responseType: 'arraybuffer'
+          });
+          return ExportService.print(promise);
+        },
+
         /********************
         EDIT LIST
         ********************/
-
-        // items: accepts null, item object, or array of item objects
-        // params: isMandatory param for creating mandatory list
-        // returns promise and new list object
-        createList: function(items, params) {
+        
+        beforeCreateList: function(items, params) {
           if (!params) {
             params = {};
           }
 
           var newList = {};
 
-          if (!items) { // if null
-            newList.items = [];
-          } else if (Array.isArray(items)) { // if multiple items
-            newList.items = items;
+          var newItems = [];
+          if (Array.isArray(items)) { // if multiple items
+            newItems = items;
           } else if (typeof items === 'object') { // if one item
-            newList.items = [items];
+            newItems = [items];
           }
 
-          // remove irrelevant properties from items
-          UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
+          newList.items = newItems.map(function(item) {
+            return {
+              itemnumber: item.itemnumber
+            };
+          });
 
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';
@@ -230,6 +291,18 @@ angular.module('bekApp')
             newList.name = 'Recommended';
           } else {
             newList.name = UtilityService.generateName('List', Service.lists);
+          }
+          
+          return newList;
+        },
+
+        // items: accepts null, item object, or array of item objects
+        // params: isMandatory param for creating mandatory list
+        // returns promise and new list object
+        createList: function(items, params) {
+          var newList = Service.beforeCreateList(items, params);
+          if (!params) {
+            params = {};
           }
           
           return List.save(params, newList).$promise.then(function(response) {
@@ -448,8 +521,8 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.getList(favoritesList.listid).then(function() {
-            var itemToDelete = $filter('filter')(favoritesList.items, {itemnumber: itemNumber})[0];
+          return Service.getListWithItems(favoritesList.listid).then(function(list) {
+            var itemToDelete = $filter('filter')(list.items, {itemnumber: itemNumber})[0];
 
             return Service.deleteItem(itemToDelete.listitemid);
           });
@@ -496,6 +569,14 @@ angular.module('bekApp')
 
         findRecommendedList: function() {
           return UtilityService.findObjectByField(Service.lists, 'isrecommended', true);
+        },
+
+        /**********************
+        OTHER SPECIAL LISTS
+        ***********************/
+
+        findList: function(field, value) {
+          return UtilityService.findObjectByField(Service.lists, field, value);
         },
 
         /***************

@@ -102,7 +102,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			//return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
             try {
                 return _orderLogic.UpdateOrderForEta(this.AuthenticatedUser,
-                    _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber));
+                    _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
             } catch (Exception ex) {
                 return null;
             }

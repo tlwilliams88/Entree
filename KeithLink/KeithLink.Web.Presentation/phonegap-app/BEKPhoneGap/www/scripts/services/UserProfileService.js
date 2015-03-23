@@ -29,7 +29,7 @@ angular.module('bekApp')
             LocalStorage.setSelectedCustomerInfo(userSelectedContext);
 
           } else {
-            LocalStorage.setSelectedBranchInfo(profile.branchid);
+            LocalStorage.setSelectedBranchInfo(profile.branchid || 'FDF'); // default to DFW branch
           }
 
           return profile;
@@ -94,11 +94,6 @@ angular.module('bekApp')
         });
       },
 
-      getUsersForGroup: function(accountId) {
-        var promise = $http.get('/profile/account/' + accountId + '/users');
-        return UtilityService.resolvePromise(promise);
-      },
-
       createUser: function(userProfile) {
         var promise = $http.post('/profile/register', userProfile);
         return UtilityService.resolvePromise(promise);
@@ -148,7 +143,7 @@ angular.module('bekApp')
 
         return deferred.promise;
       },
-      
+
       /**********
       AVATAR
       **********/
@@ -172,6 +167,39 @@ angular.module('bekApp')
         // TODO: add remove avatar api call
       }
     };
+
+
+    /**********
+    ACCESS TO OTHER FEATURES
+    **********/
+    function grantAccess(url, email) {
+      var promise = $http.post(url);
+      return UtilityService.resolvePromise(promise).then(function(response) {
+        toaster.pop('success', null, 'Successfully granted access');
+        return response.data;
+      }, function() {
+        toaster.pop('error', null, 'Error granting access');
+      });
+    }
+    function revokeAccess(url, email) {
+      var promise = $http.delete(url);
+      return UtilityService.resolvePromise(promise).then(function(response) {
+        toaster.pop('success', null, 'Successfully revoked access');
+        return response.data;
+      }, function() {
+        toaster.pop('error', null, 'Error revoking access');
+      });
+    }
+    Service.changeProgramAccess = function(email, program, isGrantingAccess) {
+      var url = '/profile/' + email + '/access/' + program;
+
+      if (isGrantingAccess) {
+        return grantAccess(url);
+      } else {
+        return revokeAccess(url);
+      }
+    };
+
 
     return Service;
 

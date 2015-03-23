@@ -300,7 +300,7 @@
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
           <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
         </ul>
-        <img src="images/bek-logo.png" alt="logo" class="logo-mobile" />
+        <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'menu.home'}" />
       </div>
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">

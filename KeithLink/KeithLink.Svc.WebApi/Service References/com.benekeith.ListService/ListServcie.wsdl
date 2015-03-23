@@ -10,6 +10,7 @@
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" />
+      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IListServcie_AddItems_InputMessage">
@@ -144,6 +145,12 @@
   <wsdl:message name="IListServcie_GetBarcodeForList_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetBarcodeForListResponse" />
   </wsdl:message>
+  <wsdl:message name="IListServcie_ReadPagedList_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadPagedList" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ReadPagedList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadPagedListResponse" />
+  </wsdl:message>
   <wsdl:portType name="IListServcie">
     <wsdl:operation name="AddItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
@@ -232,6 +239,10 @@
     <wsdl:operation name="GetBarcodeForList">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/GetBarcodeForList" message="tns:IListServcie_GetBarcodeForList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/GetBarcodeForListResponse" message="tns:IListServcie_GetBarcodeForList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadPagedList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadPagedList" message="tns:IListServcie_ReadPagedList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadPagedListResponse" message="tns:IListServcie_ReadPagedList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
@@ -427,6 +438,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetBarcodeForList">
       <soap:operation soapAction="http://tempuri.org/IListServcie/GetBarcodeForList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadPagedList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ReadPagedList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

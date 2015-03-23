@@ -138,8 +138,7 @@ angular
     if (fromState.data && toState.data) {
       if (fromState.data.saveLists && !toState.data.saveLists) {
         $log.debug('erasing lists and labels');
-        ListService.lists = [];
-        ListService.labels = [];
+        ListService.eraseCachedLists();
       }
       if (fromState.data.saveCarts && !toState.data.saveCarts) {
         $log.debug('erasing carts');

@@ -68,6 +68,10 @@
     height: 50px;
     padding: 5px 0;
     display: inline-block;
+
+    &.logo-margin-left {
+      margin-left: 45px;
+    }
   }
 
   ul {

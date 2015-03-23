@@ -22,10 +22,10 @@ angular.module('bekApp')
       // select all on focus
       element.find('input').keydown(function (e) {
           
-          var key = { left: 37, up: 38, right: 39, down: 40, enter: 13 };
+          var key = { left: 37, up: 38, right: 39, down: 40, enter: 13, tab: 9 };
 
           // shortcut for key other than arrow keys
-          if (angular.element.inArray(e.which, [key.left, key.up, key.right, key.down, key.enter]) < 0) { return; }
+          if (angular.element.inArray(e.which, [key.left, key.up, key.right, key.down, key.enter, key.tab]) < 0) { return; }
 
           var input = e.target;
           var td = angular.element(e.target).closest('td');
@@ -48,7 +48,8 @@ angular.module('bekApp')
 
               case key.up:
               case key.down:
-              case key.enter: {
+              case key.enter:
+              case key.tab: {
 
                   var tr = td.closest('tr');
                   if (attr.navigateTable === 'lists') {
@@ -57,7 +58,7 @@ angular.module('bekApp')
                   var pos = td[0].cellIndex;
 
                   var moveToRow = null;
-                  if (e.which === key.down || e.which === key.enter) {
+                  if (e.which === key.down || e.which === key.enter || e.which === key.tab) {
                       if (attr.navigateTable === 'mobile') {
                         moveToRow = tr.next('tr').next('tr');
                       } else if (attr.navigateTable === 'lists') {

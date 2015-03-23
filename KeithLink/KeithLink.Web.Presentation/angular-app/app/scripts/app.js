@@ -21,14 +21,12 @@ angular
     'ui.bootstrap',
     'ui.sortable',            // jquery ui list sorting (used on lists page)
     'angular-carousel',
-    'shoppinpal.mobile-menu', // mobile sidebar menu
     'ngDragDrop',             // jquery ui drag and drop (used on lists page)
     'infinite-scroll',
     'unsavedChanges',         // throws warning to user when navigating away from an unsaved form
     'toaster',                // user notification messages
     'angular-loading-bar',    // loading indicator in the upper left corner
     'angularFileUpload',      // csv file uploads for lists and orders
-    'naif.base64',            // base64 file uploads for images
     'fcsa-number',            // used for number validation
     'ui.select2',             // used for context menu dropdown in upper left corner
     'configenv'               // used to inject environment variables into angular through Grunt
@@ -138,8 +136,7 @@ angular
     if (fromState.data && toState.data) {
       if (fromState.data.saveLists && !toState.data.saveLists) {
         $log.debug('erasing lists and labels');
-        ListService.lists = [];
-        ListService.labels = [];
+        ListService.eraseCachedLists();
       }
       if (fromState.data.saveCarts && !toState.data.saveCarts) {
         $log.debug('erasing carts');

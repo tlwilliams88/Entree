@@ -56,6 +56,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 }
                 catch (Exception ex)
                 {
+					KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, subject: "Exception processing Notification in Queue Service");
+
                     eventLogRepository.WriteErrorLog("Exception while listening for notifications", ex);
                 }
             }

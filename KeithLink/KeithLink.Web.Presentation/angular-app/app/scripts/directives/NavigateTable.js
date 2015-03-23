@@ -14,11 +14,74 @@ angular.module('bekApp')
       
 
     element.on('keyup', 'input[type="text"]', handleNavigation);
-            
-            
+    
+    function rowHasInput(moveToRow, pos) {
+      var hasInput = false;
+      if (moveToRow && moveToRow.length) {
+        var inputCell = angular.element(moveToRow[0].cells[pos]);
+        if (inputCell.length) {
+          var input = inputCell.find('input,textarea');
+          if (input.length && input.is(':visible')) {
+            hasInput = true;
+          }
+        }
+      }
+      return hasInput;
+    }
+
+    function findNextInput(td, navigateTableType, isNavigatingDown) {
+      var tr = td.closest('tr');
+      if (attr.navigateTable === 'lists') {
+        tr = td.closest('tbody');
+      }
+      var pos = td[0].cellIndex;
+      var rowCount = element[0].rows.length;
+
+      var nextRow = tr,
+        moveToRow = null,
+        count = 0;
+      while (!rowHasInput(moveToRow, pos) && count < rowCount) {
+        if (isNavigatingDown) {
+          if (navigateTableType === 'mobile') {
+            moveToRow = nextRow.next('tr').next('tr');
+          } else if (navigateTableType === 'lists') {
+            moveToRow = nextRow.next('tbody').children('tr:not(.mobile-details-row)');
+          } else {
+            moveToRow = nextRow.next('tr');
+          }
+
+          // if (!moveToRow.length) { // go to first row
+          //   moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').first();
+          // }
+        } else {
+          if (navigateTableType === 'mobile') {
+            moveToRow = nextRow.prev('tr').prev('tr');
+          } else if (navigateTableType === 'lists') {
+            moveToRow = nextRow.prev('tbody').children('tr:not(.mobile-details-row)');
+          } else {
+            moveToRow = nextRow.prev('tr');
+          }
+
+          if (!moveToRow.length) { // go to last row
+            moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').last();
+          }
+        }
+
+        nextRow = moveToRow;
+        count++;
+      }
+
+      if (moveToRow && moveToRow.length) {
+        return angular.element(moveToRow[0].cells[pos]);  
+      } else {
+        return;
+      }      
+    }
+
+
+    
     function handleNavigation(e) {
       
-
       // select all on focus
       element.find('input').keydown(function (e) {
           
@@ -50,46 +113,9 @@ angular.module('bekApp')
               case key.down:
               case key.enter:
               case key.tab: {
-
-                  var tr = td.closest('tr');
-                  if (attr.navigateTable === 'lists') {
-                    tr = td.closest('tbody');
-                  }
-                  var pos = td[0].cellIndex;
-
-                  var moveToRow = null;
-                  if (e.which === key.down || e.which === key.enter || e.which === key.tab) {
-                      if (attr.navigateTable === 'mobile') {
-                        moveToRow = tr.next('tr').next('tr');
-                      } else if (attr.navigateTable === 'lists') {
-                        moveToRow = tr.next('tbody').children('tr:not(.mobile-details-row)');
-                      } else {
-                        moveToRow = tr.next('tr');
-                      }
-
-                      if (!moveToRow.length) { // go to first row
-                        moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').first();
-                      }
-                  }
-                  else if (e.which === key.up) {
-                      if (attr.navigateTable === 'mobile') {
-                        moveToRow = tr.prev('tr').prev('tr');
-                      } else if (attr.navigateTable === 'lists') {
-                        moveToRow = tr.prev('tbody').children('tr:not(.mobile-details-row)');
-                      } else {
-                        moveToRow = tr.prev('tr');
-                      }
-
-                      if (!moveToRow.length) { // go to last row
-                        moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').last();
-                      }
-                  }
-
-                  if (moveToRow.length) {
-                      moveTo = angular.element(moveToRow[0].cells[pos]);
-                  }
-
-                  break;
+                var isNavigatingDown = e.which === key.down || e.which === key.enter || e.which === key.tab;
+                moveTo = findNextInput(td, attr.navigateTable, isNavigatingDown);
+                break;
               }
 
           }

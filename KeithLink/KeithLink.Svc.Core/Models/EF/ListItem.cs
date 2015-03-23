@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,5 +20,6 @@ namespace KeithLink.Svc.Core.Models.EF
 		public DateTime? FromDate { get; set; }
 		public DateTime? ToDate { get; set; }
 		public List ParentList { get; set; }
+        public bool? Each { get; set; }
 	}
 }

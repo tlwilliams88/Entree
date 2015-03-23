@@ -131,6 +131,27 @@ angular.module('bekApp')
         lists: [],
         labels: [],
 
+        updateListPermissions: updateListPermissions,
+
+        eraseCachedLists: function() {
+          Service.lists = [];
+          Service.labels = [];
+        },
+
+        updateCache: function(list) {
+          // update new list in cache object
+          var cacheList = angular.copy(list);
+          cacheList.items = null;
+
+          var existingList = UtilityService.findObjectByField(Service.lists, 'listid', cacheList.listid);
+          if (existingList) {
+            var idx = Service.lists.indexOf(existingList);
+            angular.copy(cacheList, Service.lists[idx]);
+          } else {
+            Service.lists.push(cacheList);
+          }
+        },
+
         // accepts "header: true" params to get only list names
         // return array of list objects
         getAllLists: function(params) {
@@ -152,7 +173,7 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getList: function(listId) {
+        getListWithItems: function(listId) {
           return $http.get('/list/' + listId).then(function(response) {
             var list = response.data;
             if (!list) {
@@ -161,21 +182,46 @@ angular.module('bekApp')
             PricingService.updateCaculatedFields(list.items);
             updateListPermissions(list);
 
-            // update new list in cache object
-            var existingList = UtilityService.findObjectByField(Service.lists, 'listid', list.listid);
-            if (existingList) {
-              var idx = Service.lists.indexOf(existingList);
-              angular.copy(list, Service.lists[idx]);
-            } else {
-              Service.lists.push(list);
+            Service.updateCache(list);
+
+            return list;
+          });
+        },
+
+        // accepts listId (guid), paging params
+        // returns paged list object
+        getList: function(listId, params) {
+          if (!params) {
+            params = {
+              size: 30,
+              from: 0
+            };
+          }
+          return $http.post('/list/' + listId, params).then(function(response) {
+            var list = response.data;
+            if (!list) {
+              return $q.reject('No list found.');
             }
+            
+            // transform paged data
+            list.itemCount = list.items.totalResults;
+            list.items = list.items.results;
+
+            // get calculated fields
+            PricingService.updateCaculatedFields(list.items);
+            updateListPermissions(list);
+
+            Service.updateCache(list);
 
             return list;
           });
         },
 
         findListById: function(listId) {
-          return UtilityService.findObjectByField(Service.lists, 'listid', parseInt(listId));
+          if (!isNaN(parseInt(listId))) {
+            listId = parseInt(listId);
+          }
+          return UtilityService.findObjectByField(Service.lists, 'listid', listId);
         },
 
         /********************
@@ -202,11 +248,8 @@ angular.module('bekApp')
         /********************
         EDIT LIST
         ********************/
-
-        // items: accepts null, item object, or array of item objects
-        // params: isMandatory param for creating mandatory list
-        // returns promise and new list object
-        createList: function(items, params) {
+        
+        beforeCreateList: function(items, params) {
           if (!params) {
             params = {};
           }
@@ -224,12 +267,28 @@ angular.module('bekApp')
           // remove irrelevant properties from items
           UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
 
+          newList.items.forEach(function(item) {
+            item.position = 0;
+          });
+
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';
           } else if (params.isRecommended === true) {
             newList.name = 'Recommended';
           } else {
             newList.name = UtilityService.generateName('List', Service.lists);
+          }
+          
+          return newList;
+        },
+
+        // items: accepts null, item object, or array of item objects
+        // params: isMandatory param for creating mandatory list
+        // returns promise and new list object
+        createList: function(items, params) {
+          var newList = Service.beforeCreateList(items, params);
+          if (!params) {
+            params = {};
           }
           
           return List.save(params, newList).$promise.then(function(response) {
@@ -384,11 +443,16 @@ angular.module('bekApp')
         // params: allowDuplicates
         addMultipleItems: function(listId, items) {
           
-          UtilityService.deleteFieldFromObjects(items, ['listitemid', 'position', 'label', 'parlevel']);
+          var newItems = [];
+          items.forEach(function(item) {
+            newItems.push({
+              itemnumber: item.itemnumber
+            });
+          });
 
           return List.addMultipleItems({
             listId: listId
-          }, items).$promise.then(function() {
+          }, newItems).$promise.then(function() {
             // TODO: favorite all items if favorites list
             toaster.pop('success', null, 'Successfully added ' + items.length + ' items to list.');
             return Service.getList(listId);

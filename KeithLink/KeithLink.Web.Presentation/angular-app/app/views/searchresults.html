@@ -22,7 +22,7 @@
 <!-- Mobile subheader bar -->
 <div class="row page-subheader-bar hidden-md hidden-lg">
   <div class="col-md-12 page-subheader-bar__container">
-    <div class="page-subheader-bar__message">
+    <div class="page-subheader-bar__message" style="width: calc(100% - 80px)">
       {{featuredBreadcrumb.displayText}}
     </div>
     <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="nowrap hidden-print btn-no-style page-subheader-bar__button button-right">
@@ -270,7 +270,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
           {{::item.brand_extended_description}}
         </td>
         <td class="hidden-mobile-visible-print">
-          {{::item.pack | number}} / {{::item.size}}
+          {{::item.packsize}}
         </td>
         <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
         </td>

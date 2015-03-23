@@ -243,6 +243,8 @@
     <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\ListLogicImpl.cs" />
+    <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
+    <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
@@ -474,6 +476,14 @@
     <Compile Include="Repository\EF\Migrations\201502262045258_change column widths for DSRs.Designer.cs">
       <DependentUpon>201502262045258_change column widths for DSRs.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201503131531233_Create_List_Index.cs" />
+    <Compile Include="Repository\EF\Migrations\201503131531233_Create_List_Index.Designer.cs">
+      <DependentUpon>201503131531233_Create_List_Index.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.cs" />
+    <Compile Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.Designer.cs">
+      <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -563,6 +573,7 @@
     <Compile Include="Repository\Queue\DemoGenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Queue\GenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Reports\ReportRepository.cs" />
+    <Compile Include="Repository\SingleSignOn\KbitRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
@@ -811,6 +822,7 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>
@@ -978,6 +990,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201502262045258_change column widths for DSRs.resx">
       <DependentUpon>201502262045258_change column widths for DSRs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503131531233_Create_List_Index.resx">
+      <DependentUpon>201503131531233_Create_List_Index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.resx">
+      <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

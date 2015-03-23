@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Enumerations\Authentication.cs" />
+    <Compile Include="Enumerations\ExternalAppAccess.cs" />
     <Compile Include="Enumerations\Invoice.cs" />
     <Compile Include="Enumerations\Messaging.cs" />
     <Compile Include="Enumerations\ListItemStatus.cs" />
@@ -160,6 +161,7 @@
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
     <Compile Include="Extensions\DsrExtensions.cs" />
+    <Compile Include="Extensions\SingleSignOn\AccessRequestExtension.cs" />
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
     <Compile Include="Extensions\Messaging\NotificationExtension.cs" />
@@ -212,6 +214,9 @@
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
+    <Compile Include="Interface\SingleSignOn\IAccessRequestLogic.cs" />
+    <Compile Include="Interface\SingleSignOn\IKbitRepository.cs" />
+    <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
@@ -222,6 +227,10 @@
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\Lists\ListItemReportModel.cs" />
+    <Compile Include="Models\Lists\ListReportModel.cs" />
+    <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />
+    <Compile Include="Models\SingleSignOn\KbitCustomerAccessRequest.cs" />
     <Compile Include="Models\ImportFiles\BaseFileImportModel.cs" />
     <Compile Include="Models\ImportFiles\FileFormat.cs" />
     <Compile Include="Models\Invoices\InvoiceExportRequestModel.cs" />
@@ -230,6 +239,7 @@
     <Compile Include="Models\Invoices\TermModel.cs" />
     <Compile Include="Models\Lists\ListCopyShareModel.cs" />
     <Compile Include="Models\Lists\ListImportFileModel.cs" />
+    <Compile Include="Models\Lists\PagedListModel.cs" />
     <Compile Include="Models\Lists\RecommendedItemModel.cs" />
     <Compile Include="Models\Messaging\EF\UserPushNotificationDevice.cs" />
     <Compile Include="Models\Messaging\MailMessageModel.cs" />

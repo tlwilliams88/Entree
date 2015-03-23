@@ -1,26 +1,32 @@
 ﻿using CommerceServer.Foundation;
 using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Enumerations.SingleSignOn;
+using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.SingleSignOn;
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.OnlinePayments;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.SingleSignOn;
+using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using System.Linq;
 using System.Text.RegularExpressions;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Models.Messaging;
-using KeithLink.Svc.Core.Interface.Messaging;
-using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Svc.Core.Interface.Invoices;
-using KeithLink.Svc.Core.Helpers;
-using KeithLink.Svc.Core.Interface.Email;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core.Models.Paging;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Interface.OnlinePayments;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -47,13 +53,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IMessagingServiceRepository _messagingServiceRepository;
 		private IEventLogRepository _eventLog;
 		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
+        private IGenericQueueRepository _queue;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
 									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository,
-									IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository)
+									IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -68,6 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_messagingServiceRepository = messagingServiceRepository;
 			_eventLog = eventLog;
 			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
+            _queue = queue;
         }
         #endregion
 
@@ -844,10 +852,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void GrantRoleAccess(string emailAddress, string roleName) {
-            _extAd.GrantAccess(emailAddress, roleName);
+        public void GrantRoleAccess(string emailAddress, RequestedApplication requestedApp) {
+            string appRoleName;
+
+            switch (requestedApp) {
+                case RequestedApplication.KbitCustomer:
+                    appRoleName = Configuration.AccessGroupKbitCustomer;
+                    break;
+                default:
+                    return;
+            }
+
+            _extAd.GrantAccess(emailAddress, appRoleName);
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
+
+            switch (requestedApp) {
+                case RequestedApplication.KbitCustomer:
+                    RequestKbitAccess(emailAddress);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -872,6 +898,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return System.Text.RegularExpressions.Regex.IsMatch(password, Core.Constants.REGEX_PASSWORD_PATTERN);
         }
 
+        private void RemoveKbitAccess(string emailAddress) {
+            // create a new kbit app request
+            KbitCustomerAccessRequest kbitAppRequest = new KbitCustomerAccessRequest();
+
+            // get the user's profile
+            UserProfileReturn userInfo = GetUserProfile(emailAddress, false);
+            kbitAppRequest.UserName = userInfo.UserProfiles[0].UserName;
+
+            // do not load customers because we are removing all of them
+
+            SubmitExternalApplicationRequest(kbitAppRequest);
+        }
+
         public void RemoveUserFromAccount(Guid accountId, Guid userId) {
             List<Account> allAccounts = _accountRepo.GetAccounts();
             Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
@@ -891,6 +930,25 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public void RemoveUserFromCustomer(Guid customerId, Guid userId) {
             _customerRepo.RemoveUserFromCustomer(customerId, userId);
+        }
+
+        private void RequestKbitAccess(string emailAddress) {
+            // create a new kbit app request
+            KbitCustomerAccessRequest kbitAppRequest = new KbitCustomerAccessRequest();
+
+            // get the user's profile
+            UserProfileReturn userInfo = GetUserProfile(emailAddress, false);
+            kbitAppRequest.UserName = userInfo.UserProfiles[0].UserName;
+
+            // get all of the customers for the user
+            List<Customer> customers = GetCustomersForExternalUser(userInfo.UserProfiles[0].UserId);
+
+            // load all of the customers into the kbit app request
+            kbitAppRequest.Customers = (from customer in customers
+                                        select new UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber }).ToList();
+
+            // put the kbit app request in the queue
+            SubmitExternalApplicationRequest(kbitAppRequest);
         }
 
         /// <summary>
@@ -917,10 +975,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void RevokeRoleAccess(string emailAddress, string roleName) {
-            _extAd.RevokeAccess(emailAddress, roleName);
+        public void RevokeRoleAccess(string emailAddress, RequestedApplication requestedApp) {
+            string appRoleName;
+
+            switch (requestedApp) {
+                case RequestedApplication.KbitCustomer:
+                    appRoleName = Configuration.AccessGroupKbitCustomer;
+                    break;
+                default:
+                    return;
+            }
+
+            _extAd.RevokeAccess(emailAddress, appRoleName);
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
+
+            switch (requestedApp) {
+                case RequestedApplication.KbitCustomer:
+                    RemoveKbitAccess(emailAddress);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -940,6 +1016,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog("Error sending user profile email", ex);
             }
+        }
+
+        /// <summary>
+        /// send the external application request to the message queue 
+        /// </summary>
+        /// <param name="appRequest">the application request</param>
+        /// <remarks>
+        /// jwames - 3/12/2015 - original code
+        /// </remarks>
+        public void SubmitExternalApplicationRequest(BaseAccessRequest appRequest) {
+            _queue.PublishToQueue(appRequest.ToJSON(), Configuration.RabbitMQAccessServer, Configuration.RabbitMQAccessUserNamePublisher,
+                                  Configuration.RabbitMQAccessUserPasswordPublisher, Configuration.RabbitMQVHostAccess, Configuration.RabbitMQExchangeAccess);
         }
 
         /// <summary>

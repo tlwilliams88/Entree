@@ -34,6 +34,7 @@
     <MetadataFile FileName="ListServcie4.xsd" MetadataType="Schema" ID="9df5cb57-0ed1-4ac5-8fcb-c8308410adff" SourceId="1" SourceUrl="http://localhost:1317/ListServcie.svc?xsd=xsd0" />
     <MetadataFile FileName="ListServcie5.xsd" MetadataType="Schema" ID="2e51fc63-e193-4b89-a45a-bbb8c77f36bc" SourceId="1" SourceUrl="http://localhost:1317/ListServcie.svc?xsd=xsd1" />
     <MetadataFile FileName="ListServcie.wsdl" MetadataType="Wsdl" ID="a9295f2d-b68c-4afb-af6b-9d7f64fba2b1" SourceId="1" SourceUrl="http://localhost:1317/ListServcie.svc?wsdl" />
+    <MetadataFile FileName="ListServcie7.xsd" MetadataType="Schema" ID="3e17181c-d0cc-4ea2-afc5-e091ff6b5ad3" SourceId="1" SourceUrl="http://localhost:1317/ListServcie.svc?xsd=xsd8" />
     <MetadataFile FileName="ListServcie.disco" MetadataType="Disco" ID="d438cc70-c649-4d26-9d4f-90ff14482715" SourceId="1" SourceUrl="http://localhost:1317/ListServcie.svc?disco" />
     <MetadataFile FileName="ListServcie6.xsd" MetadataType="Schema" ID="c27e3e37-fb07-4bd9-976f-72f1009985fc" SourceId="1" SourceUrl="http://localhost:1317/ListServcie.svc?xsd=xsd6" />
     <MetadataFile FileName="ListServcie71.xsd" MetadataType="Schema" ID="e2902b89-e181-4a9f-9f75-30f54a5f13dc" SourceId="1" SourceUrl="http://localhost:1317/ListServcie.svc?xsd=xsd7" />

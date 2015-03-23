@@ -1,7 +1,7 @@
 <div page-header-bar>
   <div header-message>
     Order History 
-    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success" style="font-size: 12px;padding: 7px 10px;margin-left: 15px;">Get Latest<br>Updates</button>
+    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success pull-right" style="font-size: 12px;padding: 7px 10px;">Get Latest<br>Updates</button>
   </div>
   <div header-buttons>
     <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
@@ -74,8 +74,8 @@
 
       <tr ng-repeat-start="order in orders" ng-class="{ odd : $odd, even: $even }">
         <td>
-          <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
-          <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">{{order.invoicenumber}}</a>
+          <a ng-if="order.invoicenumber !== 'Pending' && order.invoicenumber !== 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
+          <a ng-if="order.invoicenumber === 'Pending' || order.invoicenumber === 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">{{order.invoicenumber}}</a>
         </td>
         <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>

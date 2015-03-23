@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets02630d969fb0c06de25806cf448d248891a394b840dd9462c2cc3b783976416a))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets9ee57868c86098c5939e184ebda75ca623e38702e33e931e9955aa8ce56fb19a))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets02630d969fb0c06de25806cf448d248891a394b840dd9462c2cc3b783976416a : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySets9ee57868c86098c5939e184ebda75ca623e38702e33e931e9955aa8ce56fb19a : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "02630d969fb0c06de25806cf448d248891a394b840dd9462c2cc3b783976416a"; }
+            get { return "9ee57868c86098c5939e184ebda75ca623e38702e33e931e9955aa8ce56fb19a"; }
         }
 
         /// <summary>
@@ -718,9 +718,9 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ListItem
-        [CodeFirstDatabaseSchema.ListItem](T3.ListItem_Id, T3.ListItem_ItemNumber, T3.ListItem_Label, T3.ListItem_Par, T3.ListItem_Note, T3.ListItem_Category, T3.ListItem_Position, T3.ListItem_FromDate, T3.ListItem_ToDate, T3.ListItem_CreatedUtc, T3.ListItem_ModifiedUtc, T3.[ListItem.ParentList_Id])
+        [CodeFirstDatabaseSchema.ListItem](T3.ListItem_Id, T3.ListItem_ItemNumber, T3.ListItem_Label, T3.ListItem_Par, T3.ListItem_Note, T3.ListItem_Category, T3.ListItem_Position, T3.ListItem_FromDate, T3.ListItem_ToDate, T3.ListItem_Each, T3.ListItem_CreatedUtc, T3.ListItem_ModifiedUtc, T3.[ListItem.ParentList_Id])
     FROM (
-        SELECT T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc, T2.[ListItem.ParentList_Id], T1._from0, (T2._from1 AND T2._from1 IS NOT NULL) AS _from1
+        SELECT T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_Each, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc, T2.[ListItem.ParentList_Id], T1._from0, (T2._from1 AND T2._from1 IS NOT NULL) AS _from1
         FROM  (
             SELECT 
                 T.Id AS ListItem_Id, 
@@ -732,6 +732,7 @@ namespace Edm_EntityMappingGeneratedViews
                 T.Position AS ListItem_Position, 
                 T.FromDate AS ListItem_FromDate, 
                 T.ToDate AS ListItem_ToDate, 
+                T.Each AS ListItem_Each, 
                 T.CreatedUtc AS ListItem_CreatedUtc, 
                 T.ModifiedUtc AS ListItem_ModifiedUtc, 
                 True AS _from0
@@ -810,7 +811,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ListItems
-        [KeithLink.Svc.Impl.Repository.EF.Operational.ListItem](T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc) WITH 
+        [KeithLink.Svc.Impl.Repository.EF.Operational.ListItem](T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_Each, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc) WITH 
         RELATIONSHIP(CREATEREF(BEKDBContext.Lists, ROW(T1.[List_Items.List_Items_Source.Id]),[KeithLink.Svc.Impl.Repository.EF.Operational.List]),[KeithLink.Svc.Impl.Repository.EF.Operational.List_Items],List_Items_Target,List_Items_Source) 
     FROM (
         SELECT 
@@ -823,6 +824,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.Position AS ListItem_Position, 
             T.FromDate AS ListItem_FromDate, 
             T.ToDate AS ListItem_ToDate, 
+            T.Each AS ListItem_Each, 
             T.CreatedUtc AS ListItem_CreatedUtc, 
             T.ModifiedUtc AS ListItem_ModifiedUtc, 
             True AS _from0, 

@@ -1,5 +1,6 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.WebApi.Models;
@@ -556,21 +557,21 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                string appRoleName = null;
+                RequestedApplication selectedApp = RequestedApplication.NotSet;
 
                 switch (appname.ToLower()) {
                     case "kbit":
-                        appRoleName = Impl.Configuration.AccessGroupKbitCustomer;
+                        selectedApp = RequestedApplication.KbitCustomer;
                         break;
                     default:
                         break;
                 }
 
-                if (appRoleName == null) {
+                if (selectedApp == RequestedApplication.NotSet) {
                     retVal.SuccessResponse = false;
                     retVal.ErrorMessage = "Could not grant access to unknown application.";
                 } else {
-                    _profileLogic.GrantRoleAccess(email, appRoleName);
+                    _profileLogic.GrantRoleAccess(email, selectedApp);
 
                     retVal.SuccessResponse = true;
                 }
@@ -590,21 +591,21 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                string appRoleName = null;
+                RequestedApplication selectedApp = RequestedApplication.NotSet;
 
                 switch (appname.ToLower()) {
                     case "kbit":
-                        appRoleName = Impl.Configuration.AccessGroupKbitCustomer;
+                        selectedApp = RequestedApplication.KbitCustomer;
                         break;
                     default:
                         break;
                 }
 
-                if (appRoleName == null) {
+                if (selectedApp == RequestedApplication.NotSet) {
                     retVal.SuccessResponse = false;
                     retVal.ErrorMessage = "Could not revoke access from unknown application.";
                 } else {
-                    _profileLogic.RevokeRoleAccess(email, appRoleName);
+                    _profileLogic.RevokeRoleAccess(email, selectedApp);
 
                     retVal.SuccessResponse = true;
                 }
