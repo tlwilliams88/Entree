@@ -21,7 +21,7 @@
 	"demo": {
       "name": "demo",
       "apiKey": "web_test_v1",
-      "apiEndpoint": "https://shopstaging.benekeith.com/api",
+      "apiEndpoint": "https://shopapistaging.benekeith.com",
       "loggingEnabled": false,
       "googleAnalytics": "UA-58495462-2",
 	  "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm"
