@@ -44,7 +44,7 @@ angular.module('bekApp')
           Service.updateListPermissions(list);
           var notDeletedItemCount = 0;
             angular.forEach(list.items, function(item, index) {
-          if (item.name||!item.isdeleted) {
+          if (item.name&&!item.isdeleted) {
            notDeletedItemCount +=1;
           }
         });
