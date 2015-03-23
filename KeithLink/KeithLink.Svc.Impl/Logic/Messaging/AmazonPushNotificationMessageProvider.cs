@@ -45,15 +45,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 						client.Publish(new AmazonSNS.Model.PublishRequest()
 						{
 							TargetArn = recipient.ProviderEndpoint,
-							MessageStructure = "GCM",
-							Message = Newtonsoft.Json.JsonConvert.SerializeObject(new { GCM = new { data = new { message = message.MessageSubject } } })
+							MessageStructure = "json",
+							Message = string.Format("{{\n\"GCM\": \"{{ \\\"data\\\": {{ \\\"message\\\": \\\"{0}\\\" }} }}\"\n}}", message.MessageSubject)
 						});
-
-						//client.Publish(
-						//	new AmazonSNS.Model.PublishRequest(recipient.ProviderEndpoint,
-						//		message.MessageBody
-						//		)
-						//	);
+						
                     }
                 }
                 catch (Exception ex)
