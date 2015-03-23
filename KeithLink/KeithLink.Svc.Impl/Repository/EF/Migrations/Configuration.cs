@@ -227,6 +227,7 @@ namespace KeithLink.Svc.Impl.Migrations
             paymentConfirmation.AppendLine("Account: {CustomerNumber} - {CustomerName}<br/>");
             paymentConfirmation.AppendLine("Branch: {BranchId}<br/>");
             paymentConfirmation.AppendLine("Bank: {BankAccount}<br/>");
+            paymentConfirmation.AppendLine("Confirmation: {ConfirmationId}<br/>");
             paymentConfirmation.AppendLine("<table style=\"width: 100%\">");
             paymentConfirmation.AppendLine("	<tr>");
             paymentConfirmation.AppendLine("		<th>Ref</th>");
