@@ -63,7 +63,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             // load up recipients, customer and message
             eventLogRepository.WriteInformationLog("Received ETA Message with " + eta.Orders.Count + " orders");
             List<string> invoiceNumbers = eta.Orders.Select(x => x.OrderId).ToList();
-            var orders = orderHistoryRepository.Read(x => invoiceNumbers.Contains(x.InvoiceNumber)); // get all orders for order ETAs
+            var orders = orderHistoryRepository.Read(x => invoiceNumbers.Contains(x.InvoiceNumber)).ToList(); // get all orders for order ETAs
             
             foreach(OrderHistoryHeader order in orders)
             {
