@@ -9,6 +9,7 @@ angular.module('bekApp')
     var Service = angular.extend(ListService, {});
 
     var db_table_name_lists = 'lists';
+    
 
     function generateId() {
       return 'a' + Math.floor((1 + Math.random()) * 0x10000).toString(16); // generate 5 digit id
@@ -41,6 +42,13 @@ angular.module('bekApp')
         return PhonegapDbService.getItem(db_table_name_lists, listId).then(function(list) {
           PricingService.updateCaculatedFields(list.items);
           Service.updateListPermissions(list);
+          var notDeletedItemCount = 0;
+            angular.forEach(list.items, function(item, index) {
+          if (item.name||!item.isdeleted) {
+           notDeletedItemCount +=1;
+          }
+        });
+          list.itemCount = notDeletedItemCount;          
           return list;
         });
       } else {
@@ -80,12 +88,15 @@ angular.module('bekApp')
         if (!list.isNew) {
           list.isChanged = true;
         }
-
+        var deletedCount =0;
         // flag new items and give them a temp id 
         list.items.forEach(function(item) {
           if (!item.listitemid && item.name) {
             item.listitemid = generateId();
             item.isNew = true;
+          }
+          if(item.isdeleted){
+            list.itemCount -=1;
           }
         });
 
