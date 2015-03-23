@@ -127,30 +127,30 @@
 
       <thead>
         <tr>
-          <th class="sort-col-header" ng-click="sortList('position',!sort.sortDescending)">
+          <th class="sort-col-header" ng-click="sortList('position',sort.sortDescending)">
             <span># <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
-          <th class="sort-col-header" ng-click="sortList('itemnumber',!sort.sortDescending)">
+          <th class="sort-col-header" ng-click="sortList('itemnumber',sort.sortDescending)">
             Item
             <span># <span sort-icons field="'itemnumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
-          <th class="sort-col-header" ng-click="sortList('name',!sort.sortDescending)">
+          <th class="sort-col-header" ng-click="sortList('name',sort.sortDescending)">
             <span>Name <span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
-          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand',!sort.sortDescending)">
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand',sort.sortDescending)">
             <span>Brand <span sort-icons field="'brand'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Pack/Size
           </th>
-          <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortList('notes',!sort.sortDescending)">
+          <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortList('notes',sort.sortDescending)">
             <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-xs hidden-sm"></th>
           <th class="hidden-mobile-visible-print" ng-hide="isChangeOrder || selectedCart.id === 'New'">
             # in Cart
           </th>
-          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',!sort.sortDescending)">
+          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
             <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-mobile-visible-print" ng-show="useParlevel">
@@ -358,5 +358,5 @@
       </tfoot>
     </table>
   </form>
-  <div loading-spinner="loadingResults"></div>
+  <div class="text-center" loading-spinner="loadingResults"></div>
 </div>

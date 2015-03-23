@@ -62,9 +62,9 @@ angular.module('bekApp')
             moveToRow = nextRow.prev('tr');
           }
 
-          if (!moveToRow.length) { // go to last row
-            moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').last();
-          }
+          // if (!moveToRow.length) { // go to last row
+          //   moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').last();
+          // }
         }
 
         nextRow = moveToRow;
