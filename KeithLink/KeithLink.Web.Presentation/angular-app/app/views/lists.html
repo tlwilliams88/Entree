@@ -305,10 +305,10 @@
 
       <div class="row sub-content">
         <div class="col-xs-5">
-          {{ (selectedList.items | filter:{isSelected:'true'}).length }} Items Selected
+          {{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected
         </div>
         <div class="text-right col-xs-7">
-          Showing {{selectedList.items.length - 1}} of {{::selectedList.itemCount}} Items    
+          Showing {{(selectedList.items|filter:{isdeleted:'false'}).length}} of {{selectedList.itemCount}} Items    
         </div>
       </div>
 

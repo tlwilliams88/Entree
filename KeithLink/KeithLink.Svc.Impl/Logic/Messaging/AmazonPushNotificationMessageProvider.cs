@@ -42,11 +42,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     }
                     else if (recipient.DeviceOS == Core.Enumerations.Messaging.DeviceOS.Android)
                     {
-                        client.Publish(
-                            new AmazonSNS.Model.PublishRequest(recipient.ProviderEndpoint,
-                                message.MessageBody
-                                )
-                            );
+						client.Publish(new AmazonSNS.Model.PublishRequest()
+						{
+							TargetArn = recipient.ProviderEndpoint,
+							MessageStructure = "json",
+							Message = string.Format("{{\n\"GCM\": \"{{ \\\"data\\\": {{ \\\"message\\\": \\\"{0}\\\" }} }}\"\n}}", message.MessageSubject)
+						});
+						
                     }
                 }
                 catch (Exception ex)
