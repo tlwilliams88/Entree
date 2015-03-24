@@ -29,6 +29,7 @@
     height: 100%;
     padding-bottom: 100%;
     margin-bottom: -100%;
+    z-index: 0;
 
     &:after {
       content:"";
@@ -42,8 +43,9 @@
   }
 
   .notification__message {
-    width: calc(75% - 15px) !important;    
-    @include make-md-column(9);
+    max-width: calc(75% - 15px);
+    float: left;
+    position: relative;
     @include arrow('left','top', 5px, $color-white, $color-border, 1px);
     margin-top: 15px;
     border-radius: 3px;
@@ -51,8 +53,7 @@
     background-color: $color-white;
     border: 1px solid $color-border;
     padding: 8px;
-    // margin-left: -20px;
-
+    
     .timestamp {
       color: $color-border;
     }
