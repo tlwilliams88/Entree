@@ -53,7 +53,7 @@ angular.module('bekApp')
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
 
      if($scope.currentCart && !$scope.currentCart.requestedshipdate){ 
-    $scope.currentCart.requestedshipdate = shipDates[0].shipdate;        
+    $scope.currentCart.requestedshipdate = $scope.shipDates[0].shipdate;        
   }
 
     if (!$scope.isChangeOrder) {
