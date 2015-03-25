@@ -220,6 +220,7 @@
             </td>
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
+              ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
                 ng-click="openDatepicker = true"
                 ng-if="invoice.userCanPayInvoice"
                 class="icon-calendar"
@@ -231,7 +232,8 @@
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
-              <span ng-show="invoice.userCanPayInvoice">{{invoice.date | formatDate}}</span>
+              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due'">{{invoice.date | formatDate}}</span>
+               <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</span>
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
@@ -283,7 +285,7 @@
                   <td>
                     Schedule Date
                   </td>
-                  <td class="datepicker">
+                  <td  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due'" class="datepicker">
                    <!--  <a
                       ng-click="openDatepicker = true"
                       class="icon-calendar"
@@ -298,6 +300,7 @@
                       close-text="Close"></a> -->
                       {{invoice.date | formatDate}}
                   </td>
+                  <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</td>
                 </tr>
                 <tr>
                   <td class="large-icon" colspan="2">

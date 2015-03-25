@@ -52,6 +52,10 @@ angular.module('bekApp')
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
 
+     if($scope.currentCart && !$scope.currentCart.requestedshipdate){ 
+    $scope.currentCart.requestedshipdate = $scope.shipDates[0].shipdate;        
+  }
+
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
     }
@@ -180,7 +184,6 @@ angular.module('bekApp')
 
     $scope.createNewCart = function() {
       CartService.createCart().then(function(newCart) {
-        cart.requestedshipdate = $scope.shipDates[0].shipdate;
         $state.go('menu.cart.items', {cartId: newCart.id, renameCart: true});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
