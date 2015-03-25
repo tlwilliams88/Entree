@@ -180,6 +180,7 @@ angular.module('bekApp')
 
     $scope.createNewCart = function() {
       CartService.createCart().then(function(newCart) {
+        cart.requestedshipdate = $scope.shipDates[0].shipdate;
         $state.go('menu.cart.items', {cartId: newCart.id, renameCart: true});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
