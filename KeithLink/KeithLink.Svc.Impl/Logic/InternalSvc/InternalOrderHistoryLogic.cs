@@ -168,9 +168,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			{
 				System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
-				int loopCnt = 0;
-				
-
 				try
 				{
 					var rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
@@ -186,21 +183,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 						Create(historyFile);
 						_conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
-						rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
-
-						if (loopCnt++ == 100)
-						{
-							_unitOfWork.SaveChangesAndClearContext();
-							loopCnt = 0;
-						}
-					}
-
-					if (loopCnt > 0)
-					{
 						_unitOfWork.SaveChangesAndClearContext();
-						
-						loopCnt = 0;
+
+						rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+												
 					}
+										
 				}
 				catch (Exception ex)
 				{
@@ -229,7 +217,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 			currentFile.Header.MergeWithEntity(ref header);
 
-			foreach (OrderHistoryDetail currentDetail in currentFile.Details)
+			foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
 			{
 
                 EF.OrderHistoryDetail detail = null;
