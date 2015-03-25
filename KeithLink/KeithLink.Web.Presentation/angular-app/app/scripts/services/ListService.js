@@ -254,8 +254,8 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(listId) {
-          var promise = $http.get('/list/print/' + listId, {
+        printList: function(listId, options) {
+          var promise = $http.post('/list/print/' + listId, options, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);

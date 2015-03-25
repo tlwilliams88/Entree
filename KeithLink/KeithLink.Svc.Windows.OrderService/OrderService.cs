@@ -340,8 +340,7 @@ namespace KeithLink.Svc.Windows.OrderService {
                         string[] files = Directory.GetFiles(Configuration.OrderUpdateWatchPath);
 						GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
 
-						var items = new System.Collections.Concurrent.BlockingCollection<string>();
-				
+						
 						System.Threading.Tasks.Parallel.ForEach(files, filePath =>
 						{
 							OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
@@ -350,6 +349,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 
 							if (CanOpenFile(filePath))
 							{
+								var items = new System.Collections.Concurrent.BlockingCollection<string>();
+				
 								OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
 								System.Threading.Tasks.Parallel.ForEach(parsedFile.Files, file =>
 								{

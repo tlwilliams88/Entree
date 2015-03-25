@@ -529,6 +529,12 @@ angular.module('bekApp')
         resolve: {
           list: function() {
             return list;
+          },
+          pagingModelOptions: function() {
+            return { sort: [{
+              field: $scope.sort.field,
+              order: $scope.sort.sortDescending ? 'desc' : 'asc'
+            }] };
           }
         }
       });
