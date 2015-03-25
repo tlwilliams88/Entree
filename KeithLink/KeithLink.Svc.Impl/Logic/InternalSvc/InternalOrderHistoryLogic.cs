@@ -218,7 +218,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
 
 			// second attempt to find the order, look by confirmation number
-			if (header == null) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
+			if (header == null && !string.IsNullOrEmpty(currentFile.Header.ControlNumber)) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
 
 			// last ditch effort is to create a new header
 			if (header == null)
@@ -244,7 +244,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					tempDetail.BranchId = header.BranchId;
 					tempDetail.InvoiceNumber = header.InvoiceNumber;
 
-					header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+					header.OrderDetails.Add(tempDetail);
 				}
 				else
 				{

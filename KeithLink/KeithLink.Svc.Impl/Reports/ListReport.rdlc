@@ -771,17 +771,21 @@
           <TablixMembers>
             <TablixMember>
               <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
             </TablixMember>
             <TablixMember>
               <Group Name="Details" />
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
+        <RepeatColumnHeaders>true</RepeatColumnHeaders>
         <RepeatRowHeaders>true</RepeatRowHeaders>
+        <FixedColumnHeaders>true</FixedColumnHeaders>
+        <FixedRowHeaders>true</FixedRowHeaders>
         <KeepTogether>true</KeepTogether>
         <Top>0.02209in</Top>
         <Height>0.63416in</Height>
-        <Width>7.44791in</Width>
+        <Width>7.44792in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -819,7 +823,7 @@
           </Paragraphs>
           <rd:DefaultName>ListName</rd:DefaultName>
           <Height>0.25in</Height>
-          <Width>1in</Width>
+          <Width>6.70834in</Width>
           <Style>
             <Border>
               <Style>None</Style>
@@ -924,8 +928,8 @@
     </PageFooter>
     <LeftMargin>0.5in</LeftMargin>
     <RightMargin>0.5in</RightMargin>
-    <TopMargin>1in</TopMargin>
-    <BottomMargin>1in</BottomMargin>
+    <TopMargin>0.2in</TopMargin>
+    <BottomMargin>0.2in</BottomMargin>
     <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>
