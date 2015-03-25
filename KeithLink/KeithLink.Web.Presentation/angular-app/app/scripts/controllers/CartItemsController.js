@@ -52,10 +52,9 @@ angular.module('bekApp')
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
 
-    if(!currentCart.requestedshipdate){
-      currentCart.requestedshipdate = shipDates[0].shipdate;
-      alert("hit it")
-    }
+     if($scope.currentCart && !$scope.currentCart.requestedshipdate){ 
+    $scope.currentCart.requestedshipdate = shipDates[0].shipdate;        
+  }
 
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
