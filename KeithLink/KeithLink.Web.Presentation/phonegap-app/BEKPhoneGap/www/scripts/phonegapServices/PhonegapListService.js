@@ -48,6 +48,14 @@ angular.module('bekApp')
       }
     };
 
+    Service.remapItems = function(item) {
+      delete item.parlevel;
+      delete item.label;
+      delete item.listitemid;
+      item.position = 0;
+      return item;
+    };
+
     Service.createList = function(items, params) {
       if (navigator.connection.type === 'none') {
         
@@ -168,7 +176,8 @@ angular.module('bekApp')
 
     Service.addItem = function(listId, item) {
       if (navigator.connection.type === 'none') {
-        
+        var deferred = $q.defer();
+
         delete item.listitemid;
         item.position = 0;
         item.label = null;
@@ -182,10 +191,11 @@ angular.module('bekApp')
           updatedList.items.push(item);
           updatedList.isChanged = true;
         }
-
+        
         PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
 
-        return item;
+        deferred.resolve(item);
+        return deferred.promise;
       } else {
         return originalListService.addItem(listId, item);
       }

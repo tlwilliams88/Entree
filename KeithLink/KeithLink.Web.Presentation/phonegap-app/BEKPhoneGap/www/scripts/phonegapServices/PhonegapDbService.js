@@ -91,6 +91,7 @@ angular.module('bekApp')
           if (res.rows.length > 0) {
             console.log('update');
             return tx.executeSql("UPDATE " + table + " SET data = '" + data + "' WHERE key ='" + key + "'", [], function(tx, res) {
+              console.log('update success');
               return true;
             });
           } else {
