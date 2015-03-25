@@ -42,7 +42,7 @@
       "apiEndpoint": "https://shopqa.benekeith.com/api",
       "loggingEnabled": true,
       "googleAnalytics": "UA-58495462-2",
-      "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm"
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm"
     },
     "prod": {
       "name": "prod",
