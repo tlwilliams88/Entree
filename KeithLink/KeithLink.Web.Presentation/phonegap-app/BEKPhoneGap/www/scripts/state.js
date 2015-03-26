@@ -189,8 +189,8 @@ angular.module('bekApp')
         validBasketId: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
           return ResolveService.validateBasket($stateParams.cartId, changeOrders);
         }],
-        originalBasket: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
-          return ResolveService.selectValidBasket(validBasketId, changeOrders);
+        originalBasket: ['$stateParams', 'carts', 'validBasketId', 'ResolveService', function($stateParams, carts, validBasketId, ResolveService) {
+          return ResolveService.selectValidBasket(validBasketId);
         }]
       }
     })
@@ -241,7 +241,7 @@ angular.module('bekApp')
           }
         }],
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
-          return ResolveService.validateList($stateParams.listId);
+          return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
         selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', function($stateParams, lists, validListId, ListService) {
           return ListService.getList(validListId);

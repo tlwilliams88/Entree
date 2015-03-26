@@ -54,8 +54,17 @@ angular.module('bekApp')
           permissions.alternativeFieldName = 'category';
           permissions.alternativeFieldHeader = 'Category';
 
-        // WORKSHEET
+        // WORKSHEET / HISTORY
         } else if (list.isworksheet) {
+
+          permissions.alternativeFieldName = 'eachString';
+          permissions.alternativeFieldHeader = 'Each';
+
+          if (list.items) {
+            list.items.forEach(function(item) {
+              item.eachString = item.each ? 'Y' : 'N';
+            });
+          }
 
         // RECOMMENDED
         } else if (list.isrecommended) {
@@ -245,9 +254,22 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
+        printList: function(listId) {
+          var promise = $http.get('/list/print/' + listId, {
+            responseType: 'arraybuffer'
+          });
+          return ExportService.print(promise);
+        },
+
         /********************
         EDIT LIST
         ********************/
+        
+        remapItems: function(item) {
+          return {
+            itemnumber: item.itemnumber
+          };
+        },
         
         beforeCreateList: function(items, params) {
           if (!params) {
@@ -256,20 +278,14 @@ angular.module('bekApp')
 
           var newList = {};
 
-          if (!items) { // if null
-            newList.items = [];
-          } else if (Array.isArray(items)) { // if multiple items
-            newList.items = items;
+          var newItems = [];
+          if (Array.isArray(items)) { // if multiple items
+            newItems = items;
           } else if (typeof items === 'object') { // if one item
-            newList.items = [items];
+            newItems = [items];
           }
 
-          // remove irrelevant properties from items
-          UtilityService.deleteFieldFromObjects(newList.items, ['listitemid', 'position', 'label', 'parlevel']);
-
-          newList.items.forEach(function(item) {
-            item.position = 0;
-          });
+          newList.items = newItems.map(Service.remapItems);
 
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';
@@ -507,8 +523,8 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.getList(favoritesList.listid).then(function() {
-            var itemToDelete = $filter('filter')(favoritesList.items, {itemnumber: itemNumber})[0];
+          return Service.getListWithItems(favoritesList.listid).then(function(list) {
+            var itemToDelete = $filter('filter')(list.items, {itemnumber: itemNumber})[0];
 
             return Service.deleteItem(itemToDelete.listitemid);
           });
@@ -555,6 +571,14 @@ angular.module('bekApp')
 
         findRecommendedList: function() {
           return UtilityService.findObjectByField(Service.lists, 'isrecommended', true);
+        },
+
+        /**********************
+        OTHER SPECIAL LISTS
+        ***********************/
+
+        findList: function(field, value) {
+          return UtilityService.findObjectByField(Service.lists, field, value);
         },
 
         /***************

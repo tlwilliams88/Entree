@@ -6724,7 +6724,7 @@ html[dir="rtl"] .select2-container .select2-choice {
   background-image: -webkit-linear-gradient(center bottom, #eee 0%, #fff 90%);
   background-image: -moz-linear-gradient(center bottom, #eee 0%, #fff 90%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#eeeeee', GradientType=0);
-  background-image: linear-gradient(to bottom, #eeeeee 0%, #ffffff 90%);
+  background-image: linear-gradient(to bottom, #eee 0%, #fff 90%);
 }
 
 /* line 72, ../scss/vendor/select2/_select2.scss */
@@ -6904,7 +6904,7 @@ html[dir="rtl"] .select2-container .select2-choice .select2-arrow b {
   background: url("../images/select2/select2.png") no-repeat 100% -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
   background: url("../images/select2/select2.png") no-repeat 100% -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
   background: url("../images/select2/select2.png") no-repeat 100% -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
-  background: url("../images/select2/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, #ffffff 85%, #eeeeee 99%) 0 0;
+  background: url("../images/select2/select2.png") no-repeat 100% -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
 }
 
 /* line 258, ../scss/vendor/select2/_select2.scss */
@@ -6914,7 +6914,7 @@ html[dir="rtl"] .select2-search input {
   background: url("../images/select2/select2.png") no-repeat -37px -22px, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
   background: url("../images/select2/select2.png") no-repeat -37px -22px, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
   background: url("../images/select2/select2.png") no-repeat -37px -22px, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
-  background: url("../images/select2/select2.png") no-repeat -37px -22px, linear-gradient(to bottom, #ffffff 85%, #eeeeee 99%) 0 0;
+  background: url("../images/select2/select2.png") no-repeat -37px -22px, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
 }
 
 /* line 268, ../scss/vendor/select2/_select2.scss */
@@ -6923,7 +6923,7 @@ html[dir="rtl"] .select2-search input {
   background: url("../images/select2/select2-spinner.gif") no-repeat 100%, -webkit-gradient(linear, left bottom, left top, color-stop(0.85, #fff), color-stop(0.99, #eee));
   background: url("../images/select2/select2-spinner.gif") no-repeat 100%, -webkit-linear-gradient(center bottom, #fff 85%, #eee 99%);
   background: url("../images/select2/select2-spinner.gif") no-repeat 100%, -moz-linear-gradient(center bottom, #fff 85%, #eee 99%);
-  background: url("../images/select2/select2-spinner.gif") no-repeat 100%, linear-gradient(to bottom, #ffffff 85%, #eeeeee 99%) 0 0;
+  background: url("../images/select2/select2-spinner.gif") no-repeat 100%, linear-gradient(to bottom, #fff 85%, #eee 99%) 0 0;
 }
 
 /* line 276, ../scss/vendor/select2/_select2.scss */
@@ -6954,7 +6954,7 @@ html[dir="rtl"] .select2-search input {
   background-image: -webkit-linear-gradient(center top, #fff 0%, #eee 50%);
   background-image: -moz-linear-gradient(center top, #fff 0%, #eee 50%);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#eeeeee', endColorstr='#ffffff', GradientType=0);
-  background-image: linear-gradient(to bottom, #ffffff 0%, #eeeeee 50%);
+  background-image: linear-gradient(to bottom, #fff 0%, #eee 50%);
 }
 
 /* line 313, ../scss/vendor/select2/_select2.scss */
@@ -7183,7 +7183,7 @@ disabled look for disabled choices in the results dropdown
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(1%, #eee), color-stop(15%, #fff));
   background-image: -webkit-linear-gradient(top, #eee 1%, #fff 15%);
   background-image: -moz-linear-gradient(top, #eee 1%, #fff 15%);
-  background-image: linear-gradient(to bottom, #eeeeee 1%, #ffffff 15%);
+  background-image: linear-gradient(to bottom, #eee 1%, #fff 15%);
 }
 
 /* line 494, ../scss/vendor/select2/_select2.scss */
@@ -7274,7 +7274,7 @@ html[dir="rtl"] .select2-container-multi .select2-choices li {
   background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eee));
   background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
   background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
-  background-image: linear-gradient(to bottom, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: linear-gradient(to bottom, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eee 100%);
 }
 
 /* line 579, ../scss/vendor/select2/_select2.scss */
@@ -7415,49 +7415,51 @@ html, body {
   height: 100%;
 }
 
-/* line 10, ../scss/scaffolding/_globals.scss */
-#sp-page {
-  background-image: url("../images/Textured-BG.jpg");
-}
-
-/* line 15, ../scss/scaffolding/_globals.scss */
+/* line 7, ../scss/scaffolding/_globals.scss */
 .container-fluid {
   height: 100%;
   padding-left: 0;
   padding-right: 0;
 }
 
-/* line 20, ../scss/scaffolding/_globals.scss */
+/* line 14, ../scss/scaffolding/_globals.scss */
+.sidebar-menu-wrapper {
+  min-height: 100%;
+  position: relative;
+  background-image: url("../images/Textured-BG.jpg");
+}
+
+/* line 21, ../scss/scaffolding/_globals.scss */
 .main-content {
   width: calc(100% - 175px);
   margin-left: 175px;
 }
 
-/* line 24, ../scss/scaffolding/_globals.scss */
+/* line 27, ../scss/scaffolding/_globals.scss */
 .view {
   padding-bottom: 15px;
 }
 
-/* line 27, ../scss/scaffolding/_globals.scss */
+/* line 32, ../scss/scaffolding/_globals.scss */
 .page-content {
   margin-top: 30px;
 }
 
 @media (max-width: 991px) {
-  /* line 32, ../scss/scaffolding/_globals.scss */
+  /* line 37, ../scss/scaffolding/_globals.scss */
   .main-content {
     width: inherit;
     margin-left: 0;
     margin-right: 0;
   }
 
-  /* line 37, ../scss/scaffolding/_globals.scss */
+  /* line 42, ../scss/scaffolding/_globals.scss */
   .page-content {
     margin-top: 15px;
   }
 }
 @media print {
-  /* line 43, ../scss/scaffolding/_globals.scss */
+  /* line 48, ../scss/scaffolding/_globals.scss */
   .main-content {
     margin-left: 0;
   }
@@ -8838,16 +8840,13 @@ form.style-validation-errors .form-error-message {
   min-height: 40px;
 }
 
-/* line 9, ../scss/components/_sidebar.scss */
+/* line 12, ../scss/components/_sidebar.scss */
 .sidebar {
   color: #9f8e7c;
   font-size: 13px;
   position: absolute;
   top: 0;
   bottom: 0;
-}
-/* line 16, ../scss/components/_sidebar.scss */
-.sidebar.sidebar-desktop {
   background-image: url("../images/Nav-Image.jpg");
   background-position: center bottom;
   background-repeat: no-repeat;
@@ -8924,25 +8923,26 @@ form.style-validation-errors .form-error-message {
   background-color: #373029;
   border-bottom: 1px solid #706457;
   letter-spacing: 1px;
+  text-align: center;
 }
-/* line 105, ../scss/components/_sidebar.scss */
+/* line 106, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr img {
   height: 60px;
   width: 60px;
   border-radius: 50px;
 }
-/* line 111, ../scss/components/_sidebar.scss */
+/* line 112, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr .contact-info {
   margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 100;
 }
-/* line 117, ../scss/components/_sidebar.scss */
+/* line 118, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-dsr .contact-info span {
   color: white;
   display: block;
 }
-/* line 124, ../scss/components/_sidebar.scss */
+/* line 125, ../scss/components/_sidebar.scss */
 .sidebar .sidebar-meta {
   font-size: 11px;
   font-weight: 300;
@@ -8950,37 +8950,55 @@ form.style-validation-errors .form-error-message {
   left: 0;
 }
 
-/* line 1, ../scss/components/_sidebar-mobile.scss */
-.sidebar-mobile {
-  background-color: #2a2621;
-}
-/* line 4, ../scss/components/_sidebar-mobile.scss */
-.sidebar-mobile .sidebar-nav ul {
-  margin-bottom: 0;
-}
-/* line 8, ../scss/components/_sidebar-mobile.scss */
-.sidebar-mobile .sidebar-nav ul li {
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-/* line 14, ../scss/components/_sidebar-mobile.scss */
-.sidebar-mobile .sidebar-user {
-  background-color: #433c35;
-}
-
 @media (max-width: 991px) {
-  /* line 21, ../scss/components/_sidebar-mobile.scss */
-  .sidebar-mobile .user-info {
-    background-color: #373029;
-    border-bottom: 1px solid #706457;
+  /* line 134, ../scss/components/_sidebar.scss */
+  .sidebar {
+    width: 250px;
+    position: absolute;
+    left: -200px;
+    background-image: none;
+    background-color: #2a2621;
+    -moz-transform: translate(-200px, 0);
+    -ms-transform: translate(-200px, 0);
+    -webkit-transform: translate(-200px, 0);
+    transform: translate(-200px, 0);
+    -moz-transition: ease-in-out 0.5s;
+    -o-transition: ease-in-out 0.5s;
+    -webkit-transition: ease-in-out 0.5s;
+    transition: ease-in-out 0.5s;
   }
-  /* line 26, ../scss/components/_sidebar-mobile.scss */
-  .sidebar-mobile .sidebar-dsr {
+  /* line 144, ../scss/components/_sidebar.scss */
+  .sidebar.open {
+    z-index: 15;
+    -moz-transform: translate(200px, 0);
+    -ms-transform: translate(200px, 0);
+    -webkit-transform: translate(200px, 0);
+    transform: translate(200px, 0);
+    -moz-transition: ease-in-out 0.5s;
+    -o-transition: ease-in-out 0.5s;
+    -webkit-transition: ease-in-out 0.5s;
+    transition: ease-in-out 0.5s;
+  }
+  /* line 150, ../scss/components/_sidebar.scss */
+  .sidebar .person-info {
+    border-bottom: 1px solid #706457;
+    background-color: #373029;
+  }
+  /* line 154, ../scss/components/_sidebar.scss */
+  .sidebar .sidebar-dsr {
+    text-align: left;
     background-color: transparent;
   }
-  /* line 30, ../scss/components/_sidebar-mobile.scss */
-  .sidebar-mobile .sidebar-actions {
-    padding: 15px;
+  /* line 158, ../scss/components/_sidebar.scss */
+  .sidebar .sidebar-dsr .contact-info-wrapper {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 5px;
+  }
+  /* line 163, ../scss/components/_sidebar.scss */
+  .sidebar .sidebar-dsr .contact-info-wrapper .contact-info {
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
 /* line 1, ../scss/components/_user-bar.scss */
@@ -9355,6 +9373,7 @@ form.style-validation-errors .form-error-message {
   height: 100%;
   padding-bottom: 100%;
   margin-bottom: -100%;
+  z-index: 0;
 }
 @media (min-width: 992px) {
   /* line 26, ../scss/pages/_home.scss */
@@ -9363,7 +9382,7 @@ form.style-validation-errors .form-error-message {
     width: 25%;
   }
 }
-/* line 33, ../scss/pages/_home.scss */
+/* line 34, ../scss/pages/_home.scss */
 .notification .notification__icon:after {
   content: "";
   position: absolute;
@@ -9373,26 +9392,17 @@ form.style-validation-errors .form-error-message {
   left: 49%;
   border-left: 2px solid #504938;
 }
-/* line 44, ../scss/pages/_home.scss */
+/* line 45, ../scss/pages/_home.scss */
 .notification .notification__message {
-  width: calc(75% - 15px) !important;
+  max-width: calc(75% - 15px);
+  float: left;
   position: relative;
-  min-height: 1px;
-  padding-left: 15px;
-  padding-right: 15px;
   margin-top: 15px;
   border-radius: 3px;
   letter-spacing: 1px;
   background-color: #fff;
   border: 1px solid #c3bc9c;
   padding: 8px;
-}
-@media (min-width: 992px) {
-  /* line 44, ../scss/pages/_home.scss */
-  .notification .notification__message {
-    float: left;
-    width: 75%;
-  }
 }
 @media screen {
   /* line 53, ../scss/mixins/_arrows.scss */
@@ -9420,15 +9430,15 @@ form.style-validation-errors .form-error-message {
   left: -12px;
   top: 4px;
 }
-/* line 56, ../scss/pages/_home.scss */
+/* line 57, ../scss/pages/_home.scss */
 .notification .notification__message .timestamp {
   color: #c3bc9c;
 }
-/* line 62, ../scss/pages/_home.scss */
+/* line 63, ../scss/pages/_home.scss */
 .notification.notification--date .notification__icon {
   padding-top: 15px;
 }
-/* line 65, ../scss/pages/_home.scss */
+/* line 66, ../scss/pages/_home.scss */
 .notification.notification--date .notification__date {
   position: relative;
   min-height: 1px;
@@ -9438,17 +9448,17 @@ form.style-validation-errors .form-error-message {
   padding-left: 0;
 }
 @media (min-width: 992px) {
-  /* line 65, ../scss/pages/_home.scss */
+  /* line 66, ../scss/pages/_home.scss */
   .notification.notification--date .notification__date {
     float: left;
     width: 75%;
   }
 }
-/* line 73, ../scss/pages/_home.scss */
+/* line 74, ../scss/pages/_home.scss */
 .notification.notification--activity .notification__icon {
   padding-top: 20px;
 }
-/* line 76, ../scss/pages/_home.scss */
+/* line 77, ../scss/pages/_home.scss */
 .notification.notification--activity .notification__icon div.icon {
   height: 26px;
   width: 26px;
@@ -9458,11 +9468,11 @@ form.style-validation-errors .form-error-message {
   background-color: #fff;
   display: inline-block;
 }
-/* line 88, ../scss/pages/_home.scss */
+/* line 89, ../scss/pages/_home.scss */
 .notification.notification--message .notification__icon {
   padding-top: 10px;
 }
-/* line 91, ../scss/pages/_home.scss */
+/* line 92, ../scss/pages/_home.scss */
 .notification.notification--message .notification__icon img {
   height: 40px;
   width: 40px;
@@ -9471,45 +9481,45 @@ form.style-validation-errors .form-error-message {
   border-radius: 100px;
 }
 
-/* line 105, ../scss/pages/_home.scss */
+/* line 106, ../scss/pages/_home.scss */
 .order-summary__header {
   font-weight: 600;
 }
 
-/* line 108, ../scss/pages/_home.scss */
+/* line 109, ../scss/pages/_home.scss */
 .order-summary__order {
   background-color: #fff;
   border: 1px solid #c3bc9c;
   margin-top: 10px;
   box-shadow: 0px 0px 5px #c3bc9c;
 }
-/* line 114, ../scss/pages/_home.scss */
+/* line 115, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--paid {
   border-left: 3px solid #04a773;
 }
-/* line 117, ../scss/pages/_home.scss */
+/* line 118, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--paid .highlight-col {
   color: #04a773;
 }
-/* line 121, ../scss/pages/_home.scss */
+/* line 122, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--late {
   border-left: 3px solid #dc6a6a;
 }
-/* line 124, ../scss/pages/_home.scss */
+/* line 125, ../scss/pages/_home.scss */
 .order-summary__order.order-summary__order--late .highlight-col {
   color: #dc6a6a;
 }
-/* line 130, ../scss/pages/_home.scss */
+/* line 131, ../scss/pages/_home.scss */
 .order-summary__order .table-col {
   padding: 34px 0;
 }
-/* line 134, ../scss/pages/_home.scss */
+/* line 135, ../scss/pages/_home.scss */
 .order-summary__order .order-col {
   background-color: #f1efe5;
   border-right: 1px solid #c3bc9c;
   padding: 15px 0;
 }
-/* line 139, ../scss/pages/_home.scss */
+/* line 140, ../scss/pages/_home.scss */
 .order-summary__order .order-col .order-col__number {
   font-size: 16px;
   font-weight: 600;
@@ -9547,27 +9557,27 @@ form.style-validation-errors .form-error-message {
   }
 }
 @media (max-width: 991px) {
-  /* line 154, ../scss/pages/_home.scss */
+  /* line 155, ../scss/pages/_home.scss */
   .order-summary__order {
     border-top: none;
   }
-  /* line 159, ../scss/pages/_home.scss */
+  /* line 160, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--late {
     border-left: none;
   }
-  /* line 161, ../scss/pages/_home.scss */
+  /* line 162, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--late .order-col {
     border-top: 3px solid #dc6a6a;
   }
-  /* line 165, ../scss/pages/_home.scss */
+  /* line 166, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--paid {
     border-left: none;
   }
-  /* line 167, ../scss/pages/_home.scss */
+  /* line 168, ../scss/pages/_home.scss */
   .order-summary__order.order-summary__order--paid .order-col {
     border-top: 3px solid #04a773;
   }
-  /* line 172, ../scss/pages/_home.scss */
+  /* line 173, ../scss/pages/_home.scss */
   .order-summary__order .order-col {
     border-bottom: 1px solid #c3bc9c;
     border-top: 1px solid #c3bc9c;
@@ -9604,16 +9614,16 @@ form.style-validation-errors .form-error-message {
     bottom: -22px;
     left: 9px;
   }
-  /* line 181, ../scss/pages/_home.scss */
+  /* line 182, ../scss/pages/_home.scss */
   .order-summary__order .order-col .order-col__date {
     text-align: right;
     font-size: 14px;
   }
-  /* line 187, ../scss/pages/_home.scss */
+  /* line 188, ../scss/pages/_home.scss */
   .order-summary__order .order-details {
     padding: 15px;
   }
-  /* line 190, ../scss/pages/_home.scss */
+  /* line 191, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item {
     margin-left: -15px;
     margin-right: -15px;
@@ -9628,7 +9638,7 @@ form.style-validation-errors .form-error-message {
   .order-summary__order .order-details > .details-item:after {
     clear: both;
   }
-  /* line 194, ../scss/pages/_home.scss */
+  /* line 195, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item > div {
     position: relative;
     float: left;
@@ -9637,11 +9647,11 @@ form.style-validation-errors .form-error-message {
     padding-left: 15px;
     padding-right: 15px;
   }
-  /* line 197, ../scss/pages/_home.scss */
+  /* line 198, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item .item-value {
     text-align: right;
   }
-  /* line 200, ../scss/pages/_home.scss */
+  /* line 201, ../scss/pages/_home.scss */
   .order-summary__order .order-details > .details-item .item-title {
     font-weight: 600;
   }

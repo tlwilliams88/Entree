@@ -144,6 +144,7 @@ angular.module('bekApp')
 
       Service.addItemToCart = function(cartId, item) {
         if (navigator.connection.type === 'none') {
+          var deferred = $q.defer();
           if (!item.quantity || item.quantity === 0) {
             item.quantity = 1;
           }
@@ -157,7 +158,8 @@ angular.module('bekApp')
           }
 
           PhonegapDbService.setItem(db_table_name_carts, cartId, updatedCart);
-          return item;
+          deferred.resolve(item);
+          return deferred.promise;
         } else {
           return originalCartService.addItemToCart(cartId, item);
         }
@@ -172,7 +174,8 @@ angular.module('bekApp')
             items.forEach(function(item) {
               item.cartitemid = generateId();
               item.isNew = true;
-            })
+            });
+
             cartFound.items = cartFound.items.concat(items);
             PhonegapDbService.setItem(db_table_name_carts, cartFound.id, cartFound);
             deferred.resolve(cartFound);
