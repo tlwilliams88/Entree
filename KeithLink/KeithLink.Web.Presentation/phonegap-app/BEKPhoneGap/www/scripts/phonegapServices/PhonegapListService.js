@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('PhonegapListService', ['$http', '$q', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'PricingService', 'List',
-  function($http, $q, ListService, PhonegapDbService, PhonegapLocalStorageService, PricingService, List) {
+.factory('PhonegapListService', ['$http', '$q', 'toaster', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'PricingService', 'List',
+  function($http, $q, toaster, ListService, PhonegapDbService, PhonegapLocalStorageService, PricingService, List) {
 
     var originalListService = angular.copy(ListService);
 
@@ -119,6 +119,7 @@ angular.module('bekApp')
         });
         PhonegapLocalStorageService.setLabels(Service.labels);
 
+        toaster.pop('success', null, 'Successfully saved list ' + list.name);
         var deferred = $q.defer();
         deferred.resolve(list);
         return deferred.promise;
@@ -218,6 +219,7 @@ angular.module('bekApp')
 
         var newItems = [];
         items.forEach(function(item) {
+          delete item.isSelected;
           newItems.push(item);
         });
 
