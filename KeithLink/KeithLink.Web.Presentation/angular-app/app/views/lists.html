@@ -230,7 +230,7 @@
         <p class="text-red" ng-show="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
       </div>
       
-      <div class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+      <form name="listSearchForm" class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
         <div class="input-group input-group-lg">
           <input 
             ng-model="listSearchTerm"
@@ -238,10 +238,10 @@
             class="form-control" 
             placeholder="Search current list by keyword, item # or label" />
           <span class="input-group-btn">
-            <button type="button" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="submit" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
           </span>
         </div>
-      </div>
+      </form>
 
       <!-- Multi-select menu -->
       <div class="hidden-print row" ng-show="(selectedList.items | filter:{isSelected:'true'}).length > 0">
