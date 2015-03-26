@@ -64,7 +64,7 @@
         ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();">
         <span class="large-icon text-green icon-checkmark"></span>
       </button>
-       <br class='visible-xs'>
+       <br class='visible-xs' ng-show="renameCartForm.cartName.$error.checkDuplicateField || renameCartForm.cartName.$error.required">
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>     
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
