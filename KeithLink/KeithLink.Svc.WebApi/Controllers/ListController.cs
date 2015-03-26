@@ -263,6 +263,20 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			try
 			{
+
+				if (!string.IsNullOrEmpty(paging.Terms))
+				{
+					//Build filter
+					paging.Filter = new FilterInfo()
+					{
+						Field = "ItemNumber",
+						FilterType = "contains",
+						Value = paging.Terms,
+						Condition = "||",
+						Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = paging.Terms, FilterType = "contains" }, new FilterInfo() { Condition = "||", Field = "Name", Value = paging.Terms, FilterType = "contains" } }
+					};
+				}
+
 				paging.Size = int.MaxValue;
 				paging.From = 0;
 

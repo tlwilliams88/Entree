@@ -36,7 +36,7 @@ angular.module('bekApp')
     function resetPage(list) {
       $scope.selectedList = angular.copy(list);
       originalList = list;
-      $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
+      $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
       // $scope.sortList('position', false);
@@ -192,6 +192,11 @@ angular.module('bekApp')
       if (!processingSaveList) {
         processingSaveList = true;
         var updatedList = angular.copy(list);
+
+        // remove empty item that is used for ui sortable
+        if (updatedList.items.length && !updatedList.items[0].listitemid) {
+          updatedList.items.splice(0, 1);
+        }
 
         angular.forEach(updatedList.items, function(item, itemIndex) {
           if (item.listitemid) {

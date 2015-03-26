@@ -3,27 +3,32 @@ html, body {
   height: 100%;
 }
 
-body {
-
-}
-
-#sp-page {
-  background-image: url('../images/Textured-BG.jpg');
-}
-
-// Bootstrap adjustment for fixed width sidebar
+// highest level container, located in index.html
 .container-fluid {
   height: 100%;
   padding-left: 0;
   padding-right: 0;
 }
+
+// wraps every page that contains the sidebar menu, located in menu.html
+.sidebar-menu-wrapper {
+  min-height: 100%;
+  position: relative;
+  background-image: url('../images/Textured-BG.jpg');
+}
+
+// div to the right of the sidebar, located in menu.html
 .main-content {
   width: calc(100% - 175px);
   margin-left: $sidebar-width;
 }
+
+// wraps menu child states, located in menu.html
 .view {
   padding-bottom: $gutter-size;
 }
+
+// everything below page-header-bar, located in each menu child state
 .page-content {
   margin-top: 30px;
 }

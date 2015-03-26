@@ -77,5 +77,8 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember(Name = "iskbitcustomer")]
         public bool IsKBITCustomer { get; set; }
+
+        [DataMember(Name="iskbitadmin")]
+        public bool IsKBITAdmin { get; set; }
     }
 }

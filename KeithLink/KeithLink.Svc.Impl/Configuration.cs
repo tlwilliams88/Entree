@@ -20,6 +20,7 @@ namespace KeithLink.Svc.Impl
         private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
 
         // Active Directory Constants
+        private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN = "ADExtAccessGroupKbitAdmin";
         private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER = "ADExtAccessGroupKbitCustomer";
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
         private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
@@ -152,6 +153,12 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region properties
+        public static string AccessGroupKbitAdmin {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);
+            }
+        }
+
         public static string AccessGroupKbitCustomer {
             get {
                 return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER, string.Empty);
