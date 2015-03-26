@@ -428,7 +428,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     // lookup customers by their assigned dsr number
                     return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
 
-                } else if (user.RoleName == "branchismanager") {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
                     return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
                 } else { // assume admin user with access to all customers
@@ -457,6 +457,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             string userBranch = string.Empty;
             bool isInternalUser = IsInternalAddress(csProfile.Email);
             UserPrincipal adUser = null;
+            bool isKbitAdmin = false;
             bool isKbitCustomer = false;
 
             if (isInternalUser) {
@@ -465,28 +466,32 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Svc.Core.Constants.INTERNAL_USER_ROLES);
 
                 if (internalUserRoles.Intersect(Constants.BEK_SYSADMIN_ROLES).Count() > 0) {
-                    userRole = "beksysadmin";
+                    userRole = Constants.ROLE_NAME_SYSADMIN;
                 } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
-                    userRole = "branchismanager";
+                    userRole = Constants.ROLE_NAME_BRANCHIS;
                     userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0){
+                    userRole = Constants.ROLE_NAME_POWERUSER;
+                    userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
                 } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
                     dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
-                    userRole = "dsm";
+                    userRole = Constants.ROLE_NAME_DSM;
                     userBranch = dsmRole.Substring(0, 3);
                     dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
                 } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
                     dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
-                    userRole = "dsr";
+                    userRole = Constants.ROLE_NAME_DSR;
                     dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
                     userBranch = dsrRole.Substring(0, 3);
                 } else {
-                    userRole = "guest";
+                    userRole = Constants.ROLE_NAME_GUEST;
                 }
 
             } else {
                 adUser = _extAd.GetUser(csProfile.Email);
                 userRole = GetUserRole(csProfile.Email);
                 userBranch = csProfile.DefaultBranch;
+                isKbitAdmin = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitAdmin);
                 isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
             }
 
@@ -511,6 +516,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
                 UserName = adUser.SamAccountName,
                 UserNameToken = tokenBase64,
+                IsKBITAdmin = isKbitAdmin,
                 IsKBITCustomer = isKbitCustomer
             };
         }
@@ -673,7 +679,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 } else if (!String.IsNullOrEmpty(user.DSMRole)) {
                     //lookup customers by their assigned dsm number
                     _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
-                } else if (user.RoleName == "branchismanager") {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId);
                     else

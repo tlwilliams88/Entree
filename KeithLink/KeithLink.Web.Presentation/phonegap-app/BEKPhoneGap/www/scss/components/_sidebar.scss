@@ -1,3 +1,6 @@
+@import "compass/css3/transform";
+@import "compass/css3/transition";
+
 $sidebar__background--light: #433c35;
 $sidebar__background--dark: #373029;
 $sidebar__text: #9f8e7c;
@@ -12,16 +15,13 @@ $sidebar-nav__text--selected: $color-white;
   position: absolute;
   top: 0;
   bottom: 0;
-
-  &.sidebar-desktop {
-    background-image: url('../images/Nav-Image.jpg');
-    background-position:center bottom;
-    background-repeat: no-repeat;
-    background-color: $sidebar__background--light;
-    padding: 0;
-    width: $sidebar-width;
-    min-height: 780px;
-  }
+  background-image: url('../images/Nav-Image.jpg');
+  background-position:center bottom;
+  background-repeat: no-repeat;
+  background-color: $sidebar__background--light;
+  padding: 0;
+  width: $sidebar-width;
+  min-height: 780px;
 
   a {
     color: $color-orange;
@@ -101,6 +101,7 @@ $sidebar-nav__text--selected: $color-white;
     background-color: $sidebar__background--dark;
     border-bottom: 1px solid $sidebar-nav__border;
     letter-spacing: 1px;
+    text-align: center;
 
     img {
       height: 60px;
@@ -125,6 +126,45 @@ $sidebar-nav__text--selected: $color-white;
     font-size: 11px;
     font-weight: 300;
     bottom: 10px;
-    left: 0;
+    left: 0;    
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .sidebar {
+    width: 250px;
+    position: absolute;
+    left: -200px;
+    background-image: none;
+    background-color: $sidebar-nav__background--selected;
+
+    @include transform(translate(-200px,0));
+    @include transition(0.5s ease-in-out);
+
+    &.open {
+      z-index: 15;
+      @include transform(translate(200px,0));
+      @include transition(0.5s ease-in-out);
+    }
+
+    .person-info {
+      border-bottom: 1px solid $sidebar-nav__border;
+      background-color: $sidebar__background--dark;
+    }
+    .sidebar-dsr {
+      text-align: left;
+      background-color: transparent;
+
+      .contact-info-wrapper {
+        display: inline-block;
+        vertical-align: middle;
+        margin-left: 5px;
+
+        .contact-info {
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+      }
+    }
   }
 }

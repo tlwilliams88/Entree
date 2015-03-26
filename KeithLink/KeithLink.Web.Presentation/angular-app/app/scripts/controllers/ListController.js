@@ -193,6 +193,10 @@ angular.module('bekApp')
         processingSaveList = true;
         var updatedList = angular.copy(list);
 
+        if (updatedList.items.length && !updatedList.items[0].listitemid) {
+          updatedList.items.splice(0, 1);
+        }
+
         angular.forEach(updatedList.items, function(item, itemIndex) {
           if (item.listitemid) {
             if (item.editLabel && item.isEditing) {
@@ -529,6 +533,12 @@ angular.module('bekApp')
         resolve: {
           list: function() {
             return list;
+          },
+          pagingModelOptions: function() {
+            return { sort: [{
+              field: $scope.sort.field,
+              order: $scope.sort.sortDescending ? 'desc' : 'asc'
+            }] };
           }
         }
       });

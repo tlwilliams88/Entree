@@ -12,12 +12,12 @@
     
     <!-- CARTS -->
     <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
-      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+      <button type="button" class="btn btn-default dropdown-toggle">
         <span class="pull-right icon-arrow-right6"></span>Add to Cart
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button type="button" class="btn btn-default" ng-repeat="cart in carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)">{{cart.name}}</button>
+          <button type="button" class="btn btn-default" ng-repeat="cart in ::carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)">{{::cart.name}}</button>
           <button type="button" class="btn btn-default" ng-click="createCartWithItem(item)">New Cart...</button>
         </div>
       </ul>
@@ -25,12 +25,12 @@
 
     <!-- LISTS -->
     <div ng-mouseenter="status.isopen2 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen2 = false;" class="btn-group" ng-class="{ open: status.isopen2 }">
-      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+      <button type="button" class="btn btn-default dropdown-toggle">
         <span class="pull-right icon-arrow-right6"></span>Add to List
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="list in lists | sortLists" ng-if="list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{list.name}}</button>
+          <button ng-repeat="list in ::lists | sortLists" ng-if="::list.permissions.canAddItems && !list.permissions.specialDisplay" type="button" class="btn btn-default" ng-click="addItemToList(list.listid, item)">{{::list.name}}</button>
           <button type="button" class="btn btn-default" ng-click="createListWithItem(item)">New List...</button>
         </div>
       </ul>
@@ -38,12 +38,12 @@
 
     <!-- CHANGE ORDERS -->
     <div ng-mouseenter="status.isopen3 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen3 = false;" class="btn-group" ng-class="{ open: status.isopen3 }" ng-if="changeOrders.length > 0 && item.nonstock !== 'Y'">
-      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="disabled">
+      <button type="button" class="btn btn-default dropdown-toggle">
         <span class="pull-right icon-arrow-right6"></span>Add to Change Order
       </button>
       <ul class="dropdown-menu" role="menu">
         <div class="btn-group-vertical">
-          <button ng-repeat="order in changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{order.invoicenumber}}</button>
+          <button ng-repeat="order in ::changeOrders" type="button" class="btn btn-default" ng-click="addItemToChangeOrder(order, item)"># {{::order.invoicenumber}}</button>
         </div>
       </ul>
     </div>

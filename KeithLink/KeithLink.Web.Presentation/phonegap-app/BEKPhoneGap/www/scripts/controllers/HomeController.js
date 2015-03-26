@@ -97,7 +97,7 @@ angular.module('bekApp')
     };
 
     $scope.notificationParams = {
-      size: 8,
+      size: 6,
       from:0,
       sort: [{
         field: 'messagecreatedutc',
