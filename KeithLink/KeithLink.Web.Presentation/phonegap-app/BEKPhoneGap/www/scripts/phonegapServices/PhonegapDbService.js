@@ -11,7 +11,9 @@ angular.module('bekApp')
 
   function openDB() {
     if (!db) {
-      db = window.openDatabase(dbName, '1.0', 'Ben E Keith Entree', 1000000); 
+      db = window.openDatabase(dbName, '1.0', 'Ben E Keith Entree', 1000000, function() {
+        console.log('opened database');
+      }); 
     }
     return db;
   };
@@ -23,6 +25,12 @@ angular.module('bekApp')
     return key;
   }
 
+  function errorHandler(tx, error) {
+    console.log('DB error');
+    debugger;
+    console.log(error);
+  }
+
   var Service = {
 
     dropTable: function(table) {
@@ -30,9 +38,10 @@ angular.module('bekApp')
       var deferred = $q.defer();
       var db = openDB();
       db.transaction(function(tx) {
-        return tx.executeSql('drop table if exists ' + table + ';', [], function(tx, res) {          
+        return tx.executeSql('drop table if exists ' + table + ';', [], function(tx, res) {
+          console.log('drop table success');
           return deferred.resolve(true);
-        });
+        }, errorHandler);
       });
       return deferred.promise;
     },
@@ -56,7 +65,7 @@ angular.module('bekApp')
           } else {
             return deferred.resolve(false);
           }
-        });
+        }, errorHandler);
       });
       return deferred.promise;
     },
@@ -67,7 +76,7 @@ angular.module('bekApp')
       key = convertKeyToString(key);
       db.transaction(function(tx) {
         // tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
-        return tx.executeSql("select data from " + table + " where key='" + key + "';", [], function(tx, res) {
+        return tx.executeSql("select data from " + table + " WHERE key = ?;", [key], function(tx, res) {
           if (res.rows.length > 0) {
             var item = JSON.parse(res.rows.item(0).data);
             console.log('found item');
@@ -76,7 +85,7 @@ angular.module('bekApp')
           } else {
             return deferred.resolve(false);
           }
-        });
+        }, errorHandler);
       });
       return deferred.promise;
     },
@@ -87,18 +96,19 @@ angular.module('bekApp')
       var db = openDB();
       db.transaction(function(tx) {
         tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
-        return tx.executeSql("select data from " + table + " where key='" + key + "';", [], function(tx, res) {
+        return tx.executeSql("select data from " + table + " where key=?;", [key], function(tx, res) {
           if (res.rows.length > 0) {
             console.log('update');
-            return tx.executeSql("UPDATE " + table + " SET data = '" + data + "' WHERE key ='" + key + "'", [], function(tx, res) {
+            return tx.executeSql("UPDATE " + table + " SET data = ? WHERE key = ?;", [data, key], function(tx, res) {
               console.log('update success');
               return true;
-            });
+            }, errorHandler);
           } else {
             console.log('insert');
             return tx.executeSql("INSERT INTO " + table + " (key, data) VALUES (?,?)", [key, data], function(tx, res) {
+              console.log('insert success');
               return true;
-            });
+            }, errorHandler);
           }
         });
       });
@@ -108,9 +118,9 @@ angular.module('bekApp')
       var db = openDB();
       key = convertKeyToString(key);
       db.transaction(function(tx) {
-        return tx.executeSql("DELETE FROM " + table + " WHERE key = '" + key + "';", [], function(tx, res) {
+        return tx.executeSql("DELETE FROM " + table + " WHERE key = ?;", [key], function(tx, res) {
           return true;
-        });
+        }, errorHandler);
       });
       return false;
     }

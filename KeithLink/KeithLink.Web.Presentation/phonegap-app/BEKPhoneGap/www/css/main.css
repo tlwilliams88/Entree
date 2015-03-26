@@ -10346,13 +10346,8 @@ ul.horizontal-slide .product-placeholder-image {
   }
 }
 
-/* line 22, ../scss/pages/_cart.scss */
-.btn-lg, .btn-group-lg > .btn {
-  padding: 8px;
-}
-
 @media print {
-  /* line 28, ../scss/pages/_cart.scss */
+  /* line 23, ../scss/pages/_cart.scss */
   .select-cart {
     border: none;
     padding: none;
