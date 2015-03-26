@@ -531,10 +531,13 @@ angular.module('bekApp')
             return list;
           },
           pagingModelOptions: function() {
-            return { sort: [{
-              field: $scope.sort.field,
-              order: $scope.sort.sortDescending ? 'desc' : 'asc'
-            }] };
+            return { 
+              sort: [{
+                field: $scope.sort.field,
+                order: $scope.sort.sortDescending ? 'desc' : 'asc'
+              }],
+              terms: $scope.listSearchTerm
+            };
           }
         }
       });
