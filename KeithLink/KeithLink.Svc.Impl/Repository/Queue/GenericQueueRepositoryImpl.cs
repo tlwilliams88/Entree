@@ -69,6 +69,41 @@ namespace KeithLink.Svc.Impl.Repository.Queue
                 throw new QueueConnectionException(server, virtualHost, exchange, string.Empty, ex.Message, ex);
             }
         }
+
+		public void BulkPublishToQueue(List<string> items, string server, string username, string password, string virtualHost, string exchange)
+		{
+			try
+			{
+				ConnectionFactory connectionFactory = new ConnectionFactory()
+				{
+					HostName = server,
+					UserName = username,
+					Password = password,
+					VirtualHost = virtualHost
+				};
+
+				using (IConnection connection = connectionFactory.CreateConnection())
+				{
+					connection.AutoClose = false; //to prevent using block from attempting to close a connection that DNE
+
+					using (IModel model = connection.CreateModel())
+					{
+						IBasicProperties props = model.CreateBasicProperties();
+						props.DeliveryMode = 2; // persistent delivery mode
+
+						foreach (var item in items)
+						{
+							model.BasicPublish(exchange, string.Empty, false, props, Encoding.UTF8.GetBytes(item));
+						}
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new QueueConnectionException(server, virtualHost, exchange, string.Empty, ex.Message, ex);
+			}
+		}
+
         #endregion
     }
 }

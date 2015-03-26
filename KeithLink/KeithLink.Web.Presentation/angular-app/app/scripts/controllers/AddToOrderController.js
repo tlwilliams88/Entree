@@ -136,6 +136,7 @@ angular.module('bekApp')
       var cart = {};
       cart.items = [];
       cart.id = 'New';
+      cart.requestedshipdate = $scope.shipDates[0].shipdate;
       $scope.selectedCart = cart;
       $scope.isChangeOrder = false;
       refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);

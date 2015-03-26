@@ -47,13 +47,13 @@ namespace KeithLink.Svc.Core.Extensions
 		}
 
 
-		public static ListReportModel ToReportModel(this ListModel list)
+		public static ListReportModel ToReportModel(this PagedListModel list)
 		{
 			return new ListReportModel()
 			{
 				Name = list.Name,
-				Items = list.Items == null ? null :
-					list.Items.Select(i => new ListItemReportModel() { Brand = i.BrandExtendedDescription, ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList()
+				Items = list.Items == null || list.Items.Results == null ? null :
+					list.Items.Results.Select(i => new ListItemReportModel() { Brand = i.BrandExtendedDescription, ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList()
 			};
 		}
 	}

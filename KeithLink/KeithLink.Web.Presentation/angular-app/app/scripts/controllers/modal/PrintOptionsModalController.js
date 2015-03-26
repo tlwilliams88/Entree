@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('PrintOptionsModalController', ['$scope', '$modalInstance', 'PrintService', 'ListService', 'list',
-  function ($scope, $modalInstance, PrintService, ListService, list) {
+.controller('PrintOptionsModalController', ['$scope', '$modalInstance', 'PrintService', 'ListService', 'list', 'pagingModelOptions',
+  function ($scope, $modalInstance, PrintService, ListService, list, pagingModelOptions) {
 
   $scope.list = list;
   $scope.labelOptions = [{
@@ -24,9 +24,8 @@ angular.module('bekApp')
     ListService.printBarcodes(list.listid);
   };
 
-  $scope.printList = function(list)
-  {
-    ListService.printList(list.listid);
+  $scope.printList = function(list) {
+    ListService.printList(list.listid, pagingModelOptions);
   };
 
   $scope.cancel = function () {
