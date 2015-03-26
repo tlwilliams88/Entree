@@ -10411,6 +10411,10 @@ ul.horizontal-slide .product-placeholder-image {
 .invoice-table > tbody > tr.invoice__paid > td.highlight-text {
   color: #04a773;
 }
+/* line 18, ../scss/pages/_invoice.scss */
+.invoice-table > tbody > tr.invoice__paid > td .hidden-icon {
+  visibility: hidden;
+}
 
 /* line 2, ../scss/pages/_notifications.scss */
 .table tbody > tr.new-message td {
