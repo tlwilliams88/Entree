@@ -34,7 +34,7 @@ angular.module('bekApp')
       DSR: 'dsr',
       DSM: 'dsm',
       SYS_ADMIN: 'beksysadmin',
-      POWER_USER: '',
+      POWER_USER: 'poweruser',
       BRANCH_MANAGER: 'branchismanager'
     },
 

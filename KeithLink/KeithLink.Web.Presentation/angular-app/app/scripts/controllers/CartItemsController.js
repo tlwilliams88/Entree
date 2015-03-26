@@ -52,10 +52,6 @@ angular.module('bekApp')
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
 
-     if($scope.currentCart && !$scope.currentCart.requestedshipdate){ 
-    $scope.currentCart.requestedshipdate = $scope.shipDates[0].shipdate;        
-  }
-
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
     }
@@ -108,8 +104,15 @@ angular.module('bekApp')
     $scope.selectShipDate = function(shipDate) {
       $scope.currentCart.requestedshipdate = shipDate.shipdate;
       $scope.selectedShipDate = shipDate;
-      $scope.cartForm.$setDirty();
+      
+      if($scope.cartForm){
+        $scope.cartForm.$setDirty();
+       }
     };
+
+      if($scope.currentCart && !$scope.currentCart.requestedshipdate){      
+          $scope.selectShipDate($scope.shipDates[0]);   
+      }
 
     $scope.sortByPrice = function(item) {
       // if (item.price) {
