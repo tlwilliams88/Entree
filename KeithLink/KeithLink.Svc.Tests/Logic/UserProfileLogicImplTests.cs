@@ -58,5 +58,9 @@ namespace KeithLink.Svc.Test.Logic {
             Assert.IsTrue(userProfiles.UserProfiles.Count == 1);
         }
 
+        //[TestMethod]
+        //public void SuccessfullyGrantAccessToKbitCustomer() {
+        //    _logic.GrantRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.RequestedApplication.KbitCustomer);
+        //}
     }
 }
