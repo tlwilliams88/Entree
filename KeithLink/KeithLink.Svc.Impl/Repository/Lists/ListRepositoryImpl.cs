@@ -15,14 +15,14 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		public ListRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
         
 
-		public IEnumerable<List> ReadListForCustomer(Core.Models.Profile.UserProfile user, Core.Models.SiteCatalog.UserSelectedContext catalogInfo, bool headerOnly)
+		public IEnumerable<List> ReadListForCustomer(Core.Models.SiteCatalog.UserSelectedContext catalogInfo, bool headerOnly)
 		{
 			if(headerOnly)
-				return this.Entities.Include(t => t.Shares).Where(l => (l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId)) || 
+				return this.Entities.Include(t => t.Shares).Where(l => 
 					(l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)) || 
 					(l.Shares.Any(s => s.CustomerId.Equals(catalogInfo.CustomerId) && s.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase))));
 			else
-				return this.Entities.Include(i => i.Items).Include(t => t.Shares).Where(l => (l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId)) || 
+				return this.Entities.Include(i => i.Items).Include(t => t.Shares).Where(l =>  
 					(l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)) ||
 					(l.Shares.Any(s => s.CustomerId.Equals(catalogInfo.CustomerId) && s.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase))));
 		}

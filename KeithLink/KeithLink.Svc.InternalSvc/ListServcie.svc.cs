@@ -52,7 +52,7 @@ namespace KeithLink.Svc.InternalSvc
 			listLogic.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
 		}
         
-        public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
+        public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
 		{
 			return listLogic.CreateList(userId, catalogInfo, list, type);
 		}
@@ -82,9 +82,9 @@ namespace KeithLink.Svc.InternalSvc
 			return listLogic.ReadList(user, catalogInfo, Id);
 		}
         
-		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
+		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
 		{
-			return listLogic.ReadListByType(user, catalogInfo, type);
+			return listLogic.ReadListByType(catalogInfo, type);
 		}
 		
         public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
