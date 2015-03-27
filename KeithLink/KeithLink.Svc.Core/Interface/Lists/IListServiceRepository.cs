@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 
 		void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
         
-        long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
+        long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 
 		void DeleteItem(long Id);
 		
@@ -38,7 +38,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
         
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 		
-		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type);
+		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type);
 		
         List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
         

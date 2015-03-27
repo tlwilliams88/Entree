@@ -71,7 +71,7 @@
   <xs:element name="CreateList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q11:guid" />
+        <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" nillable="true" type="q11:guid" />
         <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q12:UserSelectedContext" />
         <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="list" nillable="true" type="q13:UserList" />
         <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="type" type="q14:ListType" />
@@ -157,84 +157,83 @@
   <xs:element name="ReadListByType">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q23:userprofile" />
-        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q24:UserSelectedContext" />
-        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="type" type="q25:ListType" />
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q23:UserSelectedContext" />
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="type" type="q24:ListType" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadListByTypeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadListByTypeResult" nillable="true" type="q26:ArrayOfUserList" />
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadListByTypeResult" nillable="true" type="q25:ArrayOfUserList" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadListLabels">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q27:userprofile" />
-        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q28:UserSelectedContext" />
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q26:userprofile" />
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q27:UserSelectedContext" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadListLabelsResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q29="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ReadListLabelsResult" nillable="true" type="q29:ArrayOfstring" />
+        <xs:element xmlns:q28="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ReadListLabelsResult" nillable="true" type="q28:ArrayOfstring" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadNotes">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q30:userprofile" />
-        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q31:UserSelectedContext" />
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q29:userprofile" />
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q30:UserSelectedContext" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadNotesResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadNotesResult" nillable="true" type="q32:ArrayOfListItem" />
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadNotesResult" nillable="true" type="q31:ArrayOfListItem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadRecent">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q33:userprofile" />
-        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q34:UserSelectedContext" />
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q32:userprofile" />
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q33:UserSelectedContext" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadRecentResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadRecentResult" nillable="true" type="q35:ArrayOfrecentitem" />
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadRecentResult" nillable="true" type="q34:ArrayOfrecentitem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadReminders">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q36:userprofile" />
-        <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q37:UserSelectedContext" />
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q35:userprofile" />
+        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q36:UserSelectedContext" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadRemindersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadRemindersResult" nillable="true" type="q38:ArrayOfUserList" />
+        <xs:element xmlns:q37="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadRemindersResult" nillable="true" type="q37:ArrayOfUserList" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadUserList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q39:userprofile" />
-        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q40:UserSelectedContext" />
+        <xs:element xmlns:q38="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q38:userprofile" />
+        <xs:element xmlns:q39="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q39:UserSelectedContext" />
         <xs:element minOccurs="0" name="headerOnly" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
@@ -242,14 +241,14 @@
   <xs:element name="ReadUserListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q41="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadUserListResult" nillable="true" type="q41:ArrayOfUserList" />
+        <xs:element xmlns:q40="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadUserListResult" nillable="true" type="q40:ArrayOfUserList" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="UpdateItem">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="item" nillable="true" type="q42:ListItem" />
+        <xs:element xmlns:q41="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="item" nillable="true" type="q41:ListItem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -261,7 +260,7 @@
   <xs:element name="UpdateList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q43="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="userList" nillable="true" type="q43:UserList" />
+        <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="userList" nillable="true" type="q42:UserList" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -273,7 +272,7 @@
   <xs:element name="CopyList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="copyListModel" nillable="true" type="q44:ListCopyShareModel" />
+        <xs:element xmlns:q43="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="copyListModel" nillable="true" type="q43:ListCopyShareModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -285,7 +284,7 @@
   <xs:element name="ShareList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q45="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="shareListModel" nillable="true" type="q45:ListCopyShareModel" />
+        <xs:element xmlns:q44="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="shareListModel" nillable="true" type="q44:ListCopyShareModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -297,22 +296,22 @@
   <xs:element name="ReadRecommendedItemsList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q46:UserSelectedContext" />
+        <xs:element xmlns:q45="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q45:UserSelectedContext" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadRecommendedItemsListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadRecommendedItemsListResult" nillable="true" type="q47:ArrayOfrecommendeditem" />
+        <xs:element xmlns:q46="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadRecommendedItemsListResult" nillable="true" type="q46:ArrayOfrecommendeditem" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetBarcodeForList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q48:userprofile" />
-        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q49:UserSelectedContext" />
+        <xs:element xmlns:q47="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q47:userprofile" />
+        <xs:element xmlns:q48="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q48:UserSelectedContext" />
         <xs:element minOccurs="0" name="Id" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
@@ -320,24 +319,24 @@
   <xs:element name="GetBarcodeForListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" minOccurs="0" name="GetBarcodeForListResult" nillable="true" type="q50:ArrayOfItemBarcodeModel" />
+        <xs:element xmlns:q49="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" minOccurs="0" name="GetBarcodeForListResult" nillable="true" type="q49:ArrayOfItemBarcodeModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadPagedList">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q51:userprofile" />
-        <xs:element xmlns:q52="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q52:UserSelectedContext" />
+        <xs:element xmlns:q50="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q50:userprofile" />
+        <xs:element xmlns:q51="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q51:UserSelectedContext" />
         <xs:element minOccurs="0" name="Id" type="xs:long" />
-        <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="paging" nillable="true" type="q53:PagingModel" />
+        <xs:element xmlns:q52="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="paging" nillable="true" type="q52:PagingModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="ReadPagedListResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q54="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadPagedListResult" nillable="true" type="q54:PagedUserList" />
+        <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadPagedListResult" nillable="true" type="q53:PagedUserList" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

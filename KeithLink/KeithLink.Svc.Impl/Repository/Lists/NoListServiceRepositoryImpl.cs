@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             throw new NotImplementedException();
 		}
         
-        public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
+        public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
         {
             throw new NotImplementedException();
 		}
@@ -83,7 +83,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             throw new NotImplementedException();
 		}
 		
-		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
+		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
         {
             throw new NotImplementedException();
 		}
