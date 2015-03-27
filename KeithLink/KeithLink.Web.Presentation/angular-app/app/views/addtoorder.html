@@ -76,7 +76,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12 btn-group info-box hand no-border-right-sm dropdown-toggle" dropdown is-open="showShipDates">
           <span class="nav-description text-light">Ship Date</span>
           <span class="nav-title">
-            {{(selectedCart.requestedshipdate | formatDate) || shipDates[0].shipdate}}
+            {{(selectedCart.requestedshipdate | formatDate) || 'Select a date...' }}
           </span>
           <span class="pull-right icon-arrow-down7 text-light"></span>
           <div class="dropdown-menu">

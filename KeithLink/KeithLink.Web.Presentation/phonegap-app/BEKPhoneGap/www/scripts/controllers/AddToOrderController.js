@@ -85,6 +85,11 @@ angular.module('bekApp')
       listPagingModel.clearFilters();
     };
     $scope.sortList = function(sortBy, sortOrder) {
+      if (sortBy === $scope.sort.field) {
+        sortOrder = !sortOrder;
+      } else {
+        sortOrder = false;
+      }
       $scope.sort = {
         field: sortBy,
         sortDescending: sortOrder
@@ -131,6 +136,7 @@ angular.module('bekApp')
       var cart = {};
       cart.items = [];
       cart.id = 'New';
+      cart.requestedshipdate = $scope.shipDates[0].shipdate;
       $scope.selectedCart = cart;
       $scope.isChangeOrder = false;
       refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
@@ -171,8 +177,8 @@ angular.module('bekApp')
 
           // reset quantities and each
           angular.forEach($scope.selectedList.items, function(item) {
-            item.quantityincart += item.quantity; 
-            item.quantity = 0;
+            item.quantityincart += item.quantity ? parseInt(item.quantity, 10) : 0; 
+            item.quantity = null;
             item.each = false;
           });
 

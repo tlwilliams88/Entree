@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('PhonegapListService', ['$http', '$q', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'PricingService', 'List',
-  function($http, $q, ListService, PhonegapDbService, PhonegapLocalStorageService, PricingService, List) {
+.factory('PhonegapListService', ['$http', '$q', 'toaster', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'PricingService', 'List',
+  function($http, $q, toaster, ListService, PhonegapDbService, PhonegapLocalStorageService, PricingService, List) {
 
     var originalListService = angular.copy(ListService);
 
@@ -56,6 +56,14 @@ angular.module('bekApp')
       }
     };
 
+    Service.remapItems = function(item) {
+      delete item.parlevel;
+      delete item.label;
+      delete item.listitemid;
+      item.position = 0;
+      return item;
+    };
+
     Service.createList = function(items, params) {
       if (navigator.connection.type === 'none') {
         
@@ -88,7 +96,7 @@ angular.module('bekApp')
         if (!list.isNew) {
           list.isChanged = true;
         }
-        var deletedCount =0;
+        
         // flag new items and give them a temp id 
         list.items.forEach(function(item) {
           if (!item.listitemid && item.name) {
@@ -96,7 +104,7 @@ angular.module('bekApp')
             item.isNew = true;
           }
           if(item.isdeleted){
-            list.itemCount -=1;
+            list.itemCount -= 1;
           }
         });
 
@@ -111,6 +119,7 @@ angular.module('bekApp')
         });
         PhonegapLocalStorageService.setLabels(Service.labels);
 
+        toaster.pop('success', null, 'Successfully saved list ' + list.name);
         var deferred = $q.defer();
         deferred.resolve(list);
         return deferred.promise;
@@ -179,7 +188,8 @@ angular.module('bekApp')
 
     Service.addItem = function(listId, item) {
       if (navigator.connection.type === 'none') {
-        
+        var deferred = $q.defer();
+
         delete item.listitemid;
         item.position = 0;
         item.label = null;
@@ -193,36 +203,36 @@ angular.module('bekApp')
           updatedList.items.push(item);
           updatedList.isChanged = true;
         }
-
+        
         PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
 
-        return item;
+        deferred.resolve(item);
+        return deferred.promise;
       } else {
         return originalListService.addItem(listId, item);
       }
     };
 
-    // NOT USED? 3/10/15
     Service.addMultipleItems = function(listId, items) {
       if (navigator.connection.type === 'none') {
+        var deferred = $q.defer();
 
         var newItems = [];
         items.forEach(function(item) {
-          newItems.push({
-            itemnumber: item.itemnumber
-          });
+          delete item.isSelected;
+          newItems.push(item);
         });
 
         var updatedList = Service.findListById(listId);
         if (updatedList) {
-          updatedList.concat(newItems);
+          updatedList.items = updatedList.items.concat(newItems);
           updatedList.isChanged = true;
         }
         // TEST: does this update Service.lists?
-       
 
         PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
-
+        deferred.resolve(updatedList);
+        return deferred.promise;
       } else {
         originalListService.addMultipleItems(listId, items);
       }

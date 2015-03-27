@@ -60,7 +60,23 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_MIS_FAR = "FLAR-LS-SYS-AC-Entree_BranchIS";
         public const string ROLE_INTERNAL_MIS_FSA = "FSAN-LS-SYS-AC-Entree_BranchIS";
         public const string ROLE_INTERNAL_MIS_FOK = "FOKC-LS-SYS-AC-Entree_BranchIS";
-        
+
+        public const string ROLE_INTERNAL_POWERUSER_FAQ = "FABQ-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FAM = "FAMA-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FDF = "FDFW-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FHS = "FHST-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FLR = "FLRK-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FAR = "FLAR-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FSA = "FSAN-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_FOK = "FOKC-LS-SYS-AC-Entree_PowerUsers";
+
+        public const string ROLE_NAME_BRANCHIS = "branchismanager";
+        public const string ROLE_NAME_DSM = "dsm";
+        public const string ROLE_NAME_DSR = "dsr";
+        public const string ROLE_NAME_GUEST = "guest";
+        public const string ROLE_NAME_KBITADMIN = "kbitadmin";
+        public const string ROLE_NAME_POWERUSER = "poweruser";
+        public const string ROLE_NAME_SYSADMIN = "beksysadmin";
 
         public static readonly List<string> INTERNAL_USER_ROLES = new List<string>() { 
             ROLE_CORPORATE_ADMIN, ROLE_CORPORATE_SECURITY, 
@@ -68,7 +84,8 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_DSM_FAQ, ROLE_INTERNAL_DSM_FAM, ROLE_INTERNAL_DSM_FDF, ROLE_INTERNAL_DSM_FHS, ROLE_INTERNAL_DSM_FLR, ROLE_INTERNAL_DSM_FSA, ROLE_INTERNAL_DSM_FOK,
             ROLE_INTERNAL_DSR_FAQ, ROLE_INTERNAL_DSR_FAM, ROLE_INTERNAL_DSR_FDF, ROLE_INTERNAL_DSR_FHS, ROLE_INTERNAL_DSR_FLR, ROLE_INTERNAL_DSR_FSA, ROLE_INTERNAL_DSR_FOK,
             ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM, ROLE_INTERNAL_MIS_FDF, ROLE_INTERNAL_MIS_FHS, ROLE_INTERNAL_MIS_FLR, ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK,
-            ROLE_INTERNAL_MIS_FAR
+            ROLE_INTERNAL_MIS_FAR, ROLE_INTERNAL_POWERUSER_FAM, ROLE_INTERNAL_POWERUSER_FAQ, ROLE_INTERNAL_POWERUSER_FAR, ROLE_INTERNAL_POWERUSER_FDF, ROLE_INTERNAL_POWERUSER_FHS,
+            ROLE_INTERNAL_POWERUSER_FLR, ROLE_INTERNAL_POWERUSER_FOK, ROLE_INTERNAL_POWERUSER_FSA
         };
 
         public static readonly List<string> BEK_SYSADMIN_ROLES = new List<string>() {
@@ -89,12 +106,18 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_DSM_FOK
         };
 
-
         public static readonly List<string> MIS_ROLES = new List<string>() {
             ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM,
             ROLE_INTERNAL_MIS_FDF, ROLE_INTERNAL_MIS_FHS,
             ROLE_INTERNAL_MIS_FLR, ROLE_INTERNAL_MIS_FAR,
             ROLE_INTERNAL_MIS_FSA, ROLE_INTERNAL_MIS_FOK
+        };
+
+        public static readonly List<string> POWERUSER_ROLES = new List<string>(){
+            ROLE_INTERNAL_POWERUSER_FAM, ROLE_INTERNAL_POWERUSER_FAQ,
+            ROLE_INTERNAL_POWERUSER_FAR, ROLE_INTERNAL_POWERUSER_FDF,
+            ROLE_INTERNAL_POWERUSER_FHS, ROLE_INTERNAL_POWERUSER_FLR,
+            ROLE_INTERNAL_POWERUSER_FOK, ROLE_INTERNAL_POWERUSER_FSA
         };
 
         // Elastic Search : Indexes

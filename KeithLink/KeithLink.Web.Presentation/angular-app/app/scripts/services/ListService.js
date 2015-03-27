@@ -254,8 +254,8 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(listId) {
-          var promise = $http.get('/list/print/' + listId, {
+        printList: function(listId, options) {
+          var promise = $http.post('/list/print/' + listId, options, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);
@@ -264,6 +264,12 @@ angular.module('bekApp')
         /********************
         EDIT LIST
         ********************/
+        
+        remapItems: function(item) {
+          return {
+            itemnumber: item.itemnumber
+          };
+        },
         
         beforeCreateList: function(items, params) {
           if (!params) {
@@ -279,11 +285,7 @@ angular.module('bekApp')
             newItems = [items];
           }
 
-          newList.items = newItems.map(function(item) {
-            return {
-              itemnumber: item.itemnumber
-            };
-          });
+          newList.items = newItems.map(Service.remapItems);
 
           if (params.isMandatory === true) {
             newList.name = 'Mandatory';

@@ -67,7 +67,7 @@ angular.module('bekApp')
 
       $scope.addItemToCart = function(cartId, item) {
         var newItem = angular.copy(item);
-        $q.all([CartService.addItemToCart(cartId, newItem)]).then(function(data) {
+        CartService.addItemToCart(cartId, newItem).then(function(data) {
           closeModal();
           item.quantityincart += 1;
           $scope.displayMessage('success', 'Successfully added item to cart.');
@@ -99,7 +99,11 @@ angular.module('bekApp')
         };
         order.items.push(orderItem);
 
-        OrderService.updateOrder(order).then(function(data) {
+        var params = {
+          deleteOmitted: false
+        };
+
+        OrderService.updateOrder(order, params).then(function(data) {
           closeModal();
           $scope.displayMessage('success', 'Successfully added item to Order #' + order.invoicenumber + '.');
         }, function() {
