@@ -219,6 +219,13 @@ angular.module('bekApp')
         processingSaveChangeOrder = true;
 
         var changeOrder = angular.copy(order);
+
+        changeOrder.items.forEach(function(item) {
+          if (typeof item.quantity == 'string') {
+            item.quantity = parseInt(item.quantity, 10);
+          }
+        });
+
         changeOrder.items = $filter('filter')( changeOrder.items, function(item){ 
           return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 
         });
@@ -226,6 +233,13 @@ angular.module('bekApp')
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
           $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+          // recalculate ext price
+          $scope.currentCart.items.forEach(function(item) {
+            item.extPrice = PricingService.getPriceForItem(item);
+          });
+
+          $scope.cartForm.$setPristine();
           $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
         }, function(error) {
