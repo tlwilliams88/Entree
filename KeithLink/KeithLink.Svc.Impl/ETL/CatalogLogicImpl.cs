@@ -737,7 +737,7 @@ namespace KeithLink.Svc.Impl.ETL
         {
 
             KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, ListType.Contract);
+            List<ListModel> lists = listLogic.ReadListByType(userSelectedContext, ListType.Contract);
 
 
             if (lists.Count == 0 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
@@ -796,7 +796,7 @@ namespace KeithLink.Svc.Impl.ETL
             , KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
         {
             KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
-            List<ListModel> lists = listLogic.ReadListByType(userProfile, userSelectedContext, ListType.Worksheet);
+            List<ListModel> lists = listLogic.ReadListByType(userSelectedContext, ListType.Worksheet);
 
             if (lists.Count == 0)
             {
@@ -951,7 +951,7 @@ namespace KeithLink.Svc.Impl.ETL
             , ListType listType)
         {
             long listId = -1;
-            List<ListModel> addedItemsList = listLogic.ReadListByType(userProfile, userSelectedContext, listType);
+            List<ListModel> addedItemsList = listLogic.ReadListByType(userSelectedContext, listType);
 
             if (addedItemsList.Count == 0)
             {
