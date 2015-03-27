@@ -74,6 +74,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_NAME_DSM = "dsm";
         public const string ROLE_NAME_DSR = "dsr";
         public const string ROLE_NAME_GUEST = "guest";
+        public const string ROLE_NAME_KBITADMIN = "kbitadmin";
         public const string ROLE_NAME_POWERUSER = "poweruser";
         public const string ROLE_NAME_SYSADMIN = "beksysadmin";
 
@@ -104,7 +105,6 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_DSM_FLR, ROLE_INTERNAL_DSM_FSA,
             ROLE_INTERNAL_DSM_FOK
         };
-
 
         public static readonly List<string> MIS_ROLES = new List<string>() {
             ROLE_INTERNAL_MIS_FAQ, ROLE_INTERNAL_MIS_FAM,
