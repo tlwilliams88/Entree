@@ -214,7 +214,7 @@ angular.module('bekApp')
         });
         updatedList.items = updatedList.items.concat(deletedItems);
         
-        ListService.updateList(updatedList)
+        return ListService.updateList(updatedList)
           .then(resetPage)
           .finally(function() {
             processingSaveList = false;
@@ -226,7 +226,15 @@ angular.module('bekApp')
       var list = angular.copy($scope.selectedList);
       list.name = listName;
 
-      $scope.saveList(list);
+
+      $scope.saveList(list).then(function() {
+        // update cached list name
+        $scope.lists.forEach(function(list) {
+          if (list.listid === listId) {
+            list.name = listName;
+          }
+        });
+      });
     };
 
     $scope.cancelRenameList = function() {
