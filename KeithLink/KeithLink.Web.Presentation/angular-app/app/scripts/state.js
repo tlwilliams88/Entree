@@ -190,7 +190,7 @@ angular.module('bekApp')
           return ResolveService.validateBasket($stateParams.cartId, changeOrders);
         }],
         originalBasket: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
-          return ResolveService.selectValidBasket(validBasketId);
+          return ResolveService.selectValidBasket(validBasketId, changeOrders);
         }]
       }
     })
