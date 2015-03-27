@@ -231,7 +231,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
             
             LookupProductDetails(user, catalogInfo, order, notes);
-            UpdateExistingOrderInfo(order, existingOrder);
+            UpdateExistingOrderInfo(order, existingOrder, deleteOmmitedItems);
             
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             List<com.benekeith.FoundationService.PurchaseOrderLineItemUpdate> itemUpdates = new List<com.benekeith.FoundationService.PurchaseOrderLineItemUpdate>();
@@ -246,7 +246,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return this.ReadOrder(user, catalogInfo, order.OrderNumber);
         }
 
-        private void UpdateExistingOrderInfo(Order order, Order existingOrder)
+        private void UpdateExistingOrderInfo(Order order, Order existingOrder, bool deleteOmmitedItems)
         {
             // work through adds, deletes, changes based on item number
             foreach (OrderLine newLine in order.Items)
@@ -270,15 +270,18 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 }
             }
             // handle deletes
-            foreach (OrderLine existingLine in existingOrder.Items)
-            {
-                OrderLine newLine = order.Items.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
-                if (newLine == null)
-                {
-					existingLine.ChangeOrderStatus = "deleted";
-                    eventLogRepository.WriteInformationLog("Deleting line: " + existingLine.ItemNumber);
-                }
-            }
+			if (deleteOmmitedItems)
+			{
+				foreach (OrderLine existingLine in existingOrder.Items)
+				{
+					OrderLine newLine = order.Items.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
+					if (newLine == null)
+					{
+						existingLine.ChangeOrderStatus = "deleted";
+						eventLogRepository.WriteInformationLog("Deleting line: " + existingLine.ItemNumber);
+					}
+				}
+			}
         }
 
         public NewOrderReturn SubmitChangeOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber)
