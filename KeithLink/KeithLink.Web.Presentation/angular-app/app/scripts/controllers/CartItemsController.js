@@ -324,6 +324,11 @@ angular.module('bekApp')
         // set quantity
         items.forEach(function(item) {
           item.quantity = Math.ceil(item.parlevel - item.qtyInCart) || 1;
+
+          if ($scope.isChangeOrder) {
+            item.price = item.each ? item.packageprice : item.caseprice;
+          }
+
         });
 
         // add watches to new items to update price
