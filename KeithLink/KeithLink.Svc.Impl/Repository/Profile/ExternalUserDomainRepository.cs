@@ -921,8 +921,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                     groupsUserIsMemberOf.Select(g => tmp += "\r\n" + g);
                     foreach (DirectoryEntry g in groupsUserIsMemberOf) {
-                        g.Properties["member"].Remove(user.DistinguishedName);
-                        g.CommitChanges();
+                        if (g.Name.Equals(Configuration.AccessGroupKbitCustomer, StringComparison.InvariantCultureIgnoreCase) ||
+                            g.Name.Equals(Configuration.AccessGroupKbitAdmin, StringComparison.InvariantCultureIgnoreCase)) {
+                            // do not mess with access groups
+                        } else {
+                            g.Properties["member"].Remove(user.DistinguishedName);
+                            g.CommitChanges();
+                        }
                     }
                     // then add them back to all of the new customer by role, then done
                     if (customerNames.Count > 0) {
