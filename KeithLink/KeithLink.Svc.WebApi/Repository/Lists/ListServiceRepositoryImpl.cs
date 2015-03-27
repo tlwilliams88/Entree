@@ -45,7 +45,7 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			serviceClient.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
 		}
         
-        public long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
+        public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
 		{
 			return serviceClient.CreateList(userId, catalogInfo, list, type);
 		}
@@ -87,9 +87,9 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			return serviceClient.ReadList(user, catalogInfo, Id);
 		}
 		
-		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type)
+		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
 		{
-			return serviceClient.ReadListByType(user, catalogInfo, type).ToList();
+			return serviceClient.ReadListByType(catalogInfo, type).ToList();
 		}
 		
         public List<string> ReadListLabels(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo)

@@ -30,7 +30,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
 
         [OperationContract]
-		long CreateList(Guid userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
+		long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 
         [OperationContract]
         void DeleteItem(long Id);
@@ -48,7 +48,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 
         [OperationContract]
-        List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type);
+        List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type);
 
         [OperationContract]
 		List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);

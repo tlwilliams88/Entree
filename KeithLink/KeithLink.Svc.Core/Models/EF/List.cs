@@ -13,8 +13,7 @@ namespace KeithLink.Svc.Core.Models.EF
 
 	public class List: BaseEFModel
 	{
-		[Index]
-		public Guid UserId { get; set; }
+		public Guid? UserId { get; set; }
 		public string DisplayName { get; set; }
 		[Index]
 		public ListType Type { get; set; }

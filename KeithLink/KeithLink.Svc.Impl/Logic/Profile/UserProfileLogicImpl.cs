@@ -871,6 +871,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     return;
             }
 
+            _eventLog.WriteInformationLog(string.Format("Granting role access in active directory ({0}, {1})", emailAddress, appRoleName));
+
             _extAd.GrantAccess(emailAddress, appRoleName);
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
@@ -954,6 +956,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             // load all of the customers into the kbit app request
             kbitAppRequest.Customers = (from customer in customers
                                         select new UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber }).ToList();
+
+            _eventLog.WriteInformationLog(string.Format("Sending KBIT Authorization Request to the queue ({0}, {1}", emailAddress, kbitAppRequest.ToJSON()));
 
             // put the kbit app request in the queue
             SubmitExternalApplicationRequest(kbitAppRequest);

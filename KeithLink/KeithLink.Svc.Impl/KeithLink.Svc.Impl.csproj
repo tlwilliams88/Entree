@@ -484,6 +484,14 @@
     <Compile Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.Designer.cs">
       <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201503252011522_Remove_List_UserID_Index.cs" />
+    <Compile Include="Repository\EF\Migrations\201503252011522_Remove_List_UserID_Index.Designer.cs">
+      <DependentUpon>201503252011522_Remove_List_UserID_Index.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.cs" />
+    <Compile Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.Designer.cs">
+      <DependentUpon>201503252013412_UserId_On_List_Nullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -996,6 +1004,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.resx">
       <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503252011522_Remove_List_UserID_Index.resx">
+      <DependentUpon>201503252011522_Remove_List_UserID_Index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.resx">
+      <DependentUpon>201503252013412_UserId_On_List_Nullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
