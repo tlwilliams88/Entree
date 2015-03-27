@@ -260,6 +260,12 @@ angular.module('bekApp')
 
       deletedItems = deletedItems.concat($scope.selectedList.items.splice(deletedIndex, 1));
       updateItemPositions();
+
+      // load more items if number of items fell below page size
+      if ($scope.selectedList.items.length < 30) {
+        $scope.infiniteScrollLoadMore();
+      }
+
       $scope.listForm.$setDirty();
     };
 
@@ -268,6 +274,12 @@ angular.module('bekApp')
 
       $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
       $scope.selectedList.allSelected = false;
+
+      // load more items if number of items fell below page size
+      if ($scope.selectedList.items.length < 30) {
+        $scope.infiniteScrollLoadMore();
+      }
+
       $scope.listForm.$setDirty();
     };
 
