@@ -34,7 +34,7 @@
       "username": "sabroussard@somecompany.com",
       "password": "L1ttleStev1e",
       "googleAnalytics": "UA-58495462-2",
-      "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm"
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm"
     },
     "test": {
       "name": "test",
@@ -47,14 +47,14 @@
     "prod": {
       "name": "prod",
       "apiKey": "web_prod_v1",
-      "apiEndpoint": "https://shop.benekeith.com/api",
+      "apiEndpoint": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "loggingEnabled": false,
       "googleAnalytics": "UA-58495462-1"
     },
     "stage": {
       "name": "stage",
       "apiKey": "web_stage_v1",
-      "apiEndpoint": "https://shopstaging.benekeith.com/api",
+      "apiEndpoint": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "loggingEnabled": false,
       "googleAnalytics": "UA-58495303-1"
     }
