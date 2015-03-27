@@ -35,7 +35,8 @@ angular.module('bekApp')
       DSM: 'dsm',
       SYS_ADMIN: 'beksysadmin',
       POWER_USER: 'poweruser',
-      BRANCH_MANAGER: 'branchismanager'
+      BRANCH_MANAGER: 'branchismanager',
+      KBIT_ADMIN: 'kbitadmin'
     },
 
     infiniteScrollPageSize: 50,
