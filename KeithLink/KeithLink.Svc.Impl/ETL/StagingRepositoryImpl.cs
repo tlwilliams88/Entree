@@ -195,5 +195,34 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
 
-    }
+
+
+		public void ProcessContractItems()
+		{
+			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+			{
+				using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.CommandTimeout = 0;
+					conn.Open();
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
+		public void ProcessWorksheetItems()
+		{
+			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+			{
+				using (var cmd = new SqlCommand("[ETL].[ProcessWorksheetList]", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.CommandTimeout = 0;
+					conn.Open();
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+	}
 }
