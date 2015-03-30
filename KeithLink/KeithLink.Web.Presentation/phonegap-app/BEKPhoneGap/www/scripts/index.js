@@ -67,6 +67,9 @@ var app = {
         console.log("Taken Offline");
         var toaster = angular.element(jQuery('body')).injector().get('toaster');
         toaster.pop('warning', null, "You are now offline.");
+
+        var cartService = angular.element(jQuery('body')).injector().get('CartService'); 
+        cartService.updateNetworkStatus();
     },
     onPause: function() {
         console.log("Paused.")

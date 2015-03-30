@@ -3,6 +3,7 @@ using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Models.Authentication;
 using KeithLink.Svc.Core.Enumerations.Authentication;
 using System;
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
@@ -103,6 +104,12 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         public void UpdateUserPasswordGood() {
             Assert.IsTrue(_custUserRepo.UpdatePassword("jeremy@jeremyschickenshack.com", "Ab12345", "Ab12345"));
         }
+
+        //[TestMethod]
+        //public void MyTestMethod()
+        //{
+        //    _custUserRepo.UpdateUserGroups(new List<string>(), "owner", "sabroussard@somecompany.com") ;
+        //}
         #endregion
     }
 }

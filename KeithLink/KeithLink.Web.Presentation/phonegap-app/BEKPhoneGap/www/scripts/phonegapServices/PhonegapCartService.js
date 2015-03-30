@@ -232,7 +232,7 @@ angular.module('bekApp')
          
           $q.all(promises).then(function() {
             console.log('carts updated!');
-
+            originalCartService.updateNetworkStatus();
             //update from server and remove deleted array
             PhonegapDbService.dropTable(db_table_name_carts)
               .then(Service.getAllCarts);

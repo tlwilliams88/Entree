@@ -921,8 +921,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                     groupsUserIsMemberOf.Select(g => tmp += "\r\n" + g);
                     foreach (DirectoryEntry g in groupsUserIsMemberOf) {
-                        if (g.Name.Equals(Configuration.AccessGroupKbitCustomer, StringComparison.InvariantCultureIgnoreCase) ||
-                            g.Name.Equals(Configuration.AccessGroupKbitAdmin, StringComparison.InvariantCultureIgnoreCase)) {
+                        if (g.Name.EndsWith(Configuration.AccessGroupKbitCustomer, StringComparison.InvariantCultureIgnoreCase) ||
+                            g.Name.EndsWith(Configuration.AccessGroupKbitAdmin, StringComparison.InvariantCultureIgnoreCase)) {
                             // do not mess with access groups
                         } else {
                             g.Properties["member"].Remove(user.DistinguishedName);
