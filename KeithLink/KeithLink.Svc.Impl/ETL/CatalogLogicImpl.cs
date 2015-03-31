@@ -230,40 +230,50 @@ namespace KeithLink.Svc.Impl.ETL
             //For performance debugging purposes
             var startTime = DateTime.Now;
 
-            var users = stagingRepository.ReadCSUsers();
-            var processedCustomers = new List<string>();
+			try
+			{
+				stagingRepository.ProcessContractItems();
+				stagingRepository.ProcessWorksheetItems();
+			}
+			catch (Exception ex)
+			{
+				eventLog.WriteErrorLog("Error importing pre-populated lists", ex);
+			}
 
-            foreach (DataRow userRow in users.Rows)
-            {
-                try
-                {
-                    Guid userId = userRow.GetGuid("u_user_id");
-                    KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId, false).UserProfiles[0];
+			//var users = stagingRepository.ReadCSUsers();
+			//var processedCustomers = new List<string>();
 
-                    if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
-                        continue;
+			//foreach (DataRow userRow in users.Rows)
+			//{
+			//	try
+			//	{
+			//		Guid userId = userRow.GetGuid("u_user_id");
+			//		KeithLink.Svc.Core.Models.Profile.UserProfile userProfile = (KeithLink.Svc.Core.Models.Profile.UserProfile)userProfileLogic.GetUserProfile(userId, false).UserProfiles[0];
 
-					List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfileLogic.GetNonPagedCustomersForUser(userProfile);
+			//		if (userProfileLogic.IsInternalAddress(userProfile.EmailAddress))
+			//			continue;
 
-                    foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
-                    {
-                        //These list are shared across all users in the same customer, 
-                        //so if the list has already been created for the customer, there is nothing to do
-                        if (processedCustomers.Contains(customerRow.CustomerNumber))
-                            break;
-                        processedCustomers.Add(customerRow.CustomerNumber);
+			//		List<KeithLink.Svc.Core.Models.Profile.Customer> customers = userProfileLogic.GetNonPagedCustomersForUser(userProfile);
 
-                        CreateOrUpdateContractLists(userProfile, customerRow);
-                        CreateOrUpdateWorksheetLists(userProfile, customerRow);
+			//		foreach (KeithLink.Svc.Core.Models.Profile.Customer customerRow in customers)
+			//		{
+			//			//These list are shared across all users in the same customer, 
+			//			//so if the list has already been created for the customer, there is nothing to do
+			//			if (processedCustomers.Contains(customerRow.CustomerNumber))
+			//				break;
+			//			processedCustomers.Add(customerRow.CustomerNumber);
 
-                    }
-                }
-                catch (Exception ex)
-                {
-                    eventLog.WriteErrorLog("Error importing pre-populated lists", ex);
-                }
+			//			CreateOrUpdateContractLists(userProfile, customerRow);
+			//			CreateOrUpdateWorksheetLists(userProfile, customerRow);
 
-            }
+			//		}
+			//	}
+			//	catch (Exception ex)
+			//	{
+			//		eventLog.WriteErrorLog("Error importing pre-populated lists", ex);
+			//	}
+
+			//}
 
             eventLog.WriteInformationLog(string.Format("ImportPrePopulatedLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }

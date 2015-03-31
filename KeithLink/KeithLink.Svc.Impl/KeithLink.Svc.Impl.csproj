@@ -492,6 +492,10 @@
     <Compile Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.Designer.cs">
       <DependentUpon>201503252013412_UserId_On_List_Nullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.cs" />
+    <Compile Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.Designer.cs">
+      <DependentUpon>201503272112289_ListItem column lengths and indexes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1010,6 +1014,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.resx">
       <DependentUpon>201503252013412_UserId_On_List_Nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.resx">
+      <DependentUpon>201503272112289_ListItem column lengths and indexes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations.SingleSignOn;
+using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using System;
@@ -40,6 +41,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId);
 
         List<Models.Messaging.ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid);
+		List<ProfileMessagingPreferenceModel> GetMessagingPreferencesForCustomer(Guid guid, string customerId, string branchId);
 
         List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "");
 
