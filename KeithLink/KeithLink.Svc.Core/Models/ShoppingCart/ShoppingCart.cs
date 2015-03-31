@@ -33,6 +33,13 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		public string PONumber { get; set; }
 		[DataMember(Name="active")]
 		public bool Active { get; set; }
+
+		[DataMember(Name = "itemcount")]
+		public int ItemCount { get; set; }
+
+		[DataMember(Name = "subtotal")]
+		public decimal SubTotal {get;set;}
+
 		[DataMember(Name="items")]
 		public List<ShoppingCartItem> Items { get; set; }
 	}
