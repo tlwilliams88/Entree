@@ -75,7 +75,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (list.Items == null)
 				list.Items = new List<ListItem>();
 			else
-				position = list.Items.Max(i => i.Position) + 1;
+				if(list.Items.Any())
+					position = list.Items.Max(i => i.Position) + 1;
 
 
 
