@@ -264,6 +264,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         {
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
+							returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
 
 							//if (po.Properties["LineItems"] != null)
 							//{

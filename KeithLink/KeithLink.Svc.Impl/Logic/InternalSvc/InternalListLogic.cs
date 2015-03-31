@@ -75,7 +75,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (list.Items == null)
 				list.Items = new List<ListItem>();
 			else
-				position = list.Items.Max(i => i.Position) + 1;
+				if(list.Items.Any())
+					position = list.Items.Max(i => i.Position) + 1;
 
 
 
@@ -108,7 +109,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (list.Items == null)
 				list.Items = new List<ListItem>();
 			else
-				nextPosition = list.Items.Max(i => i.Position);
+				if(list.Items.Any())
+					nextPosition = list.Items.Max(i => i.Position);
 
 			foreach (var item in items)
 			{
@@ -171,7 +173,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         
 		public void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
 		{
-			var list = listRepository.Read(i => i.UserId.Equals(user.UserId) && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items).FirstOrDefault();
+            var list = listRepository.Read(i => i.UserId == user.UserId && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items).FirstOrDefault();
 
 			if (list == null)
 			{
@@ -214,7 +216,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var newList = list.ToEFList();
 
 			//Set initial positions
-			if (newList.Items != null && newList.Items.Max(i => i.Position) == 0)
+			if (newList.Items != null && newList.Items.Any() && newList.Items.Max(i => i.Position) == 0)
 			{
 				var position = 0;
 				foreach (var item in newList.Items)
@@ -456,7 +458,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			var list = listRepository.Read(l => l.UserId.Equals(user.UserId) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
+            var list = listRepository.Read(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId) && l.Type == ListType.Favorite, i => i.Items).ToList();
 
 			if (list == null)
 				return null;
@@ -544,7 +546,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			var list = listRepository.Read(i => i.UserId.Equals(user.UserId) && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
+			var list = listRepository.Read(i => i.UserId == user.UserId  && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
 			var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc })).ToList();
 			PopulateProductDetails(catalogInfo, returnItems);
 			returnItems.ForEach(delegate(RecentItem item)
@@ -634,7 +636,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return new List<List>();
 
 			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
-				(l.UserId.Equals(user.UserId) && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
+                (l.UserId == user.UserId && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
 				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)  || l.Type.Equals(ListType.RecommendedItems) || (l.Type.Equals(ListType.Mandatory))).ToList();
 			return list;
 		}

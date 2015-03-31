@@ -670,6 +670,33 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return returnedMsgPrefModel;
         }
 
+		public List<ProfileMessagingPreferenceModel> GetMessagingPreferencesForCustomer(Guid guid, string customerId, string branchId)
+		{
+			var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
+			var customer = _customerRepo.GetCustomerByCustomerNumber(customerId, branchId);
+			if (customer == null)
+				return null;
+
+
+			var returnedMsgPrefModel = new List<ProfileMessagingPreferenceModel>();
+			//first load user preferences
+			returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+			{
+				Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, null)
+			});
+			//then load customer preferences
+			
+			returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+			{
+				CustomerNumber = customer.CustomerNumber,
+				BranchId = customer.CustomerBranch,
+				Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, customer.CustomerNumber)
+			});
+
+			return returnedMsgPrefModel;
+		}
+
+
         public List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "") {
             List<Customer> allCustomers = new List<Customer>();
             if (string.IsNullOrEmpty(search))

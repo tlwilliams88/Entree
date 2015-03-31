@@ -16,6 +16,11 @@ namespace KeithLink.Common.Core.Email {
                 msg.Priority = MailPriority.High;
 
                 StringBuilder body = new StringBuilder();
+
+				body.AppendLine(string.Format("And exception occured on {0}", System.Environment.MachineName));
+				body.AppendLine();
+				body.AppendLine();
+
                 //body.AppendLine("An exception has occurred in the KeithLink Order Service.");
                 //body.AppendLine();
 

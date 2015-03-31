@@ -47,14 +47,15 @@
     "prod": {
       "name": "prod",
       "apiKey": "web_prod_v1",
-      "apiEndpoint": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+	  "apiEndpoint": "https://shop.benekeith.com/api",
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "loggingEnabled": false,
       "googleAnalytics": "UA-58495462-1"
     },
     "stage": {
       "name": "stage",
       "apiKey": "web_stage_v1",
-      "apiEndpoint": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "loggingEnabled": false,
       "googleAnalytics": "UA-58495303-1"
     }

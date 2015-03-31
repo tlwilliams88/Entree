@@ -44,13 +44,20 @@ angular.module('bekApp')
     $scope.loadingResults = false;
     $scope.sortBy = null;
     $scope.sortOrder = false;
-    
+    CartService.updateNetworkStatus();
+    $scope.isOffline = CartService.isOffline;
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
     $scope.changeOrders = angular.copy(changeOrders);
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+    $scope.$watch(function () { return CartService.isOffline }, function (newVal, oldVal) {
+      if (typeof newVal !== 'undefined') {
+        $scope.isOffline = CartService.isOffline;
+      }
+    });
 
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
@@ -324,6 +331,11 @@ angular.module('bekApp')
         // set quantity
         items.forEach(function(item) {
           item.quantity = Math.ceil(item.parlevel - item.qtyInCart) || 1;
+
+          if ($scope.isChangeOrder) {
+            item.price = item.each ? item.packageprice : item.caseprice;
+          }
+
         });
 
         // add watches to new items to update price

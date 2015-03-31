@@ -31,9 +31,9 @@ namespace KeithLink.Svc.Impl.ETL
 		public void ImportInvoices()
 		{
 
-			DateTime startTime = DateTime.Now;
+			//DateTime startTime = DateTime.Now;
 
-			stagingRepository.ProcessInvoices();
+			//stagingRepository.ProcessInvoices();
 
 			//DataTable invoices = stagingRepository.ReadInvoices();
 
@@ -67,7 +67,7 @@ namespace KeithLink.Svc.Impl.ETL
 
 			//internalInvoiceLogic.BulkImport(invoicesForImport, invoiceItemsForImport);
 
-			eventLog.WriteInformationLog(string.Format("ImportInvoices Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+			//eventLog.WriteInformationLog(string.Format("ImportInvoices Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
 		}
 
 		//private InvoiceModel CreateInvoiceModelFromStagedData(DataRow row)

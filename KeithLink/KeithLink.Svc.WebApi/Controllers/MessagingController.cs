@@ -70,6 +70,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferences(this.AuthenticatedUser.UserId) };
         }
 
+		[HttpGet]
+		[ApiKeyedRoute("messaging/preferences/{customerId}/{branchId}")]
+		public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences(string customerId, string branchId)
+		{
+			return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferencesForCustomer(this.AuthenticatedUser.UserId, customerId, branchId) };
+		}
+
         [HttpPut]
         [ApiKeyedRoute("messaging/registerpushdevice")]
         public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)

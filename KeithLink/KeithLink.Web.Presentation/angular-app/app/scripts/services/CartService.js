@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'toaster', 'UtilityService', 'PricingService', 'Cart',
-    function ($http, $q, $upload, toaster, UtilityService, PricingService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'Cart',
+    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, Cart) {
 
     var Service = {
       carts: [],
@@ -241,6 +241,15 @@ angular.module('bekApp')
       /********************
       SUBMIT ORDERS
       ********************/
+
+      updateNetworkStatus: function() {
+        if ( ENV.mobileApp === true && navigator.connection.type === 'none') {
+          Service.isOffline = true;
+        }
+        else{
+          Service.isOffline = false;
+        } 
+      },
 
       getShipDates: function() {
         var deferred = $q.defer();
