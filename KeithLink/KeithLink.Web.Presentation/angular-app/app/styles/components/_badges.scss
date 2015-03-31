@@ -1,0 +1,16 @@
+.badge-parent {
+  position: relative;
+
+  .badge {
+    font-size: 9px;
+    position: absolute;
+    background-color: $color-red;
+    color: white;
+    border-radius: 15px;
+    border: 2px solid $background;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    padding-top: 2px;
+  }
+}
