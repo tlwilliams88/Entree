@@ -111,8 +111,10 @@
             {{subtotal | currency}}
           </div>
 
-          <div class="col-sm-8 col-md-8 hidden-print text-right-lg text-left-xs" ng-if="::isChangeOrder">
-            <button style="margin-left: 10px;" class="btn-lg btn btn-danger" confirmed-click="cancelOrder(currentCart)" ng-confirm-click="{{'Are you sure you want to delete order # ' + currentCart.invoicenumber + '?'}}">Delete Order</button>
+          <div class="col-sm-8 col-md-8 hidden-print text-right-lg text-left-xs">
+            <button ng-if="::isChangeOrder" style="margin-left: 10px;" class="btn-lg btn btn-danger" confirmed-click="cancelOrder(currentCart)" ng-confirm-click="{{'Are you sure you want to delete order # ' + currentCart.invoicenumber + '?'}}">Delete Order</button>
+
+            <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id })" class="btn btn-default">Continue Shopping</a>
           </div>
 
         </div>
