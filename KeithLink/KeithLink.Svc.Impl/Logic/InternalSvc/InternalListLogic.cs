@@ -75,7 +75,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (list.Items == null)
 				list.Items = new List<ListItem>();
 			else
-				position = list.Items.Max(i => i.Position) + 1;
+				if(list.Items.Any())
+					position = list.Items.Max(i => i.Position) + 1;
 
 
 
@@ -108,7 +109,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			if (list.Items == null)
 				list.Items = new List<ListItem>();
 			else
-				nextPosition = list.Items.Max(i => i.Position);
+				if(list.Items.Any())
+					nextPosition = list.Items.Max(i => i.Position);
 
 			foreach (var item in items)
 			{
@@ -214,7 +216,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var newList = list.ToEFList();
 
 			//Set initial positions
-			if (newList.Items != null && newList.Items.Max(i => i.Position) == 0)
+			if (newList.Items != null && newList.Items.Any() && newList.Items.Max(i => i.Position) == 0)
 			{
 				var position = 0;
 				foreach (var item in newList.Items)
