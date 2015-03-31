@@ -173,5 +173,10 @@ namespace KeithLink.Svc.Core
         public const string CS_PURCHASE_ORDER_MASTER_NUMBER = "MasterNumber";
         public const string CS_LINE_ITEM_MAIN_FRAME_STATUS = "MainFrameStatus";
 
+
+        // ImageNow - Integration Services
+        public const string IMAGING_HEADER_USERNAME = "X-IntegrationServer-Username";
+        public const string IMAGING_HEADER_PASSWORD = "X-IntegrationServer-Password";
+        public const string IMAGING_HEADER_SESSIONTOKEN = "X-IntegrationServer-Session-Hash";
     }
 }
