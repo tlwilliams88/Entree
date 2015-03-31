@@ -220,6 +220,7 @@
     <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalReportLogic.cs" />
+    <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
@@ -526,6 +527,7 @@
     <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
+    <Compile Include="Repository\Invoices\ImagingRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\TermRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListShareRepositoryImpl.cs" />

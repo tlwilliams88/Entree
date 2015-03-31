@@ -118,6 +118,7 @@
     <Compile Include="Logic\ListLogicTests.cs" />
     <Compile Include="Repositories\Catalog\SiteCatalogTests.cs" />
     <Compile Include="Repositories\Catalog\CategoryImageRepositoryTests.cs" />
+    <Compile Include="Repositories\Invoices\ImagingRepoTests.cs" />
     <Compile Include="Repositories\OnlinePayments\CustomerBankRepositoryTests.cs" />
     <Compile Include="Repositories\OnlinePayments\KPayInvoiceRepositoryTests.cs" />
     <Compile Include="Repositories\Order\OrderNotificationTests.cs" />

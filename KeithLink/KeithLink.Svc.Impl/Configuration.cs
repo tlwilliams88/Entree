@@ -141,6 +141,12 @@ namespace KeithLink.Svc.Impl
 
         //Single Sign On
         private const string KEY_SSO_KBIT_CONNECTIONSTRING = "KbitCustomer";
+
+        // Imaging (ImageNow/WebNow)
+        private const string KEY_IMG_PASSWORD = "ImagingUserPassword";
+        private const string KEY_IMG_SERVER = "ImagingServerUrl";
+        private const string KEY_IMG_USER = "ImagingUserName";
+        private const string KEY_IMG_VIEWID = "ImagingViewId";
         #endregion
 
         #region methods
@@ -444,6 +450,30 @@ namespace KeithLink.Svc.Impl
         public static string ElasticSearchURL
         {
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
+        }
+
+        public static string ImagingServerUrl {
+            get {
+                return GetValue(KEY_IMG_SERVER, string.Empty);
+            }
+        }
+
+        public static string ImagingUserName {
+            get {
+                return GetValue(KEY_IMG_USER, string.Empty);
+            }
+        }
+
+        public static string ImagingUserPassword {
+            get {
+                return GetValue(KEY_IMG_PASSWORD, string.Empty);
+            }
+        }
+
+        public static string ImagingViewId {
+            get {
+                return GetValue(KEY_IMG_VIEWID, String.Empty);
+            }
         }
 
         public static string KbitConnectionString {
