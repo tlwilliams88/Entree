@@ -40,6 +40,9 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name = "subtotal")]
 		public decimal SubTotal {get;set;}
 
+		[DataMember(Name = "createddate")]
+		public DateTime CreatedDate { get; set; }
+
 		[DataMember(Name="items")]
 		public List<ShoppingCartItem> Items { get; set; }
 	}

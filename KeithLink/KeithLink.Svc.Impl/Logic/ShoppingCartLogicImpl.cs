@@ -268,7 +268,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 				}
 
-				returnList.Add(new ShoppingCart() { Name = cart.Name, CartId = cart.CartId, Active = cart.Active, RequestedShipDate = cart.RequestedShipDate, PONumber = cart.PONumber, ItemCount = itemCount, SubTotal = subTotal, BranchId = cart.BranchId  });
+				returnList.Add(new ShoppingCart() { CreatedDate = cart.CreatedDate, Name = cart.Name, CartId = cart.CartId, Active = cart.Active, RequestedShipDate = cart.RequestedShipDate, PONumber = cart.PONumber, ItemCount = itemCount, SubTotal = subTotal, BranchId = cart.BranchId  });
 
 			}
 
@@ -325,6 +325,7 @@ namespace KeithLink.Svc.Impl.Logic
 				RequestedShipDate = basket.RequestedShipDate,
 				Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
 				PONumber = basket.PONumber,
+				CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
 				Items = basket.LineItems.Select(l => new ShoppingCartItem()
 				{
 					ItemNumber = l.ProductId,
