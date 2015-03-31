@@ -40,6 +40,9 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// </remarks>
         public string Connect() {
             using (HttpClient client = new HttpClient()) {
+                if (Configuration.ImagingUserName.Length == 0) { throw new ApplicationException("No username supplied for ImageNow Integration Server"); }
+                if (Configuration.ImagingUserPassword.Length == 0) { throw new ApplicationException("No password supplied for ImageNow Integration Server"); }
+
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_USERNAME, Configuration.ImagingUserName);
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_PASSWORD, Configuration.ImagingUserPassword);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -67,7 +70,22 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
             }
         }
 
+        /// <summary>
+        /// search the imaging system for our invoice to get the document's unique identifier
+        /// </summary>
+        /// <param name="sessionToken">the token received from logging into the integration server</param>
+        /// <param name="customerInfo">branch and customer information</param>
+        /// <param name="invoiceNumber">the customer's invoice number</param>
+        /// <returns>the document's unique identifier within the imaging system</returns>
+        /// <remarks>
+        /// jwames - 3/30/2015 - original code
+        /// </remarks>
         public string GetDocumentId(string sessionToken, UserSelectedContext customerInfo, string invoiceNumber) {
+            if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
+            if (customerInfo.BranchId.Length == 0) { throw new ArgumentException("Branch cannot be blank"); }
+            if (customerInfo.CustomerId.Length == 0) { throw new ArgumentException("Customer number cannot be blank"); }
+            if (invoiceNumber.Length == 0) { throw new ArgumentException("Invoice number cannot be blank"); }
+
             using (HttpClient client = new HttpClient()) {
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json");
@@ -98,7 +116,19 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
             }
         }
 
+        /// <summary>
+        /// get base64 strings of all of the images for the specified document
+        /// </summary>
+        /// <param name="sessionToken">the token received from logging into the integration server</param>
+        /// <param name="documentId">the document's unique identifier within the imaging system</param>
+        /// <returns>all pages of the document in a base64 string list</returns>
+        /// <remarks>
+        /// jwames - 3/31/2015 - original code
+        /// </remarks>
         public List<string> GetImages(string sessionToken, string documentId) {
+            if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
+            if (documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
+
             using (HttpClient client = new HttpClient()) {
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
                 client.DefaultRequestHeaders.Add("Accept", "application/json");
@@ -129,7 +159,21 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
             }
         }
 
+        /// <summary>
+        /// get the image for the specified page as a base64 string
+        /// </summary>
+        /// <param name="sessionToken">the token received from logging into the integration server</param>
+        /// <param name="documentId">the document's unique identifier within the imaging system</param>
+        /// <param name="pageId">the current page's unique identifier</param>
+        /// <returns>the image data for the specified page in a base64 string</returns>
+        /// <remarks>
+        /// jwames - 3/31/2015 - original code
+        /// </remarks>
         private string GetImageString(string sessionToken, string documentId, string pageId) {
+            if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
+            if (documentId.Length == 0) { throw new ArgumentException("DocumentId cannot be blank."); }
+            if (pageId.Length == 0) { throw new ArgumentException("PageId cannot be blank."); }
+            
             using (HttpClient client = new HttpClient()) {
                 client.DefaultRequestHeaders.Add(Constants.IMAGING_HEADER_SESSIONTOKEN, sessionToken);
                 

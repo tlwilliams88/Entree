@@ -31,8 +31,8 @@ namespace KeithLink.Svc.Test.Repositories.Invoices {
         [TestMethod]
         public void SuccessfullyFindDocumentId() {
             string token = _imgRepo.Connect();
-            
-            string docId = _imgRepo.GetDocumentId(token, new Core.Models.SiteCatalog.UserSelectedContext(){BranchId = "FDF", CustomerId = "024418"}, "15792553");
+
+            string docId = _imgRepo.GetDocumentId(token, new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = "FDF", CustomerId = "024418" }, "15798232");
 
             Assert.IsNotNull(docId);
         }
@@ -40,8 +40,8 @@ namespace KeithLink.Svc.Test.Repositories.Invoices {
         [TestMethod]
         public void SuccessfullyGetImagePreviews() {
             string token = _imgRepo.Connect();
-            
-            string docId = _imgRepo.GetDocumentId(token, new Core.Models.SiteCatalog.UserSelectedContext(){BranchId = "FDF", CustomerId = "024418"}, "15792553");
+
+            string docId = _imgRepo.GetDocumentId(token, new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = "FDF", CustomerId = "024418" }, "15798232");
 
             List<string> images = _imgRepo.GetImages(token, docId);
 
