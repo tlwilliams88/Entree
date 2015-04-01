@@ -436,7 +436,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
             } else // external user
 			{
-                return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
+				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
+					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+				else
+					return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
             }
         }
 

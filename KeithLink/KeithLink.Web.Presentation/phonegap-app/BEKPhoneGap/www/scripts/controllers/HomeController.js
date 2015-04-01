@@ -11,10 +11,16 @@ angular.module('bekApp')
   .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService', 'Constants',
     function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService, Constants) {
     
+    // get carts
+    CartService.getCartHeaders().then(function(carts) {
+      $scope.homeCarts = CartService.carts;
+    });
+
+    // get orders
     $scope.loadingOrders = true;
     OrderService.getOrders({
       from: 0,
-      size: 4,
+      size: 6,
       sort:  [{
         field: 'createddate',
         order: 'desc'
@@ -28,6 +34,7 @@ angular.module('bekApp')
       $scope.loadingOrders = false;
     });
 
+    // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
       $scope.promoItems = items;
@@ -38,6 +45,7 @@ angular.module('bekApp')
       $scope.loadingPromoItems = false;
     });
 
+    // get account info
     $scope.loadingAccountBalance = true;
     CustomerService.getAccountBalanceInfo().then(function(data) {
       $scope.selectedUserContext.customer.balance = data.balance;
@@ -45,12 +53,12 @@ angular.module('bekApp')
       $scope.loadingAccountBalance = false;
     });
  
-    $scope.createNewCart = function() {
-      return CartService.createCart().then(function(cartId) {
-        CartService.setActiveCart(cartId);
-        $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
-      });
-    };
+    // $scope.createNewCart = function() {
+    //   return CartService.createCart().then(function(cartId) {
+    //     CartService.setActiveCart(cartId);
+    //     $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
+    //   });
+    // };
 
     $scope.showPromoItemContent = function(promoItem) {
       var modalInstance = $modal.open({

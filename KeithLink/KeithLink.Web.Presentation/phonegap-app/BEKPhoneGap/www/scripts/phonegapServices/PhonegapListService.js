@@ -23,7 +23,7 @@ angular.module('bekApp')
       });
     }
 
-    Service.getAllLists = function() {
+    Service.getAllLists = function(params) {
       if (navigator.connection.type === 'none') {
         console.log('getting lists from DB');
         // TEST: keep db lists up to date while online
@@ -33,7 +33,7 @@ angular.module('bekApp')
         });
       } else {
         console.log('getting all lists from server');
-        return originalListService.getAllLists();
+        return originalListService.getAllLists(params);
       }
     };
 

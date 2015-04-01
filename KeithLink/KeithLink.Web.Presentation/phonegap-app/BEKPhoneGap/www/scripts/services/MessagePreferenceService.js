@@ -2,45 +2,56 @@
 
 angular.module('bekApp')
   .factory('MessagePreferenceService', [ '$http', '$q', 'toaster', 'UtilityService', function ($http, $q, toaster, UtilityService) {
+    
+    function transformPreferences(preferences) {
+      var customerPreferencesTransformed = [];
+      preferences.forEach(function(preference) {
+        var preferenceTransformed = {
+          description: preference.description,
+          notificationType: preference.notificationType,
+          channels: [false, false, false]
+        };
+
+        preference.selectedChannels.forEach(function (selectedChannel) {
+          switch (selectedChannel.channel) {
+            case 1: // Email
+              preferenceTransformed.channels[0] = true;
+              break;
+            case 2: // Mobile Push
+              preferenceTransformed.channels[1] = true;
+              break;
+            case 4: // Web
+              preferenceTransformed.channels[2] = true;
+              break;
+          }
+        });
+
+        customerPreferencesTransformed.push(preferenceTransformed);
+      });
+      return customerPreferencesTransformed;
+    }
+
     var Service = {
       
-      getPreferencesForCustomer: function(customerNumber) {
+      getPreferencesForCustomer: function(customerNumber, customerBranch) {
+        var promise = $http.get('/messaging/preferences/' + customerNumber + '/' + customerBranch);
+        return UtilityService.resolvePromise(promise).then(function(customerPreferences) {
+          // returns user default preferences as the first element and customer preferences as second element
+          var customerPreferencesFound = customerPreferences[1];
+          return transformPreferences(customerPreferencesFound.preferences);
+        });
+      },
+
+      // get preferences and filter by given customerNumber
+      getPreferencesAndFilterByCustomerNumber: function(customerNumber) {
         var promise = $http.get('/messaging/preferences');
         return UtilityService.resolvePromise(promise).then(function (userPreferences) {
           
           var customerPreferencesFound;
 
           userPreferences.forEach(function(customerPreferences) {
-            
             if (customerNumber === customerPreferences.customerNumber) {
-              var customerPreferencesTransformed = [];
-
-              customerPreferences.preferences.forEach(function(preference) {
-                var preferenceTransformed = {
-                  description: preference.description,
-                  notificationType: preference.notificationType,
-                  channels: [false, false, false]
-                };
-
-                preference.selectedChannels.forEach(function (selectedChannel) {
-                  switch (selectedChannel.channel) {
-                    case 1: // Email
-                      preferenceTransformed.channels[0] = true;
-                      break;
-                    case 2: // Mobile Push
-                      preferenceTransformed.channels[1] = true;
-                      break;
-                    case 4: // Web
-                      preferenceTransformed.channels[2] = true;
-                      break;
-                  }
-                });
-
-                customerPreferencesTransformed.push(preferenceTransformed);
-
-              });
-
-              customerPreferencesFound = customerPreferencesTransformed;
+              customerPreferencesFound = transformPreferences(customerPreferences.preferences);
             }
           });
 
