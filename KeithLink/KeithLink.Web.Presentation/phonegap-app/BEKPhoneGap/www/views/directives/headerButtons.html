@@ -1,12 +1,16 @@
 <div class="hidden-xs hidden-sm hidden-print page-header-bar__actions">
 
-	<!-- <div class="pull-right"> -->
-	  <div ng-transclude="" class="page-header__buttons">
-	  	
-	  </div>
-	  <div class="page-header__orders" ng-if="isOrderEntryCustomer">
-	    <a ui-sref="menu.cart.items({ cartId: 1 })"><span title = "Carts" class="large-icon icon-truck"></span></a>
-	  </div>
-	<!-- </div> -->
+  <!-- <div class="pull-right"> -->
+  <div ng-transclude="" class="page-header__buttons">
 
-</div>
+  </div>
+  <div class="page-header__orders" ng-if="isOrderEntryCustomer">
+    <a ui-sref="menu.cart.items({ cartId: 1 })" class="badge-parent">
+      <span title = "Carts" class="icon-truck"></span>
+      <span ng-if="cartHeaders && cartHeaders.length > 0" class="badge">{{cartHeaders.length}}</span>
+    </a>
+
+  </div>
+  <!-- </div> -->
+
+  </div>

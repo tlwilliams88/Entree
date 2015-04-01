@@ -214,7 +214,7 @@ angular.module('bekApp')
         });
         updatedList.items = updatedList.items.concat(deletedItems);
         
-        ListService.updateList(updatedList)
+        return ListService.updateList(updatedList)
           .then(resetPage)
           .finally(function() {
             processingSaveList = false;
@@ -226,7 +226,15 @@ angular.module('bekApp')
       var list = angular.copy($scope.selectedList);
       list.name = listName;
 
-      $scope.saveList(list);
+
+      $scope.saveList(list).then(function() {
+        // update cached list name
+        $scope.lists.forEach(function(list) {
+          if (list.listid === listId) {
+            list.name = listName;
+          }
+        });
+      });
     };
 
     $scope.cancelRenameList = function() {
@@ -252,6 +260,12 @@ angular.module('bekApp')
 
       deletedItems = deletedItems.concat($scope.selectedList.items.splice(deletedIndex, 1));
       updateItemPositions();
+
+      // load more items if number of items fell below page size
+      if ($scope.selectedList.items.length < 30) {
+        $scope.infiniteScrollLoadMore();
+      }
+
       $scope.listForm.$setDirty();
     };
 
@@ -260,6 +274,12 @@ angular.module('bekApp')
 
       $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
       $scope.selectedList.allSelected = false;
+
+      // load more items if number of items fell below page size
+      if ($scope.selectedList.items.length < 30) {
+        $scope.infiniteScrollLoadMore();
+      }
+
       $scope.listForm.$setDirty();
     };
 
@@ -536,10 +556,13 @@ angular.module('bekApp')
             return list;
           },
           pagingModelOptions: function() {
-            return { sort: [{
-              field: $scope.sort.field,
-              order: $scope.sort.sortDescending ? 'desc' : 'asc'
-            }] };
+            return { 
+              sort: [{
+                field: $scope.sort.field,
+                order: $scope.sort.sortDescending ? 'desc' : 'asc'
+              }],
+              terms: $scope.listSearchTerm
+            };
           }
         }
       });

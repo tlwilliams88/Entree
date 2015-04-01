@@ -22,7 +22,7 @@ angular.module('bekApp')
         });
       }
 
-      Service.getAllCarts = function() {
+      Service.getAllCarts = function(params) {
         if (navigator.connection.type === 'none') {
           console.log('getting carts from DB');
           // TEST: keep db carts up to date while online
@@ -32,7 +32,7 @@ angular.module('bekApp')
           });
         } else {
           console.log('getting all carts from server');
-          return originalCartService.getAllCarts();
+          return originalCartService.getAllCarts(params);
         }
       };
 

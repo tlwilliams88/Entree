@@ -129,13 +129,13 @@ $order-col__background: #f1efe5;
 
   // order table columns
   .table-col {
-    padding: 34px 0;
+    padding: 21px 0;
   }
 
   .order-col {
     background-color: $order-col__background;
     border-right: 1px solid $color-border;
-    padding: $gutter-size 0;
+    padding: 10px 0;
 
     .order-col__number {
       font-size: 16px;
