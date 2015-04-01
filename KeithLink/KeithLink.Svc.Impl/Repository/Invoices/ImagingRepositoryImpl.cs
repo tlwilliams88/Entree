@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
@@ -183,9 +184,14 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                     System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
 
                     if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
-                        byte[] bytes = response.Content.ReadAsByteArrayAsync().Result;
+                        using (System.IO.MemoryStream tempImgStream = new System.IO.MemoryStream()) {
+                            //System.Drawing.Bitmap.FromStream(response.Content.ReadAsStreamAsync().Result).Save(tempImgStream, System.Drawing.Imaging.ImageFormat.Png);
+                            System.Drawing.Bitmap.FromStream(response.Content.ReadAsStreamAsync().Result).Save(tempImgStream, System.Drawing.Imaging.ImageFormat.Jpeg);
 
-                        return Convert.ToBase64String(bytes);
+                            byte[] bytes = tempImgStream.GetBuffer();
+
+                            return Convert.ToBase64String(bytes);
+                        }
                     } else {
                         throw new ApplicationException("Page preview not found");
                     }
