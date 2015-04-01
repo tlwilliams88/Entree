@@ -222,7 +222,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.OrderSystem = OrderSource.Entree;
             retVal.BranchId = customerInfo.BranchId;
             retVal.CustomerNumber = customerInfo.CustomerId;
-            retVal.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Pending" : value.Properties["MasterNumber"].ToString();
+            retVal.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Processing" : value.Properties["MasterNumber"].ToString();
             retVal.DeliveryDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"];
             retVal.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();
             retVal.ControlNumber = value.Properties["OrderNumber"].ToString();
