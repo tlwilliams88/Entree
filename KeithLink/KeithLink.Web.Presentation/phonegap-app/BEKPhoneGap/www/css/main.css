@@ -9019,28 +9019,18 @@ form.style-validation-errors .form-error-message {
 }
 /* line 13, ../scss/components/_user-bar.scss */
 .user-bar .user-bar__notification .badge {
-  font-size: 9px;
-  position: absolute;
   top: -5px;
   right: -3px;
-  background-color: #dc6a6a;
-  color: white;
-  border-radius: 15px;
-  border: 2px solid #f3f1eb;
-  width: 20px;
-  height: 20px;
-  text-align: center;
-  padding-top: 2px;
 }
-/* line 30, ../scss/components/_user-bar.scss */
+/* line 20, ../scss/components/_user-bar.scss */
 .user-bar .user-info .user-info__name {
   font-size: 14px;
 }
-/* line 34, ../scss/components/_user-bar.scss */
+/* line 24, ../scss/components/_user-bar.scss */
 .user-bar .user-info .user-info__job-title {
   color: #a0947f;
 }
-/* line 38, ../scss/components/_user-bar.scss */
+/* line 28, ../scss/components/_user-bar.scss */
 .user-bar .user-info .user-info__menu {
   position: absolute;
   right: 60px;
@@ -9050,68 +9040,68 @@ form.style-validation-errors .form-error-message {
   box-shadow: 4px 4px 10px #c3bc9c;
   border-radius: 4px;
 }
-/* line 47, ../scss/components/_user-bar.scss */
+/* line 37, ../scss/components/_user-bar.scss */
 .user-bar .user-info .user-info__menu button {
   text-align: left;
 }
 
-/* line 55, ../scss/components/_user-bar.scss */
+/* line 45, ../scss/components/_user-bar.scss */
 .user-info img {
   border: 1px solid #c3bc9c;
 }
 
-/* line 60, ../scss/components/_user-bar.scss */
+/* line 50, ../scss/components/_user-bar.scss */
 .user-bar-mobile {
   background-color: #f3f1eb;
   border-bottom: 1px solid #c3bc9c;
   text-align: center;
 }
-/* line 67, ../scss/components/_user-bar.scss */
+/* line 57, ../scss/components/_user-bar.scss */
 .user-bar-mobile .logo-mobile {
   height: 50px;
   padding: 5px 0;
   display: inline-block;
 }
-/* line 72, ../scss/components/_user-bar.scss */
+/* line 62, ../scss/components/_user-bar.scss */
 .user-bar-mobile .logo-mobile.logo-margin-left {
   margin-left: 45px;
 }
-/* line 77, ../scss/components/_user-bar.scss */
+/* line 67, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul {
   padding: 0;
   float: right;
   margin: 0;
 }
-/* line 82, ../scss/components/_user-bar.scss */
+/* line 72, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a, .user-bar-mobile ul .nav-tabs li a:hover, .nav-tabs li .user-bar-mobile ul a:hover {
   font-size: 24px;
   color: #9E987E;
   text-decoration: none;
 }
-/* line 86, ../scss/components/_user-bar.scss */
+/* line 76, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a li, .user-bar-mobile ul .nav-tabs li a:hover li, .nav-tabs li .user-bar-mobile ul a:hover li {
   display: inline-block;
   padding: 8px 10px;
 }
-/* line 93, ../scss/components/_user-bar.scss */
+/* line 83, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.left-mobile-menu {
   float: left;
 }
-/* line 96, ../scss/components/_user-bar.scss */
+/* line 86, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.left-mobile-menu a li, .user-bar-mobile ul.left-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.left-mobile-menu a:hover li {
   border-right: 1px solid #c3bc9c;
 }
-/* line 101, ../scss/components/_user-bar.scss */
+/* line 91, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.right-mobile-menu {
   float: right;
 }
-/* line 105, ../scss/components/_user-bar.scss */
+/* line 95, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.right-mobile-menu a li, .user-bar-mobile ul.right-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.right-mobile-menu a:hover li {
   border-left: 1px solid #c3bc9c;
 }
 
 @media (max-width: 991px) {
-  /* line 113, ../scss/components/_user-bar.scss */
+  /* line 103, ../scss/components/_user-bar.scss */
   .hide-searchbar {
     display: none;
   }
@@ -9186,29 +9176,38 @@ form.style-validation-errors .form-error-message {
   vertical-align: middle;
   display: inline-block;
 }
+/* line 44, ../scss/components/_page-header-bar.scss */
+.page-header-bar .page-header__orders .icon-truck {
+  font-size: 26px;
+}
+/* line 47, ../scss/components/_page-header-bar.scss */
+.page-header-bar .page-header__orders .badge {
+  top: -20px;
+  right: -10px;
+}
 
-/* line 46, ../scss/components/_page-header-bar.scss */
+/* line 54, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar {
   background-color: #fff;
   border-bottom: 1px solid #c3bc9c;
   padding-top: 14px;
   padding-bottom: 14px;
 }
-/* line 52, ../scss/components/_page-header-bar.scss */
+/* line 60, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__message > div {
   display: inline-block;
 }
-/* line 54, ../scss/components/_page-header-bar.scss */
+/* line 62, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__message > div:last-child span {
   display: none;
 }
-/* line 60, ../scss/components/_page-header-bar.scss */
+/* line 68, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container {
   padding-left: 15px;
   padding-right: 0px;
   color: #A1A1A1;
 }
-/* line 65, ../scss/components/_page-header-bar.scss */
+/* line 73, ../scss/components/_page-header-bar.scss */
 .page-subheader-bar .page-subheader-bar__container a, .page-subheader-bar .page-subheader-bar__container .nav-tabs li a:hover, .nav-tabs li .page-subheader-bar .page-subheader-bar__container a:hover {
   font-weight: 600;
   padding-left: 10px;
@@ -9216,19 +9215,19 @@ form.style-validation-errors .form-error-message {
 }
 
 @media (max-width: 991px) {
-  /* line 74, ../scss/components/_page-header-bar.scss */
+  /* line 82, ../scss/components/_page-header-bar.scss */
   .page-header-bar .page-header-bar__message {
     width: 100%;
   }
 
-  /* line 77, ../scss/components/_page-header-bar.scss */
+  /* line 85, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar {
     background-color: #fff;
     border-bottom: 1px solid #c3bc9c;
     padding-top: 0px;
     padding-bottom: 0px;
   }
-  /* line 80, ../scss/components/_page-header-bar.scss */
+  /* line 88, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__message {
     padding-top: 10px;
     padding-bottom: 4px;
@@ -9237,7 +9236,7 @@ form.style-validation-errors .form-error-message {
     overflow-x: hidden;
     text-overflow: ellipsis;
   }
-  /* line 88, ../scss/components/_page-header-bar.scss */
+  /* line 96, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__button {
     font-weight: 400;
     cursor: pointer;
@@ -9245,18 +9244,18 @@ form.style-validation-errors .form-error-message {
     text-align: center;
     width: 80px;
   }
-  /* line 95, ../scss/components/_page-header-bar.scss */
+  /* line 103, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__button.button-left {
     border-right: 1px solid #c3bc9c;
     float: left;
   }
-  /* line 99, ../scss/components/_page-header-bar.scss */
+  /* line 107, ../scss/components/_page-header-bar.scss */
   .page-subheader-bar .page-subheader-bar__button.button-right {
     border-left: 1px solid #c3bc9c;
     float: right;
   }
 }
-/* line 107, ../scss/components/_page-header-bar.scss */
+/* line 115, ../scss/components/_page-header-bar.scss */
 .global-message {
   box-shadow: inset 0 0px 12px -5px black;
   -webkit-box-shadow: inset 0 0px 12px -5px black;
@@ -9266,20 +9265,20 @@ form.style-validation-errors .form-error-message {
   padding-bottom: 15px;
   color: #fff;
 }
-/* line 116, ../scss/components/_page-header-bar.scss */
+/* line 124, ../scss/components/_page-header-bar.scss */
 .global-message > .global-message__text {
   width: calc(100% - 40px);
   vertical-align: middle;
   display: inline-block;
   padding-left: 15px;
 }
-/* line 124, ../scss/components/_page-header-bar.scss */
+/* line 132, ../scss/components/_page-header-bar.scss */
 .global-message > .global-message__close {
   width: 35px;
   vertical-align: middle;
   display: inline-block;
 }
-/* line 128, ../scss/components/_page-header-bar.scss */
+/* line 136, ../scss/components/_page-header-bar.scss */
 .global-message > .global-message__close a, .global-message > .global-message__close .nav-tabs li a:hover, .nav-tabs li .global-message > .global-message__close a:hover {
   border: 1px solid #fff;
   padding: 5px 7px;
@@ -9325,6 +9324,24 @@ form.style-validation-errors .form-error-message {
     display: none !important;
   }
 }
+/* line 1, ../scss/components/_badges.scss */
+.badge-parent {
+  position: relative;
+}
+/* line 4, ../scss/components/_badges.scss */
+.badge-parent .badge {
+  font-size: 9px;
+  position: absolute;
+  background-color: #dc6a6a;
+  color: white;
+  border-radius: 15px;
+  border: 2px solid #f3f1eb;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  padding-top: 2px;
+}
+
 /* line 2, ../scss/pages/_home.scss */
 .balance__term--amount {
   position: relative;
@@ -9511,13 +9528,13 @@ form.style-validation-errors .form-error-message {
 }
 /* line 131, ../scss/pages/_home.scss */
 .order-summary__order .table-col {
-  padding: 34px 0;
+  padding: 21px 0;
 }
 /* line 135, ../scss/pages/_home.scss */
 .order-summary__order .order-col {
   background-color: #f1efe5;
   border-right: 1px solid #c3bc9c;
-  padding: 15px 0;
+  padding: 10px 0;
 }
 /* line 140, ../scss/pages/_home.scss */
 .order-summary__order .order-col .order-col__number {
@@ -10336,7 +10353,7 @@ ul.horizontal-slide .product-placeholder-image {
 }
 /* line 17, ../scss/pages/_cart.scss */
 .critical-items__tabset .tab-content {
-  max-height: 150px;
+  max-height: 225px;
   overflow-y: auto;
 }
 @media print {

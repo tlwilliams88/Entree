@@ -11,18 +11,8 @@
     position: relative;
 
     .badge {
-      font-size: 9px;
-      position: absolute;
       top: -5px;
       right: -3px;
-      background-color: $color-red;
-      color: white;
-      border-radius: 15px;
-      border: 2px solid $background;
-      width: 20px;
-      height: 20px;
-      text-align: center;
-      padding-top: 2px;
     }
   }
 
