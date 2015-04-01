@@ -121,7 +121,7 @@ angular.module('bekApp')
     },
 
     canGrantAccessToOtherServices: function() {
-      return ( isSysAdmin() );
+      return ( isSysAdmin() || isKbitAdmin() );
     },
 
     canViewCustomerGroups: function() {
@@ -129,7 +129,7 @@ angular.module('bekApp')
     },
 
     canManageCustomerGroups: function() {
-      return ( isSysAdmin() || isBranchManager() );
+      return ( isSysAdmin() || isKbitAdmin() || isBranchManager() );
     },
 
     canViewCustomerGroupDashboard: function() {

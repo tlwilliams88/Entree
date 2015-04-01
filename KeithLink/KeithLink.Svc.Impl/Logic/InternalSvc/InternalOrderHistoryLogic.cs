@@ -144,7 +144,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 																			  h.CustomerNumber.Equals(customerInfo.CustomerId),
 																			d => d.OrderDetails);
 
-			return LookupControlNumberAndStatus(headers).AsQueryable().GetPage(paging);
+			return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
 		}
 
 		public void StopListening()
@@ -246,7 +246,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			_headerRepo.CreateOrUpdate(header);
 		}
 		
-		private List<Order> LookupControlNumberAndStatus(IEnumerable<EF.OrderHistoryHeader> headers)
+		private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers)
 		{
 			var customerOrders = new BlockingCollection<Order>();
 			foreach (var h in headers)
@@ -278,6 +278,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 							//	}
 							//}
                         }
+
+						var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
+						if (invoice != null)
+						{
+							returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+							
+						}
+
                     }
 
                     if (returnOrder.ActualDeliveryTime != null)
@@ -363,14 +371,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
 																			   h.CustomerNumber.Equals(customerInfo.CustomerId),
 																		  d => d.OrderDetails);
-			return LookupControlNumberAndStatus(headers);
+			return LookupControlNumberAndStatus(customerInfo,headers);
 		}
 		
 		private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
 		{
 			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
 																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
-			return LookupControlNumberAndStatus(headers);
+			return LookupControlNumberAndStatus(customerInfo, headers);
 		}
 		
 		private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders)

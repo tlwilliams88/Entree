@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var list = listRepository.ReadById(listId);
 
-			var position = 0;
+			var position = 1;
 
 			if (list.Items == null)
 				list.Items = new List<ListItem>();
@@ -105,7 +105,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
 		{
 			var list = listRepository.ReadById(listId);
-			var nextPosition = 0;
+			var nextPosition = 1;
 			if (list.Items == null)
 				list.Items = new List<ListItem>();
 			else
@@ -218,7 +218,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			//Set initial positions
 			if (newList.Items != null && newList.Items.Any() && newList.Items.Max(i => i.Position) == 0)
 			{
-				var position = 0;
+				var position = 1;
 				foreach (var item in newList.Items)
 				{
 					item.Position = position;

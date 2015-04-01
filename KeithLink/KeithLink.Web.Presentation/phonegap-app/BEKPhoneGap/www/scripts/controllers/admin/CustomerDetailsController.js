@@ -13,7 +13,7 @@ angular.module('bekApp')
     
     $scope.customer = customer;
 
-    MessagePreferenceService.getPreferencesForCustomer(customer.customerNumber).then(function (customerPreferences) {
+    MessagePreferenceService.getPreferencesForCustomer(customer.customerNumber, customer.customerBranch).then(function (customerPreferences) {
       if (customerPreferences) {
         $scope.preferencesFound = true;
         $scope.defaultPreferences = customerPreferences;

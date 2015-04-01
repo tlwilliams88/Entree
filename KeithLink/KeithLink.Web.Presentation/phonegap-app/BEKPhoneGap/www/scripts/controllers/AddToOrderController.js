@@ -215,7 +215,12 @@ angular.module('bekApp')
       if (!processingSaveChangeOrder) {
         processingSaveChangeOrder = true;
         order.items = order.items.concat(items);
-        OrderService.updateOrder(order).then(function(cart) {
+
+        var params = {
+          deleteOmitted: false
+        };
+
+        OrderService.updateOrder(order, params).then(function(cart) {
           $scope.selectedCart = cart;
           $scope.addToOrderForm.$setPristine();
           $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to Order # ' + order.invoicenumber + '.');

@@ -102,6 +102,11 @@ angular.module('bekApp')
       $state.go('menu.cart.items', {cartId: cartId, renameCart: null} );
     };
 
+    $scope.cancelChanges = function() {
+      $scope.currentCart = angular.copy(originalBasket);
+      $scope.cartForm.$setPristine();
+    };
+
     $scope.startEditCartName = function(cartName) {
       $scope.editCart = {};
       $scope.editCart.name = angular.copy(cartName);
