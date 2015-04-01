@@ -169,6 +169,7 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// <returns>the image data for the specified page in a base64 string</returns>
         /// <remarks>
         /// jwames - 3/31/2015 - original code
+        /// jwames - 4/1/2015 - convert image from tiff to jpg format
         /// </remarks>
         private string GetImageString(string sessionToken, string documentId, string pageId) {
             if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
