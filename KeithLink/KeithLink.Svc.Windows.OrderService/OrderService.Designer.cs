@@ -26,7 +26,7 @@
             // 
             // OrderService
             // 
-            this.ServiceName = "KeithLink Order Service";
+            this.ServiceName = "Entree Order Service";
 
         }
 

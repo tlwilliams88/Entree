@@ -1,5 +1,5 @@
 ﻿using KeithLink.Svc.Core.Interface.Configuration;
-//using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
@@ -22,14 +22,17 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private readonly IOnlinePaymentServiceRepository _repo;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
+        private readonly IImagingLogic _imgLogic;
 		#endregion
 
         #region ctor
-		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentServiceRepository invoiceRepository, IExportSettingServiceRepository exportSettingRepository)
+		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentServiceRepository invoiceRepository, IExportSettingServiceRepository exportSettingRepository,
+                                 IImagingLogic invoiceImagingLogic)
 			: base(profileLogic)
 		{
             _repo = invoiceRepository;
 			_exportSettingRepository = exportSettingRepository;
+            _imgLogic = invoiceImagingLogic;
 		}
         #endregion
 
@@ -60,12 +63,26 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
         [HttpGet]
+        [ApiKeyedRoute("invoice/image/{invoiceNumber}")]
+        public OperationReturnModel<List<string>> GetInvoiceImages(string invoiceNumber) {
+            OperationReturnModel<List<string>> retVal = new OperationReturnModel<List<string>>();
+
+            try {
+                retVal.SuccessResponse = _imgLogic.GetInvoiceImages(this.SelectedUserContext, invoiceNumber);
+            } catch (Exception ex) {
+                retVal.ErrorMessage = string.Format("Could not retrieve invoice images at this time.");
+            }
+
+            return retVal;
+        }
+
+        [HttpGet]
         [ApiKeyedRoute("invoice/{invoiceNumber}")]
         public InvoiceModel InvoiceTransactions(string invoiceNumber) {
             return _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
         }
 
-		[HttpPost]
+        [HttpPost]
 		[ApiKeyedRoute("invoice/export/{invoiceNumber}")]
 		public HttpResponseMessage ExportInvoiceDetail(string invoiceNumber, ExportRequestModel exportRequest)
 		{

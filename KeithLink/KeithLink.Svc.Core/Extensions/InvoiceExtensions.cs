@@ -13,7 +13,7 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class InvoiceExtensions
 	{
-		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, KeithLink.Svc.Core.Models.Profile.Customer customer)
+		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, KeithLink.Svc.Core.Models.Profile.Customer customer = null)
 		{
 			return new InvoiceModel()
 			{
@@ -24,12 +24,12 @@ namespace KeithLink.Svc.Core.Extensions
 				Status = value.DetermineStatus(),
 				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(value.DetermineStatus()),
 				CustomerNumber = value.CustomerNumber,
-				CustomerName = customer.CustomerName,
+				CustomerName = customer == null ? "N/A" : customer.CustomerName,
 				Amount = value.AmountDue,
 				DueDate = value.DueDate,
 				InvoiceDate = value.InvoiceDate,
 				OrderDate = value.InvoiceDate,
-                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && customer.KPayCustomer)
+                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && customer == null ? false : customer.KPayCustomer)
 			};
 		}
 

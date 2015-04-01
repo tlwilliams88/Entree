@@ -11,7 +11,7 @@ namespace KeithLink.Common.Core.Email {
         public static void Send(string emailToAddress, string message) {
             using (MailMessage msg = new MailMessage()) {
                 msg.To.Add(emailToAddress);
-                msg.CC.Add("gsalazar@credera.com"); msg.CC.Add("chendon@credera.com"); msg.CC.Add("rhedges@credera.com");
+				//msg.CC.Add("gsalazar@credera.com"); msg.CC.Add("chendon@credera.com"); msg.CC.Add("rhedges@credera.com");
                 msg.From = new MailAddress(Configuration.FromEmailAddress);
                 msg.Subject = EMAIL_WELCOME_SUBJECT;
                 msg.Priority = MailPriority.Normal;

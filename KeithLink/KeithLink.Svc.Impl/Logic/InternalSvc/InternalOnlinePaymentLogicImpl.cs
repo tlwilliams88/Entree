@@ -237,7 +237,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 PagedResults = pagedInvoices,
 				TotalAmmountDue = kpayInvoices.Sum(i => i.AmountDue)
             };
-        }
+        }		
 
 		private void LookupProductDetails(InvoiceModel invoiceItem, UserSelectedContext catalogInfo)
 		{

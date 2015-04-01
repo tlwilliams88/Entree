@@ -186,6 +186,8 @@
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
+    <Compile Include="Interface\Invoices\IImagingLogic.cs" />
+    <Compile Include="Interface\Invoices\IImagingRepository.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Messaging\IPushNotificationMessageProvider.cs" />
@@ -227,6 +229,14 @@
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
+    <Compile Include="Models\Invoices\Imaging\Document\ImageNowPageReturnModel.cs" />
+    <Compile Include="Models\Invoices\Imaging\Document\Info.cs" />
+    <Compile Include="Models\Invoices\Imaging\Document\Keys.cs" />
+    <Compile Include="Models\Invoices\Imaging\Document\Page.cs" />
+    <Compile Include="Models\Invoices\Imaging\View\Field.cs" />
+    <Compile Include="Models\Invoices\Imaging\Document\ImageNowDocumentReturnModel.cs" />
+    <Compile Include="Models\Invoices\Imaging\View\ImageNowViewQueryReturnModel.cs" />
+    <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />

@@ -210,21 +210,71 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
 
+			var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
+			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+
+			returnCart.ForEach(delegate(ShoppingCart list)
+			{
+				LookupProductDetails(user, catalogInfo, list, notes);
+			});
+						
 			if (headerInfoOnly)
-				return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName, Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid() }).ToList();
+				return BuildHeaderRecords(returnCart);//return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName, Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(), RequestedShipDate = l.RequestedShipDate }).ToList();
 			else
 			{
-				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
-				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
-
-				returnCart.ForEach(delegate(ShoppingCart list)
-				{
-					LookupProductDetails(user, catalogInfo, list, notes);
-				});
 				return returnCart;
 			}
 		}
-		
+
+		private List<ShoppingCart> BuildHeaderRecords(List<ShoppingCart> shoppingCarts)
+		{
+			var returnList = new List<ShoppingCart>();
+
+			foreach (var cart in shoppingCarts)
+			{
+				var itemCount = 0;
+				decimal subTotal = 0;
+
+				if (cart.Items != null && cart.Items.Any())
+				{
+					//Store item count
+					itemCount = cart.Items.Count;
+
+					foreach (var item in cart.Items)
+					{
+						decimal packagePrice = 0;
+						decimal casePrice = 0;
+						decimal.TryParse(item.PackagePrice, out packagePrice);
+						decimal.TryParse(item.CasePrice, out casePrice);
+						if (item.CatchWeight)
+						{
+
+							if (item.Each) //package catchweight
+								{
+									
+									subTotal += (((decimal)item.AverageWeight / Int32.Parse(item.Pack)) * item.Quantity) *packagePrice;
+								}
+								else //case catchweight
+								{
+									subTotal += ((decimal)item.AverageWeight * item.Quantity) * casePrice;
+								}
+							
+						}
+						else
+						{
+							subTotal += item.Quantity * casePrice;
+						}
+					}
+
+				}
+
+				returnList.Add(new ShoppingCart() { CreatedDate = cart.CreatedDate, Name = cart.Name, CartId = cart.CartId, Active = cart.Active, RequestedShipDate = cart.RequestedShipDate, PONumber = cart.PONumber, ItemCount = itemCount, SubTotal = subTotal, BranchId = cart.BranchId  });
+
+			}
+
+			return returnList;
+		}
+
 		public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
@@ -275,6 +325,7 @@ namespace KeithLink.Svc.Impl.Logic
 				RequestedShipDate = basket.RequestedShipDate,
 				Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
 				PONumber = basket.PONumber,
+				CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
 				Items = basket.LineItems.Select(l => new ShoppingCartItem()
 				{
 					ItemNumber = l.ProductId,
