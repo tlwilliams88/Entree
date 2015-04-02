@@ -439,7 +439,7 @@
                   <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
 
-                <ng-form class="hidden-print bek-no-drag" name="addLabelForm" ng-show="item.isEditing">
+                <ng-form ng-submit="" class="hidden-print bek-no-drag" name="addLabelForm" ng-show="item.isEditing">
                   <input 
                     id="newLabel" 
                     name="newLabel" 
@@ -592,7 +592,7 @@
                     </tr>
                     <tr ng-if="::selectedList.permissions.canDeleteItems">
                       <td colspan="2">
-                        <button class="btn btn-lg btn-danger" ng-click="deleteItem(item)"><span class="icon-cross"></span> Remove Item</button>
+                        <a class="btn btn-lg btn-danger" ng-click="deleteItem(item)"><span class="icon-cross"></span> Remove Item</a>
                       </td>
                     </tr>
                   </tbody>
