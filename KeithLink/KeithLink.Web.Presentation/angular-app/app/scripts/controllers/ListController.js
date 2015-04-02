@@ -546,6 +546,12 @@ angular.module('bekApp')
       });
     };
 
+    $scope.clearFilter = function(){   
+          $scope.listSearchTerm = "";
+          $scope.hideDragToReorder = false;
+          $scope.filterItems( $scope.listSearchTerm );     
+    }
+
     $scope.openPrintOptionsModal = function(list) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/printoptionsmodal.html',
