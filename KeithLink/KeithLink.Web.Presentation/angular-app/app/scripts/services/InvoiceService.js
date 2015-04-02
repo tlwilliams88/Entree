@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('InvoiceService', ['ExportService', 'Invoice',
-    function (ExportService, Invoice) {
+  .factory('InvoiceService', ['ExportService', 'Invoice', '$http', 'UtilityService',
+    function (ExportService, Invoice, $http, UtilityService) {
 
     var Service = {
 
@@ -21,6 +21,11 @@ angular.module('bekApp')
         return Invoice.getInvoice({
           invoiceNumber: invoiceNumber
         }).$promise;
+      },
+
+      getInvoiceImage: function(invoiceNumber) {
+        var promise = $http.get('/invoice/image/' + invoiceNumber);
+        return UtilityService.resolvePromise(promise);
       },
 
       // for all customers
