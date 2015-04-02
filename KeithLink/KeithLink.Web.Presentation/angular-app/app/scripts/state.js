@@ -303,6 +303,19 @@ angular.module('bekApp')
         }]
       }
     })
+    .state('invoiceimage', {
+      url: '/invoice/image/:invoiceNumber/',
+      templateUrl: 'views/invoiceimage.html',
+      controller: 'InvoiceImageController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        images: ['$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceImage($stateParams.invoiceNumber);
+        }]
+      }
+    })
 
     /**********
     TRANSACTION

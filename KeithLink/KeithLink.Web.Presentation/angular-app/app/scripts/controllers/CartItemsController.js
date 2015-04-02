@@ -42,7 +42,7 @@ angular.module('bekApp')
     }
 
     $scope.loadingResults = false;
-    $scope.sortBy = null;
+    $scope.sortBy = 'createddate'; // sort items in the order they were added to the cart
     $scope.sortOrder = false;
     CartService.updateNetworkStatus();
     $scope.isOffline = CartService.isOffline;
