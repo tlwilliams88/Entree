@@ -109,32 +109,37 @@
           Item Count
         </div>
         <div class="col-md-3">
-          Total Cost
+          Subtotal
         </div>
       </div>
 
-      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: 4">
+      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: numCartsToDisplay">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
             <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-3 table-col">
-            <span>{{(cart.requestedshipdate || '2015-04-02') | formatDate:'MM/DD/YYYY ddd.'}}</span>
+            <span>{{(cart.requestedshipdate || 'N/A') | formatDate:'ddd, MM/DD/YYYY'}}</span>
           </div>
           <div class="col-md-3 table-col">
-            {{cart.itemcount || 15}}
+            {{cart.itemcount}}
           </div>
           <div class="col-md-3 table-col">
-            {{cart.total || '$321.78'}}
+            {{cart.subtotal | currency}}
           </div>
         
         </div>
 
       </div>
-      
-      <div class="text-center">
-        <a href="">View All</a>
+
+      <div class="text-center" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
+      <div class="hidden-xs hidden-sm" ng-hide="cartMessage || homeCarts.length > 0 || loadingCarts">
+        No Carts to Display
+      </div>
+
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage">
+        <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
 
       <!-- Order Summary -->
@@ -156,17 +161,17 @@
         </div>
       </div>
 
-      <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2 | styleOrders" ng-class="order.highlightClass">
+      <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" ng-class="order.highlightClass">
         
         <div class="row no-margin">
         
           <div class="col-md-3 order-col">
-            <a ng-if="order.invoicenumber !== 'Pending' && order.invoicenumber !== 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
-            <a ng-if="order.invoicenumber === 'Pending' || order.invoicenumber === 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
+            <div class="order-col__number" order-link></div>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'MM/DD/YYYY ddd.'}}</span>
+
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'ddd, MM/DD/YYYY'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">
@@ -197,6 +202,10 @@
 
       </div>
 
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingOrders || ordersMessage">
+        <a class="view-all" ui-sref="menu.order">View All</a>
+      </div>
+
       <!-- Mobile Order Summary -->
       <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
@@ -211,8 +220,7 @@
           <div class="row">
             <div class="col-xs-6">
               <span>INVOICE #</span>
-              <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
-              <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
+              <div class="order-col__number" order-link></div>
             </div>
             <div class="col-xs-6 order-col__date">
               <span class="icon-calendar"></span> {{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}
