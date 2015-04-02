@@ -1,6 +1,6 @@
 'use strict';
-
-
+ 
+ 
 /**
  * @ngdoc overview
  * @name bekApp
@@ -33,37 +33,37 @@ angular
   ])
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
-
+ 
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
-
+ 
   // configure logging
   $logProvider.debugEnabled(ENV.loggingEnabled);
-
+ 
   // set local storage prefix
   localStorageServiceProvider.setPrefix('bek');
-
+ 
   // add authentication headers and Api Url
   $httpProvider.interceptors.push('AuthenticationInterceptor');
-
+ 
   // group multiple aysnc methods together to only run through one digest cycle
   $httpProvider.useApplyAsync(true);
-
+ 
   $compileProvider.debugInfoEnabled(false);
-
+ 
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
-
+ 
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', 'ListService', 'CartService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
   function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, ListService, CartService, $window, $location, PhonegapServices, PhonegapPushService) {
-
+ 
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
   $rootScope.displayMessage = function(type, message) {
     toaster.pop(type, null, message);
   };
-
+ 
   $rootScope.redirectUserToCorrectHomepage = function() {
     if ( AccessService.isOrderEntryCustomer() ) {
       $state.go('menu.home');
@@ -71,40 +71,40 @@ angular
       $state.go('menu.catalog.home');
     }
   };
-
+ 
   $rootScope.openExternalLink = function(url) {
     window.open(url, '_system');
   };
-
+ 
   /**********
   $stateChangeStart
   **********/
-
+ 
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     $log.debug('route: ' + toState.name);
-
+ 
     // check if route is restricted
     if (toState.data && toState.data.authorize) {
-
+ 
       // check if user's token is expired
       if (!AccessService.isLoggedIn()) {
         AuthenticationService.logout();
         $state.go('register');
         event.preventDefault();
       }
-
+ 
       if (AccessService.isPasswordExpired()) {
         $state.go('changepassword');
         event.preventDefault();
       }
-
+ 
       // check if user has access to the route based on role and permissions
       if (!AccessService[toState.data.authorize]()) {
         $state.go('register');
         event.preventDefault();
       }
     }
-
+ 
     // redirect register page to homepage if logged in
     if (toState.name === 'register' && AccessService.isLoggedIn()) {
       if (ENV.mobileApp) {  // ask to allow push notifications
@@ -113,25 +113,25 @@ angular
       $rootScope.redirectUserToCorrectHomepage();
       event.preventDefault();
     }
-
+ 
   });
-
+ 
   /**********
   $stateChangeSuccess
   **********/
-
+ 
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
     }
-
+ 
     // updates google analytics when state changes
     if (!$window.ga) {
       return;
     }
     $window.ga('send', 'pageview', { page: $location.path() });
-
+ 
     // remove lists and carts from memory
     if (fromState.data && toState.data) {
       if (fromState.data.saveLists && !toState.data.saveLists) {
@@ -140,10 +140,17 @@ angular
       }
       if (fromState.data.saveCarts && !toState.data.saveCarts) {
         $log.debug('erasing carts');
-        CartService.carts = [];
+        CartService.cartHeaders = [];
       }
     }
   });
-
+ 
+  /**********
+  $stateChangeError
+  **********/
+  
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
+    $log.debug(error);
+  });
+ 
 }]);
-
