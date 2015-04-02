@@ -41,12 +41,11 @@ angular.module('bekApp')
       watches = [];
     }
 
-    $scope.loadingResults = false;
     $scope.sortBy = 'createddate'; // sort items in the order they were added to the cart
     $scope.sortOrder = false;
     CartService.updateNetworkStatus();
     $scope.isOffline = CartService.isOffline;
-    $scope.carts = CartService.carts;
+    $scope.carts = CartService.cartHeaders;
     $scope.shipDates = CartService.shipDates;
     $scope.changeOrders = angular.copy(changeOrders);
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;

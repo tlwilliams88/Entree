@@ -32,6 +32,9 @@ ng-class="{ odd : $odd, even: $even }"
       &.red-border {
         border-left:3px solid $color-red;
       }
+      &.green-border {
+        border-left:3px solid $color-green;
+      }
     }
     &:last-child {
       border-right: 1px solid $color-border;

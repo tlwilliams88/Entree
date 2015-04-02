@@ -140,9 +140,17 @@ angular
       }
       if (fromState.data.saveCarts && !toState.data.saveCarts) {
         $log.debug('erasing carts');
-        CartService.carts = [];
+        CartService.cartHeaders = [];
       }
     }
+  });
+
+  /**********
+  $stateChangeError
+  **********/
+  
+  $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
+    $log.debug(error);
   });
 
 }]);

@@ -11,9 +11,20 @@ angular.module('bekApp')
   .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService', 'Constants',
     function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService, Constants) {
     
+    $scope.numOrdersToDisplay = 6;
+    $scope.numCartsToDisplay = 4;
+    
     // get carts
+    $scope.loadingCarts = true;
     CartService.getCartHeaders().then(function(carts) {
-      $scope.homeCarts = CartService.carts;
+      $scope.homeCarts = carts;
+      delete $scope.cartMessage;
+      $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
+      $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
+    }, function() {
+      $scope.cartMessage = 'Error loading carts.';
+    }).finally(function() {
+      $scope.loadingCarts = false;
     });
 
     // get orders
