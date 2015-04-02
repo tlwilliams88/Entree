@@ -45,51 +45,8 @@
       font-size: 26px;
     }
     .badge {
-      top: -10px;
-      right: -5px;
-    }
-  }
-
-  .truck-dropdown {
-    right: 0;
-    left: inherit;
-    width: 250px;
-    margin-top: 15px;
-    @include arrow('top','right', 15px, $color-white, $color-border, 1px);
-
-    li.heading {
-      padding-left: 15px;
-      border-bottom: 1px solid $color-border; 
-      h3 {
-        margin-top: 17px;
-        margin-bottom: 17px;
-      }
-    }
-    li.cart {
-      border-bottom: 1px solid $color-border; 
-      padding-bottom: 10px;
-      padding-top: 10px;
-      > div {
-        display: inline-block;
-        vertical-align: middle;
-      }
-      .cart-dropdown__truck {
-        padding-left: 10px;
-        padding-right: 10px;
-      }
-      .btn {
-        margin-top: 10px;
-      }
-    }
-    li.cart-dropdown__view-all {
-      div {
-        padding: 10px;
-        text-align: center;
-      }
-      a {
-        padding-left: 55px;
-        padding-right: 55px;
-      }
+      top: -20px;
+      right: -10px;
     }
   }
 }

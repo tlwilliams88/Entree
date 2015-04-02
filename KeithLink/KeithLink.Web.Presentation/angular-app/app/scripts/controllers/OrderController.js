@@ -1,53 +1,11 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'CartService', 'OrderService', 'PagingModel',
-  function ($scope, $state, $timeout, $modal, CartService, OrderService, PagingModel) {
+.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'OrderService', 'PagingModel',
+  function ($scope, $state, $timeout, $modal, OrderService, PagingModel) {
 
   var currentCustomer = $scope.selectedUserContext.customer;
 
-  /******
-  CARTS
-  ******/
-  $scope.loadingCarts = true;
-  CartService.getCartHeaders().finally(function(cartHeaders) {
-    $scope.carts = CartService.cartHeaders;
-    $scope.loadingCarts = false;
-  });
-
-  $scope.cartGuids = [];
-  $scope.toggleCart = function(guid) {
-    var idx = $scope.cartGuids.indexOf(guid);
-    if (idx === -1) {
-      $scope.cartGuids.push(guid);
-    } else {      
-      $scope.cartGuids.splice(idx, 1);
-    }
-  }
-
-  $scope.toggleAllCarts = function(allCartsSelected) {
-    if (allCartsSelected === true) {
-      $scope.carts.forEach(function(cart) {
-        $scope.cartGuids.push(cart.id);
-      });
-    } else {
-      $scope.cartGuids = [];
-    }
-  };
-
-  $scope.deleteCarts = function(cartGuids) {
-    CartService.deleteMultipleCarts(cartGuids).then(function() {
-      $scope.allCartsSelected = false;
-      $scope.cartGuids = [];
-      $scope.displayMessage('success', 'Successfully deleted carts.');
-    }, function() {
-      $scope.displayMessage('error', 'Error deleting carts.');
-    });
-  };
-
-  /******
-  ORDERS
-  ******/
   function setOrders(data) {
     $scope.orders = data.results;
     $scope.totalOrders = data.totalResults;

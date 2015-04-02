@@ -12,8 +12,7 @@ angular.module('bekApp')
     function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, Cart) {
 
     var Service = {
-      
-      cartHeaders: [],
+      carts: [],
       shipDates: [],
 
       // accepts "header: true" params to get only names
@@ -23,15 +22,15 @@ angular.module('bekApp')
           requestParams = {};
         }
 
-        return Cart.query(requestParams).$promise;
+        return Cart.query(requestParams).$promise.then(function(response) {
+          var allCarts = response;
+          angular.copy(allCarts, Service.carts);
+          return allCarts;
+        });
       },
 
       getCartHeaders: function() {
-        return Cart.query({header: true}).$promise
-          .then(function(cartHeaders) {
-            angular.copy(cartHeaders, Service.cartHeaders);
-            return cartHeaders;
-          });
+        return Service.getAllCarts({ header: true });
       },
 
       // accepts cartId (guid)
@@ -41,12 +40,23 @@ angular.module('bekApp')
           cartId: cartId,
         }).$promise.then(function(cart) {
           PricingService.updateCaculatedFields(cart.items);
+          // update cart in cache
+          var existingCart = UtilityService.findObjectByField(Service.carts, 'id', cart.id);
+          if (existingCart) {
+            var idx = Service.carts.indexOf(existingCart);
+            delete existingCart.items;
+            angular.copy(cart, Service.carts[idx]);
+          } else {
+            var newCart = angular.copy(cart);
+            delete newCart.items;
+            Service.carts.push(newCart);
+          }
           return cart;
         });
       },
 
       findCartById: function(cartId) {
-        return UtilityService.findObjectByField(Service.cartHeaders, 'id', cartId);
+        return UtilityService.findObjectByField(Service.carts, 'id', cartId);
       },
 
       // gets the default selected cart
@@ -57,15 +67,15 @@ angular.module('bekApp')
         }
         // go to active cart
         if (!selectedCart) {
-          angular.forEach(Service.cartHeaders, function(cart, index) {
+          angular.forEach(Service.carts, function(cart, index) {
             if (cart.active) {
               selectedCart = cart;
             }
           });
         }
         // go to first cart in list
-        if (!selectedCart && Service.cartHeaders && Service.cartHeaders.length > 0) {
-          selectedCart = Service.cartHeaders[0];
+        if (!selectedCart && Service.carts && Service.carts.length > 0) {
+          selectedCart = Service.carts[0];
         }
 
         return selectedCart;
@@ -94,7 +104,7 @@ angular.module('bekApp')
           }
         });
 
-        newCart.name = UtilityService.generateName('Cart', Service.cartHeaders);
+        newCart.name = UtilityService.generateName('Cart', Service.carts);
 
         newCart.requestedshipdate = shipDate;
         // default to next ship date
@@ -111,8 +121,7 @@ angular.module('bekApp')
 
         return Cart.save({}, newCart).$promise.then(function(response) {
           newCart.id = response.listitemid;
-          newCart.items = [];
-          Service.cartHeaders.push(newCart);
+          Service.carts.push(newCart);
           return newCart;
         });
       },
@@ -129,10 +138,10 @@ angular.module('bekApp')
           var data = response.data;
           if (data.success) {
             var cart = {
-              id: data.listid,
+              id: data.listid, // ****
               name: 'Imported Cart'
             };
-            Service.cartHeaders.push(cart);
+            Service.carts.push(cart);
 
             // display messages
             if (data.warningmsg) {
@@ -187,33 +196,21 @@ angular.module('bekApp')
         return Cart.delete({ 
           cartId: cartId 
         }).$promise.then(function(response) {
-          
-          // updte cart headers cache
+          // TODO: can I clean this up?
           var deletedCart = Service.findCartById(cartId);
-          var idx = Service.cartHeaders.indexOf(deletedCart);
-          Service.cartHeaders.splice(idx, 1);
-          
+          var idx = Service.carts.indexOf(deletedCart);
+          Service.carts.splice(idx, 1);
           return response;
         });
       },
 
-      deleteMultipleCarts: function(cartGuidArray) {
-        return $http.delete('/cart', {
-          headers:{'Content-Type': 'application/json'},
-          data: cartGuidArray
-        }).then(function() {
-
-          // update cart headers cache
-          var tempCarts = angular.copy(Service.cartHeaders);
-          tempCarts.forEach(function(cart, index) {
-            if (cartGuidArray.indexOf(cart.id) > -1) {
-              Service.cartHeaders.splice(index, 1);
-            }
+      deleteMultipleCarts: function(cartGuidArray)
+        {
+          return $http.delete('/cart', {
+            headers:{'Content-Type': 'application/json'},
+            data: cartGuidArray
           });
-
-          return;
-        });
-      },
+        },
 
       /********************
       EDIT SINGLE ITEM

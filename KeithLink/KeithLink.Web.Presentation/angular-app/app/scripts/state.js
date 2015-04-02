@@ -15,8 +15,7 @@ angular.module('bekApp')
     .state('register', {
       url: '/register/',
       templateUrl: 'views/register.html',
-      controller: 'RegisterController',
-      data: {}
+      controller: 'RegisterController'
     })
     .state('changepassword', {
         url: '/changepassword/',
@@ -46,8 +45,7 @@ angular.module('bekApp')
       templateUrl: 'views/home.html',
       controller: 'HomeController',
       data: {
-        authorize: 'isOrderEntryCustomer',
-        saveCarts: true
+        authorize: 'isOrderEntryCustomer'
       }
     })
     .state('menu.userprofile', {

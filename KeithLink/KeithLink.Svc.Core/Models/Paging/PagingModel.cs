@@ -20,8 +20,6 @@ namespace KeithLink.Svc.Core.Models.Paging
 		public FilterInfo Filter { get; set; }
 		[DataMember(Name = "terms")]
 		public string Terms { get; set; }
-		[DataMember(Name = "type")]
-		public string Type { get; set; }
 	}
 
 	

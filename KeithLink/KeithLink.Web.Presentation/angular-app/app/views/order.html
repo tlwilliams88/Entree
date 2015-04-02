@@ -144,7 +144,7 @@
         </td>
         <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
-        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY' }}</td>
+        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'ddd, MMM D, YYYY' }}</td>
         <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
         <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
         <td 
@@ -165,7 +165,7 @@
             </colgroup>
             <tr>
               <td>Delivery Date</td>
-              <td>{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY'}}</td>
+              <td>{{order.deliverydate || 'N/A' | formatDate:'ddd, MMM D, YYYY'}}</td>
             </tr>
             <tr>
               <td>Item Count</td>

@@ -177,9 +177,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 				case "P":
 					retVal.Status = "Processing";
 					break;
-				case "D":
-					retVal.Status = "Deleted";
-					break;
 				default:
 					retVal.Status = "Unknown";
 					break;

@@ -25,7 +25,7 @@ angular.module('bekApp')
             return basketFound.ordernumber;
           }
         }
-        if (!basketFound && CartService.cartHeaders.length) {
+        if (!basketFound && CartService.carts.length) {
           basketFound = CartService.getSelectedCart();
           if (basketFound) {
             return basketFound.id;
