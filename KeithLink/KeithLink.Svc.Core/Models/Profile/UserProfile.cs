@@ -54,8 +54,8 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "userid")]
         public Guid UserId {get;set;}
 
-		public bool IsDSR { get { return RoleName.Equals("dsr", StringComparison.CurrentCultureIgnoreCase); } }
-        public bool IsDSM { get { return RoleName.Equals("dsm", StringComparison.CurrentCultureIgnoreCase); } }
+		public bool IsDSR { get { return RoleName.Equals(Constants.ROLE_NAME_DSR, StringComparison.CurrentCultureIgnoreCase); } }
+        public bool IsDSM { get { return RoleName.Equals(Constants.ROLE_NAME_DSM, StringComparison.CurrentCultureIgnoreCase); } }
 
         [DataMember( Name = "imageurl" )]
         public string ImageUrl { get; set; }
@@ -75,7 +75,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "defaultcustomer")]
 		public Customer DefaultCustomer { get; set; }
 
-        [DataMember(Name = "iskbitcustomer")]
+        [DataMember(Name="iskbitcustomer")]
         public bool IsKBITCustomer { get; set; }
 
         [DataMember( Name = "ispowermenucustomer" )]

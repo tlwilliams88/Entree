@@ -152,8 +152,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			}
 		}
 
-        private void SendToError(string errorOrder) {
-            _orderQueue.PublishToQueue(errorOrder, Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Error));
+        private void SendToError(Exception ex, string errorOrder) {
+			_orderQueue.PublishToQueue(errorOrder, Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Error));
+			KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, string.Format("Original order message: \r\n\r\n {0}", errorOrder), "An order has been placed on the Order Error Queue");
         }
 
         private void SendToHistory(string historyOrder)
@@ -206,7 +207,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     if (ex is EarlySocketException || ex is CancelledTransactionException) {
                         SendToReprocess(rawOrder);
                     } else {
-                        SendToError(rawOrder);
+                        SendToError(ex, rawOrder);
                     }
 
                     throw;

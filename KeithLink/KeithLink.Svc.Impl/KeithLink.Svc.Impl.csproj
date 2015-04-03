@@ -175,6 +175,7 @@
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.DirectoryServices.Protocols" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -220,6 +221,7 @@
     <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalReportLogic.cs" />
+    <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
@@ -485,6 +487,18 @@
     <Compile Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.Designer.cs">
       <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201503252011522_Remove_List_UserID_Index.cs" />
+    <Compile Include="Repository\EF\Migrations\201503252011522_Remove_List_UserID_Index.Designer.cs">
+      <DependentUpon>201503252011522_Remove_List_UserID_Index.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.cs" />
+    <Compile Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.Designer.cs">
+      <DependentUpon>201503252013412_UserId_On_List_Nullable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.cs" />
+    <Compile Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.Designer.cs">
+      <DependentUpon>201503272112289_ListItem column lengths and indexes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -515,6 +529,7 @@
     <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
+    <Compile Include="Repository\Invoices\ImagingRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\NoInvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\TermRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListShareRepositoryImpl.cs" />
@@ -998,6 +1013,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201503191535488_add_each_to_listitem.resx">
       <DependentUpon>201503191535488_add_each_to_listitem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503252011522_Remove_List_UserID_Index.resx">
+      <DependentUpon>201503252011522_Remove_List_UserID_Index.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503252013412_UserId_On_List_Nullable.resx">
+      <DependentUpon>201503252013412_UserId_On_List_Nullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.resx">
+      <DependentUpon>201503272112289_ListItem column lengths and indexes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

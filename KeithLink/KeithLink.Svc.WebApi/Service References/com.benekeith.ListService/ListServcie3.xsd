@@ -146,7 +146,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="pack" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="pack" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="packageprice" nillable="true" type="xs:string">
         <xs:annotation>
           <xs:appinfo>
@@ -176,7 +182,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="size" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="size" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="temp_zone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="upc" nillable="true" type="xs:string">
         <xs:annotation>

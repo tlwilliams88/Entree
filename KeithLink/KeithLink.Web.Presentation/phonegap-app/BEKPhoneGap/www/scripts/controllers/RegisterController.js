@@ -39,10 +39,7 @@ angular.module('bekApp')
       }
       $scope.redirectUserToCorrectHomepage();
     }, function(errorMessage) {
-      $scope.loginErrorMessage = 'Error authenticating user.';
-      if (errorMessage) {
-        $scope.loginErrorMessage = errorMessage;  
-      }
+      $scope.loginErrorMessage = errorMessage;
     });
 
   };

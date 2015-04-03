@@ -429,9 +429,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
                 if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber)) {
                     // lookup customers by their assigned dsr number
-                    return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+                    return _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
 
-                } else if (user.RoleName == "branchismanager") {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
                     return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
                 } else { // assume admin user with access to all customers
@@ -439,7 +439,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
             } else // external user
 			{
-                return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
+				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
+					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+				else
+					return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
             }
         }
 
@@ -455,6 +458,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             //List<Customer> userCustomers;
             string dsrRole = string.Empty;
             string dsrNumber = string.Empty;
+			string dsmNumber = string.Empty;
             string dsmRole = string.Empty;
             string userRole = string.Empty;
             string userBranch = string.Empty;
@@ -469,27 +473,35 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Svc.Core.Constants.INTERNAL_USER_ROLES);
 
                 if (internalUserRoles.Intersect(Constants.BEK_SYSADMIN_ROLES).Count() > 0) {
-                    userRole = "beksysadmin";
+                    userRole = Constants.ROLE_NAME_SYSADMIN;
                 } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
-                    userRole = "branchismanager";
+                    userRole = Constants.ROLE_NAME_BRANCHIS;
                     userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0){
+                    userRole = Constants.ROLE_NAME_POWERUSER;
+                    userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
                 } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
                     dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
-                    userRole = "dsm";
+                    userRole = Constants.ROLE_NAME_DSM;
                     userBranch = dsmRole.Substring(0, 3);
-                    dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                    dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
                 } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
                     dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
-                    userRole = "dsr";
+                    userRole = Constants.ROLE_NAME_DSR;
                     dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
                     userBranch = dsrRole.Substring(0, 3);
                 } else {
-                    userRole = "guest";
+                    userRole = Constants.ROLE_NAME_GUEST;
                 }
-
             } else {
                 adUser = _extAd.GetUser(csProfile.Email);
-                userRole = GetUserRole(csProfile.Email);
+
+                if (_extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitAdmin)) {
+                    userRole = Constants.ROLE_NAME_KBITADMIN;
+                } else {
+                    userRole = GetUserRole(csProfile.Email);
+                }
+
                 userBranch = csProfile.DefaultBranch;
                 isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
                 isPowerMenuCustomer = _extAd.HasAccess( csProfile.Email, Configuration.AccessGroupPowerMenuCustomer );
@@ -512,6 +524,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 RoleName = userRole,
                 DSMRole = dsmRole,
                 DSRNumber = dsrNumber,
+				DSMNumber = dsmNumber,
                 //UserCustomers = userCustomers,
                 ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
                 UserName = adUser.SamAccountName,
@@ -669,6 +682,33 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return returnedMsgPrefModel;
         }
 
+		public List<ProfileMessagingPreferenceModel> GetMessagingPreferencesForCustomer(Guid guid, string customerId, string branchId)
+		{
+			var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
+			var customer = _customerRepo.GetCustomerByCustomerNumber(customerId, branchId);
+			if (customer == null)
+				return null;
+
+
+			var returnedMsgPrefModel = new List<ProfileMessagingPreferenceModel>();
+			//first load user preferences
+			returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+			{
+				Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, null)
+			});
+			//then load customer preferences
+			
+			returnedMsgPrefModel.Add(new ProfileMessagingPreferenceModel()
+			{
+				CustomerNumber = customer.CustomerNumber,
+				BranchId = customer.CustomerBranch,
+				Preferences = BuildPreferenceModelForEachNotificationType(currentMessagingPreferences, customer.CustomerNumber)
+			});
+
+			return returnedMsgPrefModel;
+		}
+
+
         public List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "") {
             List<Customer> allCustomers = new List<Customer>();
             if (string.IsNullOrEmpty(search))
@@ -680,7 +720,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 } else if (!String.IsNullOrEmpty(user.DSMRole)) {
                     //lookup customers by their assigned dsm number
                     _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
-                } else if (user.RoleName == "branchismanager") {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId);
                     else
@@ -873,6 +913,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     return;
             }
 
+            _eventLog.WriteInformationLog(string.Format("Granting role access in active directory ({0}, {1})", emailAddress, appRoleName));
+
             _extAd.GrantAccess(emailAddress, appRoleName);
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
@@ -960,6 +1002,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             // load all of the customers into the kbit app request
             kbitAppRequest.Customers = (from customer in customers
                                         select new UserSelectedContext() { BranchId = customer.CustomerBranch, CustomerId = customer.CustomerNumber }).ToList();
+
+            _eventLog.WriteInformationLog(string.Format("Sending KBIT Authorization Request to the queue ({0}, {1}", emailAddress, kbitAppRequest.ToJSON()));
 
             // put the kbit app request in the queue
             SubmitExternalApplicationRequest(kbitAppRequest);

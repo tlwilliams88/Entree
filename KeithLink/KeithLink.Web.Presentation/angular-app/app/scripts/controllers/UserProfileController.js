@@ -7,7 +7,7 @@ angular.module('bekApp')
   var init = function(){
     $scope.branches = branches;
     
-    MessagePreferenceService.getPreferencesForCustomer(null).then(function (preferences) {
+    MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
       $scope.defaultPreferences = preferences;
     });
   };

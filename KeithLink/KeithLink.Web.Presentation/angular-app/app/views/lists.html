@@ -109,7 +109,7 @@
     <ul class="dropdown-menu" role="menu">
       <li ng-repeat="list in lists | sortLists track by list.listid" ng-show="list.listid !== selectedList.listid">
         <a ng-click="goToList(list, selectedCart)">
-          {{::list.name}}
+          {{list.name}}
         </a>
       </li>
       <li><a ng-click="createList()">Create a List...</a></li>
@@ -130,7 +130,7 @@
       ng-click="goToList(list)" 
       ng-class="{'current-list' : list.listid == selectedList.listid}" 
       class="custom-lists__name btn btn-default btn-list">
-      {{::list.name}}
+      {{list.name}}
     </button>
     <button 
       type="button" 
@@ -159,12 +159,10 @@
               data-drop="isDragging && list.permissions.canAddItems" 
               data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
               jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}">
-              {{::list.name}}
+              {{list.name}}
             </button>
           </div>
           <h5>
-
-            <!-- <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a> -->
             <a 
               ng-show="lists.length > numberListNamesToShow" 
               ng-click="showMoreListNames = !showMoreListNames">
@@ -230,7 +228,7 @@
         <p class="text-red" ng-show="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
       </div>
       
-      <div class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+      <form name="listSearchForm" class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
         <div class="input-group input-group-lg">
           <input 
             ng-model="listSearchTerm"
@@ -238,10 +236,12 @@
             class="form-control" 
             placeholder="Search current list by keyword, item # or label" />
           <span class="input-group-btn">
-            <button type="button" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="submit" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+
           </span>
         </div>
-      </div>
+      </form>
 
       <!-- Multi-select menu -->
       <div class="hidden-print row" ng-show="(selectedList.items | filter:{isSelected:'true'}).length > 0">
@@ -305,10 +305,10 @@
 
       <div class="row sub-content">
         <div class="col-xs-5">
-          {{ (selectedList.items | filter:{isSelected:'true'}).length }} Items Selected
+          {{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected
         </div>
         <div class="text-right col-xs-7">
-          Showing {{::selectedList.items.length - 1}} of {{::selectedList.itemCount}} Items    
+          Showing {{(selectedList.items|filter:{isdeleted:'false'}).length}} of {{selectedList.itemCount}} Items    
         </div>
       </div>
 

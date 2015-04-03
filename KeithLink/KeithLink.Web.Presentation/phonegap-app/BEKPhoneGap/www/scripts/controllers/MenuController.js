@@ -47,11 +47,11 @@ angular.module('bekApp')
     downloadDataForOfflineStorage();
   }
 
-  function saveAllItems(items, tableName, keyField) {
-    items.forEach(function(item) {
-      PhonegapDbService.setItem(tableName, item[keyField], item);
-    });
-  }
+  // function saveAllItems(items, tableName, keyField) {
+  //   items.forEach(function(item) {
+  //     PhonegapDbService.setItem(tableName, item[keyField], item);
+  //   });
+  // }
 
   function clearOfflineStorageTables() {
     console.log('clearing tables');
@@ -61,11 +61,27 @@ angular.module('bekApp')
     ]);
   }
 
+  function getAllLists(listHeaders) {
+    listHeaders.forEach(function(list) {
+      ListService.getListWithItems(list.listid).then(function(listWithItems) {
+        PhonegapDbService.setItem(db_table_name_lists, listWithItems.listid, listWithItems);
+      });
+    })
+  }
+
+  function getAllCarts(cartHeaders) {
+    cartHeaders.forEach(function(cart) {
+      CartService.getCart(cart.id).then(function(cartWithItems) {
+        PhonegapDbService.setItem(db_table_name_carts, cartWithItems.id, cartWithItems);
+      });
+    })
+  }
+
   function downloadDataForOfflineStorage() {
     return $q.all([
-      ListService.getAllLists(),
+      ListService.getListHeaders(),
       ListService.getAllLabels(),
-      CartService.getAllCarts(),
+      CartService.getCartHeaders(),
       CartService.getShipDates()
       ]).then(function(results) {
         var lists = results[0];
@@ -73,10 +89,11 @@ angular.module('bekApp')
         var carts = results[2];
         var shipDates = results[3];
 
-        
         clearOfflineStorageTables().then(function() {
-          saveAllItems(lists, db_table_name_lists, 'listid');
-          saveAllItems(carts, db_table_name_carts, 'id');
+          getAllLists(lists);
+          getAllCarts(carts);
+          // saveAllItems(lists, db_table_name_lists, 'listid');
+          // saveAllItems(carts, db_table_name_carts, 'id');
           PhonegapLocalStorageService.setLabels(labels);  
           PhonegapLocalStorageService.setShipDates(shipDates);
         });

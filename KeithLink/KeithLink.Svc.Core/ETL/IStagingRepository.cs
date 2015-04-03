@@ -24,5 +24,7 @@ namespace KeithLink.Svc.Core.ETL
         DataTable ReadDsrInfo();
         DataTable ReadDsrImages();
 		void ProcessInvoices();
+		void ProcessContractItems();
+		void ProcessWorksheetItems();
     }
 }

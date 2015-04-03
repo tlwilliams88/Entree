@@ -36,8 +36,8 @@
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
             this.serviceInstaller1.Description = "Polls RabbitMQ orders_created queue for orders to send to the mainframe";
-            this.serviceInstaller1.DisplayName = "KeithLink Order Service";
-            this.serviceInstaller1.ServiceName = "KeithLink Order Service";
+            this.serviceInstaller1.DisplayName = "Entree Order Service";
+            this.serviceInstaller1.ServiceName = "Entree Order Service";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller

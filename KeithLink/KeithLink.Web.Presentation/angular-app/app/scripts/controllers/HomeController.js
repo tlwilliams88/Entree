@@ -1,5 +1,5 @@
 'use strict';
-
+ 
 /**
  * @ngdoc function
  * @name bekApp.controller:HomeController
@@ -11,10 +11,27 @@ angular.module('bekApp')
   .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService', 'Constants',
     function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService, Constants) {
     
+    $scope.numOrdersToDisplay = 6;
+    $scope.numCartsToDisplay = 4;
+    
+    // get carts
+    $scope.loadingCarts = true;
+    CartService.getCartHeaders().then(function(carts) {
+      $scope.homeCarts = carts;
+      delete $scope.cartMessage;
+      $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
+      $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
+    }, function() {
+      $scope.cartMessage = 'Error loading carts.';
+    }).finally(function() {
+      $scope.loadingCarts = false;
+    });
+ 
+    // get orders
     $scope.loadingOrders = true;
     OrderService.getOrders({
       from: 0,
-      size: 4,
+      size: 6,
       sort:  [{
         field: 'createddate',
         order: 'desc'
@@ -27,7 +44,8 @@ angular.module('bekApp')
     }).finally(function() {
       $scope.loadingOrders = false;
     });
-
+ 
+    // get promo/marketing items
     $scope.loadingPromoItems = true;
     MarketingService.getPromoItems().then(function(items) {
       $scope.promoItems = items;
@@ -37,7 +55,8 @@ angular.module('bekApp')
     }).finally(function() {
       $scope.loadingPromoItems = false;
     });
-
+ 
+    // get account info
     $scope.loadingAccountBalance = true;
     CustomerService.getAccountBalanceInfo().then(function(data) {
       $scope.selectedUserContext.customer.balance = data.balance;
@@ -45,13 +64,13 @@ angular.module('bekApp')
       $scope.loadingAccountBalance = false;
     });
  
-    $scope.createNewCart = function() {
-      return CartService.createCart().then(function(cartId) {
-        CartService.setActiveCart(cartId);
-        $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
-      });
-    };
-
+    // $scope.createNewCart = function() {
+    //   return CartService.createCart().then(function(cartId) {
+    //     CartService.setActiveCart(cartId);
+    //     $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
+    //   });
+    // };
+ 
     $scope.showPromoItemContent = function(promoItem) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/promoitemcontentmodal.html',
@@ -63,25 +82,25 @@ angular.module('bekApp')
         }
       });
     };
-
+ 
     $scope.openQuickAddModal = function() {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/cartquickaddmodal.html',
         controller: 'CartQuickAddModalController'
       });
-
+ 
       modalInstance.result.then(function(cartId) {
         $state.go('menu.cart.items', {cartId: cartId});
       });
     };
-
+ 
     $scope.openOrderImportModal = function () {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/orderimportmodal.html',
         controller: 'ImportModalController'
       });
     };
-
+ 
     $scope.showAdditionalInfo = function(notification) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/notificationdetailsmodal.html',
@@ -95,7 +114,7 @@ angular.module('bekApp')
         }
       });
     };
-
+ 
     $scope.notificationParams = {
       size: 6,
       from:0,
@@ -104,7 +123,7 @@ angular.module('bekApp')
         order: 'desc'
       }]
     };
-
+ 
     $scope.loadingRecentActivity = true;
       NotificationService.getMessages($scope.notificationParams).then(function(data) {
         var notifications =data.results,
@@ -125,5 +144,5 @@ angular.module('bekApp')
       $scope.dates = dates;      
       $scope.loadingRecentActivity = false;
     });
-
+ 
   }]);

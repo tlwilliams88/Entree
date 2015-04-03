@@ -44,13 +44,20 @@ angular.module('bekApp')
     $scope.loadingResults = false;
     $scope.sortBy = null;
     $scope.sortOrder = false;
-    
+    CartService.updateNetworkStatus();
+    $scope.isOffline = CartService.isOffline;
     $scope.carts = CartService.carts;
     $scope.shipDates = CartService.shipDates;
     $scope.changeOrders = angular.copy(changeOrders);
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+    $scope.$watch(function () { return CartService.isOffline }, function (newVal, oldVal) {
+      if (typeof newVal !== 'undefined') {
+        $scope.isOffline = CartService.isOffline;
+      }
+    });
 
     if (!$scope.isChangeOrder) {
       CartService.setActiveCart($scope.currentCart.id);
@@ -95,6 +102,11 @@ angular.module('bekApp')
       $state.go('menu.cart.items', {cartId: cartId, renameCart: null} );
     };
 
+    $scope.cancelChanges = function() {
+      $scope.currentCart = angular.copy(originalBasket);
+      $scope.cartForm.$setPristine();
+    };
+
     $scope.startEditCartName = function(cartName) {
       $scope.editCart = {};
       $scope.editCart.name = angular.copy(cartName);
@@ -104,8 +116,15 @@ angular.module('bekApp')
     $scope.selectShipDate = function(shipDate) {
       $scope.currentCart.requestedshipdate = shipDate.shipdate;
       $scope.selectedShipDate = shipDate;
-      $scope.cartForm.$setDirty();
+      
+      if($scope.cartForm){
+        $scope.cartForm.$setDirty();
+       }
     };
+
+      if($scope.currentCart && !$scope.currentCart.requestedshipdate){      
+          $scope.selectShipDate($scope.shipDates[0]);   
+      }
 
     $scope.sortByPrice = function(item) {
       // if (item.price) {
@@ -212,6 +231,13 @@ angular.module('bekApp')
         processingSaveChangeOrder = true;
 
         var changeOrder = angular.copy(order);
+
+        changeOrder.items.forEach(function(item) {
+          if (typeof item.quantity == 'string') {
+            item.quantity = parseInt(item.quantity, 10);
+          }
+        });
+
         changeOrder.items = $filter('filter')( changeOrder.items, function(item){ 
           return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 
         });
@@ -219,6 +245,13 @@ angular.module('bekApp')
         return OrderService.updateOrder(changeOrder).then(function(order) {
           $scope.currentCart = order;
           $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
+
+          // recalculate ext price
+          $scope.currentCart.items.forEach(function(item) {
+            item.extPrice = PricingService.getPriceForItem(item);
+          });
+
+          $scope.cartForm.$setPristine();
           $scope.displayMessage('success', 'Successfully updated change order.');
           return order.ordernumber;
         }, function(error) {
@@ -303,6 +336,11 @@ angular.module('bekApp')
         // set quantity
         items.forEach(function(item) {
           item.quantity = Math.ceil(item.parlevel - item.qtyInCart) || 1;
+
+          if ($scope.isChangeOrder) {
+            item.price = item.each ? item.packageprice : item.caseprice;
+          }
+
         });
 
         // add watches to new items to update price

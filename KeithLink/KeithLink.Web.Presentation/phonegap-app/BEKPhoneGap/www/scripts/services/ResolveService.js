@@ -56,14 +56,17 @@ angular.module('bekApp')
         // check valid change order number
         var selectedChangeOrder = OrderService.findChangeOrderByOrderNumber(changeOrders, basketId);
         if (!selectedCart && selectedChangeOrder) {
-          selectedBasket = selectedChangeOrder;
+          selectedBasket = OrderService.getOrderDetails(basketId);
         }
         return selectedBasket;
       },
 
       // returns valid list id
-      validateList: function(listId) {
+      validateList: function(listId, defaultList) {
         var selectedList = ListService.findListById(listId);
+        if (!selectedList && defaultList) {
+          selectedList = ListService.findList(defaultList, true);
+        }
         if (!selectedList) {
           selectedList = ListService.getFavoritesList();
         }

@@ -22,7 +22,7 @@ angular.module('bekApp')
         });
       }
 
-      Service.getAllCarts = function() {
+      Service.getAllCarts = function(params) {
         if (navigator.connection.type === 'none') {
           console.log('getting carts from DB');
           // TEST: keep db carts up to date while online
@@ -32,7 +32,7 @@ angular.module('bekApp')
           });
         } else {
           console.log('getting all carts from server');
-          return originalCartService.getAllCarts();
+          return originalCartService.getAllCarts(params);
         }
       };
 
@@ -144,6 +144,7 @@ angular.module('bekApp')
 
       Service.addItemToCart = function(cartId, item) {
         if (navigator.connection.type === 'none') {
+          var deferred = $q.defer();
           if (!item.quantity || item.quantity === 0) {
             item.quantity = 1;
           }
@@ -157,7 +158,8 @@ angular.module('bekApp')
           }
 
           PhonegapDbService.setItem(db_table_name_carts, cartId, updatedCart);
-          return item;
+          deferred.resolve(item);
+          return deferred.promise;
         } else {
           return originalCartService.addItemToCart(cartId, item);
         }
@@ -172,7 +174,8 @@ angular.module('bekApp')
             items.forEach(function(item) {
               item.cartitemid = generateId();
               item.isNew = true;
-            })
+            });
+
             cartFound.items = cartFound.items.concat(items);
             PhonegapDbService.setItem(db_table_name_carts, cartFound.id, cartFound);
             deferred.resolve(cartFound);
@@ -229,7 +232,7 @@ angular.module('bekApp')
          
           $q.all(promises).then(function() {
             console.log('carts updated!');
-
+            originalCartService.updateNetworkStatus();
             //update from server and remove deleted array
             PhonegapDbService.dropTable(db_table_name_carts)
               .then(Service.getAllCarts);

@@ -17,6 +17,7 @@
         <xs:sequence>
           <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q2:ListType" />
           <xs:element minOccurs="0" name="category" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="each" nillable="true" type="xs:boolean" />
           <xs:element minOccurs="0" name="fromdate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="isdeleted" type="xs:boolean" />
           <xs:element minOccurs="0" name="label" nillable="true" type="xs:string" />

@@ -212,11 +212,11 @@ namespace KeithLink.Svc.Windows.OrderService {
         protected override void OnStart(string[] args) {
             _log.WriteInformationLog("Service starting");
 
-            InitializeConfirmationThread();
-            InitializeHistoryRequestTimer();
-            InitializeHistoryResponseThread();
-            InitializeOrderUpdateTimer();
-            InitializeQueueTimer();
+			InitializeConfirmationThread();
+			InitializeHistoryRequestTimer();
+			InitializeHistoryResponseThread();
+			InitializeOrderUpdateTimer();
+			InitializeQueueTimer();
         }
 
         protected override void OnStop() {
@@ -338,70 +338,63 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                     if (_allowOrderUpdateProcessing) {
                         string[] files = Directory.GetFiles(Configuration.OrderUpdateWatchPath);
+						GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
 
-                        foreach (string filePath in files) {
-							UnitOfWork uow = new UnitOfWork(_log);
-                            OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
-
-                            //ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                            //                                                                   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                            //                                                                   new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl(),
-                            //                                                                   conversionLogic, 
-                            //                                                                   uow);
-
-                            KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl divRepo = new KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
-
-                            KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic = 
-                            new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(), 
-                                                                                          new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
-																																	  new NoCacheRepositoryImpl() ),
-                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(), 
-                                                                                          new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
-                                                                                          divRepo,
-                                                                                          new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
-																						  new NoCacheRepositoryImpl(),
-                                                                                          new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo, 
-                                                                                                                                         new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
-                                                                                          new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
-                            OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
+						
+						System.Threading.Tasks.Parallel.ForEach(files, filePath =>
+						{
+							OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
 																				   new GenericQueueRepositoryImpl(),
-                                                                                   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+																				   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
 
-                            if (CanOpenFile(filePath)) {
-                                OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
+							if (CanOpenFile(filePath))
+							{
+								var items = new System.Collections.Concurrent.BlockingCollection<string>();
+				
+								OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
+								System.Threading.Tasks.Parallel.ForEach(parsedFile.Files, file =>
+								{
 
-                                foreach (OrderHistoryFile file in parsedFile.Files) {
-                                    // do not upload an order file with an invalid header
-                                    if (file.ValidHeader) {
-                                        file.SenderApplicationName = Configuration.ApplicationName;
-                                        file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
+									// do not upload an order file with an invalid header
+									if (file.ValidHeader)
+									{
+										file.SenderApplicationName = Configuration.ApplicationName;
+										file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
 
-                                        try {
-                                            var jsonValue = JsonConvert.SerializeObject(file);
-                                            GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
-                                            repo.PublishToQueue(jsonValue, Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
+										try
+										{
+											var jsonValue = JsonConvert.SerializeObject(file);
+											items.Add(jsonValue);
+											StringBuilder logMsg = new StringBuilder();
+											logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
+											logMsg.AppendLine();
+											logMsg.AppendLine(jsonValue);
 
-                                            StringBuilder logMsg = new StringBuilder();
-                                            logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
-                                            logMsg.AppendLine();
-                                            logMsg.AppendLine(jsonValue);
+											_log.WriteInformationLog(logMsg.ToString());
 
-                                            _log.WriteInformationLog(logMsg.ToString());
+											_silenceOrderUpdateMessages = false;
+										}
+										catch (Exception ex)
+										{
+											if (!_silenceOrderUpdateMessages)
+											{
+												HandleException(ex);
+												_silenceOrderUpdateMessages = true;
+												
+											}
+										}
+									}
+								});
 
-                                            _silenceOrderUpdateMessages = false;
-                                        } catch (Exception ex) {
-                                            if (!_silenceOrderUpdateMessages) {
-                                                HandleException(ex);
-                                                _silenceOrderUpdateMessages = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
+								if (items.Count > 0)
+									repo.BulkPublishToQueue(items.ToList(), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
+						
+								System.IO.File.Delete(filePath);
+							} // end if CanOpenFile
+						});
 
-                                System.IO.File.Delete(filePath);
-                            } // end if CanOpenFile
-                        }
+											
+
                     }
                 } catch (Exception ex) {
                     HandleException(ex);

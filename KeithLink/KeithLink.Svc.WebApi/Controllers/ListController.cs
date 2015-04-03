@@ -257,13 +257,30 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		}
 
-		[HttpGet]
+		[HttpPost]
 		[ApiKeyedRoute("list/print/{listId}")]
-		public HttpResponseMessage Print(long listId)
+		public HttpResponseMessage Print(long listId, PagingModel paging)
 		{
 			try
 			{
-				var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+
+				if (!string.IsNullOrEmpty(paging.Terms))
+				{
+					//Build filter
+					paging.Filter = new FilterInfo()
+					{
+						Field = "ItemNumber",
+						FilterType = "contains",
+						Value = paging.Terms,
+						Condition = "||",
+						Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = paging.Terms, FilterType = "contains" }, new FilterInfo() { Condition = "||", Field = "Name", Value = paging.Terms, FilterType = "contains" } }
+					};
+				}
+
+				paging.Size = int.MaxValue;
+				paging.From = 0;
+
+				var list = listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, paging);
 
 				if (list == null)
 					return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };

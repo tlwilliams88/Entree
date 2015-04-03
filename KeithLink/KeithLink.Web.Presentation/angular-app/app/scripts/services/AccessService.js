@@ -8,10 +8,8 @@ angular.module('bekApp')
   function isValidToken() {
     var token = LocalStorage.getToken();
     var now = new Date();
-    return (now < new Date(token.expires_at));
+    return (token && now < new Date(token.expires_at));
   }
-
-  // ROLES
 
   // EXTERNAL
   function isOwner() {
@@ -45,6 +43,13 @@ angular.module('bekApp')
   function isDsm() {
     return ( LocalStorage.getUserRole() === Constants.roles.DSM );
   }
+  function isKbitAdmin() {
+    return ( LocalStorage.getUserRole() === Constants.roles.KBIT_ADMIN );
+  }
+
+  function isValidRole() {
+    return ( isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() || isSysAdmin() || isBranchManager() || isPowerUser() || isDsr() || isDsm() || isKbitAdmin() );
+  }
 
   var Service = {
 
@@ -66,12 +71,15 @@ angular.module('bekApp')
         case Constants.roles.SYS_ADMIN:
           displayRole = 'Sys Admin';
           break;
+        case Constants.roles.KBIT_ADMIN:
+          displayRole = 'KBIT Admin';
+          break;
       }
       return displayRole;
     },
 
     isLoggedIn: function() {
-      return !!(LocalStorage.getToken() && LocalStorage.getProfile() && isValidToken());
+      return !!(LocalStorage.getProfile() && isValidToken() && isValidRole());
     },
 
     isPasswordExpired: function() {
@@ -83,7 +91,7 @@ angular.module('bekApp')
     },
 
     isInternalAccountAdminUser: function() {
-      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isBranchManager() || isPowerUser() ) );
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() ) );
     },
 
     // PRIVILEDGES
@@ -113,7 +121,7 @@ angular.module('bekApp')
     },
 
     canGrantAccessToOtherServices: function() {
-      return ( isSysAdmin() );
+      return ( isSysAdmin() || isKbitAdmin() );
     },
 
     canViewCustomerGroups: function() {
@@ -121,7 +129,7 @@ angular.module('bekApp')
     },
 
     canManageCustomerGroups: function() {
-      return ( isSysAdmin() || isBranchManager() );
+      return ( isSysAdmin() || isKbitAdmin() || isBranchManager() );
     },
 
     canViewCustomerGroupDashboard: function() {
@@ -129,7 +137,7 @@ angular.module('bekApp')
     },
 
     canEditUsers: function() {
-      return ( isSysAdmin() || isBranchManager() || isOwner() );
+      return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
     }
 
   };

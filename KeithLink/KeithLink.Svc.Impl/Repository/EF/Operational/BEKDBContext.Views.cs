@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets9ee57868c86098c5939e184ebda75ca623e38702e33e931e9955aa8ce56fb19a))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsb905f5ddc9a09ff5e84bba6851f677bfff685a9143e7a67a8afab8a7053f67b9))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets9ee57868c86098c5939e184ebda75ca623e38702e33e931e9955aa8ce56fb19a : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySetsb905f5ddc9a09ff5e84bba6851f677bfff685a9143e7a67a8afab8a7053f67b9 : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "9ee57868c86098c5939e184ebda75ca623e38702e33e931e9955aa8ce56fb19a"; }
+            get { return "b905f5ddc9a09ff5e84bba6851f677bfff685a9143e7a67a8afab8a7053f67b9"; }
         }
 
         /// <summary>

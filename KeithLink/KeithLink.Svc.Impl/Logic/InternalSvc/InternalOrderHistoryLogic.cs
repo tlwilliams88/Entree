@@ -144,7 +144,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 																			  h.CustomerNumber.Equals(customerInfo.CustomerId),
 																			d => d.OrderDetails);
 
-			return LookupControlNumberAndStatus(headers).AsQueryable().GetPage(paging);
+			return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
 		}
 
 		public void StopListening()
@@ -168,9 +168,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			{
 				System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
-				int loopCnt = 0;
-				
-
 				try
 				{
 					var rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
@@ -186,21 +183,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 						Create(historyFile);
 						_conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
-						rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
-
-						if (loopCnt++ == 100)
-						{
-							_unitOfWork.SaveChangesAndClearContext();
-							loopCnt = 0;
-						}
-					}
-
-					if (loopCnt > 0)
-					{
 						_unitOfWork.SaveChangesAndClearContext();
-						
-						loopCnt = 0;
+
+						rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+												
 					}
+										
 				}
 				catch (Exception ex)
 				{
@@ -218,7 +206,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
 
 			// second attempt to find the order, look by confirmation number
-			if (header == null) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
+			if (header == null && !string.IsNullOrEmpty(currentFile.Header.ControlNumber)) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
 
 			// last ditch effort is to create a new header
 			if (header == null)
@@ -229,7 +217,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 			currentFile.Header.MergeWithEntity(ref header);
 
-			foreach (OrderHistoryDetail currentDetail in currentFile.Details)
+			foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
 			{
 
                 EF.OrderHistoryDetail detail = null;
@@ -244,7 +232,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					tempDetail.BranchId = header.BranchId;
 					tempDetail.InvoiceNumber = header.InvoiceNumber;
 
-					header.OrderDetails.Add(currentDetail.ToEntityFrameworkModel());
+					header.OrderDetails.Add(tempDetail);
 				}
 				else
 				{
@@ -258,7 +246,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			_headerRepo.CreateOrUpdate(header);
 		}
 		
-		private List<Order> LookupControlNumberAndStatus(IEnumerable<EF.OrderHistoryHeader> headers)
+		private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers)
 		{
 			var customerOrders = new BlockingCollection<Order>();
 			foreach (var h in headers)
@@ -276,6 +264,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         {
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
+							returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
 
 							//if (po.Properties["LineItems"] != null)
 							//{
@@ -289,6 +278,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 							//	}
 							//}
                         }
+
+						var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
+						if (invoice != null)
+						{
+							returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+							
+						}
+
                     }
 
                     if (returnOrder.ActualDeliveryTime != null)
@@ -374,14 +371,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
 																			   h.CustomerNumber.Equals(customerInfo.CustomerId),
 																		  d => d.OrderDetails);
-			return LookupControlNumberAndStatus(headers);
+			return LookupControlNumberAndStatus(customerInfo,headers);
 		}
 		
 		private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate)
 		{
 			IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
 																			   h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
-			return LookupControlNumberAndStatus(headers);
+			return LookupControlNumberAndStatus(customerInfo, headers);
 		}
 		
 		private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders)

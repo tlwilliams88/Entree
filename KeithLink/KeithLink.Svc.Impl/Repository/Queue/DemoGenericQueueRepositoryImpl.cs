@@ -112,6 +112,12 @@ namespace KeithLink.Svc.Impl.Repository.Queue
 
 		}
 
+
+
+		public void BulkPublishToQueue(List<string> items, string server, string username, string password, string virtualHost, string exchange)
+		{
+			
+		}
 	}
 
 

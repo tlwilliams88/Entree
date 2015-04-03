@@ -36,7 +36,7 @@ angular.module('bekApp')
     function resetPage(list) {
       $scope.selectedList = angular.copy(list);
       originalList = list;
-      $scope.selectedList.items.unshift({}); // allows ui sortable work with a header row
+      $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
       // $scope.sortList('position', false);
@@ -44,6 +44,10 @@ angular.module('bekApp')
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
       }
+
+      $scope.selectedList.items.forEach(function(item) {
+        item.editPosition = item.position;
+      });
     }
     function appendListItems(list) {
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
@@ -92,6 +96,11 @@ angular.module('bekApp')
       listPagingModel.filterListItems(searchTerm);
     };
     $scope.sortList = function(sortBy, sortOrder) {
+      if (sortBy === $scope.sort.field) {
+        sortOrder = !sortOrder;
+      } else {
+        sortOrder = false;
+      }
       $scope.sort = {
         field: sortBy,
         sortDescending: sortOrder
@@ -184,6 +193,11 @@ angular.module('bekApp')
         processingSaveList = true;
         var updatedList = angular.copy(list);
 
+        // remove empty item that is used for ui sortable
+        if (updatedList.items.length && !updatedList.items[0].listitemid) {
+          updatedList.items.splice(0, 1);
+        }
+
         angular.forEach(updatedList.items, function(item, itemIndex) {
           if (item.listitemid) {
             if (item.editLabel && item.isEditing) {
@@ -200,7 +214,7 @@ angular.module('bekApp')
         });
         updatedList.items = updatedList.items.concat(deletedItems);
         
-        ListService.updateList(updatedList)
+        return ListService.updateList(updatedList)
           .then(resetPage)
           .finally(function() {
             processingSaveList = false;
@@ -212,7 +226,15 @@ angular.module('bekApp')
       var list = angular.copy($scope.selectedList);
       list.name = listName;
 
-      $scope.saveList(list);
+
+      $scope.saveList(list).then(function() {
+        // update cached list name
+        $scope.lists.forEach(function(list) {
+          if (list.listid === listId) {
+            list.name = listName;
+          }
+        });
+      });
     };
 
     $scope.cancelRenameList = function() {
@@ -238,6 +260,12 @@ angular.module('bekApp')
 
       deletedItems = deletedItems.concat($scope.selectedList.items.splice(deletedIndex, 1));
       updateItemPositions();
+
+      // load more items if number of items fell below page size
+      if ($scope.selectedList.items.length < 30) {
+        $scope.infiniteScrollLoadMore();
+      }
+
       $scope.listForm.$setDirty();
     };
 
@@ -246,6 +274,12 @@ angular.module('bekApp')
 
       $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
       $scope.selectedList.allSelected = false;
+
+      // load more items if number of items fell below page size
+      if ($scope.selectedList.items.length < 30) {
+        $scope.infiniteScrollLoadMore();
+      }
+
       $scope.listForm.$setDirty();
     };
 
@@ -325,7 +359,9 @@ angular.module('bekApp')
 
     $scope.changeAllSelectedItems = function() {
       angular.forEach($scope.selectedList.items, function(item, index) {
-        item.isSelected = $scope.selectedList.allSelected;
+        if (item.itemnumber) {
+          item.isSelected = $scope.selectedList.allSelected;
+        }
       });
     };
 
@@ -518,6 +554,15 @@ angular.module('bekApp')
         resolve: {
           list: function() {
             return list;
+          },
+          pagingModelOptions: function() {
+            return { 
+              sort: [{
+                field: $scope.sort.field,
+                order: $scope.sort.sortDescending ? 'desc' : 'asc'
+              }],
+              terms: $scope.listSearchTerm
+            };
           }
         }
       });
