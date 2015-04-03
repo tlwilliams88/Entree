@@ -21,6 +21,7 @@ namespace KeithLink.Svc.Impl
 
         // Active Directory Constants
         private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER = "ADExtAccessGroupKbitCustomer";
+        private const string KEY_AD_EXTERNAL_ACCESSGROUP_POWERMENUCUSTOMER = "ADExtAccessGroupPowerMenuCustomer";
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
         private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
@@ -140,6 +141,13 @@ namespace KeithLink.Svc.Impl
 
         //Single Sign On
         private const string KEY_SSO_KBIT_CONNECTIONSTRING = "KbitCustomer";
+
+        //PowerMenu
+        private const string KEY_POWERMENU_ADMIN_USERNAME = "PowerMenuAdminUsername";
+        private const string KEY_POWERMENU_ADMIN_PASSWORD = "PowerMenuAdminPassword";
+        private const string KEY_POWERMENU_WEBSERVICE_URL = "PowerMenuWebServiceUrl";
+        private const string KEY_POWERMENU_PERMISSIONS_URL = "PowerMenuPermissionsUrl";
+        
         #endregion
 
         #region methods
@@ -155,6 +163,12 @@ namespace KeithLink.Svc.Impl
         public static string AccessGroupKbitCustomer {
             get {
                 return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER, string.Empty);
+            }
+        }
+
+        public static string AccessGroupPowerMenuCustomer {
+            get {
+                return GetValue( KEY_AD_EXTERNAL_ACCESSGROUP_POWERMENUCUSTOMER, string.Empty );
             }
         }
 
@@ -522,6 +536,22 @@ namespace KeithLink.Svc.Impl
 
         public static string OrderUpdateWatchPath {
             get{ return GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
+        }
+
+        public static string PowerMenuAdminUsername {
+            get { return GetValue( KEY_POWERMENU_ADMIN_USERNAME, string.Empty ); }
+        }
+
+        public static string PowerMenuAdminPassword {
+            get { return GetValue( KEY_POWERMENU_ADMIN_PASSWORD, string.Empty ); }
+        }
+
+        public static string PowerMenuWebServiceUrl {
+            get { return GetValue( KEY_POWERMENU_WEBSERVICE_URL, string.Empty ); }
+        }
+
+        public static string PowerMenuPermissionsUrl {
+            get { return GetValue( KEY_POWERMENU_PERMISSIONS_URL, string.Empty ); }
         }
 
         public static string PresentationUrl {

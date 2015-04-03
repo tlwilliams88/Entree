@@ -16,12 +16,6 @@ using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
-using KeithLink.Svc.Impl.Logic.Profile;
-using KeithLink.Svc.Impl.Logic.SiteCatalog;
-using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 #endregion
 #region using__interface
@@ -41,6 +35,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Core.Interface.Reports;
+using KeithLink.Svc.Core.Interface.PowerMenu;
 #endregion
 #region using__repository
 using KeithLink.Svc.Impl.Repository.BranchSupports;
@@ -65,6 +60,16 @@ using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
+using KeithLink.Svc.Impl.Repository.PowerMenu;
+#endregion
+#region using__logic
+using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
+using KeithLink.Svc.Impl.Logic.Messaging;
+using KeithLink.Svc.Impl.Logic.PowerMenu;
 #endregion
 
 namespace KeithLink.Svc.InternalSvc
@@ -229,6 +234,11 @@ namespace KeithLink.Svc.InternalSvc
             // dsr repository
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+
+
+            // PowerMenu
+            builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
+            builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
 
             return builder.Build();
         }

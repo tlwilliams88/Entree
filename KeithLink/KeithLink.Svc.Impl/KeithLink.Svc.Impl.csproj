@@ -237,6 +237,7 @@
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
+    <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
@@ -550,6 +551,7 @@
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\UserActiveCartRepositoryImpl.cs" />
+    <Compile Include="Repository\PowerMenu\PowerMenuRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\AccountRepository.cs" />
     <Compile Include="Repository\Profile\AvatarRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\Cache\NoCacheCustomerCacheRepositoryImpl.cs" />

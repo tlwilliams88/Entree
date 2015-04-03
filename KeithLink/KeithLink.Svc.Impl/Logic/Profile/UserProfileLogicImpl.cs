@@ -20,6 +20,7 @@ using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.PowerMenu;
 
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,8 @@ using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -458,6 +461,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             bool isInternalUser = IsInternalAddress(csProfile.Email);
             UserPrincipal adUser = null;
             bool isKbitCustomer = false;
+            bool isPowerMenuCustomer = false;
 
             if (isInternalUser) {
                 adUser = _intAd.GetUser(csProfile.Email);
@@ -488,6 +492,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 userRole = GetUserRole(csProfile.Email);
                 userBranch = csProfile.DefaultBranch;
                 isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
+                isPowerMenuCustomer = _extAd.HasAccess( csProfile.Email, Configuration.AccessGroupPowerMenuCustomer );
             }
 
             string userNameToken = string.Concat(adUser.SamAccountName, "-", DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -511,7 +516,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
                 UserName = adUser.SamAccountName,
                 UserNameToken = tokenBase64,
-                IsKBITCustomer = isKbitCustomer
+                IsKBITCustomer = isKbitCustomer,
+                IsPowerMenuCustomer = isPowerMenuCustomer,
+                PowerMenuPermissionsUrl = String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email)
             };
         }
 
@@ -852,12 +859,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void GrantRoleAccess(string emailAddress, RequestedApplication requestedApp) {
+        public void GrantRoleAccess(string emailAddress, AccessRequestType requestedApp) {
             string appRoleName;
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     appRoleName = Configuration.AccessGroupKbitCustomer;
+                    break;
+                case AccessRequestType.PowerMenu:
+                    appRoleName = Configuration.AccessGroupPowerMenuCustomer;
                     break;
                 default:
                     return;
@@ -868,8 +878,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     RequestKbitAccess(emailAddress);
+                    break;
+                case AccessRequestType.PowerMenu:
+                    SetupPowerMenuForAccount( emailAddress );
+                    //TODO: Add logic to add powermenu customer accounts and flag profiles with access
                     break;
                 default:
                     break;
@@ -975,11 +989,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void RevokeRoleAccess(string emailAddress, RequestedApplication requestedApp) {
+        public void RevokeRoleAccess(string emailAddress, AccessRequestType requestedApp) {
             string appRoleName;
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     appRoleName = Configuration.AccessGroupKbitCustomer;
                     break;
                 default:
@@ -991,7 +1005,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     RemoveKbitAccess(emailAddress);
                     break;
                 default:
@@ -1016,6 +1030,62 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             } catch (Exception ex) {
                 _eventLog.WriteErrorLog("Error sending user profile email", ex);
             }
+        }
+
+        private void SetupPowerMenuForAccount(string emailAddress) {
+
+            // Create the powermenu specific request that gets serialized to xml
+            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
+
+            // get the users profile
+            UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
+
+            // get all customers for the user
+            List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
+
+            // create a request for every powermenu customer
+            powerMenuRequest = (from customer in customers
+                                 where customer.IsPowerMenu == true
+                                 select new PowerMenuSystemRequestModel() {
+                                     User = new PowerMenuSystemRequestUserModel() {
+                                         Username = emailAddress,
+                                         Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
+                                         ContactName = customer.PointOfContact,
+                                         CustomerNumber = customer.CustomerNumber,
+                                         EmailAddress = customer.Email,
+                                         PhoneNumber = customer.Phone,
+                                         State = "TX" // does this need to be dynamic?
+                                     },
+                                     Login = new PowerMenuSystemRequestAdminModel() {
+                                         AdminUsername = Configuration.PowerMenuAdminUsername,
+                                         AdminPassword = Configuration.PowerMenuAdminPassword
+                                     },
+                                     Operation = PowerMenuSystemRequestModel.Operations.Create
+                                 }).First();
+
+            // If there are customers to add, send the request to PowerMenu 
+            SendPowerMenuRequests( powerMenuRequest, emailAddress );
+        }
+
+        /// <summary>
+        /// Prepare and send the powermenu requests to the queue
+        /// </summary>
+        /// <param name="requests"></param>
+        /// <param name="emailAddress"></param>
+        private void SendPowerMenuRequests( PowerMenuSystemRequestModel request, string emailAddress ) {
+            PowerMenuCustomerAccessRequest accessRequest = new PowerMenuCustomerAccessRequest();
+
+            accessRequest.UserName = emailAddress;
+            accessRequest.RequestType = AccessRequestType.PowerMenu;
+
+            XmlSerializer s = new XmlSerializer(typeof(PowerMenuSystemRequestModel));
+
+            using (System.IO.TextWriter w = new System.IO.StringWriter()) {
+                s.Serialize( w, request );
+                accessRequest.request = s.ToString();
+            }
+
+            SubmitExternalApplicationRequest( accessRequest );
         }
 
         /// <summary>

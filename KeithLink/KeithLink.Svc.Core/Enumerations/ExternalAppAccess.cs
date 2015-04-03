@@ -10,11 +10,10 @@ namespace KeithLink.Svc.Core.Enumerations.SingleSignOn {
 
         [Description("KBIT Customer Access")]
         [EnumMember]
-        KbitCustomer = 1
-    }
+        KbitCustomer = 1,
 
-    public enum RequestedApplication{
-        NotSet = 0,
-        KbitCustomer = 1
+        [Description("PowerMenu User")]
+        [EnumMember]
+        PowerMenu = 2
     }
 }

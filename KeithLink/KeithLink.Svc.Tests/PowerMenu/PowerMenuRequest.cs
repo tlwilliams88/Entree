@@ -8,11 +8,11 @@ using System.IO;
 
 namespace KeithLink.Svc.Test.PowerMenu {
     [TestClass]
-    public class PowerMenuRequestTest {
+    public class PowerMenuSystemRequestModelTest {
 
         [TestMethod]
         public void PowerMenuSerializingTest() {
-            PowerMenuRequest pm = new PowerMenuRequest();
+            PowerMenuSystemRequestModel pm = new PowerMenuSystemRequestModel();
 
             pm.Login.AdminUsername = "MATTTEST";
             pm.Login.AdminPassword = "MATTTEST";
@@ -24,10 +24,10 @@ namespace KeithLink.Svc.Test.PowerMenu {
             pm.User.CustomerNumber = "123456";
             pm.User.PhoneNumber = "817-507-5415";
             pm.User.State = "TX";
-            pm.Operation = PowerMenuRequest.Operations.Edit;
+            pm.Operation = PowerMenuSystemRequestModel.Operations.Edit;
 
 
-            XmlSerializer s = new XmlSerializer( typeof( PowerMenuRequest ) );
+            XmlSerializer s = new XmlSerializer( typeof( PowerMenuSystemRequestModel ) );
 
             //TextWriter w = new StreamWriter(@"C:\test\powermenu\testxml.xml");
             TextWriter w = new StringWriter();

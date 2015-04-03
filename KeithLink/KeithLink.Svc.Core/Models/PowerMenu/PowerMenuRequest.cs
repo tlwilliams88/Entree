@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.PowerMenu {
     [XmlRoot("PowerNetUserRequest")]
-    public class PowerMenuRequest {
+    public class PowerMenuSystemRequestModel {
         #region attributes
 
         public enum Operations {
@@ -21,9 +21,9 @@ namespace KeithLink.Svc.Core.Models.PowerMenu {
 
         #region constructor
 
-        public PowerMenuRequest() {
-            Login = new PowerMenuRequestLogin();
-            User = new PowerMenuRequestUser();
+        public PowerMenuSystemRequestModel() {
+            Login = new PowerMenuSystemRequestAdminModel();
+            User = new PowerMenuSystemRequestUserModel();
             Operation = Operations.Edit;
         }
 
@@ -31,8 +31,8 @@ namespace KeithLink.Svc.Core.Models.PowerMenu {
 
         #region properties
 
-        public PowerMenuRequestLogin Login { get; set; }
-        public PowerMenuRequestUser User { get; set; }
+        public PowerMenuSystemRequestAdminModel Login { get; set; }
+        public PowerMenuSystemRequestUserModel User { get; set; }
         public Operations Operation { get; set; }
 
         #endregion

@@ -7,9 +7,9 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.PowerMenu {
     [XmlRoot("User")]
-    public class PowerMenuRequestUser {
+    public class PowerMenuSystemRequestUserModel {
 
-        public PowerMenuRequestUser() {
+        public PowerMenuSystemRequestUserModel() {
             Username = string.Empty;
             Password = string.Empty;
             CustomerNumber = string.Empty;

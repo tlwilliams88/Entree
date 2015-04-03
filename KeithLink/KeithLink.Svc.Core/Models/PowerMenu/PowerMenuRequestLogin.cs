@@ -7,9 +7,9 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.PowerMenu {
     [XmlRoot("Admin")]
-    public class PowerMenuRequestLogin {
+    public class PowerMenuSystemRequestAdminModel {
 
-        public PowerMenuRequestLogin() {
+        public PowerMenuSystemRequestAdminModel() {
             AdminUsername = string.Empty;
             AdminPassword = string.Empty;
         }
