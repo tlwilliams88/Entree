@@ -332,7 +332,8 @@ namespace KeithLink.Svc.Impl.Logic
 					CartItemId = l.Id.ToGuid(),
 					Notes = l.Notes,
 					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-					Each = l.Each.HasValue ? l.Each.Value : false
+					Each = l.Each.HasValue ? l.Each.Value : false,
+					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
 				}).ToList()
 			};
 

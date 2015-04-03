@@ -1,9 +1,9 @@
 .page-header-bar {
   @include header-bar($color-white, 10px);
   position: relative;
-
+ 
   @include arrow('bottom','left', 10px, $color-white, $color-border, 1px);
-
+ 
   .page-header-bar__message {
     font-size: 25px;
     font-weight: 300;
@@ -13,7 +13,7 @@
     vertical-align: middle;
     padding-left: $gutter-size;
     padding-right: $gutter-size;
-
+ 
     form {
       input {
         display: inline-block;
@@ -22,7 +22,7 @@
       }
     }
   }
-
+ 
   .page-header-bar__actions {
     padding-left: $gutter-size;
     padding-right: $gutter-size;
@@ -30,23 +30,74 @@
     display: inline-block;
     vertical-align: middle;
   }
-
+ 
   .page-header__buttons {
     display: inline-block;
   }
-
+ 
   .page-header__orders {
     margin-left: 10px;
     margin-top: 5px;
     vertical-align: middle;
     display: inline-block;
+ 
+    .icon-truck {
+      font-size: 26px;
+    }
+    .badge {
+      top: -10px;
+      right: -5px;
+    }
+  }
+ 
+  .truck-dropdown {
+    right: 0;
+    left: inherit;
+    width: 250px;
+    margin-top: 15px;
+    @include arrow('top','right', 15px, $color-white, $color-border, 1px);
+ 
+    li.heading {
+      padding-left: 15px;
+      border-bottom: 1px solid $color-border; 
+      h3 {
+        margin-top: 17px;
+        margin-bottom: 17px;
+      }
+    }
+    li.cart {
+      border-bottom: 1px solid $color-border; 
+      padding-bottom: 10px;
+      padding-top: 10px;
+      > div {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .cart-dropdown__truck {
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+      .btn {
+        margin-top: 10px;
+      }
+    }
+    li.cart-dropdown__view-all {
+      div {
+        padding: 10px;
+        text-align: center;
+      }
+      a {
+        padding-left: 55px;
+        padding-right: 55px;
+      }
+    }
   }
 }
-
+ 
 .page-subheader-bar {
   @include header-bar($color-white, 14px);
   // margin-top: -30px;
-
+ 
   // breadcrumbs
   .page-subheader-bar__message {
     > div {
@@ -56,7 +107,7 @@
       }
     }
   }
-
+ 
   .page-subheader-bar__container {
     padding-left: 15px;
     padding-right: 0px;
@@ -69,14 +120,14 @@
     }
   }
 }
-
+ 
 @media(max-width: $screen-sm-max) {
   .page-header-bar .page-header-bar__message {
     width: 100%;
   }
   .page-subheader-bar {
     @include header-bar($color-white, 0px);
-
+ 
     .page-subheader-bar__message {
       padding-top: 10px;
       padding-bottom: 4px;
@@ -103,7 +154,7 @@
     }
   }
 }
-
+ 
 .global-message {
   box-shadow: inset 0 0px 12px -5px black;
   -webkit-box-shadow: inset 0 0px 12px -5px black;
@@ -112,7 +163,7 @@
   padding-top: $gutter-size;
   padding-bottom: $gutter-size;
   color: $color-white;
-
+ 
   > .global-message__text {
     width: calc(100% - 40px);  
     vertical-align: middle;
@@ -120,7 +171,7 @@
     padding-left: $gutter-size;
     
   }
-
+ 
   > .global-message__close {
     width: 35px;
     vertical-align: middle;

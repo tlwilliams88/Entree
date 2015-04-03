@@ -5,7 +5,7 @@
   <div header-buttons>
     <!-- <a ng-click="openQuickAdd()">Quick Add</a>
     <button class="btn btn-primary btn-lg" 
-		ng-disabled="!canCreateOrders"
+       ng-disabled="!canCreateOrders"
         ui-sref="menu.addtoorder.items({ })"
         ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button> -->
     <div class="btn-group" dropdown is-open="status.isopen">
@@ -20,21 +20,21 @@
     </div>
   </div>
 </div>
-
+ 
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
-
+ 
 <div class="page-content">
   <div class="row">
-    <!-- Account Summary -->
     <div class="col-md-4 col-md-push-8">
+      <!-- Account Summary -->
       <div class="info-box">
-
+ 
         <a ui-sref="menu.invoice" ng-hide = "isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         
         <h4><strong>Account Balance</strong></h4>
         
         <div loading-spinner="loadingAccountBalance"></div>
-
+ 
         <div ng-show="!loadingAccountBalance">
           <p class="currency-value">
             {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
@@ -64,14 +64,88 @@
           <span class="text-red" ng-show="ordersGraphMessage">{{ordersGraphMessage}}</span>
         </div>
         <div id="chart_div" style="height:140px;width:100%;"></div>
-      </div>
-    </div> <!-- end Account Summary -->
-
-    <!-- Order Summary -->
+      </div> <!-- end Account Summary -->
+ 
+      <!-- Recent Activity -->
+      <div class="hidden-xs hidden-sm">
+        <h3>Recent Activity</h3>
+        <p ng-show="dates && dates.length === 0">No recent activity found for this customer.</p>
+        <div ng-repeat = "date in dates">
+          <div class="notification notification--date">
+            <div class="notification__icon">
+              <span class="icon-record"></span>
+            </div>
+            <div class="notification__date">{{date | formatDate:'MM/DD/YYYY ddd.'}} </div>
+          </div>
+          <div ng-repeat = "notification in notificationDates[date]">
+            <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
+              <div class="notification__icon">
+                <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>
+                <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
+                <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
+                <div class="icon" ng-show="notification.displayType === 'Mail'"><span class="icon-mail"></span></div>
+              </div>
+              <div class="notification__message">
+                {{notification.subject}}
+                <div class="timestamp"> {{notification.messagecreatedutc | formatDate: 'h:mma'}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div loading-spinner="loadingRecentActivity"></div>
+      </div> <!-- end Recent Activity -->
+    </div>
+ 
+    <!-- Cart Summary -->
     <div class="col-md-8 col-md-pull-4">
       <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
         <div class="col-md-3">
-          Orders
+          Pending Orders
+        </div>
+        <div class="col-md-3 nowrap">
+          Ship Date
+        </div>
+        <div class="col-md-3 nowrap">
+          Item Count
+        </div>
+        <div class="col-md-3">
+          Subtotal
+        </div>
+      </div>
+ 
+      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: numCartsToDisplay">
+        <div class="row no-margin">
+          <div class="col-md-3 order-col">
+            <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
+            <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'MM/DD/YYYY h:mma'}}</span>
+          </div>
+          <div class="col-md-3 table-col">
+            <span>{{(cart.requestedshipdate || 'N/A') | formatDate:'MM/DD/YYYY ddd.'}}</span>
+          </div>
+          <div class="col-md-3 table-col">
+            {{cart.itemcount}}
+          </div>
+          <div class="col-md-3 table-col">
+            {{cart.subtotal | currency}}
+          </div>
+        
+        </div>
+ 
+      </div>
+ 
+      <div class="text-center" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
+      <div class="hidden-xs hidden-sm" ng-hide="cartMessage || homeCarts.length > 0 || loadingCarts">
+        No Carts to Display
+      </div>
+ 
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage">
+        <a class="view-all" ui-sref="menu.order">View All</a>
+      </div>
+ 
+      <!-- Order Summary -->
+      <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin" style="margin-top:10px;">
+        <div class="col-md-3">
+          Confirmed Orders
         </div>
         <div class="col-md-2 nowrap">
           Delivery Date
@@ -86,17 +160,17 @@
           Invoice Status
         </div>
       </div>
-
-      <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 4 | styleOrders" ng-class="order.highlightClass">
+ 
+      <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" ng-class="order.highlightClass">
+        
         <div class="row no-margin">
+        
           <div class="col-md-3 order-col">
-            <span>INVOICE #</span>
-            <a ng-if="order.invoicenumber !== 'Pending' && order.invoicenumber !== 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
-            <a ng-if="order.invoicenumber === 'Pending' || order.invoicenumber === 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
+            <div class="order-col__number" order-link></div>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'MM/DD/YYYY'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'ddd, MM/DD/YYYY'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">
@@ -107,7 +181,7 @@
               {{order.status}}
           </div><!-- Display order status before ETA info is available -->
           <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null || order.estimateddeliverytime != null 
-                                                                      || order.actualdeliverytime != null" style="padding:24px 0">
+                    || order. actualdeliverytime != null" style="padding:24px 0">
             <span ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null && order.deliveryoutofsequence != true" class="small-icon icon-truck">
                 <span style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</span>
             </span>
@@ -122,9 +196,15 @@
           <div class="col-md-2 table-col highlight-col">
             {{order.invoicestatus || 'N/A'}}
           </div>
+        
         </div>
+ 
       </div>
-
+ 
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingOrders || ordersMessage">
+        <a class="view-all" ui-sref="menu.order">View All</a>
+      </div>
+ 
       <!-- Mobile Order Summary -->
       <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
@@ -139,8 +219,7 @@
           <div class="row">
             <div class="col-xs-6">
               <span>INVOICE #</span>
-              <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
-              <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
+              <div class="order-col__number" order-link></div>
             </div>
             <div class="col-xs-6 order-col__date">
               <span class="icon-calendar"></span> {{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}
@@ -182,28 +261,24 @@
           </div>
         </div>
       </div> <!-- end Mobile Order Summary -->
-
+ 
       <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
       <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
         No Recent Orders
       </div>
-
+ 
       <div class="text-red" ng-show="ordersMessage">{{ordersMessage}}</div>
-
-    </div> <!-- end Order Summary -->
-
-  </div>
-
-  <div class="row">
+      <!-- end Order Summary -->
+    
     <!-- Featured Items -->
-    <div class="col-md-8 col-xs-12">
+    <div>
       <h3>Latest From Ben E. Keith</h3>
       <div class="row">
-
+ 
         <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
         <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
         <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
-
+ 
         <div class="col-sm-12 hidden-xs hidden-sm">
           <div ng-repeat="item in promoItems">
             <div class="featured-item text-center">
@@ -232,41 +307,13 @@
             </div>
           </div>
         </div>
-
+ 
         <div class="col-xs-12 hidden-md hidden-lg" ng-show="promoItems.length > 0">
           <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
         </div> 
-
+ 
       </div>
     </div> <!-- end Featured Items -->
-
-    <!-- Recent Activity -->
-    <div class="hidden-xs hidden-sm pull-right col-md-4 col-xs-12">
-      <h3>Recent Activity</h3>
-      <p ng-show="dates && dates.length === 0">No recent activity found for this customer.</p>
-      <div ng-repeat = "date in dates">
-        <div class="notification notification--date">
-          <div class="notification__icon">
-            <span class="icon-record"></span>
-          </div>
-          <div class="notification__date">{{date | formatDate:'dddd MMMM DD, YYYY'}} </div>
-        </div>
-        <div ng-repeat = "notification in notificationDates[date]">
-          <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
-            <div class="notification__icon">
-              <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>
-              <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
-              <div class="icon" ng-show="notification.displayType === 'News'"><span class="icon-warning"></span></div>
-              <div class="icon" ng-show="notification.displayType === 'Mail'"><span class="icon-mail"></span></div>
-            </div>
-            <div class="notification__message">
-              {{notification.subject}}
-              <div class="timestamp"> {{notification.messagecreatedutc | formatDate: 'h:mma'}}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div loading-spinner="loadingRecentActivity"></div>
-    </div> <!-- end Recent Activity -->
+ 
   </div>
 </div>

@@ -4,25 +4,25 @@
   // @include make-sm-column(3);
   // @include make-md-column(6);
   // @include make-lg-column(3);
-
+ 
   strong {
     display: block;
   }
-
+ 
   &:first-child {
     border-right: 1px solid $color-border;
   }
 }
-
+ 
 .account-summary__graph {
   border-top: none;
 }
-
+ 
 // Recent Activity
 .notification {
   @include make-row();
   overflow:  hidden;
-
+ 
   .notification__icon {
     @include make-md-column(3);
     text-align: center;
@@ -30,7 +30,7 @@
     padding-bottom: 100%;
     margin-bottom: -100%;
     z-index: 0;
-
+ 
     &:after {
       content:"";
       position: absolute;
@@ -41,7 +41,7 @@
       border-left: 2px solid $color-font;
     }
   }
-
+ 
   .notification__message {
     max-width: calc(75% - 15px);
     float: left;
@@ -58,7 +58,7 @@
       color: $color-border;
     }
   }
-
+ 
   &.notification--date {
     .notification__icon {
       padding-top: 15px;
@@ -73,7 +73,7 @@
   &.notification--activity {
     .notification__icon {
       padding-top: 20px;
-
+ 
       div.icon {
         height: 26px;
         width: 26px;
@@ -88,7 +88,7 @@
   &.notification--message {
     .notification__icon {
       padding-top: 10px;
-
+ 
       img {
         height: 40px;
         width: 40px;
@@ -99,10 +99,10 @@
     }
   }
 }
-
+ 
 // Order Summary
 $order-col__background: #f1efe5;
-
+ 
 .order-summary__header {
   font-weight: 600;
 }
@@ -111,32 +111,32 @@ $order-col__background: #f1efe5;
   border: 1px solid $color-border;
   margin-top: 10px;
   box-shadow: 0px 0px 5px #c3bc9c;
-
+ 
   &.order-summary__order--paid {
     border-left: 3px solid $color-green;
-
+ 
     .highlight-col {
       color: $color-green;
     }
   }
   &.order-summary__order--late {
     border-left: 3px solid $color-red;
-
+ 
     .highlight-col {
       color: $color-red;
     }
   }
-
+ 
   // order table columns
   .table-col {
-    padding: 34px 0;
+    padding: 21px 0;
   }
-
+ 
   .order-col {
     background-color: $order-col__background;
     border-right: 1px solid $color-border;
-    padding: $gutter-size 0;
-
+    padding: 10px 0;
+ 
     .order-col__number {
       font-size: 16px;
       font-weight: 600;
@@ -144,19 +144,27 @@ $order-col__background: #f1efe5;
     }
   }
 }
-
+ 
+.view-all {
+  border: 1px solid $color-border;
+  border-radius: 0 0 4px 4px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: $color-white;
+}
+ 
 @media(min-width: $screen-md-min) {
   .order-col {
     @include arrow('right','center', 10px, $order-col__background, $color-border, 1px);
   }
 }
-
+ 
 @media(max-width: $screen-sm-max) {
   .order-summary__order {
     // background-color: $color-white;
     // border: 1px solid $color-border;
     border-top: none;
-
+ 
     &.order-summary__order--late {
       border-left: none;
       .order-col {
@@ -169,7 +177,7 @@ $order-col__background: #f1efe5;
         border-top: 3px solid $color-green;
       }
     }
-
+ 
     .order-col {
       border-bottom: 1px solid $color-border;
       border-top: 1px solid $color-border;
@@ -178,7 +186,7 @@ $order-col__background: #f1efe5;
       background-color: $order-col__background;
       position: relative;
       @include arrow('bottom','left', 10px, $order-col__background, $color-border, 1px);
-
+ 
       .order-col__date {
         text-align: right;
         font-size: 14px;
@@ -187,11 +195,11 @@ $order-col__background: #f1efe5;
     }
     .order-details {
       padding: $gutter-size;
-
+ 
       > .details-item {
         @include make-row();
         padding-top: 10px;
-
+ 
         > div {
           @include make-xs-column(6);
         }

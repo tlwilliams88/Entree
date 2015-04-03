@@ -163,8 +163,6 @@
             </button>
           </div>
           <h5>
-
-            <!-- <a ng-show="hasMoreItemsToShow()" ng-click="showMore()" class="hand">Show More...</a> -->
             <a 
               ng-show="lists.length > numberListNamesToShow" 
               ng-click="showMoreListNames = !showMoreListNames">
@@ -239,6 +237,8 @@
             placeholder="Search current list by keyword, item # or label" />
           <span class="input-group-btn">
             <button type="submit" ng-click="filterItems(listSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+
           </span>
         </div>
       </form>

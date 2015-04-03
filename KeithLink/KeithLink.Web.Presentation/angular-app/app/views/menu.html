@@ -78,7 +78,7 @@
             ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
             <li>
               <span class="icon-clipboard sidebar-nav__icon"></span>
-              Order History
+              Orders
             </li>
           </button>
           <button
@@ -224,7 +224,7 @@
         </div>
         <div class="col-md-4 hidden-sm hidden-xs text-right nowrap pull-right">
           <div>
-            <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification">
+            <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent">
               <span class="icon-bell"></span>
               <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
