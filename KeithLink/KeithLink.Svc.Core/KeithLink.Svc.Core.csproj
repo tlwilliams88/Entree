@@ -203,6 +203,7 @@
     <Compile Include="Interface\OnlinePayments\Invoice\IKPayInvoiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
+    <Compile Include="Interface\OnlinePayments\Log\IKPayLogRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
     <Compile Include="Interface\Orders\History\IInternalOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
@@ -507,7 +508,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Interface\Component\" />
-    <Folder Include="Interface\OnlinePayments\Log\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

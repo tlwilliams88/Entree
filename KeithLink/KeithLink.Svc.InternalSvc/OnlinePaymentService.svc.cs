@@ -54,6 +54,10 @@ namespace KeithLink.Svc.InternalSvc {
                 
         }
 
+        public CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId) {
+            return _onlinePaymentsLogic.GetCustomerAccountBalance(customerId, branchId);
+        }
+
         private string GetDivision(string branchId) {
             if (branchId.Length == 5) {
                 return branchId;
@@ -92,7 +96,6 @@ namespace KeithLink.Svc.InternalSvc {
 			return _onlinePaymentsLogic.GetInvoiceHeaders(user, userContext, paging, forAllCustomers);
         }
 
-		
         public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{
 			_onlinePaymentsLogic.MakeInvoicePayment(userContext, emailAddress, payments);
@@ -102,13 +105,6 @@ namespace KeithLink.Svc.InternalSvc {
 		{
 			return _onlinePaymentsLogic.PendingTransactionsAllCustomers(user, paging);
 		}
-
 		#endregion
-
-
-		public CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId)
-		{
-			return _onlinePaymentsLogic.GetCustomerAccountBalance(customerId, branchId);
-		}
 	}
 }

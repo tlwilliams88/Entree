@@ -547,6 +547,7 @@
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Invoice\KPayInvoiceRepositoryImpl.cs" />
+    <Compile Include="Repository\OnlinePayments\Log\KPayLogRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\NoOnlinePaymentServiceRepository.cs" />
     <Compile Include="Repository\OnlinePayments\Payment\KPayPaymentTransactionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
