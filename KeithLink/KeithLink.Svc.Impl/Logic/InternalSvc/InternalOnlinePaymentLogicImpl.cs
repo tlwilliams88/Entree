@@ -230,6 +230,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					}
 				}
 
+				var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
+				if (orderHistory != null)
+				{
+					invoice.PONumber = orderHistory.PONumber;
+				}
+
 			}
 			
             return new InvoiceHeaderReturnModel() {

@@ -79,6 +79,9 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "pendingtransaction")]
 		public PaymentTransactionModel PendingTransaction { get; set; }
 
+		[DataMember(Name = "ponumber")]
+		public string PONumber { get; set; }
+
 		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();
