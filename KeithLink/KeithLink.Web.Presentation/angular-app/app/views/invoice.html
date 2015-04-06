@@ -304,7 +304,7 @@
                 </tr>
                 <tr>
                   <td class="large-icon" colspan="2">
-                    <a ng-if="invoice.invoicelink" ng-click="openExternalLink(invoice.invoicelink)" class="icon-camera"></a>
+                    <a ng-if="invoice.invoicelink" target="_blank" ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" class="icon-camera"></a>
                   </td>
                 </tr>
               </table>
