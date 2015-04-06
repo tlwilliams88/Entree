@@ -104,11 +104,15 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                         string rawJson = response.Content.ReadAsStringAsync().Result;
                         ImageNowViewQueryReturnModel jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ImageNowViewQueryReturnModel>(rawJson);
 
-                        string docId = jsonResponse.resultRows[0].fields.Where(item => item.columnId.Equals("8")).FirstOrDefault().value;
+                        if (jsonResponse.resultRows.Count == 0) {
+                            throw new ApplicationException("Document not found");
+                        } else {
+                            string docId = jsonResponse.resultRows[0].fields.Where(item => item.columnId.Equals("8")).FirstOrDefault().value;
 
-                        return docId;
+                            return docId;
+                        }
                     } else {
-                        throw new ApplicationException("Document not found");
+                        throw new ApplicationException("Invalid response from server");
                     }
                 } catch (Exception ex) {
                     _log.WriteErrorLog("Error connecting to the Imaging Server", ex);

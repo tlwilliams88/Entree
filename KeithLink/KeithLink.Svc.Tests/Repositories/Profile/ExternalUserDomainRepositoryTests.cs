@@ -1,17 +1,18 @@
-﻿using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Models.Authentication;
 using KeithLink.Svc.Core.Enumerations.Authentication;
+using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Repository.Profile;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
     [TestClass]
     public class ExternalUserDomainRepositoryTests {
         #region attributes
-        CustomerContainerRepository _containerRepo;
         ExternalUserDomainRepository _custUserRepo;
         EventLogRepositoryImpl _log;
         #endregion
@@ -19,8 +20,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #region ctor
         public ExternalUserDomainRepositoryTests() {
             _log = new EventLogRepositoryImpl("Unit Tests");
-            _containerRepo = new CustomerContainerRepository(_log);
-            _custUserRepo = new ExternalUserDomainRepository(_log, _containerRepo);
+            _custUserRepo = new ExternalUserDomainRepository(_log);
         }
         #endregion
 
@@ -77,7 +77,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         [TestMethod]
         public void CreateUser() {
             try {
-                //_custUserRepo.CreateUser("Jimmys Chicken Shack", "lockeduser@somecompany.com", "L0ckedUs3r", "Locked", "User", Core.Constants.ROLE_EXTERNAL_OWNER);
+                //_custUserRepo.CreateUser("Jimmys Chicken Shack", "lockeduser@somecompany.com", "L0ckedUs3r", "Locked", "User", Configuration.RoleNameOwner);
 
                 Assert.IsTrue(true);
             } catch {
@@ -102,7 +102,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
 
         [TestMethod]
         public void UpdateUserPasswordGood() {
-            Assert.IsTrue(_custUserRepo.UpdatePassword("jeremy@jeremyschickenshack.com", "Ab12345", "Ab12345"));
+            Assert.IsTrue(_custUserRepo.UpdatePassword("lockeduser@somecompany.com", "Ab12345", "Ab12345"));
         }
 
         //[TestMethod]

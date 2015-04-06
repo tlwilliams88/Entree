@@ -21,7 +21,6 @@ namespace KeithLink.Svc.Test.Logic {
         #region attrbitues
 		private NoCacheRepositoryImpl _cache;
         private UserProfileRepository               _csProfileRepo;
-        private CustomerContainerRepository         _custRepo;
         private ExternalUserDomainRepository        _extAd;
         private InternalUserDomainRepository        _intAd;
         private EventLogRepositoryImpl              _log;
@@ -37,9 +36,7 @@ namespace KeithLink.Svc.Test.Logic {
 			var _custCach = new NoCacheRepositoryImpl();
             var dsrService = new NoDsrServiceRepository();
             
-            _custRepo = new CustomerContainerRepository(_log);
-
-            _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log, _custRepo);
+            _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log);
             _intAd = new Impl.Repository.Profile.InternalUserDomainRepository(_log);
 
 
@@ -51,16 +48,42 @@ namespace KeithLink.Svc.Test.Logic {
         }
         #endregion
 
+        #region methods
         [TestMethod]
         public void GetUserProfile() {
-            Core.Models.Profile.UserProfileReturn userProfiles = _logic.GetUserProfile("jeremy@jeremyschickenshack.com");
+            Core.Models.Profile.UserProfileReturn userProfiles = _logic.GetUserProfile("sabroussard@somecompany.com");
 
             Assert.IsTrue(userProfiles.UserProfiles.Count == 1);
         }
 
-        //[TestMethod]
-        //public void SuccessfullyGrantAccessToKbitCustomer() {
-        //    _logic.GrantRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.RequestedApplication.KbitCustomer);
-        //}
+        [TestMethod]
+        public void ResetUserPassword() {
+            _logic.ResetPassword("testguest@somecompany.com");    
+        }
+
+        [TestMethod]
+        public void SuccessfullyCreateGuest() {
+            //_logic.CreateGuestUserAndProfile("testguest@somecompany.com", "Ab12345", "FDF");
+        }
+
+        [TestMethod]
+        public void SuccessfullyCreateGuestWithTempPassword() {
+            //_logic.UserCreatedGuestWithTemporaryPassword("usercreatedguest@somecompany.com", "FDF");
+        }
+
+        public void SuccssfulCreateUserAndProfile() {
+            //_logic.CreateUserAndProfile("Jeremys Chicken Shack", "test@somecompany.com", "Ab12345", "Test", "User", "", "accounting", "FDF");
+        }
+
+        [TestMethod]
+        public void SuccessfullyGrantAccessToKbitCustomer() {
+            _logic.GrantRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.RequestedApplication.KbitCustomer);
+        }
+
+        [TestMethod]
+        public void SuccessfullyRemoveAccessToKbitCustomer() {
+            _logic.RevokeRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.RequestedApplication.KbitCustomer);
+        }
+        #endregion
     }
 }
