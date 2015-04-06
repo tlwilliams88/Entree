@@ -49,6 +49,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			throw new NotImplementedException();
 		}
 
+        public void UnlockAccount(string emailAddress) {
+            throw new NotImplementedException();
+        }
+
 		public void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail)
 		{
 			throw new NotImplementedException();

@@ -152,6 +152,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             lineItem.QantityShipped = value.ShippedQuantity;
 			lineItem.OrderStatus = orderStatus;
 			lineItem.TotalShippedWeight = value.TotalShippedWeight;
+			lineItem.IsDeleted = value.ItemDeleted;
 			
             if (!string.IsNullOrWhiteSpace(value.ReplacedOriginalItemNumber)) {
                 lineItem.SubstitutedItemNumber = value.ReplacedOriginalItemNumber.Trim();

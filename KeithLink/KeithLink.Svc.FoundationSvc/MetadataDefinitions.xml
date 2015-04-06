@@ -2130,6 +2130,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="MasterNumber" csProperty="MasterNumber"/>
               <PropertyMapping property="OriginalOrderNumber" csProperty="OriginalOrderNumber"/>
 							<PropertyMapping property="PONumber" csProperty="PONumber"/>
+							<PropertyMapping property="TempSubTotal" csProperty="TempSubTotal"/>
 
             </PropertyMappings>
           </EntityMapping>
@@ -2227,6 +2228,9 @@ This file contains the Metadata Repository
 					</Property>
 					<Property name="ListType" dataType="Integer">
 						<DisplayName value="ListType"/>
+					</Property>
+					<Property name="TempSubTotal" dataType="Decimal" >
+						<DisplayName value="Temp SubTotal"/>
 					</Property>
         </Properties>
 

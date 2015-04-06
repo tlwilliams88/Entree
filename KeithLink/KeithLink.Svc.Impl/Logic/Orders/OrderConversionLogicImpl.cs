@@ -112,6 +112,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     }
                 }
 
+				//Mark missing items as deleted
+				foreach (var deletedItem in header.OrderDetails.Where(d => !currentFile.Details.Any(c => c.LineNumber.Equals(d.LineNumber))).ToList())
+				{
+					deletedItem.ItemDeleted = true;
+					deletedItem.OrderQuantity = 0;
+					deletedItem.ShippedQuantity = 0;
+				}
+				
                 _historyRepo.CreateOrUpdate(header);
                 _uow.SaveChanges();
             }

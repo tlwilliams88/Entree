@@ -31,7 +31,6 @@ namespace KeithLink.Svc.Test.Repositories.Order
         #region attrbitues
 		private NoCacheRepositoryImpl _cache;
         private UserProfileRepository _csProfileRepo;
-        private CustomerContainerRepository _custRepo;
         private ExternalUserDomainRepository _extAd;
         private InternalUserDomainRepository _intAd;
         private EventLogRepositoryImpl _log;
@@ -48,9 +47,7 @@ namespace KeithLink.Svc.Test.Repositories.Order
 			var _custCach = new NoCacheRepositoryImpl();
             var dsrService = new NoDsrServiceRepository();
 
-            _custRepo = new CustomerContainerRepository(_log);
-
-            _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log, _custRepo);
+            _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log);
             _intAd = new Impl.Repository.Profile.InternalUserDomainRepository(_log);
 
             _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);

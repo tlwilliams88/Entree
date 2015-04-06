@@ -19,6 +19,7 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Enumerations.List;
+using System.IO;
 
 namespace KeithLink.Svc.Impl.Logic {
     public class ImportLogicImpl : IImportLogic {
@@ -59,13 +60,13 @@ namespace KeithLink.Svc.Impl.Logic {
 
                 switch (file.FileFormat) {
                     case FileFormat.CSV:
-                        items = parseListDelimited( file, CSV_DELIMITER, user, catalogInfo );
+						items = parseListDelimited( file, CSV_DELIMITER, user, catalogInfo );
                         break;
                     case FileFormat.Tab:
                         items = parseListDelimited( file, TAB_DELIMITER, user, catalogInfo );
                         break;
                     case FileFormat.Excel:
-                        items = parseListExcel( file, user, catalogInfo );
+						items = parseListExcel( file, user, catalogInfo );
                         break;
                 }
 
@@ -96,20 +97,77 @@ namespace KeithLink.Svc.Impl.Logic {
 			catch (Exception ex)
 			{
 				eventLogRepository.WriteErrorLog(string.Format("List Import Error for Customer {0}", catalogInfo.CustomerId), ex);
+				SendErrorEmail(file, ex);
+
+
 				return new ListImportModel() { Success = false, ErrorMessage = "An error has occurred while processing the import file" };
+			}
+		}
+
+		private void SendErrorEmail(ListImportFileModel file, Exception ex)
+		{
+			try
+			{
+				var errorMessage = string.Format("File Import error.\n\nImport Options:\nSelected Format: {0}\nSkip First Line: {1}\nFile Name:{2}", file.FileFormat, file.IgnoreFirstLine, file.FileName);
+
+				System.Net.Mime.ContentType ct = null;
+				System.Net.Mail.Attachment attach = null;
+
+				switch (file.FileFormat)
+				{
+					case FileFormat.Excel:
+						file.Stream.Seek(0, System.IO.SeekOrigin.Begin);
+						ct = new System.Net.Mime.ContentType("application/msexcel");
+						attach = new System.Net.Mail.Attachment(file.Stream, ct);
+						attach.ContentDisposition.FileName = file.FileName;
+						break;
+					default:
+						ct = new System.Net.Mime.ContentType(System.Net.Mime.MediaTypeNames.Text.Plain);
+						var stringBytes = System.Text.Encoding.UTF8.GetBytes(file.Contents);
+						var memStream = new MemoryStream();
+						memStream.Write(stringBytes, 0, stringBytes.Length);
+						memStream.Seek(0, SeekOrigin.Begin);
+						attach = new System.Net.Mail.Attachment(memStream, ct);
+						attach.ContentDisposition.FileName = file.FileName;
+						break;
+				}
+
+				KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, errorMessage, "File Import Error", attach);
+			}
+			catch (Exception emailEx)
+			{
+				eventLogRepository.WriteErrorLog("Error sending Import failure email", emailEx);
 			}
 		}
 
         private List<ListItemModel> parseListDelimited( ListImportFileModel file, char delimiter, UserProfile user, UserSelectedContext catalogInfo ) {
             List<ListItemModel> returnValue = new List<ListItemModel>();
 
+			var itemNumberColumn = 0;
+			var labelColumn = -1;
+			//See if we can determine which columns the item number and label exist
+			if (file.IgnoreFirstLine)
+			{
+				var header = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Take(1).Select(i => i.Split(delimiter).ToList()).FirstOrDefault();
+				int colCount = 0;
+				foreach (var col in header)
+				{
+					if (col.Replace("\"", string.Empty).Equals("item", StringComparison.CurrentCultureIgnoreCase))
+						itemNumberColumn = colCount;
+					else if (col.Replace("\"", string.Empty).Equals("label", StringComparison.CurrentCultureIgnoreCase))
+						labelColumn = colCount;
+					colCount++;
+				}
+			}
+
+
             var rows = file.Contents.Split( new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None ).Skip( file.IgnoreFirstLine ? 1 : 0 );
             returnValue = rows
-                        .Skip( 1 )
                         .Where( line => !String.IsNullOrWhiteSpace( line ) )
                         .Select( i => i.Split( delimiter ) )
                         .Select( l => new ListItemModel() {
-                            ItemNumber = l[0]
+							ItemNumber = l[itemNumberColumn].Replace("\"", string.Empty),
+							Label = labelColumn == -1 ? string.Empty : l[labelColumn].Replace("\"", string.Empty)
                         } )
                         .Where( x => !String.IsNullOrEmpty( x.ItemNumber ) ).ToList();
 
@@ -126,14 +184,27 @@ namespace KeithLink.Svc.Impl.Logic {
             } else {
                 rdr = ExcelReaderFactory.CreateOpenXmlReader( file.Stream );
             }
+			var itemNumberColumn = 0;
+			var labelColumn = -1;
 
             if (file.IgnoreFirstLine) {
                 rdr.Read(); // Skip the first line
-            } 
+				for (int i = 0; i < rdr.FieldCount-1; i++)
+				{
+					if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
+						itemNumberColumn = i;
+					else if (rdr.GetString(i).Equals("label", StringComparison.CurrentCultureIgnoreCase))
+						labelColumn = i;
+
+				}
+            }
+
+			
 
             while (rdr.Read()) {
                 returnValue.Add( new ListItemModel() {
-                    ItemNumber = rdr.GetString( 0 )
+                    ItemNumber = rdr.GetString( itemNumberColumn ),
+					Label = labelColumn == -1 ? string.Empty : rdr.GetString(labelColumn)
                 } );
             }
 
