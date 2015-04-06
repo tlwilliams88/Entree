@@ -27,7 +27,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void RevokeAccess(string userName, string roleName);
 
-        void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail);
+        void UnlockAccount(string emailAddress);
+
+        //void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail);
 
         bool UpdatePassword(string emailAddress, string oldPassword, string newPassword);
 

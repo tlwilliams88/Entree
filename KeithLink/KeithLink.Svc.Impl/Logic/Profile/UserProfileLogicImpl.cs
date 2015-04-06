@@ -283,16 +283,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             AssertRoleNameLength(roleName);
         }
 
-        private string CacheKey(string email) {
-            return string.Format("{0}-{1}", "bek", email);
-        }
-
-        public AccountReturn CreateAccount(string name) {
-            // call CS account repository -- hard code it for now
-            Guid newAcctId = _accountRepo.CreateAccount(name);
-            return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
-        }
-
         private List<ProfileMessagingPreferenceDetailModel> BuildPreferenceModelForEachNotificationType(List<UserMessagingPreferenceModel> currentMsgPrefs, string customerNumber) {
             var msgPrefModelList = new List<ProfileMessagingPreferenceDetailModel>();
             //loop through each notification type to load in model
@@ -315,6 +305,38 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             }
             return msgPrefModelList;
+        }
+        
+        private string CacheKey(string email) {
+            return string.Format("{0}-{1}", "bek", email);
+        }
+
+        public AccountReturn CreateAccount(string name) {
+            // call CS account repository -- hard code it for now
+            Guid newAcctId = _accountRepo.CreateAccount(name);
+            return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
+        }
+
+        /// <summary>
+        /// take the role name that is passed in and convert it to the name that is actually used in AD
+        /// </summary>
+        /// <returns>the name of the corresponding role from the config file</returns>
+        /// <remarks>
+        /// jwames - 4/2/2015 - original code
+        /// </remarks>
+        private string ConvertRoleName(string roleName) {
+            if (roleName.Equals(Constants.ROLE_EXTERNAL_ACCOUNTING, StringComparison.InvariantCultureIgnoreCase))
+                return Configuration.RoleNameAccounting;
+            else if (roleName.Equals(Constants.ROLE_EXTERNAL_GUEST, StringComparison.InvariantCultureIgnoreCase))
+                return Configuration.RoleNameGuest;
+            else if (roleName.Equals(Constants.ROLE_EXTERNAL_OWNER, StringComparison.InvariantCultureIgnoreCase))
+                return Configuration.RoleNameOwner;
+            else if (roleName.Equals(Constants.ROLE_EXTERNAL_PURCHASINGAPPROVER, StringComparison.InvariantCultureIgnoreCase))
+                return Configuration.RoleNameApprover;
+            else if (roleName.Equals(Constants.ROLE_EXTERNAL_PURCHASINGBUYER, StringComparison.InvariantCultureIgnoreCase))
+                return Configuration.RoleNameBuyer;
+            else
+                throw new ArgumentException("Unknown role name received");
         }
 
         /// <summary>
@@ -340,6 +362,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>a completed user profile</returns>
         /// <remarks>
         /// jwames - 10/3/2014 - documented
+        /// jwames - 4/1/2015 - change AD structure
         /// </remarks>
         public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
@@ -347,12 +370,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             AssertGuestProfile(emailAddress, password);
 
-            _extAd.CreateUser(Configuration.ActiveDirectoryGuestContainer,
+            _extAd.CreateUser(Configuration.RoleNameGuest,
                               emailAddress, 
                               password, 
                               Core.Constants.AD_GUEST_FIRSTNAME, 
                               Core.Constants.AD_GUEST_LASTNAME, 
-                              Core.Constants.ROLE_EXTERNAL_GUEST
+                              Configuration.RoleNameGuest
                               );
 
             _csProfile.CreateUserProfile(emailAddress,
@@ -397,7 +420,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                               password,
                               firstName,
                               lastName,
-                              roleName
+                              ConvertRoleName(roleName)
                               );
 
             _csProfile.CreateUserProfile(emailAddress,
@@ -434,8 +457,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 } else { // assume admin user with access to all customers
                     return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
                 }
-            } else // external user
-			{
+            } else { // external user
 				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
 					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
 				else
@@ -1007,6 +1029,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             _extAd.UpdatePassword(emailAddress, generatedPassword);
             _extAd.ExpirePassword(emailAddress);
+            _extAd.UnlockAccount(emailAddress);
 
             SendPasswordChangeEmail(emailAddress, generatedPassword, RESET_PASSWORD);
         }
@@ -1080,18 +1103,21 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <param name="emailAddress"></param>
         /// <param name="branchId"></param>
         /// <returns>Returns a new user profile</returns>
+        /// <remarks>
+        /// jwames - 4/2/2015 - change AD structure
+        /// </remarks>
         public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
             string generatedPassword = GenerateTemporaryPassword();
 
             AssertGuestProfile( emailAddress, generatedPassword );
 
             _extAd.CreateUser(
-                Configuration.ActiveDirectoryGuestContainer,
+                Configuration.ActiveDirectoryExternalUserContainer,
                 emailAddress,
                 generatedPassword,
                 Core.Constants.AD_GUEST_FIRSTNAME,
                 Core.Constants.AD_GUEST_LASTNAME,
-                Core.Constants.ROLE_EXTERNAL_GUEST
+                Configuration.RoleNameGuest
                 );
 
             _csProfile.CreateUserProfile(
@@ -1157,7 +1183,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 AddUserToCustomer(c, existingUser.UserId);
             foreach (Guid c in custsToRemove)
                 RemoveUserFromCustomer(c, existingUser.UserId);
-            UpdateUserRoles(customerList.Select(x => x.CustomerName).ToList(), existingUser.EmailAddress, roleName);
+            //UpdateUserRoles(customerList.Select(x => x.CustomerName).ToList(), existingUser.EmailAddress, roleName);
+            _extAd.GrantAccess(existingUser.EmailAddress, ConvertRoleName(roleName));
+            _extAd.RevokeAccess(existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
         }
 
         /// <summary>
@@ -1225,10 +1253,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         }
 
-        public void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName)
-        {
-            _extAd.UpdateUserGroups(customerNames, roleName, emailAddress);
-        }
+        //public void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName)
+        //{
+        //    _extAd.UpdateUserGroups(customerNames, roleName, emailAddress);
+        //}
 
         #endregion
     }
