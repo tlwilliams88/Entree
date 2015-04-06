@@ -72,7 +72,7 @@ angular.module('bekApp')
       value: 'Paid'
     }]
   }];
-  $scope.selectedFilterView = $scope.filterViews[0];
+  $scope.selectedFilterView = $scope.filterViews[1];
 
   function calculateInvoiceFields(invoices) {
     invoices.forEach(function(invoice) {
