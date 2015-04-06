@@ -218,7 +218,8 @@ namespace KeithLink.Svc.Impl.Logic
 					Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(), 
 					PONumber = l.PONumber,
 					SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0, 
-					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0
+					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0,
+					RequestedShipDate = l.RequestedShipDate
 				}).ToList();
 			else
 			{
