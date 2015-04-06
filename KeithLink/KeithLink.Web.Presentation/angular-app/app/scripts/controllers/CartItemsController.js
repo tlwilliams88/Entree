@@ -26,7 +26,7 @@ angular.module('bekApp')
         item.extPrice = PricingService.getPriceForItem(item);
       }
  
-      $scope.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
+      $scope.currentCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
     }
     function addItemWatches(startingIndex) {
       for (var i = startingIndex; i < $scope.currentCart.items.length; i++) {
@@ -138,7 +138,7 @@ angular.module('bekApp')
       if (!processingSaveCart) {
         processingSaveCart = true;
         var updatedCart = angular.copy(cart);
- 
+        
         // delete items if quantity is 0 or price is 0
             updatedCart.items = $filter('filter')( updatedCart.items, function(item){ 
           return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 

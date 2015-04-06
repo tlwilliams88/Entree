@@ -12,7 +12,7 @@
             <tr ng-click="goToCart(cart.id, false)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
               <td><span class="overflow">{{cart.name}}</span></td>
               <td><!-- {{cart.items.length}} --></td>
-              <td class="nowrap">{{cart.requestedshipdate | formatDate}}</td>
+              <td class="nowrap">{{cart.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}</td>
             </tr>
             <tr ng-click="createNewCart()">
               <td colspan="3">Create a Cart...</td>
@@ -23,7 +23,7 @@
             <caption class="text-left">Change Orders</caption>
             <tr ng-if="order.ordernumber !== currentCart.ordernumber" ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.invoicenumber}}</span></td>
-              <td class="nowrap">{{order.requestedshipdate | formatDate}}</td>
+              <td class="nowrap">{{order.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}</td>
             </tr>
             <tr ng-if="changeOrders.length === 1 && currentCart.ordernumber === changeOrders[0].ordernumber">
               <td colspan="3">No other change orders.</td>
@@ -108,7 +108,7 @@
 
         <div class="row">
           <div class="col-sm-4 col-md-4 text-green currency-value">
-            {{subtotal | currency}}
+            {{currentCart.subtotal | currency}}
           </div>
 
           <div class="col-sm-8 col-md-8 hidden-print text-right-lg text-left-xs">
@@ -125,7 +125,7 @@
           <div class="col-sm-6">
             <div class="btn-group" dropdown is-open="showShipDates">
               <p class="form-control-static">
-                {{currentCart.requestedshipdate | formatDate}}
+                {{currentCart.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}
                 <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
                 <div class="dropdown-menu">
                   <table class="table no-margin">
@@ -136,7 +136,7 @@
                     </tr>
                     <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
                       <td>{{shipDate.dayofweek}}</td>
-                      <td class="nowrap">{{shipDate.shipdate}}</td>
+                      <td class="nowrap">{{shipDate.shipdate| formatDate:'ddd, MMM D, YYYY'}}</td>
                       <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
                     </tr>
                   </table>

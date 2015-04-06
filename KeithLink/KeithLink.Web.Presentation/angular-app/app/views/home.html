@@ -75,7 +75,7 @@
             <div class="notification__icon">
               <span class="icon-record"></span>
             </div>
-            <div class="notification__date">{{date | formatDate:'MM/DD/YYYY ddd.'}} </div>
+            <div class="notification__date">{{date | formatDate:'MM/DD/YYYY, ddd.'}} </div>
           </div>
           <div ng-repeat = "notification in notificationDates[date]">
             <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
@@ -120,7 +120,7 @@
             <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-3 table-col">
-            <span>{{(cart.requestedshipdate || 'N/A') | formatDate:'MM/DD/YYYY ddd.'}}</span>
+            <span>{{(cart.requestedshipdate || 'N/A') | formatDate:'ddd, MMM D, YYYY'}}</span>
           </div>
           <div class="col-md-3 table-col">
             {{cart.itemcount}}
@@ -170,7 +170,7 @@
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'ddd, MM/DD/YYYY'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'ddd, MMM D, YYYY'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">

@@ -275,7 +275,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 			stopWatch.Start();
 
-			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), listItems.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).ToList());
+			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), listItems.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).Distinct().ToList());
 			stopWatch.Stop();
 			var priceTime = stopWatch.ElapsedMilliseconds;
 

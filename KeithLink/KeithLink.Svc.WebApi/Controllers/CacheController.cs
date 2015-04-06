@@ -24,13 +24,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[HttpGet]
 		public void RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key)
 		{
-			cacheRepository.RefreshCacheItem(cacheName, cachePrefix, cacheName, key);
+			cacheRepository.RefreshCacheItem(cacheGroupName, cachePrefix, cacheName, key);
 		}
 		[Route("cache/RefreshCache")]
 		[HttpGet]
 		public void RefreshCache(string cacheGroupName, string cachePrefix, string cacheName)
 		{
-			cacheRepository.RefreshCache(cacheName, cachePrefix, cacheName);
+			cacheRepository.RefreshCache(cacheGroupName, cachePrefix, cacheName);
 		}
 	}
 }

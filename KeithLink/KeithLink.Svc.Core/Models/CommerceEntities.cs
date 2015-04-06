@@ -7589,24 +7589,25 @@ public partial class Organization : ICommerceEntity
 		}
 	}
 
-    /// <summary>
-    /// Gets or sets the DsrNumber property.
+
+	/// <summary>
+    /// Gets or sets the DsmNumber property.
     /// </summary>
     /// <value>
-    /// The DsrNumber property from the property collection.
+    /// The DsmNumber property from the property collection.
     /// </value>
-    public virtual string DsmNumber
-    {
-        get
-        {
-            return this._commerceEntity.GetPropertyValue(PropertyName.DsmNumber) as string;
-        }
+	public virtual string DsmNumber
+	{
+		get
+		{
+			return this._commerceEntity.GetPropertyValue(PropertyName.DsmNumber) as string;
+		}
 
-        set
-        {
-            this._commerceEntity.SetPropertyValue(PropertyName.DsmNumber, value);
-        }
-    }
+		set
+		{
+			this._commerceEntity.SetPropertyValue(PropertyName.DsmNumber, value);
+		}
+	}
 
 
 	/// <summary>
@@ -7948,8 +7949,7 @@ public partial class Organization : ICommerceEntity
 		}
 	}
 
-	      
-	
+
 	/// <summary>
     /// Gets or sets the ProfileSystemuserIdChangedBy property.
     /// </summary>
@@ -8042,20 +8042,24 @@ public partial class Organization : ICommerceEntity
         /// </summary>
 		public const string IsPowerMenu = "IsPowerMenu";
 
+
 		/// <summary>
         /// Constant for accessing ContractNumber property.
         /// </summary>
 		public const string ContractNumber = "ContractNumber";
 
-        /// <summary>   
+
+		/// <summary>
         /// Constant for accessing DsrNumber property.
         /// </summary>
 		public const string DsrNumber = "DsrNumber";
 
-        /// <summary>
-        /// Constant for accessing DsrNumber property.
+
+		/// <summary>
+        /// Constant for accessing DsmNumber property.
         /// </summary>
-        public const string DsmNumber = "DsmNumber";
+		public const string DsmNumber = "DsmNumber";
+
 
 		/// <summary>
         /// Constant for accessing NationalOrRegionalAccountNumber property.
@@ -8482,6 +8486,11 @@ public partial class UserOrganizations : ICommerceEntity
         /// </summary>
 		public const string UserOrganization = "UserOrganization";
 
+		/// <summary>
+        /// Constant for accessing the PreferredAddress relationship.
+        /// </summary>
+		public const string PreferredAddress = "PreferredAddress";
+
 	}
 	#endregion
 
@@ -8600,6 +8609,27 @@ public partial class UserOrganizations : ICommerceEntity
             return relationship.FirstItemIndex;
 		}
 	}
+
+	/// <summary>
+    /// PreferredAddress Relationship.
+    /// </summary>
+	public AddressProfiles PreferredAddress
+	{
+		get
+		{
+			var relationship = this._commerceEntity.GetPropertyValue(RelationshipName.PreferredAddress) as CommerceRelationship;
+				
+			if(relationship == null)
+			{
+				return null;
+			}
+	
+
+			return (AddressProfiles)relationship.Target;
+
+		}
+	}
+
 
 	#endregion	
 
@@ -11881,6 +11911,26 @@ public partial class Basket : ICommerceEntity
 
 
 	/// <summary>
+    /// Gets or sets the TempSubTotal property.
+    /// </summary>
+    /// <value>
+    /// The TempSubTotal property from the property collection.
+    /// </value>
+	public virtual decimal? TempSubTotal
+	{
+		get
+		{
+			return this._commerceEntity.GetPropertyValue(PropertyName.TempSubTotal) as decimal?;
+		}
+
+		set
+		{
+			this._commerceEntity.SetPropertyValue(PropertyName.TempSubTotal, value);
+		}
+	}
+
+
+	/// <summary>
     /// Gets or sets the Status property.
     /// </summary>
     /// <value>
@@ -12227,6 +12277,12 @@ public partial class Basket : ICommerceEntity
         /// Constant for accessing ListType property.
         /// </summary>
 		public const string ListType = "ListType";
+
+
+		/// <summary>
+        /// Constant for accessing TempSubTotal property.
+        /// </summary>
+		public const string TempSubTotal = "TempSubTotal";
 
 
 		/// <summary>

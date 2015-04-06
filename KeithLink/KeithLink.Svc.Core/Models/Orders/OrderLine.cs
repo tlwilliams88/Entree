@@ -21,6 +21,9 @@ namespace KeithLink.Svc.Core.Models.Orders
         public double LineTotal {
             get
             {
+				if (this.IsDeleted)
+					return 0;
+
                 if (this.CatchWeight)
                 {
 					if (!string.IsNullOrEmpty(this.OrderStatus) && this.OrderStatus.Equals("i", StringComparison.CurrentCultureIgnoreCase) && this.TotalShippedWeight > 0)
@@ -45,9 +48,14 @@ namespace KeithLink.Svc.Core.Models.Orders
             set { } 
         }
 
+		private int _quantity;
 		[DataMember(Name = "quantity")]
 		[Description("# Requested")]
-		public int Quantity { get; set; }
+		public int Quantity
+		{
+			get { if (IsDeleted) return 0; return _quantity; }
+			set { _quantity = value; }
+		}
 				
         //[DataMember(Name = "packsize")]
         //public string PackSize { get; set; }
@@ -65,10 +73,16 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[DataMember(Name = "price")]
 		public double Price { get; set; }
 
+		private int _quantityOrders;
         [DataMember(Name = "quantityordered")]
 		[Description("# Ordered")]
-        public int QuantityOrdered { get; set; }
+		public int QuantityOrdered
+		{
+			get { if (IsDeleted) return 0; return _quantityOrders; }
+			set { _quantityOrders = value; }
+		}
 
+		private int _quantityShipped;
         [DataMember(Name = "quantityshipped")]
 		[Description("# Shipped")]
         public int QantityShipped { get; set; }
@@ -76,6 +90,10 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "status")]
         public string Status { 
             get {
+
+				if (this.IsDeleted)
+					return Constants.ITEM_DELETED_STATUS;
+
                 string mfStatus = string.IsNullOrEmpty(MainFrameStatus) ? string.Empty : MainFrameStatus.ToUpper().Trim();
 
                 switch (mfStatus) {
@@ -115,6 +133,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 
 		[DataMember(Name = "orderstatus")]
 		public string OrderStatus { get; set; }
+
+		[DataMember(Name = "isdeleted")]
+		public bool IsDeleted { get; set; }
 
 		public List<ExportModelConfiguration> DefaultExportConfiguration()
 		{

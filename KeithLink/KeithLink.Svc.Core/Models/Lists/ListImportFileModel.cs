@@ -18,5 +18,7 @@ namespace KeithLink.Svc.Core.Models.Lists {
         [DataMember( Name = "ignorefirstline" )]
         public bool IgnoreFirstLine { get; set; }
 
+		[DataMember(Name = "filesource")]
+		public bool FileSource { get; set; }
     }
 }
