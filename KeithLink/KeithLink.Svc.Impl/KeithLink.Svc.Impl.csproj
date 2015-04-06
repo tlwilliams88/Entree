@@ -498,6 +498,14 @@
     <Compile Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.Designer.cs">
       <DependentUpon>201503272112289_ListItem column lengths and indexes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201504031553440_increase_order_history_invoice_length.cs" />
+    <Compile Include="Repository\EF\Migrations\201504031553440_increase_order_history_invoice_length.Designer.cs">
+      <DependentUpon>201504031553440_increase_order_history_invoice_length.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201504031604421_increase_order_detail_invoice_length.cs" />
+    <Compile Include="Repository\EF\Migrations\201504031604421_increase_order_detail_invoice_length.Designer.cs">
+      <DependentUpon>201504031604421_increase_order_detail_invoice_length.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1020,6 +1028,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201503272112289_ListItem column lengths and indexes.resx">
       <DependentUpon>201503272112289_ListItem column lengths and indexes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201504031553440_increase_order_history_invoice_length.resx">
+      <DependentUpon>201504031553440_increase_order_history_invoice_length.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201504031604421_increase_order_detail_invoice_length.resx">
+      <DependentUpon>201504031604421_increase_order_detail_invoice_length.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

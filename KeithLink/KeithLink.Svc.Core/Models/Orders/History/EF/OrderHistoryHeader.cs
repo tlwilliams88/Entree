@@ -22,8 +22,8 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		[Column(TypeName = "char")]
         [Index("IdxCustomerNumberByDate", 0)]
 		public string CustomerNumber { get; set; }
-		[MaxLength(8)]
-		[Column(TypeName = "char")]		
+		[MaxLength(10)]
+		[Column(TypeName = "varchar")]		
         [Index("IdxOrderHeader", 1)]
 		public string InvoiceNumber { get; set; }
         [Index("IdxCustomerNumberByDate", 1)]

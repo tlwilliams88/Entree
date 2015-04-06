@@ -15,7 +15,8 @@ angular.module('bekApp')
     .state('register', {
       url: '/register/',
       templateUrl: 'views/register.html',
-      controller: 'RegisterController'
+      controller: 'RegisterController',
+      data: {}
     })
     .state('changepassword', {
         url: '/changepassword/',
@@ -45,7 +46,8 @@ angular.module('bekApp')
       templateUrl: 'views/home.html',
       controller: 'HomeController',
       data: {
-        authorize: 'isOrderEntryCustomer'
+        authorize: 'isOrderEntryCustomer',
+        saveCarts: true
       }
     })
     .state('menu.userprofile', {
@@ -300,6 +302,19 @@ angular.module('bekApp')
       resolve: {
         invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
           return InvoiceService.getInvoice($stateParams.invoiceNumber);
+        }]
+      }
+    })
+    .state('invoiceimage', {
+      url: '/invoice/image/:invoiceNumber/',
+      templateUrl: 'views/invoiceimage.html',
+      controller: 'InvoiceImageController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        images: ['$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceImage($stateParams.invoiceNumber);
         }]
       }
     })

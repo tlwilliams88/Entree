@@ -23,11 +23,11 @@
           <div class="order-item-title">Order Date</div>
           <div class="order-item-value-1">{{order.createddate | formatDate:'MM/DD/YYYY'}}</div>
           <div class="order-item-title">Requested Ship Date</div>
-          <div class="order-item-value-2">{{order.requestedshipdate | formatDate:'MM/DD/YYYY'}}</div>
+          <div class="order-item-value-2">{{order.requestedshipdate | formatDate:'ddd, MM/DD/YYYY'}}</div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Delivery Date</div>
-          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | formatDate:'MM/DD/YYYY'}}</div>
+          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | formatDate:'ddd, MM/DD/YYYY'}}</div>
           <div class="order-item-title">Delivered</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime == null && order.actualdeliverytime == null && order.scheduleddeliverytime == null">N/A</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>

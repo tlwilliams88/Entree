@@ -266,16 +266,16 @@ module.exports = function (grunt) {
       //   dist: {}
       // },
 
-      imagemin: {
-          dist: {
-              files: [{
-                  expand: true,
-                  cwd: '<%= yeoman.app %>/images',
-                  src: '{,*/}*.{png,jpg,jpeg,gif}',
-                  dest: '<%= yeoman.dist %>/images'
-              }]
-          }
-      },
+      // imagemin: {
+      //     dist: {
+      //         files: [{
+      //             expand: true,
+      //             cwd: '<%= yeoman.app %>/images',
+      //             src: '{,*/}*.{png,jpg,jpeg,gif}',
+      //             dest: '<%= yeoman.dist %>/images'
+      //         }]
+      //     }
+      // },
 
       svgmin: {
           dist: {
@@ -398,7 +398,7 @@ module.exports = function (grunt) {
           ],
           dist: [
             'compass:dist',
-            'imagemin',
+            // 'imagemin',
             'svgmin'
           ]
       },
@@ -617,13 +617,20 @@ module.exports = function (grunt) {
   ]);
   
   grunt.registerTask('build-for-demo', [
-    // 'npm-install',
-    'clean:dev',
+    'clean:dist',
+    // 'includeSource:dist',
     'ngconstant:demo',
-    // 'includeSource:dev',
-    'compass:server',
-    'copy:dev',
-    'karma'
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngmin',
+    'copy:dist',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
   ]);
 
   grunt.registerTask('build-for-stage', [

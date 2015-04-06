@@ -1,11 +1,53 @@
 'use strict';
-
+ 
 angular.module('bekApp')
-.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'OrderService', 'PagingModel',
-  function ($scope, $state, $timeout, $modal, OrderService, PagingModel) {
-
+.controller('OrderController', ['$scope', '$state', '$timeout', '$modal', 'CartService', 'OrderService', 'PagingModel',
+  function ($scope, $state, $timeout, $modal, CartService, OrderService, PagingModel) {
+ 
   var currentCustomer = $scope.selectedUserContext.customer;
-
+ 
+  /******
+  CARTS
+  ******/
+  $scope.loadingCarts = true;
+  $scope.carts = CartService.cartHeaders;
+  CartService.getCartHeaders().finally(function() {
+    $scope.loadingCarts = false;
+  });
+ 
+  $scope.cartGuids = [];
+  $scope.toggleCart = function(guid) {
+    var idx = $scope.cartGuids.indexOf(guid);
+    if (idx === -1) {
+      $scope.cartGuids.push(guid);
+    } else {      
+      $scope.cartGuids.splice(idx, 1);
+    }
+  }
+ 
+  $scope.toggleAllCarts = function(allCartsSelected) {
+    if (allCartsSelected === true) {
+      $scope.carts.forEach(function(cart) {
+        $scope.cartGuids.push(cart.id);
+      });
+    } else {
+      $scope.cartGuids = [];
+    }
+  };
+ 
+  $scope.deleteCarts = function(cartGuids) {
+    CartService.deleteMultipleCarts(cartGuids).then(function() {
+      $scope.allCartsSelected = false;
+      $scope.cartGuids = [];
+      $scope.displayMessage('success', 'Successfully deleted carts.');
+    }, function() {
+      $scope.displayMessage('error', 'Error deleting carts.');
+    });
+  };
+ 
+  /******
+  ORDERS
+  ******/
   function setOrders(data) {
     $scope.orders = data.results;
     $scope.totalOrders = data.totalResults;
@@ -19,12 +61,12 @@ angular.module('bekApp')
   function stopLoading() {
     $scope.loadingResults = false;
   }
-
+ 
   $scope.sort = {
     field: 'createddate',
     sortDescending: true
   };
-
+ 
   var ordersPagingModel = new PagingModel( 
     OrderService.getOrders, 
     setOrders,
@@ -33,7 +75,7 @@ angular.module('bekApp')
     stopLoading,
     $scope.sort
   );
-
+ 
   ordersPagingModel.loadData();
     
   $scope.filterOrders = function(filterFields) {
@@ -53,7 +95,7 @@ angular.module('bekApp')
     };
     ordersPagingModel.sortData($scope.sort);
   };
-
+ 
   var data = { response: {}, calls: 0 };
   var poller = function() {
     OrderService.pollOrderHistory().then(function(response) {
@@ -61,7 +103,7 @@ angular.module('bekApp')
       
       if (currentCustomer.lastOrderUpdate === response.lastupdated) {
         // no update made, keep polling
-
+ 
         if (data.calls > 5) {
           // stop polling after x-number calls
           // $timeout.cancel(colorRowTimer);
@@ -70,23 +112,23 @@ angular.module('bekApp')
           // keep polling
           $timeout(poller, 2000);
         }
-
+ 
       } else {
         $scope.displayMessage('success', 'Successfully received lastest order updates.');
         ordersPagingModel.pageIndex = 0;
         ordersPagingModel.filter = [];
         ordersPagingModel.loadData();
-
+ 
       }
     });      
   };
-
+ 
   $scope.refreshOrderHistory = function() {
     OrderService.refreshOrderHistory().then(function(response) {
       poller();  
     });
   };
-
+ 
   $scope.openExportModal = function() {
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/exportmodal.html',

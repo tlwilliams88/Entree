@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    Order History 
+    Orders 
     <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success pull-right" style="font-size: 12px;padding: 7px 10px;">Get Latest<br>Updates</button>
   </div>
   <div header-buttons>
@@ -9,14 +9,80 @@
     <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
   </div>
 </div>
-
+ 
 <div class="page-content">
+  
   <div class="row">
-    <div class="col-xs-12 text-right">
+    <h3 class="col-xs-8">
+      Pending Orders
+      <button style="margin-top: -13px;margin-left: 10px;" class="btn btn-sm btn-danger" ng-show="cartGuids.length > 0" ng-click="deleteCarts(cartGuids)">Delete Carts</button>
+    </h3>
+    <div class="col-xs-4 text-right" style="margin-top:20px;">
+      Showing {{carts.length}} Carts
+    </div>
+  </div>
+ 
+  <table class="table table-border table-striped-rows">
+    <thead>
+      <tr>
+        <th class="input-col">
+          <input type="checkbox" ng-model="allCartsSelected" ng-change="toggleAllCarts(allCartsSelected)" />
+        </th>
+        <th>
+          Name
+        </th>
+        <th>
+          Ship Date
+        </th>
+        <th>
+          PO Number
+        </th>
+        <th>
+          Item Count
+        </th>
+        <th>
+          Subtotal
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+ 
+      <tr ng-repeat="cart in carts" ng-class="{ odd : $odd, even: $even }">
+        <td class="input-col">
+          <input type="checkbox" ng-checked="cartGuids.indexOf(cart.id) > -1" ng-click="toggleCart(cart.id)" />
+        </td>
+        <td>
+          <a ui-sref="menu.cart.items({ cartId: cart.id })">{{::cart.name}}</a>
+        </td>
+        <td>
+          {{::(cart.requestedshipdate || 'N/A') | formatDate:'MM/DD/YYYY ddd.'}}
+        </td>
+        <td>
+          {{::cart.ponumber || 'N/A'}}
+        </td>
+        <td>
+          {{::cart.itemcount}}
+        </td>
+        <td>
+          {{::cart.subtotal | currency}}
+        </td>
+      </tr>
+    </tbody>
+    <tfoot ng-show="orders.length === 0">
+      <tr>
+        <td colspan="9">There are no carts to display.</td>
+      </tr>
+    </tfoot>
+  </table>
+  <div class="text-center" loading-spinner="loadingCarts"></div>
+ 
+  <div class="row">
+    <h3 class="col-xs-8">Confirmed Orders</h3>
+    <div class="col-xs-4 text-right" style="margin-top:20px;">
       Showing {{orders.length}} of {{totalOrders}} Orders
     </div>
   </div>
-
+ 
   <table class="table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()">
     <thead>
       <tr>
@@ -50,7 +116,7 @@
       </tr>
     </thead>
     <tbody>
-
+ 
       <!-- Filter Row -->
       <tr class="filter-row" ng-show="showFilter">
         <td class="input-col">
@@ -71,19 +137,21 @@
           <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
         </td>
       </tr> <!-- end Filter Row -->
-
-      <tr ng-repeat-start="order in orders" ng-class="{ odd : $odd, even: $even }">
-        <td>
-          <a ng-if="order.invoicenumber !== 'Pending' && order.invoicenumber !== 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})">{{order.invoicenumber}}</a>
-          <a ng-if="order.invoicenumber === 'Pending' || order.invoicenumber === 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">{{order.invoicenumber}}</a>
+ 
+      <tr ng-repeat-start="order in orders | styleOrders" ng-class="{ odd : $odd, even: $even }">
+        <td ng-class="{ 'red-border': order.invoicestatus === 'Past Due', 'green-border': order.invoicestatus === 'Paid' }">
+          <div order-link></div>
         </td>
         <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
-        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY' }}</td>
+        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY ddd.' }}</td>
         <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
         <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
-        <!-- <td class="hidden-mobile-visible-print">{{order.invoicenumber || 'N/A'}}</td> -->
-        <td class="hidden-mobile-visible-print">{{order.invoicestatus || 'N/A'}}</td>
+        <td 
+          ng-class="{ 'text-red': order.invoicestatus === 'Past Due', 'text-green': order.invoicestatus === 'Paid' }" 
+          class="hidden-mobile-visible-print">
+          {{order.invoicestatus || 'N/A'}}
+        </td>
         <td class="large-icon icon-col">
           <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
         </td>
@@ -97,7 +165,7 @@
             </colgroup>
             <tr>
               <td>Delivery Date</td>
-              <td>{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY'}}</td>
+              <td>{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY ddd.'}}</td>
             </tr>
             <tr>
               <td>Item Count</td>
@@ -113,7 +181,7 @@
             </tr> -->
             <tr>
               <td>Invoice Status</td>
-              <td>{{order.invoicestatus || 'N/A'}}</td>
+              <td ng-class="{ 'text-red': order.invoicestatus === 'Past Due', 'text-green': order.invoicestatus === 'Paid' }">{{order.invoicestatus || 'N/A'}}</td>
             </tr>
           </table>
         </td>
