@@ -111,6 +111,10 @@
           Invoice
           <span>Status <span sort-icons field="'invoicestatus'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
         </th>
+        <th class="sort-col-header" ng-click="sortOrders('ponumber', !sort.sortDescending)">
+          PO Number
+          <span># <span sort-icons field="'ponumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+        </th>
         <th class="large-icon icon-col">
           <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
         </th>
@@ -133,6 +137,9 @@
         <td class="hidden-mobile-visible-print input-col">
           <input type="text" placeholder="Filter..." ng-model="filterFields.invoicestatus">
         </td>
+        <td class="input-col"> 
+          <input type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
+        </td>
         <td class="input-col">
           <button type="button" class="btn btn-primary btn-sm" ng-click="filterOrders(filterFields)">Filter</button>
           <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
@@ -153,6 +160,7 @@
           class="hidden-mobile-visible-print">
           {{order.invoicestatus || 'N/A'}}
         </td>
+        <td>{{order.ponumber}}</td>
         <td class="large-icon icon-col">
           <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
         </td>

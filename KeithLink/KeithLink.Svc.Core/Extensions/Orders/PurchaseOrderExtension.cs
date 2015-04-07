@@ -20,7 +20,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
                 RequestedShipDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"],
                 InvoiceStatus = "N/A",
 				Items = value.Properties["LineItems"] == null ? null : ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
-                CommerceId = Guid.Parse(value.Id)
+                CommerceId = Guid.Parse(value.Id),
+				PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString()
             };
 
             retVal.ItemCount = retVal.Items == null ? 0 : retVal.Items.Count;
