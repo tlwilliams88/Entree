@@ -536,7 +536,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
         public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			var notes = listRepository.ReadListForCustomer(catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
+			var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Notes, i => i.Items).FirstOrDefault();
 
 			if (notes == null)
 				return new List<ListItemModel>();
