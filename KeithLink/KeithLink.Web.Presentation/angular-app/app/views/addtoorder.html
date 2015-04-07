@@ -54,7 +54,7 @@
         <div class="col-md-3 col-sm-6 col-xs-12 btn-group info-box hand no-border-right-sm dropdown-toggle" dropdown is-open="showShipDates">
           <span class="nav-description text-light">Ship Date</span>
           <span class="nav-title">
-            {{(selectedCart.requestedshipdate | formatDate: 'ddd, MMM D, YYYY') || 'Select a date...' }}
+            {{(selectedCart.requestedshipdate | formatDate) || 'Select a date...' }}
           </span>
           <span class="pull-right icon-arrow-down7 text-light"></span>
           <div class="dropdown-menu">
@@ -86,7 +86,7 @@
   <div class="visible-print row sub-content">
     <div class="col-xs-3">{{selectedList.name}}</div>
     <div class="col-xs-3">{{selectedCart.name || selectedCart.ordernumber || 'New Cart'}}</div>
-    <div class="col-xs-2">{{( selectedCart.requestedshipdate | formatDate:'ddd, MMM D, YYYY') || 'Select a date...' }}</div>
+    <div class="col-xs-2">{{( selectedCart.requestedshipdate | formatDate) || 'Select a date...' }}</div>
     <div class="col-xs-2">{{itemCount || '0'}} Items</div>
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
@@ -152,35 +152,21 @@
         </tr>
       </thead>
       <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
-        <!-- Filter Row -->
-        <tr class="filter-row" ng-show="showFilter">
-          <td></td>
-          <td></td>
-          <td class="input-col">
-            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.name">
-          </td>
-          <td class="hidden-mobile-visible-print input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
-          </td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="hidden-mobile-visible-print input-col">
-            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.notes">
-          </td>
-          <td class="hidden-xs hidden-sm"></td>
-          <td class="hidden-mobile-visible-print input-col">
-            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.label">
-          </td>
-          <td class="hidden-mobile-visible-print" ng-show="useParlevel" ></td>
-          <td class="hidden-mobile-visible-print" ng-show="useParlevel" ></td>
-          <td></td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="input-col">
-            <button type="button" class="btn btn-primary btn-sm" ng-click="filterItems(filterFields)">Filter</button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters()">Clear</button>
-          </td>
-        </tr> <!-- end Filter Row -->
+      
+      <form name="orderSearchForm" class="hidden-print">
+        <div class="input-group input-group-lg">
+          <input 
+            ng-model="orderSearchTerm"
+            type="text" 
+            class="form-control" 
+            placeholder="Search current list by name, item #, notes, brand or label" />
+          <span class="input-group-btn">
+            <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+
+          </span>
+        </div>
+      </form>
 
         <tr 
           ng-repeat-start="item in  selectedList.items track by item.listitemid" 
@@ -353,7 +339,7 @@
     </thead>
     <tbody>
       <tr 
-        ng-repeat-start="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)" 
+        ng-repeat-start="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)"
         ng-class="{ odd : $odd, even: $even }">
 
         <td>

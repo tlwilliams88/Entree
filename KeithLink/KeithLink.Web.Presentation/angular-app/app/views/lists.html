@@ -373,13 +373,6 @@
                 <span>{{::selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               
-              <th class="list-print-column">Inv / Ord 1</th>
-              <th class="list-print-column">Inv / Ord 2</th>
-              <th class="list-print-column">Inv / Ord 3</th>
-              <th class="list-print-column">Inv / Ord 4</th>
-              <th class="list-print-column">Inv / Ord 5</th>
-              <th class="list-print-column">Inv / Ord 6</th>
-
               <th class="hidden-print"></th>
             </tr> 
           </thead>
@@ -427,7 +420,7 @@
               <td class="text-center hidden-drag hidden-xs hidden-sm bek-drag-handle">
                 {{::item.quantityincart}}
               </td>
-              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-mobile-visible-print">
+              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm hidden-drag">
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
@@ -481,13 +474,6 @@
               <td class="visible-print hidden-drag" ng-show="::selectedList.permissions.canSeeParlevel">
                 {{::item.parlevel}}
               </td>
-
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
                 <div               
@@ -592,7 +578,7 @@
                     </tr>
                     <tr ng-if="::selectedList.permissions.canDeleteItems">
                       <td colspan="2">
-                        <button class="btn btn-lg btn-danger" ng-click="deleteItem(item)"><span class="icon-cross"></span> Remove Item</button>
+                        <button type="button" class="btn btn-lg btn-danger" ng-click="deleteItem(item)"><span class="icon-cross"></span> Remove Item</button>
                       </td>
                     </tr>
                   </tbody>

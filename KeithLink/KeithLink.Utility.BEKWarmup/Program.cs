@@ -51,26 +51,16 @@ namespace KeithLink.Utility.BEKWarmup
 				profileRequest.AddHeader("apiKey", ConfigurationManager.AppSettings.Get("APIKey"));
 				var profileResponse = client.Execute<GetProfileResponse>(profileRequest);
 
-				var customerRequest = new RestRequest("/profile/customer?size=15&from=0", Method.GET);
+				var customerRequest = new RestRequest("/profile/customer?account=&from=0&size=5&terms=", Method.GET);
 				customerRequest.AddHeader("Authorization", string.Format("Bearer {0}", authResponse.Data.access_token));
 				customerRequest.AddHeader("apiKey", ConfigurationManager.AppSettings.Get("APIKey"));
 				var customerResponse = client.Execute<PagedCustomerResponse>(customerRequest);
 
-				foreach (var customer in customerResponse.Data.results)
-				{
-					DateTime startTime = DateTime.Now;
-					// get user lists
-					var listRequest = new RestRequest("/list", Method.GET);
-					var listResponse = MakeGetRequest(client, authResponse.Data.access_token, listRequest, customer.customerNumber, customer.customerBranch);
-
-					// get user carts
-					var cartRequest = new RestRequest("/cart", Method.GET);
-					var cartResponse = MakeGetRequest(client, authResponse.Data.access_token, cartRequest, customer.customerNumber, customer.customerBranch);
-
-					// change orders
-					var changeOrderRequest = new RestRequest("/order/changeorder", Method.GET);
-					var changeOrderResponse = MakeGetRequest(client, authResponse.Data.access_token, changeOrderRequest, customer.customerNumber, customer.customerBranch);
-				}
+				//Getting divisions is a lightweight query that will keep the internal service alive
+				var divisionRequest = new RestRequest("/catalog/divisions", Method.GET);
+				divisionRequest.AddHeader("apiKey", ConfigurationManager.AppSettings.Get("APIKey"));
+				var divisionResponse = client.Execute(divisionRequest);
+				
 			}
 			catch (Exception ex)
 			{

@@ -219,7 +219,8 @@ namespace KeithLink.Svc.Impl.Logic
 					PONumber = l.PONumber,
 					SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0, 
 					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0,
-					RequestedShipDate = l.RequestedShipDate
+					RequestedShipDate = l.RequestedShipDate,
+					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
 				}).ToList();
 			else
 			{

@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
-    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'ENV', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, ENV, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
  
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -51,7 +51,7 @@ angular.module('bekApp')
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
- 
+    $scope.isMobile = ENV.mobileApp;
     $scope.$watch(function () { return CartService.isOffline }, function (newVal, oldVal) {
       if (typeof newVal !== 'undefined') {
         $scope.isOffline = CartService.isOffline;

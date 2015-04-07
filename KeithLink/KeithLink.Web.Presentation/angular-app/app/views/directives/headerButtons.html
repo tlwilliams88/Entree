@@ -17,7 +17,7 @@
           <div class="cart-dropdown__info">
             <strong>{{cart.name}}</strong>
             <br>
-            Ship Date: {{cart.requestedshipdate | formatDate:'MM/DD/YYYY, ddd.'}}
+            Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
             <br>
             <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
           </div>

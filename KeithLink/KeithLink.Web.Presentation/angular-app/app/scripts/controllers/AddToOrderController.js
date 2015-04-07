@@ -113,15 +113,16 @@ angular.module('bekApp')
     /**********
     PAGING
     **********/
-
-    $scope.filterItems = function(filterFields) {
+    $scope.filterItems = function(searchTerm) {  
+      listPagingModel.filterListItems(searchTerm);
       clearItemWatches(watches);
-      listPagingModel.filterListItemsByMultipleFields(filterFields);
     };
-    $scope.clearFilters = function() {
-      $scope.filterFields = {};
-      listPagingModel.clearFilters();
-    };
+
+    $scope.clearFilter = function(){   
+      $scope.orderSearchTerm = "";
+      $scope.filterItems( $scope.orderSearchTerm );     
+    }
+  
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
         sortOrder = !sortOrder;

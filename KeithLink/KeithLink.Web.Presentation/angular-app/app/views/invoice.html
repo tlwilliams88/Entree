@@ -196,7 +196,7 @@
               {{::invoice.ponumber}}
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::invoice.duedate | formatDate:'MMM D, YYYY' }}
+              {{::invoice.duedate | formatDate}}
             </td>
             <td>
               {{::invoice.amount | currency}}
@@ -224,8 +224,10 @@
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice)"
+                ng-init="invoice.paymentAmount = (invoice.pendingtransaction.amount)"
                 >
             </td>
+    
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
               ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
@@ -258,7 +260,7 @@
                 </colgroup>
                 <tr>
                   <td>Due Date</td>
-                  <td>{{::invoice.duedate | formatDate:'MMM D, YYYY'}}</td>
+                  <td>{{::invoice.duedate | formatDate}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
