@@ -1,16 +1,33 @@
 <div class="hidden-xs hidden-sm hidden-print page-header-bar__actions">
 
-  <!-- <div class="pull-right"> -->
   <div ng-transclude="" class="page-header__buttons">
 
   </div>
+  
   <div class="page-header__orders" ng-if="isOrderEntryCustomer">
-    <a ui-sref="menu.cart.items({ cartId: 1 })" class="badge-parent">
-      <span title = "Carts" class="icon-truck"></span>
-      <span ng-if="cartHeaders && cartHeaders.length > 0" class="badge">{{cartHeaders.length}}</span>
-    </a>
-
+    <div class="btn-group" dropdown is-open="status.cartisopen">
+      <button class="badge-parent btn-no-style dropdown-toggle">
+        <span title="Carts" class="text-blue icon-truck"></span>
+        <span ng-if="cartHeaders && cartHeaders.length > 0" class="badge">{{cartHeaders.length}}</span>
+      </button>
+      <ul class="dropdown-menu truck-dropdown">
+        <li class="heading"><h3>Current Carts</h3></li>
+        <li class="cart" ng-repeat="cart in cartHeaders | orderBy:'active':true | limitTo: 2">
+          <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
+          <div class="cart-dropdown__info">
+            <strong>{{cart.name}}</strong>
+            <br>
+            Ship Date: {{cart.requestedshipdate | formatDate:'MM/DD/YYYY, ddd.'}}
+            <br>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
+          </div>
+        </li>
+        <li class="cart-dropdown__view-all">
+          <div>
+            <a ui-sref="menu.order" class="btn btn-primary">View All Carts</a>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
-  <!-- </div> -->
-
-  </div>
+</div>
