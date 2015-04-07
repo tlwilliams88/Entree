@@ -310,7 +310,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 				_invoiceRepo.MarkInvoiceAsPaid(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
 
-                _kpaylog.Write(emailAddress, string.Format("Invoice paid({0}: {1})", payment.InvoiceNumber, payment.PaymentAmount));
+                _kpaylog.Write(emailAddress, string.Format("Invoice paid({0} - {1} - {2})", payment.InvoiceNumber, payment.PaymentDate.Value, payment.PaymentAmount));
             }
 
             _kpaylog.Write(emailAddress, string.Concat("Payments for confirmation id: ", confId));
