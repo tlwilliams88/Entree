@@ -21,6 +21,7 @@ using System.IO;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Export;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -64,7 +65,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     {
                         this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>(Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
 
-						if (!_user.IsInternalUser)//For now, don't verify internal users
+						if (!(_user.IsInternalUser || _user.RoleName == Constants.ROLE_NAME_KBITADMIN))//For now, don't verify internal users
 						{
 							//TODO: Need to update check now that customers are no longer included with the user profile
 							//Verify that the authenticated user has access to this customer/branch

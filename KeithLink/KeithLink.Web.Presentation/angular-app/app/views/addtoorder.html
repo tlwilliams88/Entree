@@ -152,35 +152,21 @@
         </tr>
       </thead>
       <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
-        <!-- Filter Row -->
-        <tr class="filter-row" ng-show="showFilter">
-          <td></td>
-          <td></td>
-          <td class="input-col">
-            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.name">
-          </td>
-          <td class="hidden-mobile-visible-print input-col">
-            <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
-          </td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="hidden-mobile-visible-print input-col">
-            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.notes">
-          </td>
-          <td class="hidden-xs hidden-sm"></td>
-          <td class="hidden-mobile-visible-print input-col">
-            <input type="text" no-dirty-check placeholder="Filter..." ng-model="filterFields.label">
-          </td>
-          <td class="hidden-mobile-visible-print" ng-show="useParlevel" ></td>
-          <td class="hidden-mobile-visible-print" ng-show="useParlevel" ></td>
-          <td></td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="hidden-mobile-visible-print"></td>
-          <td class="input-col">
-            <button type="button" class="btn btn-primary btn-sm" ng-click="filterItems(filterFields)">Filter</button>
-            <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters()">Clear</button>
-          </td>
-        </tr> <!-- end Filter Row -->
+      
+      <form name="orderSearchForm" class="hidden-print">
+        <div class="input-group input-group-lg">
+          <input 
+            ng-model="orderSearchTerm"
+            type="text" 
+            class="form-control" 
+            placeholder="Search current list by name, item #, notes, brand or label" />
+          <span class="input-group-btn">
+            <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+
+          </span>
+        </div>
+      </form>
 
         <tr 
           ng-repeat-start="item in  selectedList.items track by item.listitemid" 
@@ -353,7 +339,7 @@
     </thead>
     <tbody>
       <tr 
-        ng-repeat-start="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)" 
+        ng-repeat-start="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)"
         ng-class="{ odd : $odd, even: $even }">
 
         <td>

@@ -516,12 +516,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 if (_extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitAdmin)) {
                     userRole = Constants.ROLE_NAME_KBITADMIN;
+					isKbitCustomer = true;
                 } else {
                     userRole = GetUserRole(csProfile.Email);
+					isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
                 }
 
                 userBranch = csProfile.DefaultBranch;
-                isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
+                
             }
 
             string userNameToken = string.Concat(adUser.SamAccountName, "-", DateTime.Now.ToString("yyyyMMddHHmmss"));
