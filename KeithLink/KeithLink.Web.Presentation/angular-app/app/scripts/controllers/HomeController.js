@@ -64,13 +64,6 @@ angular.module('bekApp')
       $scope.loadingAccountBalance = false;
     });
  
-    // $scope.createNewCart = function() {
-    //   return CartService.createCart().then(function(cartId) {
-    //     CartService.setActiveCart(cartId);
-    //     $state.go('menu.cart.items', {cartId: cartId, renameCart: true});
-    //   });
-    // };
- 
     $scope.showPromoItemContent = function(promoItem) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/promoitemcontentmodal.html',
@@ -80,24 +73,6 @@ angular.module('bekApp')
             return promoItem;
           }
         }
-      });
-    };
- 
-    $scope.openQuickAddModal = function() {
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/cartquickaddmodal.html',
-        controller: 'CartQuickAddModalController'
-      });
- 
-      modalInstance.result.then(function(cartId) {
-        $state.go('menu.cart.items', {cartId: cartId});
-      });
-    };
- 
-    $scope.openOrderImportModal = function () {
-      var modalInstance = $modal.open({
-        templateUrl: 'views/modals/orderimportmodal.html',
-        controller: 'ImportModalController'
       });
     };
  

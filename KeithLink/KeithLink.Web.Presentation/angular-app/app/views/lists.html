@@ -424,7 +424,7 @@
               <td class="hidden-sm hidden-xs hidden-drag">
                 <span tooltip="{{item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
               <td class="hidden-mobile-visible-print" item-icons></td>
-              <td class="text-center hidden-drag hidden-mobile-visible-print bek-drag-handle">
+              <td class="text-center hidden-drag hidden-xs hidden-sm bek-drag-handle">
                 {{::item.quantityincart}}
               </td>
               <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-mobile-visible-print">
@@ -478,7 +478,7 @@
                 {{::item.parlevel}}
               </td>
               <!-- Parlevel for Print -->
-              <td class="visible-print" ng-show="::selectedList.permissions.canSeeParlevel">
+              <td class="visible-print hidden-drag" ng-show="::selectedList.permissions.canSeeParlevel">
                 {{::item.parlevel}}
               </td>
 
