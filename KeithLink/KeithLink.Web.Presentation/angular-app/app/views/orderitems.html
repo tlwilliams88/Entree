@@ -43,10 +43,8 @@
         <div class="order-item">
           <div class="order-item-title">Invoice Status</div>
           <div class="order-item-value-1">{{order.invoicestatus || 'N/A'}}</div>
-        </div>
-        <hr ng-if="order.ischangeorderallowed">
-        <div ng-if="order.ischangeorderallowed">
-          <a ui-sref="menu.cart.items({ cartId: order.ordernumber })">View Change Order</a>
+          <div class="order-item-title">PO Number</div>
+          <div class="order-item-value-2">{{order.ponumber}}</div>
         </div>
       </div>
     </div>
