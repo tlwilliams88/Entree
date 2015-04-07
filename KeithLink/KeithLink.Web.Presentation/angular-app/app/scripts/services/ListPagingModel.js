@@ -102,6 +102,10 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
       this.loadList();
     },
 
+    resetPaging: function() {
+      this.pageIndex = 0;
+    },
+
     loadMoreData: function(results, total, loading, deletedItems) {
       if ( (!results || (results.length + deletedItems.length) < total) && !loading ) {
         this.pageIndex += this.pageSize;
