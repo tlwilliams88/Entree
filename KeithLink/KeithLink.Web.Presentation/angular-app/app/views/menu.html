@@ -123,16 +123,6 @@
           </button>
           <button
             class="btn-no-style"
-            ng-disabled="::!canCreateOrders"
-            ui-sref="menu.addtoorder.items({ listId: 0 })"
-            ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
-            <li>
-              <span class="icon-add-to-list sidebar-nav__icon"></span>
-              Add to Order
-            </li>
-          </button>
-          <button
-            class="btn-no-style"
             ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
             ng-click="goToAdminLandingPage()"
             ng-class="{'is-selected': $state.includes('menu.admin') }" >

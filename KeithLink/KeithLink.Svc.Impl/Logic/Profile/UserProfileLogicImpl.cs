@@ -759,8 +759,69 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public PagedResults<Account> GetPagedAccounts(PagingModel paging) {
             var accounts = _accountRepo.GetAccounts();
 
-            return accounts.AsQueryable().GetPage(paging);
+            if (!string.IsNullOrEmpty(paging.Type) && paging.Type.Equals("User", StringComparison.CurrentCultureIgnoreCase))
+	
+			{
+	
+				var user = this.GetUserProfile(paging.Terms.Trim());
+	
+				if (user != null)
+				{
+	
+					//This will find if they are an admin of a customer group
+					var account = _accountRepo.GetAccountsForUser(user.UserProfiles[0].UserId);
+					if (account != null && account.Count >0)
+					{
+						return new PagedResults<Account>() { Results = account, TotalResults = account.Count };
+					}
+	
+					//See if they are assigned to a customer that is a member of a customer group
+					var customers = _customerRepo.GetCustomersForUser(user.UserProfiles[0].UserId);
+					var userAccounts = FindAccountsForCustomers(accounts, customers);
+	
+					return new PagedResults<Account>() { TotalResults = userAccounts.Count, Results = userAccounts };
+				}
+				return new PagedResults<Account>() { TotalResults = 0, Results = new List<Account>() };
+			}
+	
+			else if (!string.IsNullOrEmpty(paging.Type) && paging.Type.Equals("Customer", StringComparison.CurrentCultureIgnoreCase))
+			{
+	
+				var customers = _customerRepo.GetCustomersByNameOrNumber(paging.Terms.Trim());
+				var userAccounts = FindAccountsForCustomers(accounts, customers);
+	
+				return new PagedResults<Account>() { TotalResults = userAccounts.Count, Results = userAccounts };
+			}
+	
+			else
+			{
+				return accounts.AsQueryable().GetPage(paging);
+			}
         }
+
+		private static List<Account> FindAccountsForCustomers(List<Account> accounts, List<Customer> customers)
+		{
+
+			var userAccounts = new List<Account>();
+
+			foreach (var cust in customers)
+			{
+
+				if (cust.AccountId.HasValue)
+				{
+
+					var acct = accounts.Where(a => a.Id == cust.AccountId).FirstOrDefault();
+
+					if (acct != null)
+
+						userAccounts.Add(acct);
+
+				}
+
+			}
+
+			return userAccounts;
+		}
 
         /// <summary>
         /// get a user profile from commerce server
