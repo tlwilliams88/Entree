@@ -224,8 +224,10 @@
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice)"
+                ng-init="invoice.paymentAmount = (invoice.pendingtransaction.amount)"
                 >
             </td>
+    
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
               ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
