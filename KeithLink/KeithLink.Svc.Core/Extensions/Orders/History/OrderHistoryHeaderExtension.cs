@@ -145,6 +145,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
             FillEtaInformation(value, retVal);
+			retVal.PONumber = value.PONumber;
 
 			if (value.OrderDetails != null && value.OrderDetails.Count > 0)
 			{
