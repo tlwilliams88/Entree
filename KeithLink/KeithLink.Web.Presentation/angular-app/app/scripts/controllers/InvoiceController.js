@@ -249,7 +249,7 @@ angular.module('bekApp')
         invoice.paymentAmount = invoice.amount.toString();
       }
     } else {
-      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+      if (invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.pendingtransaction.amount; 
       } else {
         invoice.paymentAmount = '0';  
