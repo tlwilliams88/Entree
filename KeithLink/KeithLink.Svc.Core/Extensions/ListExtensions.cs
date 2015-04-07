@@ -39,7 +39,7 @@ namespace KeithLink.Svc.Core.Extensions
 				ListId = list.Id,
 				Name = list.DisplayName,
 				ReadOnly = list.ReadOnly,
-                IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId)) : false,
+                IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase)) : false,
 				IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
                     list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc, FromDate = i.FromDate, ToDate = i.ToDate, Each = i.Each.Equals(null) ? false : (bool)i.Each }).ToList()

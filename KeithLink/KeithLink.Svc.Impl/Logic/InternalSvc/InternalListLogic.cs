@@ -852,9 +852,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
 		{
-			var totalStopWatch = new System.Diagnostics.Stopwatch();
-			var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
-			totalStopWatch.Start();
 			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
 
 			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
@@ -875,12 +872,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return cachedPagedList;
 			}
 			
-			stopWatch.Start();
 			var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault();
-			stopWatch.Stop();
-
-			var dbReadTime = stopWatch.ElapsedMilliseconds;
-
+			
+			
 			if (list == null)
 				return null;
 			var tempList = list.ToListModel(catalogInfo);
@@ -890,27 +884,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var returnList = tempList.ShallowCopy();
 
-			stopWatch.Reset();
-			stopWatch.Start();
 			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
-			stopWatch.Stop();
-			var favTime = stopWatch.ElapsedMilliseconds;
-
-			stopWatch.Reset();
-			stopWatch.Start();
+			
 			var pagedList = ToPagedList(paging, returnList);
-			stopWatch.Stop();
-			var pagingTime = stopWatch.ElapsedMilliseconds;
-
-			stopWatch.Reset();
-			stopWatch.Start();
+			
 			LookupPrices(user, pagedList.Items.Results, catalogInfo);
-			stopWatch.Stop();
-			var priceTime = stopWatch.ElapsedMilliseconds;
-			totalStopWatch.Stop();
-
-			eventLogRepository.WriteInformationLog(string.Format("Read Paged List {0}. ItemCount: {1}, Total Time In InternalService: {2}ms, DB Read: {3}ms, Map Fav/Notes: {4}ms, Paging: {5}ms, Pricing: {6}ms", returnList.ListId, returnList.Items.Count, totalStopWatch.ElapsedMilliseconds, dbReadTime, favTime, pagingTime, priceTime));
-
+			
 
 			return pagedList;
 		}
