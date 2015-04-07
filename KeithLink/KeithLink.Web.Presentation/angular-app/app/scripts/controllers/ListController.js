@@ -39,7 +39,6 @@ angular.module('bekApp')
       $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
-      // $scope.sortList('position', false);
 
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
@@ -50,6 +49,9 @@ angular.module('bekApp')
       });
     }
     function appendListItems(list) {
+      list.items.forEach(function(item) {
+        item.editPosition = item.position;
+      });
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
     }
     function startLoading() {
@@ -214,6 +216,9 @@ angular.module('bekApp')
         });
         updatedList.items = updatedList.items.concat(deletedItems);
         
+        // reset paging model 
+        listPagingModel.resetPaging();
+
         return ListService.updateList(updatedList)
           .then(resetPage)
           .finally(function() {
