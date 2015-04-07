@@ -29,12 +29,13 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
   // };
 
   // Define the constructor function.
-  function PagingModel( getData, setData, appendData, startLoading, stopLoading, sort, secondarySort, filter  ) {
+  function PagingModel( getData, setData, appendData, startLoading, stopLoading, sort, secondarySort, filter, additionalParams  ) {
     this.pageSize = Constants.infiniteScrollPageSize;
     this.pageIndex = 0;
     this.sort = sort;
     this.secondarySort = secondarySort;
     this.filter = filter;
+    this.additionalParams = additionalParams;
     
     this.getData = getData;
     this.setData = setData;
@@ -46,6 +47,10 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
   // Define the "instance" methods using the prototype
   // and standard prototypal inheritance.
   PagingModel.prototype = {
+
+    setAdditionalParams: function(params) {
+      this.additionalParams = params;
+    },
 
     getSortObject: function(sort) {
       return {
@@ -107,6 +112,11 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
         sort: this.getSortArray(this.sort, this.secondarySort),
         filter: this.filter
       };
+
+      if (this.additionalParams) {
+        params = angular.extend(params, this.additionalParams);
+      }
+
       return this.getData(params)
         .then(setData)
         .finally(this.stopLoading);
