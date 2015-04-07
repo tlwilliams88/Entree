@@ -196,7 +196,7 @@
               {{::invoice.ponumber}}
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::invoice.duedate | formatDate:'MMM D, YYYY' }}
+              {{::invoice.duedate | formatDate}}
             </td>
             <td>
               {{::invoice.amount | currency}}
@@ -260,7 +260,7 @@
                 </colgroup>
                 <tr>
                   <td>Due Date</td>
-                  <td>{{::invoice.duedate | formatDate:'MMM D, YYYY'}}</td>
+                  <td>{{::invoice.duedate | formatDate}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>

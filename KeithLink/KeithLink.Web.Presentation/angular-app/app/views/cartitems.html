@@ -12,7 +12,7 @@
             <tr ng-click="goToCart(cart.id, false)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
               <td><span class="overflow">{{cart.name}}</span></td>
               <td>{{cart.itemcount}}</td>
-              <td class="nowrap">{{cart.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}</td>
+              <td class="nowrap">{{cart.requestedshipdate | formatDate}}</td>
             </tr>
             <tr ng-click="createNewCart()">
               <td colspan="3">Create a Cart...</td>
@@ -23,7 +23,7 @@
             <caption class="text-left">Change Orders</caption>
             <tr ng-if="order.ordernumber !== currentCart.ordernumber" ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.invoicenumber}}</span></td>
-              <td class="nowrap">{{order.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}</td>
+              <td class="nowrap">{{order.requestedshipdate | formatDate}}</td>
             </tr>
             <tr ng-if="changeOrders.length === 1 && currentCart.ordernumber === changeOrders[0].ordernumber">
               <td colspan="3">No other change orders.</td>
@@ -128,7 +128,7 @@
           <div class="col-sm-6">
             <div class="btn-group" dropdown is-open="showShipDates">
               <p class="form-control-static">
-                {{currentCart.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}
+                {{currentCart.requestedshipdate | formatDate}}
                 <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
                 <div class="dropdown-menu">
                   <table class="table no-margin">
@@ -139,7 +139,7 @@
                     </tr>
                     <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
                       <td>{{shipDate.dayofweek}}</td>
-                      <td class="nowrap">{{shipDate.shipdate| formatDate:'ddd, MMM D, YYYY'}}</td>
+                      <td class="nowrap">{{shipDate.shipdate| formatDate}}</td>
                       <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
                     </tr>
                   </table>
@@ -172,7 +172,7 @@
               <button ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" class="btn-lg btn btn-default">Cancel Changes</button>
             <div ng-class="{'mobile-btn' : isMobile}">
               <button class="btn-lg btn btn-primary" ng-class="{'pull-left' : isMobile, 'pull-right' : !isMobile}" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)">Submit Order</button>
-              <p class="text-red"  ng-if="!isOffline">Order Submission Disabled: Not connected to network</p>
+              <p class="text-red"  ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
             </div>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
