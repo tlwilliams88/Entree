@@ -7,6 +7,7 @@
     <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
     <button title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <order-dropdown></order-dropdown>
   </div>
 </div>
  
@@ -68,7 +69,7 @@
         </td>
       </tr>
     </tbody>
-    <tfoot ng-show="orders.length === 0">
+    <tfoot ng-show="carts.length === 0">
       <tr>
         <td colspan="9">There are no carts to display.</td>
       </tr>
