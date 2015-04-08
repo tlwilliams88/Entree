@@ -94,6 +94,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.Name = CartName(cart.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
 			newBasket.Shared = true;
+			newBasket.TempSubTotal = cart.SubTotal;
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
 
