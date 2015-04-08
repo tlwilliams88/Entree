@@ -76,6 +76,11 @@ angular.module('bekApp')
     customerPagingModel.filterCustomers(searchTerm);
   };
 
+  $scope.clearFilter = function(){   
+     $scope.customerSearchTerm = "";       
+     $scope.searchCustomers($scope.customerSearchTerm);     
+  }
+
   $scope.sortCustomers = function(field, sortDescending) {
     $scope.customersSortDesc = sortDescending;
     $scope.customersSortField = field;
