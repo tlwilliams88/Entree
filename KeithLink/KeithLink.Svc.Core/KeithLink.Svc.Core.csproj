@@ -161,6 +161,7 @@
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
     <Compile Include="Extensions\DsrExtensions.cs" />
+    <Compile Include="Extensions\PowerMenu\PowerMenuSystemRequestExtensions.cs" />
     <Compile Include="Extensions\SingleSignOn\AccessRequestExtension.cs" />
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
@@ -419,9 +420,9 @@
     <Compile Include="Models\Paging\PagedResults.cs" />
     <Compile Include="Models\Paging\PagingModel.cs" />
     <Compile Include="Models\Paging\SortInfo.cs" />
-    <Compile Include="Models\PowerMenu\PowerMenuRequest.cs" />
-    <Compile Include="Models\PowerMenu\PowerMenuRequestLogin.cs" />
-    <Compile Include="Models\PowerMenu\PowerMenuRequestUser.cs" />
+    <Compile Include="Models\PowerMenu\PowerMenuSystemRequestModel.cs" />
+    <Compile Include="Models\PowerMenu\PowerMenuSystemRequestAdminModel.cs" />
+    <Compile Include="Models\PowerMenu\PowerMenuSystemRequestUserModel.cs" />
     <Compile Include="Models\Profile\Account.cs" />
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\AccountFilterModel.cs" />

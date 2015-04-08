@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Models.PowerMenu {
         #region attributes
 
         public enum Operations {
-            Create,
+            Add,
             Delete,
             Edit
         }

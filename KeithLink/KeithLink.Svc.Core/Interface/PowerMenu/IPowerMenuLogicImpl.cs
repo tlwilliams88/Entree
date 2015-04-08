@@ -12,6 +12,7 @@ namespace KeithLink.Svc.Core.Interface.PowerMenu {
         /// </summary>
         /// <param name="accounts"></param>
         /// <returns></returns>
-        List<string> SendAccountRequests( List<PowerMenuSystemRequestModel> accounts );
+        bool SendAccountRequestToPowerMenu( PowerMenuSystemRequestModel request );
+        bool SendAccountRequestToPowerMenu( string emailAddress );
     }
 }

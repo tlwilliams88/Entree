@@ -17,8 +17,7 @@ namespace KeithLink.Svc.Core.Models.SingleSignOn {
         #endregion
 
         #region properties
-        [DataMember( Name = "requests" )]
-        public string request { get; set; }
+
         #endregion
     }
 }
