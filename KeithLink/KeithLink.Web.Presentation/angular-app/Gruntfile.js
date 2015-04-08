@@ -266,16 +266,16 @@ module.exports = function (grunt) {
       //   dist: {}
       // },
 
-      imagemin: {
-          dist: {
-              files: [{
-                  expand: true,
-                  cwd: '<%= yeoman.app %>/images',
-                  src: '{,*/}*.{png,jpg,jpeg,gif}',
-                  dest: '<%= yeoman.dist %>/images'
-              }]
-          }
-      },
+      // imagemin: {
+      //     dist: {
+      //         files: [{
+      //             expand: true,
+      //             cwd: '<%= yeoman.app %>/images',
+      //             src: '{,*/}*.{png,jpg,jpeg,gif}',
+      //             dest: '<%= yeoman.dist %>/images'
+      //         }]
+      //     }
+      // },
 
       svgmin: {
           dist: {
@@ -343,6 +343,11 @@ module.exports = function (grunt) {
                   src: ['generated/*']
               }, {
                   expand: true,
+                  cwd: '<%= yeoman.app %>',
+                  dest: '<%= yeoman.dist %>',
+                  src: 'images/{,*/}*'
+              }, {
+                  expand: true,
                   flatten: true,
                   cwd: '<%= yeoman.app %>/lib',
                   dest: '<%= yeoman.dist %>/styles/fonts',
@@ -398,7 +403,7 @@ module.exports = function (grunt) {
           ],
           dist: [
             'compass:dist',
-            'imagemin',
+            // 'imagemin',
             'svgmin'
           ]
       },

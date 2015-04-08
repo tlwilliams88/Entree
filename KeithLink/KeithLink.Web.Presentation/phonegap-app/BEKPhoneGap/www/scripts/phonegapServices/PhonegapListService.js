@@ -23,17 +23,34 @@ angular.module('bekApp')
       });
     }
 
-    Service.getAllLists = function(params) {
+    function getAllListDetails(listHeaders) {
+      listHeaders.forEach(function(list) {
+        originalListService.getListWithItems(list.listid).then(function(listWithItems) {
+          PhonegapDbService.setItem(db_table_name_lists, listWithItems.listid, listWithItems);
+        });
+      });
+    }
+
+    Service.getAllListsForOffline = function() {
+      var listPromise = PhonegapDbService.dropTable(db_table_name_lists)
+        .then(originalListService.getListHeaders)
+        .then(getAllListDetails);
+      var labelsPromise = originalListService.getAllLabels()
+        .then(PhonegapLocalStorageService.setLabels);
+
+      return $q.all([
+        listPromise,
+        labelsPromise
+      ]);
+    };
+
+    Service.getListHeaders = function() {
       if (navigator.connection.type === 'none') {
         console.log('getting lists from DB');
-        // TEST: keep db lists up to date while online
-        return PhonegapDbService.getAllItems(db_table_name_lists).then(function(data) {
-          angular.copy(data, Service.lists);
-          return data;
-        });
+        return PhonegapDbService.getAllItems(db_table_name_lists);
       } else {
         console.log('getting all lists from server');
-        return originalListService.getAllLists(params);
+        return originalListService.getListHeaders();
       }
     };
 
@@ -42,13 +59,16 @@ angular.module('bekApp')
         return PhonegapDbService.getItem(db_table_name_lists, listId).then(function(list) {
           PricingService.updateCaculatedFields(list.items);
           Service.updateListPermissions(list);
+          
+          // calculate item count
           var notDeletedItemCount = 0;
-            angular.forEach(list.items, function(item, index) {
-          if (item.name&&!item.isdeleted) {
-           notDeletedItemCount +=1;
-          }
-        });
-          list.itemCount = notDeletedItemCount;          
+          angular.forEach(list.items, function(item, index) {
+            if (item.name && !item.isdeleted) {
+              notDeletedItemCount +=1;
+            }
+          });
+          list.itemCount = notDeletedItemCount;
+
           return list;
         });
       } else {
@@ -175,17 +195,6 @@ angular.module('bekApp')
 
     };
 
-    // NOT USED 3/2/15
-    // Service.getLabelsForList = function(listId) {
-    //   if (navigator.connection.type === 'none') {
-    //     var localLabels = localStorageService.get("labels");
-    //   } else {
-    //     console.log('getting labels for lists');
-    //     return originalListService.getLabelsForList(listId);
-    //   }
-
-    // };
-
     Service.addItem = function(listId, item) {
       if (navigator.connection.type === 'none') {
         var deferred = $q.defer();
@@ -198,18 +207,104 @@ angular.module('bekApp')
         item.isNew = true;
         item.listitemid = generateId();
         
-        var updatedList = Service.findListById(listId);
-        if (updatedList) {
-          updatedList.items.push(item);
-          updatedList.isChanged = true;
-        }
-        
-        PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
+        Service.getList(listId).then(function(updatedList) {
+          if (updatedList) {
+            updatedList.items.push(item);
+            updatedList.isChanged = true;
+          }
 
-        deferred.resolve(item);
+          deferred.resolve(item);
+          
+          PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
+        });
+
         return deferred.promise;
       } else {
         return originalListService.addItem(listId, item);
+      }
+    };
+
+    Service.deleteItem = function(listItemId) {
+      if (navigator.connection.type === 'none') {
+        var deferred = $q.defer();
+
+        // loop through all lists and items and find the item to delete
+        Service.lists.forEach(function(listHeader) {
+          PhonegapDbService.getItem(db_table_name_lists, listHeader.listid).then(function(dbList) {
+            var indexToDelete;
+            dbList.items.forEach(function(listItem, index) {
+              if (listItem.listitemid === listItemId) {
+                indexToDelete = index;
+              }
+            });
+
+            if (indexToDelete !== undefined) {
+              deferred.resolve();
+              console.log('deleting item');
+              dbList.isChanged = true;
+              dbList.items[indexToDelete].isdeleted = true;
+              PhonegapDbService.setItem(db_table_name_lists, dbList.listid, dbList);
+            }
+          });
+        });
+
+        return deferred.promise;
+      } else {
+        return originalListService.deleteItem(listItemId);
+      }
+    };
+
+    // update DB list items favorite flag
+    function updateListItemFavorites(itemNumber, isFavorite) {
+      Service.lists.forEach(function(listHeader) {
+        PhonegapDbService.getItem(db_table_name_lists, listHeader.listid).then(function(dbList) {
+          dbList.items.forEach(function(listItem) {
+            if (listItem.itemnumber === itemNumber) {
+              listItem.favorite = isFavorite;
+            }
+          });
+          PhonegapDbService.setItem(db_table_name_lists, dbList.listid, dbList);
+        });
+      });
+    }
+
+    Service.addItemToFavorites = function(item) {
+      if (navigator.connection.type === 'none') {
+        return Service.addItem(Service.getFavoritesList().listid, item, true).then(function() {
+          updateListItemFavorites(item.itemnumber, true);
+        });
+      } else {
+        return originalListService.addItemToFavorites(item);
+      }
+    };
+
+    Service.removeItemFromFavorites = function(itemNumber) {
+      if (navigator.connection.type === 'none') {
+
+        var deferred = $q.defer();
+        var favoritesList = Service.getFavoritesList();
+        PhonegapDbService.getItem(db_table_name_lists, favoritesList.listid).then(function(list) {
+          var listItemIdToDelete;
+          list.items.forEach(function(item) {
+            if (item.itemnumber === itemNumber) {
+              listItemIdToDelete = item.listitemid;
+            }
+          });
+
+          if (listItemIdToDelete) {
+            Service.deleteItem(listItemIdToDelete).then(function() {
+              deferred.resolve();
+              updateListItemFavorites(itemNumber, false);
+            });
+          } else {
+            console.log('No item found with item number.');
+            deferred.resolve();
+          }
+        });
+
+        return deferred.promise;
+      } else {
+        return originalListService.removeItemFromFavorites(itemNumber);
       }
     };
 
@@ -332,8 +427,7 @@ angular.module('bekApp')
           console.log('lists updated!');
           
           //update from server and remove deleted array
-          PhonegapDbService.dropTable(db_table_name_lists)
-            .then(Service.getAllLists);
+          Service.getAllListsForOffline();
           
           PhonegapLocalStorageService.removeDeletedListGuids();
         }, function() {

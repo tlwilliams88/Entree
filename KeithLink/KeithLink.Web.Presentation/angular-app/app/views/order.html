@@ -7,6 +7,7 @@
     <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
     <button title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <order-dropdown></order-dropdown>
   </div>
 </div>
  
@@ -55,7 +56,7 @@
           <a ui-sref="menu.cart.items({ cartId: cart.id })">{{::cart.name}}</a>
         </td>
         <td>
-          {{::(cart.requestedshipdate || 'N/A') | formatDate:'ddd, MMM D, YYYY'}}
+          {{::(cart.requestedshipdate || 'N/A') | formatDate}}
         </td>
         <td>
           {{::cart.ponumber || 'N/A'}}
@@ -68,7 +69,7 @@
         </td>
       </tr>
     </tbody>
-    <tfoot ng-show="orders.length === 0">
+    <tfoot ng-show="carts.length === 0">
       <tr>
         <td colspan="9">There are no carts to display.</td>
       </tr>
@@ -149,9 +150,9 @@
         <td ng-class="{ 'red-border': order.invoicestatus === 'Past Due', 'green-border': order.invoicestatus === 'Paid' }">
           <div order-link></div>
         </td>
-        <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
+        <td>{{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
-        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'ddd, MMM D, YYYY' }}</td>
+        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate }}</td>
         <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
         <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
         <td 
@@ -173,7 +174,7 @@
             </colgroup>
             <tr>
               <td>Delivery Date</td>
-              <td>{{order.deliverydate || 'N/A' | formatDate:'ddd, MMM D, YYYY'}}</td>
+              <td>{{order.deliverydate || 'N/A' | formatDate}}</td>
             </tr>
             <tr>
               <td>Item Count</td>

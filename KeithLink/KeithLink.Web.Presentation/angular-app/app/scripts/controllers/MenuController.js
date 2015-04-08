@@ -2,20 +2,20 @@
 
 /**
  * @ngdoc function
- * @name bekApp.controller:HomeController
+ * @name bekApp.controller:MenuController
  * @description
- * # HomeController
+ * # MenuController
  * Controller of the bekApp
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'PhonegapDbService', 'PhonegapLocalStorageService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService',
     function (
       $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
-      $modal,                         // ui-bootstrap library
-      ENV,                            // environment config, see configenv.js file which is generated from Grunt
-      branches,                       // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, PhonegapDbService, PhonegapLocalStorageService // bek custom services
+      $modal,   // ui-bootstrap library
+      ENV,      // environment config, see configenv.js file which is generated from Grunt
+      branches, // state resolve
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -43,61 +43,17 @@ angular.module('bekApp')
     db_table_name_carts = 'carts';
 
   if (ENV.mobileApp) {
-    console.log('clearing tables and downloading data');  
+    console.log('downloading data');  
     downloadDataForOfflineStorage();
   }
 
-  // function saveAllItems(items, tableName, keyField) {
-  //   items.forEach(function(item) {
-  //     PhonegapDbService.setItem(tableName, item[keyField], item);
-  //   });
-  // }
-
-  function clearOfflineStorageTables() {
-    console.log('clearing tables');
-    return $q.all([
-      PhonegapDbService.dropTable(db_table_name_lists),
-      PhonegapDbService.dropTable(db_table_name_carts)
-    ]);
-  }
-
-  function getAllLists(listHeaders) {
-    listHeaders.forEach(function(list) {
-      ListService.getListWithItems(list.listid).then(function(listWithItems) {
-        PhonegapDbService.setItem(db_table_name_lists, listWithItems.listid, listWithItems);
-      });
-    })
-  }
-
-  function getAllCarts(cartHeaders) {
-    cartHeaders.forEach(function(cart) {
-      CartService.getCart(cart.id).then(function(cartWithItems) {
-        PhonegapDbService.setItem(db_table_name_carts, cartWithItems.id, cartWithItems);
-      });
-    })
-  }
-
   function downloadDataForOfflineStorage() {
-    return $q.all([
-      ListService.getListHeaders(),
-      ListService.getAllLabels(),
-      CartService.getCartHeaders(),
-      CartService.getShipDates()
-      ]).then(function(results) {
-        var lists = results[0];
-        var labels = results[1];
-        var carts = results[2];
-        var shipDates = results[3];
-
-        clearOfflineStorageTables().then(function() {
-          getAllLists(lists);
-          getAllCarts(carts);
-          // saveAllItems(lists, db_table_name_lists, 'listid');
-          // saveAllItems(carts, db_table_name_carts, 'id');
-          PhonegapLocalStorageService.setLabels(labels);  
-          PhonegapLocalStorageService.setShipDates(shipDates);
-        });
-      });
+    $q.all([
+      ListService.getAllListsForOffline(),
+      CartService.getAllCartsForOffline()
+    ]).then(function() {
+      $scope.displayMessage('success', 'Downloaded data for offline use.');
+    });
   }
 
   /**********

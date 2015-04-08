@@ -196,7 +196,7 @@
               {{::invoice.ponumber}}
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::invoice.duedate | formatDate:'MMM D, YYYY' }}
+              {{::invoice.duedate | formatDate}}
             </td>
             <td>
               {{::invoice.amount | currency}}
@@ -224,8 +224,10 @@
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice)"
+                ng-init="invoice.paymentAmount = (invoice.pendingtransaction.amount)"
                 >
             </td>
+    
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
               ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
@@ -240,8 +242,9 @@
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
-              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due'">{{invoice.date | formatDate}}</span>
-               <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</span>
+              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'">{{invoice.date | formatDate}}</span>
+              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</span>
+              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'">{{invoice.pendingtransaction.date | formatDate}}</span>
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
@@ -257,7 +260,7 @@
                 </colgroup>
                 <tr>
                   <td>Due Date</td>
-                  <td>{{::invoice.duedate | formatDate:'MMM D, YYYY'}}</td>
+                  <td>{{::invoice.duedate | formatDate}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
@@ -293,7 +296,7 @@
                   <td>
                     Schedule Date
                   </td>
-                  <td  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due'" class="datepicker">
+                  <td  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'" class="datepicker">
                    <!--  <a
                       ng-click="openDatepicker = true"
                       class="icon-calendar"
@@ -309,6 +312,7 @@
                       {{invoice.date | formatDate}}
                   </td>
                   <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</td>
+                  <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'">{{invoice.pendingtransaction.date | formatDate}}</td>
                 </tr>
                 <tr>
                   <td class="large-icon" colspan="2">

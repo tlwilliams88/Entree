@@ -18,7 +18,7 @@ ng-class="{ odd : $odd, even: $even }"
     }
   }
 }
-
+ 
 .table-border {
   > thead:first-child > tr:first-child > th {
     border-top: 1px solid $color-border;
@@ -28,9 +28,12 @@ ng-class="{ odd : $odd, even: $even }"
   > tfoot > tr > td {
     &:first-child {
       border-left: 1px solid $color-border;
-
+ 
       &.red-border {
         border-left:3px solid $color-red;
+      }
+      &.green-border {
+        border-left:3px solid $color-green;
       }
     }
     &:last-child {
@@ -46,14 +49,14 @@ ng-class="{ odd : $odd, even: $even }"
     border-top: none;
   }
 }
-
+ 
 .table {
   font-size: 11px;
   
   > thead > tr > th {
     background-color: $background;
     border-bottom-width: 1px;
-
+ 
     &.sort-col-header {
       cursor: pointer;
       > span {
@@ -61,23 +64,23 @@ ng-class="{ odd : $odd, even: $even }"
       }
     }
   }
-
+ 
   // always hide mobile details row on md and lg devices
   .mobile-details-row {
     @extend .hidden-md;
     @extend .hidden-lg;
   }
-
+ 
   > tbody > tr.mobile-details-row > td {
     border-top: none;
   }
-
+ 
   // filter and footer have white background
   > tfoot > tr > td, 
   .filter-row > td {
     background-color: $color-white;
   }
-
+ 
   > thead,
   > tbody,
   > tfoot {
@@ -88,20 +91,20 @@ ng-class="{ odd : $odd, even: $even }"
       }
     }
   }
-
+ 
   > tbody + tbody {
     border-top: none;
   }
-
+ 
   .item-selected > tr > td, 
   .item-selected > td {
     background-color: $color-yellow !important;
   }
 }
-
+ 
 .table-narrow {
   margin-bottom: 0;
-
+ 
   > thead > tr > th, 
   > thead > tr > td, 
   > tbody > tr > th, 
@@ -109,17 +112,17 @@ ng-class="{ odd : $odd, even: $even }"
   > tfoot > tr > th, 
   > tfoot > tr > td {
     padding: 6px 5px;
-
+ 
     &.input-col {
       padding: 3px 5px;
     }
   }
 }
-
+ 
 // inputs 
 table {
   tr {
-
+ 
     > td, > th {
       &.input-col {
         padding: 6px 5px;
@@ -130,11 +133,11 @@ table {
           width: 100%;
         }
       }
-
+ 
       &.icon-col {
         padding: 7px 5px;
       }
-
+ 
       &.notes-col {
         max-width: 100px;
         white-space: nowrap;
@@ -142,13 +145,13 @@ table {
         overflow: hidden;
       }
     }
-
+ 
     &.filter-row {
       input {
         width: 100%;
       }
     }
-
+ 
     &.mobile-details-row table {
       width: 100%;
       > tbody > tr > td {
@@ -157,8 +160,8 @@ table {
     }
   }  
 }
-
-
+ 
+ 
 @media print {
   .table {
     > thead,
@@ -172,7 +175,7 @@ table {
       }
     }
   }
-
+ 
   table {
     tr {
       > td, > th {
@@ -185,11 +188,11 @@ table {
             width: 100%;
           }
         }
-
+ 
         &.icon-col {
           padding: 4px 3px;
         }
-
+ 
         &.notes-col {
           max-width: 100px;
           white-space: nowrap;
@@ -197,13 +200,13 @@ table {
           overflow: hidden;
         }
       }
-
+ 
       &.filter-row {
         input {
           width: 100%;
         }
       }
-
+ 
       &.mobile-details-row table {
         width: 100%;
         > tbody > tr > td {

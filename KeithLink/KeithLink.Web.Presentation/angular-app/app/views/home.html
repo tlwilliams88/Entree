@@ -3,21 +3,7 @@
     Welcome Back {{::userProfile.displayname}}!
   </div>
   <div header-buttons>
-    <!-- <a ng-click="openQuickAdd()">Quick Add</a>
-    <button class="btn btn-primary btn-lg" 
-       ng-disabled="!canCreateOrders"
-        ui-sref="menu.addtoorder.items({ })"
-        ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button> -->
-    <div class="btn-group" dropdown is-open="status.isopen">
-      <button type="button" class="btn btn-lg btn-default dropdown-toggle">
-        Create An Order <span class="icon-arrow-down6"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a ui-sref="menu.addtoorder.items({ listId: 0, cartId: 'New' })">From List</a></li>
-        <li><a ng-click="openQuickAddModal()">From Quick Add</a></li>
-        <li><a ng-click="openOrderImportModal()">From Import</a></li>
-      </ul>
-    </div>
+    <order-dropdown></order-dropdown>
   </div>
 </div>
  
@@ -75,7 +61,7 @@
             <div class="notification__icon">
               <span class="icon-record"></span>
             </div>
-            <div class="notification__date">{{date | formatDate:'MM/DD/YYYY, ddd.'}} </div>
+            <div class="notification__date">{{date | formatDate}} </div>
           </div>
           <div ng-repeat = "notification in notificationDates[date]">
             <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
@@ -117,10 +103,10 @@
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
-            <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'MM/DD/YYYY h:mma'}}</span>
+            <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
           </div>
           <div class="col-md-3 table-col">
-            <span>{{(cart.requestedshipdate || 'N/A') | formatDate:'ddd, MMM D, YYYY'}}</span>
+            <span>{{(cart.requestedshipdate || 'N/A') | formatDate}}</span>
           </div>
           <div class="col-md-3 table-col">
             {{cart.itemcount}}
@@ -134,11 +120,11 @@
       </div>
  
       <div class="text-center" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
-      <div class="hidden-xs hidden-sm" ng-hide="cartMessage || homeCarts.length > 0 || loadingCarts">
+      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || homeCarts.length > 0 || loadingCarts">
         No Carts to Display
-      </div>
+      </p>
  
-      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage">
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || homeCarts.length === 0">
         <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
  
@@ -167,10 +153,10 @@
         
           <div class="col-md-3 order-col">
             <div class="order-col__number" order-link></div>
-            <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</span>
+            <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'ddd, MMM D, YYYY'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">
@@ -222,7 +208,7 @@
               <div class="order-col__number" order-link></div>
             </div>
             <div class="col-xs-6 order-col__date">
-              <span class="icon-calendar"></span> {{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}
+              <span class="icon-calendar"></span> {{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}
             </div>
           </div>
         </div>
