@@ -91,6 +91,24 @@
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
 
+  <form  name="orderSearchForm" class="hidden-print">
+        <div class="input-group input-group-lg">
+          <input 
+            ng-model="orderSearchTerm"
+            type="text" 
+            class="form-control" 
+            placeholder="Search current list by name, item #, notes, brand or label" />
+          <span ng-show="addToOrderForm.$dirty" class="input-group-btn">
+            <button type="button" confirmed-click="filterItems(orderSearchTerm)" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="button"  confirmed-click="clearFilter()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+          </span>
+          <span ng-show="addToOrderForm.$pristine" class="input-group-btn">
+            <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+          </span>
+        </div>
+      </form>
+
   <form 
     unsaved-warning-form 
     novalidate 
@@ -109,11 +127,11 @@
             <span># <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortList('itemnumber',sort.sortDescending)">
-            Item
+           {{addToOrderForm.$dirty}}
             <span># <span sort-icons field="'itemnumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="sort-col-header" ng-click="sortList('name',sort.sortDescending)">
-            <span>Name <span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            <span>{{addToOrderForm.$pristine}}<span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand',sort.sortDescending)">
             <span>Brand <span sort-icons field="'brand'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
@@ -153,21 +171,7 @@
       </thead>
       <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
       
-      <form name="orderSearchForm" class="hidden-print">
-        <div class="input-group input-group-lg">
-          <input 
-            ng-model="orderSearchTerm"
-            type="text" 
-            class="form-control" 
-            placeholder="Search current list by name, item #, notes, brand or label" />
-          <span class="input-group-btn">
-            <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-
-          </span>
-        </div>
-      </form>
-
+    
         <tr 
           ng-repeat-start="item in  selectedList.items track by item.listitemid" 
           ng-class="{ odd : $odd, even: $even }">
@@ -209,7 +213,7 @@
                 ng-change="onItemOnHandAmountChanged(item)">
             </ng-form>
           </td>
-          <td class="input-col nowrap">
+          <td class="input-col nowrap"  >
             <ng-form class="hidden-print" name="quantityForm">
               <!-- <input type="text" name="quantity" ng-model="item.quantity" class="input-number text-right" integer> -->
               <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"></div>
