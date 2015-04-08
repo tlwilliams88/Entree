@@ -104,6 +104,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 				Items = purchaseOrder.Properties["LineItems"] == null || headerOnly ? new List<OrderLine>() : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
 				ItemCount = purchaseOrder.Properties["LineItems"] == null ? 0 : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Count,
                 CommerceId = Guid.Parse(purchaseOrder.Id),
+				PONumber = purchaseOrder.Properties["PONumber"] == null ? string.Empty : purchaseOrder.Properties["PONumber"].ToString()
 			};
 		}
 
