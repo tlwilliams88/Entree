@@ -3,38 +3,24 @@
     Welcome Back {{::userProfile.displayname}}!
   </div>
   <div header-buttons>
-    <!-- <a ng-click="openQuickAdd()">Quick Add</a>
-    <button class="btn btn-primary btn-lg" 
-		ng-disabled="!canCreateOrders"
-        ui-sref="menu.addtoorder.items({ })"
-        ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >Create An Order</button> -->
-    <div class="btn-group" dropdown is-open="status.isopen">
-      <button type="button" class="btn btn-lg btn-default dropdown-toggle">
-        Create An Order <span class="icon-arrow-down6"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li><a ui-sref="menu.addtoorder.items({ listId: 0 })">From List</a></li>
-        <li><a ng-click="openQuickAddModal()">From Quick Add</a></li>
-        <li><a ng-click="openOrderImportModal()">From Import</a></li>
-      </ul>
-    </div>
+    <order-dropdown></order-dropdown>
   </div>
 </div>
-
+ 
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
-
+ 
 <div class="page-content">
   <div class="row">
     <div class="col-md-4 col-md-push-8">
       <!-- Account Summary -->
       <div class="info-box">
-
+ 
         <a ui-sref="menu.invoice" ng-hide = "isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         
         <h4><strong>Account Balance</strong></h4>
         
         <div loading-spinner="loadingAccountBalance"></div>
-
+ 
         <div ng-show="!loadingAccountBalance">
           <p class="currency-value">
             {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
@@ -65,7 +51,7 @@
         </div>
         <div id="chart_div" style="height:140px;width:100%;"></div>
       </div> <!-- end Account Summary -->
-
+ 
       <!-- Recent Activity -->
       <div class="hidden-xs hidden-sm">
         <h3>Recent Activity</h3>
@@ -75,7 +61,7 @@
             <div class="notification__icon">
               <span class="icon-record"></span>
             </div>
-            <div class="notification__date">{{date | formatDate:'dddd MMMM DD, YYYY'}} </div>
+            <div class="notification__date">{{date | formatDate:'MM/DD/YYYY, ddd.'}} </div>
           </div>
           <div ng-repeat = "notification in notificationDates[date]">
             <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
@@ -95,7 +81,7 @@
         <div loading-spinner="loadingRecentActivity"></div>
       </div> <!-- end Recent Activity -->
     </div>
-
+ 
     <!-- Cart Summary -->
     <div class="col-md-8 col-md-pull-4">
       <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
@@ -109,34 +95,39 @@
           Item Count
         </div>
         <div class="col-md-3">
-          Total Cost
+          Subtotal
         </div>
       </div>
-
-      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: 4">
+ 
+      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: numCartsToDisplay">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
             <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-3 table-col">
-            <span>{{(cart.requestedshipdate || '2015-04-02') | formatDate:'MM/DD/YYYY'}}</span>
+            <span>{{(cart.requestedshipdate || 'N/A') | formatDate:'ddd, MMM D, YYYY'}}</span>
           </div>
           <div class="col-md-3 table-col">
-            {{cart.itemcount || 15}}
+            {{cart.itemcount}}
           </div>
           <div class="col-md-3 table-col">
-            {{cart.total || '$321.78'}}
+            {{cart.subtotal | currency}}
           </div>
         
         </div>
-
+ 
       </div>
-      
-      <div class="text-center">
-        <a href="">View All</a>
+ 
+      <div class="text-center" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
+      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || homeCarts.length > 0 || loadingCarts">
+        No Carts to Display
+      </p>
+ 
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || homeCarts.length === 0">
+        <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
-
+ 
       <!-- Order Summary -->
       <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin" style="margin-top:10px;">
         <div class="col-md-3">
@@ -155,18 +146,17 @@
           Invoice Status
         </div>
       </div>
-
-      <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2 | styleOrders" ng-class="order.highlightClass">
+ 
+      <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" ng-class="order.highlightClass">
         
         <div class="row no-margin">
         
           <div class="col-md-3 order-col">
-            <a ng-if="order.invoicenumber !== 'Pending' && order.invoicenumber !== 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
-            <a ng-if="order.invoicenumber === 'Pending' || order.invoicenumber === 'Rejected'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
+            <div class="order-col__number" order-link></div>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</span>
           </div>
           <div class="col-md-2 table-col">
-            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'MM/DD/YYYY'}}</span>
+            <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate:'ddd, MMM D, YYYY'}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
           <div class="col-md-2 table-col">
@@ -194,9 +184,13 @@
           </div>
         
         </div>
-
+ 
       </div>
-
+ 
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingOrders || ordersMessage">
+        <a class="view-all" ui-sref="menu.order">View All</a>
+      </div>
+ 
       <!-- Mobile Order Summary -->
       <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
@@ -211,8 +205,7 @@
           <div class="row">
             <div class="col-xs-6">
               <span>INVOICE #</span>
-              <a ng-if="order.invoicenumber !== 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})" class="order-col__number">{{order.invoicenumber}}</a>
-              <a ng-if="order.invoicenumber === 'Pending'" ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})" class="order-col__number">{{order.invoicenumber}}</a>
+              <div class="order-col__number" order-link></div>
             </div>
             <div class="col-xs-6 order-col__date">
               <span class="icon-calendar"></span> {{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}
@@ -254,12 +247,12 @@
           </div>
         </div>
       </div> <!-- end Mobile Order Summary -->
-
+ 
       <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
       <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
         No Recent Orders
       </div>
-
+ 
       <div class="text-red" ng-show="ordersMessage">{{ordersMessage}}</div>
       <!-- end Order Summary -->
     
@@ -267,11 +260,11 @@
     <div>
       <h3>Latest From Ben E. Keith</h3>
       <div class="row">
-
+ 
         <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
         <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
         <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
-
+ 
         <div class="col-sm-12 hidden-xs hidden-sm">
           <div ng-repeat="item in promoItems">
             <div class="featured-item text-center">
@@ -300,13 +293,13 @@
             </div>
           </div>
         </div>
-
+ 
         <div class="col-xs-12 hidden-md hidden-lg" ng-show="promoItems.length > 0">
           <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
         </div> 
-
+ 
       </div>
     </div> <!-- end Featured Items -->
-
+ 
   </div>
 </div>

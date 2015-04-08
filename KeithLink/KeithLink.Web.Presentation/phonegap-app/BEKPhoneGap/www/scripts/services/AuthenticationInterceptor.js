@@ -63,6 +63,10 @@ angular.module('bekApp')
       //   window.location.href = "http://localhost:9000";
       // }
 
+      if (!rejection.config) {
+        rejection.config = {};
+      }
+
       return $q.reject(rejection);
     }
 

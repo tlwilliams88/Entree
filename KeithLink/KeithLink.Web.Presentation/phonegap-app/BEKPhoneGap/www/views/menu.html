@@ -78,7 +78,7 @@
             ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
             <li>
               <span class="icon-clipboard sidebar-nav__icon"></span>
-              Order History
+              Orders
             </li>
           </button>
           <button
@@ -119,16 +119,6 @@
             <li>
               <span class="icon-text sidebar-nav__icon"></span>
               My Lists
-            </li>
-          </button>
-          <button
-            class="btn-no-style"
-            ng-disabled="::!canCreateOrders"
-            ui-sref="menu.addtoorder.items({ listId: 0 })"
-            ng-class="{'is-selected': $state.includes('menu.addtoorder')}" >
-            <li>
-              <span class="icon-add-to-list sidebar-nav__icon"></span>
-              Add to Order
             </li>
           </button>
           <button
