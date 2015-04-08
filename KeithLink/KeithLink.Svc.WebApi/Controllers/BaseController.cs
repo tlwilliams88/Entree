@@ -57,21 +57,20 @@ namespace KeithLink.Svc.WebApi.Controllers
                     _user = retVal.UserProfiles[0];
                     _user.IsAuthenticated = true;
 
-                    //TODO: add user's role
-                    GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { "Owner" });
+                    GenericPrincipal genPrincipal = new GenericPrincipal(_user, new string[] { retVal.UserProfiles[0].RoleName });
                     controllerContext.RequestContext.Principal = genPrincipal;
 
                     if (Request.Headers.Contains("userSelectedContext")) 
                     {
                         this.SelectedUserContext = JsonConvert.DeserializeObject<UserSelectedContext>(Request.Headers.GetValues("userSelectedContext").FirstOrDefault().ToString());
 
-						if (!(_user.IsInternalUser || _user.RoleName == Constants.ROLE_NAME_KBITADMIN))//For now, don't verify internal users
+                        if (!(_user.IsInternalUser || controllerContext.RequestContext.Principal.IsInRole(KeithLink.Svc.Core.Constants.ROLE_NAME_KBITADMIN)))//For now, don't verify internal users
 						{
 							//TODO: Need to update check now that customers are no longer included with the user profile
 							//Verify that the authenticated user has access to this customer/branch
-							bool isGuest = _user.RoleName.Equals(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST, StringComparison.InvariantCultureIgnoreCase);
+                            bool isGuest = controllerContext.RequestContext.Principal.IsInRole(KeithLink.Svc.Core.Constants.ROLE_EXTERNAL_GUEST);
 							bool isCustomerSelected = (!string.IsNullOrEmpty(this.SelectedUserContext.CustomerId));
-
+                            
 							var customer = _profileLogic.GetCustomerForUser(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId, _user.UserId);
 
 							bool userHasAccessToCustomer = customer != null;
