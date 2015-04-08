@@ -209,6 +209,7 @@ angular.module('bekApp')
 
       Service.updateCartsFromLocal = function() {
         console.log('updating carts after back online');
+        debugger;
 
         PhonegapDbService.getAllItems(db_table_name_carts).then(function(storedCarts) {
           
@@ -229,6 +230,7 @@ angular.module('bekApp')
               });
               var newCart = {
                 name: cart.name,
+                requestedshipdate: cart.requestedshipdate,
                 items: newItems
               };
               promises.push(Service.createCartFromLocal(newCart));
