@@ -299,8 +299,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			if (list.Items == null || list.Items.Count == 0)
 				return;
-			var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
-			stopWatch.Start();
 			int totalProcessed = 0;
 			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 			
@@ -314,14 +312,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				totalProcessed += 50;
 			}
 
-			stopWatch.Stop();
-
-			var productsTime = stopWatch.ElapsedMilliseconds;
-
-			stopWatch.Reset();
-
-			stopWatch.Start();
-			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
+			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
 			
 			Parallel.ForEach(list.Items, listItem =>
 			{
@@ -363,13 +354,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				}
 				
 			});
-			stopWatch.Stop();
-
-			var mappingTime = stopWatch.ElapsedMilliseconds;
-
-			eventLogRepository.WriteInformationLog(string.Format("Lookup Details for List {0}. ItemCount: {1}, ProductInfo: {2}ms, Mapping: {3}ms", list.ListId, list.Items.Count, productsTime, mappingTime));
-
-
+			
 		}
 
 		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Generated.Basket activeCart)
