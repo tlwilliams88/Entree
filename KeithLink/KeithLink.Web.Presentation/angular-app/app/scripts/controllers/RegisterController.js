@@ -32,14 +32,17 @@ angular.module('bekApp')
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
     
-    AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
-      if (ENV.mobileApp) { // ask to allow push notifications
-        PhonegapPushService.register();
-      }
-      $scope.redirectUserToCorrectHomepage();
-    }, function(errorMessage) {
-      $scope.loginErrorMessage = errorMessage;
-    });
+    AuthenticationService.login(loginInfo.username, loginInfo.password)
+      .then(UserProfileService.getCurrentUserProfile)
+      .then(function(profile) {
+        if (ENV.mobileApp) { // ask to allow push notifications
+          PhonegapPushService.register();
+        }
+        // $scope.redirectUserToCorrectHomepage();
+        $state.go('authorize.menu.home');
+      }, function(errorMessage) {
+        $scope.loginErrorMessage = errorMessage;
+      });
 
   };
 

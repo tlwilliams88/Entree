@@ -171,7 +171,7 @@ angular.module('bekApp')
   $scope.logout = function() {
     AuthenticationService.logout();
 
-    $state.transitionTo('register');
+    $state.transitionTo('authorize.register');
     $scope.displayUserMenu = false;
   };
 

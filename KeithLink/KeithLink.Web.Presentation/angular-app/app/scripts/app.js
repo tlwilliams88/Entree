@@ -86,29 +86,35 @@ angular
     // if token is empty and the state is restricted to logged in users, go to register
     if (!AccessService.isValidToken() && toState.data && toState.data.authorize) {
       $log.debug('Invalid token');
-      $state.go('register');
+      $state.go('authorize.register');
       event.preventDefault();
       return;
     }
 
     if (AccessService.isPasswordExpired()) {
       $log.debug('User password expired');
-      $state.go('changepassword');
+      $state.go('authorize.changepassword');
       event.preventDefault();
     }
 
     // check if route is restricted to logged in users
     if (AccessService.isLoggedIn() && toState.data && toState.data.authorize) {
+      
       // check if user has access to the route based on role and permissions
       if (!AccessService[toState.data.authorize]()) {
         $log.debug('User does not have access to the route');
-        $state.go('register');
+        // redirect to correct homepage 
+        if (toState.name === 'authorize.menu.home') {
+          $state.go('authorize.menu.catalog.home');
+        } else {
+          $state.go('authorize.register');
+        }
         event.preventDefault();
       }
     }
  
     // redirect register page to homepage if logged in
-    if (toState.name === 'register' && AccessService.isValidToken()) {
+    if (toState.name === 'authorize.register' && AccessService.isValidToken()) {
       $log.debug('user logged in, redirecting to homepage');
       if (ENV.mobileApp) {  // ask to allow push notifications
         PhonegapPushService.register();
@@ -157,7 +163,7 @@ angular
     $log.debug(error);
 
     if (error.status === 401) {
-      $state.go('register');
+      $state.go('authorize.register');
       event.preventDefault();
     }
   });

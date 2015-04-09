@@ -12,13 +12,26 @@ angular.module('bekApp')
 
   $stateProvider
     // register
-    .state('register', {
+    .state('authorize', {
+      abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
+      template: '<ui-view/>',
+      resolve: {
+        userProfile: ['UserProfileService', 'AccessService', function(UserProfileService, AccessService) {
+          if (AccessService.isValidToken()) {
+            return UserProfileService.getCurrentUserProfile();
+          } else {
+            return {};
+          }
+        }]
+      }
+    })
+    .state('authorize.register', {
       url: '/register/',
       templateUrl: 'views/register.html',
       controller: 'RegisterController',
       data: {}
     })
-    .state('changepassword', {
+    .state('authorize.changepassword', {
         url: '/changepassword/',
         templateUrl: 'views/changepassword.html',
         controller: 'ChangePasswordController',
@@ -28,15 +41,6 @@ angular.module('bekApp')
             return UserProfileService.getCurrentUserProfile();
           }]
         }
-    })
-    .state('authorize', {
-      abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
-      template: '<ui-view/>',
-      resolve: {
-        userProfile: ['UserProfileService', function(UserProfileService) {
-          return UserProfileService.getCurrentUserProfile();
-        }]
-      }
     })
     .state('authorize.menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
@@ -48,8 +52,8 @@ angular.module('bekApp')
           // also needed for tech support
           return BranchService.getBranches();
         }],
-        userProfile: ['UserProfileService', function(UserProfileService) {
-          return UserProfileService.getCurrentUserProfile();
+        userProfile: ['userProfile', function(userProfile) {
+          return userProfile;
         }],
         selectedUserContext: ['LocalStorage', function(LocalStorage) {
           if (LocalStorage.getTempContext()) {
