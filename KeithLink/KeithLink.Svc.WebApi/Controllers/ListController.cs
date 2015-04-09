@@ -18,6 +18,7 @@ using Microsoft.Reporting.WinForms;
 using System.Reflection;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.WebApi.Models;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -201,6 +202,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public void DeleteItem(List<long> itemIds)
 		{
 			listServiceRepository.DeleteItems(itemIds);
+		}
+
+		[HttpDelete]
+		[ApiKeyedRoute("list/{Id}/item/{itemNumber}")]
+		public OperationReturnModel<bool> DeleteItemNumberFromList(long Id, string itemNumber)
+		{
+			listServiceRepository.DeleteItemNumberFromList(Id, itemNumber);
+			return new OperationReturnModel<bool>() { SuccessResponse = true};
 		}
 
 		[HttpGet]

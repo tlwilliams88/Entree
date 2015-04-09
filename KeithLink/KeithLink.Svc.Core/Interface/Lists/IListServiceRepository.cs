@@ -63,5 +63,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 
 		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
+
+		void DeleteItemNumberFromList(long Id, string itemNumber);
 	}
 }

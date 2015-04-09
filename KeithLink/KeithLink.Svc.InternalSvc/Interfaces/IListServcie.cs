@@ -85,5 +85,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
 		[OperationContract]
 		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
+
+		[OperationContract]
+		void DeleteItemNumberFromList(long Id, string itemNumber);
     }
 }
