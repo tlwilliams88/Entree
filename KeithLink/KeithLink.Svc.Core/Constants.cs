@@ -15,6 +15,16 @@ namespace KeithLink.Svc.Core
         public const string AD_GUEST_FIRSTNAME = "guest";
         public const string AD_GUEST_LASTNAME = "account";
 
+        public const string BRANCH_FAM = "FAM";
+        public const string BRANCH_FAQ = "FAQ";
+        public const string BRANCH_FAR = "FAR";
+        public const string BRANCH_FDF = "FDF";
+        public const string BRANCH_FHS = "FHS";
+        public const string BRANCH_FLR = "FLR";
+        public const string BRANCH_FOK = "FOK";
+        public const string BRANCH_FSA = "FSA";
+        public const string BRANCH_GOF = "GOF";
+
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
         public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
         public const string REGEX_PASSWORD_PATTERN = @"^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d]).*$";
