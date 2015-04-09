@@ -104,17 +104,17 @@ angular
       if (!AccessService[toState.data.authorize]()) {
         $log.debug('User does not have access to the route');
         // redirect to correct homepage 
-        if (toState.name === 'authorize.menu.home') {
-          $state.go('authorize.menu.catalog.home');
-        } else {
+        // if (toState.name === 'authorize.menu.home') {
+        //   $state.go('authorize.menu.catalog.home');
+        // } else {
           $state.go('authorize.register');
-        }
+        // }
         event.preventDefault();
       }
     }
  
-    // redirect register page to homepage if logged in
-    if (toState.name === 'authorize.register' && AccessService.isValidToken()) {
+    // redirect register page or homepage to correct homepage if logged in
+    if ((toState.name === 'authorize.register' || toState.name === 'authorize.menu.home') && AccessService.isLoggedIn()) {
       $log.debug('user logged in, redirecting to homepage');
       if (ENV.mobileApp) {  // ask to allow push notifications
         PhonegapPushService.register();

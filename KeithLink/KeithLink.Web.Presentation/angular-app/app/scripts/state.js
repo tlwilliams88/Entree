@@ -52,8 +52,8 @@ angular.module('bekApp')
           // also needed for tech support
           return BranchService.getBranches();
         }],
-        userProfile: ['userProfile', function(userProfile) {
-          return userProfile;
+        userProfile: ['SessionService', function(SessionService) {
+          return SessionService.userProfile;
         }],
         selectedUserContext: ['LocalStorage', function(LocalStorage) {
           if (LocalStorage.getTempContext()) {
