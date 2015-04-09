@@ -1,0 +1,37 @@
+<div page-header-bar>
+  <div header-message>
+    Organize List: {{list.name}}
+  </div>
+
+  <div header-buttons>
+    <button type="button">Save</button>
+  </div>
+</div>
+
+<div class="page-content">
+  
+  <table class="table table-border table-striped-rows" >
+    <thead>
+      <tr>
+        <th>Position</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody ui-sortable="{ 
+      stop: stopReorder, 
+      tolerance: 'pointer', 
+      containment: 'document' }" 
+      ng-model="list.items">
+      <tr id="item_{{item.position}}" class="transition-bg" ng-class="{ odd : $odd, even: $even}" ng-repeat="item in list.items">
+        <td>
+          <input type="text" integer ng-model-options="{debounce: 400}" ng-model="item.position" ng-change="reorderItem(list.items, item)">
+        </td>
+        <td>
+          {{item.name}}
+        </td>
+      </tr>
+    </tbody>
+    
+  </table>
+
+</div>
