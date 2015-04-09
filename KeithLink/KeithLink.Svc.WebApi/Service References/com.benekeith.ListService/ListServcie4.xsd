@@ -144,6 +144,7 @@
         <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q20:userprofile" />
         <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q21:UserSelectedContext" />
         <xs:element minOccurs="0" name="Id" type="xs:long" />
+        <xs:element minOccurs="0" name="includePrice" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

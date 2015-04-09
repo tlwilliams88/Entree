@@ -35,8 +35,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
         void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
         
 		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
-        
-        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+
+		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 		
 		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type);
 		

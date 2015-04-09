@@ -81,10 +81,10 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			return serviceClient.ReadFavorites(user, catalogInfo).ToList();
 		}
-        
-        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+
+		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
 		{
-			return serviceClient.ReadList(user, catalogInfo, Id);
+			return serviceClient.ReadList(user, catalogInfo, Id, includePrice);
 		}
 		
 		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)

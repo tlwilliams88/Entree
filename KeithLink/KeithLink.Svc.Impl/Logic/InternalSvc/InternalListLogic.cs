@@ -451,7 +451,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return list.SelectMany(i => i.Items.Select(x => x.ItemNumber)).ToList();
 		}
 
-		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
 		{
 			KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
 			if(user != null)
@@ -468,7 +468,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				clonedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
 				clonedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
-				LookupPrices(user, clonedList.Items, catalogInfo);
+				
+				if (includePrice)
+					LookupPrices(user, clonedList.Items, catalogInfo);
+				
 				return clonedList;
 			}
 
@@ -486,7 +489,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var listClone = returnList.Clone();
 
 			MarkFavoritesAndAddNotes(user, listClone, catalogInfo, activeCart);
-			LookupPrices(user, listClone.Items, catalogInfo);
+			
+			if(includePrice)
+				LookupPrices(user, listClone.Items, catalogInfo);
+			
 			return listClone;
 		}
 

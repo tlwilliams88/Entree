@@ -45,7 +45,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 
         [OperationContract]
-		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 
         [OperationContract]
         List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type);

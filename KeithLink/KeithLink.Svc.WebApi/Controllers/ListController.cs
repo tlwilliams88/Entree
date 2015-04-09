@@ -75,9 +75,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 		
         [HttpGet]
 		[ApiKeyedRoute("list/{listId}")]
-		public ListModel List(long listId)
+		public ListModel List(long listId, bool includePrice = true)
         {
-			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId, includePrice);
 
 			if (list != null)
 				list.ReadOnly = (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.RecommendedItems) ||

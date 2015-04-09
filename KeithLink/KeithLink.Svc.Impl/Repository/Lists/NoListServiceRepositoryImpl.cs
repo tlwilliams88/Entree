@@ -77,8 +77,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         {
             throw new NotImplementedException();
 		}
-        
-        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+
+		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
         {
             throw new NotImplementedException();
 		}
