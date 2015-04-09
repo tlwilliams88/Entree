@@ -83,30 +83,33 @@ angular
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
     $log.debug('route: ' + toState.name);
  
-    // check if route is restricted
-    if (toState.data && toState.data.authorize) {
- 
-      // check if user's token is expired
-      if (!AccessService.isLoggedIn()) {
-        AuthenticationService.logout();
-        $state.go('register');
-        event.preventDefault();
-      }
- 
-      if (AccessService.isPasswordExpired()) {
-        $state.go('changepassword');
-        event.preventDefault();
-      }
- 
+    // if token is empty and the state is restricted to logged in users, go to register
+    if (!AccessService.isValidToken() && toState.data && toState.data.authorize) {
+      $log.debug('Invalid token');
+      $state.go('register');
+      event.preventDefault();
+      return;
+    }
+
+    if (AccessService.isPasswordExpired()) {
+      $log.debug('User password expired');
+      $state.go('changepassword');
+      event.preventDefault();
+    }
+
+    // check if route is restricted to logged in users
+    if (AccessService.isLoggedIn() && toState.data && toState.data.authorize) {
       // check if user has access to the route based on role and permissions
       if (!AccessService[toState.data.authorize]()) {
+        $log.debug('User does not have access to the route');
         $state.go('register');
         event.preventDefault();
       }
     }
  
     // redirect register page to homepage if logged in
-    if (toState.name === 'register' && AccessService.isLoggedIn()) {
+    if (toState.name === 'register' && AccessService.isValidToken()) {
+      $log.debug('user logged in, redirecting to homepage');
       if (ENV.mobileApp) {  // ask to allow push notifications
         PhonegapPushService.register();
       }
@@ -121,6 +124,7 @@ angular
   **********/
  
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
@@ -151,6 +155,11 @@ angular
   
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
     $log.debug(error);
+
+    if (error.status === 401) {
+      $state.go('register');
+      event.preventDefault();
+    }
   });
  
 }]);

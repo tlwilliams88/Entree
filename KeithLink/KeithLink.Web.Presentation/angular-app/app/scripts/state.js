@@ -21,7 +21,13 @@ angular.module('bekApp')
     .state('changepassword', {
         url: '/changepassword/',
         templateUrl: 'views/changepassword.html',
-        controller: 'ChangePasswordController'
+        controller: 'ChangePasswordController',
+        data: {},
+        resolve: {
+          userProfile: ['UserProfileService', function(UserProfileService) {
+            return UserProfileService.getCurrentUserProfile();
+          }]
+        }
     })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
@@ -32,6 +38,9 @@ angular.module('bekApp')
           // guest users must have branches to load the page (but non-guest users do not)
           // also needed for tech support
           return BranchService.getBranches();
+        }],
+        userProfile: ['UserProfileService', function(UserProfileService) {
+          return UserProfileService.getCurrentUserProfile();
         }],
         selectedUserContext: ['LocalStorage', function(LocalStorage) {
           if (LocalStorage.getTempContext()) {
