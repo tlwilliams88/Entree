@@ -72,7 +72,7 @@ angular.module('bekApp')
       value: 'Paid'
     }]
   }];
-  $scope.selectedFilterView = $scope.filterViews[0];
+  $scope.selectedFilterView = $scope.filterViews[1];
 
   function calculateInvoiceFields(invoices) {
     invoices.forEach(function(invoice) {
@@ -249,7 +249,7 @@ angular.module('bekApp')
         invoice.paymentAmount = invoice.amount.toString();
       }
     } else {
-      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+      if (invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.pendingtransaction.amount; 
       } else {
         invoice.paymentAmount = '0';  

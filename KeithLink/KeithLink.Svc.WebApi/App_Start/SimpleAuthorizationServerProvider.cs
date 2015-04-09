@@ -59,12 +59,17 @@ namespace KeithLink.Svc.WebApi
 
             KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _profileLogic.GetUserProfile(context.UserName);
 
-            var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);
-            identity.AddClaim(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, context.UserName));
-            identity.AddClaim(new System.Security.Claims.Claim("name", context.UserName));
-            identity.AddClaim(new System.Security.Claims.Claim("role", userReturn.UserProfiles[0].RoleName));
+            if (userReturn.UserProfiles.Count == 0) {
+                context.SetError("invalid_grant", "User profile does not exist in Commerce Server");
+            } else {
+                var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);
+                identity.AddClaim(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, context.UserName));
+                identity.AddClaim(new System.Security.Claims.Claim("name", context.UserName));
+                identity.AddClaim(new System.Security.Claims.Claim("role", userReturn.UserProfiles[0].RoleName));
 
-            context.Validated(identity);
+                context.Validated(identity);
+            }
+
         }
 
         private static bool ValidateApiKey(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext context)

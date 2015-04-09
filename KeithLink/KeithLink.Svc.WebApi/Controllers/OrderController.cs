@@ -112,7 +112,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("order/export/{orderNumber}")]
 		public HttpResponseMessage ExportOrderDetail(string orderNumber, ExportRequestModel exportRequest)
 		{
-			var order = _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
+			var order = _orderLogic.UpdateOrderForEta(this.AuthenticatedUser,
+					_orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 

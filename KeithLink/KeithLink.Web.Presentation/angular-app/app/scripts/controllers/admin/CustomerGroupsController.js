@@ -7,6 +7,19 @@ angular.module('bekApp')
       CustomerGroupService, PagingModel // custom bek service
     ) {
 
+  $scope.searchOptions = [{
+    text: 'Customer Group Name',
+    value: 'customergroup'
+  },{
+    text: 'User',
+    value: 'user'
+  },{
+    text: 'Customer',
+    value: 'customer'
+  }];
+  $scope.search = {};
+  $scope.search.field = $scope.searchOptions[0].value;
+
   function setGroups(data) {
     $scope.customerGroups = data.results;
     $scope.totalGroups = data.totalResults;
@@ -37,9 +50,21 @@ angular.module('bekApp')
 
   customerGroupsPagingModel.loadData();
     
-  $scope.searchCustomerGroups = function(searchTerm) {
-    customerGroupsPagingModel.filterData({ name: searchTerm });
+  $scope.searchCustomerGroups = function(searchObj) {
+    if (searchObj.field === 'customergroup') {
+      customerGroupsPagingModel.filterData({ name: searchObj.term });
+    } else {
+      customerGroupsPagingModel.setAdditionalParams({
+        terms: searchObj.term,
+        type: searchObj.field
+      });
+      customerGroupsPagingModel.loadData();
+    }
   };
+    $scope.clearFilter = function(){   
+          $scope.search.term = "";       
+          $scope.searchCustomerGroups($scope.search);     
+    }
 
   $scope.infiniteScrollLoadMore = function() {
     customerGroupsPagingModel.loadMoreData($scope.customerGroups, $scope.totalGroups, $scope.loadingResults);

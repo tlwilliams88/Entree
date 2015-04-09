@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
-    function($scope, $state, $stateParams, $filter, $modal, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'ENV', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, ENV, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
  
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -26,7 +26,7 @@ angular.module('bekApp')
         item.extPrice = PricingService.getPriceForItem(item);
       }
  
-      $scope.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
+      $scope.currentCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.currentCart.items);
     }
     function addItemWatches(startingIndex) {
       for (var i = startingIndex; i < $scope.currentCart.items.length; i++) {
@@ -51,7 +51,7 @@ angular.module('bekApp')
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
- 
+    $scope.isMobile = ENV.mobileApp;
     $scope.$watch(function () { return CartService.isOffline }, function (newVal, oldVal) {
       if (typeof newVal !== 'undefined') {
         $scope.isOffline = CartService.isOffline;
@@ -138,7 +138,7 @@ angular.module('bekApp')
       if (!processingSaveCart) {
         processingSaveCart = true;
         var updatedCart = angular.copy(cart);
- 
+        
         // delete items if quantity is 0 or price is 0
             updatedCart.items = $filter('filter')( updatedCart.items, function(item){ 
           return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 

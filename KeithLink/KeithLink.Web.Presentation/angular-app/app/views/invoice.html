@@ -119,6 +119,9 @@
             <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortInvoices('status', !sort.sortDescending)">
               <span>Status <span sort-icons field="'status'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
+            <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortInvoices('ponumber', !sort.sortDescending)">
+              <span>PO Number</span>
+            </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('duedate', !sort.sortDescending)">
               Due
               <span>Date<span sort-icons field="'duedate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
@@ -158,6 +161,7 @@
               <input type="text" placeholder="Filter..." ng-model="filterRowFields.statusdescription" no-dirty-check>
             </td>
             <td></td>
+            <td></td>
             <td class="hidden-mobile-visible-print"></td>
             <td class="hidden-mobile-visible-print"></td>
             <td ng-show="!viewingAllCustomers"></td>
@@ -188,8 +192,11 @@
             <td class="highlight-text hidden-mobile-visible-print">
               {{::invoice.statusdescription}}
             </td>
+            <td class="highlight-text hidden-mobile-visible-print">
+              {{::invoice.ponumber}}
+            </td>
             <td class="hidden-mobile-visible-print">
-              {{::invoice.duedate | formatDate:'MMM D, YYYY' }}
+              {{::invoice.duedate | formatDate}}
             </td>
             <td>
               {{::invoice.amount | currency}}
@@ -197,7 +204,7 @@
             <td class="text-center icon-col large-icon hidden-mobile-visible-print">
               <a target="_blank" ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" class="icon-camera"></a>
             </td>
-            <td ng-if="!viewingAllCustomers" class="input-col">
+            <td ng-if="!viewingAllCustomers" class="input-col" >
               <input
                 remove-positive-numbers
                 name="paymentAmount"
@@ -206,6 +213,7 @@
                 ng-if="invoice.userCanPayInvoice"
                 class="text-right"
                 type="text"
+                style="width:75px"
                 ng-model="invoice.paymentAmount"
                 fcsa-number="{
                   'maxDecimals': 2,
@@ -216,8 +224,10 @@
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice)"
+                ng-init="invoice.paymentAmount = (invoice.pendingtransaction.amount)"
                 >
             </td>
+    
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
               ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
@@ -232,8 +242,9 @@
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
-              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due'">{{invoice.date | formatDate}}</span>
-               <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</span>
+              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'">{{invoice.date | formatDate}}</span>
+              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</span>
+              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'">{{invoice.pendingtransaction.date | formatDate}}</span>
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
@@ -249,7 +260,7 @@
                 </colgroup>
                 <tr>
                   <td>Due Date</td>
-                  <td>{{::invoice.duedate | formatDate:'MMM D, YYYY'}}</td>
+                  <td>{{::invoice.duedate | formatDate}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
@@ -285,7 +296,7 @@
                   <td>
                     Schedule Date
                   </td>
-                  <td  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due'" class="datepicker">
+                  <td  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'" class="datepicker">
                    <!--  <a
                       ng-click="openDatepicker = true"
                       class="icon-calendar"
@@ -301,10 +312,11 @@
                       {{invoice.date | formatDate}}
                   </td>
                   <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</td>
+                  <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'">{{invoice.pendingtransaction.date | formatDate}}</td>
                 </tr>
                 <tr>
                   <td class="large-icon" colspan="2">
-                    <a ng-if="invoice.invoicelink" ng-click="openExternalLink(invoice.invoicelink)" class="icon-camera"></a>
+                    <a ng-if="invoice.invoicelink" target="_blank" ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" class="icon-camera"></a>
                   </td>
                 </tr>
               </table>

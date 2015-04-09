@@ -9,15 +9,26 @@
   <div class="col-md-12">
 
     <div class="row">
-      <form name="customerSearchForm" class="col-md-3 search-form">
-        <div class="input-group">
+      <form name="customerSearchForm" class="col-md-6 search-form">
+        <div class="form-group radio-button-group">
+          <label>Search by</label>
+          <div class="radio-button" ng-repeat="option in searchOptions">
+            <label>
+              <input type="radio" ng-model="search.field" value="{{option.value}}" />
+              {{option.text}}
+            </label>
+          </div>
+        </div>
+        <div class="form-group input-group">
           <input 
-            ng-model="searchTerm" 
+            ng-model="search.term" 
             type="text" 
+            name="searchTerm"
             class="form-control" 
-            placeholder="Find customer group by name" />
+            placeholder="Find customer group" />
           <span class="input-group-btn">
-            <button type="submit" ng-click="searchCustomerGroups(searchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="submit" ng-click="searchCustomerGroups(search)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
           </span>
         </div>
       </form>

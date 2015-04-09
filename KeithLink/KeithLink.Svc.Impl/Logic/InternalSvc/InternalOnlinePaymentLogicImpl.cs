@@ -11,6 +11,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -36,19 +37,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
 
         #region attributes
-        private readonly IKPayInvoiceRepository _invoiceRepo;
 		private readonly ICustomerBankRepository _bankRepo;
-		private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
-        private readonly IGenericQueueRepository _queue;
+        private readonly IKPayInvoiceRepository _invoiceRepo;
+        private readonly IKPayLogRepository _kpaylog;
+        private readonly IOrderHistoryHeaderRepsitory _orderHistoryRepo;
 		private readonly IKPayPaymentTransactionRepository _paymentTransactionRepository;
+        private readonly IGenericQueueRepository _queue;
         #endregion
 
         #region ctor
         public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, IKPayPaymentTransactionRepository paymentTransactionRepository)
-		{
+			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, IKPayPaymentTransactionRepository paymentTransactionRepository,
+            IKPayLogRepository kpayLogRepo) {
 			this._invoiceRepo = invoiceRepo;
 			this._bankRepo = bankRepo;
 			this._orderHistoryRepo = orderHistoryrepo;
@@ -56,6 +58,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			this._customerRepository = customerRepository;
             _queue = queueRepo;
 			this._paymentTransactionRepository = paymentTransactionRepository;
+            _kpaylog = kpayLogRepo;
 		}
         #endregion
 
@@ -153,8 +156,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			return returnModel;
 		}
 
-        
-
         public InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber) {
             var kpayInvoiceHeader = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoiceNumber);
             var customer = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
@@ -230,6 +231,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					}
 				}
 
+				var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
+				if (orderHistory != null)
+				{
+					invoice.PONumber = orderHistory.PONumber;
+				}
+
 			}
 			
             return new InvoiceHeaderReturnModel() {
@@ -289,7 +296,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments)
 		{
-			var confId = _invoiceRepo.GetNextConfirmationId();
+            _kpaylog.Write(emailAddress, string.Format("Paying invoices for customer ({0}-{1})", userContext.BranchId, userContext.CustomerId));
+			
+            var confId = _invoiceRepo.GetNextConfirmationId();
 
             foreach (var payment in payments) {
                 if (!payment.PaymentDate.HasValue) { payment.PaymentDate = DateTime.Now; }
@@ -306,7 +315,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 });
 
 				_invoiceRepo.MarkInvoiceAsPaid(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
+
+                _kpaylog.Write(emailAddress, string.Format("Invoice paid({0} - {1} - {2})", payment.InvoiceNumber, payment.PaymentDate.Value, payment.PaymentAmount));
             }
+
+            _kpaylog.Write(emailAddress, string.Concat("Payments for confirmation id: ", confId));
 
             // create payment notification
             PaymentConfirmationNotification notification = new PaymentConfirmationNotification();

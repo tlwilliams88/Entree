@@ -24,7 +24,7 @@ angular.module('bekApp')
   .filter('formatDate', [ function(){
     return function(dateTime, formatString){
     if (!formatString) {
-      formatString = 'YYYY-MM-DD ddd.';
+      formatString = 'ddd, MMM D, YYYY';
     }
     
     return getFormattedDateTime(dateTime, formatString);
@@ -34,7 +34,7 @@ angular.module('bekApp')
     return function(dateTime, formatString){
 
     if (!formatString) {
-      formatString = 'YYYY-MM-DD h:mma z';
+      formatString = 'ddd, MMM D, YYYY h:mma z';
     }
     
     return getFormattedDateTime(dateTime, formatString, true);

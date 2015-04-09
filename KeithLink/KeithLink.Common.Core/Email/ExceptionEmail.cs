@@ -8,12 +8,15 @@ namespace KeithLink.Common.Core.Email {
         private const string EMAIL_FAILURE_SUBJECT = "Exception encountered in KeithLink Order Service";
         #endregion
 
-        public static void Send(Exception currentExcpetion, string additionalMessage = null, string subject = null) {
+        public static void Send(Exception currentExcpetion, string additionalMessage = null, string subject = null, Attachment attach = null) {
             using (MailMessage msg = new MailMessage()) {
                 msg.To.Add(Configuration.FailureEmailAddress);
                 msg.From = new MailAddress(Configuration.FromEmailAddress);
 				msg.Subject = string.Format("{0} Exception: {1}", ConfigurationHelper.GetActiveConfiguration(), string.IsNullOrEmpty(subject) ? EMAIL_FAILURE_SUBJECT : subject);
                 msg.Priority = MailPriority.High;
+
+				if (attach != null)
+					msg.Attachments.Add(attach);
 
                 StringBuilder body = new StringBuilder();
 
@@ -44,6 +47,9 @@ namespace KeithLink.Common.Core.Email {
         }
 
         private static string GetExceptionDetails(Exception currentException) {
+			if (currentException == null)
+				return string.Empty;
+
             StringBuilder details = new StringBuilder();
 
             details.AppendLine();

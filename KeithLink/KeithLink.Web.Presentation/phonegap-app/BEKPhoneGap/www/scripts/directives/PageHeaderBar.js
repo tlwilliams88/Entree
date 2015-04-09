@@ -41,8 +41,8 @@ angular.module('bekApp')
       replace: true,
       templateUrl: 'views/directives/headerButtons.html',
       controller: ['$scope', 'CartService', function($scope, CartService) {
-        $scope.cartHeaders = CartService.carts;
-        if (CartService.carts.length === 0) {
+        $scope.cartHeaders = CartService.cartHeaders;
+        if (CartService.cartHeaders.length === 0) {
           CartService.getCartHeaders();
         }
       }]

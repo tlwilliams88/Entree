@@ -14,7 +14,7 @@
         <li class="heading"><h3>Current Carts</h3></li>
         <li class="cart" ng-repeat="cart in cartHeaders | orderBy:'active':true | limitTo: 2">
           <div class="cart-dropdown__truck"><span class="icon-truck large-icon text-light"></span></div>
-          <div>
+          <div class="cart-dropdown__info">
             <strong>{{cart.name}}</strong>
             <br>
             Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}

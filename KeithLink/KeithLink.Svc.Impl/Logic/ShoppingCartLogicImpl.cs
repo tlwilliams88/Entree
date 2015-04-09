@@ -94,6 +94,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.Name = CartName(cart.Name, catalogInfo);
 			newBasket.CustomerId = catalogInfo.CustomerId;
 			newBasket.Shared = true;
+			newBasket.TempSubTotal = cart.SubTotal;
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
 
@@ -210,71 +211,31 @@ namespace KeithLink.Svc.Impl.Logic
 
 			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
 
-			var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
-			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
-
-			returnCart.ForEach(delegate(ShoppingCart list)
-			{
-				LookupProductDetails(user, catalogInfo, list, notes);
-			});
-						
 			if (headerInfoOnly)
-				return BuildHeaderRecords(returnCart);//return listForBranch.Select(l => new ShoppingCart() { CartId = l.Id.ToGuid(), Name = l.DisplayName, Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(), RequestedShipDate = l.RequestedShipDate }).ToList();
+				return listForBranch.Select(l => new ShoppingCart() 
+				{ 
+					CartId = l.Id.ToGuid(), 
+					Name = l.DisplayName, 
+					Active = userActiveCart != null && userActiveCart.CartId == l.Id.ToGuid(), 
+					PONumber = l.PONumber,
+					SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0, 
+					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0,
+					RequestedShipDate = l.RequestedShipDate,
+					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
+				}).ToList();
 			else
 			{
+				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
+				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+
+				returnCart.ForEach(delegate(ShoppingCart list)
+				{
+					LookupProductDetails(user, catalogInfo, list, notes);
+				});
 				return returnCart;
 			}
 		}
-
-		private List<ShoppingCart> BuildHeaderRecords(List<ShoppingCart> shoppingCarts)
-		{
-			var returnList = new List<ShoppingCart>();
-
-			foreach (var cart in shoppingCarts)
-			{
-				var itemCount = 0;
-				decimal subTotal = 0;
-
-				if (cart.Items != null && cart.Items.Any())
-				{
-					//Store item count
-					itemCount = cart.Items.Count;
-
-					foreach (var item in cart.Items)
-					{
-						decimal packagePrice = 0;
-						decimal casePrice = 0;
-						decimal.TryParse(item.PackagePrice, out packagePrice);
-						decimal.TryParse(item.CasePrice, out casePrice);
-						if (item.CatchWeight)
-						{
-
-							if (item.Each) //package catchweight
-								{
-									
-									subTotal += (((decimal)item.AverageWeight / Int32.Parse(item.Pack)) * item.Quantity) *packagePrice;
-								}
-								else //case catchweight
-								{
-									subTotal += ((decimal)item.AverageWeight * item.Quantity) * casePrice;
-								}
-							
-						}
-						else
-						{
-							subTotal += item.Quantity * casePrice;
-						}
-					}
-
-				}
-
-				returnList.Add(new ShoppingCart() { CreatedDate = cart.CreatedDate, Name = cart.Name, CartId = cart.CartId, Active = cart.Active, RequestedShipDate = cart.RequestedShipDate, PONumber = cart.PONumber, ItemCount = itemCount, SubTotal = subTotal, BranchId = cart.BranchId  });
-
-			}
-
-			return returnList;
-		}
-
+				
 		public ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
@@ -288,11 +249,6 @@ namespace KeithLink.Svc.Impl.Logic
 			return cart;
 		}
         
-        private void WriteOrderFileToQueue(UserProfile user, string controlNumber, CS.PurchaseOrder newPurchaseOrder)
-        {
-            
-        }
-		
         public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
@@ -348,7 +304,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			updateCart.DisplayName = cart.Name;
 			updateCart.Name = CartName(cart.Name, catalogInfo);
-						
+			updateCart.TempSubTotal = cart.SubTotal;		
 			updateCart.RequestedShipDate = cart.RequestedShipDate;
 			updateCart.PONumber = cart.PONumber;
 

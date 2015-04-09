@@ -15,7 +15,8 @@ angular.module('bekApp')
     .state('register', {
       url: '/register/',
       templateUrl: 'views/register.html',
-      controller: 'RegisterController'
+      controller: 'RegisterController',
+      data: {}
     })
     .state('changepassword', {
         url: '/changepassword/',
@@ -45,7 +46,8 @@ angular.module('bekApp')
       templateUrl: 'views/home.html',
       controller: 'HomeController',
       data: {
-        authorize: 'isOrderEntryCustomer'
+        authorize: 'isOrderEntryCustomer',
+        saveCarts: true
       }
     })
     .state('menu.userprofile', {
@@ -211,19 +213,19 @@ angular.module('bekApp')
         lists: ['ListService', function (ListService){
           return ListService.getListHeaders();
         }],
-        carts: ['CartService', function(CartService) {
-          return CartService.getCartHeaders();
-        }],
-        changeOrders: ['OrderService', function(OrderService) {
-          return OrderService.getChangeOrders();
-        }],
+        // carts: ['CartService', function(CartService) {
+        //   return CartService.getCartHeaders();
+        // }],
+        // changeOrders: ['OrderService', function(OrderService) {
+        //   return OrderService.getChangeOrders();
+        // }],
         shipDates: ['CartService', function(CartService) {
           return CartService.getShipDates();
         }]
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':listId/?cartId&useParlevel',
+      url: ':cartId/list/:listId/?useParlevel',
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
@@ -232,12 +234,22 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        validBasketId: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
-          return ResolveService.validateBasket($stateParams.cartId, changeOrders);
-        }],
-        selectedCart: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
+        // validBasketId: ['$stateParams', 'carts', 'changeOrders', 'ResolveService', function($stateParams, carts, changeOrders, ResolveService) {
+        //   return ResolveService.validateBasket($stateParams.cartId, changeOrders);
+        // }],
+        // selectedCart: ['$stateParams', 'carts', 'changeOrders', 'validBasketId', 'ResolveService', function($stateParams, carts, changeOrders, validBasketId, ResolveService) {
+        //   if ($stateParams.cartId !== 'New') {
+        //     return ResolveService.selectValidBasket(validBasketId, changeOrders);
+        //   }
+        // }],
+        selectedCart: ['$stateParams', 'CartService', 'OrderService', function($stateParams, CartService, OrderService) {
           if ($stateParams.cartId !== 'New') {
-            return ResolveService.selectValidBasket(validBasketId, changeOrders);
+            // determine if id is a change order or a cart, carts are guids show they have dashes
+            if ($stateParams.cartId.indexOf('-') > -1) {
+              return CartService.getCart($stateParams.cartId);
+            } else {
+              return OrderService.getOrderDetails($stateParams.cartId);
+            }
           }
         }],
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
@@ -300,6 +312,19 @@ angular.module('bekApp')
       resolve: {
         invoice: [ '$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
           return InvoiceService.getInvoice($stateParams.invoiceNumber);
+        }]
+      }
+    })
+    .state('invoiceimage', {
+      url: '/invoice/image/:invoiceNumber/',
+      templateUrl: 'views/invoiceimage.html',
+      controller: 'InvoiceImageController',
+      data: {
+        authorize: 'canPayInvoices'
+      },
+      resolve: {
+        images: ['$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+          return InvoiceService.getInvoiceImage($stateParams.invoiceNumber);
         }]
       }
     })

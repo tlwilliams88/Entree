@@ -275,7 +275,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 			stopWatch.Start();
 
-			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), listItems.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).ToList());
+			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), listItems.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).Distinct().ToList());
 			stopWatch.Stop();
 			var priceTime = stopWatch.ElapsedMilliseconds;
 
@@ -299,8 +299,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			if (list.Items == null || list.Items.Count == 0)
 				return;
-			var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
-			stopWatch.Start();
 			int totalProcessed = 0;
 			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 			
@@ -314,14 +312,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				totalProcessed += 50;
 			}
 
-			stopWatch.Stop();
-
-			var productsTime = stopWatch.ElapsedMilliseconds;
-
-			stopWatch.Reset();
-
-			stopWatch.Start();
-			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
+			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
 			
 			Parallel.ForEach(list.Items, listItem =>
 			{
@@ -363,13 +354,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				}
 				
 			});
-			stopWatch.Stop();
-
-			var mappingTime = stopWatch.ElapsedMilliseconds;
-
-			eventLogRepository.WriteInformationLog(string.Format("Lookup Details for List {0}. ItemCount: {1}, ProductInfo: {2}ms, Mapping: {3}ms", list.ListId, list.Items.Count, productsTime, mappingTime));
-
-
+			
 		}
 
 		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Generated.Basket activeCart)
@@ -536,7 +521,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
         public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			var notes = listRepository.ReadListForCustomer(catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
+			var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Notes, i => i.Items).FirstOrDefault();
 
 			if (notes == null)
 				return new List<ListItemModel>();
@@ -852,9 +837,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
 		{
-			var totalStopWatch = new System.Diagnostics.Stopwatch();
-			var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
-			totalStopWatch.Start();
 			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
 
 			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
@@ -875,12 +857,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return cachedPagedList;
 			}
 			
-			stopWatch.Start();
 			var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault();
-			stopWatch.Stop();
-
-			var dbReadTime = stopWatch.ElapsedMilliseconds;
-
+			
+			
 			if (list == null)
 				return null;
 			var tempList = list.ToListModel(catalogInfo);
@@ -890,27 +869,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var returnList = tempList.ShallowCopy();
 
-			stopWatch.Reset();
-			stopWatch.Start();
 			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
-			stopWatch.Stop();
-			var favTime = stopWatch.ElapsedMilliseconds;
-
-			stopWatch.Reset();
-			stopWatch.Start();
+			
 			var pagedList = ToPagedList(paging, returnList);
-			stopWatch.Stop();
-			var pagingTime = stopWatch.ElapsedMilliseconds;
-
-			stopWatch.Reset();
-			stopWatch.Start();
+			
 			LookupPrices(user, pagedList.Items.Results, catalogInfo);
-			stopWatch.Stop();
-			var priceTime = stopWatch.ElapsedMilliseconds;
-			totalStopWatch.Stop();
-
-			eventLogRepository.WriteInformationLog(string.Format("Read Paged List {0}. ItemCount: {1}, Total Time In InternalService: {2}ms, DB Read: {3}ms, Map Fav/Notes: {4}ms, Paging: {5}ms, Pricing: {6}ms", returnList.ListId, returnList.Items.Count, totalStopWatch.ElapsedMilliseconds, dbReadTime, favTime, pagingTime, priceTime));
-
+			
 
 			return pagedList;
 		}

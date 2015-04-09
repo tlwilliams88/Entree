@@ -1,0 +1,10 @@
+<div class="btn-group" dropdown is-open="status.isopen">
+  <button type="button" class="btn btn-lg btn-default dropdown-toggle">
+    Create An Order <span class="icon-arrow-down6"></span>
+  </button>
+  <ul class="dropdown-menu" role="menu">
+    <li><a ui-sref="menu.addtoorder.items({ listId: 0, cartId: 'New' })">From List</a></li>
+    <li><a ng-click="openQuickAddModal()">From Quick Add</a></li>
+    <li><a ng-click="openOrderImportModal()">From Import</a></li>
+  </ul>
+</div>

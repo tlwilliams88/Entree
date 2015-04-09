@@ -26,8 +26,14 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_EXTERNAL_DOMAIN = "ADExtDomain";
         private const string KEY_AD_EXTERNAL_PASSWORD = "ADExtPass";
         private const string KEY_AD_EXTERNAL_ROOTNODE = "ADExtRoot";
+        private const string KEY_AD_EXTERNAL_ROLENAME_ACCOUNTING = "ADExtRoleNameAccouting";
+        private const string KEY_AD_EXTERNAL_ROLENAME_APPROVER = "ADExtRoleNameApprover";
+        private const string KEY_AD_EXTERNAL_ROLENAME_BUYER = "ADExtRoleNameBuyer";
+        private const string KEY_AD_EXTERNAL_ROLENAME_GUEST = "ADExtRoleNameGuest";
+        private const string KEY_AD_EXTERNAL_ROLENAME_OWNER = "ADExtRoleNameOwner";
         private const string KEY_AD_EXTERNAL_SERVERNAME = "ADExtServer";
         private const string KEY_AD_EXTERNAL_USER = "ADExtUser";
+        private const string KEY_AD_EXTERNAL_USERCONTAINER = "ADExtUserContainer";
         private const string KEY_AD_GUEST_CONTAINER = "ADGuestOU";
         private const string KEY_AD_INTERNAL_DOMAIN = "ADIntDomain";
         private const string KEY_AD_INTERNAL_PASSWORD = "ADIntPass";
@@ -225,6 +231,12 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_AD_EXTERNAL_USER, string.Empty);
+            }
+        }
+
+        public static string ActiveDirectoryExternalUserContainer {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_USERCONTAINER, "Users");
             }
         }
 
@@ -971,6 +983,36 @@ namespace KeithLink.Svc.Impl
             get {
                 var value = GetValue(KEY_ENVIRONMENT_DEMO, "false");
 				return ValueParsingUtil.ParseBool(value, "false");
+            }
+        }
+
+        public static string RoleNameAccounting {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_ROLENAME_ACCOUNTING, string.Empty);
+            }
+        }
+
+        public static string RoleNameApprover {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_ROLENAME_APPROVER, string.Empty);
+            }
+        }
+
+        public static string RoleNameBuyer {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_ROLENAME_BUYER, string.Empty);
+            }
+        }
+
+        public static string RoleNameGuest {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_ROLENAME_GUEST, string.Empty);
+            }
+        }
+
+        public static string RoleNameOwner {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_ROLENAME_OWNER, string.Empty);
             }
         }
         #endregion

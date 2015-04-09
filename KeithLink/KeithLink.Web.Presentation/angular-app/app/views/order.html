@@ -7,6 +7,7 @@
     <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
     <button title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <order-dropdown></order-dropdown>
   </div>
 </div>
  
@@ -15,7 +16,7 @@
   <div class="row">
     <h3 class="col-xs-8">
       Pending Orders
-      <button style="  margin-top: -13px;margin-left: 10px;" class="btn btn-sm btn-danger" ng-show="cartGuids.length > 0" ng-click="deleteCarts(cartGuids)">Delete Carts</button>
+      <button style="margin-top: -13px;margin-left: 10px;" class="btn btn-sm btn-danger" ng-show="cartGuids.length > 0" ng-click="deleteCarts(cartGuids)">Delete Carts</button>
     </h3>
     <div class="col-xs-4 text-right" style="margin-top:20px;">
       Showing {{carts.length}} Carts
@@ -55,7 +56,7 @@
           <a ui-sref="menu.cart.items({ cartId: cart.id })">{{::cart.name}}</a>
         </td>
         <td>
-          {{::(cart.requestedshipdate || 'N/A') | formatDate:'MM/DD/YYYY ddd.'}}
+          {{::(cart.requestedshipdate || 'N/A') | formatDate}}
         </td>
         <td>
           {{::cart.ponumber || 'N/A'}}
@@ -68,7 +69,7 @@
         </td>
       </tr>
     </tbody>
-    <tfoot ng-show="orders.length === 0">
+    <tfoot ng-show="carts.length === 0">
       <tr>
         <td colspan="9">There are no carts to display.</td>
       </tr>
@@ -110,6 +111,10 @@
           Invoice
           <span>Status <span sort-icons field="'invoicestatus'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
         </th>
+        <th class="sort-col-header" ng-click="sortOrders('ponumber', !sort.sortDescending)">
+          PO Number
+          <span># <span sort-icons field="'ponumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+        </th>
         <th class="large-icon icon-col">
           <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
         </th>
@@ -132,6 +137,9 @@
         <td class="hidden-mobile-visible-print input-col">
           <input type="text" placeholder="Filter..." ng-model="filterFields.invoicestatus">
         </td>
+        <td class="input-col"> 
+          <input type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
+        </td>
         <td class="input-col">
           <button type="button" class="btn btn-primary btn-sm" ng-click="filterOrders(filterFields)">Filter</button>
           <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
@@ -142,9 +150,9 @@
         <td ng-class="{ 'red-border': order.invoicestatus === 'Past Due', 'green-border': order.invoicestatus === 'Paid' }">
           <div order-link></div>
         </td>
-        <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
+        <td>{{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
-        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY ddd.' }}</td>
+        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate }}</td>
         <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
         <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
         <td 
@@ -152,6 +160,7 @@
           class="hidden-mobile-visible-print">
           {{order.invoicestatus || 'N/A'}}
         </td>
+        <td>{{order.ponumber}}</td>
         <td class="large-icon icon-col">
           <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
         </td>
@@ -165,7 +174,7 @@
             </colgroup>
             <tr>
               <td>Delivery Date</td>
-              <td>{{order.deliverydate || 'N/A' | formatDate:'MMM D, YYYY ddd.'}}</td>
+              <td>{{order.deliverydate || 'N/A' | formatDate}}</td>
             </tr>
             <tr>
               <td>Item Count</td>
