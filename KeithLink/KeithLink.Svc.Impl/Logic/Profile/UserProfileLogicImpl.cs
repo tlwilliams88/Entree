@@ -999,7 +999,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                      Operation = PowerMenuSystemRequestModel.Operations.Delete
                                  }).First();
 
-            SendPowerMenuRequests( powerMenuRequest, emailAddress );
+            //SendPowerMenuRequests( powerMenuRequest, emailAddress );
         }
 
         public void RemoveUserFromAccount(Guid accountId, Guid userId) {

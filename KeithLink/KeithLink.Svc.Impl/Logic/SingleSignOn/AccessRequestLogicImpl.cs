@@ -73,7 +73,7 @@ namespace KeithLink.Svc.Impl.Logic.SingleSignOn {
                                     _kbitLogic.UpdateUserAccess(request.UserName, ((KbitCustomerAccessRequest)request).Customers);
                                     break;
                                 case Core.Enumerations.SingleSignOn.AccessRequestType.PowerMenu:
-                                    _pmLogic.SendAccountRequestToPowerMenu( ((PowerMenuCustomerAccessRequest)request).request );
+                                    _pmLogic.SendAccountRequestToPowerMenu( ((PowerMenuCustomerAccessRequest)request).UserName );
                                     break;
                                 default:
                                     throw new ApplicationException("Unknown request type received.");

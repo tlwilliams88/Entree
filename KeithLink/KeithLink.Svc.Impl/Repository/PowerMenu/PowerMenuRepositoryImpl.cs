@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Http;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Interface.PowerMenu;
 
@@ -12,11 +13,11 @@ namespace KeithLink.Svc.Impl.Repository.PowerMenu {
     public class PowerMenuRepositoryImpl : IPowerMenuRepository {
 
         #region attributes
-        EventLogRepositoryImpl _log;
+        IEventLogRepository _log;
         #endregion
 
         #region constructor
-        public PowerMenuRepositoryImpl(EventLogRepositoryImpl log) {
+        public PowerMenuRepositoryImpl(IEventLogRepository log) {
             _log = log;
         }
         #endregion
