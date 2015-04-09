@@ -114,6 +114,7 @@ angular.module('bekApp')
     PAGING
     **********/
     $scope.filterItems = function(searchTerm) {  
+      $scope.addToOrderForm.$setPristine();
       listPagingModel.filterListItems(searchTerm);
       clearItemWatches(watches);
     };
