@@ -552,10 +552,10 @@ angular.module('bekApp')
     };
 
     $scope.clearFilter = function(){   
-          $scope.listSearchTerm = "";
-          $scope.hideDragToReorder = false;
-          $scope.filterItems( $scope.listSearchTerm );     
-    }
+      $scope.listSearchTerm = '';
+      $scope.hideDragToReorder = false;
+      $scope.filterItems( $scope.listSearchTerm );     
+    };
 
     $scope.openPrintOptionsModal = function(list) {
       var modalInstance = $modal.open({
@@ -580,6 +580,14 @@ angular.module('bekApp')
     };
 
     resetPage(angular.copy(originalList));
-    $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+    // $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+
+    if (ListService.renameList === true) {
+      console.log('rename list');
+      ListService.renameList = false;
+      if ($scope.selectedList.permissions.canRenameList) {
+        $scope.selectedList.isRenaming = true;
+      }
+    }
 
   }]);

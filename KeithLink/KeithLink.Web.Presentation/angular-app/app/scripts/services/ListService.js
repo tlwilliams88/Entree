@@ -137,6 +137,8 @@ angular.module('bekApp')
 
       var Service = {
 
+        renameList: false,
+
         lists: [],
         labels: [],
 
@@ -308,6 +310,7 @@ angular.module('bekApp')
           }
           
           return List.save(params, newList).$promise.then(function(response) {
+            Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');
             return Service.getList(response.listitemid);
           }, function(error) {

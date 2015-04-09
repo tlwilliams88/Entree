@@ -14,7 +14,7 @@ angular.module('bekApp')
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
     if ($stateParams.cartId !== basketId.toString()) {
-      $state.go('menu.cart.items', {cartId: basketId, renameCart: null}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.cart.items', {cartId: basketId}, {location:'replace', inherit:false, notify: false});
     }
  
     var watches = [];
@@ -52,7 +52,9 @@ angular.module('bekApp')
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     $scope.isMobile = ENV.mobileApp;
-    $scope.$watch(function () { return CartService.isOffline }, function (newVal, oldVal) {
+    $scope.$watch(function () { 
+      return CartService.isOffline;
+    }, function (newVal, oldVal) {
       if (typeof newVal !== 'undefined') {
         $scope.isOffline = CartService.isOffline;
       }
@@ -98,7 +100,7 @@ angular.module('bekApp')
       if (!cartId) {
         cartId = selectNextCartId();
       }
-      $state.go('menu.cart.items', {cartId: cartId, renameCart: null} );
+      $state.go('menu.cart.items', {cartId: cartId} );
     };
  
     $scope.cancelChanges = function() {
@@ -198,7 +200,7 @@ angular.module('bekApp')
  
     $scope.createNewCart = function() {
       CartService.createCart().then(function(newCart) {
-        $state.go('menu.cart.items', {cartId: newCart.id, renameCart: true});
+        $state.go('menu.cart.items', {cartId: newCart.id});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
         $scope.displayMessage('error', 'Error creating new cart.');
@@ -232,7 +234,7 @@ angular.module('bekApp')
         var changeOrder = angular.copy(order);
  
         changeOrder.items.forEach(function(item) {
-          if (typeof item.quantity == 'string') {
+          if (typeof item.quantity === 'string') {
             item.quantity = parseInt(item.quantity, 10);
           }
         });
@@ -359,7 +361,12 @@ angular.module('bekApp')
     };
  
     // on page load
-    if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
+    // if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
+    //   $scope.startEditCartName(originalBasket.name);
+    // }
+    if (CartService.renameCart === true) {
+      console.log('rename cart');
       $scope.startEditCartName(originalBasket.name);
+      CartService.renameCart = false;
     }
   }]);

@@ -13,6 +13,8 @@ angular.module('bekApp')
  
     var Service = {
       
+      renameCart: false,
+
       cartHeaders: [],
       shipDates: [],
  
@@ -108,8 +110,9 @@ angular.module('bekApp')
       // returns promise and new cart object
       createCart: function(items, shipDate) {
         var newCart = Service.beforeCreateCart(items, shipDate);        
-        newCart.subtotal = PricingService.getSubtotalForItems(newCart.items); 
+ 
         return Cart.save({}, newCart).$promise.then(function(response) {
+          Service.renameCart = true;
           newCart.id = response.listitemid;
           newCart.items = [];
           Service.cartHeaders.push(newCart);

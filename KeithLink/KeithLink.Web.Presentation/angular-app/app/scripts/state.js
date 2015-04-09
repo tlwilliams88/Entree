@@ -136,7 +136,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.lists.items', {
-      url: ':listId/?renameList',
+      url: ':listId/',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
@@ -180,7 +180,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.cart.items', {
-      url: ':cartId?renameCart',
+      url: ':cartId',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {

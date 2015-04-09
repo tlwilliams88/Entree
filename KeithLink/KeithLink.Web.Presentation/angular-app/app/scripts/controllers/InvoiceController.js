@@ -17,7 +17,7 @@ angular.module('bekApp')
 
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
- $scope.currDate = new Date()
+ $scope.currDate = new Date();
   $scope.datepickerOptions = {
     minDate: new Date(),
     options: {
