@@ -69,6 +69,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_POWERUSER_FAR = "FLAR-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_FSA = "FSAN-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_FOK = "FOKC-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_GOF = "FFGO-LS-SYS-AC-Entree_PowerUsers";
 
         public const string ROLE_NAME_BRANCHIS = "branchismanager";
         public const string ROLE_NAME_DSM = "dsm";
@@ -117,7 +118,8 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_POWERUSER_FAM, ROLE_INTERNAL_POWERUSER_FAQ,
             ROLE_INTERNAL_POWERUSER_FAR, ROLE_INTERNAL_POWERUSER_FDF,
             ROLE_INTERNAL_POWERUSER_FHS, ROLE_INTERNAL_POWERUSER_FLR,
-            ROLE_INTERNAL_POWERUSER_FOK, ROLE_INTERNAL_POWERUSER_FSA
+            ROLE_INTERNAL_POWERUSER_FOK, ROLE_INTERNAL_POWERUSER_FSA,
+            ROLE_INTERNAL_POWERUSER_GOF
         };
 
         // Elastic Search : Indexes
