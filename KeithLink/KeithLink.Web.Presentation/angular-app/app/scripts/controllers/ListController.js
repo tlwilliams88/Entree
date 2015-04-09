@@ -305,7 +305,7 @@ angular.module('bekApp')
       var items = getMultipleSelectedItems();
       angular.forEach(items, function(item, index) {
         item.isEditing = true;
-        item.label = label;
+        item.editLabel = label;
       });
       $scope.addingNewLabel = false;
       $scope.newLabel = null;
