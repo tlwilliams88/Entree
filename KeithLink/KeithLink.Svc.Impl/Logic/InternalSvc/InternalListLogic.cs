@@ -110,7 +110,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				list.Items = new List<ListItem>();
 			else
 				if(list.Items.Any())
-					nextPosition = list.Items.Max(i => i.Position);
+					nextPosition = list.Items.Max(i => i.Position) + 1;
 
 			foreach (var item in items)
 			{
