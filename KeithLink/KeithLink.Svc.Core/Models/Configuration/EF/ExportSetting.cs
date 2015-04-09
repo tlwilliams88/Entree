@@ -16,7 +16,8 @@ namespace KeithLink.Svc.Core.Models.Configuration.EF
 		Products,
 		OrderDetail,
 		InvoiceDetail,
-		ItemUsage
+		ItemUsage,
+		PendingTransactions
 	}
 
 	public class ExportSetting: BaseEFModel

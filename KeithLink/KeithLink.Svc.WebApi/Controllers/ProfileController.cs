@@ -125,8 +125,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string email) {
-            if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
+        public UserProfileReturn GetUser(string email="") {
+            if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
 				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault();

@@ -46,7 +46,7 @@ angular.module('bekApp')
         }
         else {
           // Try using other saveBlob implementations, if available
-          var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob || saveAs;
+          var saveBlob = navigator.webkitSaveBlob || navigator.mozSaveBlob || navigator.saveBlob || saveAs; // jshint ignore:line
           if(saveBlob === undefined) {
             throw 'Not supported';
           }

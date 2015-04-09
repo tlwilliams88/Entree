@@ -107,6 +107,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Order = 60, Label = "Each" });
 
 					return options;
+				case ExportType.PendingTransactions:
+					options.Fields.Add(new ExportModelConfiguration() { Field = "CustomerName", Order = 1, Label = "Customer Name" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "CustomerNumber", Order = 10, Label = "Customer Number" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "ConfirmationId", Order = 20, Label = "Confirmation Id" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 30, Label = "Invoice #" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "PaymentAmount", Order = 40, Label = "Amount" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "AccountNumber", Order = 50, Label = "Account" });
+
+					return options;
 			}
 				
 
