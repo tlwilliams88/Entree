@@ -19,7 +19,6 @@ angular.module('bekApp')
     $scope.signUpBool = true;
   }
 
-
   // gets prepopulated login info for dev environment
   $scope.loginInfo = {
     username: ENV.username,
@@ -69,7 +68,7 @@ angular.module('bekApp')
           .then(UserProfileService.getCurrentUserProfile)
           .then(function(profile) {
             // redirect to account details page
-            $state.go('menu.userprofile');
+            $state.go('authorize.menu.userprofile');
           }, function(error) {
             $scope.loginErrorMessage = error.data.error_description;
             $scope.clearForm();

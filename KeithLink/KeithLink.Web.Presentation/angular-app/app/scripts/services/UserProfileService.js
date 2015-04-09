@@ -49,13 +49,14 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
-
       getUserProfile: function(email) {
-        var data = {
-          params: {
+        var data = {};
+
+        if (email) {
+          data.params = {
             email: email
-          }
-        };
+          };
+        }
 
         return $http.get('/profile', data).then(function(response){
           var profile = response.data.userProfiles[0];

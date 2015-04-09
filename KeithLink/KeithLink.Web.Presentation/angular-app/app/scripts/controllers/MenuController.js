@@ -77,7 +77,7 @@ angular.module('bekApp')
   };
 
   // list of state names where a user has the possibility of viewing info from multiple customers
-  var statesWithViewingAllCustomers = ['menu.invoice', 'menu.transaction'];
+  var statesWithViewingAllCustomers = ['authorize.menu.invoice', 'authorize.menu.transaction'];
   
   // listens for state change event to restore selectedUserContext
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -140,11 +140,11 @@ angular.module('bekApp')
   $scope.goToAdminLandingPage = function() {
     // internal bek admin user
     if ($scope.canViewCustomerGroups) {
-      $state.go('menu.admin.customergroup');
+      $state.go('authorize.menu.admin.customergroup');
       
     // external owner admin
     } else {
-      $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
+      $state.go('authorize.menu.admin.customergroupdashboard', { customerGroupId: null });
     }
   };
 
@@ -212,9 +212,9 @@ angular.module('bekApp')
         ProductService.scanProduct(scannedText).then(function(item) {
           if (item) {
             ProductService.selectedProduct = item;
-            $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+            $state.go('authorize.menu.catalog.products.details', { itemNumber: item.itemnumber });
           } else {
-            $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
+            $state.go('authorize.menu.catalog.products.list', { type: 'search', id: scannedText });
           }
         }, function (error) {
           $scope.displayMessage('error', 'Error with scan product request.');

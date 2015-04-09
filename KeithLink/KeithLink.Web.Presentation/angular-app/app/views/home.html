@@ -15,7 +15,7 @@
       <!-- Account Summary -->
       <div class="info-box">
  
-        <a ui-sref="menu.invoice" ng-hide = "isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
+        <a ui-sref="authorize.menu.invoice" ng-hide = "isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         
         <h4><strong>Account Balance</strong></h4>
         
@@ -102,7 +102,7 @@
       <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: numCartsToDisplay">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
-            <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
+            <a ui-sref="authorize.menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
             <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
           </div>
           <div class="col-md-3 table-col">
@@ -125,7 +125,7 @@
       </p>
  
       <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || homeCarts.length === 0">
-        <a class="view-all" ui-sref="menu.order">View All</a>
+        <a class="view-all" ui-sref="authorize.menu.order">View All</a>
       </div>
  
       <!-- Order Summary -->
@@ -188,7 +188,7 @@
       </div>
  
       <div class="text-center hidden-xs hidden-sm" ng-hide="loadingOrders || ordersMessage">
-        <a class="view-all" ui-sref="menu.order">View All</a>
+        <a class="view-all" ui-sref="authorize.menu.order">View All</a>
       </div>
  
       <!-- Mobile Order Summary -->
@@ -197,7 +197,7 @@
           <h3>Current Order Status</h3>
         </div>
         <div class="col-xs-4">
-          <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
+          <a ui-sref="authorize.menu.order" class="btn btn-default pull-right btn-lg">View All</a>
         </div>
       </div>
       <div class="order-summary__order no-margin hidden-md hidden-lg" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 1 | styleOrders" ng-class="order.highlightClass">
@@ -279,7 +279,7 @@
                 </a>
                 <a 
                   ng-if="item.productid" 
-                  ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
+                  ui-sref="authorize.menu.catalog.products.details({ itemId: item.productid})" 
                   class="text-uppercase">
                   {{item.targeturltext}}
                 </a>

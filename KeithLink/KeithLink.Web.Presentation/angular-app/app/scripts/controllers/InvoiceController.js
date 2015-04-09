@@ -216,15 +216,15 @@ angular.module('bekApp')
 
   //change the selected user context to the one the user clicked and refresh the page
   $scope.changeCustomerOnClick = function (customerNumber, branch) {
-    changeUserContext('menu.invoice', $state.params, customerNumber, branch);
+    changeUserContext('authorize.menu.invoice', $state.params, customerNumber, branch);
   };
 
   $scope.linkToReferenceNumber = function(customerNumber, branch, invoiceNumber){
     if ($scope.viewingAllCustomers) {
       // change selected context if viewing all customers
-      changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
+      changeUserContext('authorize.menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
     } else {
-      $state.go('menu.invoiceitems', { invoiceNumber: invoiceNumber} );
+      $state.go('authorize.menu.invoiceitems', { invoiceNumber: invoiceNumber} );
     }
   };
 
@@ -290,7 +290,7 @@ angular.module('bekApp')
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
       InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
-        $state.go('menu.transaction');
+        $state.go('authorize.menu.transaction');
       }).finally(function () {
         processingPayInvoices = false;
       });

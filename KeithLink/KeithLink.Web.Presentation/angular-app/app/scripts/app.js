@@ -66,9 +66,9 @@ angular
  
   $rootScope.redirectUserToCorrectHomepage = function() {
     if ( AccessService.isOrderEntryCustomer() ) {
-      $state.go('menu.home');
+      $state.go('authorize.menu.home');
     } else {
-      $state.go('menu.catalog.home');
+      $state.go('authorize.menu.catalog.home');
     }
   };
  

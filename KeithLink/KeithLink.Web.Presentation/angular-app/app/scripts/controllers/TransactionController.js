@@ -64,11 +64,11 @@ angular.module('bekApp')
 
   //change the selected user context to the one the user clicked and refresh the page
   $scope.goToInvoicesForCustomer = function(customerNumber, branch) {
-    changeUserContext('menu.invoice', {}, customerNumber, branch);
+    changeUserContext('authorize.menu.invoice', {}, customerNumber, branch);
   };
 
   $scope.goToInvoiceDetails = function(customerNumber, branch, invoiceNumber){
-    changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
+    changeUserContext('authorize.menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
   };
 
   /**********

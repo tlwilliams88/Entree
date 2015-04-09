@@ -29,7 +29,16 @@ angular.module('bekApp')
           }]
         }
     })
-    .state('menu', {
+    .state('authorize', {
+      abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
+      template: '<ui-view/>',
+      resolve: {
+        userProfile: ['UserProfileService', function(UserProfileService) {
+          return UserProfileService.getCurrentUserProfile();
+        }]
+      }
+    })
+    .state('authorize.menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
       templateUrl: 'views/menu.html',
       controller: 'MenuController',
@@ -50,7 +59,7 @@ angular.module('bekApp')
       }
     })
     // /home
-    .state('menu.home', {
+    .state('authorize.menu.home', {
       url: '/home/',
       templateUrl: 'views/home.html',
       controller: 'HomeController',
@@ -59,7 +68,7 @@ angular.module('bekApp')
         saveCarts: true
       }
     })
-    .state('menu.userprofile', {
+    .state('authorize.menu.userprofile', {
       url: '/profile/',
       templateUrl: 'views/userprofile.html',
       controller: 'UserProfileController',
@@ -72,7 +81,7 @@ angular.module('bekApp')
         }]
       }
     })
-    .state('menu.notifications', {
+    .state('authorize.menu.notifications', {
       url: '/notifications/',
       templateUrl: 'views/notifications.html',
       controller: 'NotificationsController',
@@ -84,12 +93,12 @@ angular.module('bekApp')
     /**********
     CATALOG
     **********/
-    .state('menu.catalog', {
+    .state('authorize.menu.catalog', {
       abstract: true,
       url: '/catalog/',
       template: '<div ui-view=""></div>'
     })
-    .state('menu.catalog.home', {
+    .state('authorize.menu.catalog.home', {
       url: '',
       templateUrl: 'views/catalog.html',
       controller: 'CatalogController',
@@ -97,12 +106,12 @@ angular.module('bekApp')
         authorize: 'canBrowseCatalog'
       }
     })
-    .state('menu.catalog.products', {
+    .state('authorize.menu.catalog.products', {
       abstract: true,
       url: 'products/',
       template: '<div ui-view=""></div>'
     })
-    .state('menu.catalog.products.list', {
+    .state('authorize.menu.catalog.products.list', {
       url: ':type/:id/?brands',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
@@ -110,7 +119,7 @@ angular.module('bekApp')
         authorize: 'canBrowseCatalog'
       }
     })
-    .state('menu.catalog.products.details', {
+    .state('authorize.menu.catalog.products.details', {
       url: ':itemNumber/',
       templateUrl: 'views/itemdetails.html',
       controller: 'ItemDetailsController',
@@ -127,7 +136,7 @@ angular.module('bekApp')
     /**********
     LISTS
     **********/
-    .state('menu.lists', {
+    .state('authorize.menu.lists', {
       url: '/lists/',
       abstract: true,
       template: '<ui-view/>',
@@ -144,7 +153,7 @@ angular.module('bekApp')
         }]
       }
     })
-    .state('menu.lists.items', {
+    .state('authorize.menu.lists.items', {
       url: ':listId/',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
@@ -165,7 +174,7 @@ angular.module('bekApp')
     /**********
     CART
     **********/
-    .state('menu.cart', {
+    .state('authorize.menu.cart', {
       url: '/cart/',
       abstract: true,
       template: '<ui-view/>',
@@ -188,7 +197,7 @@ angular.module('bekApp')
         }]
       }
     })
-    .state('menu.cart.items', {
+    .state('authorize.menu.cart.items', {
       url: ':cartId',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
@@ -209,7 +218,7 @@ angular.module('bekApp')
     /**********
     ADD TO ORDER
     **********/
-    .state('menu.addtoorder', {
+    .state('authorize.menu.addtoorder', {
       url: '/add-to-order/',
       abstract: true,
       template: '<ui-view/>',
@@ -233,7 +242,7 @@ angular.module('bekApp')
         }]
       }
     })
-    .state('menu.addtoorder.items', {
+    .state('authorize.menu.addtoorder.items', {
       url: ':cartId/list/:listId/?useParlevel',
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
@@ -273,7 +282,7 @@ angular.module('bekApp')
     /**********
     ORDER HISTORY
     **********/
-    .state('menu.order', {
+    .state('authorize.menu.order', {
       url: '/orders/',
       templateUrl: 'views/order.html',
       controller: 'OrderController',
@@ -281,7 +290,7 @@ angular.module('bekApp')
         authorize: 'canSubmitOrders'
       }
     })
-    .state('menu.orderitems', {
+    .state('authorize.menu.orderitems', {
       url: '/order/:invoiceNumber/',
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
@@ -298,7 +307,7 @@ angular.module('bekApp')
     /**********
     INVOICE
     **********/
-    .state('menu.invoice', {
+    .state('authorize.menu.invoice', {
       url: '/invoices/',
       templateUrl: 'views/invoice.html',
       controller: 'InvoiceController',
@@ -311,7 +320,7 @@ angular.module('bekApp')
         }]
       }
     })
-    .state('menu.invoiceitems', {
+    .state('authorize.menu.invoiceitems', {
       url: '/invoice/:invoiceNumber/',
       templateUrl: 'views/invoiceitems.html',
       controller: 'InvoiceItemsController',
@@ -341,7 +350,7 @@ angular.module('bekApp')
     /**********
     TRANSACTION
     **********/
-    .state('menu.transaction', {
+    .state('authorize.menu.transaction', {
       url: '/transactions/',
       templateUrl: 'views/transaction.html',
       controller: 'TransactionController',
@@ -353,7 +362,7 @@ angular.module('bekApp')
     /**********
     MARKETING CMS
     **********/
-    .state('menu.marketing', {
+    .state('authorize.menu.marketing', {
       url: '/marketing/',
       templateUrl: 'views/marketing.html',
       controller: 'MarketingController',
@@ -365,7 +374,7 @@ angular.module('bekApp')
     /**********
     REPORT
     **********/
-    .state('menu.reports', {
+    .state('authorize.menu.reports', {
       url: '/reports/',
       templateUrl: 'views/reports.html',
       controller: 'ReportsController',
@@ -373,7 +382,7 @@ angular.module('bekApp')
       //     authorize: 'canPayInvoices'
       // }
     })
-    .state('menu.itemusagereport', {
+    .state('authorize.menu.itemusagereport', {
       url: '/reports/itemusage',
       templateUrl: 'views/itemusagereport.html',
       controller: 'ItemUsageReportController',
@@ -385,12 +394,12 @@ angular.module('bekApp')
     /**********
     ADMIN
     **********/
-    .state('menu.admin', {
+    .state('authorize.menu.admin', {
       url: '/admin/',
       template: '<ui-view>'
     })
 
-    .state('menu.admin.user', {
+    .state('authorize.menu.admin.user', {
       url: 'customergroup/:groupId/user/:email/',
       abstract: true,
       template: '<ui-view/>',
@@ -398,7 +407,7 @@ angular.module('bekApp')
         authorize: 'canViewCustomerGroupDashboard'
       }
     })
-    .state('menu.admin.user.edit', {
+    .state('authorize.menu.admin.user.edit', {
       url: 'edit/',
       templateUrl: 'views/admin/edituserdetails.html',
       controller: 'EditUserDetailsController',
@@ -414,7 +423,7 @@ angular.module('bekApp')
         }]
       }
     })
-    .state('menu.admin.user.view', {
+    .state('authorize.menu.admin.user.view', {
       url: 'view/',
       templateUrl: 'views/admin/viewuserdetails.html',
       controller: 'ViewUserDetailsController',
@@ -431,7 +440,7 @@ angular.module('bekApp')
       }
     })
 
-    .state('menu.admin.customer', {
+    .state('authorize.menu.admin.customer', {
       url: 'customers/:customerNumber/:branchNumber/',
       templateUrl: 'views/admin/customerdetails.html',
       controller: 'CustomerDetailsController',
@@ -439,7 +448,7 @@ angular.module('bekApp')
         authorize: 'canViewCustomerGroupDashboard'
       }
     })
-    .state('menu.admin.ordermanagement', {
+    .state('authorize.menu.admin.ordermanagement', {
       url: 'ordermanagement/',
       templateUrl: 'views/admin/ordermanagement.html',
       controller: 'OrderManagementController',
@@ -449,7 +458,7 @@ angular.module('bekApp')
     /*************
     ADMIN CUSTOMER GROUPS
     *************/
-    .state('menu.admin.customergroupdashboard',{
+    .state('authorize.menu.admin.customergroupdashboard',{
       url: 'customergroup/dashboard/?customerGroupId',
       templateUrl: 'views/admin/customergroupdashboard.html',
       controller: 'CustomerGroupDashboardController',
@@ -457,7 +466,7 @@ angular.module('bekApp')
         authorize: 'canViewCustomerGroupDashboard'
       }
     })
-    .state('menu.admin.customergroup', {
+    .state('authorize.menu.admin.customergroup', {
       url: 'customergroup/',
       templateUrl: 'views/admin/customergroups.html',
       controller: 'CustomerGroupsController',
@@ -465,7 +474,7 @@ angular.module('bekApp')
         authorize: 'canViewCustomerGroups'
       }
     })
-    .state('menu.admin.customergroupdetails', {
+    .state('authorize.menu.admin.customergroupdetails', {
       url: 'customergroup/:groupId/',
       templateUrl: 'views/admin/customergroupdetails.html',
       controller: 'CustomerGroupDetailsController',
