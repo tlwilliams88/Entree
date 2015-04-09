@@ -28,6 +28,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void DeleteItem(long Id);
 		
         void DeleteList(long Id);
+
+		void DeleteItemNumberFromList(long Id, string itemNumber);
 		
         void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
 		

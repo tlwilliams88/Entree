@@ -163,5 +163,11 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			return serviceClient.ReadPagedList(user, catalogInfo, Id, paging);
 		}
+
+
+		public void DeleteItemNumberFromList(long Id, string itemNumber)
+		{
+			serviceClient.DeleteItemNumberFromList(Id, itemNumber);
+		}
 	}
 }

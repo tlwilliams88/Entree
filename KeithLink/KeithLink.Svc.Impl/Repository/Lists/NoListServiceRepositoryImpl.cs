@@ -152,5 +152,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public void DeleteItemNumberFromList(long Id, string itemNumber)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

@@ -149,5 +149,11 @@ namespace KeithLink.Svc.InternalSvc
 		}
 		
 		#endregion
+
+
+		public void DeleteItemNumberFromList(long Id, string itemNumber)
+		{
+			listLogic.DeleteItemNumberFromList(Id, itemNumber);
+		}
 	}
 }
