@@ -162,6 +162,21 @@ angular.module('bekApp')
       }
     })
 
+    .state('menu.organizelist', {
+      url: '/lists/:listId/organize',
+      templateUrl: 'views/listsorganize.html',
+      controller: 'ListOrganizeController',
+      data: {
+        authorize: 'canManageLists',
+        saveLists: true
+      },
+      resolve: {
+        list: ['$stateParams', 'ListService', function ($stateParams, ListService) {
+          return ListService.getListWithItems($stateParams.listId, {includePrice: false});
+        }]
+      }
+    })
+
     /**********
     CART
     **********/

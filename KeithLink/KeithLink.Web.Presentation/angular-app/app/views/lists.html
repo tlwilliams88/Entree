@@ -217,6 +217,9 @@
             <span class="icon-trash"></span>
           </button>
 
+          <p style="margin-top: 10px; font-size: 14px;">
+            <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid})">Organize this list <span class="icon-arrow-right6"></span></a>
+          </p>
         </div>
       </div>
     </div>
