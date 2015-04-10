@@ -312,6 +312,9 @@
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
               <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
+             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='class';sortOrder=!sortOrder">
+              <span>Class <span sort-icons field="'class'" sortorder="sortOrder" sortby="sortBy"></span></span>
+            </th>
             <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
@@ -347,6 +350,10 @@
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
             </td>
+            <td class="hidden-xs hidden-sm input-col">
+              <input name="filterClass" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.class">
+            </td>
+
             <td class="hidden-xs hidden-sm"></td>
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
@@ -372,6 +379,9 @@
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.brand}}
+            </td>
+            <td class="hidden-mobile-visible-print ">
+              {{item.class}}
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.packsize}}
@@ -428,6 +438,10 @@
                 <tr>
                   <td>Notes</td>
                   <td>{{::item.notes}}</td>
+                </tr>
+                 <tr>
+                  <td>Class</td>
+                  <td>{{::item.class}}</td>
                 </tr>
                 <tr>
                   <td>Pack/Size</td>
