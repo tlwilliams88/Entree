@@ -301,9 +301,13 @@ angular.module('bekApp')
             newList.name = 'Mandatory';
           } else if (params.isRecommended === true) {
             newList.name = 'Recommended';
-          } else {
+          } else if (params.name != null) {
+            newList.name = params.name;
+          }
+          else{
             newList.name = UtilityService.generateName('List', Service.lists);
           }
+          
           
           return newList;
         },
