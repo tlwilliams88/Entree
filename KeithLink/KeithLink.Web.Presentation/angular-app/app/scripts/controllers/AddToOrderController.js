@@ -56,6 +56,8 @@ angular.module('bekApp')
         if (duplicateItem) {
           duplicateItem.quantity = cartItem.quantity; // set list item quantity 
           cartItem.isHidden = true;
+        } else {
+          cartItem.isHidden = false;
         }
       });
     }
@@ -119,9 +121,9 @@ angular.module('bekApp')
     };
 
     $scope.clearFilter = function(){   
-      $scope.orderSearchTerm = "";
+      $scope.orderSearchTerm = '';
       $scope.filterItems( $scope.orderSearchTerm );     
-    }
+    };
   
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
