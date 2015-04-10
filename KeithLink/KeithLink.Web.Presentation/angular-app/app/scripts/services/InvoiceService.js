@@ -34,15 +34,15 @@ angular.module('bekApp')
       },
 
       // for all customers
-      getPendingTransactions: function(params) {
-        return Invoice.getAllPendingTransactions(params).$promise.then(function (data) {
-          // add data to wrapper object so it matches format of getInvoices endpoints
-          var wrapper = {
-            pagedresults: data
-          };
-          return wrapper;
-        });
-      },
+      // getPendingTransactions: function(params) {
+      //   return Invoice.getAllPendingTransactions(params).$promise.then(function (data) {
+      //     // add data to wrapper object so it matches format of getInvoices endpoints
+      //     var wrapper = {
+      //       pagedresults: data
+      //     };
+      //     return wrapper;
+      //   });
+      // },
 
       payInvoices: function(payments, account) {
         payments.forEach(function(payment) {

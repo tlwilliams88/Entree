@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('TransactionController', ['$scope', '$state', 'TransactionService', 'LocalStorage', 'CustomerService', 'PagingModel',
-    function ($scope, $state, TransactionService, LocalStorage, CustomerService, PagingModel) {
+  .controller('TransactionController', ['$scope', '$state', '$modal', 'TransactionService', 'LocalStorage', 'CustomerService', 'PagingModel',
+    function ($scope, $state, $modal, TransactionService, LocalStorage, CustomerService, PagingModel) {
 
   // set context to all customers
   var tempContext = {
@@ -91,6 +91,31 @@ angular.module('bekApp')
       sortDescending: sortDescending
     };
     transactionPagingModel.sortData($scope.sort);
+  };
+
+  $scope.openExportModal = function () {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/exportmodal.html',
+      controller: 'ExportModalController',
+      resolve: {
+        headerText: function () {
+          return 'Transactions';
+        },
+        exportMethod: function () {
+          return TransactionService.exportTransactions;
+        },
+        exportConfig: function () {
+          return TransactionService.getTransactionExportConfig();
+        },
+        exportParams: function () {
+          return {
+            paging: {
+              // filter: getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView)
+            }
+          };
+        }
+      }
+    });
   };
 
 }]);
