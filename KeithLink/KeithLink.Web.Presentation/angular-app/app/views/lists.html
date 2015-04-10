@@ -351,6 +351,9 @@
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brandextendeddescription',sort.sortDescending)">
                 <span>Brand <span sort-icons field="'brandextendeddescription'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('itemclass',sort.sortDescending)">
+                <span>Class <span sort-icons field="'class'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
               </th>
@@ -406,6 +409,9 @@
               </td>
               <td class="hidden-mobile-visible-print bek-drag-handle">
                 {{::item.brand_extended_description}}
+              </td>
+              <td class="hidden-mobile-visible-print bek-drag-handle">
+                {{::item.class}}
               </td>
               <td class="hidden-mobile-visible-print bek-drag-handle">
                 {{::item.packsize}}
@@ -511,6 +517,10 @@
                     <tr>
                       <td>Brand</td>
                       <td>{{::item.brand_extended_description}}</td>
+                    </tr>
+                    <tr>
+                      <td>Class</td>
+                      <td>{{::item.class}}</td>
                     </tr>
                     <tr>
                       <td>Pack/Size</td>
