@@ -63,7 +63,14 @@
       <div class="form-group" ng-if="canGrantAccessToOtherServices">
         <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
         <div class="col-md-4">
-          <input type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeKbitAccess(profile.iskbitcustomer, 'kbit')" />
+          <input name="kbitAccess" type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeUserAccess(profile.iskbitcustomer, 'kbit')" />
+        </div>
+      
+      </div>
+      <div class="form-group" ng-if="canGrantAccessToOtherServices">
+        <label for="powerMenuAccess" class="col-md-2 control-label">Power Menu Access</label>
+        <div class="col-md-4">
+          <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenu" ng-change="changeUserAccess(profile.ispowermenu, 'powermenu')" />
         </div>
       
       </div>
@@ -161,7 +168,7 @@
   <div class="form-group sub-content">
     <div class="col-md-6 button-row">
       <button type="button" ng-click="updateProfile()" class="btn btn-lg btn-primary">Save Updates</button>
-      <a ui-sref="menu.admin.customergroupdashboard({customerGroupId: groupId})">Cancel</a>
+      <a ui-sref="authorize.menu.admin.customergroupdashboard({customerGroupId: groupId})">Cancel</a>
     </div>
   </div>
 </form>

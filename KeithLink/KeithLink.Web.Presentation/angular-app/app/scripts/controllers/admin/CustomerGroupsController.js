@@ -61,10 +61,6 @@ angular.module('bekApp')
       customerGroupsPagingModel.loadData();
     }
   };
-    $scope.clearFilter = function(){   
-          $scope.search.term = "";       
-          $scope.searchCustomerGroups($scope.search);     
-    }
 
   $scope.infiniteScrollLoadMore = function() {
     customerGroupsPagingModel.loadMoreData($scope.customerGroups, $scope.totalGroups, $scope.loadingResults);

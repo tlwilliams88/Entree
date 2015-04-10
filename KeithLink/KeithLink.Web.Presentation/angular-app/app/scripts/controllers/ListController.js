@@ -12,7 +12,7 @@ angular.module('bekApp')
     function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService, ListPagingModel) {
 
     if ($stateParams.listId !== originalList.listid.toString()) {
-      $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
+      $state.go('authorize.menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
 
     var orderBy = $filter('orderBy');
@@ -76,13 +76,13 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
-      return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
+      return $state.go('authorize.menu.lists.items', {listId: list.listid, renameList: false});
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
-      $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
+      $state.go('authorize.menu.lists.items', {listId: newList.listid, renameList: true});
     }
 
     $scope.undoChanges = function() {
@@ -552,10 +552,10 @@ angular.module('bekApp')
     };
 
     $scope.clearFilter = function(){   
-          $scope.listSearchTerm = "";
-          $scope.hideDragToReorder = false;
-          $scope.filterItems( $scope.listSearchTerm );     
-    }
+      $scope.listSearchTerm = '';
+      $scope.hideDragToReorder = false;
+      $scope.filterItems( $scope.listSearchTerm );     
+    };
 
     $scope.openPrintOptionsModal = function(list) {
       var modalInstance = $modal.open({
@@ -580,6 +580,14 @@ angular.module('bekApp')
     };
 
     resetPage(angular.copy(originalList));
-    $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+    // $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+
+    if (ListService.renameList === true) {
+      console.log('rename list');
+      ListService.renameList = false;
+      if ($scope.selectedList.permissions.canRenameList) {
+        $scope.selectedList.isRenaming = true;
+      }
+    }
 
   }]);

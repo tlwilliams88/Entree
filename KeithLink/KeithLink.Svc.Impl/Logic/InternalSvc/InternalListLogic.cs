@@ -451,7 +451,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return list.SelectMany(i => i.Items.Select(x => x.ItemNumber)).ToList();
 		}
 
-		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
 		{
 			KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
 			if(user != null)
@@ -468,7 +468,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				clonedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
 				clonedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
-				LookupPrices(user, clonedList.Items, catalogInfo);
+				
+				if (includePrice)
+					LookupPrices(user, clonedList.Items, catalogInfo);
+				
 				return clonedList;
 			}
 
@@ -486,7 +489,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var listClone = returnList.Clone();
 
 			MarkFavoritesAndAddNotes(user, listClone, catalogInfo, activeCart);
-			LookupPrices(user, listClone.Items, catalogInfo);
+			
+			if(includePrice)
+				LookupPrices(user, listClone.Items, catalogInfo);
+			
 			return listClone;
 		}
 
@@ -516,7 +522,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
 		{
-			return listRepository.ReadListForCustomer(catalogInfo, false).Where(l => l.Type.Equals(ListType.Custom) || l.Type.Equals(ListType.Favorite)).SelectMany(i => i.Items.Where(l => !string.IsNullOrEmpty(l.Label)).Select(b => b.Label)).Distinct().ToList();
+			return listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && (l.Type == ListType.Custom || l.Type == ListType.Favorite), i => i.Items).SelectMany(i => i.Items.Where(l => !string.IsNullOrEmpty(l.Label)).Select(b => b.Label)).Distinct().ToList();
 		}
 		
         public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
@@ -905,10 +911,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return pagedList;
 		}
 
+		public void DeleteItemNumberFromList(long Id, string itemNumber)
+		{
+			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
+			if (list == null)
+				return;
+
+			foreach (var item in list.Items.Where(i => i.ItemNumber.Equals(itemNumber)).ToList())
+				listItemRepository.Delete(item);
+			
+			unitOfWork.SaveChanges();
+		}
+		
 		#endregion
 
-
-		
 	}
 }

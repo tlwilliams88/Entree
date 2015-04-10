@@ -1,15 +1,17 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'LocalStorage', '$state', 'MessagePreferenceService',
-    function ($scope, UserProfileService, branches, LocalStorage, $state, MessagePreferenceService) {
+  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'MessagePreferenceService',
+    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, MessagePreferenceService) {
 
   var init = function(){
     $scope.branches = branches;
     
-    MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
-      $scope.defaultPreferences = preferences;
-    });
+    if (AccessService.isOrderEntryCustomer()){
+      MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
+        $scope.defaultPreferences = preferences;
+      });
+    }
   };
 
   /*********
@@ -48,7 +50,7 @@ angular.module('bekApp')
   };
 
   $scope.cancelChanges = function () {
-    $scope.userProfile = angular.copy(LocalStorage.getProfile());
+    $scope.userProfile = angular.copy(SessionService.userProfile);
     $scope.updateProfileForm.$setPristine();
   };
 

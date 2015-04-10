@@ -96,6 +96,8 @@ angular.module('bekApp')
           PhonegapDbService.setItem(db_table_name_carts, newCart.id, newCart);
           Service.cartHeaders.push(newCart);
 
+          Service.renameCart = true;
+
           //return a promise
           var deferred = $q.defer();
           deferred.resolve(newCart);

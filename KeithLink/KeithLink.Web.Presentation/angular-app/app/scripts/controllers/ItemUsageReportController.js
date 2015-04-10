@@ -43,7 +43,7 @@ angular.module('bekApp')
 
         // $scope.goToItemDetails = function (item) {
         //     ProductService.selectedProduct = item;
-        //     $state.go('menu.catalog.products.details', {
+        //     $state.go('authorize.menu.catalog.products.details', {
         //         itemNumber: item.itemnumber
         //     });
         // };

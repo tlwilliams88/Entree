@@ -70,10 +70,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         System.Threading.Tasks.Task<string[]> ReadFavoritesAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadList", ReplyAction="http://tempuri.org/IListServcie/ReadListResponse")]
-        KeithLink.Svc.Core.Models.Lists.ListModel ReadList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
+        KeithLink.Svc.Core.Models.Lists.ListModel ReadList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, bool includePrice);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadList", ReplyAction="http://tempuri.org/IListServcie/ReadListResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel> ReadListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel> ReadListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, bool includePrice);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadListByType", ReplyAction="http://tempuri.org/IListServcie/ReadListByTypeResponse")]
         KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type);
@@ -152,6 +152,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadPagedList", ReplyAction="http://tempuri.org/IListServcie/ReadPagedListResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.PagedListModel> ReadPagedListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/DeleteItemNumberFromList", ReplyAction="http://tempuri.org/IListServcie/DeleteItemNumberFromListResponse")]
+        void DeleteItemNumberFromList(long Id, string itemNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/DeleteItemNumberFromList", ReplyAction="http://tempuri.org/IListServcie/DeleteItemNumberFromListResponse")]
+        System.Threading.Tasks.Task DeleteItemNumberFromListAsync(long Id, string itemNumber);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -253,12 +259,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
             return base.Channel.ReadFavoritesAsync(user, catalogInfo);
         }
         
-        public KeithLink.Svc.Core.Models.Lists.ListModel ReadList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
-            return base.Channel.ReadList(user, catalogInfo, Id);
+        public KeithLink.Svc.Core.Models.Lists.ListModel ReadList(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, bool includePrice) {
+            return base.Channel.ReadList(user, catalogInfo, Id, includePrice);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel> ReadListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id) {
-            return base.Channel.ReadListAsync(user, catalogInfo, Id);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel> ReadListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, bool includePrice) {
+            return base.Channel.ReadListAsync(user, catalogInfo, Id, includePrice);
         }
         
         public KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type) {
@@ -363,6 +369,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.PagedListModel> ReadPagedListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
             return base.Channel.ReadPagedListAsync(user, catalogInfo, Id, paging);
+        }
+        
+        public void DeleteItemNumberFromList(long Id, string itemNumber) {
+            base.Channel.DeleteItemNumberFromList(Id, itemNumber);
+        }
+        
+        public System.Threading.Tasks.Task DeleteItemNumberFromListAsync(long Id, string itemNumber) {
+            return base.Channel.DeleteItemNumberFromListAsync(Id, itemNumber);
         }
     }
 }

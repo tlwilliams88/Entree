@@ -48,7 +48,16 @@
         
         <div class="info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group">
           <span class="nav-description text-light">Selected Order</span>
-          <span class="nav-title">{{selectedCart.name || selectedCart.invoicenumber || 'New Cart'}}</span>
+          <span class="nav-title" ng-hide="isRenaming">{{selectedCart.name || selectedCart.invoicenumber || 'New Cart'}} 
+            <span ng-show="::!isChangeOrder" class="icon-pencil hand large-icon text-light" ng-click="startRenamingCart(selectedCart.name)"></span>
+          </span>
+          <span ng-show="isRenaming">
+            <form name="renameCartForm">
+              <input type="text" ng-model="tempCartName" focus-me="isRenaming" required>
+              <button type="submit" class="btn-no-style icon-checkmark large-icon hand text-green" ng-disabled="renameCartForm.$invalid" ng-click="renameCart(selectedCart.id, tempCartName)"></button>
+              <span class="icon-cross large-icon hand text-red" ng-click="isRenaming = false"></span>
+            </form>
+          </span>
         </div>
         
         <div class="col-md-3 col-sm-6 col-xs-12 btn-group info-box hand no-border-right-sm dropdown-toggle" dropdown is-open="showShipDates">
@@ -91,23 +100,23 @@
     <div class="col-xs-2 text-right">{{subtotal | currency}}</div>
   </div>
 
-  <form  name="orderSearchForm" class="hidden-print">
-        <div class="input-group input-group-lg">
-          <input 
-            ng-model="orderSearchTerm"
-            type="text" 
-            class="form-control" 
-            placeholder="Search current list by name, item #, notes, brand or label" />
-          <span ng-show="addToOrderForm.$dirty" class="input-group-btn">
-            <button type="button" confirmed-click="filterItems(orderSearchTerm)" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}" class="btn btn-default"><span class="icon-search"></span></button>
-            <button type="button"  confirmed-click="clearFilter()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-          </span>
-          <span ng-show="addToOrderForm.$pristine" class="input-group-btn">
-            <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-          </span>
-        </div>
-      </form>
+  <form name="orderSearchForm" class="hidden-print">
+    <div class="input-group input-group-lg">
+      <input 
+        ng-model="orderSearchTerm"
+        type="text" 
+        class="form-control" 
+        placeholder="Search current list by name, item #, notes, brand or label" />
+      <span ng-show="addToOrderForm.$dirty" class="input-group-btn">
+        <button type="button" confirmed-click="filterItems(orderSearchTerm)" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}" class="btn btn-default"><span class="icon-search"></span></button>
+        <button type="button"  confirmed-click="clearFilter()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+      </span>
+      <span ng-show="addToOrderForm.$pristine" class="input-group-btn">
+        <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+        <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+      </span>
+    </div>
+  </form>
 
   <form 
     unsaved-warning-form 
@@ -170,8 +179,6 @@
         </tr>
       </thead>
       <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
-      
-    
         <tr 
           ng-repeat-start="item in  selectedList.items track by item.listitemid" 
           ng-class="{ odd : $odd, even: $even }">
@@ -179,7 +186,7 @@
             {{::item.position}}
           </td>
           <td>
-            <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+            <a ui-sref="authorize.menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
           </td>
           <td>
             {{::item.name}}
@@ -215,7 +222,6 @@
           </td>
           <td class="input-col nowrap"  >
             <ng-form class="hidden-print" name="quantityForm">
-              <!-- <input type="text" name="quantity" ng-model="item.quantity" class="input-number text-right" integer> -->
               <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"></div>
             </ng-form>
           </td>
@@ -347,7 +353,7 @@
         ng-class="{ odd : $odd, even: $even }">
 
         <td>
-          <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+          <a ui-sref="authorize.menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>

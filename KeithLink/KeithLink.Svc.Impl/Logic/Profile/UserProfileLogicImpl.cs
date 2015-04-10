@@ -437,6 +437,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return GetUserProfile(emailAddress);
         }
 
+        /// <summary>
+        /// return all customers that a user has access to
+        /// </summary>
+        /// <param name="user">the current user</param>
+        /// <param name="searchTerms">the text to search for</param>
+        /// <param name="paging">paging information</param>
+        /// <param name="account"></param>
+        /// <returns>paged list of Customers</returns>
+        /// <remarks>
+        /// jwames - 4/9/2015 - add support for GOF power users
+        /// </remarks>
         public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account) {
             if (string.IsNullOrEmpty(searchTerms))
                 searchTerms = "";
@@ -455,10 +466,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     // lookup customers by their assigned dsr number
                     return _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
 
-                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
                     return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
-                } else { // assume admin user with access to all customers
+                } else { // assume admin user with access to all customers or PowerUser from GOF
                     return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
                 }
             } else { // external user
@@ -495,24 +506,26 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 DirectoryEntry directoryEntry = (DirectoryEntry)adUser.GetUnderlyingObject();
                 List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Svc.Core.Constants.INTERNAL_USER_ROLES);
 
+                userBranch = GetBranchFromOU(adUser.GetOrganizationalunit());
+
                 if (internalUserRoles.Intersect(Constants.BEK_SYSADMIN_ROLES).Count() > 0) {
                     userRole = Constants.ROLE_NAME_SYSADMIN;
                 } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
                     userRole = Constants.ROLE_NAME_BRANCHIS;
-                    userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    //userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
                 } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0){
                     userRole = Constants.ROLE_NAME_POWERUSER;
-                    userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    //userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
                 } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
                     dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
                     userRole = Constants.ROLE_NAME_DSM;
-                    userBranch = dsmRole.Substring(0, 3);
+                    //userBranch = dsmRole.Substring(0, 3);
                     dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
                 } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
                     dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
                     userRole = Constants.ROLE_NAME_DSR;
                     dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
-                    userBranch = dsrRole.Substring(0, 3);
+                    //userBranch = dsrRole.Substring(0, 3);
                 } else {
                     userRole = Constants.ROLE_NAME_GUEST;
                 }
@@ -651,11 +664,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>3-digit branch name</returns>
         /// <remarks>
         /// jwames - 10/9/2014 - original code
+        /// jwames - 4/9/2015 - add GOF and use constants
         /// </remarks>
         private string GetBranchFromOU(string OU) {
             switch (OU) {
                 case "FABQ":
-                    return "FAQ";
+                    return Constants.BRANCH_FAQ;
                 case "FAMA":
                 case "FDFW":
                 case "FHST":
@@ -663,6 +677,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 case "FOKC":
                 case "FSAN":
                     return OU.Substring(0, 3);
+                case "FFGO":
+                    return Constants.BRANCH_GOF;
                 default:
                     return null;
             }
@@ -733,7 +749,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			return returnedMsgPrefModel;
 		}
 
-
+        /// <summary>
+        /// return all customers for user
+        /// </summary>
+        /// <param name="user">the current user</param>
+        /// <param name="search">search text</param>
+        /// <returns>list of customers that a user has access to</returns>
+        /// <remarks>
+        /// jwames - 4/9/2015 - add support for GOF PowerUser
+        /// </remarks>
         public List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "") {
             List<Customer> allCustomers = new List<Customer>();
             if (string.IsNullOrEmpty(search))
@@ -745,12 +769,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 } else if (!String.IsNullOrEmpty(user.DSMRole)) {
                     //lookup customers by their assigned dsm number
                     _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
-                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId);
                     else
                         allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
-                } else { // assume admin user with access to all customers
+                } else { // assume admin user with access to all customers or a PowerUser from GOF
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
                     else

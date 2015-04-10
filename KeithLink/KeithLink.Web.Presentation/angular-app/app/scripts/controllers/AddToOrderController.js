@@ -12,7 +12,7 @@ angular.module('bekApp')
       basketId = 'New';
     }
     if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {
-      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
+      $state.go('authorize.menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -114,14 +114,15 @@ angular.module('bekApp')
     PAGING
     **********/
     $scope.filterItems = function(searchTerm) {  
+      $scope.addToOrderForm.$setPristine();
       listPagingModel.filterListItems(searchTerm);
       clearItemWatches(watches);
     };
 
     $scope.clearFilter = function(){   
-      $scope.orderSearchTerm = "";
+      $scope.orderSearchTerm = '';
       $scope.filterItems( $scope.orderSearchTerm );     
-    }
+    };
   
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
@@ -139,7 +140,6 @@ angular.module('bekApp')
     $scope.infiniteScrollLoadMore = function() {
       listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, []);
     };
-
     $scope.redirect = function(listId, cart, useParlevel) {
       var cartId;
       if ($scope.isChangeOrder) {
@@ -148,7 +148,33 @@ angular.module('bekApp')
         cartId = cart.id;
       }
 
-      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
+      $state.go('authorize.menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
+    };
+
+    /**********
+    CARTS
+    **********/
+
+    $scope.startRenamingCart = function(cartName) {
+      $scope.tempCartName = cartName;
+      $scope.isRenaming = true;
+    };
+
+    $scope.renameCart = function(cartId, name) {
+
+      if (cartId === 'New') {
+        // don't need to call the backend function for new cart
+        $scope.selectedCart.name = name;
+        $scope.isRenaming = false;
+      } else {
+        // call backend to update cart
+        var cart = angular.copy($scope.selectedCart);
+        cart.name = name;
+        CartService.updateCart(cart).then(function(updatedCart) {
+          $scope.selectedCart.name = updatedCart.name;
+          $scope.isRenaming = false;
+        });
+      }
     };
 
     $scope.generateNewCartForDisplay = function() {
@@ -158,7 +184,12 @@ angular.module('bekApp')
       cart.requestedshipdate = $scope.shipDates[0].shipdate;
       $scope.selectedCart = cart;
       $scope.isChangeOrder = false;
+      $scope.startRenamingCart($scope.selectedCart.name);
     };
+
+    /**********
+    FORM EVENTS
+    **********/
 
     // combine cart and list items and total their quantities
     function getCombinedCartAndListItems(cartItems, listItems) {
