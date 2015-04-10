@@ -18,10 +18,11 @@ angular.module('bekApp')
   $scope.sortDescending = false;
 
   $scope.list.items = orderBy($scope.list.items, $scope.sortField, $scope.sortDescending);
+  $scope.list.items.unshift({});
 
   function updateItemPostions(items) {
     items.forEach(function(item, index) {
-      item.position = index + 1;
+      item.position = index;
     });
   }
 
@@ -51,9 +52,9 @@ angular.module('bekApp')
 
   $scope.reorderItem = function(items, item) {
     if (!item.position) { return; }
-    
+
     var oldIndex = items.indexOf(item);
-    $scope.list.items = move(items, oldIndex, item.position - 1);
+    $scope.list.items = move(items, oldIndex, item.position);
 
     // set focus onto correct text box
     // set class to highlight row
@@ -79,9 +80,16 @@ angular.module('bekApp')
   $scope.saveList = function(list) {
     if (!processingSaveList) {
       processingSaveList = true;
+
+      // remove empty item that is used for ui sortable
+      if (list.items.length && !list.items[0].listitemid) {
+        list.items.splice(0, 1);
+      }
+
       ListService.updateList(list).then(function(updatedList) {
         $scope.organizeListForm.$setPristine();
         $scope.list = updatedList;
+        $scope.list.items.unshift({});
       }).finally(function() {
         processingSaveList = false;
       });

@@ -149,8 +149,6 @@
         <div class="col-sm-12 custom-lists">
           <h3>Your Lists</h3>
 
-          <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid})">Organize List</a>
-
           <div class="btn-group-vertical list-names text-blue">
             <button 
               type="button" 
@@ -219,6 +217,9 @@
             <span class="icon-trash"></span>
           </button>
 
+          <p style="margin-top: 10px; font-size: 14px;">
+            <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid})">Organize this list <span class="icon-arrow-right6"></span></a>
+          </p>
         </div>
       </div>
     </div>
