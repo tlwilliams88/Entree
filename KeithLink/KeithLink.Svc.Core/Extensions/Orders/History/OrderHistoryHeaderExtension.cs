@@ -147,6 +147,13 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             FillEtaInformation(value, retVal);
 			retVal.PONumber = value.PONumber;
 
+            retVal.OrderSystem = new OrderSource().Parse(value.OrderSystem).ToString(); 
+
+			switch (value.OrderSystem.Trim())
+			{
+
+			}
+
 			if (value.OrderDetails != null && value.OrderDetails.Count > 0)
 			{
 				System.Collections.Concurrent.BlockingCollection<OrderLine> lineItems = new System.Collections.Concurrent.BlockingCollection<OrderLine>();

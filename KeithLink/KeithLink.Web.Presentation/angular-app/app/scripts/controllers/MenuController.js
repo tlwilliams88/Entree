@@ -52,7 +52,7 @@ angular.module('bekApp')
       ListService.getAllListsForOffline(),
       CartService.getAllCartsForOffline()
     ]).then(function() {
-      $scope.displayMessage('success', 'Downloaded data for offline use.');
+      console.log('Downloaded data for offline use.');
     });
   }
 

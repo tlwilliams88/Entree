@@ -365,9 +365,6 @@
               </th>
               <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print"></th>
-              <th class="hidden-mobile-visible-print">
-                # in Cart
-              </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.alternativeFieldHeader" ng-click="sortList(selectedList.permissions.alternativeFieldName,sort.sortDescending)">
                 <span>{{::selectedList.permissions.alternativeFieldHeader}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
@@ -426,9 +423,6 @@
               <td class="hidden-sm hidden-xs hidden-drag">
                 <span tooltip="{{item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
               <td class="hidden-mobile-visible-print" item-icons></td>
-              <td class="text-center hidden-drag hidden-xs hidden-sm bek-drag-handle">
-                {{::item.quantityincart}}
-              </td>
               <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm hidden-drag">
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
@@ -528,10 +522,6 @@
                     <tr>
                       <td>Pack/Size</td>
                       <td>{{::item.packsize}}</td>
-                    </tr>
-                    <tr>
-                      <td># in Cart</td>
-                      <td>{{::item.quantityincart}}</td>
                     </tr>
                     <tr>
                       <td item-icons></td>
