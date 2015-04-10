@@ -137,7 +137,7 @@
 
       <tr ng-repeat-start="item in (filteredItems = (order.items | filter:filterFields | orderBy:sortBy:sortOrder))" ng-class="{ odd : $odd, even: $even }">
         <td ng-class="{ 'red-border': item.substituteditemnumber }">
-          <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
+          <a ui-sref="authorize.menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>

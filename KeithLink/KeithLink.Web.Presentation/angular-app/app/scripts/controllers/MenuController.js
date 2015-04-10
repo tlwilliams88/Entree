@@ -9,13 +9,13 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile',
     function (
       $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService // bek custom services
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -31,7 +31,7 @@ angular.module('bekApp')
   $scope.messageText = 'Hello world!';
   $scope.displayGlobalMessage = true;
 
-  $scope.userProfile = LocalStorage.getProfile();
+  $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
@@ -42,7 +42,7 @@ angular.module('bekApp')
   var db_table_name_lists = 'lists',
     db_table_name_carts = 'carts';
 
-  if (ENV.mobileApp) {
+  if (ENV.mobileApp && AccessService.isOrderEntryCustomer()) {
     console.log('downloading data');  
     downloadDataForOfflineStorage();
   }
@@ -77,7 +77,7 @@ angular.module('bekApp')
   };
 
   // list of state names where a user has the possibility of viewing info from multiple customers
-  var statesWithViewingAllCustomers = ['menu.invoice', 'menu.transaction'];
+  var statesWithViewingAllCustomers = ['authorize.menu.invoice', 'authorize.menu.transaction'];
   
   // listens for state change event to restore selectedUserContext
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -140,11 +140,11 @@ angular.module('bekApp')
   $scope.goToAdminLandingPage = function() {
     // internal bek admin user
     if ($scope.canViewCustomerGroups) {
-      $state.go('menu.admin.customergroup');
+      $state.go('authorize.menu.admin.customergroup');
       
     // external owner admin
     } else {
-      $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
+      $state.go('authorize.menu.admin.customergroupdashboard', { customerGroupId: null });
     }
   };
 
@@ -171,7 +171,7 @@ angular.module('bekApp')
   $scope.logout = function() {
     AuthenticationService.logout();
 
-    $state.transitionTo('register');
+    $state.transitionTo('authorize.register');
     $scope.displayUserMenu = false;
   };
 
@@ -212,9 +212,9 @@ angular.module('bekApp')
         ProductService.scanProduct(scannedText).then(function(item) {
           if (item) {
             ProductService.selectedProduct = item;
-            $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
+            $state.go('authorize.menu.catalog.products.details', { itemNumber: item.itemnumber });
           } else {
-            $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
+            $state.go('authorize.menu.catalog.products.list', { type: 'search', id: scannedText });
           }
         }, function (error) {
           $scope.displayMessage('error', 'Error with scan product request.');

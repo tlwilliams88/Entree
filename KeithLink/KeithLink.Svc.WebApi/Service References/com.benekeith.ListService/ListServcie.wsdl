@@ -151,6 +151,12 @@
   <wsdl:message name="IListServcie_ReadPagedList_OutputMessage">
     <wsdl:part name="parameters" element="tns:ReadPagedListResponse" />
   </wsdl:message>
+  <wsdl:message name="IListServcie_DeleteItemNumberFromList_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteItemNumberFromList" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_DeleteItemNumberFromList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteItemNumberFromListResponse" />
+  </wsdl:message>
   <wsdl:portType name="IListServcie">
     <wsdl:operation name="AddItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
@@ -243,6 +249,10 @@
     <wsdl:operation name="ReadPagedList">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ReadPagedList" message="tns:IListServcie_ReadPagedList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ReadPagedListResponse" message="tns:IListServcie_ReadPagedList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteItemNumberFromList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/DeleteItemNumberFromList" message="tns:IListServcie_DeleteItemNumberFromList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/DeleteItemNumberFromListResponse" message="tns:IListServcie_DeleteItemNumberFromList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
@@ -447,6 +457,15 @@
     </wsdl:operation>
     <wsdl:operation name="ReadPagedList">
       <soap:operation soapAction="http://tempuri.org/IListServcie/ReadPagedList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteItemNumberFromList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/DeleteItemNumberFromList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -144,6 +144,7 @@
         <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="user" nillable="true" type="q20:userprofile" />
         <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q21:UserSelectedContext" />
         <xs:element minOccurs="0" name="Id" type="xs:long" />
+        <xs:element minOccurs="0" name="includePrice" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -338,6 +339,19 @@
       <xs:sequence>
         <xs:element xmlns:q53="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ReadPagedListResult" nillable="true" type="q53:PagedUserList" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteItemNumberFromList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Id" type="xs:long" />
+        <xs:element minOccurs="0" name="itemNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DeleteItemNumberFromListResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

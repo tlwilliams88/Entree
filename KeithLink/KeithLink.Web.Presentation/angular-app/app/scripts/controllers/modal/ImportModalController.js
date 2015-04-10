@@ -24,7 +24,7 @@ angular.module('bekApp')
     var file = files[0];
 
     ListService.importList(file, options).then(function(data) {
-      goToImportedPage('menu.lists.items', { listId: data.listid });
+      goToImportedPage('authorize.menu.lists.items', { listId: data.listid });
     });
   };
 
@@ -32,7 +32,7 @@ angular.module('bekApp')
     var file = files[0];
 
     CartService.importCart(file, options).then(function(data) {
-      $state.go('menu.cart.items', { cartId: data.id }).then(function() {
+      $state.go('authorize.menu.cart.items', { cartId: data.id }).then(function() {
         $modalInstance.close(data);
       });
     });

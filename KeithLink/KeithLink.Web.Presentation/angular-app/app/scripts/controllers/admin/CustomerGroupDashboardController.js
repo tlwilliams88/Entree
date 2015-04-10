@@ -21,9 +21,9 @@ angular.module('bekApp')
   $scope.loadingUsers = true;
   
   // set correct user details link based on role
-  $scope.userDetailState = 'menu.admin.user.view';
+  $scope.userDetailState = 'authorize.menu.admin.user.view';
   if ($scope.canEditUsers) { // inherited from MenuController
-    $scope.userDetailState = 'menu.admin.user.edit';
+    $scope.userDetailState = 'authorize.menu.admin.user.edit';
   }
 
   // get Customer Group Details
@@ -102,7 +102,7 @@ angular.module('bekApp')
         processingCreateUser = true;
         // TODO: user must immediately assign customers to the new user or else that user will be lost in limbo
         //redirects to user profile page
-        $state.go('menu.admin.user.edit', { groupId: $scope.customerGroup.id, email: email });
+        $state.go('authorize.menu.admin.user.edit', { groupId: $scope.customerGroup.id, email: email });
       }, function (errorMessage) {
         $log.debug(errorMessage);
         $scope.displayMessage('error', 'An error occurred creating the user: ' + errorMessage);

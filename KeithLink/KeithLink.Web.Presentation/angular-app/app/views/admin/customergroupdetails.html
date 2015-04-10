@@ -56,7 +56,7 @@
     </div>
   </div>
 
-  <div class="row sub-content" ng-if="!isNew">
+  <div class="row sub-content" ng-show="!isNew">
     <div class="col-md-6">
       <h3>Customers Available to Assign</h3>
       Showing {{filteredCustomers.length}} of {{totalCustomers}} Customers
@@ -69,7 +69,8 @@
             class="form-control" 
             placeholder="Filter customers by name or number" />
           <span class="input-group-btn">
-            <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>            
+            <button type="button" ng-click="clearFilter()" class="btn btn-default "><span class="glyphicon glyphicon-remove"></span></button>
           </span>
         </div>
       </ng-form>
@@ -149,7 +150,7 @@
           ng-click="submitForm(customerGroup)">
           {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
         </button>
-        <a ui-sref="menu.admin.customergroup">Cancel</a>
+        <a ui-sref="authorize.menu.admin.customergroup">Cancel</a>
       </div>
     </div>
   </div>

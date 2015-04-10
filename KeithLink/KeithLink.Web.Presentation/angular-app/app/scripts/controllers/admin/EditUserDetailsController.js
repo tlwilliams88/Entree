@@ -85,7 +85,7 @@ angular.module('bekApp')
     var customerGroupId = $stateParams.groupId;
     UserProfileService.removeUserFromCustomerGroup(profile.userid, customerGroupId).then(function(newProfile){
       $scope.displayMessage('success', 'The user was successfully removed.');
-      $state.go('menu.admin.customergroupdashboard', { customerGroupId: customerGroupId });
+      $state.go('authorize.menu.admin.customergroupdashboard', { customerGroupId: customerGroupId });
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);
     });
