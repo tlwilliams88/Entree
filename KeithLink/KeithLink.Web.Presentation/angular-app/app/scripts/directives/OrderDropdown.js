@@ -16,7 +16,7 @@ angular.module('bekApp')
         });
    
         modalInstance.result.then(function(cartId) {
-          $state.go('authorize.menu.cart.items', {cartId: cartId});
+          $state.go('menu.cart.items', {cartId: cartId});
         });
       };
    

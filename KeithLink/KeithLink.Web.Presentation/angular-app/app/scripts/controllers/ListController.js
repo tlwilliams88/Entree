@@ -12,7 +12,7 @@ angular.module('bekApp')
     function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService, ListPagingModel) {
 
     if ($stateParams.listId !== originalList.listid.toString()) {
-      $state.go('authorize.menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
 
     var orderBy = $filter('orderBy');
@@ -76,13 +76,13 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
-      return $state.go('authorize.menu.lists.items', {listId: list.listid, renameList: false});
+      return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
-      $state.go('authorize.menu.lists.items', {listId: newList.listid, renameList: true});
+      $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
 
     $scope.undoChanges = function() {

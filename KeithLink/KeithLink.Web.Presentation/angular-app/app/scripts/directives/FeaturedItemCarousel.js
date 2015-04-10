@@ -11,7 +11,7 @@
  * link: the angular ui router ui-sref attribute value for the slide link, if passing a url paramater, YOU MUST USE 'item' AS THE PARENT OBJECT (see example)
  * 
  * Example
- * <div featured-item-carousel items="items" link="'authorize.menu.catalog.products.details({ itemNumber : item.itemnumber })'"></div>
+ * <div featured-item-carousel items="items" link="'menu.catalog.products.details({ itemNumber : item.itemnumber })'"></div>
  */
 angular.module('bekApp')
   .directive('featuredItemCarousel', ['$rootScope', function ($rootScope) {

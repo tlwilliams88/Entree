@@ -38,8 +38,7 @@ angular.module('bekApp')
         if (ENV.mobileApp) { // ask to allow push notifications
           PhonegapPushService.register();
         }
-        // $scope.redirectUserToCorrectHomepage();
-        $state.go('authorize.menu.home');
+        $scope.redirectUserToCorrectHomepage();
       }, function(errorMessage) {
         $scope.loginErrorMessage = errorMessage;
       });
@@ -71,7 +70,7 @@ angular.module('bekApp')
           .then(UserProfileService.getCurrentUserProfile)
           .then(function(profile) {
             // redirect to account details page
-            $state.go('authorize.menu.userprofile');
+            $state.go('menu.userprofile');
           }, function(error) {
             $scope.loginErrorMessage = error.data.error_description;
             $scope.clearForm();
