@@ -186,7 +186,7 @@
             {{::item.position}}
           </td>
           <td>
-            <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+            <a ui-sref="authorize.menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
           </td>
           <td>
             {{::item.name}}
@@ -327,7 +327,7 @@
   </form>
   <div class="text-center" loading-spinner="loadingResults"></div>
 
-  <h3>Cart Items</h3>
+  <h3>Other Cart Items</h3>
   <table 
     class="table table-striped-rows table-border" 
     navigate-table="mobile"
@@ -353,7 +353,7 @@
         ng-class="{ odd : $odd, even: $even }">
 
         <td>
-          <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+          <a ui-sref="authorize.menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>

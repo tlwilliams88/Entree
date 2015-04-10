@@ -100,7 +100,9 @@ angular.module('bekApp')
         
         // persist new list
         PhonegapDbService.setItem(db_table_name_lists, newList.listid, newList);
-        Service.lists.push(newList);        
+        Service.lists.push(newList);  
+
+        Service.renameList = true;      
 
         //return a promise
         var deferred = $q.defer();

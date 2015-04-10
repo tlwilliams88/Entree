@@ -12,7 +12,7 @@ angular.module('bekApp')
       basketId = 'New';
     }
     if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {
-      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
+      $state.go('authorize.menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -56,6 +56,8 @@ angular.module('bekApp')
         if (duplicateItem) {
           duplicateItem.quantity = cartItem.quantity; // set list item quantity 
           cartItem.isHidden = true;
+        } else {
+          cartItem.isHidden = false;
         }
       });
     }
@@ -114,6 +116,7 @@ angular.module('bekApp')
     PAGING
     **********/
     $scope.filterItems = function(searchTerm) {  
+      $scope.addToOrderForm.$setPristine();
       listPagingModel.filterListItems(searchTerm);
       clearItemWatches(watches);
     };
@@ -147,7 +150,7 @@ angular.module('bekApp')
         cartId = cart.id;
       }
 
-      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
+      $state.go('authorize.menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
     };
 
     /**********

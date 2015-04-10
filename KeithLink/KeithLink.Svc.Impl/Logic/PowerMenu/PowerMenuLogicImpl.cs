@@ -17,13 +17,11 @@ namespace KeithLink.Svc.Impl.Logic.PowerMenu {
 
         #region attributes
             IPowerMenuRepository _pmRepository;
-            IUserProfileLogic _userProfile;
         #endregion
 
 
-        public PowerMenuLogicImpl( IPowerMenuRepository powermenuRepository, IUserProfileLogic userProfile ) {
+        public PowerMenuLogicImpl( IPowerMenuRepository powermenuRepository ) {
             _pmRepository = powermenuRepository;
-            _userProfile = userProfile;
         }
 
         /// <summary>
@@ -43,32 +41,32 @@ namespace KeithLink.Svc.Impl.Logic.PowerMenu {
         public bool SendAccountRequestToPowerMenu( string emailAddress ) {
             bool returnValue = false;
 
-            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
+            //PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
 
-            UserProfileReturn userInfo = _userProfile.GetUserProfile( emailAddress, false );
+            //UserProfileReturn userInfo = _userProfile.GetUserProfile( emailAddress, false );
 
-            List<Customer> customers = _userProfile.GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
+            //List<Customer> customers = _userProfile.GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
 
-            powerMenuRequest = (from customer in customers
-                                 where customer.IsPowerMenu == true
-                                 select new PowerMenuSystemRequestModel() {
-                                     User = new PowerMenuSystemRequestUserModel() {
-                                         Username = emailAddress,
-                                         Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
-                                         ContactName = customer.PointOfContact,
-                                         CustomerNumber = customer.CustomerNumber,
-                                         EmailAddress = customer.Email,
-                                         PhoneNumber = customer.Phone,
-                                         State = "TX" // does this need to be dynamic?
-                                     },
-                                     Login = new PowerMenuSystemRequestAdminModel() {
-                                         AdminUsername = Configuration.PowerMenuAdminUsername,
-                                         AdminPassword = Configuration.PowerMenuAdminPassword
-                                     },
-                                     Operation = PowerMenuSystemRequestModel.Operations.Add
-                                 }).First();
+            //powerMenuRequest = (from customer in customers
+            //                     where customer.IsPowerMenu == true
+            //                     select new PowerMenuSystemRequestModel() {
+            //                         User = new PowerMenuSystemRequestUserModel() {
+            //                             Username = emailAddress,
+            //                             Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
+            //                             ContactName = customer.PointOfContact,
+            //                             CustomerNumber = customer.CustomerNumber,
+            //                             EmailAddress = customer.Email,
+            //                             PhoneNumber = customer.Phone,
+            //                             State = "TX" // does this need to be dynamic?
+            //                         },
+            //                         Login = new PowerMenuSystemRequestAdminModel() {
+            //                             AdminUsername = Configuration.PowerMenuAdminUsername,
+            //                             AdminPassword = Configuration.PowerMenuAdminPassword
+            //                         },
+            //                         Operation = PowerMenuSystemRequestModel.Operations.Add
+            //                     }).First();
 
-            returnValue = SendAccountRequestToPowerMenu( powerMenuRequest );
+            //returnValue = SendAccountRequestToPowerMenu( powerMenuRequest );
 
             return returnValue;
         }

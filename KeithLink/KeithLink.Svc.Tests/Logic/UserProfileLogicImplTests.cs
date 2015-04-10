@@ -77,12 +77,12 @@ namespace KeithLink.Svc.Test.Logic {
 
         [TestMethod]
         public void SuccessfullyGrantAccessToKbitCustomer() {
-            _logic.GrantRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.RequestedApplication.KbitCustomer);
+            _logic.GrantRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer);
         }
 
         [TestMethod]
         public void SuccessfullyRemoveAccessToKbitCustomer() {
-            _logic.RevokeRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.RequestedApplication.KbitCustomer);
+            _logic.RevokeRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer);
         }
         #endregion
     }
