@@ -142,8 +142,8 @@
           <th class="sort-col-header" ng-click="sortList('name',sort.sortDescending)">
             <span>Name<span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
-          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand',sort.sortDescending)">
-            <span>Brand <span sort-icons field="'brand'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand_extended_description',sort.sortDescending)">
+            <span>Brand <span sort-icons field="'brand_extended_description'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
           </th>
           <th class="hidden-mobile-visible-print">
             Pack/Size
@@ -192,7 +192,7 @@
             {{::item.name}}
           </td>
           <td class="hidden-mobile-visible-print">
-            {{::item.brand}}
+            {{::item.brand_extended_description}}
           </td>
           <td class="hidden-mobile-visible-print">
             {{::item.packsize}}
