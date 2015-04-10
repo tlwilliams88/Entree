@@ -38,6 +38,7 @@
         <div ng-show="displayUserMenu" class="hidden-md hidden-lg">
           <button
             class="btn-no-style"
+            type="button"
             ng-click="isSidebarOpen = false"
             ui-sref="menu.userprofile">
             <li>Profile Settings</li>
@@ -63,6 +64,7 @@
         <div ng-click="isSidebarOpen = false">
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!isOrderEntryCustomer"
             ui-sref="menu.home"
             ui-sref-active="is-selected" >
@@ -73,6 +75,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canCreateOrders"
             ui-sref="menu.order"
             ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
@@ -83,6 +86,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canBrowseCatalog"
             ui-sref="menu.catalog.home"
             ng-class="{'is-selected': $state.includes('menu.catalog')}" >
@@ -91,8 +95,17 @@
               Product Catalog
             </li>
           </button>
+          <a
+            ng-if="::userProfile.ispowermenucustomer"
+            ng-href="{{userProfile.powermenupermissionslink}}" >
+            <li>
+              <span class="icon-food sidebar-nav__icon"></span>
+              eMenu Manage
+            </li>
+          </a>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canPayInvoices"
             ui-sref="menu.reports"
             ng-class="{'is-selected': $state.includes('menu.reports')}" >
@@ -103,6 +116,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canPayInvoices"
             ui-sref="menu.invoice"
             ui-sref-active="is-selected" >
@@ -113,6 +127,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canManageLists"
             ui-sref="menu.lists.items({listId: 0})"
             ng-class="{'is-selected': $state.includes('menu.lists')}" >
@@ -123,6 +138,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
             ng-click="goToAdminLandingPage()"
             ng-class="{'is-selected': $state.includes('menu.admin') }" >
@@ -133,6 +149,7 @@
           </button>
           <button
             class="btn-no-style hidden-md hidden-lg"
+            type="button"
             ng-disabled="!isOrderEntryCustomer"
             ui-sref="menu.notifications"
             ui-sref-active="is-selected" >
