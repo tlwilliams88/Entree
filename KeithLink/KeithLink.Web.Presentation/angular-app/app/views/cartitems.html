@@ -83,7 +83,7 @@
         <button title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
-        <a ui-sref="authorize.menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
+        <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
       </div>
     </div>
 
@@ -116,9 +116,9 @@
           </div>
 
           <div class="col-sm-8 col-md-8 hidden-print text-right-lg text-left-xs">
-            <a ng-if="::!isChangeOrder" ui-sref="authorize.menu.addtoorder.items({ cartId: currentCart.id })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id })" class="btn btn-default">Continue Shopping</a>
 
-            <a ng-if="::isChangeOrder" ui-sref="authorize.menu.addtoorder.items({ cartId: currentCart.ordernumber })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber })" class="btn btn-default">Continue Shopping</a>
           </div>
 
         </div>      
@@ -224,7 +224,7 @@
                   <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
                 </td>
                 <td>
-                  <a ui-sref="authorize.menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+                  <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
                 </td>
                 <td>
                   {{item.name}}
@@ -272,7 +272,7 @@
                   <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
                 </td>
                 <td>
-                  <a ui-sref="authorize.menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+                  <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
                 </td>
                 <td colspan="2">
                   {{item.name}}
@@ -365,7 +365,7 @@
           <tr ng-class="{ odd : $odd, even: $even }" 
               ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay))">
             <td>
-              <a ui-sref="authorize.menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+              <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
             </td>
             <td>
               {{item.name}}

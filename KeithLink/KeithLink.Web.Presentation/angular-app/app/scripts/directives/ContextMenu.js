@@ -57,7 +57,7 @@ angular.module('bekApp')
           ListService.addItemToFavorites(item)
         ]).then(function(data) {
           closeModal();
-          $state.go('authorize.menu.lists.items', { listId: data[0].listid, renameList: true });
+          $state.go('menu.lists.items', { listId: data[0].listid, renameList: true });
         });
       };
 
@@ -80,7 +80,7 @@ angular.module('bekApp')
         var items = [item];
         CartService.createCart(items).then(function(data) {
           closeModal();
-          $state.go('authorize.menu.cart.items', { cartId: data.id, renameCart: true });
+          $state.go('menu.cart.items', { cartId: data.id, renameCart: true });
           $scope.displayMessage('success', 'Successfully created new cart.');
         }, function() {
           $scope.displayMessage('error', 'Error creating new cart.');

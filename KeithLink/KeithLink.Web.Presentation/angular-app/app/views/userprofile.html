@@ -219,13 +219,13 @@
         <tbody>
           <tr ng-repeat="customer in customers" ng-class="{ odd : $odd, even: $even }">
             <td>
-              <a class="btn-link" ui-sref="authorize.menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})">
+              <a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})">
                 {{customer.customerNumber}}
               </a>
             </td>
             <td>{{customer.customerName}}</td>
             <td>
-              <a class="btn-link" ui-sref="authorize.menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})">
+              <a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})">
                 <span class="glyphicon glyphicon-pencil"></span>
                 Customer Details
               </a>

@@ -38,8 +38,9 @@
         <div ng-show="displayUserMenu" class="hidden-md hidden-lg">
           <button
             class="btn-no-style"
+            type="button"
             ng-click="isSidebarOpen = false"
-            ui-sref="authorize.menu.userprofile">
+            ui-sref="menu.userprofile">
             <li>Profile Settings</li>
           </button>
           <button
@@ -63,8 +64,9 @@
         <div ng-click="isSidebarOpen = false">
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!isOrderEntryCustomer"
-            ui-sref="authorize.menu.home"
+            ui-sref="menu.home"
             ui-sref-active="is-selected" >
             <li>
               <span class="icon-house sidebar-nav__icon"></span>
@@ -73,9 +75,10 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canCreateOrders"
-            ui-sref="authorize.menu.order"
-            ng-class="{'is-selected': $state.includes('authorize.menu.order') || $state.includes('authorize.menu.orderitems')}" >
+            ui-sref="menu.order"
+            ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
             <li>
               <span class="icon-clipboard sidebar-nav__icon"></span>
               Orders
@@ -83,19 +86,29 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canBrowseCatalog"
-            ui-sref="authorize.menu.catalog.home"
-            ng-class="{'is-selected': $state.includes('authorize.menu.catalog')}" >
+            ui-sref="menu.catalog.home"
+            ng-class="{'is-selected': $state.includes('menu.catalog')}" >
             <li>
               <span class="icon-book2 sidebar-nav__icon"></span>
               Product Catalog
             </li>
           </button>
+          <a
+            ng-if="::userProfile.ispowermenucustomer"
+            ng-href="{{userProfile.powermenupermissionslink}}" >
+            <li>
+              <span class="icon-food sidebar-nav__icon"></span>
+              eMenu Manage
+            </li>
+          </a>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canPayInvoices"
-            ui-sref="authorize.menu.reports"
-            ng-class="{'is-selected': $state.includes('authorize.menu.reports')}" >
+            ui-sref="menu.reports"
+            ng-class="{'is-selected': $state.includes('menu.reports')}" >
             <li>
               <span class="icon-pie sidebar-nav__icon"></span>
               Reports
@@ -103,8 +116,9 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canPayInvoices"
-            ui-sref="authorize.menu.invoice"
+            ui-sref="menu.invoice"
             ui-sref-active="is-selected" >
             <li>
               <span class="icon-dollar sidebar-nav__icon"></span>
@@ -113,9 +127,10 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canManageLists"
-            ui-sref="authorize.menu.lists.items({listId: 0})"
-            ng-class="{'is-selected': $state.includes('authorize.menu.lists')}" >
+            ui-sref="menu.lists.items({listId: 0})"
+            ng-class="{'is-selected': $state.includes('menu.lists')}" >
             <li>
               <span class="icon-text sidebar-nav__icon"></span>
               My Lists
@@ -123,9 +138,10 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
             ng-click="goToAdminLandingPage()"
-            ng-class="{'is-selected': $state.includes('authorize.menu.admin') }" >
+            ng-class="{'is-selected': $state.includes('menu.admin') }" >
             <li>
               <span class="icon-cog sidebar-nav__icon"></span>
               Admin
@@ -133,8 +149,9 @@
           </button>
           <button
             class="btn-no-style hidden-md hidden-lg"
+            type="button"
             ng-disabled="!isOrderEntryCustomer"
-            ui-sref="authorize.menu.notifications"
+            ui-sref="menu.notifications"
             ui-sref-active="is-selected" >
             <li>
               <div class="sidebar-nav__icon"><span class="icon-bell"></span></div>
@@ -181,14 +198,14 @@
     <div class="col-sm-12">
       <div class="row hidden-print user-bar-mobile visible-xs visible-sm">
         <ul class="left-mobile-menu">
-          <a ng-hide="$state.current.name === 'authorize.menu.home'" ng-click="navigateBack()"><li><span class="icon-back"></span></li></a>
+          <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()"><li><span class="icon-back"></span></li></a>
           <a ng-click="isSidebarOpen = !isSidebarOpen"><li><span class="icon-list2"></span></li></a>
         </ul>
         <ul class="right-mobile-menu">
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li><span class="icon-search"></span></li></a>
-          <a ui-sref="authorize.menu.cart.items"><li><span class="icon-truck"></span></li></a>
+          <a ui-sref="menu.cart.items"><li><span class="icon-truck"></span></li></a>
         </ul>
-        <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'authorize.menu.home'}" />
+        <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'menu.home'}" />
       </div>
        <ul class="list-unstyled">
         
@@ -203,7 +220,7 @@
 </ul>
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
-        <div class="col-md-4" ng-hide="$state.includes('authorize.menu.admin') || $state.includes('authorize.menu.transaction') || $state.includes('authorize.menu.notifications')">
+        <div class="col-md-4" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
           <!-- <div class="select-div"> -->
             <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
           <!-- </div> -->
@@ -217,7 +234,7 @@
             <div class="input-group input-group-lg">
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
-                <button ui-sref="authorize.menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>
@@ -225,7 +242,7 @@
         </div>
         <div class="col-md-4 hidden-sm hidden-xs text-right nowrap pull-right">
           <div>
-            <a ng-if="::isOrderEntryCustomer" ui-sref="authorize.menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent">
+            <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent">
               <span class="icon-bell"></span>
               <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
@@ -234,7 +251,7 @@
                 <span class="user-info__name">{{userProfile.displayname}}</span>
                 <span class="user-info__job-title text-capitalize">{{displayRole}}</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
-                  <button class="btn btn-lg btn-default" ui-sref="authorize.menu.userprofile">Profile Settings</button>
+                  <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                   <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>

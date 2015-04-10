@@ -14,7 +14,7 @@ angular.module('bekApp')
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
     if ($stateParams.cartId !== basketId.toString()) {
-      $state.go('authorize.menu.cart.items', {cartId: basketId}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.cart.items', {cartId: basketId}, {location:'replace', inherit:false, notify: false});
     }
  
     var watches = [];
@@ -100,7 +100,7 @@ angular.module('bekApp')
       if (!cartId) {
         cartId = selectNextCartId();
       }
-      $state.go('authorize.menu.cart.items', {cartId: cartId} );
+      $state.go('menu.cart.items', {cartId: cartId} );
     };
  
     $scope.cancelChanges = function() {
@@ -175,7 +175,7 @@ angular.module('bekApp')
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
-            $state.go('authorize.menu.orderitems', { invoiceNumber: data.ordernumber });
+            $state.go('menu.orderitems', { invoiceNumber: data.ordernumber });
             $scope.displayMessage('success', 'Successfully submitted order.');
           }, function(error) {
             $scope.displayMessage('error', 'Error submitting order.');
@@ -200,7 +200,7 @@ angular.module('bekApp')
  
     $scope.createNewCart = function() {
       CartService.createCart().then(function(newCart) {
-        $state.go('authorize.menu.cart.items', {cartId: newCart.id});
+        $state.go('menu.cart.items', {cartId: newCart.id});
         $scope.displayMessage('success', 'Successfully created new cart.');
       }, function() {
         $scope.displayMessage('error', 'Error creating new cart.');
@@ -272,7 +272,7 @@ angular.module('bekApp')
           .then(OrderService.resubmitOrder)
           .then(function(invoiceNumber) {
             $scope.displayMessage('success', 'Successfully submitted change order.');
-            $state.go('authorize.menu.orderitems', { invoiceNumber: invoiceNumber });
+            $state.go('menu.orderitems', { invoiceNumber: invoiceNumber });
           }, function(error) {
             $scope.displayMessage('error', 'Error re-submitting order.');
           }).finally(function() {

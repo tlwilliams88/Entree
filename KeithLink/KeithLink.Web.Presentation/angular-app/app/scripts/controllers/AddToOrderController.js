@@ -12,7 +12,7 @@ angular.module('bekApp')
       basketId = 'New';
     }
     if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {
-      $state.go('authorize.menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -150,7 +150,7 @@ angular.module('bekApp')
         cartId = cart.id;
       }
 
-      $state.go('authorize.menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
+      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
     };
 
     /**********

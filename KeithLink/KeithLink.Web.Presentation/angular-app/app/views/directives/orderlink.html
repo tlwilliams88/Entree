@@ -1,16 +1,16 @@
 <a 
   ng-if="order.ischangeorderallowed"
-  ui-sref="authorize.menu.cart.items({ cartId: order.ordernumber })">
+  ui-sref="menu.cart.items({ cartId: order.ordernumber })">
   {{order.invoicenumber}}
   <span class="icon-pencil"></span>
 </a>
 <a 
   ng-if="order.invoicenumber !== 'Processing' && order.invoicenumber !== 'Rejected' && !order.ischangeorderallowed" 
-  ui-sref="authorize.menu.orderitems({invoiceNumber: order.invoicenumber})">
+  ui-sref="menu.orderitems({invoiceNumber: order.invoicenumber})">
   {{order.invoicenumber}}
 </a>
 <a 
   ng-if="(order.invoicenumber === 'Processing' || order.invoicenumber === 'Rejected') && !order.ischangeorderallowed" 
-  ui-sref="authorize.menu.orderitems({invoiceNumber: order.ordernumber})">
+  ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">
   {{order.invoicenumber}}
 </a>
