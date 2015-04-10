@@ -4,34 +4,106 @@
   </div>
 
   <div header-buttons>
-    <button type="button">Save</button>
+    <button class="btn btn-primary btn-lg" ng-disabled="organizeListForm.$invalid" ng-click="saveList(list)" type="button">Save</button>
   </div>
 </div>
 
 <div class="page-content">
   
-  <table class="table table-border table-striped-rows" >
-    <thead>
-      <tr>
-        <th>Position</th>
-        <th>Name</th>
-      </tr>
-    </thead>
-    <tbody ui-sortable="{ 
-      stop: stopReorder, 
-      tolerance: 'pointer', 
-      containment: 'document' }" 
-      ng-model="list.items">
-      <tr id="item_{{item.position}}" class="transition-bg" ng-class="{ odd : $odd, even: $even}" ng-repeat="item in list.items">
-        <td>
-          <input type="text" integer ng-model-options="{debounce: 400}" ng-model="item.position" ng-change="reorderItem(list.items, item)">
-        </td>
-        <td>
-          {{item.name}}
-        </td>
-      </tr>
-    </tbody>
-    
-  </table>
+  <a ui-sref="menu.lists.items({listId: list.listid})"><span class="icon-arrow-left5"></span> Back to List</a>
+
+  <form
+    name="organizeListForm"
+    unsaved-warning-form 
+    novalidate 
+    class="style-validation-errors" 
+    autocomplete="off">
+    <table class="table table-border table-striped-rows" navigate-table >
+      <thead>
+        <tr>
+          <th>#</th>
+          <th 
+            class="sort-col-header" 
+            ng-click="sort('itemnumber', sortDescending)">
+            <span>Item <span sort-icons field="'itemnumber'" sortorder="sortDescending" sortby="sortField">#</span></span>
+          </th>
+          <th 
+            class="sort-col-header" 
+            ng-click="sort('name', sortDescending)">
+            <span>Name <span sort-icons field="'name'" sortorder="sortDescending" sortby="sortField"></span></span>
+          </th>
+          <th 
+            class="sort-col-header" 
+            ng-click="sort('brand_extended_description', sortDescending)">            
+            <span>Brand <span sort-icons field="'brand_extended_description'" sortorder="sortDescending" sortby="sortField"></span></span>
+          </th>
+          <th 
+            class="sort-col-header" 
+            ng-click="sort('packsize', sortDescending)">
+            <span>Pack/Size <span sort-icons field="'packsize'" sortorder="sortDescending" sortby="sortField"></span></span>
+          </th>
+          <th 
+            class="sort-col-header" 
+            ng-click="sort('notes', sortDescending)">
+            <span>Notes <span sort-icons field="'notes'" sortorder="sortDescending" sortby="sortField"></span></span>
+          </th>
+          <th></th>
+          <th></th>
+          <th 
+            class="sort-col-header" 
+            ng-click="sort('label', sortDescending)">
+            <span>Label <span sort-icons field="'label'" sortorder="sortDescending" sortby="sortField"></span></span>
+          </th>
+          <th 
+            class="sort-col-header" 
+            ng-click="sort('par', sortDescending)">
+            <span>PAR <span sort-icons field="'par'" sortorder="sortDescending" sortby="sortField"></span></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody ui-sortable="{ 
+        stop: stopReorder, 
+        tolerance: 'pointer', 
+        containment: 'document' }" 
+        ng-model="list.items">
+        <tr class="ui-draggable-handle" ng-class="{ odd : $odd, even: $even}" ng-repeat="item in list.items" style="">
+          <td class="input-col">
+            <ng-form>
+              <input 
+                type="text" 
+                integer 
+                class="text-right input-number bek-no-drag"
+                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 350, 'blur': 0} }" 
+                ng-model="item.position"
+                ng-change="reorderItem(list.items, item)">
+            </ng-form>
+          </td>
+          <td>{{::item.itemnumber}}</td>
+          <td>
+            {{::item.name}}
+          </td>
+          <td>
+            {{::item.brand_extended_description}}
+          </td>
+          <td>
+            {{::item.packsize}}
+          </td>
+          <td class="notes-col">
+            {{::item.notes}}
+          </td>
+          <td>
+            <span tooltip="{{::item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
+          <td class="hidden-mobile-visible-print" item-icons></td>
+          <td>
+            {{::item.label}}
+          </td>
+          <td>
+            {{::item.parlevel}}
+          </td>
+        </tr>
+      </tbody>
+      
+    </table>
+  </form>
 
 </div>

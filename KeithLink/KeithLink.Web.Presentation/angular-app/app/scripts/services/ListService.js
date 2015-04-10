@@ -184,8 +184,16 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getListWithItems: function(listId) {
-          return $http.get('/list/' + listId).then(function(response) {
+        getListWithItems: function(listId, params) {
+          if (!params) {
+            params = {
+              includePrice: true
+            };
+          }
+          var data = {
+            params: params
+          };
+          return $http.get('/list/' + listId, data).then(function(response) {
             var list = response.data;
             if (!list) {
               return $q.reject('No list found.');

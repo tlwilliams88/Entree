@@ -171,72 +171,8 @@ angular.module('bekApp')
         saveLists: true
       },
       resolve: {
-        list: ['ListService', function (ListService) {
-          return {
-            id: 'ab1234',
-            name: 'My List',
-            items: [{
-              name: 'Apples',
-              position: 1
-            }, {
-              name: 'Orange',
-              position: 2
-            }, {
-              name: 'Bananas',
-              position: 3
-            }, {
-              name: 'Grapes',
-              position: 4
-            }, {
-              name: 'Pineapple',
-              position: 5
-            },{
-              name: 'Apples',
-              position: 6
-            }, {
-              name: 'Orange',
-              position: 7
-            }, {
-              name: 'Bananas',
-              position: 8
-            }, {
-              name: 'Grapes',
-              position: 9
-            }, {
-              name: 'Pineapple',
-              position: 10
-            },{
-              name: 'Apples',
-              position: 11
-            }, {
-              name: 'Orange',
-              position: 12
-            }, {
-              name: 'Bananas',
-              position: 13
-            }, {
-              name: 'Grapes',
-              position: 14
-            }, {
-              name: 'Pineapple',
-              position: 15
-            },{
-              name: 'Apples',
-              position: 16
-            }, {
-              name: 'Orange',
-              position: 17
-            }, {
-              name: 'Bananas',
-              position: 18
-            }, {
-              name: 'Grapes',
-              position: 19
-            }, {
-              name: 'Pineapple',
-              position: 20
-            }]
-          };
+        list: ['$stateParams', 'ListService', function ($stateParams, ListService) {
+          return ListService.getListWithItems($stateParams.listId, {includePrice: false});
         }]
       }
     })
