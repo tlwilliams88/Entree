@@ -130,9 +130,10 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			serviceClient.UpdateList(userList);
 		}
 
-		public void CopyList(ListCopyShareModel copyListModel)
+		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
 		{
-			serviceClient.CopyList(copyListModel);
+			var result = serviceClient.CopyList(copyListModel);
+			return result == null ? new List<ListCopyResultModel>() : result.ToList();
 		}
 
 		public void ShareList(ListCopyShareModel shareListModel)
