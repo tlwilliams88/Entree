@@ -36,7 +36,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             throw new NotImplementedException();
         }
 
-        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+        public List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
             throw new NotImplementedException();
         }
 

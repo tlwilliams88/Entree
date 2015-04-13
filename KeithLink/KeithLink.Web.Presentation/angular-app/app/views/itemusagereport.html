@@ -52,7 +52,7 @@
       </div>
     </form>
 
-  	<div class="col-xs-12 col-md-12 col-lg-9">
+  	<div class="col-xs-12 col-md-12 col-lg-11">
   		<div class="row">
   			<h2 class="col-xs-6">Item Usage</h2>
         <span class="sub-content col-xs-6 text-right">{{itemusages.length}} results</span>
@@ -68,6 +68,18 @@
             <th class="sort-col-header" ng-click="sortTable('Name')" >
               <span>Name <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
+            <th class="sort-col-header" ng-click="sortTable('Brand')" >
+              <span>Brand <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortTable('ManufacturerName')" >
+              <span>Mfr Name <span sort-icons field="'ManufacturerName'" sortorder="sortReverse" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortTable('UPC')" >
+              <span>GTIN <span sort-icons field="'UPC'" sortorder="sortReverse" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortTable('VendorItemNumber')" >
+              <span>Vender Item <span sort-icons field="'VendorItemNumber'" sortorder="sortReverse" sortby="sortField"></span></span>
+            </th>
             <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
@@ -82,6 +94,12 @@
               #
   			       <span>Shipped <span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
+            <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('AveragePrice')">
+              Average Price
+            </th>
+            <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('TotalCost')">
+              Total Cost
+            </th>
             <th></th>
           </tr>
   			</thead>
@@ -94,6 +112,18 @@
             <td>
               {{item.name}}
             </td>
+            <td>
+              {{item.brand}}
+            </td>
+            <td>
+              {{item.manufacturer_name}}
+            </td>
+            <td>
+              {{item.upc}}
+            </td>
+            <td>
+              {{item.vendor_num}}
+            </td>
             <td class="hidden-mobile-visible-print">
               {{item.packsize}}
             </td>
@@ -105,6 +135,12 @@
             </td>
             <td class="text-center hidden-mobile-visible-print">
               {{item.totalquantityshipped}}
+            </td>
+             <td class="text-center hidden-mobile-visible-print">
+              {{item.averageprice | currency}}
+            </td>
+             <td class="text-center hidden-mobile-visible-print">
+              {{item.totalcost | currency}}
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>

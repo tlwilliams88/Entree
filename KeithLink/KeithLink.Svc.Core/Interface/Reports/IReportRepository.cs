@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Models.Reports;
+﻿using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,10 @@ namespace KeithLink.Svc.Core.Interface.Reports
             string branchId, string customerNumber, 
             DateTime fromDateTime, DateTime toDateTime,
             string sortDir, string sortField);
+
+		IEnumerable<OrderLine> GetOrderLinesForItemUsageReport(
+			string branchId, string customerNumber,
+			DateTime fromDateTime, DateTime toDateTime,
+			string sortDir, string sortField);
     }
 }

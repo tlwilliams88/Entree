@@ -73,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public List<Order> OrdersIndate(DateTime from, DateTime to)
 		{
 			return _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
-                _orderServiceRepository.GetOrderHeaderInDateRange(this.AuthenticatedUser.UserId, this.SelectedUserContext, from, to));
+                _orderServiceRepository.GetOrderHeaderInDateRange(this.SelectedUserContext, from, to));
 		}
         
 		[HttpPost]
