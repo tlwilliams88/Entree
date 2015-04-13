@@ -148,7 +148,6 @@ angular.module('bekApp')
   }
 
   $scope.filterInvoices = function(filterFields) {
-    console.log('filterInvoices: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+filterFields);
     InvoiceService.setFilters($scope.selectedFilterView , filterFields);
     getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
     invoicePagingModel.loadData();
@@ -160,19 +159,15 @@ angular.module('bekApp')
     $scope.showFilter = false;
   };
   $scope.selectFilterView = function (filterView) {
-    console.log('selectFilterView: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+$scope.filterRowFields);
     InvoiceService.setFilters(filterView, $scope.filterRowFields);
     $scope.selectedFilterView = filterView;
     getInvoicesFilterObject($scope.filterRowFields, filterView);
     invoicePagingModel.loadData();
   };
   $scope.infiniteScrollLoadMore = function() {
-    console.log('infiniteScrollLoadMore: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+$scope.filterRowFields);
     invoicePagingModel.loadMoreData($scope.invoices, $scope.totalInvoices, $scope.loadingResults);
   };
   $scope.sortInvoices = function(field, sortDescending) {
-        console.log('sortInvoices: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+$scope.filterRowFields);
-
     $scope.sort = {
       field: field,
       sortDescending: sortDescending
@@ -185,8 +180,6 @@ angular.module('bekApp')
   ************/
 
   function setTempContextForViewingAllCustomers() {
-            console.log('setTempContextForViewingAllCustomers: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+$scope.filterRowFields);
-
     //store current user context temporarily
     currentUserSelectedContext = $scope.selectedUserContext;
     //wipe user context and replace text with all customers
@@ -198,8 +191,6 @@ angular.module('bekApp')
 
   //toggles state between all customer invoices and single customer invoices
   $scope.setViewingAllCustomers = function (invoiceContext) {
-                console.log('setViewingAllCustomers: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+$scope.filterRowFields);
-
     $scope.viewingAllCustomers = invoiceContext.isViewingAllCustomers;
     $scope.selectedInvoiceContext = invoiceContext;
     
@@ -226,8 +217,6 @@ angular.module('bekApp')
   };
 
   function changeUserContext(stateName, stateParams, customerNumber, customerBranch) {
-                    console.log('changeUserContext: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+$scope.filterRowFields);
-
     //generate and set customer context to customerNumber that user selected
     CustomerService.getCustomerDetails(customerNumber, customerBranch).then(function (customer) {
       var generatedUserContext = {
@@ -253,8 +242,6 @@ angular.module('bekApp')
 
   //change the selected user context to the one the user clicked and refresh the page
   $scope.changeCustomerOnClick = function (customerNumber, branch) {
-                        console.log('changeCustomerOnClick: $scope.selectedFilterView = '+$scope.selectedFilterView+'filterFields= '+$scope.filterRowFields);
-
     changeUserContext('menu.invoice', $state.params, customerNumber, branch);
   };
 
