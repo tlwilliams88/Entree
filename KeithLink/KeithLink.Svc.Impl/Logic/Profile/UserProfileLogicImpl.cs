@@ -370,6 +370,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
         public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
 
             AssertGuestProfile(emailAddress, password);
@@ -417,6 +418,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId) {
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
             _extAd.CreateUser(customerName,
@@ -1323,6 +1325,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 4/2/2015 - change AD structure
         /// </remarks>
         public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             string generatedPassword = GenerateTemporaryPassword();
 
             AssertGuestProfile( emailAddress, generatedPassword );

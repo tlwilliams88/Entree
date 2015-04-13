@@ -167,23 +167,35 @@
           <div class="col-md-2 table-col">
             {{order.ordertotal | currency}}
           </div>
-          <!-- Order Status -->
+
           <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
               {{order.status}}
-          </div><!-- Display order status before ETA info is available -->
-          <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null || order.estimateddeliverytime != null 
-                    || order. actualdeliverytime != null" style="padding:24px 0">
-            <span ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null && order.deliveryoutofsequence != true" class="small-icon icon-truck">
-                <span style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</span>
+          </div>
+
+          <!-- Display order status before ETA info is available -->
+          <div
+            class="nowrap col-md-3 table-col highlight-col" 
+            ng-if="order.scheduleddeliverytime != null 
+              || order.estimateddeliverytime != null 
+              || order. actualdeliverytime != null"
+            style="padding:12px 0">
+            <span 
+              ng-if="order.estimateddeliverytime != null 
+                && order.actualdeliverytime == null 
+                && order.deliveryoutofsequence != true">
+                <span class="small-icon icon-truck"></span><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
             </span>
             <span ng-if="order.actualdeliverytime != null">
-              Delivered<span style="white-space: nowrap;"><br />{{order.actualdeliverytime | formatDateWithTimezone}}</span>
+              Delivered<br />{{order.actualdeliverytime | formatDateWithTimezone}}
             </span>
-            <span ng-if="(order.actualdeliverytime == null && order.estimateddeliverytime == null) || order.deliveryoutofsequence == true" class="small-icon icon-truck">
-              <span style="white-space: nowrap;"><br />Out For Delivery</span>
+            <span 
+              ng-if="
+                (order.actualdeliverytime == null && order.estimateddeliverytime == null) 
+                || order.deliveryoutofsequence == true" >
+              <span class="small-icon icon-truck"></span><br />Out For Delivery
             </span>
           </div> <!-- Display ETA info once it s available -->
-          <!-- Order Status -->
+
           <div class="col-md-2 table-col highlight-col">
             {{order.invoicestatus || 'N/A'}}
           </div>
@@ -209,7 +221,7 @@
           <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
         </div>
       </div>
-      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order visible-xs visible-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: 2">
+      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: 2">
         <div class="order-col">
           <div class="row">
             <div class="col-xs-6">
@@ -256,7 +268,7 @@
           <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
         </div>
       </div>
-      <div  ng-show="orders && orders.length > 0" class="order-summary__order visible-xs visible-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2 | filter:filterETAS" ng-class="order.highlightClass">        
+      <div  ng-show="orders && orders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2" ng-class="order.highlightClass">
                <div class="order-col">
           <div class="row">
             <div class="col-xs-6">
@@ -290,25 +302,36 @@
             <div class="item-title">
               Status
             </div>
-            <div class="item-value" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
+            <div class="item-value highlight-col" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
               {{order.status}}
-          </div>
-          <!-- Display order status before ETA info is available-->
-            <div ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null && order.deliveryoutofsequence != true" class=" item-value small-icon icon-truck">
-                <div style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
             </div>
-            <div class="item-value" ng-if="order.actualdeliverytime != null">
-              Delivered<div style="white-space: nowrap;"><br/>{{order.actualdeliverytime | formatDateWithTimezone}}</div>
+          
+            <!-- Display order status before ETA info is available-->
+            <div 
+              ng-if="order.estimateddeliverytime != null 
+              && order.actualdeliverytime == null 
+              && order.deliveryoutofsequence != true" 
+              class="item-value highlight-col">
+              <span class="small-icon icon-truck"></span><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
             </div>
-            <div ng-if="(order.actualdeliverytime == null && !order.estimateddeliverytime == null) || order.deliveryoutofsequence == true" class="item-value small-icon icon-truck">
-              <div style="white-space: nowrap;"><br />Out For Delivery</div>
+            <div 
+              class="item-value highlight-col" 
+              ng-if="order.actualdeliverytime != null">
+              Delivered<br/>{{order.actualdeliverytime | formatDateWithTimezone}}
             </div>
+            <div 
+              ng-if="(order.actualdeliverytime == null && !order.estimateddeliverytime == null) 
+              || order.deliveryoutofsequence == true" 
+              class="item-value highlight-col">
+              <span class="small-icon icon-truck"></span><br />Out For Delivery
+            </div>
+
           </div>
            <div class="details-item">
             <div class="item-title">
              Invoice Status
             </div>
-            <div class="item-value">
+            <div class="item-value highlight-col">
                {{order.invoicestatus || 'N/A'}}
             </div>
           </div>
