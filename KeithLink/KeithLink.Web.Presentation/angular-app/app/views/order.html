@@ -23,6 +23,7 @@
     </div>
   </div>
  
+  <div infinite-scroll="infiniteScrollLoadMore()">
   <table class="table table-border table-striped-rows">
     <thead>
       <tr>
@@ -84,9 +85,9 @@
     </div>
   </div>
  
-  <table class="table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()">
+  <table class="table table-border table-striped-rows table-orders">
     <thead>
-      <tr>
+      <tr fsm-sticky-header scroll-body="'.table-orders'" scroll-stop="0">
         <th class="sort-col-header" ng-click="sortOrders('invoicenumber', !sort.sortDescending)">
           Invoice
           <span># <span sort-icons field="'invoicenumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
@@ -207,5 +208,6 @@
       </tr>
     </tfoot>
   </table>
+  </div>
   <div class="text-center" loading-spinner="loadingResults"></div>
 </div>

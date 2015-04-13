@@ -170,10 +170,7 @@
               <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
 
               <button ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" class="btn-lg btn btn-default">Cancel Changes</button>
-            <div ng-class="{'mobile-btn' : isMobile}">
-              <button class="btn-lg btn btn-primary" ng-class="{'pull-left' : isMobile, 'pull-right' : !isMobile}" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)">Submit Order</button>
-              <p class="text-red"  ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
-            </div>
+              <button class="btn-lg btn btn-primary pull-right" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)">Submit Order</button>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
               <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
@@ -182,6 +179,9 @@
 
               <button class="btn-lg btn btn-primary pull-right" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Submit Changes</button>
             </div>
+          </div>
+          <div class="col-xs-12">
+            <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
           </div>
         </div>
 
@@ -294,13 +294,13 @@
 
   </div>
 
-  <div class="row sub-content">
-    <div class="col-md-12">
-      <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+  <div class="sub-content">
+    <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+    <div class="table-cart-items">
       <h4 class="visible-xs-inline-block">Cart Items</h4>
       <table class="table table-striped-rows table-border" navigate-table="mobile">
         <thead>
-          <tr>
+          <tr fsm-sticky-header scroll-body="'.table-cart-items'" scroll-stop="0">
             <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
               Item
               <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
@@ -488,7 +488,7 @@
         </tbody>
         <tfoot>
           <tr ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
-            <td colspan="12">No products found.</td>
+            <td colspan="13">No products found.</td>
           </tr>
         </tfoot>
       </table>

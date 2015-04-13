@@ -57,9 +57,9 @@
     </div>
   </div>
 
-  <table class="table table-border table-striped-rows">
+  <table class="table table-border table-striped-rows table-order-items">
     <thead>
-      <tr>
+      <tr fsm-sticky-header scroll-body="'.table-order-items'" scroll-stop="0">
         <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
           Item
           <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>

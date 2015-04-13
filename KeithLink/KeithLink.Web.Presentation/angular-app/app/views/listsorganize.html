@@ -23,7 +23,7 @@
     class="style-validation-errors" 
     autocomplete="off">
     <table 
-      class="table table-border table-striped-rows"
+      class="table table-border table-striped-rows table-organize-list"
       navigate-table="lists"
       ui-sortable="{ 
         stop: stopReorder, 
@@ -31,7 +31,7 @@
         containment: 'document' }" 
       ng-model="list.items">
       <thead>
-        <tr>
+        <tr fsm-sticky-header scroll-body="'.table-organize-list'" scroll-stop="0">
           <th>#</th>
           <th 
             class="sort-col-header" 

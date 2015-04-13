@@ -23,6 +23,7 @@ angular
     'angular-carousel',
     'ngDragDrop',             // jquery ui drag and drop (used on lists page)
     'infinite-scroll',
+    'fsm',
     'unsavedChanges',         // throws warning to user when navigating away from an unsaved form
     'toaster',                // user notification messages
     'angular-loading-bar',    // loading indicator in the upper left corner
