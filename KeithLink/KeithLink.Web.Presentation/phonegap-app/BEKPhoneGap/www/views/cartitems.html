@@ -12,7 +12,7 @@
             <tr ng-click="goToCart(cart.id, false)" ng-show="cart.id !== currentCart.id" ng-repeat="cart in carts | orderBy: 'name'">
               <td><span class="overflow">{{cart.name}}</span></td>
               <td>{{cart.itemcount}}</td>
-              <td class="nowrap">{{cart.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}</td>
+              <td class="nowrap">{{cart.requestedshipdate | formatDate}}</td>
             </tr>
             <tr ng-click="createNewCart()">
               <td colspan="3">Create a Cart...</td>
@@ -23,7 +23,7 @@
             <caption class="text-left">Change Orders</caption>
             <tr ng-if="order.ordernumber !== currentCart.ordernumber" ng-click="goToCart(order.ordernumber, true)" ng-repeat="order in changeOrders">
               <td><span class="overflow"># {{order.invoicenumber}}</span></td>
-              <td class="nowrap">{{order.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}</td>
+              <td class="nowrap">{{order.requestedshipdate | formatDate}}</td>
             </tr>
             <tr ng-if="changeOrders.length === 1 && currentCart.ordernumber === changeOrders[0].ordernumber">
               <td colspan="3">No other change orders.</td>
@@ -121,15 +121,14 @@
             <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber })" class="btn btn-default">Continue Shopping</a>
           </div>
 
-        </div>
-         <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
+        </div>      
 
         <div class="sub-content form-group no-margin">
           <label for="shipDate" class="col-sm-3 control-label">Ship Date:</label>
           <div class="col-sm-6">
             <div class="btn-group" dropdown is-open="showShipDates">
               <p class="form-control-static">
-                {{currentCart.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}
+                {{currentCart.requestedshipdate | formatDate}}
                 <button class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
                 <div class="dropdown-menu">
                   <table class="table no-margin">
@@ -140,7 +139,7 @@
                     </tr>
                     <tr ng-repeat="shipDate in shipDates" ng-click="selectShipDate(shipDate)">
                       <td>{{shipDate.dayofweek}}</td>
-                      <td class="nowrap">{{shipDate.shipdate| formatDate:'ddd, MMM D, YYYY'}}</td>
+                      <td class="nowrap">{{shipDate.shipdate| formatDate}}</td>
                       <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
                     </tr>
                   </table>
@@ -171,10 +170,8 @@
               <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
 
               <button ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" class="btn-lg btn btn-default">Cancel Changes</button>
-            
-              <button class="btn-lg btn btn-primary pull-right" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)" >Submit Order</button>
+              <button class="btn-lg btn btn-primary pull-right" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)">Submit Order</button>
             </div>
-
             <div class="button-row" ng-if="::isChangeOrder">
               <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
 
@@ -182,6 +179,9 @@
 
               <button class="btn-lg btn btn-primary pull-right" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Submit Changes</button>
             </div>
+          </div>
+          <div class="col-xs-12">
+            <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
           </div>
         </div>
 
@@ -294,13 +294,13 @@
 
   </div>
 
-  <div class="row sub-content">
-    <div class="col-md-12">
-      <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+  <div class="sub-content">
+    <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+    <div class="table-cart-items">
       <h4 class="visible-xs-inline-block">Cart Items</h4>
       <table class="table table-striped-rows table-border" navigate-table="mobile">
         <thead>
-          <tr>
+          <tr fsm-sticky-header scroll-body="'.table-cart-items'" scroll-stop="0">
             <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
               Item
               <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
@@ -311,6 +311,9 @@
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
               <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
+            </th>
+             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='class';sortOrder=!sortOrder">
+              <span>Class <span sort-icons field="'class'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="hidden-mobile-visible-print">
               Pack/Size
@@ -347,6 +350,10 @@
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
             </td>
+            <td class="hidden-xs hidden-sm input-col">
+              <input name="filterClass" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.class">
+            </td>
+
             <td class="hidden-xs hidden-sm"></td>
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
@@ -372,6 +379,9 @@
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.brand}}
+            </td>
+            <td class="hidden-mobile-visible-print ">
+              {{item.class}}
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.packsize}}
@@ -429,6 +439,10 @@
                   <td>Notes</td>
                   <td>{{::item.notes}}</td>
                 </tr>
+                 <tr>
+                  <td>Class</td>
+                  <td>{{::item.class}}</td>
+                </tr>
                 <tr>
                   <td>Pack/Size</td>
                   <td>{{::item.packsize}}</td>
@@ -474,7 +488,7 @@
         </tbody>
         <tfoot>
           <tr ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
-            <td colspan="12">No products found.</td>
+            <td colspan="13">No products found.</td>
           </tr>
         </tfoot>
       </table>

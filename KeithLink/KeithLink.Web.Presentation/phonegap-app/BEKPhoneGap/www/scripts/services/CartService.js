@@ -13,6 +13,8 @@ angular.module('bekApp')
  
     var Service = {
       
+      renameCart: false,
+
       cartHeaders: [],
       shipDates: [],
  
@@ -110,6 +112,7 @@ angular.module('bekApp')
         var newCart = Service.beforeCreateCart(items, shipDate);        
  
         return Cart.save({}, newCart).$promise.then(function(response) {
+          Service.renameCart = true;
           newCart.id = response.listitemid;
           newCart.items = [];
           Service.cartHeaders.push(newCart);
@@ -204,12 +207,13 @@ angular.module('bekApp')
         }).then(function() {
  
           // update cart headers cache
-          var tempCarts = angular.copy(Service.cartHeaders);
-          tempCarts.forEach(function(cart, index) {
-            if (cartGuidArray.indexOf(cart.id) > -1) {
-              Service.cartHeaders.splice(index, 1);
+          var cartsKept = [];
+          Service.cartHeaders.forEach(function(cart, index) {
+            if (cartGuidArray.indexOf(cart.id) === -1) {
+              cartsKept.push(cart);
             }
           });
+          angular.copy(cartsKept, Service.cartHeaders);
  
           return;
         });

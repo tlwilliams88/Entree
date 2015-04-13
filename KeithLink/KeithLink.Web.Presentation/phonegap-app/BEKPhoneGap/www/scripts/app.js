@@ -23,6 +23,7 @@ angular
     'angular-carousel',
     'ngDragDrop',             // jquery ui drag and drop (used on lists page)
     'infinite-scroll',
+    'fsm',
     'unsavedChanges',         // throws warning to user when navigating away from an unsaved form
     'toaster',                // user notification messages
     'angular-loading-bar',    // loading indicator in the upper left corner
@@ -55,8 +56,8 @@ angular
   $tooltipProvider.options({animation: false});
  
 }])
-.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'AuthenticationService', 'NotificationService', 'ListService', 'CartService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
-  function($rootScope, $state, $log, toaster, ENV, AccessService, AuthenticationService, NotificationService, ListService, CartService, $window, $location, PhonegapServices, PhonegapPushService) {
+.run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
+  function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService) {
  
   // helper method to display toaster popup message
   // takes 'success', 'error' types and message as a string
@@ -80,38 +81,58 @@ angular
   $stateChangeStart
   **********/
  
+  var bypass;
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-    $log.debug('route: ' + toState.name);
- 
-    // check if route is restricted
-    if (toState.data && toState.data.authorize) {
- 
-      // check if user's token is expired
-      if (!AccessService.isLoggedIn()) {
-        AuthenticationService.logout();
-        $state.go('register');
-        event.preventDefault();
-      }
- 
-      if (AccessService.isPasswordExpired()) {
-        $state.go('changepassword');
-        event.preventDefault();
-      }
- 
-      // check if user has access to the route based on role and permissions
-      if (!AccessService[toState.data.authorize]()) {
-        $state.go('register');
-        event.preventDefault();
+
+    function isStateRestricted(stateData) {
+      return stateData && stateData.authorize;
+    }
+    function processValidStateChange() {
+      bypass = true;
+      $state.go(toState, toParams);
+    }
+    function validateStateForLoggedInUser() {
+      // redirect to homepage, if restricted state and user not authorized OR going to register page
+      if ( ( isStateRestricted(toState.data) && !AccessService[toState.data.authorize]() ) || toState.name === 'register' ) {
+        $log.debug('redirecting to homepage');
+
+        // ask to allow push notifications
+        if (toState.name === 'register' && ENV.mobileApp) {
+          PhonegapPushService.register();
+        }
+
+        $rootScope.redirectUserToCorrectHomepage();
+      } else {
+        processValidStateChange();
       }
     }
- 
-    // redirect register page to homepage if logged in
-    if (toState.name === 'register' && AccessService.isLoggedIn()) {
-      if (ENV.mobileApp) {  // ask to allow push notifications
-        PhonegapPushService.register();
+
+    if (bypass) { 
+      $log.debug('route: ' + toState.name);
+      bypass = false;
+      return; 
+    }
+
+    event.preventDefault();
+
+    // Validate teh state the user is trying to access
+    
+    if (AccessService.isLoggedIn()) {
+      $log.debug('user logged in');
+      validateStateForLoggedInUser();
+
+    } else if (AccessService.isValidToken()) {
+      $log.debug('user has token, getting profile');
+      UserProfileService.getCurrentUserProfile()
+        .then(validateStateForLoggedInUser);
+
+    } else { // no token, no profile
+      if (isStateRestricted(toState.data)) {
+        $log.debug('user NOT logged in, redirecting to register page');
+        $state.go('register');
+      } else {
+        processValidStateChange();
       }
-      $rootScope.redirectUserToCorrectHomepage();
-      event.preventDefault();
     }
  
   });
@@ -121,6 +142,9 @@ angular
   **********/
  
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+
+    $log.debug('state change success');
+
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
@@ -151,6 +175,11 @@ angular
   
   $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error){
     $log.debug(error);
+
+    if (error.status === 401) {
+      $state.go('register');
+      event.preventDefault();
+    }
   });
  
 }]);

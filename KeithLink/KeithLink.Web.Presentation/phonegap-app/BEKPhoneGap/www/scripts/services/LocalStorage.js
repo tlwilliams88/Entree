@@ -45,24 +45,6 @@ angular.module('bekApp')
         localStorageService.set(Constants.localStorage.leadGenInfo, leadGenInfo);
       },
 
-
-      /*************
-      USER PROFILE
-      *************/
-      getProfile: function() {
-        return localStorageService.get(Constants.localStorage.userProfile);
-      },
-
-      setProfile: function(profile) {
-        localStorageService.set(Constants.localStorage.userProfile, profile);
-      },
-
-      getUserRole: function() {
-        if (Service.getProfile()) {
-          return Service.getProfile().rolename;
-        }
-      },
-
       /*************
       SELECTED USER CONTEXT
       *************/

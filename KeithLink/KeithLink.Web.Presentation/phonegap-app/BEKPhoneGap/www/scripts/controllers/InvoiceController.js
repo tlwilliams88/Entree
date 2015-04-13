@@ -17,7 +17,7 @@ angular.module('bekApp')
 
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
- $scope.currDate = new Date()
+ $scope.currDate = new Date();
   $scope.datepickerOptions = {
     minDate: new Date(),
     options: {
@@ -249,7 +249,7 @@ angular.module('bekApp')
         invoice.paymentAmount = invoice.amount.toString();
       }
     } else {
-      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
+      if (invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.pendingtransaction.amount; 
       } else {
         invoice.paymentAmount = '0';  

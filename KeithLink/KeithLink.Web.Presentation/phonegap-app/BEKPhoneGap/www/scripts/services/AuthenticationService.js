@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AuthenticationService', ['$http', '$q', 'UserProfileService', 'ENV', 'LocalStorage',
-    function ($http, $q, UserProfileService, ENV, LocalStorage) {
+  .factory('AuthenticationService', ['$http', '$q', 'ENV', 'LocalStorage',
+    function ($http, $q, ENV, LocalStorage) {
 
     var Service = {
 
@@ -37,8 +37,7 @@ angular.module('bekApp')
       },
 
       login: function(username, password) {
-        return Service.authenticateUser(username, password)
-          .then(UserProfileService.getCurrentUserProfile);
+        return Service.authenticateUser(username, password);
       },
 
       logout: function() {

@@ -23,7 +23,7 @@ angular.module('bekApp')
     } else {      
       $scope.cartGuids.splice(idx, 1);
     }
-  }
+  };
  
   $scope.toggleAllCarts = function(allCartsSelected) {
     if (allCartsSelected === true) {
