@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Extensions.Orders.History;
 
 namespace KeithLink.Svc.Impl.Repository.Reports
 {
@@ -70,5 +71,17 @@ namespace KeithLink.Svc.Impl.Repository.Reports
                     Each = g.Key.UnitOfMeasure.Equals("P", StringComparison.CurrentCultureIgnoreCase) ? "Y" : "N"
                 });
         }
-    }
+
+
+		public IEnumerable<Core.Models.Orders.OrderLine> GetOrderLinesForItemUsageReport(string branchId, string customerNumber, DateTime fromDateTime, DateTime toDateTime, string sortDir, string sortField)
+		{
+			var query = this.UnitOfWork.Context.OrderHistoryDetails
+				.Where(c => c.OrderHistoryHeader.CustomerNumber == customerNumber &&
+					c.OrderHistoryHeader.BranchId.Equals(branchId, StringComparison.CurrentCultureIgnoreCase)
+					&& c.OrderHistoryHeader.DeliveryDate >= fromDateTime
+					&& c.OrderHistoryHeader.DeliveryDate <= toDateTime).ToList();
+
+			return query.Select(o => o.ToOrderLine("o")).ToList();
+		}
+	}
 }

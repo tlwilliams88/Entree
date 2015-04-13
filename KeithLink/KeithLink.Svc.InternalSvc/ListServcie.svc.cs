@@ -120,10 +120,10 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			listLogic.UpdateList(userList);
 		}
-        
-		public void CopyList(ListCopyShareModel copyListModel)
+
+		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
 		{
-			listLogic.CopyList(copyListModel);
+			return listLogic.CopyList(copyListModel);
 		}		
 
 		public void ShareList(ListCopyShareModel shareListModel)

@@ -25,7 +25,6 @@
           <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="parlevel" type="xs:decimal" />
           <xs:element minOccurs="0" name="position" type="xs:int" />
-          <xs:element minOccurs="0" name="quantityincart" nillable="true" type="xs:decimal" />
           <xs:element minOccurs="0" name="storagetemp" nillable="true" type="xs:string">
             <xs:annotation>
               <xs:appinfo>
@@ -85,6 +84,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ListCopyShareModel" nillable="true" type="tns:ListCopyShareModel" />
+  <xs:complexType name="ArrayOfListCopyResultModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ListCopyResultModel" nillable="true" type="tns:ListCopyResultModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfListCopyResultModel" nillable="true" type="tns:ArrayOfListCopyResultModel" />
+  <xs:complexType name="ListCopyResultModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="customerid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="newlistid" type="xs:long" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ListCopyResultModel" nillable="true" type="tns:ListCopyResultModel" />
   <xs:complexType name="ArrayOfrecommendeditem">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="recommendeditem" nillable="true" type="tns:recommendeditem" />

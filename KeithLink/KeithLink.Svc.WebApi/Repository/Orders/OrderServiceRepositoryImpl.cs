@@ -39,8 +39,8 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetUserActiveCart(catalogInfo, userId);
         }
 
-        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            return serviceClient.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate).ToList();
+        public List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            return serviceClient.GetOrderHeaderInDateRange(customerInfo, startDate, endDate).ToList();
         }
 
         public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
