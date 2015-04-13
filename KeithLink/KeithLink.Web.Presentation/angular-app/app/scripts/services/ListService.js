@@ -621,13 +621,26 @@ angular.module('bekApp')
             customers: customers
           };
 
-          return List.copyList(copyListData).$promise.then(function() {
+          return List.copyList(copyListData).$promise.then(function(newLists) {
             toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
+            return newLists;
           }, function(error) {
             toaster.pop('error', null, 'Error copying list.');
             return $q.reject(error);
           });
         },
+
+        // copy list to current customer and redirect to that list
+        duplicateList: function(list, customers) {
+          return Service.copyList(list, customers).then(function(lists) {
+            var newList = lists[0];
+            Service.lists.push({
+              listid: newList.newlistid,
+              name: 'Copied - ' + list.name
+            });
+            return newList.newlistid;
+          })
+        }
       };
 
       return Service;
