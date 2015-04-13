@@ -56,6 +56,8 @@ angular.module('bekApp')
         if (duplicateItem) {
           duplicateItem.quantity = cartItem.quantity; // set list item quantity 
           cartItem.isHidden = true;
+        } else {
+          cartItem.isHidden = false;
         }
       });
     }

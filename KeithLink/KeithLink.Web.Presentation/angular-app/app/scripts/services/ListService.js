@@ -184,8 +184,16 @@ angular.module('bekApp')
 
         // accepts listId (guid)
         // returns list object
-        getListWithItems: function(listId) {
-          return $http.get('/list/' + listId).then(function(response) {
+        getListWithItems: function(listId, params) {
+          if (!params) {
+            params = {
+              includePrice: true
+            };
+          }
+          var data = {
+            params: params
+          };
+          return $http.get('/list/' + listId, data).then(function(response) {
             var list = response.data;
             if (!list) {
               return $q.reject('No list found.');
@@ -293,9 +301,13 @@ angular.module('bekApp')
             newList.name = 'Mandatory';
           } else if (params.isRecommended === true) {
             newList.name = 'Recommended';
-          } else {
+          } else if (params.name != null) {
+            newList.name = params.name;
+          }
+          else{
             newList.name = UtilityService.generateName('List', Service.lists);
           }
+          
           
           return newList;
         },

@@ -124,210 +124,220 @@
     name="addToOrderForm" 
     class="style-validation-errors" 
     autocomplete="off">
-
-    <table 
-      class="table table-striped-rows table-border" 
-      navigate-table="mobile"
-      infinite-scroll="infiniteScrollLoadMore()">
-
-      <thead>
-        <tr>
-          <th class="sort-col-header" ng-click="sortList('position',sort.sortDescending)">
-            <span># <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortList('itemnumber',sort.sortDescending)">
-           Item
-            <span># <span sort-icons field="'itemnumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortList('name',sort.sortDescending)">
-            <span>Name<span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
-          </th>
-          <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand',sort.sortDescending)">
-            <span>Brand <span sort-icons field="'brand'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
-          </th>
-          <th class="hidden-mobile-visible-print">
-            Pack/Size
-          </th>
-          <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortList('notes',sort.sortDescending)">
-            <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
-          </th>
-          <th class="hidden-xs hidden-sm"></th>
-          <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
-            <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
-          </th>
-          <th class="hidden-mobile-visible-print" ng-show="useParlevel">
-            PAR
-          </th>
-          <th class="hidden-mobile-visible-print" ng-show="useParlevel">
-            On Hand
-          </th>
-          <th>
-            Qty
-          </th>
-          <th class="hidden-mobile-visible-print">
-            Each
-          </th>
-          <th class="hidden-mobile-visible-print">
-            Price
-          </th>
-          <th class="hidden-mobile-visible-print">
-            Ext Price
-          </th>
-          <th class="large-icon icon-col">
-            <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
-          </th>
-        </tr>
-      </thead>
-      <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
-        <tr 
-          ng-repeat-start="item in  selectedList.items track by item.listitemid" 
-          ng-class="{ odd : $odd, even: $even }">
-          <td>
-            {{::item.position}}
-          </td>
-          <td>
-            <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
-          </td>
-          <td>
-            {{::item.name}}
-          </td>
-          <td class="hidden-mobile-visible-print">
-            {{::item.brand}}
-          </td>
-          <td class="hidden-mobile-visible-print">
-            {{::item.packsize}}
-          </td>
-          <td class="hidden-mobile-visible-print notes-col">
-            {{::item.notes}}
-          </td>
-          <td class="hidden-xs hidden-sm">
-            <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
-          </td>
-          <td class="hidden-mobile-visible-print">
-            {{::item.label}}
-          </td>
-          <td ng-show="useParlevel" class="hidden-mobile-visible-print">
-            {{::item.parlevel}}
-          </td>
-          <td ng-show="useParlevel" class="hidden-mobile-visible-print input-col">
-            <ng-form name="parlevelForm" ng-if="item.canOrder">
-              <input 
-                type="text" 
-                class="input-number text-right" 
-                allow-one-positive-decimal
-                ng-model="item.onhand" 
-                name="onhand" 
-                ng-change="onItemOnHandAmountChanged(item)">
-            </ng-form>
-          </td>
-          <td class="input-col nowrap"  >
-            <ng-form class="hidden-print" name="quantityForm">
-              <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"></div>
-            </ng-form>
-          </td>
-          <td class="input-col hidden-mobile-visible-print">
-            <ng-form name="eachForm" ng-if="item.hasPackagePrice">
-              <input type="checkbox" ng-model="item.each" id="each" name="each" />
-              <label for="each"></label>
-            </ng-form>
-          </td>
-          <td class="hidden-mobile-visible-print">
-            <div ng-show="item.canOrder">
-              {{item.each ? item.packageprice : item.caseprice | currency}}
-              <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>  
-            </div>
-          </td>
-          <td class="hidden-mobile-visible-print">
-            <div ng-show="item.canOrder">
-              {{item.extPrice | currency}}  
-            </div>
-          </td>
-          <td class="large-icon icon-col">
-            <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-          </td>
-        </tr>
-        <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
-          <td colspan="5">
-            <table>
-              <colgroup>
-                <col width="25%" />
-                <col width="75%" />
-              </colgroup>
-              <tr>
-                <td>Notes</td>
-                <td>{{::item.notes}}</td>
-              </tr>
-              <tr>
-                <td>Label</td>
-                <td>{{::item.label}}</td>
-              </tr>
-              <tr>
-                <td>Pack/Size</td>
-                <td>{{::item.packsize}}</td>
-              </tr>
-              <tr>
-                <td>Brand</td>
-                <td>{{::item.brand}}</td>
-              </tr>
-              <tr ng-hide="isChangeOrder || selectedCart.id === 'New'">
-                <td># in Cart</td>
-                <td>{{::item.quantityincart}}</td>
-              </tr>
-              <tr>
-                <td item-icons></td>
-              </tr>
-              <tr ng-show="useParlevel">
-                <td>PAR Level</td>
-                <td>{{::item.parlevel}}</td>
-              </tr>
-              <tr ng-show="useParlevel && item.canOrder">
-                <td>On Hand Amount</td>
-                <td class="input-col">
-                  <ng-form name="parlevelForm_mobile">
-                    <input 
-                      type="text" 
-                      class="input-number text-right" 
-                      allow-one-positive-decimal 
-                      ng-model="item.onhand_mobile" 
-                      ng-change="onItemOnHandAmountChanged(item)">
-                  </ng-form>
-                </td>
-              </tr>
-              <tr ng-if="item.hasPackagePrice">
-                <td>Each</td>
-                <td>
-                  <ng-form name="eachForm_mobile">
-                    <input type="checkbox" ng-model="item.each" id="each" name="each" />
-                  </ng-form>
-                </td>
-              </tr>
-              <tr ng-show="item.canOrder">
-                <td>Price</td>
-                <td>
-                  {{item.each ? item.packageprice : item.caseprice | currency}}
-                  <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
-                </td>
-              </tr>
-              <tr ng-show="item.canOrder">
-                <td>Ext Price</td>
-                <td>{{item.extPrice | currency}}</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </tbody>
-      <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
-        <tr>
-          <td colspan="16">
-            There are no products to display.
-          </td>
-        </tr>
-      </tfoot>
-    </table>
+    <div class="table-addtoorder">
+      <table 
+        class="table table-striped-rows table-border" 
+        navigate-table="mobile"
+        infinite-scroll="infiniteScrollLoadMore()">
+        <thead>
+          <tr fsm-sticky-header scroll-body="'.table-addtoorder'" scroll-stop="0">
+            <th class="sort-col-header" ng-click="sortList('position',sort.sortDescending)">
+              <span># <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortList('itemnumber',sort.sortDescending)">
+             Item
+              <span># <span sort-icons field="'itemnumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortList('name',sort.sortDescending)">
+              <span>Name<span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brand_extended_description',sort.sortDescending)">
+              <span>Brand <span sort-icons field="'brand_extended_description'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('itemclass',sort.sortDescending)">
+              <span>Class <span sort-icons field="'itemclass'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Pack/Size
+            </th>
+            <th class="hidden-mobile-visible-print sort-col-header notes-col" ng-click="sortList('notes',sort.sortDescending)">
+              <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            </th>
+            <th class="hidden-xs hidden-sm"></th>
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
+              <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+            </th>
+            <th class="hidden-mobile-visible-print" ng-show="useParlevel">
+              PAR
+            </th>
+            <th class="hidden-mobile-visible-print" ng-show="useParlevel">
+              On Hand
+            </th>
+            <th>
+              Qty
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Each
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Price
+            </th>
+            <th class="hidden-mobile-visible-print">
+              Ext Price
+            </th>
+            <th class="large-icon icon-col">
+              <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+            </th>
+          </tr>
+        </thead>
+        <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
+          <tr 
+            ng-repeat-start="item in  selectedList.items track by item.listitemid" 
+            ng-class="{ odd : $odd, even: $even }">
+            <td>
+              {{::item.position}}
+            </td>
+            <td>
+              <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+            </td>
+            <td>
+              {{::item.name}}
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.brand_extended_description}}
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.class}}
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.packsize}}
+            </td>
+            <td class="hidden-mobile-visible-print notes-col">
+              {{::item.notes}}
+            </td>
+            <td class="hidden-xs hidden-sm">
+              <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.label}}
+            </td>
+            <td ng-show="useParlevel" class="hidden-mobile-visible-print">
+              {{::item.parlevel}}
+            </td>
+            <td ng-show="useParlevel" class="hidden-mobile-visible-print input-col">
+              <ng-form name="parlevelForm" ng-if="item.canOrder">
+                <input 
+                  type="text" 
+                  class="input-number text-right" 
+                  allow-one-positive-decimal
+                  ng-model="item.onhand" 
+                  name="onhand" 
+                  ng-change="onItemOnHandAmountChanged(item)">
+              </ng-form>
+            </td>
+            <td class="input-col nowrap"  >
+              <ng-form class="hidden-print" name="quantityForm">
+                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"></div>
+              </ng-form>
+            </td>
+            <td class="input-col hidden-mobile-visible-print">
+              <ng-form name="eachForm" ng-if="item.hasPackagePrice">
+                <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                <label for="each"></label>
+              </ng-form>
+            </td>
+            <td class="hidden-mobile-visible-print">
+              <div ng-show="item.canOrder">
+                {{item.each ? item.packageprice : item.caseprice | currency}}
+                <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>  
+              </div>
+            </td>
+            <td class="hidden-mobile-visible-print">
+              <div ng-show="item.canOrder">
+                {{item.extPrice | currency}}  
+              </div>
+            </td>
+            <td class="large-icon icon-col">
+              <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+            </td>
+          </tr>
+          <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
+            <td colspan="5">
+              <table>
+                <colgroup>
+                  <col width="25%" />
+                  <col width="75%" />
+                </colgroup>
+                <tr>
+                  <td>Notes</td>
+                  <td>{{::item.notes}}</td>
+                </tr>
+                <tr>
+                  <td>Label</td>
+                  <td>{{::item.label}}</td>
+                </tr>
+                <tr>
+                  <td>Class</td>
+                  <td>{{::item.class}}</td>
+                </tr>
+                <tr>
+                  <td>Pack/Size</td>
+                  <td>{{::item.packsize}}</td>
+                </tr>
+                <tr>
+                  <td>Brand</td>
+                  <td>{{::item.brand}}</td>
+                </tr>
+                <tr ng-hide="isChangeOrder || selectedCart.id === 'New'">
+                  <td># in Cart</td>
+                  <td>{{::item.quantityincart}}</td>
+                </tr>
+                <tr>
+                  <td item-icons></td>
+                </tr>
+                <tr ng-show="useParlevel">
+                  <td>PAR Level</td>
+                  <td>{{::item.parlevel}}</td>
+                </tr>
+                <tr ng-show="useParlevel && item.canOrder">
+                  <td>On Hand Amount</td>
+                  <td class="input-col">
+                    <ng-form name="parlevelForm_mobile">
+                      <input 
+                        type="text" 
+                        class="input-number text-right" 
+                        allow-one-positive-decimal 
+                        ng-model="item.onhand_mobile" 
+                        ng-change="onItemOnHandAmountChanged(item)">
+                    </ng-form>
+                  </td>
+                </tr>
+                <tr ng-if="item.hasPackagePrice">
+                  <td>Each</td>
+                  <td>
+                    <ng-form name="eachForm_mobile">
+                      <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                    </ng-form>
+                  </td>
+                </tr>
+                <tr ng-show="item.canOrder">
+                  <td>Price</td>
+                  <td>
+                    {{item.each ? item.packageprice : item.caseprice | currency}}
+                    <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                  </td>
+                </tr>
+                <tr ng-show="item.canOrder">
+                  <td>Ext Price</td>
+                  <td>{{item.extPrice | currency}}</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
+          <tr>
+            <td colspan="16">
+              There are no products to display.
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
   </form>
   <div class="text-center" loading-spinner="loadingResults"></div>
 
-  <h3>Cart Items</h3>
+  <h3>Other Cart Items</h3>
   <table 
     class="table table-striped-rows table-border" 
     navigate-table="mobile"

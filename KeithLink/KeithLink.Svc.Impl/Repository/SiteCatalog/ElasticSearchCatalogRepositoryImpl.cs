@@ -357,7 +357,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.Name = oProd._source.name;
             p.CategoryName = oProd._source.categoryname;
             p.VendorItemNumber = oProd._source.vendor1;
-            p.ItemClass = oProd._source.itemclass;
+			p.ItemClass = oProd._source.parentcategoryname;
             p.CaseCube = oProd._source.icube;
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;

@@ -1271,9 +1271,34 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <param name="emailAddress"></param>
         private void SendPowerMenuRequests( string emailAddress ) {
             PowerMenuCustomerAccessRequest accessRequest = new PowerMenuCustomerAccessRequest();
+            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
 
             accessRequest.UserName = emailAddress;
             accessRequest.RequestType = AccessRequestType.PowerMenu;
+
+            UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
+
+            List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
+
+            powerMenuRequest = (from customer in customers
+                                 where customer.IsPowerMenu == true
+                                 select new PowerMenuSystemRequestModel() {
+                                     User = new PowerMenuSystemRequestUserModel() {
+                                         Username = emailAddress,
+                                         Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
+                                         ContactName = customer.PointOfContact,
+                                         CustomerNumber = customer.CustomerNumber,
+                                         EmailAddress = customer.Email,
+                                         PhoneNumber = customer.Phone,
+                                         State = "TX" // does this need to be dynamic?
+                                     },
+                                     Login = new PowerMenuSystemRequestAdminModel() {
+                                         AdminUsername = Configuration.PowerMenuAdminUsername,
+                                         AdminPassword = Configuration.PowerMenuAdminPassword
+                                     },
+                                     Operation = PowerMenuSystemRequestModel.Operations.Add
+                                 }).First();
+
 
             SubmitExternalApplicationRequest( accessRequest );
         }

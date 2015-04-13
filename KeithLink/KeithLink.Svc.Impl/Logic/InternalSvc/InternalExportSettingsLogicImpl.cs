@@ -126,7 +126,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Description", Label = "Description" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Label = "Brand" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Label = "Pack/Size" });
-			options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityInCart", Label = "# In Cart" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryId", Label = "Category" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryName", Label = "Category Desc" });

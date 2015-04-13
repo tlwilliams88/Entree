@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderItemsController', ['$scope', '$modal', 'order', 'OrderService',
-  function ($scope, $modal, order, OrderService) {
+.controller('OrderItemsController', ['$scope', '$modal', 'order', 'OrderService', 'ListService',
+  function ($scope, $modal, order, OrderService, ListService) {
 
   $scope.order = order;
 
@@ -25,6 +25,10 @@ angular.module('bekApp')
         }
       }
     });
+  };
+
+  $scope.saveAsList = function() {
+    ListService.createList($scope.order.items, { name: "List From -" + $scope.order.ordernumber })
   };
 
 }]);

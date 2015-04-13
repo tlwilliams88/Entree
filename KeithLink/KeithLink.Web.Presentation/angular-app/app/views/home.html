@@ -1,7 +1,11 @@
 <div page-header-bar>
-  <div header-message>
+  <div header-message class="hidden-xs">
     Welcome Back {{::userProfile.displayname}}!
   </div>
+    <div header-message class="visible-xs" style="font-size:20px; font-weight:bold;">
+    <order-dropdown style="float:right;"></order-dropdown>
+   {{::userProfile.displayname}} 
+</div>
   <div header-buttons>
     <order-dropdown></order-dropdown>
   </div>
@@ -43,7 +47,7 @@
           </div>
         </div>
       </div>
-      <div class="info-box account-summary__graph" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController">
+      <div class="info-box account-summary__graph hidden-xs" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController">
         <div style="margin-left: 15px;">
           <h4 class="no-margin-top"><strong>Order Summary Last 6 Months</strong></h4>
           <div loading-spinner="loadingOrderGraph"></div>
@@ -190,18 +194,69 @@
       <div class="text-center hidden-xs hidden-sm" ng-hide="loadingOrders || ordersMessage">
         <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
- 
-      <!-- Mobile Order Summary -->
-      <div class="row sub-content visible-xs visible-sm">
+
+      <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
+      <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
+        No Recent Orders
+      </div>
+        <div class="text-red" ng-show="ordersMessage">{{ordersMessage}}</div>
+        <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
-          <h3>Current Order Status</h3>
+          <h3>Pending Orders</h3>
         </div>
         <div class="col-xs-4">
           <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
         </div>
       </div>
-      <div class="order-summary__order no-margin hidden-md hidden-lg" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 1 | styleOrders" ng-class="order.highlightClass">
+      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order visible-xs visible-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: 2">
         <div class="order-col">
+          <div class="row">
+            <div class="col-xs-6">
+              <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
+              <div class="order-col__number" order-link></div>
+            </div>
+            <div class="col-xs-6 order-col__date">
+              <span class="icon-calendar"></span> {{cart.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}
+            </div>
+          </div>
+        </div>
+        <div class="order-details">
+          <div class="details-item">
+            <div class="item-title">
+              Ship Date
+            </div>
+            <div class="item-value">
+            {{(cart.requestedshipdate || 'N/A') | formatDate}}
+            </div>
+          </div>
+          <div class="details-item">
+            <div class="item-title">
+             Item Count
+            </div>
+            <div class="item-value">
+              {{cart.itemcount}}
+            </div>
+          </div>
+          <div class="details-item">
+            <div class="item-title">
+              Subtotal
+            </div>
+            <div class="item-value highlight-col">
+              {{cart.subtotal | currency}}
+            </div>
+          </div>
+        </div>           
+      </div>      
+         <div class="row sub-content visible-xs visible-sm">
+        <div class="col-xs-8">
+          <h3>Confirmed Orders</h3>
+        </div>
+        <div class="col-xs-4">
+          <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
+        </div>
+      </div>
+      <div  ng-show="orders && orders.length > 0" class="order-summary__order visible-xs visible-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2 | filter:filterETAS" ng-class="order.highlightClass">        
+               <div class="order-col">
           <div class="row">
             <div class="col-xs-6">
               <span>INVOICE #</span>
@@ -218,7 +273,8 @@
               Delivery Date
             </div>
             <div class="item-value">
-              {{order.deliveryDate || 'TBD'}}
+            <div ng-if="order.deliverydate != null">{{order.deliverydate | formatDate}}</div>
+            <div ng-if="order.deliverydate == null">TBD</div>
             </div>
           </div>
           <div class="details-item">
@@ -233,27 +289,33 @@
             <div class="item-title">
               Status
             </div>
-            <div class="item-value highlight-col">
+            <div class="item-value" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
               {{order.status}}
+          </div>
+          <!-- Display order status before ETA info is available-->
+            <div ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null && order.deliveryoutofsequence != true" class=" item-value small-icon icon-truck">
+                <div style="white-space: nowrap;"><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
+            </div>
+            <div class="item-value" ng-if="order.actualdeliverytime != null">
+              Delivered<div style="white-space: nowrap;"><br/>{{order.actualdeliverytime | formatDateWithTimezone}}</div>
+            </div>
+            <div ng-if="(order.actualdeliverytime == null && !order.estimateddeliverytime == null) || order.deliveryoutofsequence == true" class="item-value small-icon icon-truck">
+              <div style="white-space: nowrap;"><br />Out For Delivery</div>
             </div>
           </div>
-          <div class="details-item">
+           <div class="details-item">
             <div class="item-title">
-              Invoice Status
+             Invoice Status
             </div>
-            <div class="item-value highlight-col">
-              {{order.invoicestatus || 'N/A'}}
+            <div class="item-value">
+               {{order.invoicestatus || 'N/A'}}
             </div>
           </div>
-        </div>
-      </div> <!-- end Mobile Order Summary -->
- 
-      <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
-      <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
-        No Recent Orders
+        </div>           
       </div>
  
-      <div class="text-red" ng-show="ordersMessage">{{ordersMessage}}</div>
+ 
+    
       <!-- end Order Summary -->
     
     <!-- Featured Items -->

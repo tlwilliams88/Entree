@@ -174,6 +174,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.CatchWeight = prod.CatchWeight;
                     item.TempZone = prod.TempZone;
                     item.AverageWeight = prod.AverageWeight;
+					item.ItemClass = prod.ItemClass;
 				}
 				if (price != null)
 				{

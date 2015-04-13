@@ -9,13 +9,13 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile',
     function (
       $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService // bek custom services
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -31,7 +31,7 @@ angular.module('bekApp')
   $scope.messageText = 'Hello world!';
   $scope.displayGlobalMessage = true;
 
-  $scope.userProfile = LocalStorage.getProfile();
+  $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
@@ -42,7 +42,7 @@ angular.module('bekApp')
   var db_table_name_lists = 'lists',
     db_table_name_carts = 'carts';
 
-  if (ENV.mobileApp) {
+  if (ENV.mobileApp && AccessService.isOrderEntryCustomer()) {
     console.log('downloading data');  
     downloadDataForOfflineStorage();
   }
@@ -52,7 +52,7 @@ angular.module('bekApp')
       ListService.getAllListsForOffline(),
       CartService.getAllCartsForOffline()
     ]).then(function() {
-      $scope.displayMessage('success', 'Downloaded data for offline use.');
+      console.log('Downloaded data for offline use.');
     });
   }
 
