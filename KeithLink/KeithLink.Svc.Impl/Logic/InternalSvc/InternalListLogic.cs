@@ -674,10 +674,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
 		}
 
-		public void CopyList(ListCopyShareModel copyListModel)
+		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
 		{
 			var listToCopy = listRepository.ReadById(copyListModel.ListId);
 
+			var listToCreate = new List<List>();
 			foreach (var customer in copyListModel.Customers)
 			{
 				var newList = new List() { DisplayName = string.Format("Copied - {0}", listToCopy.DisplayName), UserId = listToCopy.UserId, CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch, Type = ListType.Custom, ReadOnly = false };
@@ -685,10 +686,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				foreach (var item in listToCopy.Items)
 					newList.Items.Add(new ListItem() { Category = item.Category, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.Par, Position = item.Position });
 				listRepository.Create(newList);
+				listToCreate.Add(newList);
 
 			}
 
 			unitOfWork.SaveChanges();
+
+			return listToCreate.Select(l => new ListCopyResultModel() { CustomerId = l.CustomerId, BranchId = l.BranchId, NewListId = l.Id }).ToList();
 		}
 		
 		public void ShareList(ListCopyShareModel shareListModel)

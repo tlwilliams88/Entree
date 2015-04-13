@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
         Order GetOrder(string branchId, string invoiceNumber);
 
-        List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+        List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
         
 		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
 		

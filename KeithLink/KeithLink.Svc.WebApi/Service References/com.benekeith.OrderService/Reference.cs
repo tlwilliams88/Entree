@@ -40,10 +40,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order> GetOrderAsync(string branchId, string invoiceNumber);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange", ReplyAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse")]
-        KeithLink.Svc.Core.Models.Orders.Order[] GetOrderHeaderInDateRange(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate);
+        KeithLink.Svc.Core.Models.Orders.Order[] GetOrderHeaderInDateRange(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange", ReplyAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetOrderHeaderInDateRangeAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetOrderHeaderInDateRangeAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/GetUserActiveCartResponse")]
         KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId);
@@ -141,12 +141,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
             return base.Channel.GetOrderAsync(branchId, invoiceNumber);
         }
         
-        public KeithLink.Svc.Core.Models.Orders.Order[] GetOrderHeaderInDateRange(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate) {
-            return base.Channel.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate);
+        public KeithLink.Svc.Core.Models.Orders.Order[] GetOrderHeaderInDateRange(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate) {
+            return base.Channel.GetOrderHeaderInDateRange(customerInfo, startDate, endDate);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetOrderHeaderInDateRangeAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate) {
-            return base.Channel.GetOrderHeaderInDateRangeAsync(userId, customerInfo, startDate, endDate);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetOrderHeaderInDateRangeAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate) {
+            return base.Channel.GetOrderHeaderInDateRangeAsync(customerInfo, startDate, endDate);
         }
         
         public KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId) {

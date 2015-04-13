@@ -67,8 +67,7 @@
   <xs:element name="GetOrderHeaderInDateRange">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q8:guid" />
-        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="customerInfo" nillable="true" type="q9:UserSelectedContext" />
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="customerInfo" nillable="true" type="q8:UserSelectedContext" />
         <xs:element minOccurs="0" name="startDate" type="xs:dateTime" />
         <xs:element minOccurs="0" name="endDate" type="xs:dateTime" />
       </xs:sequence>
@@ -77,31 +76,31 @@
   <xs:element name="GetOrderHeaderInDateRangeResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetOrderHeaderInDateRangeResult" nillable="true" type="q10:ArrayOfOrder" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetOrderHeaderInDateRangeResult" nillable="true" type="q9:ArrayOfOrder" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetUserActiveCart">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q11:UserSelectedContext" />
-        <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q12:guid" />
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q10:UserSelectedContext" />
+        <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q11:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetUserActiveCartResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetUserActiveCartResult" nillable="true" type="q13:UserActiveCartModel" />
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetUserActiveCartResult" nillable="true" type="q12:UserActiveCartModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="SaveUserActiveCart">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q14:UserSelectedContext" />
-        <xs:element xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q15:guid" />
-        <xs:element xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="cartId" type="q16:guid" />
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q13:UserSelectedContext" />
+        <xs:element xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q14:guid" />
+        <xs:element xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="cartId" type="q15:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -113,7 +112,7 @@
   <xs:element name="SaveOrderHistory">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" minOccurs="0" name="historyFile" nillable="true" type="q17:OrderHistoryFile" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" minOccurs="0" name="historyFile" nillable="true" type="q16:OrderHistoryFile" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -130,7 +129,7 @@
   <xs:element name="GetSubmittedUnconfirmedOrdersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetSubmittedUnconfirmedOrdersResult" nillable="true" type="q18:ArrayOfOrderHeader" />
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" minOccurs="0" name="GetSubmittedUnconfirmedOrdersResult" nillable="true" type="q17:ArrayOfOrderHeader" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -144,23 +143,23 @@
   <xs:element name="GetUserIdForControlNumberResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q19="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="GetUserIdForControlNumberResult" type="q19:guid" />
+        <xs:element xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="GetUserIdForControlNumberResult" type="q18:guid" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetPagedOrders">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q20="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q20:guid" />
-        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="customerInfo" nillable="true" type="q21:UserSelectedContext" />
-        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="paging" nillable="true" type="q22:PagingModel" />
+        <xs:element xmlns:q19="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q19:guid" />
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="customerInfo" nillable="true" type="q20:UserSelectedContext" />
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="paging" nillable="true" type="q21:PagingModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="GetPagedOrdersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="GetPagedOrdersResult" nillable="true" type="q23:PagedResultsOfOrderEqjqjVHj" />
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="GetPagedOrdersResult" nillable="true" type="q22:PagedResultsOfOrderEqjqjVHj" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
