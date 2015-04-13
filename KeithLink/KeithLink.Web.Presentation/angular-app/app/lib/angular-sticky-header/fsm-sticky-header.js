@@ -7,13 +7,17 @@ fsm.directive('fsmStickyHeader', function(){
         scope: { 
             scrollBody: '=',
             scrollStop: '=',
-            scrollableContainer: '='
+            scrollableContainer: '=',
+            scrollOffset: '='            
         },
         link: function(scope, element, attributes, control){
             var header = $(element, this);
             var clonedHeader = null;
             var content = $(scope.scrollBody);
             var scrollableContainer = $(scope.scrollableContainer);
+
+            var scrollOffset = scope.scrollOffset;
+            console.log(scrollOffset);
 
             if (scrollableContainer.length == 0){
                 scrollableContainer = $(window);
@@ -59,6 +63,8 @@ fsm.directive('fsmStickyHeader', function(){
                 var scrollTop = scrollableContainer.scrollTop() + scope.scrollStop;
                 var contentTop = content.position().top;
                 var contentBottom = contentTop + content.outerHeight(false);
+
+                contentTop += scrollOffset;
 
                 if ( (scrollTop > contentTop) && (scrollTop < contentBottom) ) {
                     if (!clonedHeader){
