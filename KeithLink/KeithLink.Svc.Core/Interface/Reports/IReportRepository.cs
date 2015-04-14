@@ -10,12 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Reports
 {
 	public interface IReportRepository
 	{
-        IEnumerable<ItemUsageReportItemModel> GetItemUsageForCustomer(
-            string branchId, string customerNumber, 
-            DateTime fromDateTime, DateTime toDateTime,
-            string sortDir, string sortField);
-
-		IEnumerable<OrderLine> GetOrderLinesForItemUsageReport(
+        IEnumerable<OrderLine> GetOrderLinesForItemUsageReport(
 			string branchId, string customerNumber,
 			DateTime fromDateTime, DateTime toDateTime,
 			string sortDir, string sortField);
