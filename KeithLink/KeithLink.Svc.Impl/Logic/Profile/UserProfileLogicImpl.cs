@@ -578,7 +578,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 IsKBITCustomer = isKbitCustomer,
                 IsPowerMenuCustomer = isPowerMenuCustomer,
                 PowerMenuPermissionsUrl = String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email)
-            };
+#if DEMO
+				,IsDemo = true
+#endif
+			};
+
         }
 
         private string GenerateTemporaryPassword() {
