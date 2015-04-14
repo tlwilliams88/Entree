@@ -230,6 +230,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/9/2014 - converted to use AccountManagement from original code
         /// jwames - 4/1/2015 - remove the customer container support
+        /// jwames - 4/14/2014 - change the userOU to use the container from the config file
         /// </remarks>
         public string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName) {
             //CustomerContainerReturn custExists = _containerRepo.SearchCustomerContainers(customerName);
@@ -242,7 +243,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             PrincipalContext principal = null;
             //string userOU = string.Format("ou=Users,ou={0},{1}", customerName, Configuration.ActiveDirectoryExternalRootNode);
-            string userOU = string.Format("ou=Users,{0}", Configuration.ActiveDirectoryExternalRootNode);
+            //string userOU = string.Format("ou=Users,{0}", Configuration.ActiveDirectoryExternalRootNode);
+            string userOU = string.Format("ou={0},{1}", Configuration.ActiveDirectoryExternalUserContainer, Configuration.ActiveDirectoryExternalRootNode);
 
             try {
                 principal = new PrincipalContext(ContextType.Domain,
