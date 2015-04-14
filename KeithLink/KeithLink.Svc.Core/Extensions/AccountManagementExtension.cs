@@ -32,9 +32,10 @@ namespace KeithLink.Svc.Core.Extensions {
             foreach (string splitPath in path) {
                 string[] kvp = splitPath.Split('=');
 
+                // always use the last OU because it will contain the branch id
                 if (string.Compare(kvp[0], "OU", true) == 0) {
                     retVal = kvp[1];
-                    break;
+                    //break;
                 }
             }
 
