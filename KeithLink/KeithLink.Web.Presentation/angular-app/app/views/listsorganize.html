@@ -73,7 +73,7 @@
           <th></th>
         </tr>
       </thead>
-      <tbody ng-repeat="item in list.items | filter:{listitemid: '!!'} ">
+      <tbody ng-repeat="item in list.items | filter:{listitemid: '!!'} " class="item_{{item.listitemid}}">
         <tr class="ui-draggable-handle" ng-class="{ odd : $odd, even: $even}">
           <td class="input-col">
             <ng-form>
@@ -81,9 +81,9 @@
                 type="text" 
                 integer 
                 class="text-right input-number bek-no-drag"
-                ng-model-options="{ updateOn: 'default blur', debounce: {'default': 750, 'blur': 0} }" 
                 ng-model="item.position"
-                ng-change="reorderItem(list.items, item)">
+                ng-model-options="{debounce: 500}"
+                ng-change="changePosition(list.items, item)">
             </ng-form>
           </td>
           <td>{{::item.itemnumber}}</td>
@@ -151,7 +151,7 @@
       </tbody>
       <tfoot ng-show="list.items.length === 0">
         <tr>
-          <td colspan="10">
+          <td colspan="11">
             There are no items to display.
           </td>
         </tr>
