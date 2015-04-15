@@ -160,7 +160,7 @@
             <div class="order-col__number" order-link></div>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
           </div>
-          <div class="col-md-2 table-col">
+          <div class="col-md-2 table-col nowrap">
             <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate}}</span>
             <span ng-if="order.deliverydate == null">TBD</span>
           </div>
