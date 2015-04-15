@@ -1034,7 +1034,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     RequestKbitAccess(emailAddress);
                     break;
                 case AccessRequestType.PowerMenu:
-                    SendPowerMenuRequests( emailAddress );
+                    SetupPowerMenuForAccount( emailAddress );
                     //TODO: Add logic to add powermenu customer accounts and flag profiles with access
                     break;
                 default:
@@ -1108,7 +1108,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                      Operation = PowerMenuSystemRequestModel.Operations.Delete
                                  }).First();
 
-            //SendPowerMenuRequests( powerMenuRequest, emailAddress );
+            SendPowerMenuRequests( powerMenuRequest, emailAddress );
         }
 
         public void RemoveUserFromAccount(Guid accountId, Guid userId) {
@@ -1229,65 +1229,26 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         private void SetupPowerMenuForAccount(string emailAddress) {
 
-            // Create the powermenu specific request that gets serialized to xml
-            //PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
-
-            //// get the users profile
-            //UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
-
-            //// get all customers for the user
-            //List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
-
-            //// create a request for every powermenu customer
-            //powerMenuRequest = (from customer in customers
-            //                     where customer.IsPowerMenu == true
-            //                     select new PowerMenuSystemRequestModel() {
-            //                         User = new PowerMenuSystemRequestUserModel() {
-            //                             Username = emailAddress,
-            //                             Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
-            //                             ContactName = customer.PointOfContact,
-            //                             CustomerNumber = customer.CustomerNumber,
-            //                             EmailAddress = customer.Email,
-            //                             PhoneNumber = customer.Phone,
-            //                             State = "TX" // does this need to be dynamic?
-            //                         },
-            //                         Login = new PowerMenuSystemRequestAdminModel() {
-            //                             AdminUsername = Configuration.PowerMenuAdminUsername,
-            //                             AdminPassword = Configuration.PowerMenuAdminPassword
-            //                         },
-            //                         Operation = PowerMenuSystemRequestModel.Operations.Add
-            //                     }).First();
-
-            // If there are customers to add, send the request to PowerMenu 
-            //SendPowerMenuRequests( powerMenuRequest, emailAddress );
-        }
-
-        /// <summary>
-        /// Prepare and send the powermenu requests to the queue
-        /// </summary>
-        /// <param name="requests"></param>
-        /// <param name="emailAddress"></param>
-        private void SendPowerMenuRequests( string emailAddress ) {
-            PowerMenuCustomerAccessRequest accessRequest = new PowerMenuCustomerAccessRequest();
+            //Create the powermenu specific request that gets serialized to xml
             PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
 
-            accessRequest.UserName = emailAddress;
-            accessRequest.RequestType = AccessRequestType.PowerMenu;
-
+            // get the users profile
             UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
 
+            // get all customers for the user
             List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
 
+            // create a request for every powermenu customer
             powerMenuRequest = (from customer in customers
                                  where customer.IsPowerMenu == true
                                  select new PowerMenuSystemRequestModel() {
                                      User = new PowerMenuSystemRequestUserModel() {
-                                         Username = emailAddress,
-                                         Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
-                                         ContactName = customer.PointOfContact,
+                                         Username = userInfo.UserProfiles[0].UserName,
+                                         Password = String.Concat(userInfo.UserProfiles[0].UserName, userInfo.UserProfiles[0].UserId.ToString().Substring(0,4)),
+                                         ContactName = userInfo.UserProfiles[0].FirstName,
                                          CustomerNumber = customer.CustomerNumber,
-                                         EmailAddress = customer.Email,
-                                         PhoneNumber = customer.Phone,
+                                         EmailAddress = emailAddress,
+                                         PhoneNumber = userInfo.UserProfiles[0].PhoneNumber,
                                          State = "TX" // does this need to be dynamic?
                                      },
                                      Login = new PowerMenuSystemRequestAdminModel() {
@@ -1297,6 +1258,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                      Operation = PowerMenuSystemRequestModel.Operations.Add
                                  }).First();
 
+            //If there are customers to add, send the request to PowerMenu 
+            SendPowerMenuRequests( powerMenuRequest, emailAddress );
+        }
+
+        /// <summary>
+        /// Prepare and send the powermenu requests to the queue
+        /// </summary>
+        /// <param name="requests"></param>
+        /// <param name="emailAddress"></param>
+        private void SendPowerMenuRequests( PowerMenuSystemRequestModel request,  string emailAddress ) {
+            PowerMenuCustomerAccessRequest accessRequest = new PowerMenuCustomerAccessRequest();
+            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
+
+            accessRequest.UserName = emailAddress;
+            accessRequest.RequestType = AccessRequestType.PowerMenu;
+            accessRequest.request = request;
 
             SubmitExternalApplicationRequest( accessRequest );
         }
