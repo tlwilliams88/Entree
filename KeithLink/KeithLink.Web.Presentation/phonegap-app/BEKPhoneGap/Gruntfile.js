@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         config: {
           template: '_config.xml',
           data: {
-            id: 'com.benekeith.entree',
+            id: '<%= grunt.option("appStoreId") %>',
             version: '<%= config.version %>',
             name: '<%= config.name %>',
             description: '<%= config.build.phonegap.description %>',
@@ -197,6 +197,18 @@ module.exports = function(grunt) {
           }
         }
       },
+      review: {
+        constants: {
+          ENV: {
+            name: '<%= config.environment.test.name %>',
+            apiKey: '<%= config.environment.test.apiKey %>',
+            apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
+            loggingEnabled: config.environment.test.loggingEnabled,
+            googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
+            mobileApp: true
+          }
+        }
+      },
       prod: {
         constants: {
           ENV: {
@@ -231,4 +243,21 @@ module.exports = function(grunt) {
     grunt.task.run('connect:server');
     return grunt.task.run('watch');
   });
+
+  // ios
+  // takes prod, review, or test targets
+  grunt.registerTask('build-ios', function(target) {
+    if (target === 'prod' || target === 'review') {
+      grunt.option('appStoreId', config.environment.prod.iosStoreId);
+    } else {
+      target = 'test';
+      grunt.option('appStoreId', config.environment.test.iosStoreId);
+    }
+
+    grunt.task.run([
+     'ngconstant:' + target,
+     'phonegap:build:ios'
+    ]);
+  });
+
 };
