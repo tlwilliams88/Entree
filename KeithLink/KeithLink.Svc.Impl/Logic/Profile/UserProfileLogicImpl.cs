@@ -577,7 +577,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 UserNameToken = tokenBase64,
                 IsKBITCustomer = isKbitCustomer,
                 IsPowerMenuCustomer = isPowerMenuCustomer,
-                PowerMenuPermissionsUrl = String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email)
+                PowerMenuPermissionsUrl = String.Format(Configuration.PowerMenuPermissionsUrl, adUser.SamAccountName),
+                // TODO: Add powermenu login url to profile
 #if DEMO
 				,IsDemo = true
 #endif
@@ -1047,7 +1048,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     break;
                 case AccessRequestType.PowerMenu:
                     SetupPowerMenuForAccount( emailAddress );
-                    //TODO: Add logic to add powermenu customer accounts and flag profiles with access
                     break;
                 default:
                     break;
