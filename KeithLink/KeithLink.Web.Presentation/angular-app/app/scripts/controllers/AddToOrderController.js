@@ -12,7 +12,7 @@ angular.module('bekApp')
       basketId = 'New';
     }
     if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {
-      $state.go('authorize.menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
+      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -56,6 +56,8 @@ angular.module('bekApp')
         if (duplicateItem) {
           duplicateItem.quantity = cartItem.quantity; // set list item quantity 
           cartItem.isHidden = true;
+        } else {
+          cartItem.isHidden = false;
         }
       });
     }
@@ -148,7 +150,7 @@ angular.module('bekApp')
         cartId = cart.id;
       }
 
-      $state.go('authorize.menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
+      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
     };
 
     /**********
@@ -241,10 +243,10 @@ angular.module('bekApp')
     }
 
     var processingSaveCart = false;
-    function createNewCart(items, shipDate) {
+    function createNewCart(items, shipDate, name) {
       if (!processingSaveCart) {
         processingSaveCart = true;
-        CartService.createCart(items, shipDate).then(function(cart) {
+        CartService.createCart(items, shipDate, name).then(function(cart) {
           $scope.addToOrderForm.$setPristine();
           $scope.redirect($scope.selectedList.listid, cart);
           $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
@@ -291,7 +293,7 @@ angular.module('bekApp')
           if (updatedCart && updatedCart.id && updatedCart.id !== 'New') {
             updateCart(updatedCart);
           } else {
-            createNewCart(cartItems, updatedCart.requestedshipdate);
+            createNewCart(cartItems, updatedCart.requestedshipdate, updatedCart.name);
           }
         }
       }

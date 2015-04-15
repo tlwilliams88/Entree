@@ -11,7 +11,7 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
         List<Order> GetOrders(System.Guid userId, UserSelectedContext customerInfo);
 
-		List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+		List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
 
         void SaveOrder(OrderHistoryFile historyFile);
 

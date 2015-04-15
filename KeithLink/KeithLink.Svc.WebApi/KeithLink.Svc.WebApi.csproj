@@ -229,6 +229,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Orders.OrderHeader.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.PagedListModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Lists.ListCopyResultModel.datasource" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />

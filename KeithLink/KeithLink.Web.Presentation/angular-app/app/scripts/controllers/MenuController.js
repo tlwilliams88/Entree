@@ -52,7 +52,7 @@ angular.module('bekApp')
       ListService.getAllListsForOffline(),
       CartService.getAllCartsForOffline()
     ]).then(function() {
-      $scope.displayMessage('success', 'Downloaded data for offline use.');
+      console.log('Downloaded data for offline use.');
     });
   }
 
@@ -77,7 +77,7 @@ angular.module('bekApp')
   };
 
   // list of state names where a user has the possibility of viewing info from multiple customers
-  var statesWithViewingAllCustomers = ['authorize.menu.invoice', 'authorize.menu.transaction'];
+  var statesWithViewingAllCustomers = ['menu.invoice', 'menu.transaction'];
   
   // listens for state change event to restore selectedUserContext
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
@@ -140,11 +140,11 @@ angular.module('bekApp')
   $scope.goToAdminLandingPage = function() {
     // internal bek admin user
     if ($scope.canViewCustomerGroups) {
-      $state.go('authorize.menu.admin.customergroup');
+      $state.go('menu.admin.customergroup');
       
     // external owner admin
     } else {
-      $state.go('authorize.menu.admin.customergroupdashboard', { customerGroupId: null });
+      $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
     }
   };
 
@@ -171,7 +171,7 @@ angular.module('bekApp')
   $scope.logout = function() {
     AuthenticationService.logout();
 
-    $state.transitionTo('authorize.register');
+    $state.transitionTo('register');
     $scope.displayUserMenu = false;
   };
 
@@ -212,9 +212,9 @@ angular.module('bekApp')
         ProductService.scanProduct(scannedText).then(function(item) {
           if (item) {
             ProductService.selectedProduct = item;
-            $state.go('authorize.menu.catalog.products.details', { itemNumber: item.itemnumber });
+            $state.go('menu.catalog.products.details', { itemNumber: item.itemnumber });
           } else {
-            $state.go('authorize.menu.catalog.products.list', { type: 'search', id: scannedText });
+            $state.go('menu.catalog.products.list', { type: 'search', id: scannedText });
           }
         }, function (error) {
           $scope.displayMessage('error', 'Error with scan product request.');
@@ -235,6 +235,7 @@ angular.module('bekApp')
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
     $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
+    $scope.isDemo = AccessService.isDemo();
 
     $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
     $scope.canSeePrices = AccessService.canSeePrices();

@@ -38,8 +38,7 @@ angular.module('bekApp')
         if (ENV.mobileApp) { // ask to allow push notifications
           PhonegapPushService.register();
         }
-        // $scope.redirectUserToCorrectHomepage();
-        $state.go('authorize.menu.home');
+        $scope.redirectUserToCorrectHomepage();
       }, function(errorMessage) {
         $scope.loginErrorMessage = errorMessage;
       });
@@ -58,6 +57,14 @@ angular.module('bekApp')
     $scope.signUpBool = !signUpBool;
   };
 
+  $scope.checkForInternalEmail = function(email) {    
+    if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === "@benekeith.com"){
+      $scope.isInternalEmail = true;
+    }else{
+      $scope.isInternalEmail = false;
+    }
+  };
+
   var processingRegistration = false;
   $scope.registerNewUser = function(userProfile) {
     if (!processingRegistration) {
@@ -71,7 +78,7 @@ angular.module('bekApp')
           .then(UserProfileService.getCurrentUserProfile)
           .then(function(profile) {
             // redirect to account details page
-            $state.go('authorize.menu.userprofile');
+            $state.go('menu.userprofile');
           }, function(error) {
             $scope.loginErrorMessage = error.data.error_description;
             $scope.clearForm();

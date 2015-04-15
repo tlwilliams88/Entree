@@ -23,6 +23,7 @@
     </div>
   </div>
  
+  <div infinite-scroll="infiniteScrollLoadMore()">
   <table class="table table-border table-striped-rows">
     <thead>
       <tr>
@@ -53,7 +54,7 @@
           <input type="checkbox" ng-checked="cartGuids.indexOf(cart.id) > -1" ng-click="toggleCart(cart.id)" />
         </td>
         <td>
-          <a ui-sref="authorize.menu.cart.items({ cartId: cart.id })">{{::cart.name}}</a>
+          <a ui-sref="menu.cart.items({ cartId: cart.id })">{{::cart.name}}</a>
         </td>
         <td>
           {{::(cart.requestedshipdate || 'N/A') | formatDate}}
@@ -84,9 +85,9 @@
     </div>
   </div>
  
-  <table class="table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()">
+  <table class="table table-border table-striped-rows table-orders">
     <thead>
-      <tr>
+      <tr fsm-sticky-header scroll-body="'.table-orders'" scroll-stop="0">
         <th class="sort-col-header" ng-click="sortOrders('invoicenumber', !sort.sortDescending)">
           Invoice
           <span># <span sort-icons field="'invoicenumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
@@ -115,6 +116,9 @@
           PO Number
           <span># <span sort-icons field="'ponumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
         </th>
+        <th class="col-header">
+          Order System
+        </th>
         <th class="large-icon icon-col">
           <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
         </th>
@@ -140,6 +144,7 @@
         <td class="input-col"> 
           <input type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
         </td>
+        <td class="hidden-mobile-visible-print"></td>
         <td class="input-col">
           <button type="button" class="btn btn-primary btn-sm" ng-click="filterOrders(filterFields)">Filter</button>
           <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
@@ -161,6 +166,7 @@
           {{order.invoicestatus || 'N/A'}}
         </td>
         <td>{{order.ponumber}}</td>
+        <td>{{order.ordersystem}}</td>
         <td class="large-icon icon-col">
           <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
         </td>
@@ -202,5 +208,6 @@
       </tr>
     </tfoot>
   </table>
+  </div>
   <div class="text-center" loading-spinner="loadingResults"></div>
 </div>

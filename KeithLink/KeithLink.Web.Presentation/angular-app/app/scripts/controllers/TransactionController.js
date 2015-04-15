@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('TransactionController', ['$scope', '$state', 'TransactionService', 'LocalStorage', 'CustomerService', 'PagingModel',
-    function ($scope, $state, TransactionService, LocalStorage, CustomerService, PagingModel) {
+  .controller('TransactionController', ['$scope', '$state', '$modal', 'TransactionService', 'LocalStorage', 'CustomerService', 'PagingModel',
+    function ($scope, $state, $modal, TransactionService, LocalStorage, CustomerService, PagingModel) {
 
   // set context to all customers
   var tempContext = {
@@ -64,11 +64,11 @@ angular.module('bekApp')
 
   //change the selected user context to the one the user clicked and refresh the page
   $scope.goToInvoicesForCustomer = function(customerNumber, branch) {
-    changeUserContext('authorize.menu.invoice', {}, customerNumber, branch);
+    changeUserContext('menu.invoice', {}, customerNumber, branch);
   };
 
   $scope.goToInvoiceDetails = function(customerNumber, branch, invoiceNumber){
-    changeUserContext('authorize.menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
+    changeUserContext('menu.invoiceitems', { invoiceNumber: invoiceNumber }, customerNumber, branch);
   };
 
   /**********
@@ -91,6 +91,31 @@ angular.module('bekApp')
       sortDescending: sortDescending
     };
     transactionPagingModel.sortData($scope.sort);
+  };
+
+  $scope.openExportModal = function () {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/exportmodal.html',
+      controller: 'ExportModalController',
+      resolve: {
+        headerText: function () {
+          return 'Transactions';
+        },
+        exportMethod: function () {
+          return TransactionService.exportTransactions;
+        },
+        exportConfig: function () {
+          return TransactionService.getTransactionExportConfig();
+        },
+        exportParams: function () {
+          return {
+            paging: {
+              // filter: getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView)
+            }
+          };
+        }
+      }
+    });
   };
 
 }]);

@@ -123,7 +123,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
         }
 		
-		public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate){
+		public List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate){
 			var customer = _customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId, customerInfo.BranchId);
 
 			var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);

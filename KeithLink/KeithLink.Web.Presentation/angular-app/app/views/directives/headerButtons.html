@@ -19,12 +19,13 @@
             <br>
             Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
             <br>
-            <a class="btn btn-default" ui-sref="authorize.menu.cart.items({ cartId: cart.id })">View Cart</a>
+            <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
+            <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })">Continue Shopping</a>
           </div>
         </li>
         <li class="cart-dropdown__view-all">
           <div>
-            <a ui-sref="authorize.menu.order" class="btn btn-primary">View All Carts</a>
+            <a ui-sref="menu.order" class="btn btn-primary">View All Carts</a>
           </div>
         </li>
       </ul>

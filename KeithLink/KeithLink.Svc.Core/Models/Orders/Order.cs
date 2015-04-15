@@ -72,6 +72,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[DataMember(Name = "ponumber")]
 		public string PONumber { get; set; }
 
+		[DataMember(Name = "ordersystem")]
+		public string OrderSystem { get; set; }
+
 		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();

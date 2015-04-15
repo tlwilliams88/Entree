@@ -4,21 +4,25 @@
   </div>
   <div header-buttons>
     <button class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></button>
-    <!-- <button class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></button> -->
+    <button class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></button>
   </div>
 </div>
 
-<div class="row page-content">
-  <div class="col-xs-12">
+<div class="page-content">
 
-    <a ui-sref="authorize.menu.invoice">Return to Invoices</a>
-    <div class="text-right">
-      Showing {{transactions.length}} of {{totalTransactions}} Transactions
+  <div class="row">
+    <div class="col-xs-12">
+      <a ui-sref="menu.invoice">Return to Invoices</a>
+      <div class="text-right">
+        Showing {{transactions.length}} of {{totalTransactions}} Transactions
+      </div>
     </div>
-
-    <table class="table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()">
+  </div>
+  
+  <div class="table-transactions">
+    <table class="table table-border table-striped-rows"  infinite-scroll="infiniteScrollLoadMore()">
       <thead>
-        <tr>
+        <tr fsm-sticky-header scroll-body="'.table-transactions'" scroll-stop="0">
           <th class="sort-col-header" ng-click="sortTransactions('customername', !sortOrder)">
             Customer
             <span>Name <span sort-icons field="'customername'" sortorder="sortOrder" sortby="transactionParams.sort[0].field"></span></span>
@@ -140,9 +144,7 @@
         </tr>
       </tfoot>
     </table>
-
-    <div class="text-center" loading-spinner="loadingResults"></div>
-
   </div>
+  <div class="text-center" loading-spinner="loadingResults"></div>
 </div>
 

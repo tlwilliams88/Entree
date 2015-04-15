@@ -94,6 +94,11 @@ angular.module('bekApp')
     customer.selected = false;
   };
 
+  $scope.customerSearchTerm = ""; 
+ $scope.clearFilter = function(){ 
+    $scope.customerSearchTerm = ""; 
+    $scope.searchCustomers($scope.customerSearchTerm); 
+  };
   /**********
   USERS
   **********/
@@ -146,7 +151,7 @@ angular.module('bekApp')
       processingCreateCustomerGroup = true;
       CustomerGroupService.createGroup(group).then(function(newGroup) {
         $scope.displayMessage('success', 'Successfully created a new customer group.');
-        $state.go('authorize.menu.admin.customergroupdetails', { groupId: newGroup.id });
+        $state.go('menu.admin.customergroupdetails', { groupId: newGroup.id });
       }, function(error) {
         $scope.displayMessage('error', 'Error creating new customer group.');
       }).finally(function() {

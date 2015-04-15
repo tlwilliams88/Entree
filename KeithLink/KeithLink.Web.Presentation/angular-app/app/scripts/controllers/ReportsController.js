@@ -13,7 +13,7 @@ angular.module('bekApp')
     
     // auto-redirect user to item usage report if they don't have access to kbit
     // if (!$scope.userProfile.iskbitcustomer) {
-    //   $state.go('authorize.menu.itemusagereport');
+    //   $state.go('menu.itemusagereport');
     // }
 
     // KBIT ACCESS

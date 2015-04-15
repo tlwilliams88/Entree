@@ -69,9 +69,9 @@
     </div>
   </div>
 
-  <table class="table table-border table-striped-rows">
+  <table class="table table-border table-striped-rows table-invoice-items">
     <thead>
-      <tr>
+      <tr fsm-sticky-header scroll-body="'.table-invoice-items'" scroll-stop="0">
         <th class="sort-col-header" ng-click="sortBy='linenumber';sortOrder=!sortOrder;">
           <span># <span sort-icons field="'linenumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
@@ -148,7 +148,7 @@
           {{item.linenumber}}
         </td>
         <td>
-          <a ui-sref="authorize.menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
+          <a ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>

@@ -70,7 +70,7 @@
       <div class="form-group" ng-if="canGrantAccessToOtherServices">
         <label for="powerMenuAccess" class="col-md-2 control-label">Power Menu Access</label>
         <div class="col-md-4">
-          <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenu" ng-change="changeUserAccess(profile.ispowermenu, 'powermenu')" />
+          <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" />
         </div>
       
       </div>
@@ -168,7 +168,7 @@
   <div class="form-group sub-content">
     <div class="col-md-6 button-row">
       <button type="button" ng-click="updateProfile()" class="btn btn-lg btn-primary">Save Updates</button>
-      <a ui-sref="authorize.menu.admin.customergroupdashboard({customerGroupId: groupId})">Cancel</a>
+      <a ui-sref="menu.admin.customergroupdashboard({customerGroupId: groupId})">Cancel</a>
     </div>
   </div>
 </form>

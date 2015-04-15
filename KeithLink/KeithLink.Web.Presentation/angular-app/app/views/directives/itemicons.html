@@ -1,12 +1,12 @@
 <!-- Replacement Item -->
-<a ui-sref="authorize.menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="::item.replacementitem > 0">
+<a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="::item.replacementitem > 0">
   <span tooltip="Item is replacing item # {{item.replacementitem}}" class="text-green icon-cycle"></span>
 </a>
-<a ui-sref="authorize.menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="::item.replaceditem > 0">
+<a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="::item.replaceditem > 0">
   <span tooltip="Item is being replaced by item # {{item.replaceditem}}" class="text-red icon-cycle"></span>
 </a>
 <!-- Substituted Item (orders only) -->
-<a ng-if="::item.substituteditemnumber" ui-sref="authorize.menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item subtituted for Item # {{item.substituteditemnumber}}"></span></a>
+<a ng-if="::item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item subtituted for Item # {{item.substituteditemnumber}}"></span></a>
 <!-- Deviated Cost -->
 <a ng-if="::item.deviatedcost === 'Y'">
   <span tooltip="Deviated Price" class="text-regular icon-dollar"></span>

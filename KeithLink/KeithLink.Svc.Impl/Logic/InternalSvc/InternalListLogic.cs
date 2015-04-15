@@ -357,69 +357,28 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 		}
 
-		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo, KeithLink.Svc.Core.Models.Generated.Basket activeCart)
+		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
 		{
 			if (list.Items == null || list.Items.Count == 0)
 				return;
 
-			var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
-
-
-			stopWatch.Start();
 			var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Notes, i => i.Items).FirstOrDefault();
-			stopWatch.Stop();
-			var readNotes = stopWatch.ElapsedMilliseconds;
-			stopWatch.Reset();
-			stopWatch.Start();
 			var favorites = listRepository.Read(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Favorite, i => i.Items).FirstOrDefault();
-			stopWatch.Stop();
-			var readFav = stopWatch.ElapsedMilliseconds;
 
 			var notesHash = new Dictionary<string, ListItem>();
 			var favHash = new Dictionary<string, ListItem>();
-			var cartHash = new Dictionary<string, decimal>();
 
-			stopWatch.Reset();
-			stopWatch.Start();
 			if (notes != null && notes.Items != null)
 				notesHash = notes.Items.ToDictionary(n => n.ItemNumber);
 			if (favorites != null && favorites.Items != null)
 				favHash = favorites.Items.ToDictionary(f => f.ItemNumber);
-			stopWatch.Stop();
-			var createHashes = stopWatch.ElapsedMilliseconds;
 
-			stopWatch.Reset();
-			stopWatch.Start();
-			if (activeCart != null && activeCart.LineItems != null)
-			{
-				foreach (var item in activeCart.LineItems)
-					if (cartHash.ContainsKey(item.ProductId))
-						cartHash[item.ProductId] += item.Quantity.HasValue ? item.Quantity.Value : 0;
-					else
-						cartHash.Add(item.ProductId, item.Quantity.HasValue ? item.Quantity.Value : 0);
-			}
-			stopWatch.Stop();
-			var cartHashTime = stopWatch.ElapsedMilliseconds;
-
-			stopWatch.Reset();
-			stopWatch.Start();
+			
 			Parallel.ForEach(list.Items, listItem =>
 			{
 				listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);// favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
 				listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;// notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
-				listItem.QuantityInCart = cartHash.ContainsKey(listItem.ItemNumber) ? cartHash[listItem.ItemNumber] : 0;
-				//if (activeCart != null && activeCart.LineItems != null) //Is there an active cart? If so get item counts
-				//{
-				//	listItem.QuantityInCart = activeCart.LineItems.Where(b => b.ProductId.Equals(listItem.ItemNumber)).Sum(l => l.Quantity);
-				//}
-
-				
 			});
-			stopWatch.Stop();
-			var mapTime = stopWatch.ElapsedMilliseconds;
-
-			eventLogRepository.WriteInformationLog(string.Format("Lookup Fav/Notes for List {0}. Read Notes: {1}ms, Read Fav: {2}ms, Hash Notes/Fav: {3}ms, Hash Cart Items: {4}ms, Map Value: {5}ms", list.ListId, readNotes, readFav, createHashes, cartHashTime, mapTime ));
-
 
 		}
 		
@@ -453,16 +412,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
 		{
-			KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
-			if(user != null)
-				activeCart = GetUserActiveCart(catalogInfo, user);
-
 			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
 			if (cachedList != null)
 			{
 				var clonedList = cachedList.Clone();
 
-				MarkFavoritesAndAddNotes(user, clonedList, catalogInfo, activeCart);
+				MarkFavoritesAndAddNotes(user, clonedList, catalogInfo);
 				
 				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
@@ -488,7 +443,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var listClone = returnList.Clone();
 
-			MarkFavoritesAndAddNotes(user, listClone, catalogInfo, activeCart);
+			MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
 			
 			if(includePrice)
 				LookupPrices(user, listClone.Items, catalogInfo);
@@ -596,9 +551,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)}).ToList();
             else {
                 var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
-				KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
-
-                var processedList = new List<ListModel>();
+				
+				var processedList = new List<ListModel>();
                 //Lookup product details for each item
                 returnList.ForEach(delegate(ListModel listItem) {
 					var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId));
@@ -614,7 +568,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 });
                 //Mark favorites and add notes
                 processedList.ForEach(delegate(ListModel listItem) {
-                    MarkFavoritesAndAddNotes(user, listItem, catalogInfo, activeCart);
+                    MarkFavoritesAndAddNotes(user, listItem, catalogInfo);
                 });
 
                 return processedList;
@@ -720,10 +674,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
 		}
 
-		public void CopyList(ListCopyShareModel copyListModel)
+		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
 		{
 			var listToCopy = listRepository.ReadById(copyListModel.ListId);
 
+			var listToCreate = new List<List>();
 			foreach (var customer in copyListModel.Customers)
 			{
 				var newList = new List() { DisplayName = string.Format("Copied - {0}", listToCopy.DisplayName), UserId = listToCopy.UserId, CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch, Type = ListType.Custom, ReadOnly = false };
@@ -731,10 +686,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				foreach (var item in listToCopy.Items)
 					newList.Items.Add(new ListItem() { Category = item.Category, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.Par, Position = item.Position });
 				listRepository.Create(newList);
+				listToCreate.Add(newList);
 
 			}
 
 			unitOfWork.SaveChanges();
+
+			return listToCreate.Select(l => new ListCopyResultModel() { CustomerId = l.CustomerId, BranchId = l.BranchId, NewListId = l.Id }).ToList();
 		}
 		
 		public void ShareList(ListCopyShareModel shareListModel)
@@ -843,14 +801,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
 		{
-			KeithLink.Svc.Core.Models.Generated.Basket activeCart = GetUserActiveCart(catalogInfo, user);
-
 			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
 			if (cachedList != null)
 			{
 				var cachedReturnList = cachedList.ShallowCopy();
 
-				MarkFavoritesAndAddNotes(user, cachedReturnList, catalogInfo, activeCart);
+				MarkFavoritesAndAddNotes(user, cachedReturnList, catalogInfo);
 
 				var sharedlist = listRepository.Read(l => l.Id.Equals(Id)).FirstOrDefault();
 
@@ -875,7 +831,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var returnList = tempList.ShallowCopy();
 
-			MarkFavoritesAndAddNotes(user, returnList, catalogInfo, activeCart);
+			MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
 			
 			var pagedList = ToPagedList(paging, returnList);
 			

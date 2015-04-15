@@ -83,7 +83,7 @@
         <button title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
-        <a ui-sref="authorize.menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
+        <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
       </div>
     </div>
 
@@ -116,9 +116,9 @@
           </div>
 
           <div class="col-sm-8 col-md-8 hidden-print text-right-lg text-left-xs">
-            <a ng-if="::!isChangeOrder" ui-sref="authorize.menu.addtoorder.items({ cartId: currentCart.id })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::!isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.id })" class="btn btn-default">Continue Shopping</a>
 
-            <a ng-if="::isChangeOrder" ui-sref="authorize.menu.addtoorder.items({ cartId: currentCart.ordernumber })" class="btn btn-default">Continue Shopping</a>
+            <a ng-if="::isChangeOrder" ui-sref="menu.addtoorder.items({ cartId: currentCart.ordernumber })" class="btn btn-default">Continue Shopping</a>
           </div>
 
         </div>      
@@ -170,10 +170,7 @@
               <button class="btn-lg btn btn-primary" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
 
               <button ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" class="btn-lg btn btn-default">Cancel Changes</button>
-            <div ng-class="{'mobile-btn' : isMobile}">
-              <button class="btn-lg btn btn-primary" ng-class="{'pull-left' : isMobile, 'pull-right' : !isMobile}" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)">Submit Order</button>
-              <p class="text-red"  ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
-            </div>
+              <button class="btn-lg btn btn-primary pull-right" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)">Submit Order</button>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
               <button class="btn-lg btn btn-primary" ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
@@ -182,6 +179,9 @@
 
               <button class="btn-lg btn btn-primary pull-right" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Submit Changes</button>
             </div>
+          </div>
+          <div class="col-xs-12">
+            <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
           </div>
         </div>
 
@@ -224,7 +224,7 @@
                   <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
                 </td>
                 <td>
-                  <a ui-sref="authorize.menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+                  <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
                 </td>
                 <td>
                   {{item.name}}
@@ -272,7 +272,7 @@
                   <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
                 </td>
                 <td>
-                  <a ui-sref="authorize.menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+                  <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
                 </td>
                 <td colspan="2">
                   {{item.name}}
@@ -294,13 +294,13 @@
 
   </div>
 
-  <div class="row sub-content">
-    <div class="col-md-12">
-      <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+  <div class="sub-content">
+    <span class="pull-right">Showing {{filteredItems.length}} of {{currentCart.items.length}} Items</span>
+    <div class="table-cart-items">
       <h4 class="visible-xs-inline-block">Cart Items</h4>
       <table class="table table-striped-rows table-border" navigate-table="mobile">
         <thead>
-          <tr>
+          <tr fsm-sticky-header scroll-body="'.table-cart-items'" scroll-stop="0">
             <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
               Item
               <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
@@ -311,6 +311,9 @@
             </th>
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
               <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
+            </th>
+             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='class';sortOrder=!sortOrder">
+              <span>Class <span sort-icons field="'class'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
             <th class="hidden-mobile-visible-print">
               Pack/Size
@@ -347,6 +350,10 @@
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
             </td>
+            <td class="hidden-xs hidden-sm input-col">
+              <input name="filterClass" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.class">
+            </td>
+
             <td class="hidden-xs hidden-sm"></td>
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
@@ -365,13 +372,16 @@
           <tr ng-class="{ odd : $odd, even: $even }" 
               ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay))">
             <td>
-              <a ui-sref="authorize.menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+              <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
             </td>
             <td>
               {{item.name}}
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.brand}}
+            </td>
+            <td class="hidden-mobile-visible-print ">
+              {{item.class}}
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.packsize}}
@@ -429,6 +439,10 @@
                   <td>Notes</td>
                   <td>{{::item.notes}}</td>
                 </tr>
+                 <tr>
+                  <td>Class</td>
+                  <td>{{::item.class}}</td>
+                </tr>
                 <tr>
                   <td>Pack/Size</td>
                   <td>{{::item.packsize}}</td>
@@ -474,7 +488,7 @@
         </tbody>
         <tfoot>
           <tr ng-show="(currentCart.items.length === 0 || !currentCart.items || filteredItems.length === 0) && currentCart">
-            <td colspan="12">No products found.</td>
+            <td colspan="13">No products found.</td>
           </tr>
         </tfoot>
       </table>
