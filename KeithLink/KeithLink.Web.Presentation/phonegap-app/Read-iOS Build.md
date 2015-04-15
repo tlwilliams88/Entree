@@ -14,7 +14,10 @@ There are 2 apps setup in [iTunes Connect](itunesconnect.apple.com).
 
 These are the steps to regularly build and deploy the iOS app after your environment is setup.
 
-1. Download the latest code from git and switch to the ```develop``` branch if building for Test or the ```master``` branch for Prod
+1. Download the latest code from git and switch to the correct branch
+  - ```develop``` - building latest code for test
+  - ```RC``` - building QA code for review
+  - ```master``` - building prod code for prod
 2. Run ```grunt update```
   - This pulls all the code from the angular-app directory into the phonegap-app directory except for the ```scripts/services/phonegapServices/``` directory.
 3. Follow the instructions in the ```Read-AfterGruntUpdate.txt``` file to update the ```www/index.html``` file correctly
@@ -22,14 +25,22 @@ These are the steps to regularly build and deploy the iOS app after your environ
 ## 2.1 Build
 
 **Testing and QA app**
+
 1. Run ```grunt build-ios:test```
 2. Run ```grunt phonegap:run:ios```
 3. Make sure the app is working correctly through the emulator
 
 **Prod App**
+
 1. Run ```grunt build-ios:review```
 2. Run ```grunt phonegap:run:ios```
 3. Make sure the app is working correctly through the emulator
+
+**Troubleshooting**
+
+> Warning: Unable to delete "build" file (ENOTEMPTY, directory not empty 'build/platforms/ios'). Use --force to continue.
+
+Delete the build/platforms/ios/ directory and try running the command again	
 
 ## 2.2 Deploy to iTunes Connect
 
@@ -40,9 +51,10 @@ These are the steps to regularly build and deploy the iOS app after your environ
  - Bundle Identifier: ```com.benekeith.entree``` for QA and ```com.benekeith.entreeprod``` for Prod
  - Version: should usually be the same version for the app in [iTunes Connect](itunesconnect.apple.com) or the version for which TestFlight Beta Testing is enabled
  - Build: 
-   - QA: add 0.0.1 to the latest build number in iTunes Connect
-   - Prod: builds ending in **odd numbers point to the QA api** and **even numbers point to Prod**
+	 - QA: add 0.0.1 to the latest build number in iTunes Connect
+	 - Prod: builds ending in **odd numbers point to the QA api** and **even numbers point to Prod**
  - Team: Select "Ben E. Keith Company"
+ - Under Build Settings the Code Signing Identity should be Ben E. Keith Company
 5. Go to the Product Menu -> Archive
 6. Select the QA app and make sure the Identifier in the left panel says ```com.benekeith.entree``` for QA and ```com.benekeith.entreeprod``` for Prod
 7. Click Validate..
@@ -54,17 +66,17 @@ These are the steps to regularly build and deploy the iOS app after your environ
 After the build is done processing, you can update internal testers that there is a new build to download.
 
 1. Under the Prerelease tab click Internal Testers
-3. Click the checkboxes next to the Internal Testers and click "Invite"
+2. Click the checkboxes next to the Internal Testers and click "Invite"
 
 ## 2.4 Releasing for External Testers
 
 1. Upload a build
 2. Provide beta info for testers 
-  - What to Test
-  - Feedback Email
-  - Contact info
-  - Demo account
-  - App Description, Marketing URL (can be copied from the app info?)
+	- What to Test
+	- Feedback Email
+	- Contact info
+	- Demo account
+	- App Description, Marketing URL (can be copied from the app info?)
 3. Submit for Beta App Review. The app must go through a full app review and adhere to the App Store guidelines before External Users can test (~2 days)
 
 ## 2.5 Available Grunt tasks
@@ -96,11 +108,13 @@ After the build is done processing, you can update internal testers that there i
 # Using iTunes Connect
 
 Add Internal Testers
+
 Notify Internal Testers
 
 # Submitting to the App Store
 
 # Debugging
+
 1. Open Safari
 2. Go to "Develop" menu
   - If you don't see the Develop menu...
