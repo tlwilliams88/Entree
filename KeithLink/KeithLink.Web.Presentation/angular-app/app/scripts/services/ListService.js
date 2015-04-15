@@ -369,7 +369,7 @@ angular.module('bekApp')
 
         // accepts list object
         // returns promise and updated list object
-        updateList: function(list) {
+        updateList: function(list, getEntireList) {
           return List.update(null, list).$promise.then(function(response) {
             
             // update labels
@@ -379,7 +379,14 @@ angular.module('bekApp')
               }
             });
 
-            return Service.getList(response.listid).then(function(list) {
+            var promise;
+            if (getEntireList) {
+              promise = Service.getListWithItems(response.listid, { includePrice: false });
+            } else {
+              promise = Service.getList(response.listid);
+            }
+
+            return promise.then(function(list) {
               toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
               return list;
             });
