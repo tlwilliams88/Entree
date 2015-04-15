@@ -629,6 +629,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                     .Select(grp => grp.First())
                                     .ToList();
 
+			foreach (var up in acct.AdminUsers)
+				up.RoleName = GetUserRole(up.EmailAddress);
+
             foreach (var up in acct.CustomerUsers)
                 up.RoleName = GetUserRole(up.EmailAddress);
 
