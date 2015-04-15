@@ -10,6 +10,9 @@
 
     <div class="row">
       <form name="customerSearchForm" class="col-md-6 search-form">
+        
+        <p class="text-red" ng-show="customerSearchForm.searchTerm.$error.validateEmail">Please enter a valid email address</p>
+
         <div class="form-group radio-button-group">
           <label>Search by</label>
           <div class="radio-button" ng-repeat="option in searchOptions">
@@ -25,9 +28,10 @@
             type="text" 
             name="searchTerm"
             class="form-control" 
-            placeholder="Find customer group" />
+            placeholder="Find customer group"
+            validate-email="{{search.field === 'user'}}" />
           <span class="input-group-btn">
-            <button type="submit" ng-click="searchCustomerGroups(search)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="submit" ng-disabled="customerSearchForm.$invalid" ng-click="searchCustomerGroups(search)" class="btn btn-default"><span class="icon-search"></span></button>
           </span>
         </div>
       </form>

@@ -203,7 +203,7 @@ namespace KeithLink.Svc.Impl.Logic {
 
             while (rdr.Read()) {
                 returnValue.Add( new ListItemModel() {
-                    ItemNumber = rdr.GetString( itemNumberColumn ),
+                    ItemNumber = rdr.GetString( itemNumberColumn ).PadLeft(6, '0'),
 					Label = labelColumn == -1 ? string.Empty : rdr.GetString(labelColumn)
                 } );
             }

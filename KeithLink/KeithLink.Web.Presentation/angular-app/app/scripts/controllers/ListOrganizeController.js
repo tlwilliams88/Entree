@@ -21,13 +21,13 @@ angular.module('bekApp')
       item.editPosition = item.position;
     });
     $scope.list.items.unshift({ position: 0 });
+
+    $scope.sortField = 'position';
+    $scope.sortDescending = false;
+    $scope.list.items = orderBy($scope.list.items, $scope.sortField, $scope.sortDescending);
   }
 
   setList(list);
-
-  $scope.sortField = 'position';
-  $scope.sortDescending = false;
-  $scope.list.items = orderBy($scope.list.items, $scope.sortField, $scope.sortDescending);
 
   function updateItemPositions(listItemId, oldPosition, newPosition) {
     var isMovingUp = oldPosition > newPosition;
@@ -80,8 +80,8 @@ angular.module('bekApp')
 
     var oldPosition = movedItem.editPosition;
     var newPosition = movedItem.position;
-
-    movedItem.editPosition = movedItem.position;
+    
+    movedItem.editPosition = newPosition;
 
     updateItemPositions(movedItem.listitemid, oldPosition, newPosition);
   };
@@ -139,7 +139,7 @@ angular.module('bekApp')
     //   $scope.list.items = orderedItems;
     // //   list.items = orderedItems;
 
-      ListService.updateList(list).then(function(updatedList) {
+      ListService.updateList(list, true).then(function(updatedList) {
         $scope.organizeListForm.$setPristine();
         setList(updatedList);
       }).finally(function() {
