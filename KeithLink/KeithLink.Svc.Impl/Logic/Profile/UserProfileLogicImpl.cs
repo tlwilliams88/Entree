@@ -1394,7 +1394,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // update account user roles to owner
             foreach (UserProfile user in users) // all account users are assumed to be owners on all customers
-                UpdateCustomersForUser(customers, "owner", user);
+                UpdateCustomersForUser(customers, user.RoleName, user);
 
             _accountRepo.UpdateAccount(name, accountId);
 
