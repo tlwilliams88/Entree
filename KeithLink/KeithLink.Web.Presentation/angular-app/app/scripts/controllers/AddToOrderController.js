@@ -243,10 +243,10 @@ angular.module('bekApp')
     }
 
     var processingSaveCart = false;
-    function createNewCart(items, shipDate) {
+    function createNewCart(items, shipDate, name) {
       if (!processingSaveCart) {
         processingSaveCart = true;
-        CartService.createCart(items, shipDate).then(function(cart) {
+        CartService.createCart(items, shipDate, name).then(function(cart) {
           $scope.addToOrderForm.$setPristine();
           $scope.redirect($scope.selectedList.listid, cart);
           $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
@@ -293,7 +293,7 @@ angular.module('bekApp')
           if (updatedCart && updatedCart.id && updatedCart.id !== 'New') {
             updateCart(updatedCart);
           } else {
-            createNewCart(cartItems, updatedCart.requestedshipdate);
+            createNewCart(cartItems, updatedCart.requestedshipdate, updatedCart.name);
           }
         }
       }

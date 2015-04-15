@@ -23,7 +23,9 @@
       <xs:element minOccurs="0" name="itemcount" type="xs:int" />
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfOrderLine" />
       <xs:element minOccurs="0" name="ordernumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ordersystem" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ordertotal" type="xs:double" />
+      <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="requestedshipdate" type="xs:dateTime" />
       <xs:element minOccurs="0" name="scheduleddeliverytime" nillable="true" type="xs:dateTime" />
       <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
@@ -43,6 +45,7 @@
           <xs:element minOccurs="0" name="changeorderstatus" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="each" type="xs:boolean" />
           <xs:element minOccurs="0" name="eachyn" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="isdeleted" type="xs:boolean" />
           <xs:element minOccurs="0" name="linenumber" type="xs:int" />
           <xs:element minOccurs="0" name="linetotal" type="xs:double" />
           <xs:element minOccurs="0" name="mainframestatus" nillable="true" type="xs:string" />

@@ -122,8 +122,8 @@ namespace KeithLink.Svc.Impl.Repository.Lists
         {
             throw new NotImplementedException();
 		}
-        
-		public void CopyList(ListCopyShareModel copyListModel)
+
+		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
 		{
 			throw new NotImplementedException();
 		}

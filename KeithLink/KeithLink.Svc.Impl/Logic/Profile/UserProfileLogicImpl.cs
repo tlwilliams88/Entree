@@ -370,6 +370,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
         public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
 
             AssertGuestProfile(emailAddress, password);
@@ -417,6 +418,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId) {
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
             _extAd.CreateUser(customerName,
@@ -487,6 +489,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>a completed user profile object</returns>
         /// <remarks>
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
+        /// jwames - 4/13/2015 - handle the DSM number when it is two or three digits
         /// </remarks>
         public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false) {
             //List<Customer> userCustomers;
@@ -520,7 +523,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
                     userRole = Constants.ROLE_NAME_DSM;
                     //userBranch = dsmRole.Substring(0, 3);
-                    dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                    //dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                    if (adUser.Description.Length == 3) {
+                        dsmNumber = adUser.Description.Substring(1, 2);
+                    } else if (adUser.Description.Length == 2) {
+                        dsmNumber = adUser.Description;
+                    }
                 } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
                     dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
                     userRole = Constants.ROLE_NAME_DSR;
@@ -570,7 +578,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 IsKBITCustomer = isKbitCustomer,
                 IsPowerMenuCustomer = isPowerMenuCustomer,
                 PowerMenuPermissionsUrl = String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email)
-            };
+#if DEMO
+				,IsDemo = true
+#endif
+			};
+
         }
 
         private string GenerateTemporaryPassword() {
@@ -1323,6 +1335,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 4/2/2015 - change AD structure
         /// </remarks>
         public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             string generatedPassword = GenerateTemporaryPassword();
 
             AssertGuestProfile( emailAddress, generatedPassword );

@@ -369,7 +369,7 @@ angular.module('bekApp')
 
         // accepts list object
         // returns promise and updated list object
-        updateList: function(list) {
+        updateList: function(list, getEntireList) {
           return List.update(null, list).$promise.then(function(response) {
             
             // update labels
@@ -379,7 +379,14 @@ angular.module('bekApp')
               }
             });
 
-            return Service.getList(response.listid).then(function(list) {
+            var promise;
+            if (getEntireList) {
+              promise = Service.getListWithItems(response.listid, { includePrice: false });
+            } else {
+              promise = Service.getList(response.listid);
+            }
+
+            return promise.then(function(list) {
               toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
               return list;
             });
@@ -621,13 +628,26 @@ angular.module('bekApp')
             customers: customers
           };
 
-          return List.copyList(copyListData).$promise.then(function() {
+          return List.copyList(copyListData).$promise.then(function(newLists) {
             toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
+            return newLists;
           }, function(error) {
             toaster.pop('error', null, 'Error copying list.');
             return $q.reject(error);
           });
         },
+
+        // copy list to current customer and redirect to that list
+        duplicateList: function(list, customers) {
+          return Service.copyList(list, customers).then(function(lists) {
+            var newList = lists[0];
+            Service.lists.push({
+              listid: newList.newlistid,
+              name: 'Copied - ' + list.name
+            });
+            return newList.newlistid;
+          })
+        }
       };
 
       return Service;

@@ -83,6 +83,11 @@ namespace KeithLink.Svc.Core.Models.Profile
 
         [DataMember( Name = "powermenupermissionslink" )]
         public string PowerMenuPermissionsUrl { get; set; }
+
+
+		[DataMember(Name = "isdemo", EmitDefaultValue = false)]
+		public bool? IsDemo { get; set; }
+
         
     }
 }
