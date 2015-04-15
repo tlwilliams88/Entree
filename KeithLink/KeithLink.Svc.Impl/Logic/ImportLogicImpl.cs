@@ -27,6 +27,7 @@ namespace KeithLink.Svc.Impl.Logic {
         private ICatalogLogic catalogLogic;
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
+		private IPriceLogic priceLogic;
 
         private StringBuilder _errors;
         private StringBuilder _warnings;
@@ -38,11 +39,12 @@ namespace KeithLink.Svc.Impl.Logic {
         private const int ITEM_NUMBER_INDEX = 0;
         private const int ITEM_QUANTITY_INDEX = 1;
 
-        public ImportLogicImpl( IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic ) {
+        public ImportLogicImpl( IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic ) {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
             this.eventLogRepository = eventLogRepository;
             this.shoppingCartLogic = shoppingCartLogic;
+			this.priceLogic = priceLogic;
 
             _errors = new StringBuilder();
             _warnings = new StringBuilder();
@@ -239,6 +241,8 @@ namespace KeithLink.Svc.Impl.Logic {
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(e, String.Format("User: {0} for customer {1} in {2} failed importing an order from file: {3}.", user.UserId, catalogInfo.CustomerId, catalogInfo.BranchId, file.FileName));
             }
 
+			CalculateCartSupTotal(catalogInfo, newCart, items);
+
             if (_errors.Length < 1) {
                 if (file.Options.IgnoreZeroQuantities)
                     items = items.Where( i => i.Quantity > 0 ).ToList();
@@ -254,8 +258,51 @@ namespace KeithLink.Svc.Impl.Logic {
             return returnModel;
         }
 
+		private void CalculateCartSupTotal(UserSelectedContext catalogInfo, ShoppingCart newCart, List<ShoppingCartItem> items)
+		{
+			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, items.Select(i => i.ItemNumber).ToList());
+			items.ForEach(delegate(ShoppingCartItem item)
+			{
+				var product = products.Products.Where(p => p.ItemNumber == item.ItemNumber).FirstOrDefault();
+				if (product != null)
+				{
+					item.CatchWeight = product.CatchWeight;
+					item.AverageWeight = product.AverageWeight;
+				}
+			});
+
+			var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), items.Select(i => new Product() { ItemNumber = i.ItemNumber }).ToList());
+			foreach (var item in items)
+			{
+				var price = prices.Prices.Where(p => p.ItemNumber == item.ItemNumber).FirstOrDefault();
+				if (price != null)
+					newCart.SubTotal += (decimal)item.LineTotal(item.Each ? price.PackagePrice : price.CasePrice);
+			}
+		}
+
         private List<ShoppingCartItem> ParseDelimitedFile(OrderImportFileModel file, char Delimiter, UserProfile user, UserSelectedContext catalogInfo) {
             List<ShoppingCartItem> returnValue = new List<ShoppingCartItem>() {};
+
+			var itemNumberColumn = 0;
+			var quantityColumn = 1;
+			var eachColumn = 2;
+			//See if we can determine which columns the item number and label exist
+			if (file.Options.IgnoreFirstLine)
+			{
+				var header = file.Contents.Split(new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None).Take(1).Select(i => i.Split(Delimiter).ToList()).FirstOrDefault();
+				int colCount = 0;
+				foreach (var col in header)
+				{
+					if (col.Replace("\"", string.Empty).Equals("item", StringComparison.CurrentCultureIgnoreCase))
+						itemNumberColumn = colCount;
+					else if (col.Replace("\"", string.Empty).Equals("# Ordered", StringComparison.CurrentCultureIgnoreCase))
+						quantityColumn = colCount;
+					else if (col.Replace("\"", string.Empty).Equals("each", StringComparison.CurrentCultureIgnoreCase))
+						eachColumn = colCount;
+					colCount++;
+				}
+			}
+
 
             var rows = file.Contents.Split( new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None );
             returnValue = rows
@@ -263,9 +310,9 @@ namespace KeithLink.Svc.Impl.Logic {
                         .Where( line => !String.IsNullOrWhiteSpace(line) )
                         .Select( i => i.Split( Delimiter ) )
                         .Select( l => new ShoppingCartItem() {
-                            ItemNumber = DetermineItemNumber( l[0], file.Options, user, catalogInfo ),
-                            Quantity = DetermineQuantity( l[1], file.Options ),
-                            Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( l[2], file.Options ):false
+							ItemNumber = DetermineItemNumber(l[itemNumberColumn].Replace("\"", string.Empty), file.Options, user, catalogInfo),
+							Quantity = DetermineQuantity(l[quantityColumn].Replace("\"", string.Empty), file.Options),
+							Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem(l[eachColumn], file.Options) : false
                             } )
                         .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
 
@@ -283,15 +330,29 @@ namespace KeithLink.Svc.Impl.Logic {
                 rdr = ExcelReaderFactory.CreateOpenXmlReader( file.Stream );
             }
 
+			var itemNumberColumn = 0;
+			var quantityColumn = 1;
+			var eachColumn = 2;
+
             if ( file.Options.IgnoreFirstLine.Equals( true ) ) {
                 rdr.Read(); // Skip the first line
+				for (int i = 0; i < rdr.FieldCount - 1; i++)
+				{
+					if (rdr.GetString(i).Equals("item", StringComparison.CurrentCultureIgnoreCase))
+						itemNumberColumn = i;
+					else if (rdr.GetString(i).Equals("# Ordered", StringComparison.CurrentCultureIgnoreCase))
+						quantityColumn = i;
+					else if (rdr.GetString(i).Equals("each", StringComparison.CurrentCultureIgnoreCase))
+						quantityColumn = i;
+
+				}
             }
 
             while (rdr.Read()) {
                 returnValue.Add(new ShoppingCartItem() {
-                    ItemNumber = DetermineItemNumber(rdr.GetString(0), file.Options, user, catalogInfo),
-                    Quantity = DetermineQuantity(rdr.GetString(1), file.Options),
-                    Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( rdr.GetString(2), file.Options ):false
+                    ItemNumber = DetermineItemNumber(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), file.Options, user, catalogInfo),
+                    Quantity = DetermineQuantity(rdr.GetString(quantityColumn), file.Options),
+                    Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( rdr.GetString(eachColumn), file.Options ):false
                 });
             }
 

@@ -34,5 +34,26 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 
 		[DataMember(Name = "createddate")]
 		public DateTime CreatedDate { get; set; }
+		
+		public double LineTotal(double Price)
+		{
+
+			if (this.CatchWeight)
+			{
+				if (this.Each) //package catchweight
+				{
+					return ((this.AverageWeight / Int32.Parse(this.Pack)) * (double)this.Quantity) * Price;
+				}
+				else //case catchweight
+				{
+					return (this.AverageWeight * (double)this.Quantity) * Price;
+				}
+
+			}
+			else
+			{
+				return (double)this.Quantity * Price;
+			}
+		}
 	}
 }
