@@ -157,6 +157,12 @@
   <wsdl:message name="IListServcie_DeleteItemNumberFromList_OutputMessage">
     <wsdl:part name="parameters" element="tns:DeleteItemNumberFromListResponse" />
   </wsdl:message>
+  <wsdl:message name="IListServcie_ItemsInHistoryList_InputMessage">
+    <wsdl:part name="parameters" element="tns:ItemsInHistoryList" />
+  </wsdl:message>
+  <wsdl:message name="IListServcie_ItemsInHistoryList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ItemsInHistoryListResponse" />
+  </wsdl:message>
   <wsdl:portType name="IListServcie">
     <wsdl:operation name="AddItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
@@ -253,6 +259,10 @@
     <wsdl:operation name="DeleteItemNumberFromList">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/DeleteItemNumberFromList" message="tns:IListServcie_DeleteItemNumberFromList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/DeleteItemNumberFromListResponse" message="tns:IListServcie_DeleteItemNumberFromList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ItemsInHistoryList">
+      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ItemsInHistoryList" message="tns:IListServcie_ItemsInHistoryList_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ItemsInHistoryListResponse" message="tns:IListServcie_ItemsInHistoryList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
@@ -466,6 +476,15 @@
     </wsdl:operation>
     <wsdl:operation name="DeleteItemNumberFromList">
       <soap:operation soapAction="http://tempuri.org/IListServcie/DeleteItemNumberFromList" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ItemsInHistoryList">
+      <soap:operation soapAction="http://tempuri.org/IListServcie/ItemsInHistoryList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

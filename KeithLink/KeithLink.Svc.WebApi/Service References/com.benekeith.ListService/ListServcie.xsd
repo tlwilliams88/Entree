@@ -131,4 +131,17 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PagedUserList" nillable="true" type="tns:PagedUserList" />
+  <xs:complexType name="ArrayOfInHistoryReturnModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="InHistoryReturnModel" nillable="true" type="tns:InHistoryReturnModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfInHistoryReturnModel" nillable="true" type="tns:ArrayOfInHistoryReturnModel" />
+  <xs:complexType name="InHistoryReturnModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="InHistory" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ItemNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InHistoryReturnModel" nillable="true" type="tns:InHistoryReturnModel" />
 </xs:schema>

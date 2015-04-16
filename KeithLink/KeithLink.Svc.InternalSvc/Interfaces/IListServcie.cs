@@ -88,5 +88,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
 		[OperationContract]
 		void DeleteItemNumberFromList(long Id, string itemNumber);
+
+		[OperationContract]
+		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
     }
 }
