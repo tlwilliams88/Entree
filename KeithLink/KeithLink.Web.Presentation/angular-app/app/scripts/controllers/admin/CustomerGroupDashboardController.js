@@ -152,7 +152,7 @@ angular.module('bekApp')
             });
             if ($scope.userOnCurrentCustomerGroup === false) {
               // sys admin can move the user from one group to another
-              if ($scope.isInternalAccountAdminUser) {
+              if ($scope.canMoveUserToAnotherGroup) {
                 $scope.canMoveUser = true;
               } else {
                 $scope.cannotMoveUser = true;

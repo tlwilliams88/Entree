@@ -21,7 +21,7 @@
           This user already exists. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and add the user to this customer group.
         </p>
         <p class="text-red" ng-show="checkUserExists && cannotMoveUser">
-          This user already exists and has access to another customer group. Contact BEK to move this user to your customer group.
+          This user already exists and has access to another customer group. Contact BEK to move this user to this customer group.
         </p>
         <p class="text-red" ng-show="canMoveUser">
           This user exists and has access to another customer group. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and move the user to this customer group.

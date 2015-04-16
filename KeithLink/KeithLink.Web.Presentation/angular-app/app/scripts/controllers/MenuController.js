@@ -248,5 +248,6 @@ angular.module('bekApp')
     $scope.canViewCustomerGroupDashboard = AccessService.canViewCustomerGroupDashboard();
     $scope.canEditUsers = AccessService.canEditUsers();
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
+    $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
   }
 }]);
