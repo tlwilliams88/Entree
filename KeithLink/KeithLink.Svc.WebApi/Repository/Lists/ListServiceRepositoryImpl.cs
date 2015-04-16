@@ -170,5 +170,15 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			serviceClient.DeleteItemNumberFromList(Id, itemNumber);
 		}
+
+
+		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
+		{
+			var list = serviceClient.ItemsInHistoryList(catalogInfo, itemNumbers.ToArray());
+
+			if (list == null)
+				return new List<InHistoryReturnModel>();
+			return list.ToList();
+		}
 	}
 }

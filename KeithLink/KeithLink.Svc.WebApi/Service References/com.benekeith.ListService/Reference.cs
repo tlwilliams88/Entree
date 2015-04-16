@@ -158,6 +158,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/DeleteItemNumberFromList", ReplyAction="http://tempuri.org/IListServcie/DeleteItemNumberFromListResponse")]
         System.Threading.Tasks.Task DeleteItemNumberFromListAsync(long Id, string itemNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ItemsInHistoryList", ReplyAction="http://tempuri.org/IListServcie/ItemsInHistoryListResponse")]
+        KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[] ItemsInHistoryList(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ItemsInHistoryList", ReplyAction="http://tempuri.org/IListServcie/ItemsInHistoryListResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[]> ItemsInHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -377,6 +383,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task DeleteItemNumberFromListAsync(long Id, string itemNumber) {
             return base.Channel.DeleteItemNumberFromListAsync(Id, itemNumber);
+        }
+        
+        public KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[] ItemsInHistoryList(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers) {
+            return base.Channel.ItemsInHistoryList(catalogInfo, itemNumbers);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[]> ItemsInHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers) {
+            return base.Channel.ItemsInHistoryListAsync(catalogInfo, itemNumbers);
         }
     }
 }

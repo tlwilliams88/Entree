@@ -158,5 +158,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

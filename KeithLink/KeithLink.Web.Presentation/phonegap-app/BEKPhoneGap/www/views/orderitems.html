@@ -3,6 +3,7 @@
     Order Details
   </div>
   <div header-buttons>
+    <button title="Save As List" ng-click="saveAsList()" class="btn btn-icon btn-default"><span class="icon-text2"></span></button>
     <button ng-click="print()" title="Print" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button ng-click="openExportModal()" title="Export" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
   </div>
@@ -12,7 +13,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-9 col-lg-8">
       <div class="info-box">
-        <h3 class="no-margin">ORDER INFORMATION</h3>
+        <h3 class="no-margin">ORDER INFORMATION<small><i> (System: {{order.ordersystem}})</i></small></h3>
         <div class="order-item">
           <div class="order-item-title">Invoice #</div>
           <div class="order-item-value-1">{{order.invoicenumber || 'N/A'}}</div>
@@ -21,13 +22,13 @@
         </div>
         <div class="order-item">
           <div class="order-item-title">Order Date</div>
-          <div class="order-item-value-1">{{order.createddate | formatDate:'MM/DD/YYYY'}}</div>
+          <div class="order-item-value-1">{{order.createddate | formatDate}}</div>
           <div class="order-item-title">Requested Ship Date</div>
-          <div class="order-item-value-2">{{order.requestedshipdate | formatDate:'ddd, MMM D, YYYY'}}</div>
+          <div class="order-item-value-2">{{order.requestedshipdate | formatDate}}</div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Delivery Date</div>
-          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | formatDate:'ddd, MMM D, YYYY'}}</div>
+          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | formatDate}}</div>
           <div class="order-item-title">Delivered</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime == null && order.actualdeliverytime == null && order.scheduleddeliverytime == null">N/A</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
@@ -43,10 +44,8 @@
         <div class="order-item">
           <div class="order-item-title">Invoice Status</div>
           <div class="order-item-value-1">{{order.invoicestatus || 'N/A'}}</div>
-        </div>
-        <hr ng-if="order.ischangeorderallowed">
-        <div ng-if="order.ischangeorderallowed">
-          <a ui-sref="menu.cart.items({ cartId: order.ordernumber })">View Change Order</a>
+          <div class="order-item-title">PO Number</div>
+          <div class="order-item-value-2">{{order.ponumber}}</div>
         </div>
       </div>
     </div>
@@ -58,9 +57,9 @@
     </div>
   </div>
 
-  <table class="table table-border table-striped-rows">
+  <table class="table table-border table-striped-rows table-order-items">
     <thead>
-      <tr>
+      <tr fsm-sticky-header scroll-body="'.table-order-items'" scroll-stop="0">
         <th class="sort-col-header" ng-click="sortBy='itemnumber';sortOrder=!sortOrder;">
           Item
           <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
@@ -70,6 +69,9 @@
         </th>
         <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='brand';sortOrder=!sortOrder;">
           <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy='class';sortOrder=!sortOrder;">
+          <span>Class <span sort-icons field="'class'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="hidden-mobile-visible-print">
           Pack/Size
@@ -119,6 +121,9 @@
         <td class="hidden-mobile-visible-print input-col">
           <input type="text" placeholder="Filter..." ng-model="filterFields.brand">
         </td>
+         <td class="hidden-mobile-visible-print input-col">
+          <input type="text" placeholder="Filter..." ng-model="filterFields.class">
+        </td>
         <td class="hidden-mobile-visible-print"></td>
         <td class="hidden-mobile-visible-print input-col">
           <input type="text" placeholder="Filter..." ng-model="filterFields.notes">
@@ -143,6 +148,7 @@
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>
+        <td class="hidden-mobile-visible-print">{{item.class}}</td>
         <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
         <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
         <td class="hidden-xs hidden-sm">

@@ -54,7 +54,7 @@ angular.module('bekApp')
       }
     };
 
-    Service.getList = function(listId) {
+    Service.getList = function(listId, params) {
       if (navigator.connection.type === 'none') {
         return PhonegapDbService.getItem(db_table_name_lists, listId).then(function(list) {
           PricingService.updateCaculatedFields(list.items);
@@ -72,7 +72,7 @@ angular.module('bekApp')
           return list;
         });
       } else {
-        return originalListService.getList(listId);
+        return originalListService.getList(listId, params);
       }
     };
 

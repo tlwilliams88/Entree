@@ -4,12 +4,16 @@ angular.module('bekApp')
   .directive('counter', ['$filter', '$window', function($filter, $window) {
     return {
       restrict: 'A',
-      require: 'ngModel',
+      require: ['^form','ngModel'],
       scope: { 
         value: '=ngModel'
       },
       templateUrl: 'views/directives/counter.html',
-      link: function( scope, element, attributes, ctrl ) {
+      link: function( scope, element, attributes, ctrls ) {
+
+        var formCtrl = ctrls[0]; // form controller
+        var ctrl = ctrls[1]; // ngmodelcontroller
+
         // set size
         element.addClass('counter-container');
         if (attributes.size === 'large') { // item details page
@@ -42,7 +46,8 @@ angular.module('bekApp')
          */
         var setValue = function( val ) {
           scope.value = parseInt( val );
-          ctrl.$setViewValue(val);
+          // ctrl.$setViewValue(val);
+          formCtrl.$setDirty(true);
 
           disableButtons(val);
           // scope.counter.isopen = false;

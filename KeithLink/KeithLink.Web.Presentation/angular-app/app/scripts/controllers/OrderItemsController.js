@@ -6,6 +6,13 @@ angular.module('bekApp')
 
   $scope.order = order;
 
+  $scope.getOrder = function(orderNumber) {
+    OrderService.getOrderDetails(orderNumber).then(function(order) {
+      $scope.order = order;
+      $scope.displayMessage('success', 'Successfully retrieved latest info for order.');
+    });
+  }
+
   $scope.openExportModal = function() {
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/exportmodal.html',

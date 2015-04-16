@@ -8,9 +8,9 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-    .controller('ChangePasswordController', ['$scope', '$state', 'ENV', 'LocalStorage','AuthenticationService', 'AccessService', 'UserProfileService',
-        function ($scope, $state, ENV, LocalStorage, AuthenticationService, AccessService, UserProfileService) {
-           var profile = LocalStorage.getProfile();
+    .controller('ChangePasswordController', ['$scope', '$state', 'SessionService','AuthenticationService', 'UserProfileService',
+        function ($scope, $state, SessionService, AuthenticationService, UserProfileService) {
+           var profile = SessionService.userProfile;
 
            $scope.passwordData = { 
                email: profile.emailaddress,
@@ -23,12 +23,8 @@ angular.module('bekApp')
 
                UserProfileService.changePassword(passwordData).then(function(response) {
                    profile.passwordexpired = false;
-                   LocalStorage.setProfile(profile);
-                   if ( AccessService.isOrderEntryCustomer() || AccessService.isInternalAccountAdminUser() ) {
-                        $state.go('menu.home');
-                   } else {
-                        $state.go('menu.catalog.home');
-                   }
+                   SessionService.userProfile = profile;
+                   $scope.redirectUserToCorrectHomepage();
                }, function(errorMessage) {
                    $scope.changePasswordErrorMessage = errorMessage.errorMessage;
                });
