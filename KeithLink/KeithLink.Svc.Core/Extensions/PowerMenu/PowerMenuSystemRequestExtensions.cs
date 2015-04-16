@@ -16,7 +16,11 @@ namespace KeithLink.Svc.Core.Extensions.PowerMenu {
 
             using (MemoryStream stream = new MemoryStream()) {
                 using (XmlWriter writer = XmlWriter.Create( stream )) {
-                    new XmlSerializer( typeof( PowerMenuSystemRequestModel ) ).Serialize( writer, PowerMenuRequest );
+                    // Remove the xmlns namespaces from the xml responses
+                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                    ns.Add( "", "" );
+
+                    new XmlSerializer( typeof( PowerMenuSystemRequestModel ), string.Empty ).Serialize( writer, PowerMenuRequest, ns );
                     returnValue = Encoding.UTF8.GetString( stream.ToArray() );
                 }
             }
