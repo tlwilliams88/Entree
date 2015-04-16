@@ -503,6 +503,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             UserPrincipal adUser = null;
             bool isKbitCustomer = false;
             bool isPowerMenuCustomer = false;
+            bool isPowerMenuAdmin = false;
 
             if (isInternalUser) {
                 adUser = _intAd.GetUser(csProfile.Email);
@@ -513,8 +514,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 if (internalUserRoles.Intersect(Constants.BEK_SYSADMIN_ROLES).Count() > 0) {
                     userRole = Constants.ROLE_NAME_SYSADMIN;
+                    isPowerMenuAdmin = true;
                 } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
                     userRole = Constants.ROLE_NAME_BRANCHIS;
+                    isPowerMenuAdmin = true;
                     //userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
                 } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0){
                     userRole = Constants.ROLE_NAME_POWERUSER;
@@ -577,13 +580,31 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 UserNameToken = tokenBase64,
                 IsKBITCustomer = isKbitCustomer,
                 IsPowerMenuCustomer = isPowerMenuCustomer,
-                PowerMenuPermissionsUrl = String.Format(Configuration.PowerMenuPermissionsUrl, adUser.SamAccountName),
-                // TODO: Add powermenu login url to profile
+                PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, adUser.SamAccountName):"",
+                PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), adUser.SamAccountName),
+                PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl):"",
 #if DEMO
 				,IsDemo = true
 #endif
 			};
 
+        }
+
+        private string GetPowerMenuLoginUrl( Guid userId, string userName ) {
+            string returnValue = String.Empty;
+
+            List<Customer> customers = GetCustomersForExternalUser( userId );
+
+            string customerNumbers = string.Join("|", (from customer in customers 
+                         where customer.IsPowerMenu == true
+                         select customer.CustomerNumber));
+
+            if (customerNumbers.Length > 0) {
+                string password = String.Concat(userName, userId.ToString().Substring(0,4));
+                returnValue = String.Format( Configuration.PowerMenuLoginUrl, userName, password, customerNumbers );
+            }
+
+            return returnValue;
         }
 
         private string GenerateTemporaryPassword() {
