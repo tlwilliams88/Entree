@@ -38,6 +38,7 @@
         <div ng-show="displayUserMenu" class="hidden-md hidden-lg">
           <button
             class="btn-no-style"
+            type="button"
             ng-click="isSidebarOpen = false"
             ui-sref="menu.userprofile">
             <li>Profile Settings</li>
@@ -52,17 +53,12 @@
             ng-click="logout()">
             <li>Sign Out</li>
           </button>
-          <li>
-            <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
-          
-            <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
-            </div>
-          </li>
-        </div>
+          </div>
 
         <div ng-click="isSidebarOpen = false">
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!isOrderEntryCustomer"
             ui-sref="menu.home"
             ui-sref-active="is-selected" >
@@ -73,6 +69,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canCreateOrders"
             ui-sref="menu.order"
             ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
@@ -83,6 +80,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canBrowseCatalog"
             ui-sref="menu.catalog.home"
             ng-class="{'is-selected': $state.includes('menu.catalog')}" >
@@ -91,8 +89,17 @@
               Product Catalog
             </li>
           </button>
+          <a
+            ng-if="::userProfile.ispowermenucustomer"
+            ng-href="{{userProfile.powermenupermissionslink}}" >
+            <li>
+              <span class="icon-food sidebar-nav__icon"></span>
+              eMenu Manage
+            </li>
+          </a>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canPayInvoices"
             ui-sref="menu.reports"
             ng-class="{'is-selected': $state.includes('menu.reports')}" >
@@ -103,6 +110,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canPayInvoices"
             ui-sref="menu.invoice"
             ui-sref-active="is-selected" >
@@ -113,6 +121,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-disabled="::!canManageLists"
             ui-sref="menu.lists.items({listId: 0})"
             ng-class="{'is-selected': $state.includes('menu.lists')}" >
@@ -123,6 +132,7 @@
           </button>
           <button
             class="btn-no-style"
+            type="button"
             ng-if="::canViewCustomerGroupDashboard || canViewCustomerGroups"
             ng-click="goToAdminLandingPage()"
             ng-class="{'is-selected': $state.includes('menu.admin') }" >
@@ -133,6 +143,7 @@
           </button>
           <button
             class="btn-no-style hidden-md hidden-lg"
+            type="button"
             ng-disabled="!isOrderEntryCustomer"
             ui-sref="menu.notifications"
             ui-sref-active="is-selected" >
@@ -191,12 +202,17 @@
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'menu.home'}" />
       </div>
 
-      <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
-        <div class="col-md-4 hidden-sm hidden-xs" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction')">
-          <!-- <div class="select-div"> -->
-            <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
-          <!-- </div> -->
+    <div class="row hidden-md hidden-lg mobile-user-context"> 
+      <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
+    
+      <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
+      </div>
+    </div>
 
+      <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
+        <div class="col-md-4 hidden-xs hidden-sm" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
+          <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch()"></select>
+          
           <div ui-select2="customerSelectOptions" ng-if="::isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
           </div>
 

@@ -9073,58 +9073,65 @@ form.style-validation-errors .form-error-message {
   border: 1px solid #c3bc9c;
 }
 
-/* line 50, ../scss/components/_user-bar.scss */
+/* line 49, ../scss/components/_user-bar.scss */
+.mobile-user-context {
+  padding: 10px 15px;
+  background-color: #f3f1eb;
+  border-bottom: 1px solid #c3bc9c;
+}
+
+/* line 55, ../scss/components/_user-bar.scss */
 .user-bar-mobile {
   background-color: #f3f1eb;
   border-bottom: 1px solid #c3bc9c;
   text-align: center;
 }
-/* line 57, ../scss/components/_user-bar.scss */
+/* line 62, ../scss/components/_user-bar.scss */
 .user-bar-mobile .logo-mobile {
   height: 50px;
   padding: 5px 0;
   display: inline-block;
 }
-/* line 62, ../scss/components/_user-bar.scss */
+/* line 67, ../scss/components/_user-bar.scss */
 .user-bar-mobile .logo-mobile.logo-margin-left {
   margin-left: 45px;
 }
-/* line 67, ../scss/components/_user-bar.scss */
+/* line 72, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul {
   padding: 0;
   float: right;
   margin: 0;
 }
-/* line 72, ../scss/components/_user-bar.scss */
+/* line 77, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a, .user-bar-mobile ul .nav-tabs li a:hover, .nav-tabs li .user-bar-mobile ul a:hover {
   font-size: 24px;
   color: #9E987E;
   text-decoration: none;
 }
-/* line 76, ../scss/components/_user-bar.scss */
+/* line 81, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul a li, .user-bar-mobile ul .nav-tabs li a:hover li, .nav-tabs li .user-bar-mobile ul a:hover li {
   display: inline-block;
   padding: 8px 10px;
 }
-/* line 83, ../scss/components/_user-bar.scss */
+/* line 88, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.left-mobile-menu {
   float: left;
 }
-/* line 86, ../scss/components/_user-bar.scss */
+/* line 91, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.left-mobile-menu a li, .user-bar-mobile ul.left-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.left-mobile-menu a:hover li {
   border-right: 1px solid #c3bc9c;
 }
-/* line 91, ../scss/components/_user-bar.scss */
+/* line 96, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.right-mobile-menu {
   float: right;
 }
-/* line 95, ../scss/components/_user-bar.scss */
+/* line 100, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.right-mobile-menu a li, .user-bar-mobile ul.right-mobile-menu .nav-tabs li.active a:hover li, .nav-tabs li.active .user-bar-mobile ul.right-mobile-menu a:hover li {
   border-left: 1px solid #c3bc9c;
 }
 
 @media (max-width: 991px) {
-  /* line 103, ../scss/components/_user-bar.scss */
+  /* line 108, ../scss/components/_user-bar.scss */
   .hide-searchbar {
     display: none;
   }
@@ -10472,8 +10479,18 @@ ul.horizontal-slide .product-placeholder-image {
   }
 }
 
+/* line 22, ../scss/pages/_cart.scss */
+.mobile-btn {
+  margin-top: 10px;
+}
+/* line 24, ../scss/pages/_cart.scss */
+.mobile-btn .p {
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
 @media print {
-  /* line 23, ../scss/pages/_cart.scss */
+  /* line 33, ../scss/pages/_cart.scss */
   .select-cart {
     border: none;
     padding: none;

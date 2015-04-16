@@ -217,6 +217,9 @@
             <span class="icon-trash"></span>
           </button>
 
+          <p style="margin-top: 10px; font-size: 14px;">
+            <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid})">Organize this list <span class="icon-arrow-right6"></span></a>
+          </p>
         </div>
       </div>
     </div>
@@ -351,6 +354,9 @@
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brandextendeddescription',sort.sortDescending)">
                 <span>Brand <span sort-icons field="'brandextendeddescription'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('itemclass',sort.sortDescending)">
+                <span>Class <span sort-icons field="'class'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
               </th>
@@ -359,9 +365,6 @@
               </th>
               <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print"></th>
-              <th class="hidden-mobile-visible-print">
-                # in Cart
-              </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.alternativeFieldHeader" ng-click="sortList(selectedList.permissions.alternativeFieldName,sort.sortDescending)">
                 <span>{{::selectedList.permissions.alternativeFieldHeader}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
@@ -373,13 +376,6 @@
                 <span>{{::selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               
-              <th class="list-print-column">Inv / Ord 1</th>
-              <th class="list-print-column">Inv / Ord 2</th>
-              <th class="list-print-column">Inv / Ord 3</th>
-              <th class="list-print-column">Inv / Ord 4</th>
-              <th class="list-print-column">Inv / Ord 5</th>
-              <th class="list-print-column">Inv / Ord 6</th>
-
               <th class="hidden-print"></th>
             </tr> 
           </thead>
@@ -415,6 +411,9 @@
                 {{::item.brand_extended_description}}
               </td>
               <td class="hidden-mobile-visible-print bek-drag-handle">
+                {{::item.class}}
+              </td>
+              <td class="hidden-mobile-visible-print bek-drag-handle">
                 {{::item.packsize}}
               </td>
               <!-- Notes -->
@@ -424,10 +423,7 @@
               <td class="hidden-sm hidden-xs hidden-drag">
                 <span tooltip="{{item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
               <td class="hidden-mobile-visible-print" item-icons></td>
-              <td class="text-center hidden-drag hidden-xs hidden-sm bek-drag-handle">
-                {{::item.quantityincart}}
-              </td>
-              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-mobile-visible-print">
+              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm hidden-drag">
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
@@ -482,13 +478,6 @@
                 {{::item.parlevel}}
               </td>
 
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-              <td class="list-print-column">|</td>
-
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
                 <div               
                   ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
@@ -527,12 +516,12 @@
                       <td>{{::item.brand_extended_description}}</td>
                     </tr>
                     <tr>
-                      <td>Pack/Size</td>
-                      <td>{{::item.packsize}}</td>
+                      <td>Class</td>
+                      <td>{{::item.class}}</td>
                     </tr>
                     <tr>
-                      <td># in Cart</td>
-                      <td>{{::item.quantityincart}}</td>
+                      <td>Pack/Size</td>
+                      <td>{{::item.packsize}}</td>
                     </tr>
                     <tr>
                       <td item-icons></td>
@@ -592,7 +581,7 @@
                     </tr>
                     <tr ng-if="::selectedList.permissions.canDeleteItems">
                       <td colspan="2">
-                        <button class="btn btn-lg btn-danger" ng-click="deleteItem(item)"><span class="icon-cross"></span> Remove Item</button>
+                        <button type="button" class="btn btn-lg btn-danger" ng-click="deleteItem(item)"><span class="icon-cross"></span> Remove Item</button>
                       </td>
                     </tr>
                   </tbody>

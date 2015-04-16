@@ -14,7 +14,7 @@ angular.module('bekApp')
 
         if (!processingAddItem) {
           processingAddItem = true;
-          ListService.addItemToFavorites(item).then(function() {
+          ListService.addItemToFavorites(newItem).then(function() {
             $scope.$broadcast('closeContextMenu');
             item.favorite = true;
           }).finally(function() {
