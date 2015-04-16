@@ -65,5 +65,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
 
 		void DeleteItemNumberFromList(long Id, string itemNumber);
+
+		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 	}
 }

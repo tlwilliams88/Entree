@@ -76,7 +76,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			if (ret == null)
 				return null;
 
-			AddFavoriteProductInfo(profile, ret, catalogInfo);
+			GetAdditionalProductInfo(profile, new ProductsReturn() { Count = 1, Products = new List<Product>() { ret } }, catalogInfo);
+			//AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct( ret, catalogInfo );
 
@@ -116,7 +117,9 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			if (ret == null)
 				return null;
 
-			AddFavoriteProductInfo(profile, ret, catalogInfo);
+			GetAdditionalProductInfo(profile, new ProductsReturn() { Count = 1, Products = new List<Product>() { ret } }, catalogInfo);
+			
+			//AddFavoriteProductInfo(profile, ret, catalogInfo);
 			AddProductImageInfo(ret);
 			AddItemHistoryToProduct(ret, catalogInfo);
 
@@ -217,7 +220,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
 
             AddPricingInfo(ret, profile, catalogInfo, searchModel);
-            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
+            GetAdditionalProductInfo(profile, ret, catalogInfo);
             return ret;
         }
 
@@ -232,7 +235,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
 
             AddPricingInfo(returnValue, profile, catalogInfo, searchModel);
-            AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, returnValue, catalogInfo);
+            GetAdditionalProductInfo(profile, returnValue, catalogInfo);
 
             return returnValue;
         }
@@ -248,7 +251,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 				ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
                 
             AddPricingInfo(ret, profile, catalogInfo, searchModel);
-			AddFavoriteProductInfoAndNotes(catalogInfo.BranchId, profile, ret, catalogInfo);
+			GetAdditionalProductInfo(profile, ret, catalogInfo);
             return ret;
         }
 
@@ -277,29 +280,31 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-		private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
-        {
-			if (profile != null && ret != null)
-			{
-				var list = _listServiceRepository.ReadFavorites(profile, catalogInfo);
-				var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
+		//private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
+		//{
+		//	if (profile != null && ret != null)
+		//	{
+		//		var list = _listServiceRepository.ReadFavorites(profile, catalogInfo);
+		//		var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
 
-				ret.Favorite = list.Contains(ret.ItemNumber);
-				ret.Notes = notes.Where(n => n.ItemNumber.Equals(ret.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
-			}
-        }
+		//		ret.Favorite = list.Contains(ret.ItemNumber);
+		//		ret.Notes = notes.Where(n => n.ItemNumber.Equals(ret.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
+		//	}
+		//}
 
-		private void AddFavoriteProductInfoAndNotes(string branch, UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
+		private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
         {
 			if (profile != null)
 			{
 				var favorites = _listServiceRepository.ReadFavorites(profile, catalogInfo);
 				var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
+				var history = _listServiceRepository.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
 
 				ret.Products.ForEach(delegate (Product prod) 
 				{
 					prod.Favorite = favorites.Contains(prod.ItemNumber);
 					prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
+					prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber)).FirstOrDefault().InHistory;
 				});
 			}
         }

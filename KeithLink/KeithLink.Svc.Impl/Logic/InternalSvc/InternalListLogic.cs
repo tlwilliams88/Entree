@@ -724,8 +724,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 		}
         
-		
-
 		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
 		{
 			var list = listRepository.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
@@ -753,7 +751,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			return returnItems;
 		}
-
 
 		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
 		{
@@ -797,7 +794,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			});
 
 		}
-
 
 		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
 		{
@@ -879,7 +875,25 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 			unitOfWork.SaveChanges();
 		}
-		
+
+		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
+		{
+			var returnModel = new List<InHistoryReturnModel>();
+			
+			var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Contract, i => i.Items).FirstOrDefault();
+
+			if (list == null)
+				return itemNumbers.Select(i => new InHistoryReturnModel() { ItemNumber = i, InHistory = false }).ToList();
+			else
+			{
+				Parallel.ForEach(itemNumbers, item =>
+				{
+					returnModel.Add(new InHistoryReturnModel() { InHistory = list.Items.Where(i => i.ItemNumber.Equals(item)).Any(), ItemNumber = item });
+				});
+			}
+			return returnModel;
+		}
+
 		#endregion
 
 	}
