@@ -148,12 +148,18 @@ namespace KeithLink.Svc.InternalSvc
 			return listLogic.ReadPagedList(user, catalogInfo, Id, paging);
 		}
 		
-		#endregion
-
 
 		public void DeleteItemNumberFromList(long Id, string itemNumber)
 		{
 			listLogic.DeleteItemNumberFromList(Id, itemNumber);
 		}
+
+
+		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
+		{
+			return listLogic.ItemsInHistoryList(catalogInfo, itemNumbers);
+		}
+		
+		#endregion
 	}
 }
