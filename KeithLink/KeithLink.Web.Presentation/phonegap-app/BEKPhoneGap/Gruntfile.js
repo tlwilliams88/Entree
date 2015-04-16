@@ -82,6 +82,14 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      logo: {
+        expand: true,
+        src: '<%= meta.phonegapPath %>/images/bek-logo-<%= grunt.option("logoColor") %>.png',
+        dest: '<%= meta.phonegapPath %>/images/',
+        rename: function(dest, src) {
+          return dest + 'bek-logo.png';
+        }
+      },
       all: {
         files: [{
           cwd: '<%= meta.angularPath %>/images/', // set working folder / root to copy
@@ -254,7 +262,16 @@ module.exports = function(grunt) {
       grunt.option('appStoreId', config.environment.test.iosStoreId);
     }
 
+    if (target === 'prod') {
+      grunt.option('logoColor', 'yellow');
+    } else {
+      grunt.option('logoColor', 'green');
+    }
+
+    console.log(grunt.option('logoColor'));
+
     grunt.task.run([
+     'copy:logo',
      'ngconstant:' + target,
      'phonegap:build:ios'
     ]);

@@ -77,7 +77,7 @@ angular.module('bekApp')
       CREATE CART
       ********************/
  
-      beforeCreateCart: function(items, shipDate) {
+      beforeCreateCart: function(items, shipDate, name) {
         var newCart = {};
     
         if (!items) { // if null
@@ -96,20 +96,26 @@ angular.module('bekApp')
           }
         });
  
-        newCart.name = UtilityService.generateName('Cart', Service.cartHeaders);
+        if (name && name !== 'New') {
+          newCart.name = name;
+        } else {
+          newCart.name = UtilityService.generateName('Cart', Service.cartHeaders);
+        }
  
         newCart.requestedshipdate = shipDate;
         // default to next ship date
         if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
           newCart.requestedshipdate = Service.shipDates[0].shipdate;
         }
+        newCart.subtotal = PricingService.getSubtotalForItems(newCart.items);
+
         return newCart;
       },
  
       // accepts null, item object, or array of item objects and shipDate
       // returns promise and new cart object
-      createCart: function(items, shipDate) {
-        var newCart = Service.beforeCreateCart(items, shipDate);        
+      createCart: function(items, shipDate, name) {
+        var newCart = Service.beforeCreateCart(items, shipDate, name);
  
         return Cart.save({}, newCart).$promise.then(function(response) {
           Service.renameCart = true;

@@ -86,16 +86,19 @@ After the build is done processing, you can update internal testers that there i
 ```grunt build-ios:test```
 
 - Points to QA api
+- Changes the logo to use the **green** logo
 - Setup to deploy to QA app
 
 ```grunt build-ios:review```
 
 - Points to QA api
+- Changes the logo to use the **green** logo
 - Setup to deploy to Prod app
 
 ```grunt build-ios:prod```
 
 - Points to Prod api
+- Changes the logo to use the **yellow** logo
 - Setup to deploy to Prod app
 
 **Run**

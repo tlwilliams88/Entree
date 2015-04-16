@@ -106,7 +106,7 @@
         ng-model="orderSearchTerm"
         type="text" 
         class="form-control" 
-        placeholder="Search current list by name, item #, notes, brand or label" />
+        placeholder="Search current list by keyword, item # or label" />
       <span ng-show="addToOrderForm.$dirty" class="input-group-btn">
         <button type="button" confirmed-click="filterItems(orderSearchTerm)" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}" class="btn btn-default"><span class="icon-search"></span></button>
         <button type="button"  confirmed-click="clearFilter()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>

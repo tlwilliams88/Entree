@@ -2,6 +2,6 @@
 
  angular.module('configenv', [])
 
-.constant('ENV', {name:'dev',apiKey:'web_test_v1',apiEndpoint:'https://shopqa.benekeith.com/api',loggingEnabled:true,username:'bek.qa.user@gmail.com',password:'Ab12345',googleAnalytics:'UA-58495462-2',mobileApp: true})
+.constant('ENV', {name:'prod',apiKey:'web_prod_v1',apiEndpoint:'https://shop.benekeith.com/api',loggingEnabled:false,googleAnalytics:'UA-58495462-1',mobileApp:true})
 
 ;
