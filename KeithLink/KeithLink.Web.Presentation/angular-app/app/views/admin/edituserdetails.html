@@ -75,6 +75,10 @@
       
       </div>
 
+      <div>
+        <a ng-if="profile.powermenupermissionslink" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
+      </div>
+
       <a 
         class="col-md-offset-2 btn-link" 
         confirmed-click="deleteProfile(profile)" 
@@ -148,7 +152,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="customer in filteredCustomers = (profile.customers | filter: {accountId: groupId})" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat="customer in filterSelectedCustomers = (profile.customers | filter: {accountId: groupId})" ng-class="{ odd : $odd, even: $even }">
             <td>{{customer.customerNumber}}</td>
             <td>{{customer.customerName}}</td>
             <td>
@@ -157,7 +161,7 @@
           </tr>
         </tbody>
         <tfoot>
-          <tr ng-show="filteredCustomers.length === 0">
+          <tr ng-show="filterSelectedCustomers.length === 0">
             <td colspan="3">There are no selected customers in this customer group to display.</td>
           </tr>
         </tfoot>
