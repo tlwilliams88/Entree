@@ -10,9 +10,8 @@ angular.module('bekApp')
   $scope.files = [];
 
   function goToImportedPage(routeName, routeParams) {
-    $state.go(routeName, routeParams).then(function() {
-      $modalInstance.close();
-    });
+    $state.go(routeName, routeParams);
+    $modalInstance.close();
   }
 
   $scope.onFileSelect = function($files) {
@@ -35,9 +34,8 @@ angular.module('bekApp')
     var file = $scope.files[0];
 
     CartService.importCart(file, options).then(function(data) {
-      $state.go('menu.cart.items', { cartId: data.listid }).then(function() {
-        $modalInstance.close(data);
-      });
+      $state.go('menu.cart.items', { cartId: data.listid });
+      $modalInstance.close(data);
     });
   };
   
