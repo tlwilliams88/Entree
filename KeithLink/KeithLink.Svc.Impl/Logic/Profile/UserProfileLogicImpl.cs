@@ -827,6 +827,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return allCustomers;
         }
 
+		/// <summary>
+		/// Returns a paged list of Accounts
+		///		Additional searching options can be set to filter the accounts by user or customer
+		///		To search for accounts by Customer
+		///			paging.Type = "customer"
+		///			paging.Terms = either customer number or name (partial matches work)
+		///		To search for accounts by User
+		///			paging.Type = "user"
+		///			paing.Terms = user email address. Partial matches do not work, must be the full email address
+		/// </summary>
+		/// <param name="paging"></param>
+		/// <returns>Paged list of accounts</returns>
         public PagedResults<Account> GetPagedAccounts(PagingModel paging) {
             var accounts = _accountRepo.GetAccounts();
 
