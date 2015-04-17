@@ -161,6 +161,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_POWERMENU_ADMIN_PASSWORD = "PowerMenuAdminPassword";
         private const string KEY_POWERMENU_WEBSERVICE_URL = "PowerMenuWebServiceUrl";
         private const string KEY_POWERMENU_PERMISSIONS_URL = "PowerMenuPermissionsUrl";
+        private const string KEY_POWERMENU_LOGIN_URL = "PowerMenuLoginUrl";
+        private const string KEY_POWERMENU_GROUP_SETUP_URL = "PowerMenuGroupSetupUrl";
         #endregion
 
         #region methods
@@ -609,6 +611,14 @@ namespace KeithLink.Svc.Impl
 
         public static string PowerMenuPermissionsUrl {
             get { return GetValue( KEY_POWERMENU_PERMISSIONS_URL, string.Empty ); }
+        }
+        
+        public static string PowerMenuLoginUrl {
+            get { return GetValue( KEY_POWERMENU_LOGIN_URL, string.Empty ); }
+        }
+
+        public static string PowerMenuGroupSetupUrl {
+            get { return GetValue( KEY_POWERMENU_GROUP_SETUP_URL, string.Empty ); }
         }
 
         public static string PresentationUrl {

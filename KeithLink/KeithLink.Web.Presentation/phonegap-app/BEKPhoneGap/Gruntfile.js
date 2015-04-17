@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         config: {
           template: '_config.xml',
           data: {
-            id: '<%= grunt.option("appStoreId") %>',
+            id: '<%= grunt.option("phonegapAppId") %>',
             version: '<%= config.version %>',
             name: '<%= config.name %>',
             description: '<%= config.build.phonegap.description %>',
@@ -82,6 +82,14 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      logo: {
+        expand: true,
+        src: '<%= meta.phonegapPath %>/images/bek-logo-<%= grunt.option("logoColor") %>.png',
+        dest: '<%= meta.phonegapPath %>/images/',
+        rename: function(dest, src) {
+          return dest + 'bek-logo.png';
+        }
+      },
       all: {
         files: [{
           cwd: '<%= meta.angularPath %>/images/', // set working folder / root to copy
@@ -244,19 +252,35 @@ module.exports = function(grunt) {
     return grunt.task.run('watch');
   });
 
-  // ios
-  // takes prod, review, or test targets
-  grunt.registerTask('build-ios', function(target) {
-    if (target === 'prod' || target === 'review') {
-      grunt.option('appStoreId', config.environment.prod.iosStoreId);
+  // takes ios or android as platform
+  // takes prod, review, or test as targets
+  grunt.registerTask('build', function(platform, target) {
+    if (!target) { target = 'test' };
+
+    // select correct app id
+    var phonegapAppId = config.environment.test.iosStoreId;
+    // deploy to the production ios app
+    if (platform === 'ios' && (target === 'prod' || target === 'review')) {
+      phonegapAppId = config.environment.prod.iosStoreId;
+    }
+    grunt.option('phonegapAppId', phonegapAppId);
+
+
+    if (target === 'prod') {
+      grunt.option('logoColor', 'yellow');
     } else {
-      target = 'test';
-      grunt.option('appStoreId', config.environment.test.iosStoreId);
+      grunt.option('logoColor', 'green');
+    }
+
+    var phonegapBuild = 'phonegap:build';
+    if (platform) {
+      phonegapBuild += ':' + platform;
     }
 
     grunt.task.run([
+     'copy:logo',
      'ngconstant:' + target,
-     'phonegap:build:ios'
+     phonegapBuild
     ]);
   });
 

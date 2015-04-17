@@ -29,11 +29,12 @@ angular
     'angular-loading-bar',    // loading indicator in the upper left corner
     'angularFileUpload',      // csv file uploads for lists and orders
     'fcsa-number',            // used for number validation
-    'ui.select2',             // used for context menu dropdown in upper left corner
+    'ui.select2',
+    'blockUI',            // used for context menu dropdown in upper left corner
     'configenv'               // used to inject environment variables into angular through Grunt
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 
-  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig',
+  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig) {
  
   // configure loading bar
   cfpLoadingBarProvider.includeBar = false;
@@ -54,7 +55,25 @@ angular
  
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
- 
+
+  blockUIConfig.requestFilter = function(config) {
+  var message;
+  switch(config.method) {
+    case 'GET':
+      message = 'Loading...';
+      break;
+    case 'POST':
+      message = 'Loading...';
+      break;
+    case 'DELETE':
+      message = 'Deleting...';
+      break;
+    case 'PUT':
+      message = 'Saving...';
+      break;
+  };
+  return message;
+};  
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
   function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService) {
@@ -183,5 +202,4 @@ angular
       event.preventDefault();
     }
   });
- 
 }]);

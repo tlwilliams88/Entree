@@ -12,7 +12,7 @@
 <div ng-swipe-left="isSidebarOpen = false" ng-swipe-right="isSidebarOpen = true" class="sidebar-menu-wrapper">
 
   <!-- Desktop Sidebar -->
-  <div class="sidebar hidden-print" ng-class="{'open': isSidebarOpen}">
+  <div class="sidebar hidden-print" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
     <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu = !displayUserMenu">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">

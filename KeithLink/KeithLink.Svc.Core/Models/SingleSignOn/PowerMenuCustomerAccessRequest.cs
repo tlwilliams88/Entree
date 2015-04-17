@@ -20,7 +20,8 @@ namespace KeithLink.Svc.Core.Models.SingleSignOn {
 
         #region properties
 
-        public string Username { get; set; }
+        [DataMember(Name = "request")]
+        public PowerMenuSystemRequestModel request { get; set; }
 
         #endregion
     }

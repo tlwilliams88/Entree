@@ -44,6 +44,10 @@ angular.module('bekApp')
     return ( getRole() === Constants.roles.KBIT_ADMIN );
   }
 
+  function isDemo() {
+    return SessionService.userProfile.isdemo;
+  }
+
   function isValidRole() {
     return ( isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() || isSysAdmin() || isBranchManager() || isPowerUser() || isDsr() || isDsm() || isKbitAdmin() );
   }
@@ -141,6 +145,9 @@ angular.module('bekApp')
 
     canEditUsers: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
+    },
+    isDemo: function() {
+      return isDemo();
     }
 
   };
