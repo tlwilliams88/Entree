@@ -14,6 +14,7 @@ using System.Web.Http;
 using System.Threading.Tasks;
 using KeithLink.Svc.WebApi.Attribute;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -25,6 +26,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private ICustomerDomainRepository       _extAd;
         private IEventLogRepository             _log;
         private IUserProfileLogic               _profileLogic;
+		private readonly IPasswordResetService _passwordResetService;
         #endregion
 
         #region ctor
@@ -32,12 +34,14 @@ namespace KeithLink.Svc.WebApi.Controllers
                                  IEventLogRepository logRepo,
                                  IUserProfileLogic profileLogic,
                                  IAvatarRepository avatarRepository,
-                                 ICustomerDomainRepository customerADRepo) : base(profileLogic) {
+                                 ICustomerDomainRepository customerADRepo,
+			IPasswordResetService passwordResetService) : base(profileLogic) {
             _custRepo = customerRepo;
             _profileLogic = profileLogic;
             _log = logRepo;
             _avatarRepository = avatarRepository;
             _extAd = customerADRepo;
+			_passwordResetService = passwordResetService;
         }
         #endregion
 
@@ -100,23 +104,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             } catch (Exception ex) {
                 returnValue.ErrorMessage = String.Concat( "Could not complete the request. ", ex.Message );
                 _log.WriteErrorLog( "Unhandled exception", ex );
-            }
-
-            return returnValue;
-        }
-
-        [HttpPost]
-        [ApiKeyedRoute( "profile/forgotpassword" )]
-        public OperationReturnModel<bool> ForgotPassword( string emailAddress ) {
-            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
-
-            try {
-                _profileLogic.ResetPassword( emailAddress );
-                returnValue.SuccessResponse = true;
-            } catch (Exception ex) {
-                returnValue.SuccessResponse = false;
-                returnValue.ErrorMessage = "There was an error processing your request. Please validate your information is correct. If the problem persists please contact support";
-                _log.WriteErrorLog( "Controller reset password error", ex );
             }
 
             return returnValue;
@@ -620,6 +607,56 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+		[HttpPost]
+		[ApiKeyedRoute("profile/forgotpassword")]
+		public OperationReturnModel<bool> ForgotPassword(string emailAddress)
+		{
+			OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+
+			try
+			{
+				_passwordResetService.GeneratePasswordResetRequest(emailAddress);
+				returnValue.SuccessResponse = true;
+			}
+			catch (Exception ex)
+			{
+				returnValue.SuccessResponse = false;
+				returnValue.ErrorMessage = "There was an error processing your request. Please validate your information is correct. If the problem persists please contact support";
+				_log.WriteErrorLog("Controller reset password error", ex);
+			}
+
+			return returnValue;
+		}
+
+		[HttpPost]
+		[ApiKeyedRoute("profile/forgotpassword/validatetoken")]
+		public bool ValidateToken(ValidateTokenModel tokenModel)
+		{
+			return _passwordResetService.IsTokenValid(tokenModel.Token);
+		}
+
+
+		[HttpPost]
+		[ApiKeyedRoute("profile/forgotpassword/change")]
+		public OperationReturnModel<bool> ChangeForgotPassword(ResetPasswordModel resetModel)
+		{
+			OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+
+			try
+			{
+				returnValue.SuccessResponse = _passwordResetService.ResetPassword(resetModel); ;
+			}
+			catch (Exception ex)
+			{
+				returnValue.SuccessResponse = false;
+				returnValue.ErrorMessage = "There was an error processing your request. If the problem persists please contact support";
+				_log.WriteErrorLog("Reset password error", ex);
+			}
+
+			return returnValue;
+		}
+
         #endregion
     }
 }

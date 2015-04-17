@@ -1,5 +1,7 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Helpers;
+using KeithLink.Svc.Core.Models.Configuration;
+using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using System;
@@ -60,6 +62,18 @@ namespace KeithLink.Svc.Core.Extensions
             else
                 return value.ToString();
         }
+
+		public static MessageTemplateModel ToMessageTemplateModel(this MessageTemplate template)
+		{
+			return new MessageTemplateModel() { 
+				Id = template.Id, 
+				Body = template.Body, 
+				IsBodyHtml = template.IsBodyHtml, 
+				ModifiedOn = template.ModifiedUtc, 
+				Subject = template.Subject, 
+				TemplateKey = template.TemplateKey 
+			};
+		}
 
 	}
 }

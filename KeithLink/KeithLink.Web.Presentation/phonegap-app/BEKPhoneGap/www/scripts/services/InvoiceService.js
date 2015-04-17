@@ -79,6 +79,20 @@ angular.module('bekApp')
         ExportService.export('/invoice/export/' + filter, exportParams);
       },
 
+       
+    
+       setFilters: function(filterView,filterRows){       
+        if(filterView){
+          Service.selectedFilterView={};
+          Service.selectedFilterView = filterView;
+        }
+        if(filterRows){
+          Service.filterRowFields ={};
+          Service.filterRowFields = filterRows;
+        }
+        return;
+       },
+
       getDetailExportConfig: function(invoiceNumber) {
         return Invoice.getDetailExportConfig({
           invoiceNumber: invoiceNumber

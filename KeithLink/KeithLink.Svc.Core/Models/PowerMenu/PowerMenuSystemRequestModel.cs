@@ -8,6 +8,7 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.PowerMenu {
     [XmlRoot("PowerNetUserRequest")]
+    [DataContract(Name = "PowerNetUserRequest", Namespace = "")]
     public class PowerMenuSystemRequestModel {
         #region attributes
 
@@ -31,8 +32,13 @@ namespace KeithLink.Svc.Core.Models.PowerMenu {
 
         #region properties
 
+        [DataMember(Name = "Login")]
         public PowerMenuSystemRequestAdminModel Login { get; set; }
+
+        [DataMember(Name = "User")]
         public PowerMenuSystemRequestUserModel User { get; set; }
+
+        [DataMember(Name = "Operation")]
         public Operations Operation { get; set; }
 
         #endregion

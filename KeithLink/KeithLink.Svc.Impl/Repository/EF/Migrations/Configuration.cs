@@ -276,6 +276,43 @@ namespace KeithLink.Svc.Impl.Migrations
                     Type = MessageTemplateType.Email,
                     Body = paymentConfirmationDetail.ToString()
                 });
+
+
+			System.Text.StringBuilder resetPasswordMessage = new System.Text.StringBuilder();
+			resetPasswordMessage.AppendLine("<div>");
+			resetPasswordMessage.AppendLine("	<p>");
+			resetPasswordMessage.AppendLine("        We received a request to reset the password associated with this e-mail address. If you made this request, please follow the instructions below.");
+			resetPasswordMessage.AppendLine("    </p>");
+			resetPasswordMessage.AppendLine("	<p>");
+			resetPasswordMessage.AppendLine("		Click the link below to reset your password:");
+			resetPasswordMessage.AppendLine("	</p>");
+			resetPasswordMessage.AppendLine("	<p>");
+			resetPasswordMessage.AppendLine("		<a href=\"{resetLink}\" target=\"_blank\">{resetLink}</a>");
+			resetPasswordMessage.AppendLine("	</p>");
+			resetPasswordMessage.AppendLine("  <p>");
+			resetPasswordMessage.AppendLine("    If you did not request to have your password reset you can safely ignore this email.");
+			resetPasswordMessage.AppendLine("  </p>");
+			resetPasswordMessage.AppendLine("  <p>");
+			resetPasswordMessage.AppendLine("    If clicking the link doesn't seem to work, you can copy and paste the link into your browser's address window, or retype it there.");
+			resetPasswordMessage.AppendLine("  </p>");
+			resetPasswordMessage.AppendLine("  <p>");
+			resetPasswordMessage.AppendLine("	The link will expire in 3 days, so be sure to use it right away");
+			resetPasswordMessage.AppendLine("  </p>");
+			resetPasswordMessage.AppendLine("</div>");
+
+			context.MessageTemplates.AddOrUpdate(
+				t => t.TemplateKey,
+				new MessageTemplate
+				{
+					TemplateKey = "ResetPasswordRequest",
+					Subject = "Ben E. Keith Entrée Password Reset",
+					IsBodyHtml = true,
+					Type = MessageTemplateType.Email,
+					Body = resetPasswordMessage.ToString()
+
+				});
+
+
         }
     }
 

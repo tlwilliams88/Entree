@@ -57,6 +57,14 @@ angular.module('bekApp')
     $scope.signUpBool = !signUpBool;
   };
 
+  $scope.checkForInternalEmail = function(email) {    
+    if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === "@benekeith.com"){
+      $scope.isInternalEmail = true;
+    }else{
+      $scope.isInternalEmail = false;
+    }
+  };
+
   var processingRegistration = false;
   $scope.registerNewUser = function(userProfile) {
     if (!processingRegistration) {

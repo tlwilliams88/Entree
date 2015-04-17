@@ -57,11 +57,6 @@ namespace KeithLink.Svc.Test.Logic {
         }
 
         [TestMethod]
-        public void ResetUserPassword() {
-            _logic.ResetPassword("testguest@somecompany.com");    
-        }
-
-        [TestMethod]
         public void SuccessfullyCreateGuest() {
             //_logic.CreateGuestUserAndProfile("testguest@somecompany.com", "Ab12345", "FDF");
         }

@@ -132,6 +132,7 @@ namespace KeithLink.Svc.Impl
         private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
         private const string KEY_URL_WEBNOW = "WebNowUrl";
         private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
+		private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
 
 
 		//Email
@@ -160,6 +161,8 @@ namespace KeithLink.Svc.Impl
         private const string KEY_POWERMENU_ADMIN_PASSWORD = "PowerMenuAdminPassword";
         private const string KEY_POWERMENU_WEBSERVICE_URL = "PowerMenuWebServiceUrl";
         private const string KEY_POWERMENU_PERMISSIONS_URL = "PowerMenuPermissionsUrl";
+        private const string KEY_POWERMENU_LOGIN_URL = "PowerMenuLoginUrl";
+        private const string KEY_POWERMENU_GROUP_SETUP_URL = "PowerMenuGroupSetupUrl";
         #endregion
 
         #region methods
@@ -177,6 +180,14 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);
             }
         }
+
+		public static string EntreeSiteURL
+		{
+			get
+			{
+				return GetValue(KEY_ENTREE_SITE_URL, string.Empty);
+			}
+		}
 
         public static string AccessGroupKbitCustomer {
             get {
@@ -600,6 +611,14 @@ namespace KeithLink.Svc.Impl
 
         public static string PowerMenuPermissionsUrl {
             get { return GetValue( KEY_POWERMENU_PERMISSIONS_URL, string.Empty ); }
+        }
+        
+        public static string PowerMenuLoginUrl {
+            get { return GetValue( KEY_POWERMENU_LOGIN_URL, string.Empty ); }
+        }
+
+        public static string PowerMenuGroupSetupUrl {
+            get { return GetValue( KEY_POWERMENU_GROUP_SETUP_URL, string.Empty ); }
         }
 
         public static string PresentationUrl {
