@@ -8,6 +8,8 @@ using System.Net.Http;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Interface.PowerMenu;
+using KeithLink.Svc.Core.Models.PowerMenu;
+using KeithLink.Svc.Core.Extensions.PowerMenu;
 
 namespace KeithLink.Svc.Impl.Repository.PowerMenu {
     public class PowerMenuRepositoryImpl : IPowerMenuRepository {
@@ -27,7 +29,7 @@ namespace KeithLink.Svc.Impl.Repository.PowerMenu {
         /// </summary>
         /// <param name="requests"></param>
         /// <returns></returns>
-        public bool SendPowerMenuAccountRequests( string request ) {
+        public bool SendPowerMenuAccountRequests( PowerMenuSystemRequestModel request ) {
             bool returnValue = false;
 
             using (HttpClient client = new HttpClient())
