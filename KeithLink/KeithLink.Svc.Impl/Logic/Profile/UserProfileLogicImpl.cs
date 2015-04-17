@@ -1172,17 +1172,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// Reset a password administration style (no old password required)
         /// </summary>
         /// <param name="emailAddress"></param>
-        public void ResetPassword(string emailAddress) {
-            if (emailAddress == null)
-                throw new ArgumentException("EmailAddress cannot be null");
-
-            string generatedPassword = GenerateTemporaryPassword();
-
-            _extAd.UpdatePassword(emailAddress, generatedPassword);
-            _extAd.ExpirePassword(emailAddress);
-            _extAd.UnlockAccount(emailAddress);
-
-            SendPasswordChangeEmail(emailAddress, generatedPassword, RESET_PASSWORD);
+		public void ResetPassword(Guid userId, string newPassword){
+			var user = GetUserProfile(userId);
+			if (user.UserProfiles.Count != 1)
+				return;
+            
+            _extAd.UpdatePassword(user.UserProfiles[0].EmailAddress, newPassword);
+			_extAd.UnlockAccount(user.UserProfiles[0].EmailAddress);
         }
 
         /// <summary>

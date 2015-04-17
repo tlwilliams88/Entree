@@ -47,7 +47,7 @@ angular.module('bekApp')
 
   $scope.forgotPassword = function(email) { 
     UserProfileService.resetPassword(email).then(function(data){      
-       toaster.pop('success', null, 'Successfully reset password.');
+       toaster.pop('success', null, 'We have sent a password reset request if the email was verified');
       },function(error) {
       toaster.pop('error', null, 'Error resetting password.');        
       });

@@ -220,6 +220,7 @@
     <Compile Include="Logic\InternalSvc\InternalOnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalReportLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\ItemNoteLogicImpl.cs" />
@@ -507,6 +508,10 @@
     <Compile Include="Repository\EF\Migrations\201504031604421_increase_order_detail_invoice_length.Designer.cs">
       <DependentUpon>201504031604421_increase_order_detail_invoice_length.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201504161516299_Create_PasswordResetRequest_table.cs" />
+    <Compile Include="Repository\EF\Migrations\201504161516299_Create_PasswordResetRequest_table.Designer.cs">
+      <DependentUpon>201504161516299_Create_PasswordResetRequest_table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -591,6 +596,7 @@
     <Compile Include="Repository\Profile\Cache\NoCacheUserProfileCacheRepository.cs" />
     <Compile Include="Repository\Profile\Cache\UserProfileCacheRepository.cs" />
     <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
+    <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
@@ -1037,6 +1043,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201504031604421_increase_order_detail_invoice_length.resx">
       <DependentUpon>201504031604421_increase_order_detail_invoice_length.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201504161516299_Create_PasswordResetRequest_table.resx">
+      <DependentUpon>201504161516299_Create_PasswordResetRequest_table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

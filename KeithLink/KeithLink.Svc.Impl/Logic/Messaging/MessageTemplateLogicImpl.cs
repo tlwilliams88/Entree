@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Extensions;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging
 {
@@ -25,7 +26,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 			if (template == null)
 				return null;
 
-			return new MessageTemplateModel() { Id = template.Id, Body = template.Body, IsBodyHtml = template.IsBodyHtml, ModifiedOn = template.ModifiedUtc, Subject = template.Subject, TemplateKey = template.TemplateKey };
+			return template.ToMessageTemplateModel();
 		}
 	}
 }

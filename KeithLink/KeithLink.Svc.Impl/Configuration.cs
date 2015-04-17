@@ -132,6 +132,7 @@ namespace KeithLink.Svc.Impl
         private const string LIST_ITEM_DAYS_NEW = "ListItemDaysNew";
         private const string KEY_URL_WEBNOW = "WebNowUrl";
         private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
+		private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
 
 
 		//Email
@@ -177,6 +178,14 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);
             }
         }
+
+		public static string EntreeSiteURL
+		{
+			get
+			{
+				return GetValue(KEY_ENTREE_SITE_URL, string.Empty);
+			}
+		}
 
         public static string AccessGroupKbitCustomer {
             get {

@@ -496,6 +496,21 @@ angular.module('bekApp')
           }
         }]
       }
+    })
+
+    /************************
+    /* User Password
+    /************************/
+    .state('forgotpassword', {
+        url: '/forgotpassword/?t',
+        templateUrl: 'views/forgotpassword.html',
+        controller: 'ForgotPasswordController',
+        data: {},
+        resolve: {
+        validToken: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+         return UserProfileService.validateToken($stateParams.t);
+        }]
+      }
     });
 
   $stateProvider
