@@ -35,6 +35,11 @@ angular.module('bekApp')
       getAllPendingTransactions: {
         url: '/invoice/transactions/pending',
         method: 'POST'
+      },
+
+      getTransactionExportConfig: {
+        url: '/invoice/transactions/pending/export',
+        method: 'GET'
       }
 
     });

@@ -1,50 +1,51 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('AccessService', ['LocalStorage', 'Constants',
-    function (LocalStorage, Constants) {
+  .factory('AccessService', ['LocalStorage', 'Constants', 'SessionService',
+    function (LocalStorage, Constants, SessionService) {
 
-  // validates the token is not expired
-  function isValidToken() {
-    var token = LocalStorage.getToken();
-    var now = new Date();
-    return (token && now < new Date(token.expires_at));
+  function getRole() {
+    return SessionService.userProfile.rolename;
   }
 
   // EXTERNAL
   function isOwner() {
-    return ( LocalStorage.getUserRole() === Constants.roles.OWNER );
+    return ( getRole() === Constants.roles.OWNER );
   }
   function isAccounting() {
-    return ( LocalStorage.getUserRole() === Constants.roles.ACCOUNTING );
+    return ( getRole() === Constants.roles.ACCOUNTING );
   }
   function isApprover() {
-    return ( LocalStorage.getUserRole() === Constants.roles.APPROVER );
+    return ( getRole() === Constants.roles.APPROVER );
   }
   function isBuyer() {
-    return ( LocalStorage.getUserRole() === Constants.roles.BUYER );
+    return ( getRole() === Constants.roles.BUYER );
   }
   function isGuest() {
-    return ( LocalStorage.getUserRole() === Constants.roles.GUEST );
+    return ( getRole() === Constants.roles.GUEST );
   }
   // INTERNAL
   function isSysAdmin() {
-    return ( LocalStorage.getUserRole() === Constants.roles.SYS_ADMIN );
+    return ( getRole() === Constants.roles.SYS_ADMIN );
   }
   function isBranchManager() {
-    return ( LocalStorage.getUserRole() === Constants.roles.BRANCH_MANAGER );
+    return ( getRole() === Constants.roles.BRANCH_MANAGER );
   }
   function isPowerUser() {
-    return ( LocalStorage.getUserRole() === Constants.roles.POWER_USER );
+    return ( getRole() === Constants.roles.POWER_USER );
   }
   function isDsr() {
-    return ( LocalStorage.getUserRole() === Constants.roles.DSR );
+    return ( getRole() === Constants.roles.DSR );
   }
   function isDsm() {
-    return ( LocalStorage.getUserRole() === Constants.roles.DSM );
+    return ( getRole() === Constants.roles.DSM );
   }
   function isKbitAdmin() {
-    return ( LocalStorage.getUserRole() === Constants.roles.KBIT_ADMIN );
+    return ( getRole() === Constants.roles.KBIT_ADMIN );
+  }
+
+  function isDemo() {
+    return SessionService.userProfile.isdemo;
   }
 
   function isValidRole() {
@@ -78,12 +79,18 @@ angular.module('bekApp')
       return displayRole;
     },
 
+    isValidToken: function() {
+      var token = LocalStorage.getToken();
+      var now = new Date();
+      return (token && now < new Date(token.expires_at));
+    },
+
     isLoggedIn: function() {
-      return !!(LocalStorage.getProfile() && isValidToken() && isValidRole());
+      return !!(SessionService.userProfile && Service.isValidToken() && isValidRole());
     },
 
     isPasswordExpired: function() {
-        return (Service.isLoggedIn() && LocalStorage.getProfile().passwordexpired);
+        return (Service.isLoggedIn() && SessionService.userProfile.passwordexpired);
     },
 
     isOrderEntryCustomer: function() {
@@ -138,6 +145,9 @@ angular.module('bekApp')
 
     canEditUsers: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
+    },
+    isDemo: function() {
+      return isDemo();
     }
 
   };

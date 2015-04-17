@@ -116,6 +116,29 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
 		}
+
+		[HttpPost]
+		[ApiKeyedRoute("invoice/transactions/pending/export/")]
+		public HttpResponseMessage ExportOrders(InvoiceExportRequestModel request)
+		{
+			request.paging.Size = int.MaxValue;
+			request.paging.From = 0;
+
+			var transactions = _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, request.paging);
+
+			if (request.export.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, request.export.Fields, request.export.SelectedType);
+
+			return ExportModel<PaymentTransactionModel>(transactions.Results, request.export);
+		}
+
+		[HttpGet]
+		[ApiKeyedRoute("invoice/transactions/pending/export")]
+		public ExportOptionsModel ExportOrders()
+		{
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, 0);
+		}
+
 		
         #endregion
     }

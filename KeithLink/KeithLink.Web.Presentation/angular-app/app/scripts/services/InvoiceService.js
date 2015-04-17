@@ -34,15 +34,15 @@ angular.module('bekApp')
       },
 
       // for all customers
-      getPendingTransactions: function(params) {
-        return Invoice.getAllPendingTransactions(params).$promise.then(function (data) {
-          // add data to wrapper object so it matches format of getInvoices endpoints
-          var wrapper = {
-            pagedresults: data
-          };
-          return wrapper;
-        });
-      },
+      // getPendingTransactions: function(params) {
+      //   return Invoice.getAllPendingTransactions(params).$promise.then(function (data) {
+      //     // add data to wrapper object so it matches format of getInvoices endpoints
+      //     var wrapper = {
+      //       pagedresults: data
+      //     };
+      //     return wrapper;
+      //   });
+      // },
 
       payInvoices: function(payments, account) {
         payments.forEach(function(payment) {
@@ -78,6 +78,20 @@ angular.module('bekApp')
 
         ExportService.export('/invoice/export/' + filter, exportParams);
       },
+
+       
+    
+       setFilters: function(filterView,filterRows){       
+        if(filterView){
+          Service.selectedFilterView={};
+          Service.selectedFilterView = filterView;
+        }
+        if(filterRows){
+          Service.filterRowFields ={};
+          Service.filterRowFields = filterRows;
+        }
+        return;
+       },
 
       getDetailExportConfig: function(invoiceNumber) {
         return Invoice.getDetailExportConfig({

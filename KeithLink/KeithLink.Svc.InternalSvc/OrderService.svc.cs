@@ -52,8 +52,8 @@ namespace KeithLink.Svc.InternalSvc {
             return _historyLogic.GetOrder(branchId, invoiceNumber);
         }
 
-        public List<Order> GetOrderHeaderInDateRange(Guid userId, UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            return _historyLogic.GetOrderHeaderInDateRange(userId, customerInfo, startDate, endDate);
+        public List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            return _historyLogic.GetOrderHeaderInDateRange(customerInfo, startDate, endDate);
         }
 
 		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)

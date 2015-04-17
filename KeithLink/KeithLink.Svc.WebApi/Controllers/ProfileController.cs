@@ -125,8 +125,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string email) {
-            if (string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
+        public UserProfileReturn GetUser(string email="") {
+            if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
                 UserProfileReturn retVal = new UserProfileReturn();
                 retVal.UserProfiles.Add(this.AuthenticatedUser);
 				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault();
@@ -557,17 +557,20 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                RequestedApplication selectedApp = RequestedApplication.NotSet;
+                AccessRequestType selectedApp = AccessRequestType.Undefined;
 
                 switch (appname.ToLower()) {
                     case "kbit":
-                        selectedApp = RequestedApplication.KbitCustomer;
+                        selectedApp = AccessRequestType.KbitCustomer;
+                        break;
+                    case "powermenu":
+                        selectedApp = AccessRequestType.PowerMenu;
                         break;
                     default:
                         break;
                 }
 
-                if (selectedApp == RequestedApplication.NotSet) {
+                if (selectedApp == AccessRequestType.Undefined) {
                     retVal.SuccessResponse = false;
                     retVal.ErrorMessage = "Could not grant access to unknown application.";
                 } else {
@@ -577,7 +580,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 }
             } catch (Exception ex) {
                 retVal.SuccessResponse = false;
-                retVal.ErrorMessage = "Could grant access";
+                retVal.ErrorMessage = "Could not grant access";
                 _log.WriteErrorLog("Could not grant access to application.", ex);
             }
 
@@ -591,17 +594,17 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                RequestedApplication selectedApp = RequestedApplication.NotSet;
+                AccessRequestType selectedApp = AccessRequestType.Undefined;
 
                 switch (appname.ToLower()) {
                     case "kbit":
-                        selectedApp = RequestedApplication.KbitCustomer;
+                        selectedApp = AccessRequestType.KbitCustomer;
                         break;
                     default:
                         break;
                 }
 
-                if (selectedApp == RequestedApplication.NotSet) {
+                if (selectedApp == AccessRequestType.Undefined) {
                     retVal.SuccessResponse = false;
                     retVal.ErrorMessage = "Could not revoke access from unknown application.";
                 } else {

@@ -120,7 +120,9 @@ namespace KeithLink.Svc.Core.Models.Lists
 						ModifiedUtc = item.ModifiedUtc,
 						CasePrice = item.CasePrice,
 						PackagePrice = item.PackagePrice,
-                        Each = item.Each
+                        Each = item.Each,
+						CategoryName = item.CategoryName,
+						ItemClass = item.ItemClass
 					});
 				}
 

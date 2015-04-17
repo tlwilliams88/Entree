@@ -17,7 +17,7 @@ angular.module('bekApp')
 
   $scope.accounts = accounts;
   $scope.selectedAccount = accounts[0];
- $scope.currDate = new Date()
+ $scope.currDate = new Date();
   $scope.datepickerOptions = {
     minDate: new Date(),
     options: {
@@ -26,15 +26,6 @@ angular.module('bekApp')
     }
   };
 
-  var invoicePagingModel = new PagingModel( 
-    InvoiceService.getInvoices, 
-    setInvoices,
-    appendInvoices,
-    startLoading,
-    stopLoading
-  );
-
-  invoicePagingModel.loadData();
     
   // different filter views for users to choose in the header dropdown
   $scope.filterViews = [{
@@ -72,7 +63,21 @@ angular.module('bekApp')
       value: 'Paid'
     }]
   }];
-  $scope.selectedFilterView = $scope.filterViews[1];
+
+
+  var invoicePagingModel = new PagingModel( 
+    InvoiceService.getInvoices, 
+    setInvoices,
+    appendInvoices,
+    startLoading,
+    stopLoading
+  );
+
+    if(!InvoiceService.selectedFilterView){
+  $scope.selectedFilterView = InvoiceService.selectedFilterView = $scope.filterViews[1];
+}
+  retrieveFilter();
+  invoicePagingModel.loadData();
 
   function calculateInvoiceFields(invoices) {
     invoices.forEach(function(invoice) {
@@ -99,6 +104,23 @@ angular.module('bekApp')
 
     calculateInvoiceFields(data.pagedresults.results);
   }
+
+
+    function retrieveFilter() {
+        if(InvoiceService && InvoiceService.filterRowFields){
+            $scope.showFilter = true;
+            $scope.filterRowFields =InvoiceService.filterRowFields;
+            $scope.selectedFilterView = InvoiceService.selectedFilterView;
+          var filter = getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
+        }
+        else{
+          if(InvoiceService && InvoiceService.selectedFilterView){
+          $scope.selectedFilterView = InvoiceService.selectedFilterView;
+          var filter = getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
+        }
+  }
+}
+
   function appendInvoices(data) {
     $scope.invoices = $scope.invoices.concat(data.pagedresults.results);
     calculateInvoiceFields(data.pagedresults.results);
@@ -110,7 +132,7 @@ angular.module('bekApp')
     $scope.loadingResults = false;
   }
 
-  function getInvoicesFilterObject(filterFields, filterView) {
+  function getInvoicesFilterObject(filterFields, filterView) {  
     var filter = invoicePagingModel.getFilterObject(filterFields, filterView.filterFields);
     if (filterView.specialFitler) {
       if (filter) {
@@ -121,19 +143,23 @@ angular.module('bekApp')
     }
     invoicePagingModel.filter = filter;
     invoicePagingModel.pageIndex = 0;
+
     return filter;
   }
 
   $scope.filterInvoices = function(filterFields) {
+    InvoiceService.setFilters($scope.selectedFilterView , filterFields);
     getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
     invoicePagingModel.loadData();
   };
   $scope.clearFilters = function() {
-    $scope.filterRowFields = {};
-    getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);
+    $scope.filterRowFields = InvoiceService.filterRowFields = {};
+    getInvoicesFilterObject($scope.filterRowFields, $scope.selectedFilterView);    
     invoicePagingModel.loadData();
+    $scope.showFilter = false;
   };
   $scope.selectFilterView = function (filterView) {
+    InvoiceService.setFilters(filterView, $scope.filterRowFields);
     $scope.selectedFilterView = filterView;
     getInvoicesFilterObject($scope.filterRowFields, filterView);
     invoicePagingModel.loadData();
@@ -322,5 +348,4 @@ angular.module('bekApp')
       }
     });
   };
-
 }]);

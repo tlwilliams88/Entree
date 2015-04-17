@@ -77,7 +77,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 							if ((isGuest && isCustomerSelected) || (!isGuest && !userHasAccessToCustomer))
 							{
-								throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1})", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId));
+								throw new Exception(string.Format("Authenticated user does not have access to passed CustomerId/Branch ({0}/{1}). Requested URI {2}", this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId, this.Request.RequestUri));
 							}
 						}
                     }

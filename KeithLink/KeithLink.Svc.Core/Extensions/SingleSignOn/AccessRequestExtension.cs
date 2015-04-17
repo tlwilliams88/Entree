@@ -25,6 +25,8 @@ namespace KeithLink.Svc.Core.Extensions.SingleSignOn {
                 switch (request.RequestType) {
                     case Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer:
                         return (BaseAccessRequest)new DataContractJsonSerializer(typeof(KbitCustomerAccessRequest)).ReadObject(ms);
+                    case Core.Enumerations.SingleSignOn.AccessRequestType.PowerMenu:
+                        return (BaseAccessRequest)new DataContractJsonSerializer( typeof( PowerMenuCustomerAccessRequest ) ).ReadObject( ms );
                     default:
                         return request;
                 }

@@ -15,6 +15,16 @@ namespace KeithLink.Svc.Core
         public const string AD_GUEST_FIRSTNAME = "guest";
         public const string AD_GUEST_LASTNAME = "account";
 
+        public const string BRANCH_FAM = "FAM";
+        public const string BRANCH_FAQ = "FAQ";
+        public const string BRANCH_FAR = "FAR";
+        public const string BRANCH_FDF = "FDF";
+        public const string BRANCH_FHS = "FHS";
+        public const string BRANCH_FLR = "FLR";
+        public const string BRANCH_FOK = "FOK";
+        public const string BRANCH_FSA = "FSA";
+        public const string BRANCH_GOF = "GOF";
+
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
         public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
         public const string REGEX_PASSWORD_PATTERN = @"^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d]).*$";
@@ -69,6 +79,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_POWERUSER_FAR = "FLAR-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_FSA = "FSAN-LS-SYS-AC-Entree_PowerUsers";
         public const string ROLE_INTERNAL_POWERUSER_FOK = "FOKC-LS-SYS-AC-Entree_PowerUsers";
+        public const string ROLE_INTERNAL_POWERUSER_GOF = "FFGO-LS-SYS-AC-Entree_PowerUsers";
 
         public const string ROLE_NAME_BRANCHIS = "branchismanager";
         public const string ROLE_NAME_DSM = "dsm";
@@ -117,7 +128,8 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_POWERUSER_FAM, ROLE_INTERNAL_POWERUSER_FAQ,
             ROLE_INTERNAL_POWERUSER_FAR, ROLE_INTERNAL_POWERUSER_FDF,
             ROLE_INTERNAL_POWERUSER_FHS, ROLE_INTERNAL_POWERUSER_FLR,
-            ROLE_INTERNAL_POWERUSER_FOK, ROLE_INTERNAL_POWERUSER_FSA
+            ROLE_INTERNAL_POWERUSER_FOK, ROLE_INTERNAL_POWERUSER_FSA,
+            ROLE_INTERNAL_POWERUSER_GOF
         };
 
         // Elastic Search : Indexes

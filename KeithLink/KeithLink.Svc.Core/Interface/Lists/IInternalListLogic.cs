@@ -28,12 +28,14 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void DeleteItem(long Id);
 		
         void DeleteList(long Id);
+
+		void DeleteItemNumberFromList(long Id, string itemNumber);
 		
         void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
 		
 		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
         
-        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 		
 		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type);
         
@@ -51,7 +53,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		
         void UpdateList(ListModel userList);
 
-		void CopyList(ListCopyShareModel copyListModel);
+		List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
 		void ShareList(ListCopyShareModel shareListModel);
 
 		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);

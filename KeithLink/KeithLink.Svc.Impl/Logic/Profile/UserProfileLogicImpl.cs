@@ -20,6 +20,8 @@ using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.PowerMenu;
+using KeithLink.Svc.Core.Extensions.PowerMenu;
 
 using System;
 using System.Collections.Generic;
@@ -27,6 +29,8 @@ using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -366,6 +370,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
         public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
 
             AssertGuestProfile(emailAddress, password);
@@ -413,6 +418,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId) {
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
             _extAd.CreateUser(customerName,
@@ -433,6 +439,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return GetUserProfile(emailAddress);
         }
 
+        /// <summary>
+        /// return all customers that a user has access to
+        /// </summary>
+        /// <param name="user">the current user</param>
+        /// <param name="searchTerms">the text to search for</param>
+        /// <param name="paging">paging information</param>
+        /// <param name="account"></param>
+        /// <returns>paged list of Customers</returns>
+        /// <remarks>
+        /// jwames - 4/9/2015 - add support for GOF power users
+        /// </remarks>
         public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account) {
             if (string.IsNullOrEmpty(searchTerms))
                 searchTerms = "";
@@ -451,10 +468,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     // lookup customers by their assigned dsr number
                     return _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
 
-                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
                     return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
-                } else { // assume admin user with access to all customers
+                } else { // assume admin user with access to all customers or PowerUser from GOF
                     return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
                 }
             } else { // external user
@@ -472,6 +489,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>a completed user profile object</returns>
         /// <remarks>
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
+        /// jwames - 4/13/2015 - handle the DSM number when it is two or three digits
         /// </remarks>
         public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false) {
             //List<Customer> userCustomers;
@@ -484,6 +502,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             bool isInternalUser = IsInternalAddress(csProfile.Email);
             UserPrincipal adUser = null;
             bool isKbitCustomer = false;
+            bool isPowerMenuCustomer = false;
 
             if (isInternalUser) {
                 adUser = _intAd.GetUser(csProfile.Email);
@@ -504,7 +523,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
                     userRole = Constants.ROLE_NAME_DSM;
                     //userBranch = dsmRole.Substring(0, 3);
-                    dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                    //dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                    if (adUser.Description.Length == 3) {
+                        dsmNumber = adUser.Description.Substring(1, 2);
+                    } else if (adUser.Description.Length == 2) {
+                        dsmNumber = adUser.Description;
+                    }
                 } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
                     dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
                     userRole = Constants.ROLE_NAME_DSR;
@@ -525,7 +549,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
 
                 userBranch = csProfile.DefaultBranch;
-                
+                isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
+                isPowerMenuCustomer = _extAd.HasAccess( csProfile.Email, Configuration.AccessGroupPowerMenuCustomer );
             }
 
             string userNameToken = string.Concat(adUser.SamAccountName, "-", DateTime.Now.ToString("yyyyMMddHHmmss"));
@@ -550,8 +575,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
                 UserName = adUser.SamAccountName,
                 UserNameToken = tokenBase64,
-                IsKBITCustomer = isKbitCustomer
-            };
+                IsKBITCustomer = isKbitCustomer,
+                IsPowerMenuCustomer = isPowerMenuCustomer,
+                PowerMenuPermissionsUrl = String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email)
+#if DEMO
+				,IsDemo = true
+#endif
+			};
+
         }
 
         private string GenerateTemporaryPassword() {
@@ -597,6 +628,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                     .GroupBy(x => x.UserId)
                                     .Select(grp => grp.First())
                                     .ToList();
+
+			foreach (var up in acct.AdminUsers)
+				up.RoleName = GetUserRole(up.EmailAddress);
 
             foreach (var up in acct.CustomerUsers)
                 up.RoleName = GetUserRole(up.EmailAddress);
@@ -645,11 +679,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>3-digit branch name</returns>
         /// <remarks>
         /// jwames - 10/9/2014 - original code
+        /// jwames - 4/9/2015 - add GOF and use constants
         /// </remarks>
         private string GetBranchFromOU(string OU) {
             switch (OU) {
                 case "FABQ":
-                    return "FAQ";
+                    return Constants.BRANCH_FAQ;
                 case "FAMA":
                 case "FDFW":
                 case "FHST":
@@ -657,6 +692,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 case "FOKC":
                 case "FSAN":
                     return OU.Substring(0, 3);
+                case "FFGO":
+                    return Constants.BRANCH_GOF;
                 default:
                     return null;
             }
@@ -727,7 +764,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			return returnedMsgPrefModel;
 		}
 
-
+        /// <summary>
+        /// return all customers for user
+        /// </summary>
+        /// <param name="user">the current user</param>
+        /// <param name="search">search text</param>
+        /// <returns>list of customers that a user has access to</returns>
+        /// <remarks>
+        /// jwames - 4/9/2015 - add support for GOF PowerUser
+        /// </remarks>
         public List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "") {
             List<Customer> allCustomers = new List<Customer>();
             if (string.IsNullOrEmpty(search))
@@ -739,12 +784,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 } else if (!String.IsNullOrEmpty(user.DSMRole)) {
                     //lookup customers by their assigned dsm number
                     _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
-                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER)) {
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId);
                     else
                         allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
-                } else { // assume admin user with access to all customers
+                } else { // assume admin user with access to all customers or a PowerUser from GOF
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
                     else
@@ -979,12 +1024,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void GrantRoleAccess(string emailAddress, RequestedApplication requestedApp) {
+        public void GrantRoleAccess(string emailAddress, AccessRequestType requestedApp) {
             string appRoleName;
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     appRoleName = Configuration.AccessGroupKbitCustomer;
+                    break;
+                case AccessRequestType.PowerMenu:
+                    appRoleName = Configuration.AccessGroupPowerMenuCustomer;
                     break;
                 default:
                     return;
@@ -997,8 +1045,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     RequestKbitAccess(emailAddress);
+                    break;
+                case AccessRequestType.PowerMenu:
+                    SendPowerMenuRequests( emailAddress );
+                    //TODO: Add logic to add powermenu customer accounts and flag profiles with access
                     break;
                 default:
                     break;
@@ -1038,6 +1090,40 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             // do not load customers because we are removing all of them
 
             SubmitExternalApplicationRequest(kbitAppRequest);
+        }
+
+        private void RemovePowerMenuAccess(string emailAddress) {
+
+            // Create the powermenu specific request that gets serialized to xml
+            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
+
+            // get the users profile
+            UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
+
+            // get all customers for the user
+            List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
+
+            // create a request for every powermenu customer
+            powerMenuRequest = (from customer in customers
+                                 where customer.IsPowerMenu == true
+                                 select new PowerMenuSystemRequestModel() {
+                                     User = new PowerMenuSystemRequestUserModel() {
+                                         Username = emailAddress,
+                                         Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
+                                         ContactName = customer.PointOfContact,
+                                         CustomerNumber = customer.CustomerNumber,
+                                         EmailAddress = customer.Email,
+                                         PhoneNumber = customer.Phone,
+                                         State = "TX" // does this need to be dynamic?
+                                     },
+                                     Login = new PowerMenuSystemRequestAdminModel() {
+                                         AdminUsername = Configuration.PowerMenuAdminUsername,
+                                         AdminPassword = Configuration.PowerMenuAdminPassword
+                                     },
+                                     Operation = PowerMenuSystemRequestModel.Operations.Delete
+                                 }).First();
+
+            //SendPowerMenuRequests( powerMenuRequest, emailAddress );
         }
 
         public void RemoveUserFromAccount(Guid accountId, Guid userId) {
@@ -1107,12 +1193,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void RevokeRoleAccess(string emailAddress, RequestedApplication requestedApp) {
+        public void RevokeRoleAccess(string emailAddress, AccessRequestType requestedApp) {
             string appRoleName;
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     appRoleName = Configuration.AccessGroupKbitCustomer;
+                    break;
+                case AccessRequestType.PowerMenu:
+                    appRoleName = Configuration.AccessGroupPowerMenuCustomer;
                     break;
                 default:
                     return;
@@ -1123,8 +1212,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
             switch (requestedApp) {
-                case RequestedApplication.KbitCustomer:
+                case AccessRequestType.KbitCustomer:
                     RemoveKbitAccess(emailAddress);
+                    break;
+                case AccessRequestType.PowerMenu:
+                    RemovePowerMenuAccess( emailAddress );
                     break;
                 default:
                     break;
@@ -1150,6 +1242,80 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
         }
 
+        private void SetupPowerMenuForAccount(string emailAddress) {
+
+            // Create the powermenu specific request that gets serialized to xml
+            //PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
+
+            //// get the users profile
+            //UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
+
+            //// get all customers for the user
+            //List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
+
+            //// create a request for every powermenu customer
+            //powerMenuRequest = (from customer in customers
+            //                     where customer.IsPowerMenu == true
+            //                     select new PowerMenuSystemRequestModel() {
+            //                         User = new PowerMenuSystemRequestUserModel() {
+            //                             Username = emailAddress,
+            //                             Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
+            //                             ContactName = customer.PointOfContact,
+            //                             CustomerNumber = customer.CustomerNumber,
+            //                             EmailAddress = customer.Email,
+            //                             PhoneNumber = customer.Phone,
+            //                             State = "TX" // does this need to be dynamic?
+            //                         },
+            //                         Login = new PowerMenuSystemRequestAdminModel() {
+            //                             AdminUsername = Configuration.PowerMenuAdminUsername,
+            //                             AdminPassword = Configuration.PowerMenuAdminPassword
+            //                         },
+            //                         Operation = PowerMenuSystemRequestModel.Operations.Add
+            //                     }).First();
+
+            // If there are customers to add, send the request to PowerMenu 
+            //SendPowerMenuRequests( powerMenuRequest, emailAddress );
+        }
+
+        /// <summary>
+        /// Prepare and send the powermenu requests to the queue
+        /// </summary>
+        /// <param name="requests"></param>
+        /// <param name="emailAddress"></param>
+        private void SendPowerMenuRequests( string emailAddress ) {
+            PowerMenuCustomerAccessRequest accessRequest = new PowerMenuCustomerAccessRequest();
+            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
+
+            accessRequest.UserName = emailAddress;
+            accessRequest.RequestType = AccessRequestType.PowerMenu;
+
+            UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
+
+            List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
+
+            powerMenuRequest = (from customer in customers
+                                 where customer.IsPowerMenu == true
+                                 select new PowerMenuSystemRequestModel() {
+                                     User = new PowerMenuSystemRequestUserModel() {
+                                         Username = emailAddress,
+                                         Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
+                                         ContactName = customer.PointOfContact,
+                                         CustomerNumber = customer.CustomerNumber,
+                                         EmailAddress = customer.Email,
+                                         PhoneNumber = customer.Phone,
+                                         State = "TX" // does this need to be dynamic?
+                                     },
+                                     Login = new PowerMenuSystemRequestAdminModel() {
+                                         AdminUsername = Configuration.PowerMenuAdminUsername,
+                                         AdminPassword = Configuration.PowerMenuAdminPassword
+                                     },
+                                     Operation = PowerMenuSystemRequestModel.Operations.Add
+                                 }).First();
+
+
+            SubmitExternalApplicationRequest( accessRequest );
+        }
+
         /// <summary>
         /// send the external application request to the message queue 
         /// </summary>
@@ -1172,6 +1338,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 4/2/2015 - change AD structure
         /// </remarks>
         public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
+            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             string generatedPassword = GenerateTemporaryPassword();
 
             AssertGuestProfile( emailAddress, generatedPassword );
@@ -1230,7 +1397,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             // update account user roles to owner
             foreach (UserProfile user in users) // all account users are assumed to be owners on all customers
-                UpdateCustomersForUser(customers, "owner", user);
+                UpdateCustomersForUser(customers, user.RoleName, user);
 
             _accountRepo.UpdateAccount(name, accountId);
 

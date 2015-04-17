@@ -99,12 +99,27 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					options.Fields.Add(new ExportModelConfiguration() { Field = "Amount", Label = "Amount" });
 					return options;
 				case ExportType.ItemUsage:
+
 					options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
 					options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Brand", Order = 21, Label = "Brand" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Order = 21, Label = "Mfr Name" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "UPC", Order = 22, Label = "GTIN" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "VendorItemNumber", Order = 23, Label = "Vendor Item" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "AveragePrice", Order = 24, Label = "Average Price" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "TotalCost", Order = 25, Label = "Total Cost" });
 					options.Fields.Add(new ExportModelConfiguration() { Field = "TotalQuantityOrdered", Order = 30, Label = "Qty Ordered" });
 					options.Fields.Add(new ExportModelConfiguration() { Field = "TotalQuantityShipped", Order = 40, Label = "Qty Shipped" });
 					options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 50, Label = "Pack / Size" });
 					options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Order = 60, Label = "Each" });
+					return options;
+				case ExportType.PendingTransactions:
+					options.Fields.Add(new ExportModelConfiguration() { Field = "CustomerName", Order = 1, Label = "Customer Name" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "CustomerNumber", Order = 10, Label = "Customer Number" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "ConfirmationId", Order = 20, Label = "Confirmation Id" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 30, Label = "Invoice #" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "PaymentAmount", Order = 40, Label = "Amount" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "AccountNumber", Order = 50, Label = "Account" });
 
 					return options;
 			}
@@ -117,7 +132,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Description", Label = "Description" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "BrandExtendedDescription", Label = "Brand" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Label = "Pack/Size" });
-			options.Fields.Add(new ExportModelConfiguration() { Field = "QuantityInCart", Label = "# In Cart" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "Notes", Label = "Note" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryId", Label = "Category" });
 			options.Fields.Add(new ExportModelConfiguration() { Field = "CategoryName", Label = "Category Desc" });

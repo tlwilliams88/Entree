@@ -161,6 +161,7 @@
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
     <Compile Include="Extensions\DsrExtensions.cs" />
+    <Compile Include="Extensions\PowerMenu\PowerMenuSystemRequestExtensions.cs" />
     <Compile Include="Extensions\SingleSignOn\AccessRequestExtension.cs" />
     <Compile Include="Extensions\MessagingExtensions.cs" />
     <Compile Include="Extensions\Enumerations\UnitOfMeasureExtension.cs" />
@@ -210,6 +211,8 @@
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
+    <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
+    <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
@@ -238,6 +241,7 @@
     <Compile Include="Models\Invoices\Imaging\Document\ImageNowDocumentReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ImageNowViewQueryReturnModel.cs" />
     <Compile Include="Models\Invoices\Imaging\View\ResultRow.cs" />
+    <Compile Include="Models\Lists\ListCopyResultModel.cs" />
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />
@@ -418,6 +422,9 @@
     <Compile Include="Models\Paging\PagedResults.cs" />
     <Compile Include="Models\Paging\PagingModel.cs" />
     <Compile Include="Models\Paging\SortInfo.cs" />
+    <Compile Include="Models\PowerMenu\PowerMenuSystemRequestModel.cs" />
+    <Compile Include="Models\PowerMenu\PowerMenuSystemRequestAdminModel.cs" />
+    <Compile Include="Models\PowerMenu\PowerMenuSystemRequestUserModel.cs" />
     <Compile Include="Models\Profile\Account.cs" />
     <Compile Include="Models\Profile\AccountReturn.cs" />
     <Compile Include="Models\Profile\AccountFilterModel.cs" />
@@ -440,6 +447,7 @@
     <Compile Include="Models\Reports\ItemUsageReportQueryModel.cs" />
     <Compile Include="Models\ShoppingCart\QuickAddItemModel.cs" />
     <Compile Include="Models\ShoppingCart\QuickAddReturnModel.cs" />
+    <Compile Include="Models\SingleSignOn\PowerMenuCustomerAccessRequest.cs" />
     <Compile Include="Models\SiteCatalog\CatalogInfo.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCart.cs" />
     <Compile Include="Models\ShoppingCart\ShoppingCartItem.cs" />

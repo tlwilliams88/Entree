@@ -53,7 +53,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         UserProfileReturn GetUsers(UserFilterModel userFilters);
 
-        void GrantRoleAccess(string emailAddress, RequestedApplication requestedApp);
+        void GrantRoleAccess(string emailAddress, AccessRequestType requestedApp);
 
         bool IsInternalAddress(string emailAddress);
 
@@ -63,7 +63,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void ResetPassword(string emailAddress);
 
-        void RevokeRoleAccess(string emailAddress, RequestedApplication requestedApp);
+        void RevokeRoleAccess(string emailAddress, AccessRequestType requestedApp);
 
         bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
 

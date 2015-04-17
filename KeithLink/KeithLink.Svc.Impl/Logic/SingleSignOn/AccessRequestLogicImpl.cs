@@ -2,8 +2,10 @@
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
 using KeithLink.Svc.Core.Interface.SingleSignOn;
+using KeithLink.Svc.Core.Interface.PowerMenu;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.SingleSignOn;
+using KeithLink.Svc.Core.Models.PowerMenu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +18,7 @@ namespace KeithLink.Svc.Impl.Logic.SingleSignOn {
         private const int DURATION_TIMER_INTERVAL = 5000;
 
         private IKbitRequestLogic _kbitLogic;
+        private IPowerMenuLogic _pmLogic;
         private bool _keepQueueListening;
         private IEventLogRepository _log;
         private IGenericQueueRepository _queue;
@@ -23,8 +26,9 @@ namespace KeithLink.Svc.Impl.Logic.SingleSignOn {
         #endregion
 
         #region ctor
-        public AccessRequestLogicImpl(IGenericQueueRepository queueRepo, IKbitRequestLogic KbitRequestLogic, IEventLogRepository logRepo) {
+        public AccessRequestLogicImpl(IGenericQueueRepository queueRepo, IKbitRequestLogic KbitRequestLogic, IEventLogRepository logRepo, IPowerMenuLogic pmLogic) {
             _kbitLogic = KbitRequestLogic;
+            _pmLogic = pmLogic;
             _keepQueueListening = true;
             _log = logRepo;
             _queue = queueRepo;
@@ -67,6 +71,9 @@ namespace KeithLink.Svc.Impl.Logic.SingleSignOn {
                             switch (request.RequestType) {
                                 case Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer:
                                     _kbitLogic.UpdateUserAccess(request.UserName, ((KbitCustomerAccessRequest)request).Customers);
+                                    break;
+                                case Core.Enumerations.SingleSignOn.AccessRequestType.PowerMenu:
+                                    _pmLogic.SendAccountRequestToPowerMenu( ((PowerMenuCustomerAccessRequest)request).UserName );
                                     break;
                                 default:
                                     throw new ApplicationException("Unknown request type received.");

@@ -75,11 +75,11 @@ angular.module('bekApp')
   $scope.searchCustomers = function (searchTerm) {
     customerPagingModel.filterCustomers(searchTerm);
   };
-
-  $scope.clearFilter = function(){   
-     $scope.customerSearchTerm = "";       
-     $scope.searchCustomers($scope.customerSearchTerm);     
-  }
+  
+  $scope.clearFilter = function(){    
+     $scope.customerSearchTerm = "";   
+     $scope.searchCustomers($scope.customerSearchTerm);    
+  };
 
   $scope.sortCustomers = function(field, sortDescending) {
     $scope.customersSortDesc = sortDescending;

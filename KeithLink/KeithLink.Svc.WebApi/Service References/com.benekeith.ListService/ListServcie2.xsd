@@ -11,9 +11,11 @@
       <xs:element minOccurs="0" name="imageurl" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="internal" type="xs:boolean" />
       <xs:element minOccurs="0" name="iskbitcustomer" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ispowermenucustomer" type="xs:boolean" />
       <xs:element minOccurs="0" name="lastname" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="passwordexpired" type="xs:boolean" />
       <xs:element minOccurs="0" name="phonenumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="powermenupermissionslink" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="rolename" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="userid" type="ser:guid" />
       <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />

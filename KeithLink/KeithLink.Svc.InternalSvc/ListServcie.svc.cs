@@ -77,9 +77,9 @@ namespace KeithLink.Svc.InternalSvc
 			return listLogic.ReadFavorites(user, catalogInfo);
 		}
 
-        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
 		{
-			return listLogic.ReadList(user, catalogInfo, Id);
+			return listLogic.ReadList(user, catalogInfo, Id, includePrice);
 		}
         
 		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
@@ -120,10 +120,10 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			listLogic.UpdateList(userList);
 		}
-        
-		public void CopyList(ListCopyShareModel copyListModel)
+
+		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
 		{
-			listLogic.CopyList(copyListModel);
+			return listLogic.CopyList(copyListModel);
 		}		
 
 		public void ShareList(ListCopyShareModel shareListModel)
@@ -149,5 +149,11 @@ namespace KeithLink.Svc.InternalSvc
 		}
 		
 		#endregion
+
+
+		public void DeleteItemNumberFromList(long Id, string itemNumber)
+		{
+			listLogic.DeleteItemNumberFromList(Id, itemNumber);
+		}
 	}
 }

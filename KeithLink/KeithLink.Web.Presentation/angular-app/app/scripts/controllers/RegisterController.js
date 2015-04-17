@@ -19,7 +19,6 @@ angular.module('bekApp')
     $scope.signUpBool = true;
   }
 
-
   // gets prepopulated login info for dev environment
   $scope.loginInfo = {
     username: ENV.username,
@@ -33,14 +32,16 @@ angular.module('bekApp')
   $scope.login = function(loginInfo) {
     $scope.loginErrorMessage = '';
     
-    AuthenticationService.login(loginInfo.username, loginInfo.password).then(function(profile) {
-      if (ENV.mobileApp) { // ask to allow push notifications
-        PhonegapPushService.register();
-      }
-      $scope.redirectUserToCorrectHomepage();
-    }, function(errorMessage) {
-      $scope.loginErrorMessage = errorMessage;
-    });
+    AuthenticationService.login(loginInfo.username, loginInfo.password)
+      .then(UserProfileService.getCurrentUserProfile)
+      .then(function(profile) {
+        if (ENV.mobileApp) { // ask to allow push notifications
+          PhonegapPushService.register();
+        }
+        $scope.redirectUserToCorrectHomepage();
+      }, function(errorMessage) {
+        $scope.loginErrorMessage = errorMessage;
+      });
 
   };
 
@@ -56,6 +57,14 @@ angular.module('bekApp')
     $scope.signUpBool = !signUpBool;
   };
 
+  $scope.checkForInternalEmail = function(email) {    
+    if(email.slice(email.indexOf('@'),(email.indexOf('@') + 14)).toLowerCase(0) === "@benekeith.com"){
+      $scope.isInternalEmail = true;
+    }else{
+      $scope.isInternalEmail = false;
+    }
+  };
+
   var processingRegistration = false;
   $scope.registerNewUser = function(userProfile) {
     if (!processingRegistration) {
@@ -65,19 +74,21 @@ angular.module('bekApp')
       UserProfileService.createUser(userProfile).then(function(data) {
 
         // log user in
-        AuthenticationService.login(userProfile.email, userProfile.password).then(function(profile) {
-          // redirect to account details page
-          $state.go('menu.userprofile');
+        AuthenticationService.login(userProfile.email, userProfile.password)
+          .then(UserProfileService.getCurrentUserProfile)
+          .then(function(profile) {
+            // redirect to account details page
+            $state.go('menu.userprofile');
+          }, function(error) {
+            $scope.loginErrorMessage = error.data.error_description;
+            $scope.clearForm();
+            $scope.loginInfo = {};
+          });
         }, function(error) {
-          $scope.loginErrorMessage = error.data.error_description;
-          $scope.clearForm();
-          $scope.loginInfo = {};
+          $scope.registrationErrorMessage = error;
+        }).finally(function() {
+          processingRegistration = false;
         });
-      }, function(error) {
-        $scope.registrationErrorMessage = error;
-      }).finally(function() {
-        processingRegistration = false;
-      });
     }
   };
 
