@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ImportModalController', ['$scope', '$modalInstance', '$state', 'ListService', 'CartService',
-  function ($scope, $modalInstance, $state, ListService, CartService) {
+.controller('ImportModalController', ['$scope', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders',
+  function ($scope, $modalInstance, $state, ListService, CartService, customListHeaders) {
+
+  $scope.customListHeaders = customListHeaders;
   
   $scope.upload = [];
-  var files = [];
+  $scope.files = [];
 
   function goToImportedPage(routeName, routeParams) {
     $state.go(routeName, routeParams).then(function() {
@@ -14,22 +16,23 @@ angular.module('bekApp')
   }
 
   $scope.onFileSelect = function($files) {
-    files = [];
+    $scope.files = [];
     for (var i = 0; i < $files.length; i++) {
-      files.push($files[i]);
+      $scope.files.push($files[i]);
     }
   };
 
   $scope.startListUpload = function(options) {
-    var file = files[0];
+    var file = $scope.files[0];
 
     ListService.importList(file, options).then(function(data) {
       goToImportedPage('menu.lists.items', { listId: data.listid });
     });
   };
 
+
   $scope.startOrderUpload = function(options) {
-    var file = files[0];
+    var file = $scope.files[0];
 
     CartService.importCart(file, options).then(function(data) {
       $state.go('menu.cart.items', { cartId: data.listid }).then(function() {
