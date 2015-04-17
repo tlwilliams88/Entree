@@ -259,7 +259,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
 		public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
 		{
-			var list = listRepository.ReadListForCustomer(catalogInfo, true).FirstOrDefault();
+			var list = listRepository.ReadListForCustomer(catalogInfo, true).Where(l => l.Type == ListType.Notes).FirstOrDefault();
 			if (list == null)
 			{
 				listItemRepository.Delete(list.Items.Where(i => i.ItemNumber.Equals(ItemNumber)).FirstOrDefault());
@@ -467,7 +467,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
         public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
-			var list = listRepository.ReadListForCustomer(catalogInfo, false).Where(l => l.Type.Equals(type) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
+			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type == type && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
 			if (list == null)
 				return null;
@@ -596,9 +596,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             if (String.IsNullOrEmpty(catalogInfo.CustomerId))
                 return new List<List>();
 
-			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
-                (l.UserId == user.UserId && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
-				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)  || l.Type.Equals(ListType.RecommendedItems) || (l.Type.Equals(ListType.Mandatory)));
+			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type == ListType.Custom ||
+				(l.UserId == user.UserId && l.Type == ListType.Favorite) || l.Type == ListType.Contract || l.Type == ListType.Worksheet || l.Type == ListType.ContractItemsAdded
+				|| l.Type == ListType.ContractItemsDeleted || l.Type == ListType.Reminder  || l.Type == ListType.RecommendedItems || (l.Type == ListType.Mandatory));
 			return list;
 		}
 		

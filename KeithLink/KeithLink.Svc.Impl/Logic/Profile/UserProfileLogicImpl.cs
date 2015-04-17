@@ -827,6 +827,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return allCustomers;
         }
 
+		/// <summary>
+		/// Returns a paged list of Accounts
+		///		Additional searching options can be set to filter the accounts by user or customer
+		///		To search for accounts by Customer
+		///			paging.Type = "customer"
+		///			paging.Terms = either customer number or name (partial matches work)
+		///		To search for accounts by User
+		///			paging.Type = "user"
+		///			paing.Terms = user email address. Partial matches do not work, must be the full email address
+		/// </summary>
+		/// <param name="paging"></param>
+		/// <returns>Paged list of accounts</returns>
         public PagedResults<Account> GetPagedAccounts(PagingModel paging) {
             var accounts = _accountRepo.GetAccounts();
 
@@ -1156,12 +1168,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
             usersReturn.CustomerUserProfiles = new List<UserProfile>();
 
+			var user = GetUserProfile(userId);
+			_extAd.RevokeAccess(user.UserProfiles[0].EmailAddress, ConvertRoleName(user.UserProfiles[0].RoleName));
+			_extAd.GrantAccess(user.UserProfiles[0].EmailAddress, ConvertRoleName(Constants.ROLE_NAME_GUEST));
+
             foreach (Customer c in acct.Customers) {
                 RemoveUserFromCustomer(c.CustomerId, userId);
             }
 
+			
+
             //Remove directly from account
             _accountRepo.RemoveUserFromAccount(accountId, userId);
+
+			// remove the old user profile from cache and then update it with the new profile
+			_cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(user.UserProfiles[0].EmailAddress));
+
         }
 
         public void RemoveUserFromCustomer(Guid customerId, Guid userId) {
@@ -1468,7 +1490,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile.UpdateUserProfile(id, emailAddress, firstName, lastName, phoneNumber, branchId);
 
             _extAd.UpdateUserAttributes(existingUser.UserProfiles[0].EmailAddress, emailAddress, firstName, lastName);
-
+			
             // update customer list
             if (updateCustomerListAndRole && customerList != null && customerList.Count > 0) {
                 UpdateCustomersForUser(customerList, roleName, existingUser.UserProfiles[0]);

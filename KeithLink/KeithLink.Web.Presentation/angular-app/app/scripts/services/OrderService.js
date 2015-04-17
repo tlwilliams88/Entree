@@ -12,6 +12,8 @@ angular.module('bekApp')
     function ($http, $q, UtilityService, ExportService, PricingService, Order) {
     
     var Service = {
+
+      changeOrderHeaders: [],
       
       getAllOrders: function() {
         return Order.query().$promise;
@@ -48,6 +50,7 @@ angular.module('bekApp')
           changeOrders.forEach(function(changeOrder) {
             PricingService.updateCaculatedFields(changeOrder.items);
           });
+          angular.copy(changeOrders, Service.changeOrderHeaders);
           return changeOrders;
         });
       },
@@ -74,7 +77,18 @@ angular.module('bekApp')
       cancelOrder: function(commerceId) {
         return Order.delete({
           orderNumber: commerceId
-        }).$promise;
+        }).$promise.then(function(orderNumber) {
+          // delete change order from cache
+          
+          var deletedChangeOrder;
+          Service.changeOrderHeaders.forEach(function(changeOrder) {
+            if (changeOrder.ordernumber === orderNumber) {
+              deletedChangeOrder = changeOrder;
+            }
+          });
+          var idx = Service.changeOrderHeaders.indexOf(deletedChangeOrder);
+          Service.changeOrderHeaders.splice(idx, 1);
+        });
       },
 
       /*************

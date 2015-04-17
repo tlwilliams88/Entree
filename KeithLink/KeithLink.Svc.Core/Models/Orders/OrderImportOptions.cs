@@ -43,6 +43,9 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember( Name = "importbyinventory" )]
         public bool ImportByInventory { get; set; }
 
+		[DataMember( Name = "listid")]
+		public long? ListId { get; set; }
+
 	}
 
 }
