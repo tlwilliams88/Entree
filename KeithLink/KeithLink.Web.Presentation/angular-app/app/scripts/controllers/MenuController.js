@@ -153,8 +153,8 @@ angular.module('bekApp')
   }
 
   // change context menu selection for guest users
-  $scope.changeBranch = function() {
-    LocalStorage.setSelectedBranchInfo($scope.selectedUserContext);
+  $scope.changeBranch = function(branchId) {
+    LocalStorage.setTempBranch(branchId);
     refreshPage();
   };
 
