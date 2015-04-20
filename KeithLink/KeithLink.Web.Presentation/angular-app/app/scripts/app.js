@@ -71,7 +71,7 @@ angular
     case 'PUT':
       message = 'Saving...';
       break;
-  };
+  }
   return message;
 };  
 }])

@@ -652,7 +652,7 @@ angular.module('bekApp')
               name: 'Copied - ' + list.name
             });
             return newList.newlistid;
-          })
+          });
         }
       };
 

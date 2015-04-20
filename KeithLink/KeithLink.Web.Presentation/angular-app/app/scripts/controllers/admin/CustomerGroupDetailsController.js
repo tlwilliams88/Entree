@@ -94,9 +94,9 @@ angular.module('bekApp')
     customer.selected = false;
   };
 
-  $scope.customerSearchTerm = ""; 
+  $scope.customerSearchTerm = ''; 
  $scope.clearFilter = function(){ 
-    $scope.customerSearchTerm = ""; 
+    $scope.customerSearchTerm = ''; 
     $scope.searchCustomers($scope.customerSearchTerm); 
   };
   /**********
