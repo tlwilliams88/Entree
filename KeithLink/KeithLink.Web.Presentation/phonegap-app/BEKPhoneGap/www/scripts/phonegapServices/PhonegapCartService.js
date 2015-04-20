@@ -11,7 +11,8 @@ angular.module('bekApp')
       var db_table_name_carts = 'carts';
 
       function generateId() {
-        return 'a' + Math.floor((1 + Math.random()) * 0x10000).toString(16); // generate 5 digit id
+        // generate random id that has a '-' in it
+        return 'a' + Math.floor((1 + Math.random()) * 0x10000).toString(16) + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
       }
 
       function updateCachedCarts(updatedCart) {
