@@ -259,7 +259,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		
 		public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
 		{
-			var list = listRepository.ReadListForCustomer(catalogInfo, true).FirstOrDefault();
+			var list = listRepository.ReadListForCustomer(catalogInfo, true).Where(l => l.Type == ListType.Notes).FirstOrDefault();
 			if (list == null)
 			{
 				listItemRepository.Delete(list.Items.Where(i => i.ItemNumber.Equals(ItemNumber)).FirstOrDefault());
@@ -465,14 +465,30 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return activeCart;
 		}
 		
-        public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
+        public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
-			var list = listRepository.ReadListForCustomer(catalogInfo, false).Where(l => l.Type.Equals(type) && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
+			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type == type && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
 			if (list == null)
 				return null;
 
-			return list.Select(b => b.ToListModel(catalogInfo)).ToList();
+			if (headerOnly)
+				return list.Select(l => new ListModel()
+				{
+					ListId = l.Id,
+					Name = l.DisplayName,
+					IsContractList = l.Type == ListType.Contract,
+					IsFavorite = l.Type == ListType.Favorite,
+					IsWorksheet = l.Type == ListType.Worksheet,
+					IsReminder = l.Type == ListType.Reminder,
+					IsMandatory = l.Type == ListType.Mandatory,
+					IsRecommended = l.Type == ListType.RecommendedItems,
+					SharedWith = l.Shares.Select(s => s.CustomerId).ToList(),
+					IsSharing = l.Shares.Any() && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId),
+					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)
+				}).ToList();
+			else
+				return list.Select(b => b.ToListModel(catalogInfo)).ToList();
 		}
 
 		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
@@ -575,14 +591,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             }
         }
 
-		private List<List> ReadListForCustomer(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
+		private IEnumerable<List> ReadListForCustomer(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly)
 		{
             if (String.IsNullOrEmpty(catalogInfo.CustomerId))
                 return new List<List>();
 
-			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type.Equals(ListType.Custom) ||
-                (l.UserId == user.UserId && l.Type.Equals(ListType.Favorite)) || l.Type.Equals(ListType.Contract) || l.Type.Equals(ListType.Worksheet) || l.Type.Equals(ListType.ContractItemsAdded)
-				|| l.Type.Equals(ListType.ContractItemsDeleted) || l.Type.Equals(ListType.Reminder)  || l.Type.Equals(ListType.RecommendedItems) || (l.Type.Equals(ListType.Mandatory))).ToList();
+			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type == ListType.Custom ||
+				(l.UserId == user.UserId && l.Type == ListType.Favorite) || l.Type == ListType.Contract || l.Type == ListType.Worksheet || l.Type == ListType.ContractItemsAdded
+				|| l.Type == ListType.ContractItemsDeleted || l.Type == ListType.Reminder  || l.Type == ListType.RecommendedItems || (l.Type == ListType.Mandatory));
 			return list;
 		}
 		

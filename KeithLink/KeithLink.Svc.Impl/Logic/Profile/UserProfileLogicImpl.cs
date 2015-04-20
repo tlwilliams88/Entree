@@ -580,8 +580,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 UserNameToken = tokenBase64,
                 IsKBITCustomer = isKbitCustomer,
                 IsPowerMenuCustomer = isPowerMenuCustomer,
-                PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, adUser.SamAccountName):"",
-                PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), adUser.SamAccountName),
+                PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, adUser.EmailAddress):"",
+                PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), adUser.EmailAddress),
                 PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl):"",
 #if DEMO
 				,IsDemo = true
@@ -827,6 +827,18 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return allCustomers;
         }
 
+		/// <summary>
+		/// Returns a paged list of Accounts
+		///		Additional searching options can be set to filter the accounts by user or customer
+		///		To search for accounts by Customer
+		///			paging.Type = "customer"
+		///			paging.Terms = either customer number or name (partial matches work)
+		///		To search for accounts by User
+		///			paging.Type = "user"
+		///			paing.Terms = user email address. Partial matches do not work, must be the full email address
+		/// </summary>
+		/// <param name="paging"></param>
+		/// <returns>Paged list of accounts</returns>
         public PagedResults<Account> GetPagedAccounts(PagingModel paging) {
             var accounts = _accountRepo.GetAccounts();
 
@@ -1116,7 +1128,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private void RemovePowerMenuAccess(string emailAddress) {
 
             // Create the powermenu specific request that gets serialized to xml
-            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
 
             // get the users profile
             UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
@@ -1125,26 +1136,35 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
 
             // create a request for every powermenu customer
+            PowerMenuSystemRequestModel powerMenuRequest = BuildPowerMenuRequest( customers, userInfo, PowerMenuSystemRequestModel.Operations.Delete ); 
+
+            SendPowerMenuRequests( powerMenuRequest, emailAddress );
+        }
+
+        private PowerMenuSystemRequestModel BuildPowerMenuRequest( List<Customer> customers, UserProfileReturn userInfo, PowerMenuSystemRequestModel.Operations operation ) {
+            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
+
             powerMenuRequest = (from customer in customers
                                  where customer.IsPowerMenu == true
                                  select new PowerMenuSystemRequestModel() {
                                      User = new PowerMenuSystemRequestUserModel() {
-                                         Username = emailAddress,
-                                         Password = String.Concat( customer.CustomerNumber, customer.CustomerBranch ),
-                                         ContactName = customer.PointOfContact,
+                                         Username = userInfo.UserProfiles[0].EmailAddress,
+                                         Password = String.Concat(userInfo.UserProfiles[0].UserName, userInfo.UserProfiles[0].UserId.ToString().Substring(0,4)),
+                                         ContactName = userInfo.UserProfiles[0].FirstName,
                                          CustomerNumber = customer.CustomerNumber,
-                                         EmailAddress = customer.Email,
-                                         PhoneNumber = customer.Phone,
+                                         EmailAddress = userInfo.UserProfiles[0].EmailAddress,
+                                         PhoneNumber = userInfo.UserProfiles[0].PhoneNumber,
                                          State = "TX" // does this need to be dynamic?
                                      },
                                      Login = new PowerMenuSystemRequestAdminModel() {
                                          AdminUsername = Configuration.PowerMenuAdminUsername,
                                          AdminPassword = Configuration.PowerMenuAdminPassword
                                      },
-                                     Operation = PowerMenuSystemRequestModel.Operations.Delete
+                                     Operation = PowerMenuSystemRequestModel.Operations.Add
                                  }).First();
 
-            SendPowerMenuRequests( powerMenuRequest, emailAddress );
+
+            return powerMenuRequest;
         }
 
         public void RemoveUserFromAccount(Guid accountId, Guid userId) {
@@ -1156,12 +1176,22 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             usersReturn.AccountUserProfiles = _csProfile.GetUsersForCustomerOrAccount(accountId);
             usersReturn.CustomerUserProfiles = new List<UserProfile>();
 
+			var user = GetUserProfile(userId);
+			_extAd.RevokeAccess(user.UserProfiles[0].EmailAddress, ConvertRoleName(user.UserProfiles[0].RoleName));
+			_extAd.GrantAccess(user.UserProfiles[0].EmailAddress, ConvertRoleName(Constants.ROLE_NAME_GUEST));
+
             foreach (Customer c in acct.Customers) {
                 RemoveUserFromCustomer(c.CustomerId, userId);
             }
 
+			
+
             //Remove directly from account
             _accountRepo.RemoveUserFromAccount(accountId, userId);
+
+			// remove the old user profile from cache and then update it with the new profile
+			_cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(user.UserProfiles[0].EmailAddress));
+
         }
 
         public void RemoveUserFromCustomer(Guid customerId, Guid userId) {
@@ -1260,10 +1290,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         private void SetupPowerMenuForAccount(string emailAddress) {
-
-            //Create the powermenu specific request that gets serialized to xml
-            PowerMenuSystemRequestModel powerMenuRequest = new PowerMenuSystemRequestModel();
-
             // get the users profile
             UserProfileReturn userInfo = GetUserProfile( emailAddress, false );
 
@@ -1271,24 +1297,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             List<Customer> customers = GetCustomersForExternalUser( userInfo.UserProfiles[0].UserId );
 
             // create a request for every powermenu customer
-            powerMenuRequest = (from customer in customers
-                                 where customer.IsPowerMenu == true
-                                 select new PowerMenuSystemRequestModel() {
-                                     User = new PowerMenuSystemRequestUserModel() {
-                                         Username = userInfo.UserProfiles[0].UserName,
-                                         Password = String.Concat(userInfo.UserProfiles[0].UserName, userInfo.UserProfiles[0].UserId.ToString().Substring(0,4)),
-                                         ContactName = userInfo.UserProfiles[0].FirstName,
-                                         CustomerNumber = customer.CustomerNumber,
-                                         EmailAddress = emailAddress,
-                                         PhoneNumber = userInfo.UserProfiles[0].PhoneNumber,
-                                         State = "TX" // does this need to be dynamic?
-                                     },
-                                     Login = new PowerMenuSystemRequestAdminModel() {
-                                         AdminUsername = Configuration.PowerMenuAdminUsername,
-                                         AdminPassword = Configuration.PowerMenuAdminPassword
-                                     },
-                                     Operation = PowerMenuSystemRequestModel.Operations.Add
-                                 }).First();
+            PowerMenuSystemRequestModel powerMenuRequest = BuildPowerMenuRequest( customers, userInfo, PowerMenuSystemRequestModel.Operations.Add );
 
             //If there are customers to add, send the request to PowerMenu 
             SendPowerMenuRequests( powerMenuRequest, emailAddress );
@@ -1468,7 +1477,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile.UpdateUserProfile(id, emailAddress, firstName, lastName, phoneNumber, branchId);
 
             _extAd.UpdateUserAttributes(existingUser.UserProfiles[0].EmailAddress, emailAddress, firstName, lastName);
-
+			
             // update customer list
             if (updateCustomerListAndRole && customerList != null && customerList.Count > 0) {
                 UpdateCustomersForUser(customerList, roleName, existingUser.UserProfiles[0]);

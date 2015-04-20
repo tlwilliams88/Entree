@@ -230,7 +230,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   <table class="table table-striped-rows table-border table-products" infinite-scroll="infiniteScrollLoadMore()" context-menu favorite-item-click-handles >
     <thead>
       <tr fsm-sticky-header scroll-body="'.table-products'" scroll-stop="0" scroll-offset="184">
-        <th></th>
+        <th ng-if="isOrderEntryCustomer"></th>
         <th class="sort-col-header" ng-click="sortTable('itemnumber')">
           Item 
           <span># <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span></span>
@@ -256,7 +256,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     </thead>
     <tbody>
       <tr ng-repeat-start="item in products" ng-class="{ odd : $odd, even: $even }">
-        <td class="large-icon icon-col">
+        <td ng-if="isOrderEntryCustomer" class="large-icon icon-col">
           <span favorite-icons></span>
         </td>
         <td>

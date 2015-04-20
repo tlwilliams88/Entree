@@ -160,6 +160,7 @@
       <xs:sequence>
         <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="catalogInfo" nillable="true" type="q23:UserSelectedContext" />
         <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="type" type="q24:ListType" />
+        <xs:element minOccurs="0" name="headerOnly" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

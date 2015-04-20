@@ -83,7 +83,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
             throw new NotImplementedException();
 		}
 		
-		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
+		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
         {
             throw new NotImplementedException();
 		}

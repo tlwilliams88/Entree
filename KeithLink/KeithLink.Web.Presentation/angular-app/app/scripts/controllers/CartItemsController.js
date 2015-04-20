@@ -47,7 +47,7 @@ angular.module('bekApp')
     $scope.isOffline = CartService.isOffline;
     $scope.carts = CartService.cartHeaders;
     $scope.shipDates = CartService.shipDates;
-    $scope.changeOrders = angular.copy(changeOrders);
+    $scope.changeOrders = OrderService.changeOrderHeaders;
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);

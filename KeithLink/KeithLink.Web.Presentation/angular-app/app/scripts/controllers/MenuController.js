@@ -35,6 +35,29 @@ angular.module('bekApp')
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
+  if (AccessService.isOrderEntryCustomer()) {
+
+    $scope.cartHeaders = CartService.cartHeaders;
+    $scope.numOrdersToDisplay = 6;
+    $scope.numCartsToDisplay = 4;
+
+    if (CartService.cartHeaders.length === 0) {
+      $scope.loadingCarts = true;
+      delete $scope.cartMessage;
+      CartService.getCartHeaders().then(
+        function(carts) {
+          $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
+          $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
+        }, 
+        function() {
+          $scope.cartMessage = 'Error loading carts.';
+        })
+      .finally(function() {
+        $scope.loadingCarts = false;
+      });
+    }
+  }
+
   /**********
   PHONEGAP OFFLINE STORAGE
   **********/
@@ -153,8 +176,8 @@ angular.module('bekApp')
   }
 
   // change context menu selection for guest users
-  $scope.changeBranch = function() {
-    LocalStorage.setSelectedBranchInfo($scope.selectedUserContext);
+  $scope.changeBranch = function(branchId) {
+    LocalStorage.setTempBranch(branchId);
     refreshPage();
   };
 

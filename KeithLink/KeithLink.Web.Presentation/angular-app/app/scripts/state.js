@@ -45,6 +45,8 @@ angular.module('bekApp')
         selectedUserContext: ['LocalStorage', function(LocalStorage) {
           if (LocalStorage.getTempContext()) {
             LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          } else if (LocalStorage.getTempBranch()) {
+            LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
           }
         }]
       }

@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			//Lookup the user profile
 			var profile = userProfileLogic.GetUserProfile(emailAddress);
 
-			if (profile.UserProfiles.Count() == 0) //Profile not found, do nothing
+			if (profile.UserProfiles.Count() == 0 || profile.UserProfiles[0].IsInternalUser) //Profile not found, do nothing. Don't do anything if internal user
 				return;
 
 			var token = Crypto.GenerateRandomToken();
