@@ -362,6 +362,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
+			p.CaseOnly = oProd._source.caseonly == "Y";
             p.CatchWeight = oProd._source.catchweight;
 			p.IsProprietary = oProd._source.isproprietary;
             p.AverageWeight = oProd._source.averageweight;
