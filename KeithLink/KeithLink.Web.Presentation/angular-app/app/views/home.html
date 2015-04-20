@@ -320,8 +320,8 @@
               Delivered<br/>{{order.actualdeliverytime | formatDateWithTimezone}}
             </div>
             <div 
-              ng-if="(order.actualdeliverytime == null && !order.estimateddeliverytime == null) 
-              || order.deliveryoutofsequence == true" 
+              ng-if="order.actualdeliverytime == null && (!order.estimateddeliverytime == null 
+              || order.deliveryoutofsequence == true)"
               class="item-value highlight-col">
               <span class="small-icon icon-truck"></span><br />Out For Delivery
             </div>
