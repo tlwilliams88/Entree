@@ -362,6 +362,44 @@ namespace KeithLink.Svc.Impl.Logic
 
 			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem(basket.BranchId));
 		}
+
+		public List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, List<QuickAddItemModel> productsToValidate)
+		{
+			int totalProcessed = 0;
+			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
+
+			while (totalProcessed < productsToValidate.Count)
+			{
+				var batch = productsToValidate.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
+
+				var tempProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
+
+				products.Products.AddRange(tempProducts.Products);
+				totalProcessed += 50;
+			}
+
+			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
+
+			var results = new List<ItemValidationResultModel>();
+
+			foreach (var item in productsToValidate)
+			{
+				var product = productHash.ContainsKey(item.ItemNumber) ? productHash[item.ItemNumber] : null;
+
+				if (product == null)
+					results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+				else
+				{
+					if(item.Each && product.CaseOnly)
+						results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
+					else
+						results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
+				}				
+			}
+
+			return results;
+		}
+
         #endregion
 
 

@@ -29,6 +29,8 @@ namespace KeithLink.Svc.Core.Interface.Cart
 
 		void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 
+		List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, List<QuickAddItemModel> productsToValidate);
+
 		QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items);
 
 	}

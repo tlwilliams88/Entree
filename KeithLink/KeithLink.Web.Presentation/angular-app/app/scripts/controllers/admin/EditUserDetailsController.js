@@ -19,7 +19,7 @@ angular.module('bekApp')
 
     if (userIsOnAnotherCustomerGroup) {
       var r = confirm('This user has access to a different customer group than the one selected. Assigning customers will remove the user from the previous customer group. Are you sure you want to continue?');
-      if (r == true) {
+      if (r === true) {
 
       } else {
         // redirect to dashboard

@@ -3,6 +3,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ShoppingCart;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,12 +56,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return shoppingCartLogic.CreateQuickAddCart(this.AuthenticatedUser, this.SelectedUserContext, items);
 		}
 
-
-		[HttpGet]
-		[ApiKeyedRoute("cart/quickadd")]
-		public List<QuickAddItemModel> List()
+		[HttpPost]
+		[ApiKeyedRoute("cart/quickadd/validate")]
+		public List<ItemValidationResultModel> Validate(List<QuickAddItemModel> items)
 		{
-			return new List<QuickAddItemModel>() { new QuickAddItemModel() { Quantity = 5, ItemNumber = "31" } };
+			return shoppingCartLogic.ValidateItems(this.SelectedUserContext, items);
 		}
 
 
