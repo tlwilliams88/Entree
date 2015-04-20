@@ -46,7 +46,7 @@ angular.module('bekApp')
       },
 
       /*************
-      SELECTED USER CONTEXT
+      TEMP
       *************/
 
       getTempContext: function() {
@@ -56,6 +56,18 @@ angular.module('bekApp')
       setTempContext: function(context) {
         localStorageService.set(Constants.localStorage.tempContext, context);
       },
+
+      getTempBranch: function() {
+        return localStorageService.get(Constants.localStorage.tempBranch);
+      },
+
+      setTempBranch: function(branch) {
+        localStorageService.set(Constants.localStorage.tempBranch, branch);
+      },
+
+      /*************
+      SELECTED USER CONTEXT
+      *************/
 
       getBranchId: function() {
         return localStorageService.get(Constants.localStorage.branchId);

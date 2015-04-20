@@ -1,14 +1,10 @@
 <div page-header-bar>
-  <div header-message class="hidden-xs">
-    Welcome Back {{::userProfile.displayname}}!
-    <order-dropdown class="hidden-md hidden-lg pull-right"></order-dropdown>
+  <div header-message>
+    <span class="hidden-xs hidden-sm">Welcome Back </span>{{::userProfile.displayname}}!
+    <order-dropdown open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
   </div>
-    <div header-message class="visible-xs" style="font-size:20px; font-weight:bold;">
-    <order-dropdown style="float:right;"></order-dropdown>
-   {{::userProfile.displayname}} 
-</div>
   <div header-buttons>
-    <order-dropdown></order-dropdown>
+    <order-dropdown open-scope="status.orderdropdownisopen2"></order-dropdown>
   </div>
 </div>
  
@@ -48,7 +44,7 @@
           </div>
         </div>
       </div>
-      <div class="info-box account-summary__graph hidden-xs" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController">
+      <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController">
         <div style="margin-left: 15px;">
           <h4 class="no-margin-top"><strong>Order Summary Last 6 Months</strong></h4>
           <div loading-spinner="loadingOrderGraph"></div>
@@ -104,7 +100,7 @@
         </div>
       </div>
  
-      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: numCartsToDisplay">
+      <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
@@ -124,12 +120,12 @@
  
       </div>
  
-      <div class="text-center" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
-      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || homeCarts.length > 0 || loadingCarts">
+      <div class="text-center hidden-xs hidden-sm" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
+      <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartHeaders.length > 0 || loadingCarts">
         No Carts to Display
       </p>
  
-      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || homeCarts.length === 0">
+      <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
         <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
  
@@ -190,8 +186,8 @@
             </span>
             <span 
               ng-if="
-                (order.actualdeliverytime == null && order.estimateddeliverytime == null) 
-                || order.deliveryoutofsequence == true" >
+                order.actualdeliverytime == null && (order.estimateddeliverytime == null 
+                || order.deliveryoutofsequence == true") >
               <span class="small-icon icon-truck"></span><br />Out For Delivery
             </span>
           </div> <!-- Display ETA info once it s available -->
@@ -208,7 +204,7 @@
         <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
 
-      <div class="text-center" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
+      <div class="text-center hidden-sm hidden-xs" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
       <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
         No Recent Orders
       </div>
@@ -221,7 +217,7 @@
           <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
         </div>
       </div>
-      <div ng-show="homeCarts && homeCarts.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="cart in homeCarts | orderBy:'createddate':true | limitTo: 2">
+      <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: 2">
         <div class="order-col">
           <div class="row">
             <div class="col-xs-6">
@@ -320,8 +316,8 @@
               Delivered<br/>{{order.actualdeliverytime | formatDateWithTimezone}}
             </div>
             <div 
-              ng-if="(order.actualdeliverytime == null && !order.estimateddeliverytime == null) 
-              || order.deliveryoutofsequence == true" 
+              ng-if="order.actualdeliverytime == null && (!order.estimateddeliverytime == null 
+              || order.deliveryoutofsequence == true)"
               class="item-value highlight-col">
               <span class="small-icon icon-truck"></span><br />Out For Delivery
             </div>
