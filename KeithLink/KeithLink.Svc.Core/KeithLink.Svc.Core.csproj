@@ -469,6 +469,7 @@
     <Compile Include="Interface\Lists\IListLogic.cs" />
     <Compile Include="Models\Lists\ListItemModel.cs" />
     <Compile Include="Models\SiteCatalog\ItemNote.cs" />
+    <Compile Include="Models\SiteCatalog\ItemValidationResultModel.cs" />
     <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductImage.cs" />
     <Compile Include="Models\SiteCatalog\ProductImageReturn.cs" />
