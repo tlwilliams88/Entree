@@ -512,7 +512,12 @@ angular.module('bekApp')
     $scope.openListImportModal = function () {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/listimportmodal.html',
-        controller: 'ImportModalController'
+        controller: 'ImportModalController',
+        resolve: {
+          customListHeaders: function() {
+            return [];
+          }
+        }
       });
     };
 

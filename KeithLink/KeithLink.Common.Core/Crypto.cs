@@ -261,6 +261,19 @@ namespace KeithLink.Common.Core
         }
 
         #endregion
+
+
+		public static string GenerateRandomToken(int numberOfBytes = 96)
+		{
+			byte[] data = new byte[numberOfBytes];
+			using(var rng = new RNGCryptoServiceProvider())
+			{
+				rng.GetNonZeroBytes(data);
+
+				return Convert.ToBase64String(data);
+			}
+		}
+
     }
 
 }

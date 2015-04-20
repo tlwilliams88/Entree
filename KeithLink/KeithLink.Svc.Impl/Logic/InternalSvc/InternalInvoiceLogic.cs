@@ -78,7 +78,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return;
 
             var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, invoice.Items.Select(i => i.ItemNumber).Distinct().ToList());
-            var notes = listRepository.ReadListForCustomer(catalogInfo, false).Where(l => l.Type.Equals(ListType.Notes)).FirstOrDefault();
+            var notes = listRepository.ReadListForCustomer(catalogInfo, false).Where(l => l.Type == ListType.Notes).FirstOrDefault();
+			
 
             Parallel.ForEach(invoice.Items, invoiceItem => {
                 var prod = products.Products.Where(p => p.ItemNumber.Equals(invoiceItem.ItemNumber)).FirstOrDefault();

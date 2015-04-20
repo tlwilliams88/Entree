@@ -87,9 +87,9 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			return serviceClient.ReadList(user, catalogInfo, Id, includePrice);
 		}
 		
-		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
+		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
-			return serviceClient.ReadListByType(catalogInfo, type).ToList();
+			return serviceClient.ReadListByType(catalogInfo, type, headerOnly).ToList();
 		}
 		
         public List<string> ReadListLabels(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo)

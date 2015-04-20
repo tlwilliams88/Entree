@@ -12,7 +12,7 @@
   <div class="row">
     <form id="itemUsageForm" class="item-usage-form col-md-6">
       <div class="info-box" style="display:inline-block;">
-      <table>            
+      <table>
         <tr>              
           <td class="datepicker">
             <label>From: </label>
@@ -51,16 +51,17 @@
       </table>
       </div>
     </form>
+  </div>
 
-  	<div class="col-xs-12 col-md-12 col-lg-11">
+  	<!-- <div class="col-xs-12 col-md-12 col-lg-11"> -->
   		<div class="row">
   			<h2 class="col-xs-6">Item Usage</h2>
         <span class="sub-content col-xs-6 text-right">{{itemusages.length}} results</span>
   		</div>
   		
-  		<table class="table table-striped-rows table-border">
+  		<table class="table table-striped-rows table-border table-item-usage-report">
   			<thead>
-  				<tr>
+  				<tr fsm-sticky-header scroll-body="'.table-item-usage-report'" scroll-stop="0">
             <th class="sort-col-header" ng-click="sortTable('ItemNumber')">
               Item
               <span># <span sort-icons field="'ItemNumber'" sortorder="sortReverse" sortby="sortField"></span></span>
@@ -181,6 +182,6 @@
   		</table>
 
   		<div class="text-center" loading-spinner="loadingResults"></div>
-  	</div>
+  	<!-- </div> -->
   </div>
-</div>
+<!-- </div> -->

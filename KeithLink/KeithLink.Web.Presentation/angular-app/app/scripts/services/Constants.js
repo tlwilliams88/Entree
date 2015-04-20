@@ -10,7 +10,8 @@ angular.module('bekApp')
       customerNumber: 'customerNumber',
       leadGenInfo: 'leadGenInfo',
       currentCustomer: 'currentCustomer',
-      tempContext: 'tempContext'
+      tempContext: 'tempContext',
+      tempBranch: 'tempBranch'
     },
 
     offlineLocalStorage: {
