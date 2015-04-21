@@ -17,7 +17,8 @@
     <preference name="DisallowOverscroll"       value="true"         />
     <preference name="StatusBarOverlaysWebView" value="false"        />
     <preference name="StatusBarBackgroundColor" value="#f3f1eb"      />
-    <preference name="StatusBarStyle"           value="default" />
+    <preference name="StatusBarStyle"           value="default"      />
+    <preference name="BackupWebStorage"         value="local"        />
 
     <access origin="*" />
 

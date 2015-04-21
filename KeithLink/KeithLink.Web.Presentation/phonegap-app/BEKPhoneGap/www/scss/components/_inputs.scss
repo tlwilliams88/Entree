@@ -5,6 +5,12 @@ input.input-number {
   width: 40px !important;
 }
 
+.style-select {
+  border: 1px solid $color-border;
+  border-radius: 4px;
+  height: 30px;
+}
+
 @mixin text-placeholder($color, $style) {
   ::-webkit-input-placeholder {
     color: $color !important;
