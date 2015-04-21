@@ -3,202 +3,207 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
-    [TestClass]
-    public class CustomerContainerRepositoryTests
-    {
-        [TestMethod]
-        public void CreateGoodContainer()
-        {
-        //    try {
-        //        KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
-        //        custCont.CreateCustomerContainer(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER);
+	//With recent AD changes, this is no longer valid
 
-        //        Assert.IsTrue(true);
-        //    } catch {
-        //        Assert.IsTrue(false);
-        //    }
-            Assert.IsTrue(true);
-        }
 
-        [TestMethod]
-        public void CreateDuplicateContainer()
-        {
-            //try
-            //{
-            //    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
-            //    custCont.CreateCustomerContainer("Jimmys Chicken Shack");
 
-            //    // this should fail
-            //    Assert.IsTrue(false);
-            //}
-            //catch
-            //{
-            //    Assert.IsTrue(true);
-            //}
-            Assert.IsTrue(true);
-        }
 
-        [TestMethod]
-        public void CreateContainerWithEmptyString()
-        {
-            try
-            {
-                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
-                custCont.CreateCustomerContainer(string.Empty);
+	//[TestClass]
+	//public class CustomerContainerRepositoryTests
+	//{
+	//	[TestMethod]
+	//	public void CreateGoodContainer()
+	//	{
+	//	//    try {
+	//	//        KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//	//        custCont.CreateCustomerContainer(KeithLink.Svc.Core.Constants.AD_GUEST_CONTAINER);
 
-                // this should fail
-                Assert.IsTrue(false);
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
+	//	//        Assert.IsTrue(true);
+	//	//    } catch {
+	//	//        Assert.IsTrue(false);
+	//	//    }
+	//		Assert.IsTrue(true);
+	//	}
 
-        [TestMethod]
-        public void CreateContainerWithSpecialCharacters()
-        {
-            try
-            {
-                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
-                custCont.CreateCustomerContainer(string.Empty);
+	//	[TestMethod]
+	//	public void CreateDuplicateContainer()
+	//	{
+	//		//try
+	//		//{
+	//		//    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
+	//		//    custCont.CreateCustomerContainer("Jimmys Chicken Shack");
 
-                // this should fail
-                Assert.IsTrue(false);
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
+	//		//    // this should fail
+	//		//    Assert.IsTrue(false);
+	//		//}
+	//		//catch
+	//		//{
+	//		//    Assert.IsTrue(true);
+	//		//}
+	//		Assert.IsTrue(true);
+	//	}
 
-        [TestMethod]
-        public void DeleteGoodContainer()
-        {
-            //try
-            //{
-            //    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
-            //    custCont.DeleteCustomerContainer("Jeremys Chicken Shack");
+	//	[TestMethod]
+	//	public void CreateContainerWithEmptyString()
+	//	{
+	//		try
+	//		{
+	//			KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//			custCont.CreateCustomerContainer(string.Empty);
 
-            //    Assert.IsTrue(true);
-            //}
-            //catch
-            //{
-            //    Assert.IsTrue(false);
-            //}
-            Assert.IsTrue(true);
-        }
+	//			// this should fail
+	//			Assert.IsTrue(false);
+	//		}
+	//		catch
+	//		{
+	//			Assert.IsTrue(true);
+	//		}
+	//	}
 
-        [TestMethod]
-        public void DeleteNonExistingContainer()
-        {
-            try
-            {
-                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
-                custCont.DeleteCustomerContainer("Non-Existant Container");
+	//	[TestMethod]
+	//	public void CreateContainerWithSpecialCharacters()
+	//	{
+	//		try
+	//		{
+	//			KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//			custCont.CreateCustomerContainer(string.Empty);
 
-                // this should fail
-                Assert.IsTrue(false);
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
+	//			// this should fail
+	//			Assert.IsTrue(false);
+	//		}
+	//		catch
+	//		{
+	//			Assert.IsTrue(true);
+	//		}
+	//	}
 
-        [TestMethod]
-        public void DeleteContainerWithEmptyString()
-        {
-            try
-            {
-                KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
-                custCont.DeleteCustomerContainer(string.Empty);
+	//	[TestMethod]
+	//	public void DeleteGoodContainer()
+	//	{
+	//		//try
+	//		//{
+	//		//    KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository();
+	//		//    custCont.DeleteCustomerContainer("Jeremys Chicken Shack");
 
-                // this should fail
-                Assert.IsTrue(false);
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
+	//		//    Assert.IsTrue(true);
+	//		//}
+	//		//catch
+	//		//{
+	//		//    Assert.IsTrue(false);
+	//		//}
+	//		Assert.IsTrue(true);
+	//	}
 
-        [TestMethod]
-        public void GetGoodContainer()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//	[TestMethod]
+	//	public void DeleteNonExistingContainer()
+	//	{
+	//		try
+	//		{
+	//			KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//			custCont.DeleteCustomerContainer("Non-Existant Container");
 
-            Assert.IsTrue(custCont.GetCustomerContainer("Jimmys Chicken Shack").CustomerContainers.Count == 1);
-        }
+	//			// this should fail
+	//			Assert.IsTrue(false);
+	//		}
+	//		catch
+	//		{
+	//			Assert.IsTrue(true);
+	//		}
+	//	}
 
-        [TestMethod]
-        public void GetContainerWithInvalidName()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//	[TestMethod]
+	//	public void DeleteContainerWithEmptyString()
+	//	{
+	//		try
+	//		{
+	//			KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//			custCont.DeleteCustomerContainer(string.Empty);
 
-            Assert.IsTrue(custCont.GetCustomerContainer("Jimmys").CustomerContainers.Count == 0);
-        }
+	//			// this should fail
+	//			Assert.IsTrue(false);
+	//		}
+	//		catch
+	//		{
+	//			Assert.IsTrue(true);
+	//		}
+	//	}
 
-        [TestMethod]
-        public void GetContainerWithEmptyString()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//	[TestMethod]
+	//	public void GetGoodContainer()
+	//	{
+	//		KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
-            try
-            {
-                custCont.GetCustomerContainer(string.Empty);
+	//		Assert.IsTrue(custCont.GetCustomerContainer("Jimmys Chicken Shack").CustomerContainers.Count == 1);
+	//	}
 
-                // this should throw an exception
-                Assert.IsTrue(false);
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
+	//	[TestMethod]
+	//	public void GetContainerWithInvalidName()
+	//	{
+	//		KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
-        [TestMethod]
-        public void SearchCustomerContainers()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//		Assert.IsTrue(custCont.GetCustomerContainer("Jimmys").CustomerContainers.Count == 0);
+	//	}
 
-            Assert.IsTrue(custCont.SearchCustomerContainers("j").CustomerContainers.Count > 0);
-        }
+	//	[TestMethod]
+	//	public void GetContainerWithEmptyString()
+	//	{
+	//		KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
-        [TestMethod]
-        public void SearchCustomerContainersWithEmptyString()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//		try
+	//		{
+	//			custCont.GetCustomerContainer(string.Empty);
 
-            try
-            {
-                custCont.SearchCustomerContainers(string.Empty);
+	//			// this should throw an exception
+	//			Assert.IsTrue(false);
+	//		}
+	//		catch
+	//		{
+	//			Assert.IsTrue(true);
+	//		}
+	//	}
 
-                // this should fail
-                Assert.IsTrue(false);
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
+	//	[TestMethod]
+	//	public void SearchCustomerContainers()
+	//	{
+	//		KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
-        [TestMethod]
-        public void SearchCustomerContainersWithSpecialCharacters()
-        {
-            KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+	//		Assert.IsTrue(custCont.SearchCustomerContainers("j").CustomerContainers.Count > 0);
+	//	}
 
-            try
-            {
-                custCont.SearchCustomerContainers("Jimmy's Chicken Shack");
+	//	[TestMethod]
+	//	public void SearchCustomerContainersWithEmptyString()
+	//	{
+	//		KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
 
-                // this should fail
-                Assert.IsTrue(false);
-            }
-            catch
-            {
-                Assert.IsTrue(true);
-            }
-        }
-    }
+	//		try
+	//		{
+	//			custCont.SearchCustomerContainers(string.Empty);
+
+	//			// this should fail
+	//			Assert.IsTrue(false);
+	//		}
+	//		catch
+	//		{
+	//			Assert.IsTrue(true);
+	//		}
+	//	}
+
+	//	[TestMethod]
+	//	public void SearchCustomerContainersWithSpecialCharacters()
+	//	{
+	//		KeithLink.Svc.Impl.Repository.Profile.CustomerContainerRepository custCont = new Impl.Repository.Profile.CustomerContainerRepository(new Common.Impl.Logging.EventLogRepositoryImpl("KeithLinkTessts"));
+
+	//		try
+	//		{
+	//			custCont.SearchCustomerContainers("Jimmy's Chicken Shack");
+
+	//			// this should fail
+	//			Assert.IsTrue(false);
+	//		}
+	//		catch
+	//		{
+	//			Assert.IsTrue(true);
+	//		}
+	//	}
+	//}
 }

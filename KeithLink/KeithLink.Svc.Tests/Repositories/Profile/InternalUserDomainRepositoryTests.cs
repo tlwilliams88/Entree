@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #region tests
         [TestMethod]
         public void CanAuthenticate() {
-            bool success = _userRepo.AuthenticateUser("tcfox", "password");
+			bool success = _userRepo.AuthenticateUser("tcfox@benekeith.com", "password");
 
             Assert.IsTrue(success);
         }
