@@ -143,6 +143,10 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || isOwner() );
     },
 
+    canMoveUserToAnotherGroup: function() {
+      return ( isSysAdmin() );
+    },
+
     canEditUsers: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
     },

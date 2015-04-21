@@ -280,7 +280,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
           </ng-form>
         </td>
       <td class="hidden-mobile-visible-print" ng-if="canSeePrices">
-        <span ng-if="hasCasePrice(item)">{{item.each ? item.packageprice : item.caseprice}}</span>
+        <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
         <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
       </td>
       <td class="large-icon icon-col nowrap">
@@ -316,7 +316,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         </tr>
         <tr ng-if="hasCasePrice(item)" ng-show="canSeePrices">
           <td>Price</td>
-          <td>{{item.each ? item.packageprice : item.caseprice}}</td>
+          <td>{{(item.each ? item.packageprice : item.caseprice) | currency}}</td>
         </tr>
         <tr ng-if="hasPackagePrice(item)">
           <td>Each</td>

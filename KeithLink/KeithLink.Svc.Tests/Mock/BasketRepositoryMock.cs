@@ -7,7 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using CS = KeithLink.Svc.Core.Models.Generated;
 
-namespace KeithLink.Svc.Test.MockRepository
+namespace KeithLink.Svc.Test.Mock
 {
 
 	public class BasketRepositoryMock: IBasketRepository

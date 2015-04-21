@@ -44,6 +44,10 @@ angular.module('bekApp')
         });
       },
 
+      validateToken: function(token) {        
+        return $http.post('/profile/forgotpassword/validatetoken/', { token: token });
+      },
+
       resetPassword: function(email) {          
         var promise = $http.post('/profile/forgotpassword?emailAddress='+email);
         return UtilityService.resolvePromise(promise);
@@ -138,6 +142,21 @@ angular.module('bekApp')
         var deferred = $q.defer();
 
         $http.put('/profile/password', passwordData).then(function(response) {
+          $log.debug(response);
+          if (response.data.successResponse === true) {
+            deferred.resolve(response.data);
+          } else {
+            deferred.reject(response.data);
+          }
+        });
+
+        return deferred.promise;
+      },
+
+      changeForgottenPassword: function(passwordData) {
+        var deferred = $q.defer();
+
+        $http.post('/profile/forgotpassword/change', passwordData).then(function(response) {
           $log.debug(response);
           if (response.data.successResponse === true) {
             deferred.resolve(response.data);

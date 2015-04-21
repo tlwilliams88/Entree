@@ -11,6 +11,8 @@ angular.module('bekApp')
       MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
         $scope.defaultPreferences = preferences;
       });
+    } else {
+      $scope.hideNotificationPreferences = true;
     }
   };
 

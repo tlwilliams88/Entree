@@ -1,3 +1,8 @@
+<!-- History -->
+<a ng-if="::item.inhistory === true">
+  <span tooltip="Previously ordered" class="text-regular icon-history"></span>
+</a>
+
 <!-- Replacement Item -->
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="::item.replacementitem > 0">
   <span tooltip="Item is replacing item # {{item.replacementitem}}" class="text-green icon-cycle"></span>

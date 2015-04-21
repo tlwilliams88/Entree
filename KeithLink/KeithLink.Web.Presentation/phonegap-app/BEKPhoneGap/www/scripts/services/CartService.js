@@ -160,6 +160,12 @@ angular.module('bekApp')
         return deferred.promise;
       },
  
+      validateQuickAdd: function(items) {
+        return $http.post('/cart/quickadd/validate', items).then(function(response) {
+          return response.data;
+        });
+      },
+
       quickAdd: function(items) {
         return Cart.quickAdd({}, items).$promise.then(function(response) {
  

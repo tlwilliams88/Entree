@@ -20,6 +20,7 @@ using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Common.Core.Logging;
+using System.Collections.Concurrent;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -34,7 +35,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IProductImageRepository productImageRepository;
 		private readonly IListShareRepository listShareRepository;
 		private readonly IUserActiveCartRepository userActiveCartRepository;
-		private readonly IBasketRepository basketRepository;
 		private readonly ICustomerRepository customerRepository;
 		private readonly IEventLogRepository eventLogRepository;
 
@@ -48,7 +48,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository,
 			ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
-			IUserActiveCartRepository userActiveCartRepository, IBasketRepository basketRepository, ICustomerRepository customerRepository, IEventLogRepository eventLogRepository)
+			IUserActiveCartRepository userActiveCartRepository, ICustomerRepository customerRepository, IEventLogRepository eventLogRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -59,7 +59,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.productImageRepository = productImageRepository;
 			this.listShareRepository = listShareRepository;
 			this.userActiveCartRepository = userActiveCartRepository;
-			this.basketRepository = basketRepository;
 			this.customerRepository = customerRepository;
 			this.eventLogRepository = eventLogRepository;
 		}
@@ -451,19 +450,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return listClone;
 		}
 
-		private Core.Models.Generated.Basket GetUserActiveCart(UserSelectedContext catalogInfo, UserProfile user)
-		{
-			var userActiveCart = userActiveCartRepository.Read(u => u.UserId == user.UserId && u.CustomerId.Equals(catalogInfo.CustomerId) && u.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
-			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+		//private Core.Models.Generated.Basket GetUserActiveCart(UserSelectedContext catalogInfo, UserProfile user)
+		//{
+		//	var userActiveCart = userActiveCartRepository.Read(u => u.UserId == user.UserId && u.CustomerId.Equals(catalogInfo.CustomerId) && u.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
+		//	var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-			KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
+		//	KeithLink.Svc.Core.Models.Generated.Basket activeCart = null;
 
-			if (userActiveCart != null && customer != null)
-			{
-				activeCart = basketRepository.ReadBasket(customer.CustomerId, userActiveCart.CartId);
-			}
-			return activeCart;
-		}
+		//	if (userActiveCart != null && customer != null)
+		//	{
+		//		activeCart = basketRepository.ReadBasket(customer.CustomerId, userActiveCart.CartId);
+		//	}
+		//	return activeCart;
+		//}
 		
         public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
@@ -894,7 +893,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
 		{
-			var returnModel = new List<InHistoryReturnModel>();
+			var returnModel = new BlockingCollection<InHistoryReturnModel>();
 			
 			var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Contract, i => i.Items).FirstOrDefault();
 
@@ -907,7 +906,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					returnModel.Add(new InHistoryReturnModel() { InHistory = list.Items.Where(i => i.ItemNumber.Equals(item)).Any(), ItemNumber = item });
 				});
 			}
-			return returnModel;
+			return returnModel.ToList();
 		}
 
 		#endregion
