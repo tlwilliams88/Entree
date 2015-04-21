@@ -261,7 +261,6 @@ namespace KeithLink.Svc.Windows.OrderService {
 																														  new NoCacheRepositoryImpl()),
                                                                               new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(),
                                                                               new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
-                                                                              divRepo,
                                                                               new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
 																			  new NoCacheRepositoryImpl(),
                                                                               new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo,

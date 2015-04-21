@@ -24,7 +24,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private ICatalogRepository _catalogRepository;
         private IPriceLogic _priceLogic;
         private IProductImageRepository _imgRepository;
-		private IDivisionRepository _divisionRepository;
         private ICategoryImageRepository _categoryImageRepository;
         private ICacheRepository _catalogCacheRepository;
 		private IListServiceRepository _listServiceRepository;
@@ -36,15 +35,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 		protected string CACHE_PREFIX { get { return "Default"; } }
         #endregion
 
-		public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, 
-			IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, 
+		public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository,
+			ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, 
 			IOrderServiceRepository orderServiceRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
 			_listServiceRepository = listServiceRepository;
-			_divisionRepository = divisionRepository;
             _categoryImageRepository = categoryImageRepository;
             _catalogCacheRepository = catalogCacheRepository;
 			_divisionLogic = divisionLogic;
