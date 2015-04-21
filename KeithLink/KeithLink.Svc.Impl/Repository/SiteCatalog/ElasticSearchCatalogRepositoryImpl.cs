@@ -123,6 +123,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } },
 					boost_factor = 1300
 				});
+				boosts.Add(new
+				{
+					filter = new { query = new { query_string = new { fields = new List<string>() { "name" }, use_dis_max = true, query = string.Join(" AND ", searchTerms.Split(' ').ToArray()) } } },
+					boost_factor = 1200
+				});
 			}
 
 
@@ -301,7 +306,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
             dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, fieldsToSearch, termSearch);
-
+			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", termSearchExpression);
         }
 
