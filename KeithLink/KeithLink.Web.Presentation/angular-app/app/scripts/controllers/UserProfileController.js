@@ -62,6 +62,7 @@ angular.module('bekApp')
     
     UserProfileService.updateUserProfile(userProfile).then(function(profile) {
       $scope.$parent.userProfile = profile;
+      $scope.updateProfileForm.$setPristine();
       $scope.displayMessage('success', 'Successfully updated profile.');
     }, function(errorMessage) {
       $scope.updateProfileErrorMessage = errorMessage;

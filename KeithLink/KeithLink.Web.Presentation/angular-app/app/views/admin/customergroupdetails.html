@@ -6,7 +6,7 @@
 </div>
 
 <div class="page-content">
-<ng-form name="customerGroupDetailsForm" novalidate>
+<form name="customerGroupDetailsForm" novalidate>
  
   <div class="row">
     <div class="col-md-6">
@@ -20,6 +20,9 @@
       <h3>Admin Users</h3>
 
       <ng-form name="addNewAdminUserForm" class="form-inline search-form">
+        <div class="text-red">
+          {{addUserError}}
+        </div>
         <div class="form-group">
           <span class="text-red" ng-show="addNewAdminUserForm.newAdminUserEmail.$dirty && addNewAdminUserForm.newAdminUserEmail.$error.emailLengthValidation">Please choose a shorter email address</span>
           <br ng-if="addNewAdminUserForm.newAdminUserEmail.$dirty && addNewAdminUserForm.newAdminUserEmail.$error.emailLengthValidation">
@@ -155,7 +158,7 @@
     </div>
   </div>
 
-</ng-form>
+</form>
 </div>
   
   

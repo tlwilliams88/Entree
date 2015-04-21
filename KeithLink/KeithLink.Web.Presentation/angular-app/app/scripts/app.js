@@ -37,7 +37,8 @@ angular
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig) {
  
   // configure loading bar
-  cfpLoadingBarProvider.includeBar = false;
+  cfpLoadingBarProvider.includeSpinner = false;
+  // cfpLoadingBarProvider.latencyThreshold = 500;
  
   // configure logging
   $logProvider.debugEnabled(ENV.loggingEnabled);
@@ -57,23 +58,20 @@ angular
   $tooltipProvider.options({animation: false});
 
   blockUIConfig.requestFilter = function(config) {
-  var message;
-  switch(config.method) {
-    case 'GET':
-      message = 'Loading...';
-      break;
-    case 'POST':
-      message = 'Loading...';
-      break;
-    case 'DELETE':
-      message = 'Deleting...';
-      break;
-    case 'PUT':
-      message = 'Saving...';
-      break;
-  }
-  return message;
-};  
+    if (config.data && config.data.message) {
+      return config.data.message;
+    } else if (config.data && typeof config.data === 'string' && config.data.indexOf('message')) { // authen
+      return config.data.substr(config.data.indexOf('message')+8);
+    } else if (config.url === '/invoice/payment' && config.method === 'POST') {
+      return 'Submitting payments...';
+    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) {
+      return 'Saving...';
+    } else if (config.method === 'DELETE') {
+      return 'Deleting...';
+    } else {
+      return false;
+    }
+  };  
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
   function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService) {

@@ -131,6 +131,7 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
     clearFilters: function() {
       this.pageIndex = 0;
       this.filter = [];
+      this.additionalParams = null;
       this.loadData();
     },
 

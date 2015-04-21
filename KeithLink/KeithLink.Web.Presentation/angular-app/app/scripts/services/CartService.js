@@ -117,6 +117,7 @@ angular.module('bekApp')
       createCart: function(items, shipDate, name) {
         var newCart = Service.beforeCreateCart(items, shipDate, name);
  
+        newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
           Service.renameCart = true;
           newCart.id = response.listitemid;
@@ -187,6 +188,7 @@ angular.module('bekApp')
       // accepts cart object and params (deleteOmitted?)
       // returns promise and updated cart object
       updateCart: function(cart, params) {
+        cart.message = 'Saving cart...';
         return Cart.update(params, cart).$promise.then(function(response) {
           return Service.getCart(response.id);
         });
@@ -301,7 +303,7 @@ angular.module('bekApp')
       submitOrder: function(cartId) {
         return Cart.submit({
           cartId: cartId
-        }, null).$promise;
+        }, { message: 'Submitting Order...' }).$promise;
       },
  
       setActiveCart: function(cartId) {
