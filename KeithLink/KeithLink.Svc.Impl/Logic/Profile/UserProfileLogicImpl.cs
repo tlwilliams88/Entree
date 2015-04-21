@@ -621,8 +621,21 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (accountFilters != null) {
                 if (accountFilters.UserId.HasValue) {
-                    retAccounts.AddRange(_accountRepo.GetAccountsForUser(accountFilters.UserId.Value));
 
+					var account = _accountRepo.GetAccountsForUser(accountFilters.UserId.Value);
+					if (account != null && account.Count > 0)
+					{
+						retAccounts.AddRange(_accountRepo.GetAccountsForUser(accountFilters.UserId.Value));
+					}
+					else
+					{
+						//See if they are assigned to a customer that is a member of a customer group
+						var accounts = _accountRepo.GetAccounts();
+						var customers = _customerRepo.GetCustomersForUser(accountFilters.UserId.Value);
+						var userAccounts = FindAccountsForCustomers(accounts, customers);
+
+						retAccounts.AddRange(userAccounts);
+					}
                 }
                 if (!String.IsNullOrEmpty(accountFilters.Wildcard)) {
                     retAccounts.AddRange(_accountRepo.GetAccounts().Where(x => x.Name.ToLower().Contains(accountFilters.Wildcard.ToLower())));

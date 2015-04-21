@@ -184,9 +184,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                                          ContextOptions.Negotiate,
                                                                          Configuration.ActiveDirectoryInternalDomainUserName,
                                                                          Configuration.ActiveDirectoryInternalPassword)) {
-                    string domainUserName = string.Format(Configuration.ActiveDirectoryInternalDomain, userName);
-
-                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, domainUserName);
+                    
+                    UserPrincipal user = UserPrincipal.FindByIdentity(principal, IdentityType.SamAccountName, userName);
 
                     if (user == null)
                         return false;
