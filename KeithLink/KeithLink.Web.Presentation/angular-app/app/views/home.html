@@ -1,14 +1,10 @@
 <div page-header-bar>
-  <div header-message class="hidden-xs hidden-sm">
-    Welcome Back {{::userProfile.displayname}}!
-    <order-dropdown class="hidden-md hidden-lg pull-right"></order-dropdown>
-  </div>
-  <div header-message class="visible-xs" style="font-size:20px;">
-    <order-dropdown style="float:right;"></order-dropdown>
-   {{::userProfile.displayname}} 
+  <div header-message>
+    <span class="hidden-xs hidden-sm">Welcome Back </span>{{::userProfile.displayname}}!
+    <order-dropdown open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
   </div>
   <div header-buttons>
-    <order-dropdown></order-dropdown>
+    <order-dropdown open-scope="status.orderdropdownisopen2"></order-dropdown>
   </div>
 </div>
  
@@ -190,8 +186,8 @@
             </span>
             <span 
               ng-if="
-                (order.actualdeliverytime == null && order.estimateddeliverytime == null) 
-                || order.deliveryoutofsequence == true" >
+                order.actualdeliverytime == null && (order.estimateddeliverytime == null 
+                || order.deliveryoutofsequence == true)" >
               <span class="small-icon icon-truck"></span><br />Out For Delivery
             </span>
           </div> <!-- Display ETA info once it s available -->
@@ -320,8 +316,8 @@
               Delivered<br/>{{order.actualdeliverytime | formatDateWithTimezone}}
             </div>
             <div 
-              ng-if="(order.actualdeliverytime == null && !order.estimateddeliverytime == null) 
-              || order.deliveryoutofsequence == true" 
+              ng-if="order.actualdeliverytime == null && (!order.estimateddeliverytime == null 
+              || order.deliveryoutofsequence == true)"
               class="item-value highlight-col">
               <span class="small-icon icon-truck"></span><br />Out For Delivery
             </div>

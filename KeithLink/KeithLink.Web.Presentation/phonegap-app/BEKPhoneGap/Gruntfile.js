@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             }
           }
         },
-        versionCode: 0 // android
+        versionCode: 10002 // android
       }
     },
     clean: [
@@ -260,7 +260,7 @@ module.exports = function(grunt) {
     // select correct app id
     var phonegapAppId = config.environment.test.iosStoreId;
     // deploy to the production ios app
-    if (platform === 'ios' && (target === 'prod' || target === 'review')) {
+    if (target === 'prod' || target === 'review') {
       phonegapAppId = config.environment.prod.iosStoreId;
     }
     grunt.option('phonegapAppId', phonegapAppId);

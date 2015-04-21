@@ -5,7 +5,9 @@ angular.module('bekApp')
   return {
     restrict: 'E',
     // replace : true,
-    // scope: true,
+    scope: {
+      openScope: '='
+    },
     templateUrl: 'views/directives/orderdropdown.html',
     controller: ['$scope', '$modal', '$state', function($scope, $modal, $state){
 

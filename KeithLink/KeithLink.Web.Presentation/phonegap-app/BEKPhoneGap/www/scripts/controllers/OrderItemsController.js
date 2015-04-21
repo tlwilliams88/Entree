@@ -6,6 +6,13 @@ angular.module('bekApp')
 
   $scope.order = order;
 
+  $scope.getOrder = function(orderNumber) {
+    OrderService.getOrderDetails(orderNumber).then(function(order) {
+      $scope.order = order;
+      $scope.displayMessage('success', 'Successfully retrieved latest info for order.');
+    });
+  };
+
   $scope.openExportModal = function() {
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/exportmodal.html',
@@ -28,7 +35,7 @@ angular.module('bekApp')
   };
 
   $scope.saveAsList = function() {
-    ListService.createList($scope.order.items, { name: "List From -" + $scope.order.ordernumber })
+    ListService.createList($scope.order.items, { name: 'List From - ' + $scope.order.ordernumber });
   };
 
 }]);

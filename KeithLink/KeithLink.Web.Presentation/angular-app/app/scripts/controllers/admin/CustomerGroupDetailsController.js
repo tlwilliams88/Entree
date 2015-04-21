@@ -94,16 +94,20 @@ angular.module('bekApp')
     customer.selected = false;
   };
 
-  $scope.customerSearchTerm = ""; 
+  $scope.customerSearchTerm = ''; 
  $scope.clearFilter = function(){ 
-    $scope.customerSearchTerm = ""; 
+    $scope.customerSearchTerm = ''; 
     $scope.searchCustomers($scope.customerSearchTerm); 
   };
+
   /**********
   USERS
   **********/
+
+  $scope.addUserError = '';
   $scope.checkUserAndAddAdmin = function(emailAddress) {
     var isDuplicateUser = false;
+    $scope.addUserError = '';
 
     // check if user is already in list of selected users
     $scope.customerGroup.adminusers.forEach(function(user) {
@@ -114,6 +118,7 @@ angular.module('bekApp')
     });
 
     if (isDuplicateUser) {
+      $scope.addUserError = 'This user is already an admin on this customer group.';
       return;
     }
 

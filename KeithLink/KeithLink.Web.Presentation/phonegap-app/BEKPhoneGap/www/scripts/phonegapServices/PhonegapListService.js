@@ -47,7 +47,10 @@ angular.module('bekApp')
     Service.getListHeaders = function() {
       if (navigator.connection.type === 'none') {
         console.log('getting lists from DB');
-        return PhonegapDbService.getAllItems(db_table_name_lists);
+        return PhonegapDbService.getAllItems(db_table_name_lists).then(function(listHeaders) {
+          angular.copy(listHeaders, Service.lists);
+          return listHeaders;
+        });
       } else {
         console.log('getting all lists from server');
         return originalListService.getListHeaders();
