@@ -84,9 +84,9 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
 			{
 				var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
-				ret.CasePrice = String.Format("{0:C}", price.CasePrice);
+				ret.CasePrice =  price.CasePrice.ToString();
 				ret.CasePriceNumeric = price.CasePrice;
-				ret.PackagePrice = String.Format("{0:C}", price.PackagePrice);
+				ret.PackagePrice = price.PackagePrice.ToString();
                 ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
 			}
 			
@@ -126,9 +126,9 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any())
 			{
 				var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
-				ret.CasePrice = String.Format("{0:C}", price.CasePrice);
+				ret.CasePrice = price.CasePrice.ToString();
 				ret.CasePriceNumeric = price.CasePrice;
-				ret.PackagePrice = String.Format("{0:C}", price.PackagePrice);
+				ret.PackagePrice = price.PackagePrice.ToString();
 				ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
 			}
 
@@ -263,9 +263,9 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             foreach (Price p in pricingInfo.Prices)
             {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
-                prod.CasePrice = String.Format("{0:C}", p.CasePrice);
+                prod.CasePrice = p.CasePrice.ToString();
                 prod.CasePriceNumeric = p.CasePrice;
-                prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
+				prod.PackagePrice = p.PackagePrice.ToString();
                 prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
             }
 
