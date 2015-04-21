@@ -20,6 +20,7 @@ using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Common.Core.Logging;
+using System.Collections.Concurrent;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -892,7 +893,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
 		{
-			var returnModel = new List<InHistoryReturnModel>();
+			var returnModel = new BlockingCollection<InHistoryReturnModel>();
 			
 			var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Contract, i => i.Items).FirstOrDefault();
 
@@ -905,7 +906,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					returnModel.Add(new InHistoryReturnModel() { InHistory = list.Items.Where(i => i.ItemNumber.Equals(item)).Any(), ItemNumber = item });
 				});
 			}
-			return returnModel;
+			return returnModel.ToList();
 		}
 
 		#endregion

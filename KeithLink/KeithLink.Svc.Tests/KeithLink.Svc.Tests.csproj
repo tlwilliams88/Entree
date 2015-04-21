@@ -113,6 +113,7 @@
   <ItemGroup>
     <Compile Include="AutoFac\DependencyMap.cs" />
     <Compile Include="Email\EmailTemplateTest.cs" />
+    <Compile Include="Logic\InternalSrv\InternalDivisionLogicTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />
     <Compile Include="Logic\NoCacheRepositoryImpl.cs" />
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
