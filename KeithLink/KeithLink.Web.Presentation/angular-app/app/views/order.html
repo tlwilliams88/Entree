@@ -49,7 +49,7 @@
     </thead>
     <tbody>
  
-      <tr ng-repeat="cart in carts" ng-class="{ odd : $odd, even: $even }">
+      <tr ng-repeat="cart in carts | orderBy:'createddate':true" ng-class="{ odd : $odd, even: $even }">
         <td class="input-col">
           <input type="checkbox" ng-checked="cartGuids.indexOf(cart.id) > -1" ng-click="toggleCart(cart.id)" />
         </td>

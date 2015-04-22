@@ -8,9 +8,11 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService', 'Constants',
-    function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService, Constants) {
+  .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService',
+    function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService) {
     
+    $scope.cartHeaders = CartService.cartHeaders;
+
     // get orders
     $scope.loadingOrders = true;
     OrderService.getOrders({

@@ -11,7 +11,7 @@ angular.module('bekApp')
   ******/
   $scope.loadingCarts = true;
   $scope.carts = CartService.cartHeaders;
-  CartService.getCartHeaders().finally(function() {
+  CartService.getCartHeaders().finally(function(cartHeaders) {
     $scope.loadingCarts = false;
   });
  
@@ -39,6 +39,8 @@ angular.module('bekApp')
     CartService.deleteMultipleCarts(cartGuids).then(function() {
       $scope.allCartsSelected = false;
       $scope.cartGuids = [];
+      // update cartHeaders in MenuController
+      $scope.$parent.cartHeaders = CartService.cartHeaders;
       $scope.displayMessage('success', 'Successfully deleted carts.');
     }, function() {
       $scope.displayMessage('error', 'Error deleting carts.');
