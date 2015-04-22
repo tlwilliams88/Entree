@@ -37,7 +37,7 @@
               <File Id="Autofac" Name="Autofac.dll" DiskId="1" Source="$(var.SourcePath)\Autofac.dll" KeyPath="no" Vital="yes" />
               <File Id="AWSSDK" Name="AWSSDK.dll" DiskId="1" Source="$(var.SourcePath)\AWSSDK.dll" KeyPath="no" Vital="yes"/>
               <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
-              <!--<File Id="CommerceServer_Core_Internal_ContentListHelper" Name="CommerceServer.Core.Internal.ContentListHelper.dll" DiskId="1" Source="$(var.SourcePath)\CommerceServer.Core.Internal.ContentListHelper.dll" KeyPath="no" Vital="yes" />-->
+              <File Id="CommerceServer_Core_Internal_ContentListHelper" Name="CommerceServer.Core.Internal.ContentListHelper.dll" DiskId="1" Source="$(var.SourcePath)\CommerceServer.Core.Internal.ContentListHelper.dll" KeyPath="no" Vital="yes" />
               <File Id="OpenXmlDocFormat" Name="DocumentFormat.OpenXml.dll" DiskId="1" Source="$(var.SourcePath)\DocumentFormat.OpenXml.dll" KeyPath="no" Vital="yes"/>
               <File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF" Name="EntityFramework.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.dll" KeyPath="no" Vital="yes"/>
