@@ -420,6 +420,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="Services\PowerMenuPricing.asmx" />
     <None Include="Service References\com.benekeith.ProfileService\ProfileService.disco" />
     <None Include="Service References\com.benekeith.ProfileService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ProfileService\configuration.svcinfo" />
@@ -540,6 +541,10 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Services\PowerMenuPricing.asmx.cs">
+      <DependentUpon>PowerMenuPricing.asmx</DependentUpon>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
