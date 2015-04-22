@@ -4,6 +4,7 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -66,23 +67,29 @@ namespace KeithLink.Svc.Test.Mock
 				var mockListSet = new FakeDbSet<List>();
 				var mockListItemSet = new FakeDbSet<ListItem>();
 				var mockShareSet = new FakeDbSet<ListShare>();
-				var branchSupportSet = new FakeDbSet<BranchSupport>();
+				var mockBranchSupportSet = new FakeDbSet<BranchSupport>();
 				#endregion
 
 				#region Generate data
-				var listItemTemp = new List<ListItem>();
 
+				//List
+				var listItemTemp = new List<ListItem>();
 				IQueryable<List> listData;
 				IQueryable<ListItem> listItemData;
+				var shareItemData = new List<ListShare>().AsQueryable();
+				IQueryable<BranchSupport> branchSupportData;
 
 				GenerateListData(listItemTemp, out listData, out listItemData);
 
-				var shareItemData = new List<ListShare>().AsQueryable();
+				branchSupportData = Builder<BranchSupport>.CreateListOfSize(10).Build().AsQueryable();
+				
 				#endregion
 
 				mockListSet.SetData(listData);
 				mockListItemSet.SetData(listItemData);
 				mockShareSet.SetData(shareItemData);
+				mockBranchSupportSet.SetData(branchSupportData);
+
 
 
 				mockListSet.Setup(s => s.Include(It.IsAny<string>())).Returns(mockListSet.Object);
@@ -92,7 +99,7 @@ namespace KeithLink.Svc.Test.Mock
 				mockContext.Setup(c => c.Set<List>()).Returns(mockListSet.Object);
 				mockContext.Setup(c => c.Set<ListItem>()).Returns(mockListItemSet.Object);
 				mockContext.Setup(c => c.Set<ListShare>()).Returns(mockShareSet.Object);
-				mockContext.Setup(c => c.Set<BranchSupport>()).Returns(branchSupportSet.Object);
+				mockContext.Setup(c => c.Set<BranchSupport>()).Returns(mockBranchSupportSet.Object);
 				#endregion
 
 				return mockContext.Object;
@@ -190,8 +197,28 @@ namespace KeithLink.Svc.Test.Mock
 				_data.Remove(item);
 			}
 
+			public T Create()
+			{
+				return Activator.CreateInstance<T>();
+			}
+
+			public ObservableCollection<T> Local
+			{
+				get
+				{
+					return new ObservableCollection<T>(_data);
+				}
+			}
+
+			public TDerivedEntity Create<TDerivedEntity>() where TDerivedEntity : class, T
+			{
+				return Activator.CreateInstance<TDerivedEntity>();
+			}
+
+
 			public void SetData(IQueryable<T> data)
 			{
+				this._query = data;
 				this.As<IQueryable<T>>().Setup(x => x.Provider).Returns(data.Provider);
 				this.As<IQueryable<T>>().Setup(x => x.Expression).Returns(data.Expression);
 				this.As<IQueryable<T>>().Setup(x => x.ElementType).Returns(data.ElementType);
