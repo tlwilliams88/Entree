@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace KeithLink.Svc.Test.Logic.InternalSrv
 {
+	[TestClass]
 	public class InternalDivisionLogicTests
 	{
 		private readonly IInternalDivisionLogic divisionLogic;
