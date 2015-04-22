@@ -82,9 +82,9 @@ namespace KeithLink.Svc.InternalSvc
 			return listLogic.ReadList(user, catalogInfo, Id, includePrice);
 		}
         
-		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
+		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
-			return listLogic.ReadListByType(catalogInfo, type);
+			return listLogic.ReadListByType(catalogInfo, type, headerOnly);
 		}
 		
         public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)

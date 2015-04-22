@@ -403,6 +403,16 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <None Include="Service References\com.benekeith.ProfileService\ProfileService.wsdl" />
+    <None Include="Service References\com.benekeith.ProfileService\ProfileService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ProfileService\ProfileService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ProfileService\ProfileService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.ReportService\ReportService.disco" />
     <None Include="Service References\com.benekeith.ReportService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ReportService\configuration.svcinfo" />
@@ -411,6 +421,13 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <Content Include="Services\PowerMenuPricing.asmx" />
+    <None Include="Service References\com.benekeith.ProfileService\ProfileService.disco" />
+    <None Include="Service References\com.benekeith.ProfileService\configuration91.svcinfo" />
+    <None Include="Service References\com.benekeith.ProfileService\configuration.svcinfo" />
+    <None Include="Service References\com.benekeith.ProfileService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="SqlServerTypes\readme.htm" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -467,6 +484,7 @@
     <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
     <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
     <Compile Include="Service References\com.benekeith.ConfigurationService\Reference.cs">
@@ -510,6 +528,11 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\com.benekeith.ProfileService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -696,6 +719,7 @@
     <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OnlinePaymentService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
+    <WCFMetadataStorage Include="Service References\com.benekeith.ProfileService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ReportService\" />
   </ItemGroup>
   <PropertyGroup>

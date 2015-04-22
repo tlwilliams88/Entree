@@ -5,7 +5,9 @@ angular.module('bekApp')
   return {
     restrict: 'E',
     // replace : true,
-    // scope: true,
+    scope: {
+      openScope: '='
+    },
     templateUrl: 'views/directives/orderdropdown.html',
     controller: ['$scope', '$modal', '$state', function($scope, $modal, $state){
 
@@ -23,7 +25,12 @@ angular.module('bekApp')
       $scope.openOrderImportModal = function () {
         var modalInstance = $modal.open({
           templateUrl: 'views/modals/orderimportmodal.html',
-          controller: 'ImportModalController'
+          controller: 'ImportModalController',
+          resolve: {
+            customListHeaders: ['ListService', function(ListService) {
+              return ListService.getCustomListHeaders();
+            }]
+          }
         });
       };
     }]

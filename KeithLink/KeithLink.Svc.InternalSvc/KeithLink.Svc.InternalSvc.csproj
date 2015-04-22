@@ -143,6 +143,7 @@
     <Content Include="CacheService.svc" />
     <Content Include="ContentManagementService.svc" />
     <Content Include="DsrService.svc" />
+    <Content Include="ProfileService.svc" />
     <Content Include="ReportService.svc" />
     <Content Include="DivisionService.svc" />
     <Content Include="ConfigurationService.svc" />
@@ -174,6 +175,10 @@
     <Compile Include="Interfaces\IDsrService.cs" />
     <Compile Include="Interfaces\ICacheService.cs" />
     <Compile Include="Interfaces\IReportService.cs" />
+    <Compile Include="Interfaces\IProfileService.cs" />
+    <Compile Include="ProfileService.svc.cs">
+      <DependentUpon>ProfileService.svc</DependentUpon>
+    </Compile>
     <Compile Include="ReportService.svc.cs">
       <DependentUpon>ReportService.svc</DependentUpon>
     </Compile>

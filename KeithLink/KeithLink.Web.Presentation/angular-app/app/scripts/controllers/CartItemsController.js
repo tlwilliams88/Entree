@@ -16,6 +16,9 @@ angular.module('bekApp')
     if ($stateParams.cartId !== basketId.toString()) {
       $state.go('menu.cart.items', {cartId: basketId}, {location:'replace', inherit:false, notify: false});
     }
+
+    // update cartHeaders in MenuController
+    $scope.$parent.$parent.cartHeaders = CartService.cartHeaders;
  
     var watches = [];
     function onQuantityChange(newVal, oldVal) {
@@ -47,7 +50,7 @@ angular.module('bekApp')
     $scope.isOffline = CartService.isOffline;
     $scope.carts = CartService.cartHeaders;
     $scope.shipDates = CartService.shipDates;
-    $scope.changeOrders = angular.copy(changeOrders);
+    $scope.changeOrders = OrderService.changeOrderHeaders;
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);

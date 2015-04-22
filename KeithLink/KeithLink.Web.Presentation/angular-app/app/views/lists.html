@@ -347,7 +347,7 @@
           ng-model="selectedList.items">
 
           <thead>
-            <tr>
+            <tr fsm-sticky-header scroll-body="'.list-form'" scroll-stop="0" scroll-offset="170">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort.sortDescending)"> 
@@ -365,7 +365,7 @@
                 <span>Brand <span sort-icons field="'brandextendeddescription'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('itemclass',sort.sortDescending)">
-                <span>Class <span sort-icons field="'class'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span>Category <span sort-icons field="'class'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size

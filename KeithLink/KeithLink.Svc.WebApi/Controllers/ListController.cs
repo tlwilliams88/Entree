@@ -73,6 +73,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
 			return listServiceRepository.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, header);
         }
+
+		[HttpGet]
+		[ApiKeyedRoute("list/type/{type}")]
+		public List<ListModel> List(ListType type, bool headerOnly = false)
+		{
+			return listServiceRepository.ReadListByType(this.SelectedUserContext, type, headerOnly);
+		}
 		
         [HttpGet]
 		[ApiKeyedRoute("list/{listId}")]

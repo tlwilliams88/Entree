@@ -12,17 +12,21 @@ angular.module('bekApp')
     controller: ['$scope', '$state', '$q', '$modal', 'toaster', 'ListService', 'CartService', 'OrderService', 'ContextMenuService',
     function($scope, $state, $q, $modal, toaster, ListService, CartService, OrderService, ContextMenuService){
 
-      ListService.getListHeaders().then(function(lists) {
-        $scope.lists = lists;
-      });
+      if ($scope.isOrderEntryCustomer) {
+        CartService.getShipDates(); // needed if user creates a cart using the context menu
 
-      CartService.getCartHeaders().then(function(carts) {
-        $scope.carts = carts;
-      });
+        ListService.getListHeaders().then(function(lists) {
+          $scope.lists = lists;
+        });
 
-      OrderService.getChangeOrders().then(function(orders) {
-        $scope.changeOrders = orders;
-      });
+        CartService.getCartHeaders().then(function(carts) {
+          $scope.carts = carts;
+        });
+
+        OrderService.getChangeOrders().then(function(orders) {
+          $scope.changeOrders = orders;
+        });
+      }
 
       function closeModal() {
         $scope.$broadcast('closeContextMenu');

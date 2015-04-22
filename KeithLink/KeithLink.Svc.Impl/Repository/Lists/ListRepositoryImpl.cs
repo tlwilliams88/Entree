@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		public ListRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
         
 
-		public IEnumerable<List> ReadListForCustomer(Core.Models.SiteCatalog.UserSelectedContext catalogInfo, bool headerOnly)
+		public IQueryable<List> ReadListForCustomer(Core.Models.SiteCatalog.UserSelectedContext catalogInfo, bool headerOnly)
 		{
 			if(headerOnly)
 				return this.Entities.Include(t => t.Shares).Where(l => 

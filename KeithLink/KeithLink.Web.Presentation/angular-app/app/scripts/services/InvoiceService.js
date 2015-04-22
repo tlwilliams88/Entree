@@ -50,7 +50,8 @@ angular.module('bekApp')
           payment.amount = parseFloat(payment.paymentAmount);
         });
 
-        return Invoice.pay(payments).$promise;
+
+        return Invoice.pay({}, payments).$promise;
       },
 
       /********************

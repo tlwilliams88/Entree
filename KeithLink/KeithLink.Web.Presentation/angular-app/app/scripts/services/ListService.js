@@ -182,6 +182,12 @@ angular.module('bekApp')
           return Service.getAllLists({ header: true });
         },
 
+        getCustomListHeaders: function() {
+          return $http.get('/list/type/custom', { params: { headerOnly: true } }).then(function(response) {
+            return response.data;
+          });
+        },
+
         // accepts listId (guid)
         // returns list object
         getListWithItems: function(listId, params) {
@@ -320,7 +326,8 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-          
+
+          newList.message = 'Creating list...';          
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');
@@ -370,6 +377,7 @@ angular.module('bekApp')
         // accepts list object
         // returns promise and updated list object
         updateList: function(list, getEntireList) {
+          list.message = 'Saving list...';
           return List.update(null, list).$promise.then(function(response) {
             
             // update labels
@@ -473,6 +481,19 @@ angular.module('bekApp')
           });
         },
 
+        deleteItemByItemNumber: function(listId, itemNumber) {
+          return List.deleteItemByItemNumber({
+            listId: listId,
+            itemNumber: itemNumber
+          }).$promise.then(function(response) {
+            toaster.pop('success', null, 'Successfully removed item from list.');
+            return;
+          }, function(error) {
+            toaster.pop('error', null, 'Error removing item from list.');
+            return $q.reject(error);
+          });
+        },
+
         /********************
         EDIT MULTIPLE ITEMS
         ********************/
@@ -545,11 +566,7 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.getListWithItems(favoritesList.listid).then(function(list) {
-            var itemToDelete = $filter('filter')(list.items, {itemnumber: itemNumber})[0];
-
-            return Service.deleteItem(itemToDelete.listitemid);
-          });
+          return Service.deleteItemByItemNumber(favoritesList.listid, itemNumber);
         },
 
         addItemToFavorites: function(item) {
@@ -646,7 +663,7 @@ angular.module('bekApp')
               name: 'Copied - ' + list.name
             });
             return newList.newlistid;
-          })
+          });
         }
       };
 
