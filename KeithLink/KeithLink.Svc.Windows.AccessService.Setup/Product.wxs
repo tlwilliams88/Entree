@@ -34,6 +34,7 @@
         <Directory Id="CompanyFolder" Name="$(var.MfgName)">
           <Directory Id="INSTALLFOLDER" Name="$(var.AppName)">
             <Component Id="ServiceFile" Guid="83859B7F-CE45-4804-8AFA-301BFE4A25EE">
+              <File Id="Autofac" Name="Autofac.dll" DiskId="1" Source="$(var.SourcePath)\Autofac.dll" KeyPath="no" Vital="yes" />
               <File Id="AWSSDK" Name="AWSSDK.dll" DiskId="1" Source="$(var.SourcePath)\AWSSDK.dll" KeyPath="no" Vital="yes"/>
               <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
               <File Id="OpenXmlDocFormat" Name="DocumentFormat.OpenXml.dll" DiskId="1" Source="$(var.SourcePath)\DocumentFormat.OpenXml.dll" KeyPath="no" Vital="yes"/>

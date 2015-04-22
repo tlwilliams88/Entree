@@ -580,9 +580,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 UserNameToken = tokenBase64,
                 IsKBITCustomer = isKbitCustomer,
                 IsPowerMenuCustomer = isPowerMenuCustomer,
-                PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, adUser.EmailAddress):"",
-                PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), adUser.EmailAddress),
-                PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl):"",
+                PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email):"",
+                PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName),
+                PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl):""
 #if DEMO
 				,IsDemo = true
 #endif
@@ -590,7 +590,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         }
 
-        private string GetPowerMenuLoginUrl( Guid userId, string userName ) {
+        private string GetPowerMenuLoginUrl( Guid userId, string userName, string samAccountName ) {
             string returnValue = String.Empty;
 
             List<Customer> customers = GetCustomersForExternalUser( userId );
@@ -600,7 +600,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                          select customer.CustomerNumber));
 
             if (customerNumbers.Length > 0) {
-                string password = String.Concat(userName, userId.ToString().Substring(0,4));
+                string password = String.Concat(samAccountName, userId.ToString().Substring(0,4));
                 returnValue = String.Format( Configuration.PowerMenuLoginUrl, userName, password, customerNumbers );
             }
 
@@ -1163,10 +1163,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                      User = new PowerMenuSystemRequestUserModel() {
                                          Username = userInfo.UserProfiles[0].EmailAddress,
                                          Password = String.Concat(userInfo.UserProfiles[0].UserName, userInfo.UserProfiles[0].UserId.ToString().Substring(0,4)),
-                                         ContactName = userInfo.UserProfiles[0].FirstName,
+                                         ContactName = userInfo.UserProfiles[0].EmailAddress,
                                          CustomerNumber = customer.CustomerNumber,
                                          EmailAddress = userInfo.UserProfiles[0].EmailAddress,
-                                         PhoneNumber = userInfo.UserProfiles[0].PhoneNumber,
+                                         PhoneNumber = "0000000000",
                                          State = "TX" // does this need to be dynamic?
                                      },
                                      Login = new PowerMenuSystemRequestAdminModel() {

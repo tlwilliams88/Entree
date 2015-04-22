@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Test.Logic {
         #region methods
         [TestMethod]
         public void GetUserProfile() {
-            Core.Models.Profile.UserProfileReturn userProfiles = _logic.GetUserProfile("sabroussard@somecompany.com");
+            Core.Models.Profile.UserProfileReturn userProfiles = _logic.GetUserProfile("test52@thismat.com");
 
             Assert.IsTrue(userProfiles.UserProfiles.Count == 1);
         }
