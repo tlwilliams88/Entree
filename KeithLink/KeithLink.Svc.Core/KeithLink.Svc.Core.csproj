@@ -464,6 +464,9 @@
     <Compile Include="Models\Lists\ListItemModel.cs" />
     <Compile Include="Models\SiteCatalog\ItemNote.cs" />
     <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\Product.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductLine.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductImage.cs" />
     <Compile Include="Models\SiteCatalog\ProductImageReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductsReturn.cs" />

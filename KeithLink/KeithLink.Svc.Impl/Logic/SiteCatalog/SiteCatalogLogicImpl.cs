@@ -1,20 +1,21 @@
-﻿using System;
+﻿using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Orders.History;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.Orders.History;
-using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Interface.Cache;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -36,10 +37,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 		protected string CACHE_PREFIX { get { return "Default"; } }
         #endregion
 
-		public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository, 
-			IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, 
-			IOrderServiceRepository orderServiceRepository)
-        {
+        #region ctor
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, 
+                                                 IListServiceRepository listServiceRepository, IDivisionRepository divisionRepository, ICategoryImageRepository categoryImageRepository, 
+                                                 ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderServiceRepository orderServiceRepository) {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
@@ -49,6 +50,88 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _catalogCacheRepository = catalogCacheRepository;
 			_divisionLogic = divisionLogic;
             _orderServiceRepository = orderServiceRepository;
+        }
+        #endregion
+
+        #region methods
+        private void AddCategoryImages(CategoriesReturn returnValue) {
+            foreach (Category c in returnValue.Categories) {
+                c.CategoryImage = _categoryImageRepository.GetImageByCategory(c.Id).CategoryImage;
+            }
+        }
+
+        private void AddCategorySearchName(CategoriesReturn returnValue) {
+            foreach (Category c in returnValue.Categories) {
+                c.SearchName = GetCategorySearchName(c.Name);
+                foreach (SubCategory sc in c.SubCategories)
+                    sc.SearchName = GetCategorySearchName(sc.Name);
+            }
+        }
+
+        //private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
+        //{
+        //	if (profile != null && ret != null)
+        //	{
+        //		var list = _listServiceRepository.ReadFavorites(profile, catalogInfo);
+        //		var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
+
+        //		ret.Favorite = list.Contains(ret.ItemNumber);
+        //		ret.Notes = notes.Where(n => n.ItemNumber.Equals(ret.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
+        //	}
+        //}
+
+        private void AddItemHistoryToProduct(Product returnValue, UserSelectedContext catalogInfo) {
+            List<Core.Models.Orders.History.OrderHistoryFile> history = _orderServiceRepository.GetLastFiveOrderHistory(catalogInfo, returnValue.ItemNumber);
+
+            foreach (OrderHistoryFile h in history) {
+                foreach (OrderHistoryDetail d in h.Details) {
+                    if (returnValue.OrderHistory.ContainsKey(h.Header.DeliveryDate.Value.ToShortDateString()))
+                        returnValue.OrderHistory[h.Header.DeliveryDate.Value.ToShortDateString()] += d.ShippedQuantity;
+                    else
+                        returnValue.OrderHistory.Add(h.Header.DeliveryDate.Value.ToShortDateString(), d.ShippedQuantity);
+                }
+            }
+        }
+
+        private void AddPricingInfo(ProductsReturn prods, UserProfile profile, UserSelectedContext context, SearchInputModel searchModel) {
+            if (profile == null || context == null || String.IsNullOrEmpty(context.CustomerId))
+                return;
+
+            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
+
+            foreach (Price p in pricingInfo.Prices) {
+                Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
+                prod.CasePrice = String.Format("{0:C}", p.CasePrice);
+                prod.CasePriceNumeric = p.CasePrice;
+                prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
+                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+            }
+
+            if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
+            {
+                if (searchModel.SDir == "asc")
+                    prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
+                else
+                    prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
+            }
+        }
+
+        private void AddProductImageInfo(Product ret) {
+            ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
+        }
+
+        private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo) {
+            if (profile != null) {
+                var favorites = _listServiceRepository.ReadFavorites(profile, catalogInfo);
+                var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
+                var history = _listServiceRepository.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
+
+                ret.Products.ForEach(delegate(Product prod) {
+                    prod.Favorite = favorites.Contains(prod.ItemNumber);
+                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
+                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber)).FirstOrDefault().InHistory;
+                });
+            }
         }
 
         public CategoriesReturn GetCategories(int from, int size)
@@ -67,6 +150,17 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private static string GetCategoriesCacheKey(int from, int size)
         {
             return String.Format("CategoriesReturn_{0}_{1}", from, size);
+        }
+
+        private string GetCategorySearchName(string categoryName) {
+            // remove ',' and '.', replace '&' with 'and', replace white space and / with _, lowercase
+            if (!String.IsNullOrEmpty(categoryName))
+                return categoryName.Replace("&", "and").Replace(",", "").Replace(" ", "_").Replace("/", "_").Replace(".", "").ToLower();
+            return categoryName;
+        }
+
+        public List<Division> GetDivisions() {
+            return _divisionLogic.GetDivisions();
         }
 
         public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile)
@@ -95,7 +189,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
-		public Product GetProductByIdorUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile)
+		public Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile)
 		{
 			Product ret = null;
 			if (idorupc.Length <= 6)
@@ -137,48 +231,41 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			return ret;
 		}
 
-        private void AddCategoryImages(CategoriesReturn returnValue)
+        public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel, UserProfile profile)
         {
-            foreach (Category c in returnValue.Categories)
-            {
-                c.CategoryImage = _categoryImageRepository.GetImageByCategory(c.Id).CategoryImage;
-            }
-        }
+            ProductsReturn returnValue;
 
-        private void AddCategorySearchName(CategoriesReturn returnValue)
+            // special handling for price sorting
+            if (searchModel.SField == "caseprice")
+                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+            else
+                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
+
+            AddPricingInfo(returnValue, profile, catalogInfo, searchModel);
+            GetAdditionalProductInfo(profile, returnValue, catalogInfo);
+
+            return returnValue;
+        }
+		
+        public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile)
         {
-            foreach (Category c in returnValue.Categories)
-            {
-                c.SearchName = GetCategorySearchName(c.Name);
-                foreach (SubCategory sc in c.SubCategories)
-                    sc.SearchName = GetCategorySearchName(sc.Name);
-            }
-        }
+            ProductsReturn ret;
+            string categoryName = category;
 
-        private void AddItemHistoryToProduct( Product returnValue, UserSelectedContext catalogInfo ) {
-            List<Core.Models.Orders.History.OrderHistoryFile> history = _orderServiceRepository.GetLastFiveOrderHistory( catalogInfo, returnValue.ItemNumber );
+            // enable category search on either category id or search name
+            Category catFromSearchName = this.GetCategories(0, 2000).Categories.Where(x => x.SearchName == category).FirstOrDefault();
+            if (catFromSearchName != null)
+                categoryName = catFromSearchName.Name;
 
-            foreach (OrderHistoryFile h in history) {
-                foreach (OrderHistoryDetail d in h.Details) {
-					if (returnValue.OrderHistory.ContainsKey(h.Header.DeliveryDate.Value.ToShortDateString()))
-						returnValue.OrderHistory[h.Header.DeliveryDate.Value.ToShortDateString()] += d.ShippedQuantity;
-					else
-						returnValue.OrderHistory.Add( h.Header.DeliveryDate.Value.ToShortDateString(), d.ShippedQuantity );
-                }
-            }
-        }
+            // special handling for price sorting
+            if (searchModel.SField == "caseprice")
+                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+            else
+                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
 
-        private string GetCategorySearchName(string categoryName)
-        {
-            // remove ',' and '.', replace '&' with 'and', replace white space and / with _, lowercase
-            if (!String.IsNullOrEmpty(categoryName))
-                return categoryName.Replace("&", "and").Replace(",", "").Replace(" ", "_").Replace("/","_").Replace(".","").ToLower();
-            return categoryName;
-        }
-
-        private void AddProductImageInfo(Product ret)
-        {
-            ret.ProductImages = _imgRepository.GetImageList(ret.ItemNumber).ProductImages;
+            AddPricingInfo(ret, profile, catalogInfo, searchModel);
+            GetAdditionalProductInfo(profile, ret, catalogInfo);
+            return ret;
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids)
@@ -203,43 +290,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			return products;
         }
 
-		public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile)
-        {
-            ProductsReturn ret;
-            string categoryName = category;
-
-            // enable category search on either category id or search name
-            Category catFromSearchName = this.GetCategories(0, 2000).Categories.Where(x => x.SearchName == category).FirstOrDefault();
-            if (catFromSearchName != null)
-                categoryName = catFromSearchName.Name;
-
-            // special handling for price sorting
-            if (searchModel.SField == "caseprice")
-                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
-            else
-                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
-
-            AddPricingInfo(ret, profile, catalogInfo, searchModel);
-            GetAdditionalProductInfo(profile, ret, catalogInfo);
-            return ret;
-        }
-
-		public ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel, UserProfile profile)
-        {
-            ProductsReturn returnValue;
-
-            // special handling for price sorting
-            if (searchModel.SField == "caseprice")
-                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
-            else
-                returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
-
-            AddPricingInfo(returnValue, profile, catalogInfo, searchModel);
-            GetAdditionalProductInfo(profile, returnValue, catalogInfo);
-
-            return returnValue;
-        }
-
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile)
         {
             ProductsReturn ret;
@@ -254,65 +304,6 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 			GetAdditionalProductInfo(profile, ret, catalogInfo);
             return ret;
         }
-
-        private void AddPricingInfo(ProductsReturn prods, UserProfile profile, UserSelectedContext context, SearchInputModel searchModel)
-        {
-            if (profile == null || context == null || String.IsNullOrEmpty(context.CustomerId))
-                return;
-
-            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
-
-            foreach (Price p in pricingInfo.Prices)
-            {
-                Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
-                prod.CasePrice = String.Format("{0:C}", p.CasePrice);
-                prod.CasePriceNumeric = p.CasePrice;
-                prod.PackagePrice = String.Format("{0:C}", p.PackagePrice);
-                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
-            }
-
-            if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
-            {
-                if (searchModel.SDir == "asc")
-                    prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
-                else
-                    prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
-            }
-        }
-
-		//private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
-		//{
-		//	if (profile != null && ret != null)
-		//	{
-		//		var list = _listServiceRepository.ReadFavorites(profile, catalogInfo);
-		//		var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
-
-		//		ret.Favorite = list.Contains(ret.ItemNumber);
-		//		ret.Notes = notes.Where(n => n.ItemNumber.Equals(ret.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
-		//	}
-		//}
-
-		private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo)
-        {
-			if (profile != null)
-			{
-				var favorites = _listServiceRepository.ReadFavorites(profile, catalogInfo);
-				var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
-				var history = _listServiceRepository.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
-
-				ret.Products.ForEach(delegate (Product prod) 
-				{
-					prod.Favorite = favorites.Contains(prod.ItemNumber);
-					prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
-					prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber)).FirstOrDefault().InHistory;
-				});
-			}
-        }
-
-
-		public List<Division> GetDivisions()
-		{
-			return _divisionLogic.GetDivisions();
-		}
-	}
+        #endregion
+    }
 }
