@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel',
-    function ($scope, $state, $stateParams, $filter, lists, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'ENV',
+    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, ENV) {
     
     // redirect to url with correct parameters
     var basketId;
@@ -14,6 +14,8 @@ angular.module('bekApp')
     if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {
       $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
+
+
 
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
@@ -125,7 +127,27 @@ angular.module('bekApp')
       $scope.orderSearchTerm = '';
       $scope.filterItems( $scope.orderSearchTerm );     
     };
-  
+
+
+      $scope.checkOrientation = function(){   
+       $scope.isMobile = UtilityService.isMobileDevice();
+       if($scope.isMobile && window.innerHeight < window.innerWidth){     
+        $timeout(function(){
+          $scope.landscapeOrient = true;
+        }, 0)     
+      }
+      else{
+         $timeout(function(){
+         $scope.landscapeOrient = false;
+        }, 0)  
+      }
+    };  
+     
+    $scope.checkOrientation();
+    $(window).on("orientationchange",function(){
+    $scope.checkOrientation();
+    });
+
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
         sortOrder = !sortOrder;
