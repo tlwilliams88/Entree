@@ -582,7 +582,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 IsPowerMenuCustomer = isPowerMenuCustomer,
                 PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email):"",
                 PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName),
-                PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl):"",
+                PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl):""
 #if DEMO
 				,IsDemo = true
 #endif
