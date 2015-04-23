@@ -31,8 +31,7 @@ angular.module('bekApp')
         return name + ' ' + number;
       },
 
-       // TODO: move to UtilityService
-        isMobileDevice: function() {
+       isMobileDevice: function() {
         var check = false;
         
         // Check for mobile browsers using http://detectmobilebrowsers.com/ script
@@ -48,7 +47,6 @@ angular.module('bekApp')
         }
         return check;
       },
-
       // accepts a collection to search, fieldName (string) and matcher
       // loops through items in collection looking for an object where property fieldName equals matcher
       findObjectByField: function(collection, fieldName, matcher) {

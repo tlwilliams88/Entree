@@ -52,15 +52,12 @@ angular.module('bekApp')
         } else {
           menuElement.removeAttr('style');
         }
-        
-        opened = true;
       }
-
- 
+        
       function openContextMenuMouseoverEvent(event) {
         mouseenter = true;
         // desktop
-        if (!isMobileDevice() && !opened) {
+        if (!UtilityService.isMobileDevice() && !opened) {
           if (ContextMenuService.menuElement !== null) {
             closeDesktop(ContextMenuService.menuElement);
           }
@@ -75,7 +72,7 @@ angular.module('bekApp')
       }
 
       function openContextMenuClickEvent(event) {
-        if (isMobileDevice()) {
+        if (UtilityService.isMobileDevice()) {
           // open modal
           ContextMenuService.modalElement = $modal.open({
             templateUrl: 'views/modals/contextmenumodal.html',

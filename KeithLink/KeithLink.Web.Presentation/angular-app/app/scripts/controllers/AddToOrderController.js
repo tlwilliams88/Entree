@@ -129,32 +129,32 @@ angular.module('bekApp')
       $scope.orderSearchTerm = '';
       $scope.filterItems( $scope.orderSearchTerm );     
     };
+  
+  //Used for Par Level colums in landscape view for mobile
+   $(window).resize(function(){ 
+    $scope.$apply(function(){ 
+      $scope.checkOrientation(); 
+    }); 
+  });
 
-
-      $scope.checkOrientation = function(){   
-       $scope.isMobile = UtilityService.isMobileDevice();
-       if($scope.isMobile && window.innerHeight < window.innerWidth){     
-        $timeout(function(){
-          $scope.landscapeOrient = true;
-        }, 0)     
-      }
+  $scope.checkOrientation = function(){    
+      $scope.isMobile = UtilityService.isMobileDevice(); 
+       if($scope.isMobile && window.innerHeight < window.innerWidth){ 
+       $timeout(function(){ 
+         $scope.landscapeOrient = true;
+        }, 0)
+     }
       else{
-         $timeout(function(){
-         $scope.landscapeOrient = false;
-        }, 0)  
-      }
-    };  
-
-   $(window).resize(function(){
-      $scope.$apply(function(){
-        $scope.checkOrientation();
-      });
-    });
-
-    $scope.checkOrientation();
-    $(window).on("orientationchange",function(){
-    $scope.checkOrientation();
-    });
+          $timeout(function(){
+          $scope.landscapeOrient = false;
+         }, 0)  
+       }
+     };  
+      
+     $scope.checkOrientation();
+     $(window).on("orientationchange",function(){
+     $scope.checkOrientation();
+     });
 
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
