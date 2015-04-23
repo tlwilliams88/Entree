@@ -349,7 +349,14 @@ angular.module('bekApp')
         authorize: 'canPayInvoices'
       },
       resolve: {
-        images: ['$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+        selectedUserContext: ['LocalStorage', function(LocalStorage) {
+          if (LocalStorage.getTempContext()) {
+            LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          } else if (LocalStorage.getTempBranch()) {
+            LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
+          }
+        }],
+        images: ['$stateParams', 'InvoiceService', 'selectedUserContext', function($stateParams, InvoiceService, selectedUserContext) {
           return InvoiceService.getInvoiceImage($stateParams.invoiceNumber);
         }]
       }
