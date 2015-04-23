@@ -21,8 +21,6 @@ namespace KeithLink.Svc.WebApi
 
 
 			//Only enable swagger for local environments
-#if DEV || DEBUG || DEMO
-
 			config
 				.EnableSwagger(c =>
 				{
@@ -34,7 +32,6 @@ namespace KeithLink.Svc.WebApi
 				{
 					c.InjectStylesheet(Assembly.GetExecutingAssembly(), "SwaggerUI.css");
 				});
-#endif
 			
 			
 			WebApiConfig.Register(config);
