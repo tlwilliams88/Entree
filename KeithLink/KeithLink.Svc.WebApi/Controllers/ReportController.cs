@@ -31,6 +31,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+
+		/// <summary>
+		/// Retrieve the item usage report
+		/// </summary>
+		/// <param name="usageQuery">Query/filter options</param>
+		/// <returns></returns>
         [HttpGet]
 		[ApiKeyedRoute("report/itemusage")]
 		public Models.OperationReturnModel<IEnumerable<ItemUsageReportItemModel>> ReadItemUsage([FromUri] ItemUsageReportQueryModel usageQuery) {
@@ -47,6 +53,12 @@ namespace KeithLink.Svc.WebApi.Controllers
                 return new Models.OperationReturnModel<IEnumerable<ItemUsageReportItemModel>>() { ErrorMessage = "A valid FROM and TO date are required" };
 		}
 
+		/// <summary>
+		/// Export item usage report
+		/// </summary>
+		/// <param name="usageQuery">Query options</param>
+		/// <param name="exportRequest">Export options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("report/itemusage/export")]
 		public HttpResponseMessage ExportList([FromUri] ItemUsageReportQueryModel usageQuery, ExportRequestModel exportRequest)
@@ -65,6 +77,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 				return new HttpResponseMessage() { StatusCode = HttpStatusCode.NoContent };			
 		}
 
+		/// <summary>
+		/// Retrieve item usage export options
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("report/itemusage/export")]
 		public ExportOptionsModel ExportList()

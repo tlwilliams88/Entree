@@ -27,6 +27,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Read Content items for branch
+		/// </summary>
+		/// <param name="branchId">Which branch to read content for</param>
+		/// <param name="count">Number of items to return</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("cms/contentitems/{branchId}/{count}")]
         public Models.OperationReturnModel<List<ContentItemViewModel>> ReadContentItems(string branchId, int count)
@@ -36,6 +42,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
+		/// <summary>
+		/// Read a specific content item
+		/// </summary>
+		/// <param name="itemId">Content item Id</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("cms/contentitem/{itemId}")]
         public Models.OperationReturnModel<ContentItemViewModel> ReadContentItem(int itemId)
@@ -45,6 +56,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
+		/// <summary>
+		/// Read Promo items for branch
+		/// </summary>
+		/// <param name="branchId">Which branch to read promos for</param>
+		/// <param name="count">Number of items to return</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("cms/promoitems/{branchId}/{count}")]
         public Models.OperationReturnModel<List<ContentItemViewModel>> ReadPromoItems(string branchId, int count)
@@ -54,6 +71,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
+		/// <summary>
+		/// Create Content item
+		/// </summary>
+		/// <param name="contentItem">Item to create</param>
+		/// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("cms/contentitem")]
         public Models.OperationReturnModel<bool> CreateContentItem(ContentItemPostModel contentItem)
@@ -71,6 +93,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+		/// <summary>
+		/// Delete Content item
+		/// </summary>
+		/// <param name="itemId">Content item Id to delete</param>
+		/// <returns></returns>
         [HttpDelete]
         [ApiKeyedRoute("cms/contentitem/{itemId}")]
         public Models.OperationReturnModel<bool> DeleteContentItem(int itemId)

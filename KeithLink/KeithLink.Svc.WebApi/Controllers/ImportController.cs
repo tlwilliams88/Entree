@@ -25,6 +25,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			this.importLogic = importLogic;
         }
 		
+		/// <summary>
+		/// Import a user List
+		/// </summary>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("import/list")]
 		public async Task<ListImportModel> List()
@@ -66,6 +70,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 
+		/// <summary>
+		/// Import Order
+		/// </summary>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("import/order")]
 		public async Task<OrderImportModel> Order()

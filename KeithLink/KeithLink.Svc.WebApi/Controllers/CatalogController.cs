@@ -39,6 +39,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Retrieve all product categories
+		/// </summary>
+		/// <returns>List of Categories</returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/categories")]
         public CategoriesReturn GetCategories()
@@ -47,6 +51,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _catalogLogic.GetCategories(0, 2000);
         }
 
+		/// <summary>
+		/// Retrieve Sub-Categories
+		/// </summary>
+		/// <param name="id">Parent Category</param>
+		/// <param name="searchModel">Contains From and Size for specifing items to be retreived</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/category/{id}/categories")]
         public CategoriesReturn GetSubCategoriesByParentId(string id, [FromUri] SearchInputModel searchModel)
@@ -54,6 +64,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _catalogLogic.GetCategories(searchModel.From, searchModel.Size);
         }
 
+		/// <summary>
+		/// Retrieve Products for a Category
+		/// </summary>
+		/// <param name="categoryId">Category Id</param>
+		/// <param name="searchModel"></param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/search/category/{categoryId}/products")]
         public ProductsReturn GetProductsByCategoryId(string categoryId, [FromUri] SearchInputModel searchModel)
@@ -62,6 +78,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return prods;
         }
 
+		/// <summary>
+		/// Retrieve Products by house brand
+		/// </summary>
+		/// <param name="brandControlLabel">House brand</param>
+		/// <param name="searchModel"></param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/search/brands/house/{brandControlLabel}")]
         public ProductsReturn GetProductsByHouseBrand(string brandControlLabel, [FromUri] SearchInputModel searchModel)
@@ -69,6 +91,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _catalogLogic.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
         }
 
+		/// <summary>
+		/// Get Categories
+		/// </summary>
+		/// <param name="id">This is not currently being used</param>
+		/// <param name="searchModel"></param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/category/{id}")]
 		public CategoriesReturn GetCategoriesById(string id, [FromUri] SearchInputModel searchModel)
@@ -77,6 +105,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _catalogLogic.GetCategories(searchModel.From, searchModel.Size);
         }
 
+		/// <summary>
+		/// Get Product by Id
+		/// </summary>
+		/// <param name="id">Product Id (itemnumber)</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/product/{id}")]
         public Product GetProductById(string id)
@@ -90,6 +123,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return prod;
         }
 
+		/// <summary>
+		/// Get Product by Id or UPC
+		/// </summary>
+		/// <param name="idorupc">Can be Itemnumber or UPC</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("catalog/product/scan/{idorupc}")]
 		public Product GetProductByIdorUPC(string idorupc)
@@ -99,6 +137,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return prod;
 		}
 
+		/// <summary>
+		/// Search products
+		/// </summary>
+		/// <param name="searchTerms">Product Search term</param>
+		/// <param name="searchModel"></param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/search/{searchTerms}/products")]
 		public ProductsReturn GetProductsSearch(string searchTerms, [FromUri] SearchInputModel searchModel)
@@ -106,7 +150,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
             return prods;
         }
-				
+			
+		/// <summary>
+		/// Retrieve divisions
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[AllowAnonymous]
 		[ApiKeyedRoute("catalog/divisions")]
@@ -117,6 +165,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		#region Exports
 
+		/// <summary>
+		/// Get Catalog export options
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("catalog/export")]
 		public ExportOptionsModel ExportProducts()
@@ -124,6 +176,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, 0);
 		}
 
+		/// <summary>
+		/// Export Catalog using provided search term
+		/// </summary>
+		/// <param name="searchTerms">Search term</param>
+		/// <param name="searchModel"></param>
+		/// <param name="exportRequest">Export options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("catalog/export/{searchTerms}/products")]
 		public HttpResponseMessage ProductSearchExport(string searchTerms, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
@@ -137,6 +196,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		}
 
+		/// <summary>
+		/// Export products for a Category
+		/// </summary>
+		/// <param name="categoryId">Category Id</param>
+		/// <param name="searchModel"></param>
+		/// <param name="exportRequest">Export options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("catalog/export/category/{categoryId}/products")]
 		public HttpResponseMessage GetProductsByCategoryIdExport(string categoryId, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
@@ -149,6 +215,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return ExportModel<Product>(prods.Products, exportRequest);	
 		}
 
+		/// <summary>
+		/// Export products for a house brand
+		/// </summary>
+		/// <param name="brandControlLabel">House brand</param>
+		/// <param name="searchModel"></param>
+		/// <param name="exportRequest">Export options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("catalog/export/brands/house/{brandControlLabel}")]
 		public HttpResponseMessage GetProductsByHouseBrandExport(string brandControlLabel, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)

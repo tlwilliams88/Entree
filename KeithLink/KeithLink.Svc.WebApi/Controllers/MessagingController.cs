@@ -32,6 +32,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Retrieve paged list of user messages
+		/// </summary>
+		/// <param name="paging">Paging options</param>
+		/// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("messaging/usermessages/")]
 		public PagedResults<UserMessageModel> usermessages(PagingModel paging)
@@ -39,6 +44,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
 
+		/// <summary>
+		/// Mark a message as read by the user
+		/// </summary>
+		/// <param name="updatedUserMessages">Array of read messages</param>
 		[HttpPut]
         [ApiKeyedRoute("messaging/usermessages/markasread")]
         public void UpdateReadMessages(List<UserMessageModel> updatedUserMessages)
@@ -46,6 +55,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             messagingServiceRepository.MarkAsReadUserMessages(updatedUserMessages);
         }
 
+		/// <summary>
+		/// Retrieve a count for the number of unread messages
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("messaging/usermessages/unreadcount")]
         public int ReadUnreadMessageCount()
@@ -53,6 +66,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser.UserId);
         }
 
+		/// <summary>
+		/// Update messages preferences for the authenticated user
+		/// </summary>
+		/// <param name="messagingPreferenceModel">Updated preferences</param>
+		/// <returns></returns>
         [HttpPut]
         [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<bool> UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel)
@@ -63,6 +81,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
+		/// <summary>
+		/// Retrieve message preferences for the authenticated user
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences()
@@ -70,6 +92,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferences(this.AuthenticatedUser.UserId) };
         }
 
+		/// <summary>
+		/// Retrieve message preferences for customer
+		/// </summary>
+		/// <param name="customerId">Customer number</param>
+		/// <param name="branchId">Branch id</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("messaging/preferences/{customerId}/{branchId}")]
 		public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences(string customerId, string branchId)
@@ -77,6 +105,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferencesForCustomer(this.AuthenticatedUser.UserId, customerId, branchId) };
 		}
 
+		/// <summary>
+		/// Register a push device (mobile device)
+		/// </summary>
+		/// <param name="pushDeviceModel">Registration information</param>
+		/// <returns></returns>
         [HttpPut]
         [ApiKeyedRoute("messaging/registerpushdevice")]
         public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)
@@ -87,6 +120,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
+		/// <summary>
+		/// Create a mail message
+		/// </summary>
+		/// <param name="mailMessage">Message</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("messaging/mail")]
 		public OperationReturnModel<bool> CreateMessage(MailMessageModel mailMessage)

@@ -23,12 +23,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Retrieve recently viewed items
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
 		[ApiKeyedRoute("recent/")]
 		public List<RecentItem> Recent() {
 			return listServiceRepository.ReadRecent(this.AuthenticatedUser, this.SelectedUserContext);
 		}
 
+		/// <summary>
+		/// Add a new recently viewed item
+		/// </summary>
+		/// <param name="itemnumber"></param>
 		[HttpPost]
 		[ApiKeyedRoute("recent/{itemnumber}")]
 		public void Recent(string itemnumber) {
