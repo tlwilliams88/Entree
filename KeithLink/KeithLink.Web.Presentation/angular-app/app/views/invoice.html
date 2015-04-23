@@ -184,7 +184,7 @@
               <a ng-click="changeCustomerOnClick(invoice.customernumber, invoice.branchid)">{{::invoice.customernumber}}</a>
             </td>
             <td>
-              <a ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)">{{::invoice.invoicenumber}}</a>
+              <a format="telephone=no" ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)">{{::invoice.invoicenumber}}</a>
               <span ng-show="invoice.typedescription !== 'Invoice'">{{::invoice.invoicenumber}}</span>
             </td>
             <td class="hidden-mobile-visible-print">
