@@ -15,6 +15,8 @@ angular.module('bekApp')
       $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
 
+    // update cartHeaders in MenuController
+    $scope.$parent.$parent.cartHeaders = CartService.cartHeaders;
 
 
     function onItemQuantityChanged(newVal, oldVal) {
