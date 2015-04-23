@@ -27,10 +27,6 @@ namespace KeithLink.Svc.WebApi
 					c.SingleApiVersion("v1", "Entree Api");
 					c.IncludeXmlComments(GetXmlCommentsPath());
 					c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
-				})
-				.EnableSwaggerUi(c =>
-				{
-					c.InjectStylesheet(Assembly.GetExecutingAssembly(), "SwaggerUI.css");
 				});
 			
 			
