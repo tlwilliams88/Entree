@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', 'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel',
-    function ($scope, $state, $stateParams, $filter, lists, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel',
+    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel) {
     
     // redirect to url with correct parameters
     var basketId;
@@ -126,6 +126,32 @@ angular.module('bekApp')
       $scope.filterItems( $scope.orderSearchTerm );     
     };
   
+  //Used for Par Level colums in landscape view for mobile
+   $(window).resize(function(){ 
+    $scope.$apply(function(){ 
+      $scope.checkOrientation(); 
+    }); 
+  });
+
+  $scope.checkOrientation = function(){    
+      $scope.isMobile = UtilityService.isMobileDevice(); 
+       if($scope.isMobile && window.innerHeight < window.innerWidth){ 
+       $timeout(function(){ 
+         $scope.landscapeOrient = true;
+        }, 0)
+     }
+      else{
+          $timeout(function(){
+          $scope.landscapeOrient = false;
+         }, 0)  
+       }
+     };  
+      
+     $scope.checkOrientation();
+     $(window).on("orientationchange",function(){
+     $scope.checkOrientation();
+     });
+
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
         sortOrder = !sortOrder;
