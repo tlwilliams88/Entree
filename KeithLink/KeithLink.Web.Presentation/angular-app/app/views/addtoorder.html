@@ -157,10 +157,10 @@
             <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="hidden-mobile-visible-print" ng-show="useParlevel">
+            <th ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}" ng-show="useParlevel">
               PAR
             </th>
-            <th class="hidden-mobile-visible-print" ng-show="useParlevel">
+            <th ng-class="{'hidden-mobile-visible-print' : !landscapeOrient, 'text-center' : landscapeOrient}" ng-show="useParlevel">
               On Hand
             </th>
             <th>
@@ -211,13 +211,15 @@
             <td class="hidden-mobile-visible-print">
               {{::item.label}}
             </td>
-            <td ng-show="useParlevel" class="hidden-mobile-visible-print">
+            <td ng-show="useParlevel"ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">
               {{::item.parlevel}}
             </td>
-            <td ng-show="useParlevel" class="hidden-mobile-visible-print input-col">
+            <td ng-show="useParlevel" class="input-col"  ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">
               <ng-form name="parlevelForm" ng-if="item.canOrder">
+              <div style="display:inline-block; white-space:nowrap;" ng-if="isMobile" type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.onhand" name="onhand" ng-change="onItemOnHandAmountChanged(item)"></div>
                 <input 
                   type="text" 
+                  ng-if="!isMobile"
                   class="input-number text-right" 
                   allow-one-positive-decimal
                   ng-model="item.onhand" 
@@ -227,7 +229,13 @@
             </td>
             <td class="input-col nowrap"  >
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"></div>
+                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="(!landscapeOrient || !useParlevel) && isMobile"></div> 
+                  <input 
+                  type="text" 
+                  ng-if="(landscapeOrient && useParlevel && item.canOrder) || !isMobile" 
+                  class="input-number text-right" 
+                 allow-one-positive-decimal 
+                  ng-model="item.quantity">
               </ng-form>
             </td>
             <td class="input-col hidden-mobile-visible-print">
