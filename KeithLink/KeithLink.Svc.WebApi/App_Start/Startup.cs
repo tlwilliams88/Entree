@@ -21,12 +21,20 @@ namespace KeithLink.Svc.WebApi
 
 
 			//Only enable swagger for local environments
+#if DEV || DEBUG || DEMO
+
 			config
 				.EnableSwagger(c =>
 				{
 					c.SingleApiVersion("v1", "Entree Api");
 					c.IncludeXmlComments(GetXmlCommentsPath());
-				}).EnableSwaggerUi();
+					c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+				})
+				.EnableSwaggerUi(c =>
+				{
+					c.InjectStylesheet(Assembly.GetExecutingAssembly(), "SwaggerUI.css");
+				});
+#endif
 			
 			
 			WebApiConfig.Register(config);
