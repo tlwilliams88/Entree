@@ -24,7 +24,7 @@ angular.module('bekApp')
       },
 
       getInvoiceImage: function(invoiceNumber) {
-        var promise = $http.get('/invoice/image/' + invoiceNumber);
+        var promise = $http.get('/invoice/image/' + invoiceNumber, { data: { message: 'Loading image...' } });
         return UtilityService.resolvePromise(promise);
       },
 

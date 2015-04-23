@@ -132,7 +132,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("catalog/product/scan/{idorupc}")]
 		public Product GetProductByIdorUPC(string idorupc)
 		{
-			Product prod = _catalogLogic.GetProductByIdorUPC(this.SelectedUserContext, idorupc, this.AuthenticatedUser);
+			Product prod = _catalogLogic.GetProductByIdOrUPC(this.SelectedUserContext, idorupc, this.AuthenticatedUser);
 					
 			return prod;
 		}

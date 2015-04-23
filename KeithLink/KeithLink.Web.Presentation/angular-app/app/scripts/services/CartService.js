@@ -303,7 +303,12 @@ angular.module('bekApp')
       submitOrder: function(cartId) {
         return Cart.submit({
           cartId: cartId
-        }, { message: 'Submitting Order...' }).$promise;
+        }, { message: 'Submitting Order...' }).$promise.then(function(data) {
+          var deletedCart = Service.findCartById(cartId);
+          var idx = Service.cartHeaders.indexOf(deletedCart);
+          Service.cartHeaders.splice(idx, 1);
+          return data;
+        });
       },
  
       setActiveCart: function(cartId) {

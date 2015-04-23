@@ -481,6 +481,19 @@ angular.module('bekApp')
           });
         },
 
+        deleteItemByItemNumber: function(listId, itemNumber) {
+          return List.deleteItemByItemNumber({
+            listId: listId,
+            itemNumber: itemNumber
+          }).$promise.then(function(response) {
+            toaster.pop('success', null, 'Successfully removed item from list.');
+            return;
+          }, function(error) {
+            toaster.pop('error', null, 'Error removing item from list.');
+            return $q.reject(error);
+          });
+        },
+
         /********************
         EDIT MULTIPLE ITEMS
         ********************/
@@ -553,11 +566,7 @@ angular.module('bekApp')
         // accepts item number to remove from favorites list
         removeItemFromFavorites: function(itemNumber) {
           var favoritesList = Service.getFavoritesList();
-          return Service.getListWithItems(favoritesList.listid).then(function(list) {
-            var itemToDelete = $filter('filter')(list.items, {itemnumber: itemNumber})[0];
-
-            return Service.deleteItem(itemToDelete.listitemid);
-          });
+          return Service.deleteItemByItemNumber(favoritesList.listid, itemNumber);
         },
 
         addItemToFavorites: function(item) {
