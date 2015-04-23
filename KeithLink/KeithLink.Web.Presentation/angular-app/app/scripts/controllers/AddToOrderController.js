@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'ENV',
-    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, ENV) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel',
+    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel) {
     
     // redirect to url with correct parameters
     var basketId;
@@ -142,7 +142,13 @@ angular.module('bekApp')
         }, 0)  
       }
     };  
-     
+
+   $(window).resize(function(){
+      $scope.$apply(function(){
+        $scope.checkOrientation();
+      });
+    });
+
     $scope.checkOrientation();
     $(window).on("orientationchange",function(){
     $scope.checkOrientation();
