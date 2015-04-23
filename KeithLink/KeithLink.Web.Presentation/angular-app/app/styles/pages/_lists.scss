@@ -143,18 +143,21 @@
     max-height: 463px;
     overflow-y: auto;
   }
-  .list-form {
-    // max-height: 523px;
-    height: 523px;
-    overflow-y: auto;
-    overflow-x: auto;
-  }
 }
 
 // highlight row when hovering on desktop only
 @media (min-width: $screen-md-min) {
   table.custom-lists__table tbody tr:hover td {
     background-color: #EBE7D9;
+  }
+}
+
+@media (min-width: $screen-md-min) {
+  .list-form {
+    // max-height: 523px;
+    height: 523px;
+    overflow-y: auto;
+    overflow-x: auto;
   }
 }
 
