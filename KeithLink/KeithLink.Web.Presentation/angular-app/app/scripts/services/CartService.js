@@ -190,6 +190,17 @@ angular.module('bekApp')
       updateCart: function(cart, params) {
         cart.message = 'Saving cart...';
         return Cart.update(params, cart).$promise.then(function(response) {
+
+          // update cache
+          Service.cartHeaders.forEach(function(cartHeader, index) {
+            if (cartHeader.id === cart.id) {
+              var cartHeaderToUpdate = Service.cartHeaders[index];
+              cartHeaderToUpdate.requestedshipdate = cart.requestedshipdate;
+              cartHeaderToUpdate.subtotal = cart.subtotal;
+              cartHeaderToUpdate.name = cart.name;
+            }
+          });
+
           return Service.getCart(response.id);
         });
       },
