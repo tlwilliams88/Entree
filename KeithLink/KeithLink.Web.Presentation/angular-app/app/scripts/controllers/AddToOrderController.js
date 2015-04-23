@@ -142,7 +142,13 @@ angular.module('bekApp')
         }, 0)  
       }
     };  
-     
+
+   $(window).resize(function(){
+      $scope.$apply(function(){
+        $scope.checkOrientation();
+      });
+    });
+
     $scope.checkOrientation();
     $(window).on("orientationchange",function(){
     $scope.checkOrientation();
