@@ -18,16 +18,13 @@
     @include scroll-div-vertical(225px);
   }
 }
-
-.mobile-btn {
-  margin-top: 10px;  
-  .p{
-    margin-top: 10px;
-    margin-left:10px;
-  }
-}
-
-
+  .button-row {     
+   button{
+   margin-left:0px;
+   margin-right:0px;
+   padding:6px;
+  } 
+ } 
 
 @media print {
   .select-cart {
