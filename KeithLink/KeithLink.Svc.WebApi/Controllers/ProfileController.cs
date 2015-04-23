@@ -18,118 +18,172 @@ using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-    public class ProfileController : BaseController
-    {
-        #region attributes
-        private IAvatarRepository               _avatarRepository;
-        private ICustomerContainerRepository    _custRepo;
-        private ICustomerDomainRepository       _extAd;
-        private IEventLogRepository             _log;
-        private IUserProfileLogic               _profileLogic;
+	public class ProfileController : BaseController
+	{
+		#region attributes
+		private IAvatarRepository _avatarRepository;
+		private ICustomerContainerRepository _custRepo;
+		private ICustomerDomainRepository _extAd;
+		private IEventLogRepository _log;
+		private IUserProfileLogic _profileLogic;
 		private readonly IPasswordResetService _passwordResetService;
-        #endregion
+		#endregion
 
-        #region ctor
-        public ProfileController(ICustomerContainerRepository customerRepo, 
-                                 IEventLogRepository logRepo,
-                                 IUserProfileLogic profileLogic,
-                                 IAvatarRepository avatarRepository,
-                                 ICustomerDomainRepository customerADRepo,
-			IPasswordResetService passwordResetService) : base(profileLogic) {
-            _custRepo = customerRepo;
-            _profileLogic = profileLogic;
-            _log = logRepo;
-            _avatarRepository = avatarRepository;
-            _extAd = customerADRepo;
+		#region ctor
+		public ProfileController(ICustomerContainerRepository customerRepo,
+								 IEventLogRepository logRepo,
+								 IUserProfileLogic profileLogic,
+								 IAvatarRepository avatarRepository,
+								 ICustomerDomainRepository customerADRepo,
+			IPasswordResetService passwordResetService)
+			: base(profileLogic)
+		{
+			_custRepo = customerRepo;
+			_profileLogic = profileLogic;
+			_log = logRepo;
+			_avatarRepository = avatarRepository;
+			_extAd = customerADRepo;
 			_passwordResetService = passwordResetService;
-        }
-        #endregion
+		}
+		#endregion
 
-        #region methods
-        [AllowAnonymous]
-        [HttpPost]
-        [ApiKeyedRoute("profile/create")]
-        public OperationReturnModel<UserProfileReturn> CreateUser(UserProfileModel userInfo) {
-            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
+		#region methods
+		/// <summary>
+		/// Create user
+		/// </summary>
+		/// <param name="userInfo">User</param>
+		/// <returns></returns>
+		[AllowAnonymous]
+		[HttpPost]
+		[ApiKeyedRoute("profile/create")]
+		public OperationReturnModel<UserProfileReturn> CreateUser(UserProfileModel userInfo)
+		{
+			OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
-            try {
-                retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password,
-                                                                            userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
-                                                                            userInfo.Role, userInfo.BranchId);
-            } catch (ApplicationException axe) {
-                retVal.ErrorMessage = axe.Message;
+			try
+			{
+				retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password,
+																			userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
+																			userInfo.Role, userInfo.BranchId);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            } catch (Exception ex) {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
 
-        [AllowAnonymous]
-        [HttpPost]
-        [ApiKeyedRoute("profile/register")] // Discussion on route naming
-        public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
-            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
+		/// <summary>
+		/// Register as guest
+		/// </summary>
+		/// <param name="guestInfo">Guest</param>
+		/// <returns></returns>
+		[AllowAnonymous]
+		[HttpPost]
+		[ApiKeyedRoute("profile/register")] // Discussion on route naming
+		public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo)
+		{
+			OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
-            try {
-                retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
-            } catch (ApplicationException axe) {
-                retVal.ErrorMessage = axe.Message;
+			try
+			{
+				retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            } catch (Exception ex) {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
 
-        [Authorize]
-        [HttpPost]
-        [ApiKeyedRoute( "profile/admin/user" )]
-        public OperationReturnModel<UserProfileReturn> CreateGuestWithTemporaryPassword( GuestProfileModel guestInfo ) {
-            OperationReturnModel<UserProfileReturn> returnValue = new OperationReturnModel<UserProfileReturn>();
+		/// <summary>
+		/// Create guest and assign a temporary password
+		/// </summary>
+		/// <param name="guestInfo">Guest</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPost]
+		[ApiKeyedRoute("profile/admin/user")]
+		public OperationReturnModel<UserProfileReturn> CreateGuestWithTemporaryPassword(GuestProfileModel guestInfo)
+		{
+			OperationReturnModel<UserProfileReturn> returnValue = new OperationReturnModel<UserProfileReturn>();
 
-            try {
-                returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword( guestInfo.Email, guestInfo.BranchId );
-            } catch (ApplicationException ex) {
-                returnValue.ErrorMessage = ex.Message;
-                _log.WriteErrorLog( "Application exception", ex );
-            } catch (Exception ex) {
-                returnValue.ErrorMessage = String.Concat( "Could not complete the request. ", ex.Message );
-                _log.WriteErrorLog( "Unhandled exception", ex );
-            }
+			try
+			{
+				returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword(guestInfo.Email, guestInfo.BranchId);
+			}
+			catch (ApplicationException ex)
+			{
+				returnValue.ErrorMessage = ex.Message;
+				_log.WriteErrorLog("Application exception", ex);
+			}
+			catch (Exception ex)
+			{
+				returnValue.ErrorMessage = String.Concat("Could not complete the request. ", ex.Message);
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return returnValue;
-        }
+			return returnValue;
+		}
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string email="") {
-            if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
-                UserProfileReturn retVal = new UserProfileReturn();
-                retVal.UserProfiles.Add(this.AuthenticatedUser);
+		/// <summary>
+		/// Get user profile
+		/// </summary>
+		/// <param name="email">User's email</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile")]
+		public UserProfileReturn GetUser(string email = "")
+		{
+			if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
+			{
+				UserProfileReturn retVal = new UserProfileReturn();
+				retVal.UserProfiles.Add(this.AuthenticatedUser);
 				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault();
-                return retVal;
-            } else {
-                return _profileLogic.GetUserProfile(email, true);
-            }
-        }
+				return retVal;
+			}
+			else
+			{
+				return _profileLogic.GetUserProfile(email, true);
+			}
+		}
 
-        [AllowAnonymous]
-        [HttpGet]
-        [ApiKeyedRoute("profile/searchcustomer/{searchText}")]
-        public CustomerContainerReturn SearchCustomers(string searchText) {
-            return _custRepo.SearchCustomerContainers(searchText);
-        }
+		/// <summary>
+		/// Retrieve customers
+		/// </summary>
+		/// <param name="searchText">Search text</param>
+		/// <returns></returns>
+		[AllowAnonymous]
+		[HttpGet]
+		[ApiKeyedRoute("profile/searchcustomer/{searchText}")]
+		public CustomerContainerReturn SearchCustomers(string searchText)
+		{
+			return _custRepo.SearchCustomerContainers(searchText);
+		}
 
+		/// <summary>
+		/// Retrieve balance for customer
+		/// </summary>
+		/// <returns></returns>
 		[AllowAnonymous]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/balance")]
@@ -138,177 +192,227 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _profileLogic.GetBalanceForCustomer(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
 		}
 
-        [Authorize]
-        [HttpPut]
-        [ApiKeyedRoute("profile/password")]
-        public OperationReturnModel<bool> UpdatePassword(UpdatePasswordModel pwInfo) {
-            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
-            try {
-               returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
-            } catch (Exception ex) {
-                returnValue.SuccessResponse = false;
-                returnValue.ErrorMessage = ex.Message;
-            }
+		/// <summary>
+		/// Update user profile
+		/// </summary>
+		/// <param name="pwInfo">Password information</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPut]
+		[ApiKeyedRoute("profile/password")]
+		public OperationReturnModel<bool> UpdatePassword(UpdatePasswordModel pwInfo)
+		{
+			OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
+			try
+			{
+				returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+			}
+			catch (Exception ex)
+			{
+				returnValue.SuccessResponse = false;
+				returnValue.ErrorMessage = ex.Message;
+			}
 
-            return returnValue;
-        }
+			return returnValue;
+		}
 
-        [Authorize]
-        [HttpPut]
-        [ApiKeyedRoute("profile")]
-        public OperationReturnModel<UserProfileReturn> UpdateUser(UserProfileModel userInfo) {
-            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
+		/// <summary>
+		/// Update user
+		/// </summary>
+		/// <param name="userInfo">User</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPut]
+		[ApiKeyedRoute("profile")]
+		public OperationReturnModel<UserProfileReturn> UpdateUser(UserProfileModel userInfo)
+		{
+			OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
-            try {
-                if (String.IsNullOrEmpty(userInfo.UserId)) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
+			try
+			{
+				if (String.IsNullOrEmpty(userInfo.UserId)) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
-                if (!_profileLogic.IsInternalAddress(userInfo.Email))
-                {
-                    _profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
-                                                  userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId, 
-                                                  true /* hard coded security for now */, userInfo.Customers, userInfo.Role);
-                }
+				if (!_profileLogic.IsInternalAddress(userInfo.Email))
+				{
+					_profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
+												  userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId,
+												  true /* hard coded security for now */, userInfo.Customers, userInfo.Role);
+				}
 
-                retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);
-            } catch (ApplicationException axe) {
-                retVal.ErrorMessage = axe.Message;
+				retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            } catch (Exception ex) {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
 
-        [Authorize]
-        [HttpPost]
-        [ApiKeyedRoute("profile/account")]
-        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<AccountReturn> CreateAccount(Account account)
-        {
-            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+		/// <summary>
+		/// Create account
+		/// </summary>
+		/// <param name="account">Account</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPost]
+		[ApiKeyedRoute("profile/account")]
+		//[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+		public OperationReturnModel<AccountReturn> CreateAccount(Account account)
+		{
+			OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
 
-            try
-            {
-                retVal.SuccessResponse = _profileLogic.CreateAccount(account.Name);
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
+			try
+			{
+				retVal.SuccessResponse = _profileLogic.CreateAccount(account.Name);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
 
-        [Authorize]
-        [HttpPut]
-        [ApiKeyedRoute("profile/account")]
-        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<bool> UpdateAccount(Account account)
-        {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+		/// <summary>
+		/// Update account
+		/// </summary>
+		/// <param name="account">Account</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPut]
+		[ApiKeyedRoute("profile/account")]
+		//[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+		public OperationReturnModel<bool> UpdateAccount(Account account)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 			retVal.SuccessResponse = false;
-            try
-            {
-                retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
-			
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+			try
+			{
+				retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-            return retVal;
-        }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile/account/{accountid}")]
-        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<Account> GetAccount(Guid accountid)
-        {
-            OperationReturnModel<Account> retVal = new OperationReturnModel<Account>();
+			return retVal;
+		}
 
-            try
-            {
-                retVal.SuccessResponse = _profileLogic.GetAccount(accountid);
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
+		/// <summary>
+		/// Retrieve account
+		/// </summary>
+		/// <param name="accountid">Account id</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/account/{accountid}")]
+		//[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+		public OperationReturnModel<Account> GetAccount(Guid accountid)
+		{
+			OperationReturnModel<Account> retVal = new OperationReturnModel<Account>();
 
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+			try
+			{
+				retVal.SuccessResponse = _profileLogic.GetAccount(accountid);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-            return retVal;
-        }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-        [Authorize]
-        [HttpPut]
-        [ApiKeyedRoute("profile/account/user")]
-        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<bool> AddUserToAccount(AccountAddUserModel info)
-        {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+			return retVal;
+		}
 
-            try
-            {
-                // TODO
-                retVal.SuccessResponse = true;
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
+		/// <summary>
+		/// Add user to account
+		/// </summary>
+		/// <param name="info">Account and user</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPut]
+		[ApiKeyedRoute("profile/account/user")]
+		//[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+		public OperationReturnModel<bool> AddUserToAccount(AccountAddUserModel info)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+			try
+			{
+				// TODO
+				retVal.SuccessResponse = true;
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-            return retVal;
-        }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile/account/{accountId}/users")]
-        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<AccountUsersReturn> GetAcountUsers(Guid accountId)
-        {
-            return new OperationReturnModel<AccountUsersReturn>() { SuccessResponse = _profileLogic.GetAccountUsers(accountId) };
-        }
+			return retVal;
+		}
 
-		///profile/{userId}/account/{accountId} 
+		/// <summary>
+		/// Retrieve all users for an account
+		/// </summary>
+		/// <param name="accountId">Account id</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/account/{accountId}/users")]
+		//[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+		public OperationReturnModel<AccountUsersReturn> GetAcountUsers(Guid accountId)
+		{
+			return new OperationReturnModel<AccountUsersReturn>() { SuccessResponse = _profileLogic.GetAccountUsers(accountId) };
+		}
+
+		/// <summary>
+		/// Remove user from an account
+		/// </summary>
+		/// <param name="userId">User id</param>
+		/// <param name="accountId">Account id</param>
+		/// <returns></returns> 
 		[Authorize]
 		[HttpDelete]
-		[ApiKeyedRoute("profile/{userId}/account/{accountId}")]        
+		[ApiKeyedRoute("profile/{userId}/account/{accountId}")]
 		public OperationReturnModel<bool> RemoveUserFromAcocunt(Guid userId, Guid accountId)
 		{
 			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
@@ -334,102 +438,129 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return retVal;
 		}
 
-        [Authorize]
-        [HttpPut]
-        [ApiKeyedRoute("profile/customer/user")]
-        public OperationReturnModel<bool> AddUserToCustomer(CustomerAddUserModel info)
-        {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+		/// <summary>
+		/// Add user to a customer
+		/// </summary>
+		/// <param name="info">Customer and user</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPut]
+		[ApiKeyedRoute("profile/customer/user")]
+		public OperationReturnModel<bool> AddUserToCustomer(CustomerAddUserModel info)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
-            try
-            {
-                _profileLogic.AddUserToCustomer(info.customerId, info.userId);
-                retVal.SuccessResponse = true;
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
+			try
+			{
+				_profileLogic.AddUserToCustomer(info.customerId, info.userId);
+				retVal.SuccessResponse = true;
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
 
+		/// <summary>
+		/// Paged search of customers
+		/// </summary>
+		/// <param name="paging">Paging information</param>
+		/// <param name="sort">Sort object</param>
+		/// <param name="account">Account</param>
+		/// <returns></returns>
 		[Authorize]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
 		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", [FromUri] string terms = "")
 		{
-            if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field) )
-            {
-                paging.Sort = new List<SortInfo>() { sort };
-            }
+			if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field))
+			{
+				paging.Sort = new List<SortInfo>() { sort };
+			}
 			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account);
 		}
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile/customer/{branchId}/{customerNumber}")]
-        public OperationReturnModel<Customer> GetCustomer(string branchId, string customerNumber)
-        {
-            OperationReturnModel<Customer> retVal = new OperationReturnModel<Customer>();
+		/// <summary>
+		/// Get customer
+		/// </summary>
+		/// <param name="branchId">Branch id</param>
+		/// <param name="customerNumber">Customer number</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/customer/{branchId}/{customerNumber}")]
+		public OperationReturnModel<Customer> GetCustomer(string branchId, string customerNumber)
+		{
+			OperationReturnModel<Customer> retVal = new OperationReturnModel<Customer>();
 
-            try
-            {
+			try
+			{
 				retVal.SuccessResponse = _profileLogic.GetCustomerByCustomerNumber(customerNumber, branchId);
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile/accounts")]
-        //[Authorization(new string[] { Core.Constants.ROLE_EXTERNAL_OWNER })] // TODO - add internal roles
-        public OperationReturnModel<AccountReturn> GetAccounts([FromUri] AccountFilterModel accountFilter)
-        {
-            OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
+		/// <summary>
+		/// Retrieve accounts
+		/// </summary>
+		/// <param name="accountFilter">Filter/search information</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/accounts")]
+		//[Authorization(new string[] { Core.Constants.ROLE_EXTERNAL_OWNER })] // TODO - add internal roles
+		public OperationReturnModel<AccountReturn> GetAccounts([FromUri] AccountFilterModel accountFilter)
+		{
+			OperationReturnModel<AccountReturn> retVal = new OperationReturnModel<AccountReturn>();
 
-            try
-            {
-                retVal.SuccessResponse = _profileLogic.GetAccounts(accountFilter);
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
+			try
+			{
+				retVal.SuccessResponse = _profileLogic.GetAccounts(accountFilter);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-            return retVal;
-        }
+			return retVal;
+		}
 
-
+		/// <summary>
+		/// Retrieve paged list of accounts
+		/// </summary>
+		/// <param name="paging">Paging information</param>
+		/// <returns></returns>
 		[Authorize]
 		[HttpPost]
 		[ApiKeyedRoute("profile/accounts")]
@@ -438,176 +569,235 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _profileLogic.GetPagedAccounts(paging);
 		}
 
+		/// <summary>
+		/// Retrieve users
+		/// </summary>
+		/// <param name="userFilter"></param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/users")]
+		//[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
+		public OperationReturnModel<UserProfileReturn> GetUsers([FromUri] UserFilterModel userFilter)
+		{
+			OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile/users")]
-        //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
-        public OperationReturnModel<UserProfileReturn> GetUsers([FromUri] UserFilterModel userFilter)
-        {
-            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
+			try
+			{
+				retVal.SuccessResponse = _profileLogic.GetUsers(userFilter);
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
 
-            try
-            {
-                retVal.SuccessResponse = _profileLogic.GetUsers(userFilter);
-            }
-            catch (ApplicationException axe)
-            {
-                retVal.ErrorMessage = axe.Message;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-                _log.WriteErrorLog("Application exception", axe);
-            }
-            catch (Exception ex)
-            {
-                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
 
-                _log.WriteErrorLog("Unhandled exception", ex);
-            }
+			return retVal;
+		}
 
-            return retVal;
-        }
+		/// <summary>
+		/// Retrieve all users for external user (Is this still used???)
+		/// </summary>
+		/// <param name="userid"></param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/user/{userid}/customers")]
+		public OperationReturnModel<CustomerReturn> GetCustomersForExternalUser(Guid userid)
+		{
+			OperationReturnModel<CustomerReturn> customerReturn = new OperationReturnModel<CustomerReturn>();
+			try
+			{
+				customerReturn.SuccessResponse = new CustomerReturn() { Customers = _profileLogic.GetCustomersForExternalUser(userid) };
+			}
+			catch (Exception ex)
+			{
+				customerReturn.ErrorMessage = ex.Message;
+				_log.WriteErrorLog("Error retrieving customers for external user", ex);
+			}
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile/user/{userid}/customers")]
-        public OperationReturnModel<CustomerReturn> GetCustomersForExternalUser(Guid userid) {
-            OperationReturnModel<CustomerReturn> customerReturn = new OperationReturnModel<CustomerReturn>();
-            try
-            {
-                customerReturn.SuccessResponse = new CustomerReturn() { Customers = _profileLogic.GetCustomersForExternalUser(userid) };
-            }
-            catch (Exception ex)
-            {
-                customerReturn.ErrorMessage = ex.Message;
-                _log.WriteErrorLog("Error retrieving customers for external user", ex);
-            }
+			return customerReturn;
+		}
 
-            return customerReturn;
-        }
-
-
-        [Authorize]
-        [HttpPost]
-        [ApiKeyedRoute("profile/avatar" )]
-        public async Task<OperationReturnModel<bool>> UploadAvatar() {
-            if (!Request.Content.IsMimeMultipartContent())
+		/// <summary>
+		/// Upload user avatar
+		/// </summary>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPost]
+		[ApiKeyedRoute("profile/avatar")]
+		public async Task<OperationReturnModel<bool>> UploadAvatar()
+		{
+			if (!Request.Content.IsMimeMultipartContent())
 				throw new InvalidOperationException();
 
-            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool> { ErrorMessage = null, SuccessResponse = false };
+			OperationReturnModel<bool> returnValue = new OperationReturnModel<bool> { ErrorMessage = null, SuccessResponse = false };
 
 			var provider = new MultipartMemoryStreamProvider();
 			await Request.Content.ReadAsMultipartAsync(provider);
 
-            string base64FileString = null;
-            string fileName = null;
+			string base64FileString = null;
+			string fileName = null;
 
 			foreach (var content in provider.Contents)
 			{
-			    var data = content;
+				var data = content;
 				var paramName = data.Headers.ContentDisposition.Name.Trim('\"');
-                var buffer = await data.ReadAsByteArrayAsync();
-                var stream = new System.IO.MemoryStream(buffer);
+				var buffer = await data.ReadAsByteArrayAsync();
+				var stream = new System.IO.MemoryStream(buffer);
 
-                if (paramName.Equals("file")) {
-                    base64FileString = Convert.ToBase64String(buffer, Base64FormattingOptions.None);
-                }
+				if (paramName.Equals("file"))
+				{
+					base64FileString = Convert.ToBase64String(buffer, Base64FormattingOptions.None);
+				}
 
-                if (paramName.Equals("name")) {
-                    using (var s = new System.IO.StreamReader(stream)) {
-                        fileName = s.ReadToEnd();
-                    }
-                }
-            }
+				if (paramName.Equals("name"))
+				{
+					using (var s = new System.IO.StreamReader(stream))
+					{
+						fileName = s.ReadToEnd();
+					}
+				}
+			}
 
-            try {
-                returnValue.SuccessResponse = _avatarRepository.SaveAvatar( this.AuthenticatedUser.UserId, fileName, base64FileString );
-            } catch (Exception e) {
-                returnValue.SuccessResponse = false;
-                returnValue.ErrorMessage = e.Message;
-            }
+			try
+			{
+				returnValue.SuccessResponse = _avatarRepository.SaveAvatar(this.AuthenticatedUser.UserId, fileName, base64FileString);
+			}
+			catch (Exception e)
+			{
+				returnValue.SuccessResponse = false;
+				returnValue.ErrorMessage = e.Message;
+			}
 
-            return returnValue; 
-        }
+			return returnValue;
+		}
 
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute( "profile/salesrep" )]
-        public OperationReturnModel<bool> GetSalesRep() {
-            // Get the DSR
-            return new OperationReturnModel<bool>() { SuccessResponse = true };
-        }
+		/// <summary>
+		/// Retrieve sales rep
+		/// </summary>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/salesrep")]
+		public OperationReturnModel<bool> GetSalesRep()
+		{
+			// Get the DSR
+			return new OperationReturnModel<bool>() { SuccessResponse = true };
+		}
 
-        [Authorize]
-        [HttpPost]
-        [ApiKeyedRoute("profile/{email}/access/{appname}")]
-        public OperationReturnModel<bool> GrantApplicationAccess(string email, string appname) {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
-            try {
-                AccessRequestType selectedApp = AccessRequestType.Undefined;
+		/// <summary>
+		/// Grant account to external applications(kbit, powermenu)
+		/// </summary>
+		/// <param name="email">User email</param>
+		/// <param name="appname">Application</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpPost]
+		[ApiKeyedRoute("profile/{email}/access/{appname}")]
+		public OperationReturnModel<bool> GrantApplicationAccess(string email, string appname)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
-                switch (appname.ToLower()) {
-                    case "kbit":
-                        selectedApp = AccessRequestType.KbitCustomer;
-                        break;
-                    case "powermenu":
-                        selectedApp = AccessRequestType.PowerMenu;
-                        break;
-                    default:
-                        break;
-                }
+			try
+			{
+				AccessRequestType selectedApp = AccessRequestType.Undefined;
 
-                if (selectedApp == AccessRequestType.Undefined) {
-                    retVal.SuccessResponse = false;
-                    retVal.ErrorMessage = "Could not grant access to unknown application.";
-                } else {
-                    _profileLogic.GrantRoleAccess(email, selectedApp);
+				switch (appname.ToLower())
+				{
+					case "kbit":
+						selectedApp = AccessRequestType.KbitCustomer;
+						break;
+					case "powermenu":
+						selectedApp = AccessRequestType.PowerMenu;
+						break;
+					default:
+						break;
+				}
 
-                    retVal.SuccessResponse = true;
-                }
-            } catch (Exception ex) {
-                retVal.SuccessResponse = false;
-                retVal.ErrorMessage = "Could not grant access";
-                _log.WriteErrorLog("Could not grant access to application.", ex);
-            }
+				if (selectedApp == AccessRequestType.Undefined)
+				{
+					retVal.SuccessResponse = false;
+					retVal.ErrorMessage = "Could not grant access to unknown application.";
+				}
+				else
+				{
+					_profileLogic.GrantRoleAccess(email, selectedApp);
 
-            return retVal;
-        }
+					retVal.SuccessResponse = true;
+				}
+			}
+			catch (Exception ex)
+			{
+				retVal.SuccessResponse = false;
+				retVal.ErrorMessage = "Could not grant access";
+				_log.WriteErrorLog("Could not grant access to application.", ex);
+			}
 
-        [Authorize]
-        [HttpDelete]
-        [ApiKeyedRoute("profile/{email}/access/{appname}")]
-        public OperationReturnModel<bool> RevokeApplicationAccess(string email, string appname) {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+			return retVal;
+		}
 
-            try {
-                AccessRequestType selectedApp = AccessRequestType.Undefined;
+		/// <summary>
+		/// Remove user acces to external application
+		/// </summary>
+		/// <param name="email">User email</param>
+		/// <param name="appname">Application</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpDelete]
+		[ApiKeyedRoute("profile/{email}/access/{appname}")]
+		public OperationReturnModel<bool> RevokeApplicationAccess(string email, string appname)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
-                switch (appname.ToLower()) {
-                    case "kbit":
-                        selectedApp = AccessRequestType.KbitCustomer;
-                        break;
-                    default:
-                        break;
-                }
+			try
+			{
+				AccessRequestType selectedApp = AccessRequestType.Undefined;
 
-                if (selectedApp == AccessRequestType.Undefined) {
-                    retVal.SuccessResponse = false;
-                    retVal.ErrorMessage = "Could not revoke access from unknown application.";
-                } else {
-                    _profileLogic.RevokeRoleAccess(email, selectedApp);
+				switch (appname.ToLower())
+				{
+					case "kbit":
+						selectedApp = AccessRequestType.KbitCustomer;
+						break;
+					default:
+						break;
+				}
 
-                    retVal.SuccessResponse = true;
-                }
-            } catch (Exception ex) {
-                retVal.SuccessResponse = false;
-                retVal.ErrorMessage = "Could revoke access";
-                _log.WriteErrorLog("Could not revoke access to application.", ex);
-            }
+				if (selectedApp == AccessRequestType.Undefined)
+				{
+					retVal.SuccessResponse = false;
+					retVal.ErrorMessage = "Could not revoke access from unknown application.";
+				}
+				else
+				{
+					_profileLogic.RevokeRoleAccess(email, selectedApp);
 
-            return retVal;
-        }
+					retVal.SuccessResponse = true;
+				}
+			}
+			catch (Exception ex)
+			{
+				retVal.SuccessResponse = false;
+				retVal.ErrorMessage = "Could revoke access";
+				_log.WriteErrorLog("Could not revoke access to application.", ex);
+			}
 
+			return retVal;
+		}
+
+		/// <summary>
+		/// Generate forgot password email
+		/// </summary>
+		/// <param name="emailAddress">Email</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("profile/forgotpassword")]
 		public OperationReturnModel<bool> ForgotPassword(string emailAddress)
@@ -629,6 +819,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return returnValue;
 		}
 
+		/// <summary>
+		/// Validate user reset password token
+		/// </summary>
+		/// <param name="tokenModel">Token information</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("profile/forgotpassword/validatetoken")]
 		public bool ValidateToken(ValidateTokenModel tokenModel)
@@ -636,7 +831,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _passwordResetService.IsTokenValid(tokenModel.Token);
 		}
 
-
+		/// <summary>
+		/// Change user password, using the forgot password token
+		/// </summary>
+		/// <param name="resetModel">Password change information</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("profile/forgotpassword/change")]
 		public OperationReturnModel<bool> ChangeForgotPassword(ResetPasswordModel resetModel)
@@ -657,6 +856,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return returnValue;
 		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

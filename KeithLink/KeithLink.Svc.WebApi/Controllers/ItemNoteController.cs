@@ -24,6 +24,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Add item note
+		/// </summary>
+		/// <param name="newNote">Note</param>
         [HttpPost]
 		[ApiKeyedRoute("itemnote/")]
 		public void AddItem(ItemNote newNote)
@@ -31,6 +35,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.AddNote(this.AuthenticatedUser, this.SelectedUserContext, newNote);
 		}
 
+		/// <summary>
+		/// Remove note from item
+		/// </summary>
+		/// <param name="itemNumber">Itemnumber</param>
 		[HttpDelete]
 		[ApiKeyedRoute("itemnote/{itemnumber}")]
 		public void Delete(string itemNumber)
