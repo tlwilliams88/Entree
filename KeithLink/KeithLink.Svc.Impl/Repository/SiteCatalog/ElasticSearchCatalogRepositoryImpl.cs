@@ -123,11 +123,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } },
 					boost_factor = 1300
 				});
-				boosts.Add(new
+				if (!searchTerms.Contains("OR upc:*")) //This is a search for a itemnumber or upc, don't add this boost
 				{
-					filter = new { query = new { query_string = new { fields = new List<string>() { "name" }, use_dis_max = true, query = string.Join(" AND ", searchTerms.Split(' ').ToArray()) } } },
-					boost_factor = 1200
-				});
+					boosts.Add(new
+					{
+						filter = new { query = new { query_string = new { fields = new List<string>() { "name" }, use_dis_max = true, query = string.Join(" AND ", searchTerms.Split(' ').ToArray()) } } },
+						boost_factor = 1200
+					});
+				}
 			}
 
 
