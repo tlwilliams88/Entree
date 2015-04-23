@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Extensions.Enumerations;
 
 namespace KeithLink.Svc.Core.Extensions.Orders {
     public static class PurchaseOrderExtension {
@@ -21,7 +22,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
                 InvoiceStatus = "N/A",
 				Items = value.Properties["LineItems"] == null ? null : ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(value.Id),
-				PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString()
+				PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString(),
+				OrderSystem = new OrderSource().Parse("B").ToString()
             };
 
             retVal.ItemCount = retVal.Items == null ? 0 : retVal.Items.Count;
