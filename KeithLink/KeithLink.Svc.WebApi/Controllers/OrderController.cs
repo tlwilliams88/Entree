@@ -45,12 +45,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Retrieve possible ship dates
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/shipdays")]
         public ShipDateReturn GetShipDays() {
             return _shipDayService.GetShipDates(this.SelectedUserContext);
         }
 
+		/// <summary>
+		/// Retrieve a orders for the authenticated user
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("order/")]
 		public List<Order> Orders()
@@ -59,6 +67,11 @@ namespace KeithLink.Svc.WebApi.Controllers
                 _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext));
 		}
 
+		/// <summary>
+		/// Retrieve a paged list of orders for the authenticated user
+		/// </summary>
+		/// <param name="paging">Paging options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("order/")]
 		public PagedResults<Order> PagedOrders(PagingModel paging)
@@ -68,6 +81,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return results;
 		}
 
+		/// <summary>
+		/// Retrieve orders in the date range for the authenticated user
+		/// </summary>
+		/// <param name="from">Start date</param>
+		/// <param name="to">End date</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("order/date")]
 		public List<Order> OrdersIndate(DateTime from, DateTime to)
@@ -76,6 +95,11 @@ namespace KeithLink.Svc.WebApi.Controllers
                 _orderServiceRepository.GetOrderHeaderInDateRange(this.SelectedUserContext, from, to));
 		}
         
+		/// <summary>
+		/// Export orders
+		/// </summary>
+		/// <param name="exportRequest">Export options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("order/export/")]
 		public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest)
@@ -88,6 +112,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return ExportModel<Order>(orders, exportRequest);
 		}
 
+		/// <summary>
+		/// Retrieve order export options
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("order/export")]
 		public ExportOptionsModel ExportOrders()
@@ -95,6 +123,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, 0);
 		}
 
+		/// <summary>
+		/// Retrieve order
+		/// </summary>
+		/// <param name="orderNumber">Order number</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("order/{orderNumber}")]
 		public Order Orders(string orderNumber)
@@ -108,6 +141,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             }
 		}
 
+		/// <summary>
+		/// Exort a specific order
+		/// </summary>
+		/// <param name="orderNumber">Order number</param>
+		/// <param name="exportRequest">Export options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("order/export/{orderNumber}")]
 		public HttpResponseMessage ExportOrderDetail(string orderNumber, ExportRequestModel exportRequest)
@@ -120,6 +159,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return ExportModel<OrderLine>(order.Items, exportRequest);			
 		}
 
+		/// <summary>
+		/// Retrieve export options for a specific order
+		/// </summary>
+		/// <param name="orderNumber">Order number</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("order/export/{orderNumber}")]
 		public ExportOptionsModel ExportOrderDetail(string orderNumber)
@@ -128,24 +172,41 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 
+		/// <summary>
+		/// Request order history for customemr
+		/// </summary>
         [HttpPost]
         [ApiKeyedRoute("order/history")]
         public void RequestOrderHistoryHeaders() {
             _historyRequestLogic.RequestAllOrdersForCustomer(this.SelectedUserContext);
         }
 
+		/// <summary>
+		/// Request order history update for specific order
+		/// </summary>
+		/// <param name="orderNumber">Order number</param>
         [HttpPost]
         [ApiKeyedRoute("order/history/{orderNumber}")]
         public void RequestOrderHistory(string orderNumber) {
             _historyRequestLogic.RequestOrderForCustomer(this.SelectedUserContext, orderNumber);
         }
 
+		/// <summary>
+		/// Submit order
+		/// </summary>
+		/// <param name="cartId">Shopping cart Id</param>
+		/// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("order/{cartId}")]
         public NewOrderReturn SaveOrder(Guid cartId) {
             return _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
         }
 
+		/// <summary>
+		/// Submit change order
+		/// </summary>
+		/// <param name="orderNumber">Order number</param>
+		/// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("order/{orderNumber}/changeorder")]
         public NewOrderReturn SaveOrder(string orderNumber)
@@ -153,6 +214,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _orderLogic.SubmitChangeOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
         }
 
+		/// <summary>
+		/// Retrieve change order
+		/// </summary>
+		/// <param name="header">Header only?</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/changeorder")]
 		public Models.OperationReturnModel<List<Order>> GetChangeOrders(bool header = false)
@@ -164,6 +230,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return ret;
         }
 
+		/// <summary>
+		/// Update order
+		/// </summary>
+		/// <param name="order">Updated order</param>
+		/// <param name="deleteOmitted">Delete ommitted items?</param>
+		/// <returns></returns>
         [HttpPut]
         [ApiKeyedRoute("order/")]
         public Order UpdateOrder(Order order, bool deleteOmitted = true)
@@ -171,6 +243,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _orderLogic.UpdateOrder(this.SelectedUserContext, this.AuthenticatedUser, order, deleteOmitted);
         }
 
+		/// <summary>
+		/// Cancel order
+		/// </summary>
+		/// <param name="commerceId">Order Id</param>
+		/// <returns></returns>
         [HttpDelete]
         [ApiKeyedRoute("order/{commerceId}")]
         public NewOrderReturn CancelOrder(Guid commerceId)
@@ -178,6 +255,10 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _orderLogic.CancelOrder(this.AuthenticatedUser, this.SelectedUserContext, commerceId);
         }
 
+		/// <summary>
+		/// Retrieve when orders were last updated
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("order/lastupdate")]
 		public OrderHistoryUpdateModel LastUpdated()
@@ -185,6 +266,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new OrderHistoryUpdateModel() { LastUpdated = _orderServiceRepository.ReadLatestUpdatedDate(this.SelectedUserContext) };
 		}
 
+		/// <summary>
+		/// Retrieve unconfirmed orders
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/admin/submittedUnconfirmed")]
         public Models.OperationReturnModel<List<OrderHeader>> GetUnconfirmedOrders()
@@ -193,6 +278,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return new Models.OperationReturnModel<List<OrderHeader>>() { SuccessResponse = orders };
         }
 
+		/// <summary>
+		/// Resubmit unconfirmed order
+		/// </summary>
+		/// <param name="controlNumber">Control number</param>
+		/// <returns></returns>
         [HttpPut]
         [ApiKeyedRoute("order/admin/resubmitUnconfirmed/{controlNumber}")]
         public Models.OperationReturnModel<bool> ResubmitUnconfirmedOrder(int controlNumber)

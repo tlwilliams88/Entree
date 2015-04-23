@@ -37,6 +37,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Read a paged list of invoices
+		/// </summary>
+		/// <param name="paging">Paging options</param>
+		/// <param name="forAllCustomers">Invoices for all customers?</param>
+		/// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("invoice/")]
 		public InvoiceHeaderReturnModel Invoice(PagingModel paging, bool forAllCustomers = false)
@@ -44,6 +50,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return _repo.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
         }
 		
+		/// <summary>
+		/// Export invoice
+		/// </summary>
+		/// <param name="request">Export options</param>
+		/// <param name="forAllCustomers">Invoices for all customers?</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("invoice/export/")]
 		public HttpResponseMessage ExportInvoices(InvoiceExportRequestModel request, bool forAllCustomers = false)
@@ -55,6 +67,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return ExportModel<InvoiceModel>(list.PagedResults.Results, request.export);
 		}
 
+		/// <summary>
+		/// Retrieve export options for invoices
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("invoice/export/")]
 		public ExportOptionsModel ExportInvoices()
@@ -62,6 +78,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0);
 		}
 
+		/// <summary>
+		/// Retrieve invoice image
+		/// </summary>
+		/// <param name="invoiceNumber">Invoice number</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/image/{invoiceNumber}")]
         public OperationReturnModel<List<string>> GetInvoiceImages(string invoiceNumber) {
@@ -76,12 +97,23 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+		/// <summary>
+		/// Retrieve specific invoice
+		/// </summary>
+		/// <param name="invoiceNumber">Invoice number</param>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/{invoiceNumber}")]
         public InvoiceModel InvoiceTransactions(string invoiceNumber) {
             return _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
         }
 
+		/// <summary>
+		/// Export invoice details
+		/// </summary>
+		/// <param name="invoiceNumber">Invoice to export</param>
+		/// <param name="exportRequest">Export options</param>
+		/// <returns></returns>
         [HttpPost]
 		[ApiKeyedRoute("invoice/export/{invoiceNumber}")]
 		public HttpResponseMessage ExportInvoiceDetail(string invoiceNumber, ExportRequestModel exportRequest)
@@ -93,6 +125,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return ExportModel<InvoiceItemModel>(invoice.Items, exportRequest);
 		}
 
+		/// <summary>
+		/// Retrieve export options for specific invoice
+		/// </summary>
+		/// <param name="invoiceNumber">Invoice number</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("invoice/export/{invoiceNumber}")]
 		public ExportOptionsModel ExportInvoiceDetail(string invoiceNumber)
@@ -100,7 +137,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, 0);
 		}
 
-
+		/// <summary>
+		/// Submit invoice payment
+		/// </summary>
+		/// <param name="payments">Payment</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("invoice/payment")]
 		public OperationReturnModel<bool> Payment(List<PaymentTransactionModel> payments)
@@ -110,6 +151,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new OperationReturnModel<bool>() { SuccessResponse = true };
 		}
 
+		/// <summary>
+		/// Retrieve paged list of pending transactions
+		/// </summary>
+		/// <param name="paging">Paging options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("invoice/transactions/pending")]
 		public PagedResults<PaymentTransactionModel> PendingTransaction(PagingModel paging)
@@ -117,6 +163,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
 		}
 
+		/// <summary>
+		/// Export pending transactions
+		/// </summary>
+		/// <param name="request">Export options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("invoice/transactions/pending/export/")]
 		public HttpResponseMessage ExportOrders(InvoiceExportRequestModel request)
@@ -132,6 +183,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return ExportModel<PaymentTransactionModel>(transactions.Results, request.export);
 		}
 
+		/// <summary>
+		/// Retrieve export options for pending transactions
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("invoice/transactions/pending/export")]
 		public ExportOptionsModel ExportOrders()

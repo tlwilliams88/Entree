@@ -22,7 +22,10 @@ using KeithLink.Svc.WebApi.Models;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
-	[Authorize]
+	/// <summary>
+	/// User Lists
+	/// </summary>
+	[Authorize]	
     public class ListController : BaseController {
         #region attributes
         private readonly IListServiceRepository listServiceRepository;
@@ -41,7 +44,12 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
-
+		/// <summary>
+		/// Export list to CSV, TAB, or Excel
+		/// </summary>
+		/// <param name="listId"></param>
+		/// <param name="exportRequest"></param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("list/export/{listId}")]
 		public HttpResponseMessage ExportList(long listId, ExportRequestModel exportRequest)
@@ -53,6 +61,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return ExportModel<ListItemModel>(list.Items, exportRequest);				
 		}
 
+		/// <summary>
+		/// Retrieve export options for specific list
+		/// </summary>
+		/// <param name="listId">List Id</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("list/export/{listId}")]
 		public ExportOptionsModel ExportList(long listId)
@@ -60,6 +73,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, listId);
 		}
 
+		/// <summary>
+		/// Retrieve recommended items list
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("list/recommended")]
 		public List<RecommendedItemModel> ReadRecommendedItemsList()
@@ -67,6 +84,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.ReadRecommendedItemsList(this.SelectedUserContext);
 		}
 
+		/// <summary>
+		/// Retrieve all list for the authenticated user
+		/// </summary>
+		/// <param name="header">Headonly only or details?</param>
+		/// <returns></returns>
         [HttpGet]
 		[ApiKeyedRoute("list/")]
         public List<ListModel> List(bool header = false)
@@ -74,6 +96,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, header);
         }
 
+		/// <summary>
+		/// Retrieve list by type for the authenticated user
+		/// </summary>
+		/// <param name="type">List type</param>
+		/// <param name="headerOnly">Header only or details?</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("list/type/{type}")]
 		public List<ListModel> List(ListType type, bool headerOnly = false)
@@ -81,6 +109,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.ReadListByType(this.SelectedUserContext, type, headerOnly);
 		}
 		
+		/// <summary>
+		/// Retrieve a specific list
+		/// </summary>
+		/// <param name="listId">Lsit id</param>
+		/// <param name="includePrice">Include item prices?</param>
+		/// <returns></returns>
         [HttpGet]
 		[ApiKeyedRoute("list/{listId}")]
 		public ListModel List(long listId, bool includePrice = true)
@@ -95,6 +129,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         }
 
+		/// <summary>
+		/// Retrieve all list labels for the authenticated user
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
 		[ApiKeyedRoute("list/labels")]
         public List<string> ListLabels()
@@ -102,12 +140,23 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
         }
 
+		/// <summary>
+		/// Retrieve reminders list for the authenticated user
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/reminders")]
         public List<ListModel> ListReminders() {
             return listServiceRepository.ReadReminders(this.AuthenticatedUser, this.SelectedUserContext);
         }
 
+		/// <summary>
+		/// Create a new list for the authenticated user
+		/// </summary>
+		/// <param name="list">List</param>
+		/// <param name="isMandatory">Is mandatory list?</param>
+		/// <param name="isRecommended">Is recommended list?</param>
+		/// <returns></returns>
         [HttpPost]
 		[ApiKeyedRoute("list/")]
 		public NewListItem List(ListModel list, bool isMandatory = false, bool isRecommended = false)
@@ -115,6 +164,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? ListType.Mandatory : isRecommended ? ListType.RecommendedItems : ListType.Custom) };
         }
 		
+
+		/// <summary>
+		/// Add item to a specific list
+		/// </summary>
+		/// <param name="listId">List Id</param>
+		/// <param name="newItem">New item</param>
+		/// <returns></returns>
         [HttpPost]
 		[ApiKeyedRoute("list/{listId}/item")]
 		public NewListItem AddItem(long listId, ListItemModel newItem)
@@ -122,6 +178,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new NewListItem() { Id = listServiceRepository.AddItem(listId, newItem) };
         }
 
+		/// <summary>
+		/// Add multiple items to a specific list
+		/// </summary>
+		/// <param name="listId">List Id</param>
+		/// <param name="newItems">Array of new items</param>
+		/// <param name="allowDuplicates">Allow duplicate item numbers?</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("list/{listId}/items")]
 		public ListModel AddItems(long listId, List<ListItemModel> newItems, bool allowDuplicates = false)
@@ -129,6 +192,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.AddItems(this.AuthenticatedUser, this.SelectedUserContext, listId, newItems);
 		}
 		
+		/// <summary>
+		/// Copy list
+		/// </summary>
+		/// <param name="copyListModel">Copy options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("list/copy")]
 		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
@@ -136,6 +204,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return listServiceRepository.CopyList(copyListModel);
 		}
 
+		/// <summary>
+		/// Share list
+		/// </summary>
+		/// <param name="copyListModel">Share options</param>
 		[HttpPost]
 		[ApiKeyedRoute("list/share")]
 		public void ShareList(ListCopyShareModel copyListModel)
@@ -143,6 +215,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.ShareList(copyListModel);
 		}
 
+		/// <summary>
+		/// Retrieve paged list details for specific list
+		/// </summary>
+		/// <param name="listId">List Id</param>
+		/// <param name="paging">Paging options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("list/{listId}")]
 		public PagedListModel pagedList(long listId, PagingModel paging)
@@ -168,7 +246,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return list;
 		}
 
-		
+		/// <summary>
+		/// Update list item
+		/// </summary>
+		/// <param name="updatedItem">Updated item</param>
         [HttpPut]
 		[ApiKeyedRoute("list/item")]
 		public void UpdateItem(ListItemModel updatedItem)
@@ -176,6 +257,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.UpdateItem(updatedItem);
         }
 
+		/// <summary>
+		/// Update list
+		/// </summary>
+		/// <param name="updatedList">Updated list</param>
 		[HttpPut]
 		[ApiKeyedRoute("list/")]
 		public void Put(ListModel updatedList)
@@ -183,6 +268,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.UpdateList(updatedList);
 		}
 
+		/// <summary>
+		/// Delete list
+		/// </summary>
+		/// <param name="listId">List Id to delete</param>
 		[HttpDelete]
 		[ApiKeyedRoute("list/{listId}")]
 		public void DeleteList(long listId)
@@ -190,6 +279,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.DeleteList(listId);
 		}
 
+		/// <summary>
+		/// Delete multiple lists
+		/// </summary>
+		/// <param name="listIds">Array of list ids to delete</param>
 		[HttpDelete]
 		[ApiKeyedRoute("list/")]
 		public void DeleteList(List<long> listIds)
@@ -197,6 +290,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.DeleteLists(listIds);
 		}
 
+		/// <summary>
+		/// Delete list item
+		/// </summary>
+		/// <param name="itemId">Item id to delete</param>
 		[HttpDelete]
 		[ApiKeyedRoute("list/item/{itemId}")]
 		public void DeleteItem(long itemId)
@@ -204,6 +301,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.DeleteItem(itemId);
 		}
 
+		/// <summary>
+		/// Delete multiple list items
+		/// </summary>
+		/// <param name="itemIds">Array of item ids to delete</param>
 		[HttpDelete]
 		[ApiKeyedRoute("list/item")]
 		public void DeleteItem(List<long> itemIds)
@@ -211,6 +312,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 			listServiceRepository.DeleteItems(itemIds);
 		}
 
+		/// <summary>
+		/// Delete itemnumbers from a specific list
+		/// </summary>
+		/// <param name="Id">List Id</param>
+		/// <param name="itemNumber">Itemnumber to delete</param>
+		/// <returns></returns>
 		[HttpDelete]
 		[ApiKeyedRoute("list/{Id}/item/{itemNumber}")]
 		public OperationReturnModel<bool> DeleteItemNumberFromList(long Id, string itemNumber)
@@ -219,6 +326,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new OperationReturnModel<bool>() { SuccessResponse = true};
 		}
 
+		/// <summary>
+		/// Retrieve the list Barcode report (PDF)
+		/// </summary>
+		/// <param name="listId">List Id</param>
+		/// <returns></returns>
 		[HttpGet]
 		[ApiKeyedRoute("list/barcode/{listId}")]
 		public HttpResponseMessage Barcode(long listId)
@@ -273,6 +385,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 		}
 
+		/// <summary>
+		/// Retrieve the list printing report (PDF)
+		/// </summary>
+		/// <param name="listId">List Id</param>
+		/// <param name="paging">Paging options</param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("list/print/{listId}")]
 		public HttpResponseMessage Print(long listId, PagingModel paging)

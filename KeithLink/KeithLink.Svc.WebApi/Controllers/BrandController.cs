@@ -13,6 +13,9 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+	/// <summary>
+	/// House Brands
+	/// </summary>
     public class BrandController : BaseController {
         #region attributes
         KeithLink.Svc.Core.Interface.Brand.IBrandRepository _brandRepository;
@@ -25,6 +28,10 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region methods
+		/// <summary>
+		/// Returns a list of house brands
+		/// </summary>
+		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("brands/house")]
         public BrandsReturn GetHouseBrands()
