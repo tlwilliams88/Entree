@@ -8,16 +8,15 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService',
-    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService) {
+  .factory('UserProfileService', [ '$http', '$q', '$log', '$upload', 'toaster', 'LocalStorage', 'UtilityService', 'AccessService', 'SessionService',
+    function ($http, $q, $log, $upload, toaster, LocalStorage, UtilityService, AccessService, SessionService) {
 
     var Service = {
 
       // gets and sets current user profile
       getCurrentUserProfile: function(email) {
-
-        return Service.getUserProfile(email).then(function (profile) {             
-          LocalStorage.setProfile(profile);
+        return Service.getUserProfile(email).then(function (profile) {
+          SessionService.userProfile = profile;
 
           // check if user is Order entry customer to determine which branch/context to select
           if (AccessService.isOrderEntryCustomer()) {
@@ -36,22 +35,32 @@ angular.module('bekApp')
         }, function(error) {
           // log out
           LocalStorage.clearAll();
-          return $q.reject(error.data.error_description);
+
+          var message = error;
+          if (error.data.error_description) {
+            message = error.data.error_description;
+          }
+          return $q.reject(message);
         });
       },
 
-        resetPassword: function(email) {          
+      validateToken: function(token) {        
+        return $http.post('/profile/forgotpassword/validatetoken/', { token: token });
+      },
+
+      resetPassword: function(email) {          
         var promise = $http.post('/profile/forgotpassword?emailAddress='+email);
         return UtilityService.resolvePromise(promise);
       },
 
-
       getUserProfile: function(email) {
-        var data = {
-          params: {
+        var data = {};
+
+        if (email) {
+          data.params = {
             email: email
-          }
-        };
+          };
+        }
 
         return $http.get('/profile', data).then(function(response){
           var profile = response.data.userProfiles[0];
@@ -114,7 +123,7 @@ angular.module('bekApp')
       updateUserProfile: function(userProfile) {
         var promise = $http.put('/profile', userProfile);
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
-          var loggedinprofile = LocalStorage.getProfile(); //Get current users profile from LocalStorage
+          var loggedinprofile = SessionService.userProfile; //Get current users profile from LocalStorage
 
           var profile = successResponse.userProfiles[0];
           $log.debug(profile);
@@ -122,7 +131,7 @@ angular.module('bekApp')
           //the currently logged in user. If this is an admin editing another user's profile, don't save
           //to local storage
           if(loggedinprofile.userid === profile.userid){
-            LocalStorage.setProfile(profile);
+            SessionService.userProfile = profile;
           } 
           Service.updateDisplayName(profile);        
           return profile;
@@ -133,6 +142,21 @@ angular.module('bekApp')
         var deferred = $q.defer();
 
         $http.put('/profile/password', passwordData).then(function(response) {
+          $log.debug(response);
+          if (response.data.successResponse === true) {
+            deferred.resolve(response.data);
+          } else {
+            deferred.reject(response.data);
+          }
+        });
+
+        return deferred.promise;
+      },
+
+      changeForgottenPassword: function(passwordData) {
+        var deferred = $q.defer();
+
+        $http.post('/profile/forgotpassword/change', passwordData).then(function(response) {
           $log.debug(response);
           if (response.data.successResponse === true) {
             deferred.resolve(response.data);

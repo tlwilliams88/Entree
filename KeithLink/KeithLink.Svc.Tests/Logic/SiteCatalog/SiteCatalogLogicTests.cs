@@ -8,7 +8,6 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Impl;
-using KeithLink.Svc.Test.MockRepository;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Cache;
 
@@ -27,7 +26,6 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
 				new PriceLogicImpl(new PriceRepositoryImpl(), new NoCacheRepositoryImpl()),
                 new ProductImageRepositoryImpl(),
 				new NoListServiceRepositoryImpl(),
-                new DivisionRepositoryImpl(),
                 new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
 				new NoCacheRepositoryImpl(),
 				new DivisionLogicImpl(new DivisionRepositoryImpl(), new NoDivisionServiceRepositoryImpl()),

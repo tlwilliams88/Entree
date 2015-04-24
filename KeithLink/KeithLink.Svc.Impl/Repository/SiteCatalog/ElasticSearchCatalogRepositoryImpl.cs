@@ -123,6 +123,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } },
 					boost_factor = 1300
 				});
+				if (!searchTerms.Contains("OR upc:*")) //This is a search for a itemnumber or upc, don't add this boost
+				{
+					boosts.Add(new
+					{
+						filter = new { query = new { query_string = new { fields = new List<string>() { "name" }, use_dis_max = true, query = string.Join(" AND ", searchTerms.Split(' ').ToArray()) } } },
+						boost_factor = 1200
+					});
+				}
 			}
 
 
@@ -301,7 +309,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             }
 
             dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, fieldsToSearch, termSearch);
-
+			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", termSearchExpression);
         }
 
@@ -362,6 +370,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
+			p.CaseOnly = oProd._source.caseonly == "Y";
             p.CatchWeight = oProd._source.catchweight;
 			p.IsProprietary = oProd._source.isproprietary;
             p.AverageWeight = oProd._source.averageweight;

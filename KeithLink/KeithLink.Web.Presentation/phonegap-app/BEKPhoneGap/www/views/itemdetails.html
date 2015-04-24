@@ -46,12 +46,14 @@
             <span class="icon-arrow-down6"></span>
           </div>
 
-          <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
+          <form name="orderForm" style="display: inline-block;">
+            <div counter allowDropdown="true" size="large" ng-model="item.quantity" min="0"></div>
             <span ng-if="packagePriceInd">Order By Package             
-                  <ng-form name="eachForm_mobile">
-                    <input type="checkbox" ng-model="item.each" id="each" name="each" />
-                  </ng-form>
-                </span>             
+              <ng-form name="eachForm_mobile">
+                <input type="checkbox" ng-model="item.each" id="each" name="each" />
+              </ng-form>
+            </span>
+          </form>
         </div>
      </div>
     </div>
@@ -137,11 +139,11 @@
                 </tr>
                 <tr class="even">
                   <td>Category</td>
-                  <td>{{item.categoryname}}</td>
+                  <td>{{item.class}}</td>
                 </tr>
                 <tr class="odd">
-                  <td>Class</td>
-                  <td>{{item.iclass}}</td>
+                  <td>Sub-Category</td>
+                  <td>{{item.categoryname}}</td>
                 </tr>
                 <tr class="even">
                   <td>Storage Instructions</td>

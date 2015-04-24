@@ -221,18 +221,26 @@ namespace KeithLink.Svc.Impl.Logic {
                 BranchId = catalogInfo.BranchId
             };
 
+			ListModel parList = null;
+
+			if (file.Options.ImportByInventory && file.Options.ListId.HasValue)
+			{
+				parList = listServiceRepository.ReadList(user, catalogInfo, file.Options.ListId.Value);
+			}
+
+
             var items = new List<ShoppingCartItem>();
 
             try {
                 switch (file.Options.FileFormat) {
                     case FileFormat.CSV:
-                        items = ParseDelimitedFile( file, CSV_DELIMITER, user, catalogInfo );
+                        items = ParseDelimitedFile( file, CSV_DELIMITER, user, catalogInfo, parList );
                         break;
                     case FileFormat.Tab:
-                        items = ParseDelimitedFile( file, TAB_DELIMITER, user, catalogInfo );
+						items = ParseDelimitedFile(file, TAB_DELIMITER, user, catalogInfo, parList);
                         break;
                     case FileFormat.Excel:
-                        items = ParseExcelDocument( file, user, catalogInfo );
+                        items = ParseExcelDocument( file, user, catalogInfo, parList);
                         break;
                 }
             } catch (Exception e) {
@@ -280,7 +288,7 @@ namespace KeithLink.Svc.Impl.Logic {
 			}
 		}
 
-        private List<ShoppingCartItem> ParseDelimitedFile(OrderImportFileModel file, char Delimiter, UserProfile user, UserSelectedContext catalogInfo) {
+        private List<ShoppingCartItem> ParseDelimitedFile(OrderImportFileModel file, char Delimiter, UserProfile user, UserSelectedContext catalogInfo, ListModel parList) {
             List<ShoppingCartItem> returnValue = new List<ShoppingCartItem>() {};
 
 			var itemNumberColumn = 0;
@@ -311,7 +319,7 @@ namespace KeithLink.Svc.Impl.Logic {
                         .Select( i => i.Split( Delimiter ) )
                         .Select( l => new ShoppingCartItem() {
 							ItemNumber = DetermineItemNumber(l[itemNumberColumn].Replace("\"", string.Empty), file.Options, user, catalogInfo),
-							Quantity = DetermineQuantity(l[quantityColumn].Replace("\"", string.Empty), file.Options),
+							Quantity = DetermineQuantity(l[itemNumberColumn].Replace("\"", string.Empty), l[quantityColumn].Replace("\"", string.Empty), file.Options, parList),
 							Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem(l[eachColumn], file.Options) : false
                             } )
                         .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
@@ -319,7 +327,7 @@ namespace KeithLink.Svc.Impl.Logic {
           return returnValue;
         }
 
-        private List<ShoppingCartItem> ParseExcelDocument(OrderImportFileModel file, UserProfile user, UserSelectedContext catalogInfo) {
+        private List<ShoppingCartItem> ParseExcelDocument(OrderImportFileModel file, UserProfile user, UserSelectedContext catalogInfo, ListModel parList) {
             List<ShoppingCartItem> returnValue = new List<ShoppingCartItem>() {};
 
             IExcelDataReader rdr = null;
@@ -351,7 +359,7 @@ namespace KeithLink.Svc.Impl.Logic {
             while (rdr.Read()) {
                 returnValue.Add(new ShoppingCartItem() {
                     ItemNumber = DetermineItemNumber(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), file.Options, user, catalogInfo),
-                    Quantity = DetermineQuantity(rdr.GetString(quantityColumn), file.Options),
+                    Quantity = DetermineQuantity(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), rdr.GetString(quantityColumn), file.Options, parList),
                     Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( rdr.GetString(eachColumn), file.Options ):false
                 });
             }
@@ -386,13 +394,28 @@ namespace KeithLink.Svc.Impl.Logic {
             return returnValue;
         }
 
-        private decimal DetermineQuantity( string quantities, OrderImportOptions options ) {
+        private decimal DetermineQuantity(string itemNumber, string quantities, OrderImportOptions options, ListModel parList ) {
             decimal? returnValue = null;
 
             if (options.Contents.Equals(FileContentType.ItemOnly) ) {
                 returnValue = 0;
             } else {
-                returnValue = quantities.ToDecimal();
+				if (options.ImportByInventory && parList != null && parList.Items != null)
+				{
+					var onHandQuantity = quantities.ToDecimal();
+
+					var parValue = parList.Items.Where(i => i.ItemNumber.Equals(itemNumber)).FirstOrDefault();
+					if (parValue != null)
+					{
+						var orderQuantity = parValue.ParLevel - onHandQuantity;
+						returnValue = orderQuantity > 0 ? orderQuantity : 0;
+					}
+					else
+						returnValue = 0;
+
+				}
+				else
+					returnValue = quantities.ToDecimal();
             }
 
             if (returnValue.Equals( null )) {

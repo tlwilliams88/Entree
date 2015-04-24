@@ -11,7 +11,8 @@ angular.module('bekApp')
       var db_table_name_carts = 'carts';
 
       function generateId() {
-        return 'a' + Math.floor((1 + Math.random()) * 0x10000).toString(16); // generate 5 digit id
+        // generate random id that has a '-' in it
+        return 'a' + Math.floor((1 + Math.random()) * 0x10000).toString(16) + '-' + Math.floor((1 + Math.random()) * 0x10000).toString(16);
       }
 
       function updateCachedCarts(updatedCart) {
@@ -80,7 +81,7 @@ angular.module('bekApp')
         }
       };
 
-      Service.createCart = function(items, shipDate) {
+      Service.createCart = function(items, shipDate, name) {
        
         if (navigator.connection.type === 'none') {
 
@@ -92,7 +93,7 @@ angular.module('bekApp')
             item.cartitemid = generateId();
             item.isNew = true;
           });
-
+          newCart.name = name;
           PhonegapDbService.setItem(db_table_name_carts, newCart.id, newCart);
           Service.cartHeaders.push(newCart);
 
@@ -104,7 +105,7 @@ angular.module('bekApp')
           return deferred.promise;
 
         } else {
-          return originalCartService.createCart(items, shipDate);
+          return originalCartService.createCart(items, shipDate, name);
         }
       };
 

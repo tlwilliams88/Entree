@@ -75,6 +75,11 @@ angular.module('bekApp')
   $scope.searchCustomers = function (searchTerm) {
     customerPagingModel.filterCustomers(searchTerm);
   };
+  
+  $scope.clearFilter = function(){    
+     $scope.customerSearchTerm = '';   
+     $scope.searchCustomers($scope.customerSearchTerm);    
+  };
 
   $scope.sortCustomers = function(field, sortDescending) {
     $scope.customersSortDesc = sortDescending;
@@ -111,19 +116,53 @@ angular.module('bekApp')
       });
     }
   }
-  
-  $scope.userExists = false;
+
   $scope.checkUser = function (checkEmail) {  
     //set email as a parameter
     var params = {
       email: checkEmail
     };
+    $scope.checkUserExists = false;
+    $scope.canMoveUser = false;
+    $scope.cannotMoveUser = false;
+    $scope.canAddUser = false;
+    $scope.checkEmail = checkEmail;
+    
     //check if user exists in the database
-    $scope.userExists = false;
-    UserProfileService.getAllUsers(params).then(function (profile) {
+    UserProfileService.getAllUsers(params).then(function (profiles) {
       //if the user does exist update userExists flag to true, else keep it as false
-      if (profile.length) {
-        $scope.userExists = true; //displays error message
+      if (profiles.length) {
+        $scope.checkUserExists = true; // displays error message
+
+        // check if user is on a customer group
+        CustomerGroupService.getGroups({
+          from: 0,
+          size: 50,
+          type: 'user',
+          terms: checkEmail
+        }).then(function(customerGroups) {
+          // if user is already associated with a customer group
+          if (customerGroups.totalResults) {
+            // check if user already exists on the current customer group
+            $scope.userOnCurrentCustomerGroup = false;
+            customerGroups.results.forEach(function(customerGroup) {
+              if (customerGroup.id === $scope.customerGroup.id) {
+                $scope.userOnCurrentCustomerGroup = true;
+              }
+            });
+            if ($scope.userOnCurrentCustomerGroup === false) {
+              // sys admin can move the user from one group to another
+              if ($scope.canMoveUserToAnotherGroup) {
+                $scope.canMoveUser = true;
+              } else {
+                $scope.cannotMoveUser = true;
+              }
+            }
+          } else {
+            // allow owner to add user
+            $scope.canAddUser = true; 
+          }
+        });
       } else {
         //make user profile then redirect to profile page
         createUser(checkEmail);

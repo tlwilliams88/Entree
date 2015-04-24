@@ -7,7 +7,7 @@
     <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
     <button title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
-    <order-dropdown></order-dropdown>
+    <order-dropdown open-scope="status.orderdropdownisopen1"></order-dropdown>
   </div>
 </div>
  
@@ -23,6 +23,7 @@
     </div>
   </div>
  
+  <div infinite-scroll="infiniteScrollLoadMore()">
   <table class="table table-border table-striped-rows">
     <thead>
       <tr>
@@ -56,7 +57,7 @@
           <a ui-sref="menu.cart.items({ cartId: cart.id })">{{::cart.name}}</a>
         </td>
         <td>
-          {{::(cart.requestedshipdate || 'N/A') | formatDate:'ddd, MMM D, YYYY'}}
+          {{::(cart.requestedshipdate || 'N/A') | formatDate}}
         </td>
         <td>
           {{::cart.ponumber || 'N/A'}}
@@ -84,9 +85,9 @@
     </div>
   </div>
  
-  <table class="table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()">
+  <table class="table table-border table-striped-rows table-orders">
     <thead>
-      <tr>
+      <tr fsm-sticky-header scroll-body="'.table-orders'" scroll-stop="0">
         <th class="sort-col-header" ng-click="sortOrders('invoicenumber', !sort.sortDescending)">
           Invoice
           <span># <span sort-icons field="'invoicenumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
@@ -115,6 +116,9 @@
           PO Number
           <span># <span sort-icons field="'ponumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
         </th>
+        <th class="col-header">
+          Order System
+        </th>
         <th class="large-icon icon-col">
           <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
         </th>
@@ -140,6 +144,7 @@
         <td class="input-col"> 
           <input type="text" placeholder="Filter..." ng-model="filterFields.ponumber">
         </td>
+        <td class="hidden-mobile-visible-print"></td>
         <td class="input-col">
           <button type="button" class="btn btn-primary btn-sm" ng-click="filterOrders(filterFields)">Filter</button>
           <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterFields)">Clear</button>
@@ -150,9 +155,9 @@
         <td ng-class="{ 'red-border': order.invoicestatus === 'Past Due', 'green-border': order.invoicestatus === 'Paid' }">
           <div order-link></div>
         </td>
-        <td>{{order.createddate | formatDate:'MM/DD/YYYY h:mma'}}</td>
+        <td>{{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</td>
         <td style="max-width: 100px;overflow-x: hidden;">{{order.status}}</td>
-        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate:'ddd, MMM D, YYYY' }}</td>
+        <td class="hidden-mobile-visible-print">{{order.deliverydate || 'N/A' | formatDate }}</td>
         <td class="hidden-mobile-visible-print">{{order.itemcount}}</td>
         <td class="hidden-mobile-visible-print text-right">{{order.ordertotal | currency}}</td>
         <td 
@@ -161,6 +166,7 @@
           {{order.invoicestatus || 'N/A'}}
         </td>
         <td>{{order.ponumber}}</td>
+        <td>{{order.ordersystem}}</td>
         <td class="large-icon icon-col">
           <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
         </td>
@@ -174,7 +180,7 @@
             </colgroup>
             <tr>
               <td>Delivery Date</td>
-              <td>{{order.deliverydate || 'N/A' | formatDate:'ddd, MMM D, YYYY'}}</td>
+              <td>{{order.deliverydate || 'N/A' | formatDate}}</td>
             </tr>
             <tr>
               <td>Item Count</td>
@@ -202,5 +208,6 @@
       </tr>
     </tfoot>
   </table>
+  </div>
   <div class="text-center" loading-spinner="loadingResults"></div>
 </div>

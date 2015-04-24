@@ -5,24 +5,32 @@
   <p class="text-red" ng-if="quickAddForm.itemNumber.$error.fcsaNumber">Cart has some invalid item numbers. These items will be excluded when the order is submitted.</p>
 
   <form name="quickAddForm" class="style-validation-errors">
+    <p class="text-green" ng-if="enableSubmit">All item numbers are valid. Click Create Cart</p>
+    <p class="text-red" ng-if="!enableSubmit">You must enter all valid item numbers before you can create the cart</p>
+
     <table class="table table-border" navigate-quick-add>
       <thead>
         <tr>
           <th>Item #</th>
           <th>Qty</th>
           <th>Each</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="item in items">
-          <td class="input-col">
+          <td class="input-col" ng-class="{ 'red-border': item.valid === false }">
             <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" ng-model-options="{ debounce: 300 }" fcsa-number="{ 'noFormat': true, 'minDigits': 6, 'maxDigits': 6 }">
+            <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
           </td>
           <td class="input-col">
             <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
           </td>
           <td class="input-col">
             <input name="each" type="checkbox" ng-model="item.each">
+          </td>
+          <td>
+            <a ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
           </td>
         </tr>
       </tbody>
@@ -35,6 +43,7 @@
 
 </div>
 <div class="modal-footer">
-    <button type="submit" class="btn-lg btn btn-primary" ng-click="saveCart(items)">Create Cart</button>
-    <button type="button" class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+  <button type="button" class="btn btn-lg btn-default pull-left" ng-click="validateItems(items)">Validate Items</button>
+  <button type="submit" class="btn-lg btn btn-primary" ng-disabled="!enableSubmit" ng-click="saveCart(items)">Create Cart</button>
+  <button type="button" class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
 </div>

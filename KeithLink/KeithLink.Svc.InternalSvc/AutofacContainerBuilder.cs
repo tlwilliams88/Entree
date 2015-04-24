@@ -72,6 +72,8 @@ using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
+using KeithLink.Svc.Impl.Repository.Profile.PasswordReset;
 #endregion
 
 namespace KeithLink.Svc.InternalSvc
@@ -94,6 +96,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ReportService>();
 			builder.RegisterType<CacheService>();
             builder.RegisterType<DsrService>();
+			builder.RegisterType<ProfileService>();
 
 			#if DEMO
 				builder.RegisterType<DemoStagingRepositoryImpl>().As<IStagingRepository>();
@@ -242,6 +245,10 @@ namespace KeithLink.Svc.InternalSvc
             // PowerMenu
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
             builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
+
+			//Password Reset
+			builder.RegisterType<InternalPasswordResetRequestLogicImpl>().As<IInternalPasswordResetLogic>();
+			builder.RegisterType<PasswordResetRequestRepositoryImpl>().As<IPasswordResetRequestRepository>();
 
             return builder.Build();
         }

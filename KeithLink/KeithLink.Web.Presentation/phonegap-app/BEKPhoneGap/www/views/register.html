@@ -30,7 +30,7 @@
               </div>
               </div>
               <div class="col-md-5" >
-                <a ng-confirm-click="{{'Are you sure you want to reset your password for the account: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" ><strong>Forgot your password?</strong></a>
+                <a ng-confirm-click="{{'Request a password reset for the following email: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" ><strong>Forgot your password?</strong></a>
               </div>
             </div>
           </form>
@@ -62,7 +62,8 @@
             <label for="username">Email Address</label>
             <span ng-show="registrationForm.username.$error.required && registrationForm.username.$dirty" class="text-red">Email is required</span>
             <span ng-show="registrationForm.username.$error.emailLengthValidation && registrationForm.username.$dirty" class="text-red">Please choose a shorter email address</span>
-            <input required email-length-validation ng-trim class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
+            <span ng-show="registrationForm.username.$error.internalEmailInvalid" class="text-red">You cannot register with an internal benekeith.com email address</span>
+            <input required email-length-validation ng-trim internal-email-invalid class="form-control" type="text" id="username" name="username" ng-model="registerUser.email">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmUsername">Confirm Email</label>
@@ -128,7 +129,12 @@
 
         <div class="row sub-content">
           <div class="col-xs-12 button-row">
-            <button ng-click="registerNewUser(registerUser)" ng-disabled="registrationForm.$invalid || registrationFormSubmitted" type="submit" class="btn-lg btn btn-primary">Submit Registration</button>
+            <button 
+            ng-click="registerNewUser(registerUser)" 
+            ng-disabled="registrationForm.$invalid || registrationFormSubmitted" 
+            type="submit" 
+            class="btn-lg btn btn-primary">
+            Submit Registration</button>
             <a ng-click="clearForm()">Cancel</a>
           </div>
         </div>

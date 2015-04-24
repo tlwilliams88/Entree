@@ -94,6 +94,11 @@ angular.module('bekApp')
     customer.selected = false;
   };
 
+  $scope.customerSearchTerm = ''; 
+ $scope.clearFilter = function(){ 
+    $scope.customerSearchTerm = ''; 
+    $scope.searchCustomers($scope.customerSearchTerm); 
+  };
   /**********
   USERS
   **********/

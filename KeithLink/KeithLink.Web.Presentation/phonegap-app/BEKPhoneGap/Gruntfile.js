@@ -28,7 +28,7 @@ module.exports = function(grunt) {
         config: {
           template: '_config.xml',
           data: {
-            id: 'com.benekeith.entree',
+            id: '<%= grunt.option("phonegapAppId") %>',
             version: '<%= config.version %>',
             name: '<%= config.name %>',
             description: '<%= config.build.phonegap.description %>',
@@ -39,7 +39,7 @@ module.exports = function(grunt) {
             }
           }
         },
-        versionCode: 0 // android
+        versionCode: 10002 // android
       }
     },
     clean: [
@@ -82,6 +82,14 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      logo: {
+        expand: true,
+        src: '<%= meta.phonegapPath %>/images/bek-logo-<%= grunt.option("logoColor") %>.png',
+        dest: '<%= meta.phonegapPath %>/images/',
+        rename: function(dest, src) {
+          return dest + 'bek-logo.png';
+        }
+      },
       all: {
         files: [{
           cwd: '<%= meta.angularPath %>/images/', // set working folder / root to copy
@@ -197,6 +205,18 @@ module.exports = function(grunt) {
           }
         }
       },
+      review: {
+        constants: {
+          ENV: {
+            name: '<%= config.environment.test.name %>',
+            apiKey: '<%= config.environment.test.apiKey %>',
+            apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
+            loggingEnabled: config.environment.test.loggingEnabled,
+            googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
+            mobileApp: true
+          }
+        }
+      },
       prod: {
         constants: {
           ENV: {
@@ -231,4 +251,37 @@ module.exports = function(grunt) {
     grunt.task.run('connect:server');
     return grunt.task.run('watch');
   });
+
+  // takes ios or android as platform
+  // takes prod, review, or test as targets
+  grunt.registerTask('build', function(platform, target) {
+    if (!target) { target = 'test' };
+
+    // select correct app id
+    var phonegapAppId = config.environment.test.iosStoreId;
+    // deploy to the production ios app
+    if (target === 'prod' || target === 'review') {
+      phonegapAppId = config.environment.prod.iosStoreId;
+    }
+    grunt.option('phonegapAppId', phonegapAppId);
+
+
+    if (target === 'prod') {
+      grunt.option('logoColor', 'yellow');
+    } else {
+      grunt.option('logoColor', 'green');
+    }
+
+    var phonegapBuild = 'phonegap:build';
+    if (platform) {
+      phonegapBuild += ':' + platform;
+    }
+
+    grunt.task.run([
+     'copy:logo',
+     'ngconstant:' + target,
+     phonegapBuild
+    ]);
+  });
+
 };

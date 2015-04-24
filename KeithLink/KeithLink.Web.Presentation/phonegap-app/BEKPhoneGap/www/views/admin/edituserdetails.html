@@ -63,9 +63,20 @@
       <div class="form-group" ng-if="canGrantAccessToOtherServices">
         <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
         <div class="col-md-4">
-          <input type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeKbitAccess(profile.iskbitcustomer, 'kbit')" />
+          <input name="kbitAccess" type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeUserAccess(profile.iskbitcustomer, 'kbit')" />
         </div>
       
+      </div>
+      <div class="form-group" ng-if="canGrantAccessToOtherServices">
+        <label for="powerMenuAccess" class="col-md-2 control-label">Power Menu Access</label>
+        <div class="col-md-4">
+          <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" />
+        </div>
+      
+      </div>
+
+      <div>
+        <a ng-if="profile.powermenupermissionslink" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
       </div>
 
       <a 
@@ -141,7 +152,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="customer in profile.customers" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat="customer in filterSelectedCustomers = (profile.customers | filter: {accountId: groupId})" ng-class="{ odd : $odd, even: $even }">
             <td>{{customer.customerNumber}}</td>
             <td>{{customer.customerName}}</td>
             <td>
@@ -150,8 +161,8 @@
           </tr>
         </tbody>
         <tfoot>
-          <tr ng-show="profile.customers.length === 0">
-            <td colspan="3">There are no selected customers to display.</td>
+          <tr ng-show="filterSelectedCustomers.length === 0">
+            <td colspan="3">There are no selected customers in this customer group to display.</td>
           </tr>
         </tfoot>
       </table>

@@ -9,13 +9,13 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile',
     function (
       $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService // bek custom services
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -31,10 +31,33 @@ angular.module('bekApp')
   $scope.messageText = 'Hello world!';
   $scope.displayGlobalMessage = true;
 
-  $scope.userProfile = LocalStorage.getProfile();
+  $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
+  if (AccessService.isOrderEntryCustomer()) {
+
+    $scope.cartHeaders = CartService.cartHeaders;
+    $scope.numOrdersToDisplay = 6;
+    $scope.numCartsToDisplay = 4;
+
+    if (CartService.cartHeaders.length === 0) {
+      $scope.loadingCarts = true;
+      delete $scope.cartMessage;
+      CartService.getCartHeaders().then(
+        function(carts) {
+          $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
+          $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
+        }, 
+        function() {
+          $scope.cartMessage = 'Error loading carts.';
+        })
+      .finally(function() {
+        $scope.loadingCarts = false;
+      });
+    }
+  }
+
   /**********
   PHONEGAP OFFLINE STORAGE
   **********/
@@ -42,7 +65,7 @@ angular.module('bekApp')
   var db_table_name_lists = 'lists',
     db_table_name_carts = 'carts';
 
-  if (ENV.mobileApp) {
+  if (ENV.mobileApp && AccessService.isOrderEntryCustomer()) {
     console.log('downloading data');  
     downloadDataForOfflineStorage();
   }
@@ -153,8 +176,8 @@ angular.module('bekApp')
   }
 
   // change context menu selection for guest users
-  $scope.changeBranch = function() {
-    LocalStorage.setSelectedBranchInfo($scope.selectedUserContext);
+  $scope.changeBranch = function(branchId) {
+    LocalStorage.setTempBranch(branchId);
     refreshPage();
   };
 
@@ -235,6 +258,7 @@ angular.module('bekApp')
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
     $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
+    $scope.isDemo = AccessService.isDemo();
 
     $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
     $scope.canSeePrices = AccessService.canSeePrices();
@@ -247,5 +271,6 @@ angular.module('bekApp')
     $scope.canViewCustomerGroupDashboard = AccessService.canViewCustomerGroupDashboard();
     $scope.canEditUsers = AccessService.canEditUsers();
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
+    $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
   }
 }]);

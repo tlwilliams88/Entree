@@ -21,7 +21,13 @@ angular.module('bekApp')
     .state('changepassword', {
         url: '/changepassword/',
         templateUrl: 'views/changepassword.html',
-        controller: 'ChangePasswordController'
+        controller: 'ChangePasswordController',
+        data: {},
+        resolve: {
+          userProfile: ['UserProfileService', function(UserProfileService) {
+            return UserProfileService.getCurrentUserProfile();
+          }]
+        }
     })
     .state('menu', {
       abstract: true, // path that cannot be navigated to directly, it can only be accessed by child views
@@ -33,9 +39,14 @@ angular.module('bekApp')
           // also needed for tech support
           return BranchService.getBranches();
         }],
+        userProfile: ['SessionService', function(SessionService) {
+          return SessionService.userProfile;
+        }],
         selectedUserContext: ['LocalStorage', function(LocalStorage) {
           if (LocalStorage.getTempContext()) {
             LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          } else if (LocalStorage.getTempBranch()) {
+            LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
           }
         }]
       }
@@ -136,7 +147,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.lists.items', {
-      url: ':listId/?renameList',
+      url: ':listId/',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
@@ -149,6 +160,21 @@ angular.module('bekApp')
         }],
         originalList: ['$stateParams', 'validListId', 'lists', 'ListService', function($stateParams, validListId, lists, ListService) {
           return ListService.getList(validListId);
+        }]
+      }
+    })
+
+    .state('menu.organizelist', {
+      url: '/lists/:listId/organize',
+      templateUrl: 'views/listsorganize.html',
+      controller: 'ListOrganizeController',
+      data: {
+        authorize: 'canManageLists',
+        saveLists: true
+      },
+      resolve: {
+        list: ['$stateParams', 'ListService', function ($stateParams, ListService) {
+          return ListService.getListWithItems($stateParams.listId, {includePrice: false});
         }]
       }
     })
@@ -180,7 +206,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.cart.items', {
-      url: ':cartId?renameCart',
+      url: ':cartId',
       templateUrl: 'views/cartitems.html',
       controller: 'CartItemsController',
       data: {
@@ -470,6 +496,21 @@ angular.module('bekApp')
           } else {
             return CustomerGroupService.getGroupDetails($stateParams.groupId);
           }
+        }]
+      }
+    })
+
+    /************************
+    /* User Password
+    /************************/
+    .state('forgotpassword', {
+        url: '/forgotpassword/?t',
+        templateUrl: 'views/forgotpassword.html',
+        controller: 'ForgotPasswordController',
+        data: {},
+        resolve: {
+        validToken: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+         return UserProfileService.validateToken($stateParams.t);
         }]
       }
     });

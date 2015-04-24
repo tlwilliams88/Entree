@@ -46,6 +46,8 @@ using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.WebApi.Repository.Profile;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 #endregion
 
 namespace KeithLink.Svc.WebApi
@@ -128,6 +130,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<com.benekeith.ContentManagementService.ContentManagementServiceClient>().As<com.benekeith.ContentManagementService.IContentManagementService>();
             builder.RegisterType<com.benekeith.ReportService.ReportServiceClient>().As<com.benekeith.ReportService.IReportService>();
             builder.RegisterType<com.benekeith.DsrService.DsrServiceClient>().As<com.benekeith.DsrService.IDsrService>();
+			builder.RegisterType<com.benekeith.ProfileService.ProfileServiceClient>().As<com.benekeith.ProfileService.IProfileService>();
 
 			builder.RegisterType<com.benekeith.ConfigurationService.ConfigurationServiceClient>().As<com.benekeith.ConfigurationService.IConfigurationService>();
 
@@ -135,6 +138,8 @@ namespace KeithLink.Svc.WebApi
 
 			builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+
+			builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
 
             // Build the container.
             var container = builder.Build();

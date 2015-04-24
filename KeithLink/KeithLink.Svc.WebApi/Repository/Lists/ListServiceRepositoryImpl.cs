@@ -87,9 +87,9 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			return serviceClient.ReadList(user, catalogInfo, Id, includePrice);
 		}
 		
-		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type)
+		public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
-			return serviceClient.ReadListByType(catalogInfo, type).ToList();
+			return serviceClient.ReadListByType(catalogInfo, type, headerOnly).ToList();
 		}
 		
         public List<string> ReadListLabels(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo)
@@ -169,6 +169,16 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		public void DeleteItemNumberFromList(long Id, string itemNumber)
 		{
 			serviceClient.DeleteItemNumberFromList(Id, itemNumber);
+		}
+
+
+		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
+		{
+			var list = serviceClient.ItemsInHistoryList(catalogInfo, itemNumbers.ToArray());
+
+			if (list == null)
+				return new List<InHistoryReturnModel>();
+			return list.ToList();
 		}
 	}
 }

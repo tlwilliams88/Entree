@@ -149,7 +149,7 @@
       </div>
     </form>
   </div>
-  <div class="col-md-7">
+  <div class="col-md-7" ng-if="!hideNotificationPreferences">
     <h2>Default Notification Preferences &nbsp;&nbsp;&nbsp;
       <a class="smallerHeaderLinkText" ng-init="canEditNotifications = false"
          ng-click="canEditNotifications = !canEditNotifications">

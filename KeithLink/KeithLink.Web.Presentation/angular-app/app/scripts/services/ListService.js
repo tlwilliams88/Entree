@@ -182,6 +182,12 @@ angular.module('bekApp')
           return Service.getAllLists({ header: true });
         },
 
+        getCustomListHeaders: function() {
+          return $http.get('/list/type/custom', { params: { headerOnly: true } }).then(function(response) {
+            return response.data;
+          });
+        },
+
         // accepts listId (guid)
         // returns list object
         getListWithItems: function(listId, params) {
@@ -320,7 +326,8 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-          
+
+          newList.message = 'Creating list...';          
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');
@@ -370,6 +377,7 @@ angular.module('bekApp')
         // accepts list object
         // returns promise and updated list object
         updateList: function(list, getEntireList) {
+          list.message = 'Saving list...';
           return List.update(null, list).$promise.then(function(response) {
             
             // update labels
@@ -646,7 +654,7 @@ angular.module('bekApp')
               name: 'Copied - ' + list.name
             });
             return newList.newlistid;
-          })
+          });
         }
       };
 

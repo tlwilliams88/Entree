@@ -37,8 +37,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 
 		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
-		
-		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type);
+
+		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
 		
         List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
         
@@ -65,5 +65,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
 
 		void DeleteItemNumberFromList(long Id, string itemNumber);
+
+		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 	}
 }

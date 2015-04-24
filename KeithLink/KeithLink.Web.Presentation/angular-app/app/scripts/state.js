@@ -45,6 +45,8 @@ angular.module('bekApp')
         selectedUserContext: ['LocalStorage', function(LocalStorage) {
           if (LocalStorage.getTempContext()) {
             LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          } else if (LocalStorage.getTempBranch()) {
+            LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
           }
         }]
       }
@@ -347,7 +349,14 @@ angular.module('bekApp')
         authorize: 'canPayInvoices'
       },
       resolve: {
-        images: ['$stateParams', 'InvoiceService', function($stateParams, InvoiceService) {
+        selectedUserContext: ['LocalStorage', function(LocalStorage) {
+          if (LocalStorage.getTempContext()) {
+            LocalStorage.setSelectedCustomerInfo(LocalStorage.getTempContext());
+          } else if (LocalStorage.getTempBranch()) {
+            LocalStorage.setSelectedBranchInfo(LocalStorage.getTempBranch());
+          }
+        }],
+        images: ['$stateParams', 'InvoiceService', 'selectedUserContext', function($stateParams, InvoiceService, selectedUserContext) {
           return InvoiceService.getInvoiceImage($stateParams.invoiceNumber);
         }]
       }
@@ -494,6 +503,21 @@ angular.module('bekApp')
           } else {
             return CustomerGroupService.getGroupDetails($stateParams.groupId);
           }
+        }]
+      }
+    })
+
+    /************************
+    /* User Password
+    /************************/
+    .state('forgotpassword', {
+        url: '/forgotpassword/?t',
+        templateUrl: 'views/forgotpassword.html',
+        controller: 'ForgotPasswordController',
+        data: {},
+        resolve: {
+        validToken: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+         return UserProfileService.validateToken($stateParams.t);
         }]
       }
     });

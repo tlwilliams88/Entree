@@ -770,8 +770,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     }
 
                     if (principal.ValidateCredentials(emailAddress, oldPassword)) {
-                        user.ChangePassword(oldPassword, newPassword);
-                        
+						user.ChangePassword(oldPassword, newPassword);
+
                         return true;
                     } else {
                         if (user.IsAccountLockedOut()) {

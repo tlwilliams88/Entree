@@ -27,6 +27,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[Description("Price")]
 		public string CasePrice { get; set; }
 
+		[DataMember(Name = "caseonly")]
+		public bool CaseOnly { get; set; }
+
         [IgnoreDataMember]
         public double CasePriceNumeric { get; set; }
 

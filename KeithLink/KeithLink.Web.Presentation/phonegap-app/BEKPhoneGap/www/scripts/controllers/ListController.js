@@ -39,7 +39,6 @@ angular.module('bekApp')
       $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
-      // $scope.sortList('position', false);
 
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
@@ -50,6 +49,9 @@ angular.module('bekApp')
       });
     }
     function appendListItems(list) {
+      list.items.forEach(function(item) {
+        item.editPosition = item.position;
+      });
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
     }
     function startLoading() {
@@ -137,6 +139,16 @@ angular.module('bekApp')
       $scope.createList(dragSelection);
     };
 
+    $scope.copyList = function(list) {
+      var customers = [{
+        customerNumber: $scope.selectedUserContext.customer.customerNumber,
+        customerBranch: $scope.selectedUserContext.customer.customerBranch
+      }];
+      ListService.duplicateList(list, customers).then(function(newListId) {
+        $state.go('menu.lists.items', { listId: newListId});
+      });
+    };
+
     /**********
     CREATE MANDATORY LIST
     **********/
@@ -214,6 +226,9 @@ angular.module('bekApp')
         });
         updatedList.items = updatedList.items.concat(deletedItems);
         
+        // reset paging model 
+        listPagingModel.resetPaging();
+
         return ListService.updateList(updatedList)
           .then(resetPage)
           .finally(function() {
@@ -300,7 +315,7 @@ angular.module('bekApp')
       var items = getMultipleSelectedItems();
       angular.forEach(items, function(item, index) {
         item.isEditing = true;
-        item.label = label;
+        item.editLabel = label;
       });
       $scope.addingNewLabel = false;
       $scope.newLabel = null;
@@ -497,7 +512,12 @@ angular.module('bekApp')
     $scope.openListImportModal = function () {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/listimportmodal.html',
-        controller: 'ImportModalController'
+        controller: 'ImportModalController',
+        resolve: {
+          customListHeaders: function() {
+            return [];
+          }
+        }
       });
     };
 
@@ -547,10 +567,10 @@ angular.module('bekApp')
     };
 
     $scope.clearFilter = function(){   
-          $scope.listSearchTerm = "";
-          $scope.hideDragToReorder = false;
-          $scope.filterItems( $scope.listSearchTerm );     
-    }
+      $scope.listSearchTerm = '';
+      $scope.hideDragToReorder = false;
+      $scope.filterItems( $scope.listSearchTerm );     
+    };
 
     $scope.openPrintOptionsModal = function(list) {
       var modalInstance = $modal.open({
@@ -575,6 +595,14 @@ angular.module('bekApp')
     };
 
     resetPage(angular.copy(originalList));
-    $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+    // $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
+
+    if (ListService.renameList === true) {
+      console.log('rename list');
+      ListService.renameList = false;
+      if ($scope.selectedList.permissions.canRenameList) {
+        $scope.selectedList.isRenaming = true;
+      }
+    }
 
   }]);

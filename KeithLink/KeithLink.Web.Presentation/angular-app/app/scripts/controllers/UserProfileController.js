@@ -11,6 +11,8 @@ angular.module('bekApp')
       MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
         $scope.defaultPreferences = preferences;
       });
+    } else {
+      $scope.hideNotificationPreferences = true;
     }
   };
 
@@ -60,6 +62,7 @@ angular.module('bekApp')
     
     UserProfileService.updateUserProfile(userProfile).then(function(profile) {
       $scope.$parent.userProfile = profile;
+      $scope.updateProfileForm.$setPristine();
       $scope.displayMessage('success', 'Successfully updated profile.');
     }, function(errorMessage) {
       $scope.updateProfileErrorMessage = errorMessage;

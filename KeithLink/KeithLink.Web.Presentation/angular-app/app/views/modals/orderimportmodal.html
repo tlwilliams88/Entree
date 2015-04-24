@@ -5,15 +5,17 @@
 
   <form name="orderImportForm" class="form-horizontal style-validation-errors">
     <div class="form-group">
-      <label for="file" class="col-sm-3 control-label">File: </label>
-      <div class="col-sm-9">
-        <input type="file" ng-file-select="onFileSelect($files)">
+      <label for="file" class="col-sm-4 control-label">File: </label>
+      <div class="col-sm-8">
+        <label class="btn btn-default" for="importFile">Choose File</label>
+        {{files[0].name}}
+        <input style="display:none;" type="file" id="importFile" name="importFile" ng-file-select="onFileSelect($files)">
       </div>
     </div>
     <div class="form-group">
-      <label for="itemType" class="col-sm-3 control-label">Item Type: </label>
-      <div class="col-sm-9">
-        <select name="itemType" id="" required ng-model="options.itemnumber">
+      <label for="itemType" class="col-sm-4 control-label">Item type: </label>
+      <div class="col-sm-8">
+        <select class="style-select" name="itemType" id="" required ng-model="options.itemnumber">
           <option value="0">Item Number</option>
           <option value="1">UPC</option>
           <option value="2">Item Number or UPC</option>
@@ -21,9 +23,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="contents" class="col-sm-3 control-label">Contents: </label>
-      <div class="col-sm-9">
-        <select name="contents" id="" required ng-model="options.contents">
+      <label for="contents" class="col-sm-4 control-label">Contents: </label>
+      <div class="col-sm-8">
+        <select class="style-select" name="contents" id="" required ng-model="options.contents">
           <option value="0">Item Only</option>
           <option value="1">Item, Quantity</option>
           <option value="2">Item, Quantity, Broken Case (Y/N)</option>
@@ -31,9 +33,9 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="fileFormat" class="col-sm-3 control-label">File Format: </label>
-      <div class="col-sm-9">
-        <select name="fileFormat" id="" required ng-model="options.fileformat">
+      <label for="fileFormat" class="col-sm-4 control-label">File format: </label>
+      <div class="col-sm-8">
+        <select class="style-select" name="fileFormat" id="" required ng-model="options.fileformat">
           <option value="0">CSV</option>
           <option value="1">Tab</option>
           <option value="2">Excel</option>
@@ -41,21 +43,27 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="ignoreZeroes" class="col-sm-3 control-label">Ignore zero quantities: </label>
-      <div class="col-sm-9">
+      <label for="ignoreZeroes" class="col-sm-4 control-label">Ignore zero quantities: </label>
+      <div class="col-sm-8">
         <input type="checkbox" name="ignoreZeroes" ng-model="options.ignorezero">
       </div>
     </div>
     <div class="form-group">
-      <label for="ignoreFirstLine" class="col-sm-3 control-label">Ignore first line: </label>
-      <div class="col-sm-9">
+      <label for="ignoreFirstLine" class="col-sm-4 control-label">Ignore first line: </label>
+      <div class="col-sm-8">
         <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirst">
       </div>
     </div>
     <div class="form-group">
-      <label for="importByInventory" class="col-sm-3 control-label">Import by inventory: </label>
-      <div class="col-sm-9">
+      <label for="importByInventory" class="col-sm-4 control-label">Import by PAR Level: </label>
+      <div class="col-sm-8">
         <input type="checkbox" name="importByInventory" ng-model="options.importbyinventory">
+      </div>
+    </div>
+    <div class="form-group" ng-show="options.importbyinventory">
+      <label for="selectedList" class="col-sm-4 control-label">List with PARs: </label>
+      <div class="col-sm-8">
+        <select class="style-select" ng-options="list.listid as list.name for list in customListHeaders" ng-model="options.listid" id="selectedList" name="selectedList"></select>
       </div>
     </div>
     

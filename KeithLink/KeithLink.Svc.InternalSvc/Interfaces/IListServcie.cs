@@ -48,7 +48,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 
         [OperationContract]
-        List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type);
+		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
 
         [OperationContract]
 		List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
@@ -88,5 +88,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
 		[OperationContract]
 		void DeleteItemNumberFromList(long Id, string itemNumber);
+
+		[OperationContract]
+		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
     }
 }

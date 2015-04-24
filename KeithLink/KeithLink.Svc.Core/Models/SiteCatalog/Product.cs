@@ -63,6 +63,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember( Name = "orderhistory" )]
         public Dictionary<string, int> OrderHistory { get; set; }
+
+		[DataMember(Name ="inhistory")]
+		public bool InHistory { get; set; }
         #endregion
 	}
 

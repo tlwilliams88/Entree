@@ -46,10 +46,14 @@
   border: 1px solid $color-border;
 }
 
+.mobile-user-context {
+  padding: 10px 15px;
+  background-color: $background;
+  border-bottom: 1px solid $color-border;
+}
 
 .user-bar-mobile {
   background-color: $background;
-  // height: 65px;
   border-bottom: 1px solid $color-border;
 
   text-align: center;
@@ -69,32 +73,36 @@
     float: right;
     margin: 0;
 
-    a {
+    // a {
+    //   font-size: 24px;
+    //   color: #9E987E;
+    //   text-decoration: none;
+    //   li.mobile-menu-item {
+    //     display: inline-block;
+    //     padding: 8px 10px;
+    //   }
+    // }
+
+    li.mobile-menu-item {
+      display: inline-block;
+      padding: 8px 10px;
       font-size: 24px;
       color: #9E987E;
       text-decoration: none;
-      li {
-        display: inline-block;
-        padding: 8px 10px;
-      }
     }
   }
 
   ul.left-mobile-menu {
     float: left;
-    a {
-      li {
-        border-right: 1px solid $color-border;
-      }
+    li.mobile-menu-item {
+      border-right: 1px solid $color-border;
     }
   }
   ul.right-mobile-menu {
     float: right;
 
-    a {
-      li {
-        border-left: 1px solid $color-border;
-      }
+    li.mobile-menu-item {
+      border-left: 1px solid $color-border;
     }
   }
 }

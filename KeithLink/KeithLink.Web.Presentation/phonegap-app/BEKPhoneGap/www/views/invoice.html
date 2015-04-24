@@ -42,7 +42,7 @@
     <div class="col-md-12" ng-if="viewingAllCustomers">
       <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
     </div>
-    <div class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers && !isInternalAccountAdminUser">
+    <div class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers &&  (!isInternalAccountAdminUser || isDemo)">
       <div class="info-box" ng-if="hasPayableInvoices">
         <h3 style="margin-top:0">Billing Information</h3>
         <address class="text-light">
@@ -95,9 +95,10 @@
         Showing {{invoices.length}} of {{totalInvoices}} Invoices
       </div>
 
+      <div class="table-invoices">
       <table class="table table-border table-striped-rows invoice-table" navigate-table="mobile" infinite-scroll="infiniteScrollLoadMore()">
         <thead>
-          <tr>
+          <tr fsm-sticky-header scroll-body="'.table-invoices'" scroll-stop="0" scroll-offset="74 + 64 + 17 + 30">
             <th ng-if="!viewingAllCustomers" class="input-col">
               <input type="checkbox" ng-if="!isInternalAccountAdminUser" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
             </th>
@@ -196,7 +197,7 @@
               {{::invoice.ponumber}}
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::invoice.duedate | formatDate:'MMM D, YYYY' }}
+              {{::invoice.duedate | formatDate}}
             </td>
             <td>
               {{::invoice.amount | currency}}
@@ -224,8 +225,10 @@
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice)"
+                ng-init="invoice.paymentAmount = (invoice.pendingtransaction.amount)"
                 >
             </td>
+    
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
               ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
@@ -258,7 +261,7 @@
                 </colgroup>
                 <tr>
                   <td>Due Date</td>
-                  <td>{{::invoice.duedate | formatDate:'MMM D, YYYY'}}</td>
+                  <td>{{::invoice.duedate | formatDate}}</td>
                 </tr>
                 <tr>
                   <td>Status</td>
@@ -329,10 +332,11 @@
           </tr>
         </tfoot>
       </table>
+      </div>
 
       <div class="text-center" loading-spinner="loadingResults"></div>
-
     </div>
+    <div class="clearfix"></div>
   </form>
 </div>
 

@@ -29,14 +29,16 @@ angular
     'angular-loading-bar',    // loading indicator in the upper left corner
     'angularFileUpload',      // csv file uploads for lists and orders
     'fcsa-number',            // used for number validation
-    'ui.select2',             // used for context menu dropdown in upper left corner
+    'ui.select2',
+    'blockUI',            // used for context menu dropdown in upper left corner
     'configenv'               // used to inject environment variables into angular through Grunt
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 
-  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV) {
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig',
+  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig) {
  
   // configure loading bar
-  cfpLoadingBarProvider.includeBar = false;
+  cfpLoadingBarProvider.includeSpinner = false;
+  // cfpLoadingBarProvider.latencyThreshold = 500;
  
   // configure logging
   $logProvider.debugEnabled(ENV.loggingEnabled);
@@ -54,7 +56,22 @@ angular
  
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
- 
+
+  blockUIConfig.requestFilter = function(config) {
+    if (config.data && config.data.message) {
+      return config.data.message;
+    } else if (config.data && typeof config.data === 'string' && config.data.indexOf('message')) { // authen
+      return config.data.substr(config.data.indexOf('message')+8);
+    } else if (config.url === '/invoice/payment' && config.method === 'POST') {
+      return 'Submitting payments...';
+    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) {
+      return 'Saving...';
+    } else if (config.method === 'DELETE') {
+      return 'Deleting...';
+    } else {
+      return false;
+    }
+  };  
 }])
 .run(['$rootScope', '$state', '$log', 'toaster', 'ENV', 'AccessService', 'NotificationService', 'ListService', 'CartService', 'UserProfileService', '$window', '$location', 'PhonegapServices', 'PhonegapPushService',
   function($rootScope, $state, $log, toaster, ENV, AccessService, NotificationService, ListService, CartService, UserProfileService, $window, $location, PhonegapServices, PhonegapPushService) {
@@ -93,7 +110,9 @@ angular
     }
     function validateStateForLoggedInUser() {
       // redirect to homepage, if restricted state and user not authorized OR going to register page
-      if ( ( isStateRestricted(toState.data) && !AccessService[toState.data.authorize]() ) || toState.name === 'register' ) {
+      if (AccessService.isPasswordExpired() && toState.name !== 'changepassword') {
+        $state.go('changepassword');
+      } else if ( ( isStateRestricted(toState.data) && !AccessService[toState.data.authorize]() ) || toState.name === 'register' ) {
         $log.debug('redirecting to homepage');
 
         // ask to allow push notifications
@@ -181,5 +200,4 @@ angular
       event.preventDefault();
     }
   });
- 
 }]);

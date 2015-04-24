@@ -3,6 +3,7 @@
     Order Details
   </div>
   <div header-buttons>
+    <a class="btn-lg btn btn-success" ng-click="getOrder(order.ordernumber)" ng-if="order.status === 'Submitted'">Check Status</a>
     <button title="Save As List" ng-click="saveAsList()" class="btn btn-icon btn-default"><span class="icon-text2"></span></button>
     <button ng-click="print()" title="Print" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
     <button ng-click="openExportModal()" title="Export" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
@@ -28,7 +29,7 @@
         </div>
         <div class="order-item">
           <div class="order-item-title">Delivery Date</div>
-          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | formatDate}}</div>
+          <div class="order-item-value-1">{{order.ischangeorderallowed}}</div>
           <div class="order-item-title">Delivered</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime == null && order.actualdeliverytime == null && order.scheduleddeliverytime == null">N/A</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
@@ -46,6 +47,10 @@
           <div class="order-item-value-1">{{order.invoicestatus || 'N/A'}}</div>
           <div class="order-item-title">PO Number</div>
           <div class="order-item-value-2">{{order.ponumber}}</div>
+        </div>
+        <hr ng-if="order.ischangeorderallowed">
+        <div ng-if="order.ischangeorderallowed">
+          <a ui-sref="menu.cart.items({ cartId: order.ordernumber })">View and Edit Change Order</a>
         </div>
       </div>
     </div>

@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void RemoveUserFromCustomer(Guid customerId, Guid userId);
 
-        void ResetPassword(string emailAddress);
+        void ResetPassword(Guid userId, string newPassword);
 
         void RevokeRoleAccess(string emailAddress, AccessRequestType requestedApp);
 

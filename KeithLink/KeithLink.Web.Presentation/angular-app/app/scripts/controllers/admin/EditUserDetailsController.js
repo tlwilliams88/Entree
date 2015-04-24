@@ -4,6 +4,30 @@ angular.module('bekApp')
   .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
     function ($scope, $state, $stateParams, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
 
+
+  $scope.groupId = $stateParams.groupId;
+  
+  function checkIfUserExistsOnAnotherGroup() {
+    // add check if userCustomers are in a different customer group
+    // throw warning to user that assigning different custoemr will change the customer group
+    var userIsOnAnotherCustomerGroup = false;
+    userCustomers.forEach(function(customer) {
+      if (customer.accountId !== $scope.groupId) {
+        userIsOnAnotherCustomerGroup = true;
+      }
+    });
+
+    if (userIsOnAnotherCustomerGroup) {
+      var r = confirm('This user has access to a different customer group than the one selected. Assigning customers will remove the user from the previous customer group. Are you sure you want to continue?');
+      if (r === true) {
+
+      } else {
+        // redirect to dashboard
+        $state.go('menu.admin.customergroupdashboard', { customerGroupId: $stateParams.groupId });
+      }
+    }
+  }
+
   var email;
   var processProfile = function(newProfile) {
     // rename email <----- NEEDS FIX ON RESPONSE TYPE
@@ -35,7 +59,6 @@ angular.module('bekApp')
     return customers;
   }
 
-  $scope.groupId = $stateParams.groupId;
   $scope.customersSortDesc = false;
   $scope.customersSortField = 'customerName';
 
@@ -53,7 +76,8 @@ angular.module('bekApp')
   $scope.roles = ['owner', 'accounting', 'approver', 'buyer', 'guest'];
 
   processProfile(userProfile);
-  customerPagingModel.loadCustomers();
+  customerPagingModel.loadCustomers()
+    .then(checkIfUserExistsOnAnotherGroup);
 
   /**********
   FORM EVENTS
@@ -63,7 +87,7 @@ angular.module('bekApp')
     //attaches only selected customers to profile object before it is pushed to the database
     var selectedCustomers = [];
     $scope.customers.forEach(function(customer){
-      if(customer.selected){
+      if(customer.selected) {
         selectedCustomers.push(customer);
       }
     });

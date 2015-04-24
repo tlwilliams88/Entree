@@ -1,5 +1,5 @@
 {
-  "name": "Ben E. Keith Entree",
+  "name": "Entrée System - Powered by Ben E. Keith",
   "homepage": "",
   "author": {
     "name": "Credera",
@@ -42,15 +42,17 @@
       "apiEndpoint": "https://shopqa.benekeith.com/api",
       "loggingEnabled": true,
       "googleAnalytics": "UA-58495462-2",
-      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm"
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "iosStoreId": "com.benekeith.entree"
     },
     "prod": {
       "name": "prod",
       "apiKey": "web_prod_v1",
-	  "apiEndpoint": "https://shop.benekeith.com/api",
+	    "apiEndpoint": "https://shop.benekeith.com/api",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "loggingEnabled": false,
-      "googleAnalytics": "UA-58495462-1"
+      "googleAnalytics": "UA-58495462-1",
+      "iosStoreId": "com.benekeith.entreeprod"
     },
     "stage": {
       "name": "stage",

@@ -11,6 +11,7 @@
     <!-- build:css(app) styles/vendor.css -->
     <link rel="stylesheet" href="lib/angular-toaster/toaster.css" />
     <link rel="stylesheet" href="lib/angular-loading-bar/loading-bar.css" />
+    <link rel="stylesheet" href="lib/angular-block-ui/angular-block-ui.css" />
     <link rel="stylesheet" href="lib/icomoon/style.css" />
     <link rel="stylesheet" href="lib/angular-carousel/angular-carousel.css" />
     <link rel="stylesheet" href="lib/c3/c3.css" />
@@ -61,6 +62,9 @@
     <script src="lib/moment-js/moment-timezone-with-data.js"></script>
     <script src="lib/Blob.js/Blob.js"></script>
     <script src="lib/Filesaver/Filesaver.js"></script>
+    <script src="lib/angular-sticky-header/fsm-sticky-header.js"></script>
+    <script src="lib/angular-block-ui/angular-block-ui.js"></script>
+
     <!-- endbuild -->
 
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
@@ -73,7 +77,7 @@
             }, false);
         });
     </script>
-    
+
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script type="text/javascript" src="scripts/app.js"></script>
     <script type="text/javascript" src="scripts/state.js"></script>
@@ -83,6 +87,7 @@
     <script type="text/javascript" src="scripts/controllers/OrderSummaryGraphController.js"></script>
     <script type="text/javascript" src="scripts/controllers/ItemDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/ListController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ListOrganizeController.js"></script>
     <script type="text/javascript" src="scripts/controllers/MenuController.js"></script>
     <script type="text/javascript" src="scripts/controllers/SearchController.js"></script>
     <script type="text/javascript" src="scripts/controllers/RegisterController.js"></script>
@@ -99,6 +104,7 @@
     <script type="text/javascript" src="scripts/controllers/ItemUsageReportController.js"></script>
     <script type="text/javascript" src="scripts/controllers/CustomerController.js"></script>
     <script type="text/javascript" src="scripts/controllers/InvoiceImageController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/ForgotPasswordController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/ContextMenuModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/CartQuickAddModalController.js"></script>
     <script type="text/javascript" src="scripts/controllers/modal/PromoItemContentModalController.js"></script>
@@ -119,6 +125,7 @@
     <script type="text/javascript" src="scripts/controllers/GoogleServicesController.js"></script>
     <script type="text/javascript" src="scripts/controllers/TransactionController.js"></script>
     <script type="text/javascript" src="scripts/directives/FeaturedItemCarousel.js"></script>
+    <script type="text/javascript" src="scripts/directives/InternalEmailInvalid.js"></script>
     <script type="text/javascript" src="scripts/directives/OrderLink.js"></script>
     <script type="text/javascript" src="scripts/directives/ItemIcons.js"></script>
     <script type="text/javascript" src="scripts/directives/LoadingSpinner.js"></script>
@@ -147,6 +154,7 @@
     <script type="text/javascript" src="scripts/directives/DisableNgAnimate.js"></script>
     <script type="text/javascript" src="scripts/directives/MandatoryItemsCheck.js"></script>
     <script type="text/javascript" src="scripts/directives/ValidatorRequiredArray.js"></script>
+    <script type="text/javascript" src="scripts/directives/ValidEmail.js"></script>
     <script type="text/javascript" src="scripts/services/Constants.js"></script>
     <script type="text/javascript" src="scripts/services/PagingModel.js"></script>
     <script type="text/javascript" src="scripts/services/CustomerPagingModel.js"></script>
@@ -178,6 +186,7 @@
     <script type="text/javascript" src="scripts/services/ReportService.js"></script>
     <script type="text/javascript" src="scripts/services/ExportService.js"></script>
     <script type="text/javascript" src="scripts/services/BroadcastService.js"></script>
+    <script type="text/javascript" src="scripts/services/SessionService.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
     <script type="text/javascript" src="scripts/resources/InvoiceResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>
