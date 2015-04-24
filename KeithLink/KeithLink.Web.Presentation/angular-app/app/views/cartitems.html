@@ -173,11 +173,11 @@
               <button class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)">Submit Order</button>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
-              <button class="btn btn-primary pull-right btn-mobile"ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
+              <button class="btn btn-primary  btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
 
-              <button class=" btn btn-default btn-mobile" ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
+              <button class=" btn btn-default btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
 
-              <button class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Submit Changes</button>
+              <button class=" btn btn-primary btn-mobile pull-right"  ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" >Submit Changes</button>
             </div>
           </div>
           <div class="col-xs-12">
