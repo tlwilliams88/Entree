@@ -1432,8 +1432,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             foreach (Guid c in custsToRemove)
                 RemoveUserFromCustomer(c, existingUser.UserId);
             //UpdateUserRoles(customerList.Select(x => x.CustomerName).ToList(), existingUser.EmailAddress, roleName);
-            _extAd.GrantAccess(existingUser.EmailAddress, ConvertRoleName(roleName));
-            _extAd.RevokeAccess(existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
+            if (!roleName.Equals(existingUser.RoleName, StringComparison.InvariantCultureIgnoreCase)) {
+                _extAd.GrantAccess(existingUser.EmailAddress, ConvertRoleName(roleName));
+                _extAd.RevokeAccess(existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
+            }
         }
 
         /// <summary>
