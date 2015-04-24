@@ -142,22 +142,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             boosts.Add(new { filter = new { term = new { preferreditemcode = "C" } }, 
                 boost_factor = 100 });
 
-			//// name and description boosts
-			//if (!String.IsNullOrEmpty(searchTerms)) // search is keyword
-			//{
-			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
-			//		boost_factor = 500 });
-			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match = new { name = searchTerms } } } } } }, 
-			//		boost_factor = 250 });
-			//}
-			//// phrase boosts on name and description
-			//if (!String.IsNullOrEmpty(searchTerms) && Regex.IsMatch(searchTerms, "\\s+")) // search is keyword and any whitespace in search terms
-			//{
-			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
-			//		boost_factor = 1000 });
-			//	boosts.Add(new { filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase = new { name = searchTerms } } } } } }, 
-			//		boost_factor = 500 });
-			//}
 
             return boosts;
         }

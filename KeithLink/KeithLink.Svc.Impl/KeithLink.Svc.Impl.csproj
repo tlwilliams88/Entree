@@ -199,7 +199,6 @@
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="ETL\DemoStagingRepositoryImpl.cs" />
-    <Compile Include="ETL\InvoiceLogicImpl.cs" />
     <Compile Include="ETL\CustomerLogicImpl.cs" />
     <Compile Include="ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\CommerceServerCore.cs" />
@@ -223,7 +222,6 @@
     <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalReportLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
-    <Compile Include="Logic\ItemNoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EtaNotificationHandlerImpl.cs" />
@@ -244,9 +242,7 @@
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
-    <Compile Include="Logic\RecentlyViewedListLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
-    <Compile Include="Logic\ListLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -563,7 +559,6 @@
     <Compile Include="Repository\EF\Operational\UnitOfWork.cs" />
     <Compile Include="Repository\Invoices\InvoiceItemRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\ListCachRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListItemRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
@@ -576,15 +571,12 @@
     <Compile Include="Repository\Orders\History\OrderUpdateRequestSocketRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
     <Compile Include="Repository\Orders\NoOrderServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Orders\OrderQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\UserActiveCartRepositoryImpl.cs" />
     <Compile Include="Repository\PowerMenu\PowerMenuRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\AccountRepository.cs" />
     <Compile Include="Repository\Profile\AvatarRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\Cache\NoCacheCustomerCacheRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\Cache\CustomerCacheRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\BaseOrgRepository.cs" />
     <Compile Include="Repository\Profile\CustomerRepository.cs" />
     <Compile Include="Repository\Orders\ShipDateRepositoryImpl.cs" />
@@ -593,8 +585,6 @@
     <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
-    <Compile Include="Repository\Profile\Cache\NoCacheUserProfileCacheRepository.cs" />
-    <Compile Include="Repository\Profile\Cache\UserProfileCacheRepository.cs" />
     <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
@@ -606,14 +596,10 @@
     <Compile Include="Repository\Queue\GenericQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Reports\ReportRepository.cs" />
     <Compile Include="Repository\SingleSignOn\KbitRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\CatalogCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ElasticSearchCatalogRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\NoCacheCatalogCacheRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\NoCachePriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\NoDivisionServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\PriceCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />
