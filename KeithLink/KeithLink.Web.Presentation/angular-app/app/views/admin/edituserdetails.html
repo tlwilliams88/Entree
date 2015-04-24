@@ -8,81 +8,81 @@
 </div>
 
 <div class="page-content">
-<form class="form-horizontal style-validation-errors" name="editUserForm">
-  
   <div class="row">
     <div class="col-md-8">
-      <div class="form-group">
-        <label for="firstName" class="col-md-2 control-label">First Name</label>
+      <form class="form-horizontal style-validation-errors" name="editUserForm">
+        <div class="form-group">
+          <label for="firstName" class="col-md-2 control-label">First Name</label>
 
-        <div class="col-md-4">
-          <input type="text" class="form-control" id="firstName" name="firstName"
-                 ng-model="profile.firstname">
-        </div>
-        <label for="lastName" class="col-md-2 control-label">Last Name</label>
+          <div class="col-md-4">
+            <input type="text" class="form-control" id="firstName" name="firstName"
+                   ng-model="profile.firstname">
+          </div>
+          <label for="lastName" class="col-md-2 control-label">Last Name</label>
 
-        <div class="col-md-4">
-          <input type="text" class="form-control" id="lastName" name="lastName"
-                 ng-model="profile.lastname">
+          <div class="col-md-4">
+            <input type="text" class="form-control" id="lastName" name="lastName"
+                   ng-model="profile.lastname">
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="emailAddress" class="col-md-2 control-label">Email</label>
+        <div class="form-group">
+          <label for="emailAddress" class="col-md-2 control-label">Email</label>
 
-        <div class="col-md-10">
-          <span ng-show="updateProfileForm.emailAddress.$error.required"
-                class="text-red">Email Address is required</span>
-          <span ng-show="updateProfileForm.emailAddress.$error.email"
-                class="text-red">Must be a valid email address</span>
-          <input type="email" class="form-control form-control-lg" required id="emailAddress" name="emailAddress"
-                 ng-model="profile.email">
+          <div class="col-md-10">
+            <span ng-show="updateProfileForm.emailAddress.$error.required"
+                  class="text-red">Email Address is required</span>
+            <span ng-show="updateProfileForm.emailAddress.$error.email"
+                  class="text-red">Must be a valid email address</span>
+            <input type="email" class="form-control form-control-lg" required id="emailAddress" name="emailAddress"
+                   ng-model="profile.email">
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
+        <div class="form-group">
+          <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
 
-        <div class="col-md-4">
-          <input 
-            type="text" 
-            class="form-control form-control-lg" 
-            ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/"
-            id="phoneNumber" 
-            name="phoneNumber"
-            ng-model="profile.phonenumber">
+          <div class="col-md-4">
+            <input 
+              type="text" 
+              class="form-control form-control-lg" 
+              ng-pattern="/^\(?(\d{3})\)?[ .-]?(\d{3})[ .-]?(\d{4})$/"
+              id="phoneNumber" 
+              name="phoneNumber"
+              ng-model="profile.phonenumber">
+          </div>
         </div>
-      </div>
+          
+        <div class="form-group">
+          <label for="userRole" class="col-md-2 control-label">User Role</label>
+          <div class="col-md-4">
+            <select id="userRole" ng-options="role as role for role in roles" class="text-capitalize form-control" ng-model="profile.role" required></select>
+          </div>
         
-      <div class="form-group">
-        <label for="userRole" class="col-md-2 control-label">User Role</label>
-        <div class="col-md-4">
-          <select id="userRole" ng-options="role as role for role in roles" class="text-capitalize form-control" ng-model="profile.role" required></select>
         </div>
-      
-      </div>
 
-      <div class="form-group" ng-if="canGrantAccessToOtherServices">
-        <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
-        <div class="col-md-4">
-          <input name="kbitAccess" type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeUserAccess(profile.iskbitcustomer, 'kbit')" />
+        <div class="form-group" ng-if="canGrantAccessToOtherServices">
+          <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
+          <div class="col-md-4">
+            <input name="kbitAccess" type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeUserAccess(profile.iskbitcustomer, 'kbit')" />
+          </div>
+        
         </div>
-      
-      </div>
-      <div class="form-group" ng-if="canGrantAccessToOtherServices">
-        <label for="powerMenuAccess" class="col-md-2 control-label">Power Menu Access</label>
-        <div class="col-md-4">
-          <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" />
+        <div class="form-group" ng-if="canGrantAccessToOtherServices">
+          <label for="powerMenuAccess" class="col-md-2 control-label">Power Menu Access</label>
+          <div class="col-md-4">
+            <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" />
+          </div>
+        
         </div>
-      
-      </div>
 
-      <div>
-        <a ng-if="profile.powermenupermissionslink" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
-      </div>
+        <div>
+          <a ng-if="profile.powermenupermissionslink" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
+        </div>
 
-      <a 
-        class="col-md-offset-2 btn-link" 
-        confirmed-click="deleteProfile(profile)" 
-        ng-confirm-click="{{'Are you sure you want to remove this user from the customer group?'}}">Remove User from Customer Group</a>
+        <a 
+          class="col-md-offset-2 btn-link" 
+          confirmed-click="deleteProfile(profile)" 
+          ng-confirm-click="{{'Are you sure you want to remove this user from the customer group?'}}">Remove User from Customer Group</a>
+      </form>
     </div>
   </div>
 
@@ -93,7 +93,7 @@
       <h3 class="no-margin-top">Customers Available to Assign</h3>
       Showing {{filteredCustomers.length}} of {{totalCustomers}} Customers
 
-      <ng-form name="customerSearchForm" class="search-form">
+      <form name="customerSearchForm" class="search-form">
         <div class="input-group">
           <input 
             ng-model="customerSearchTerm" 
@@ -101,10 +101,10 @@
             class="form-control" 
             placeholder="Filter customers by name or number" />
           <span class="input-group-btn">
-            <button ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+            <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
           </span>
         </div>
-      </ng-form>
+      </form>
 
       <div class="infiniteScroll">
         <table class="table no-margin table-border table-striped-rows" 
@@ -175,5 +175,4 @@
       <a ui-sref="menu.admin.customergroupdashboard({customerGroupId: groupId})">Cancel</a>
     </div>
   </div>
-</form>
 </div>

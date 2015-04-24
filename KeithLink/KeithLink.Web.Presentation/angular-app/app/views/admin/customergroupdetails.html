@@ -6,20 +6,20 @@
 </div>
 
 <div class="page-content">
-<form name="customerGroupDetailsForm" novalidate>
- 
   <div class="row">
     <div class="col-md-6">
-      <div class="form-group">
-        <label for="customerGroupName" class="control-label">Name</label>
-        <span class="text-red" ng-show="customerGroupDetailsForm.customerGroupName.$dirty && customerGroupDetailsForm.customerGroupName.$error.required">Customer group name is required.</span>
-        <input type="text" class="form-control" name="customerGroupName" id="customerGroupName" ng-model="customerGroup.name" required>
-      </div>
+      <form name="customerGroupDetailsForm" novalidate>
+        <div class="form-group">
+          <label for="customerGroupName" class="control-label">Name</label>
+          <span class="text-red" ng-show="customerGroupDetailsForm.customerGroupName.$dirty && customerGroupDetailsForm.customerGroupName.$error.required">Customer group name is required.</span>
+          <input type="text" class="form-control" name="customerGroupName" id="customerGroupName" ng-model="customerGroup.name" required>
+        </div>
+      </form>
     </div>
     <div class="col-md-6" ng-if="!isNew">
       <h3>Admin Users</h3>
 
-      <ng-form name="addNewAdminUserForm" class="form-inline search-form">
+      <form name="addNewAdminUserForm" class="form-inline search-form">
         <div class="text-red">
           {{addUserError}}
         </div>
@@ -29,7 +29,7 @@
           <input email-length-validation type="text" class="form-control" name ="newAdminUserEmail" placeholder="Email address" ng-model="adminUserEmail"/>
           <button ng-disabled="addNewAdminUserForm.$invalid" type="submit" class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add New Admin User</button>
         </div>
-      </ng-form>
+      </form>
 
       <table class="table no-margin table-border table-striped-rows">
         <thead>
@@ -64,7 +64,7 @@
       <h3>Customers Available to Assign</h3>
       Showing {{filteredCustomers.length}} of {{totalCustomers}} Customers
 
-      <ng-form name="customerSearchForm" class="search-form">
+      <form name="customerSearchForm" class="search-form">
         <div class="input-group">
           <input 
             ng-model="customerSearchTerm" 
@@ -76,7 +76,7 @@
             <button type="button" ng-click="clearFilter()" class="btn btn-default "><span class="glyphicon glyphicon-remove"></span></button>
           </span>
         </div>
-      </ng-form>
+      </form>
 
       <div class="infiniteScroll">
         <table class="table no-margin table-border table-striped-rows" 
@@ -147,7 +147,7 @@
     <div class="col-xs-12">
       <div class="form-group button-row">
         <button 
-          type="submit" 
+          type="button" 
           ng-disabled="customerGroupDetailsForm.$invalid" 
           class="btn btn-lg btn-primary" 
           ng-click="submitForm(customerGroup)">
@@ -157,8 +157,6 @@
       </div>
     </div>
   </div>
-
-</form>
 </div>
   
   
