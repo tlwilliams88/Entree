@@ -18,13 +18,17 @@
     @include scroll-div-vertical(225px);
   }
 }
-  .button-row {     
-   button{
-   margin-left:0px;
-   margin-right:0px;
-   padding:6px;
-  } 
- } 
+
+.button-row{
+  button{
+    margin-right:0px;
+    margin-left:0px;
+  }
+}
+
+.btn-mobile{
+  padding:6px;
+}
 
 @media print {
   .select-cart {
@@ -33,3 +37,4 @@
     font-size: 16px;
   }
 }
+  
