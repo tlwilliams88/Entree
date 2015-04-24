@@ -1,12 +1,12 @@
 <div page-header-bar>
   <div header-message>
     Orders 
-    <button ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success pull-right" style="font-size: 12px;padding: 7px 10px;">Get Latest<br>Updates</button>
+    <button type="button" ng-click="refreshOrderHistory()" class="hidden-md hidden-lg hidden-print btn btn-lg btn-success pull-right" style="font-size: 12px;padding: 7px 10px;">Get Latest<br>Updates</button>
   </div>
   <div header-buttons>
-    <button ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
-    <button title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
-    <button title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <button type="button" ng-click="refreshOrderHistory()" class="hidden-xs hidden-sm btn btn-lg btn-success">Get Latest Updates</button>
+    <a title="Print" ng-click="print()" class="btn btn-icon btn-default"><span class="icon-printer"></span></a>
+    <a title="Export" ng-click="openExportModal()" class="btn btn-icon btn-default"><span class="icon-export"></span></a>
     <order-dropdown open-scope="status.orderdropdownisopen1"></order-dropdown>
   </div>
 </div>
@@ -16,7 +16,7 @@
   <div class="row">
     <h3 class="col-xs-8">
       Pending Orders
-      <button style="margin-top: -13px;margin-left: 10px;" class="btn btn-sm btn-danger" ng-show="cartGuids.length > 0" ng-click="deleteCarts(cartGuids)">Delete Carts</button>
+      <button type="button" style="margin-top: -13px;margin-left: 10px;" class="btn btn-sm btn-danger" ng-show="cartGuids.length > 0" ng-click="deleteCarts(cartGuids)">Delete Carts</button>
     </h3>
     <div class="col-xs-4 text-right" style="margin-top:20px;">
       Showing {{carts.length}} Carts

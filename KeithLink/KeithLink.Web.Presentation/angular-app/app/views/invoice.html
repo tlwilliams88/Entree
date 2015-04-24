@@ -24,8 +24,8 @@
     </div>
   </div>
   <div header-buttons>
-    <button class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></button>
-    <button class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></button>
+    <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
+    <a class="btn btn-icon btn-default" ng-click="openExportModal()" title="Export"><span class="icon-export"></span></a>
   </div>
 </div>
 
@@ -84,7 +84,7 @@
 
       <div class="row sub-content" ng-if="hasPayableInvoices">
         <div class="col-xs-12 text-right">
-          <button ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0" ng-click="payInvoices()" class="btn btn-primary btn-lg">Pay Invoice(s)</button>
+          <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0" ng-click="payInvoices()" class="btn btn-primary btn-lg">Pay Invoice(s)</button>
         </div>
       </div>
     </div>

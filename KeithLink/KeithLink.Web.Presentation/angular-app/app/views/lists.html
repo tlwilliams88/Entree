@@ -69,15 +69,16 @@
     <button 
       ng-if="::selectedList.permissions.canEditList" 
       class="btn-lg btn btn-default" 
+      type="button"
       ng-click="undoChanges()" 
       ng-disabled="listForm.$pristine">
       Cancel
     </button>
    
     <div class="btn-group" dropdown is-open="status.listactions">
-      <button class="btn btn-lg btn-default dropdown-toggle">
+      <a class="btn btn-lg btn-default dropdown-toggle">
         List Actions <span class="icon-arrow-down6"></span>
-      </button>
+      </a>
       <ul class="dropdown-menu">
         <li><a ng-click="openPrintOptionsModal(selectedList)">Print</a></li>
         <li><a ng-click="openExportModal()">Export</a></li>
@@ -106,6 +107,7 @@
     ng-if="::selectedList.permissions.canEditList" 
     class="btn-no-style page-subheader-bar__button button-left" 
     ng-click="undoChanges()" 
+    type="button"
     ng-disabled="listForm.$pristine">
     Cancel
   </button>
@@ -115,7 +117,7 @@
   </div> -->
 
   <div class="btn-group pull-right" dropdown is-open="status.listsisopen">
-    <button type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-right">Lists <span class="icon-arrow-down5"></span></button>
+    <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-right text-regular">Lists <span class="icon-arrow-down5"></span></a>
     <ul class="dropdown-menu" role="menu">
       <li ng-repeat="list in lists | sortLists track by list.listid" ng-show="list.listid !== selectedList.listid">
         <a ng-click="goToList(list, selectedCart)">

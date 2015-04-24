@@ -80,8 +80,8 @@
 
     <div class="pull-right">
       <div class="page-header__buttons">
-        <button type="button" title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
-        <button type="button" title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></button>
+        <a title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></a>
+        <a title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></a>
       </div>
       <div class="page-header__orders" ng-if="isOrderEntryCustomer">
         <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
