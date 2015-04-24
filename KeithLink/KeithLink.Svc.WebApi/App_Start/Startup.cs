@@ -21,7 +21,7 @@ namespace KeithLink.Svc.WebApi
 
 
 			//Only enable swagger for local environments
-#if DEV || DEBUG || DEMO
+#if DEV || DEBUG 
 
 			config
 				.EnableSwagger(c =>
