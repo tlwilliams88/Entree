@@ -15,6 +15,8 @@ angular.module('bekApp')
       $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
 
+    $scope.basketId = basketId;
+
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
