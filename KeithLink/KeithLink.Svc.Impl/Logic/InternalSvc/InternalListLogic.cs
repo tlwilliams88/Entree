@@ -895,7 +895,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var returnModel = new BlockingCollection<InHistoryReturnModel>();
 			
-			var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Contract, i => i.Items).FirstOrDefault();
+			var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Worksheet, i => i.Items).FirstOrDefault();
 
 			if (list == null)
 				return itemNumbers.Select(i => new InHistoryReturnModel() { ItemNumber = i, InHistory = false }).ToList();

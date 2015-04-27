@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('PhonegapMarketingService', ['$http', '$q', '$log', 'MarketingService',
-    function($http, $q, $log, MarketingService) {
+  .factory('PhonegapMarketingService', ['$http', '$q', 'MarketingService',
+    function($http, $q, MarketingService) {
 
       var originalMarketingService = angular.copy(MarketingService);
 
