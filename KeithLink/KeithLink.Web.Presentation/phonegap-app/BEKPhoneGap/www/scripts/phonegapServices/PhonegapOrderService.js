@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('PhonegapOrderService', ['$http', '$q', 'OrderService',
-    function($http, $q, OrderService) {
+  .factory('PhonegapOrderService', ['$http', '$q', '$log', 'OrderService',
+    function($http, $q, $log, OrderService) {
 
       var originalOrderService = angular.copy(OrderService);
 
@@ -10,12 +10,12 @@ angular.module('bekApp')
 
       Service.getChangeOrders = function() {
         if (navigator.connection.type === 'none') {
-          console.log('getting change orders from DB');            
+          $log.debug('getting change orders from DB');            
           var deferred = $q.defer();
           deferred.resolve([]);
           return deferred.promise;
         } else {
-          console.log('getting all change orders from server');
+          $log.debug('getting all change orders from server');
           return originalOrderService.getChangeOrders();
         }
       };
