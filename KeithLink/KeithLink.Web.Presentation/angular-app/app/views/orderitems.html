@@ -29,7 +29,7 @@
         </div>
         <div class="order-item">
           <div class="order-item-title">Delivery Date</div>
-          <div class="order-item-value-1">{{order.ischangeorderallowed}}</div>
+          <div class="order-item-value-1">{{order.deliverydate || 'N/A' | formatDate}}</div>
           <div class="order-item-title">Delivered</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime == null && order.actualdeliverytime == null && order.scheduleddeliverytime == null">N/A</div>
           <div class="order-item-value-2" ng-if="order.estimateddeliverytime != null && order.actualdeliverytime == null">ETA: {{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
