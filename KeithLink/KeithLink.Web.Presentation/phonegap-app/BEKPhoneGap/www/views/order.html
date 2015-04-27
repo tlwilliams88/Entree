@@ -49,7 +49,7 @@
     </thead>
     <tbody>
  
-      <tr ng-repeat="cart in carts" ng-class="{ odd : $odd, even: $even }">
+      <tr ng-repeat="cart in carts | orderBy:'createddate':true" ng-class="{ odd : $odd, even: $even }">
         <td class="input-col">
           <input type="checkbox" ng-checked="cartGuids.indexOf(cart.id) > -1" ng-click="toggleCart(cart.id)" />
         </td>
@@ -70,7 +70,7 @@
         </td>
       </tr>
     </tbody>
-    <tfoot ng-show="carts.length === 0">
+    <tfoot ng-show="carts.length === 0 && !loadingCarts">
       <tr>
         <td colspan="9">There are no carts to display.</td>
       </tr>
@@ -210,4 +210,5 @@
   </table>
   </div>
   <div class="text-center" loading-spinner="loadingResults"></div>
+  <div class="text-red">{{ordersMessage}}</div>
 </div>

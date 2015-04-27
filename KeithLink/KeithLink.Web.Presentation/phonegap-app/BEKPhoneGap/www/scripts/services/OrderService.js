@@ -22,6 +22,8 @@ angular.module('bekApp')
       getOrders: function(params) {
         return $http.post('/order', params).then(function(response) {
           return response.data;
+        }, function() {
+          return $q.reject('Error retrieving orders.');
         });
       },
 
@@ -58,12 +60,13 @@ angular.module('bekApp')
       resubmitOrder: function(orderNumber) {
         return Order.resubmitOrder({
           orderNumber: orderNumber
-        }, null).$promise.then(function(order) {
+        }, { message: 'Submitting changes...' }).$promise.then(function(order) {
           return order.ordernumber;
         });
       },
 
       updateOrder: function(order, params) {
+        order.message = 'Saving order...';
         return Order.update(params, order).$promise.then(function(changeOrder) {
           PricingService.updateCaculatedFields(changeOrder.items);
           return changeOrder;

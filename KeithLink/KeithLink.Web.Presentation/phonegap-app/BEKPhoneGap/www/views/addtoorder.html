@@ -2,10 +2,11 @@
   <div header-message>
     Add To Order
 
-    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Add to Order</button>
+    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Save</button>
   </div>
   <div header-buttons ng-hide="invalidParams">
-    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Add to Order</button>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Save</button>
+    <a class="btn-lg btn btn-default pull-right-sm hidden-print" ui-sref="menu.cart.items({cartId: basketId})">Proceed to Checkout</a>
     <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
     <button title="Export" class="btn btn-default btn-icon"><span class="icon-export"></span></button>
   </div>
@@ -14,6 +15,9 @@
 <div loading-spinner="invalidParams"></div>
 
 <div class="page-content" ng-hide="invalidParams">
+  
+  <a class="btn-lg btn btn-default hidden-md hidden-lg hidden-print" ui-sref="menu.cart.items({cartId: basketId})">Proceed to Checkout</a>
+
   <div class="row" ng-show="addToOrderForm.$invalid">
     <div class="col-xs-12 text-red">
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
@@ -154,17 +158,17 @@
               <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
             <th class="hidden-xs hidden-sm"></th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
+            <th  class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="hidden-mobile-visible-print" ng-show="useParlevel">
+            <th ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}" ng-show="useParlevel">
               PAR
             </th>
-            <th class="hidden-mobile-visible-print" ng-show="useParlevel">
+            <th ng-class="{'hidden-mobile-visible-print' : !landscapeOrient, 'text-center' : landscapeOrient}" ng-show="useParlevel">
               On Hand
             </th>
             <th>
-              Qty
+             Qty
             </th>
             <th class="hidden-mobile-visible-print">
               Each
@@ -211,23 +215,31 @@
             <td class="hidden-mobile-visible-print">
               {{::item.label}}
             </td>
-            <td ng-show="useParlevel" class="hidden-mobile-visible-print">
+            <td ng-show="useParlevel"ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">
               {{::item.parlevel}}
             </td>
-            <td ng-show="useParlevel" class="hidden-mobile-visible-print input-col">
+            <td ng-show="useParlevel" class="input-col"  ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">            
               <ng-form name="parlevelForm" ng-if="item.canOrder">
-                <input 
+                <div style="display:inline-block; white-space:nowrap;" ng-if="isMobile" type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.onhand" name="onhand" ng-change="onItemOnHandAmountChanged(item)"></div>
+                  <input 
                   type="text" 
+                  ng-if="!isMobile"
                   class="input-number text-right" 
                   allow-one-positive-decimal
-                  ng-model="item.onhand" 
+                  ng-model="item.onhand"                        
                   name="onhand" 
                   ng-change="onItemOnHandAmountChanged(item)">
-              </ng-form>
+              </ng-form>  
             </td>
             <td class="input-col nowrap"  >
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"></div>
+                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="(!landscapeOrient || !useParlevel) && isMobile"></div>
+                  <input              
+                  type="text" 
+                  ng-if="(landscapeOrient && useParlevel && item.canOrder) || !isMobile"                
+                  class="input-number text-right" 
+                  allow-one-positive-decimal
+                  ng-model="item.quantity">                
               </ng-form>
             </td>
             <td class="input-col hidden-mobile-visible-print">

@@ -17,7 +17,6 @@ fsm.directive('fsmStickyHeader', function(){
             var scrollableContainer = $(scope.scrollableContainer);
 
             var scrollOffset = parseInt(scope.scrollOffset, 10) || 0;
-            console.log(scrollOffset);
 
             if (scrollableContainer.length == 0){
                 scrollableContainer = $(window);

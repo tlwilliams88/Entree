@@ -347,7 +347,7 @@
           ng-model="selectedList.items">
 
           <thead>
-            <tr fsm-sticky-header scroll-body="'.list-form'" scroll-stop="0" scroll-offset="170">
+            <tr list-header-sticky-scroll scrollable-container="'.list-form'" scroll-body="'.custom-lists__table'" scroll-stop="0">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort.sortDescending)"> 

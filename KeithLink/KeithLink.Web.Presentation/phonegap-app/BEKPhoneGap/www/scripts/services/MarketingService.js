@@ -8,13 +8,17 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('MarketingService', ['$http', 'LocalStorage', 'Constants', 'UtilityService', function ($http, LocalStorage, Constants, UtilityService) {
+  .factory('MarketingService', ['$http', '$q', 'LocalStorage', 'Constants', 'UtilityService', function ($http, $q, LocalStorage, Constants, UtilityService) {
 
   var Service = {
   
     getPromoItems: function() {
       var promise = $http.get('/cms/promoitems/' + LocalStorage.getBranchId() + '/' + Constants.promoItemsSize);
-      return UtilityService.resolvePromise(promise);
+      return UtilityService.resolvePromise(promise).then(function(data) {
+        return data;
+      }, function() {
+        return $q.reject('Error loading promo items.');
+      });
     }
 
   };

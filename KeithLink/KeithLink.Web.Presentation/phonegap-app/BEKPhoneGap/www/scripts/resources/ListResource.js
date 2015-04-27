@@ -35,6 +35,11 @@ angular.module('bekApp')
         method: 'DELETE'
       },
 
+      deleteItemByItemNumber: {
+        url: '/list/:listId/item/:itemNumber',
+        method: 'DELETE'
+      },
+
       // postData is an array of items
       addMultipleItems: {
         url: '/list/:listId/items',

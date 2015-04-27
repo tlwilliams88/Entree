@@ -25,8 +25,8 @@ angular.module('bekApp')
     }).then(function(data) {
       $scope.orders = data.results;
       delete $scope.ordersMessage;
-    }, function(error) {
-      $scope.ordersMessage = 'Error loading orders.';
+    }, function(errorMessage) {
+      $scope.ordersMessage = errorMessage;
     }).finally(function() {
       $scope.loadingOrders = false;
     });
@@ -36,8 +36,8 @@ angular.module('bekApp')
     MarketingService.getPromoItems().then(function(items) {
       $scope.promoItems = items;
       delete $scope.promoMessage;
-    }, function(error) {
-      $scope.promoMessage = 'Error loading promo items.';
+    }, function(errorMessage) {
+      $scope.promoMessage = errorMessage;
     }).finally(function() {
       $scope.loadingPromoItems = false;
     });
@@ -47,6 +47,9 @@ angular.module('bekApp')
     CustomerService.getAccountBalanceInfo().then(function(data) {
       $scope.selectedUserContext.customer.balance = data.balance;
       $scope.selectedUserContext.customer.lastorderupdate = data.lastorderupdate;
+    }, function(errorMessage) {
+      $scope.accountBalanceMessage = errorMessage;
+    }).finally(function() {
       $scope.loadingAccountBalance = false;
     });
  

@@ -16,6 +16,9 @@ angular.module('bekApp')
     if ($stateParams.cartId !== basketId.toString()) {
       $state.go('menu.cart.items', {cartId: basketId}, {location:'replace', inherit:false, notify: false});
     }
+
+    // update cartHeaders in MenuController
+    $scope.$parent.$parent.cartHeaders = CartService.cartHeaders;
  
     var watches = [];
     function onQuantityChange(newVal, oldVal) {
@@ -316,7 +319,12 @@ angular.module('bekApp')
  
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/orderimportmodal.html',
-        controller: 'ImportModalController'
+        controller: 'ImportModalController',
+        resolve: {
+          customListHeaders: ['ListService', function(ListService) {
+            return ListService.getCustomListHeaders();
+          }]
+        }
       });
     };
  
