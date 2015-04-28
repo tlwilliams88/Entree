@@ -43,6 +43,8 @@ angular.module('bekApp')
       getAccountBalanceInfo: function() {
         return $http.get('/profile/customer/balance').then(function(response) {
           return response.data;
+        }, function() {
+          return $q.reject('Error getting account balance information.');
         });
       }
   };

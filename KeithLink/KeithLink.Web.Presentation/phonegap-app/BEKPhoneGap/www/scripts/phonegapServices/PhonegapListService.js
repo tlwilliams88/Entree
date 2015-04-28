@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.factory('PhonegapListService', ['$http', '$q', 'toaster', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'PricingService', 'List',
-  function($http, $q, toaster, ListService, PhonegapDbService, PhonegapLocalStorageService, PricingService, List) {
+.factory('PhonegapListService', ['$http', '$q', '$log', 'toaster', 'ListService', 'PhonegapDbService', 'PhonegapLocalStorageService', 'PricingService', 'List',
+  function($http, $q, $log, toaster, ListService, PhonegapDbService, PhonegapLocalStorageService, PricingService, List) {
 
     var originalListService = angular.copy(ListService);
 
@@ -46,13 +46,13 @@ angular.module('bekApp')
 
     Service.getListHeaders = function() {
       if (navigator.connection.type === 'none') {
-        console.log('getting lists from DB');
+        $log.debug('getting lists from DB');
         return PhonegapDbService.getAllItems(db_table_name_lists).then(function(listHeaders) {
           angular.copy(listHeaders, Service.lists);
           return listHeaders;
         });
       } else {
-        console.log('getting all lists from server');
+        $log.debug('getting all lists from server');
         return originalListService.getListHeaders();
       }
     };
@@ -156,7 +156,7 @@ angular.module('bekApp')
 
     Service.deleteList = function(listId) {
       if (navigator.connection.type === 'none') {
-        console.log('deleting list offline');          
+        $log.debug('deleting list offline');          
 
         Service.lists.forEach(function(list, index) {
           if (list.listid === listId) {
@@ -185,7 +185,7 @@ angular.module('bekApp')
     };
 
     Service.getAllLabels = function() {
-      console.log('getting labels');
+      $log.debug('getting labels');
         
       if (navigator.connection.type === 'none') {
         if (Service.labels) {
@@ -245,7 +245,7 @@ angular.module('bekApp')
 
             if (indexToDelete !== undefined) {
               deferred.resolve();
-              console.log('deleting item');
+              $log.debug('deleting item');
               dbList.isChanged = true;
               dbList.items[indexToDelete].isdeleted = true;
               PhonegapDbService.setItem(db_table_name_lists, dbList.listid, dbList);
@@ -302,7 +302,7 @@ angular.module('bekApp')
               updateListItemFavorites(itemNumber, false);
             });
           } else {
-            console.log('No item found with item number.');
+            $log.debug('No item found with item number.');
             deferred.resolve();
           }
         });
@@ -383,7 +383,7 @@ angular.module('bekApp')
     };
 
     Service.updateListsFromLocal = function() {
-      console.log('updating lists after back online');
+      $log.debug('updating lists after back online');
       
       PhonegapDbService.getAllItems(db_table_name_lists).then(function(storedLists) {
        
@@ -429,14 +429,14 @@ angular.module('bekApp')
 
         
         $q.all(promises).then(function() {
-          console.log('lists updated!');
+          $log.debug('lists updated!');
           
           //update from server and remove deleted array
           Service.getAllListsForOffline();
           
           PhonegapLocalStorageService.removeDeletedListGuids();
         }, function() {
-          console.log('error updating lists');
+          $log.debug('error updating lists');
         });
       });
     };

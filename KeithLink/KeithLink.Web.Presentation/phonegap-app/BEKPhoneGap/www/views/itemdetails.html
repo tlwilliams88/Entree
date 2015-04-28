@@ -26,10 +26,10 @@
           <div>
             <span><strong>Item #</strong> {{item.itemnumber}} | </span>
             <span ng-if="casePriceInd && canSeePrices">
-              <strong>Case:</strong> {{::item.caseprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
+              <strong>Case:</strong> {{::item.caseprice | currency}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
             </span>
             <span ng-if="packagePriceInd && canSeePrices">
-              <strong>Package:</strong> {{::item.packageprice}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
+              <strong>Package:</strong> {{::item.packageprice | currency}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span> |
             </span>
             <span ng-if="item.packsize !== null"><strong>Pack/Size:</strong> {{::item.packsize}}</span>
           </div>

@@ -22,6 +22,8 @@ angular.module('bekApp')
       getOrders: function(params) {
         return $http.post('/order', params).then(function(response) {
           return response.data;
+        }, function() {
+          return $q.reject('Error retrieving orders.');
         });
       },
 

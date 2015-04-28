@@ -5,8 +5,8 @@
   </div>
 
   <div header-buttons>
-    <button class="btn btn-icon btn-default" title="Print" ng-click="print()"><span class="icon-printer"></span></button>
-    <button class="btn btn-icon btn-default" title="Export" ng-click="openExportModal()"><span class="icon-export"></span></button>
+    <a class="btn btn-icon btn-default" title="Print" ng-click="print()"><span class="icon-printer"></span></a>
+    <a class="btn btn-icon btn-default" title="Export" ng-click="openExportModal()"><span class="icon-export"></span></a>
   </div>
 </div>
 
@@ -25,7 +25,7 @@
     <div class="page-subheader-bar__message" style="width: calc(100% - 80px)">
       {{featuredBreadcrumb.displayText}}
     </div>
-    <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="nowrap hidden-print btn-no-style page-subheader-bar__button button-right">
+    <button type="button" ng-click="hideMobileFilters = ! hideMobileFilters"  class="nowrap hidden-print btn-no-style page-subheader-bar__button button-right">
       Filter <span ng-show="filterCount > 0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
     </button>
   </div>

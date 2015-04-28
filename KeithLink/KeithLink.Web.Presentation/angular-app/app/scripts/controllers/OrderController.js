@@ -63,6 +63,9 @@ angular.module('bekApp')
   function stopLoading() {
     $scope.loadingResults = false;
   }
+  function orderErrorHandler(errorMessage) {
+    $scope.ordersMessage = errorMessage;
+  }
  
   $scope.sort = {
     field: 'createddate',
@@ -75,7 +78,9 @@ angular.module('bekApp')
     appendOrders,
     startLoading,
     stopLoading,
-    $scope.sort
+    $scope.sort,
+    null, null, null,
+    orderErrorHandler
   );
  
   ordersPagingModel.loadData();

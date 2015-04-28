@@ -19,14 +19,12 @@ namespace KeithLink.Svc.InternalSvc
     {
         private readonly ICatalogLogic categoryLogic;
         private readonly ICustomerLogic customerLogic;
-		private readonly IInvoiceLogic invoiceLogic;
-        
+		
 
-        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, IInvoiceLogic invoiceLogic)
+        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic)
         {
             this.categoryLogic = categoryLogic;
             this.customerLogic = customerLogic;
-			this.invoiceLogic = invoiceLogic;
         }
 
         public bool ProcessETLData()
@@ -67,10 +65,7 @@ namespace KeithLink.Svc.InternalSvc
         
         public bool ProcessInvoiceData()
         {
-            Task.Factory.StartNew(() => invoiceLogic.ImportInvoices()).ContinueWith((t) =>
-            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-
-            return true;
+			return true;
         }
 
         public bool ProcessContractAndWorksheetData()

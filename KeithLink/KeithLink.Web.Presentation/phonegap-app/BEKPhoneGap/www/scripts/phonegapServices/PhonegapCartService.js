@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('PhonegapCartService', ['$http', '$q', 'CartService', 'PhonegapLocalStorageService', 'PhonegapDbService', 'PricingService', 'Cart',
-    function($http, $q, CartService, PhonegapLocalStorageService, PhonegapDbService, PricingService, Cart) {
+  .factory('PhonegapCartService', ['$http', '$q', '$log', 'CartService', 'PhonegapLocalStorageService', 'PhonegapDbService', 'PricingService', 'Cart',
+    function($http, $q, $log, CartService, PhonegapLocalStorageService, PhonegapDbService, PricingService, Cart) {
 
       var originalCartService = angular.copy(CartService);
 
@@ -47,13 +47,13 @@ angular.module('bekApp')
 
       Service.getCartHeaders = function() {
         if (navigator.connection.type === 'none') {
-          console.log('getting carts from DB');
+          $log.debug('getting carts from DB');
           return PhonegapDbService.getAllItems(db_table_name_carts).then(function(data) {
             angular.copy(data, Service.cartHeaders);
             return data;
           });
         } else {
-          console.log('getting all carts from server');
+          $log.debug('getting all carts from server');
           return originalCartService.getCartHeaders();
         }
       };
@@ -61,8 +61,8 @@ angular.module('bekApp')
       Service.getCart = function(cartId) {
         if (navigator.connection.type === 'none') {
           return PhonegapDbService.getItem(db_table_name_carts, cartId).then(function(cart) {
-            console.log('found cart');
-            console.log(cart);
+            $log.debug('found cart');
+            $log.debug(cart);
             PricingService.updateCaculatedFields(cart.items);
             return cart;
           });
@@ -137,7 +137,7 @@ angular.module('bekApp')
 
       Service.deleteCart = function(cartId) {
         if (navigator.connection.type === 'none') {
-          console.log('deleting cart offline');
+          $log.debug('deleting cart offline');
 
           Service.cartHeaders.forEach(function(cart, index) {
             if (cart.id === cartId) {
@@ -211,7 +211,7 @@ angular.module('bekApp')
       }
 
       Service.updateCartsFromLocal = function() {
-        console.log('updating carts after back online');
+        $log.debug('updating carts after back online');
         debugger;
 
         PhonegapDbService.getAllItems(db_table_name_carts).then(function(storedCarts) {
@@ -257,14 +257,14 @@ angular.module('bekApp')
 
          
           $q.all(promises).then(function() {
-            console.log('carts updated!');
+            $log.debug('carts updated!');
             originalCartService.updateNetworkStatus();
             //update from server and remove deleted array
             Service.getAllCartsForOffline();
 
             PhonegapLocalStorageService.removeDeletedCartGuids();
           }, function() {
-            console.log('error updating carts');
+            $log.debug('error updating carts');
           });
         });
       };

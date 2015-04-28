@@ -14,8 +14,8 @@ angular.module('bekApp')
     var Service = {
 
       // gets and sets current user profile
-      getCurrentUserProfile: function(email) {
-        return Service.getUserProfile(email).then(function (profile) {
+      getCurrentUserProfile: function() {
+        return Service.getUserProfile().then(function (profile) {
           SessionService.userProfile = profile;
 
           // check if user is Order entry customer to determine which branch/context to select
@@ -54,15 +54,19 @@ angular.module('bekApp')
       },
 
       getUserProfile: function(email) {
-        var data = {};
+        var config = {};
 
         if (email) {
-          data.params = {
+          config.params = {
             email: email
+          };
+        } else { // show loading screen when getting current user's profile
+          config.data = {
+            message: 'Loading...'
           };
         }
 
-        return $http.get('/profile', data).then(function(response){
+        return $http.get('/profile', config).then(function(response){
           var profile = response.data.userProfiles[0];
           $log.debug(profile);
           Service.updateDisplayName(profile);  
@@ -104,6 +108,7 @@ angular.module('bekApp')
       },
 
       createUser: function(userProfile) {
+        userProfile.message = 'Creating user...';
         var promise = $http.post('/profile/register', userProfile);
         return UtilityService.resolvePromise(promise);
       },
@@ -121,6 +126,7 @@ angular.module('bekApp')
       },
 
       updateUserProfile: function(userProfile) {
+        userProfile.message = 'Saving profile...';
         var promise = $http.put('/profile', userProfile);
         return UtilityService.resolvePromise(promise).then(function(successResponse) {
           var loggedinprofile = SessionService.userProfile; //Get current users profile from LocalStorage

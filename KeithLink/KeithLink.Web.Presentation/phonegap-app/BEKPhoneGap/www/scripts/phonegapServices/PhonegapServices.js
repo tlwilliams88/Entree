@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-    .factory('PhonegapServices', ['PhonegapAuthenticationService', 'PhonegapCartService', 'PhonegapListService', 'PhonegapOrderService', 'PhonegapNotificationService',
-        function(PhonegapAuthenticationService, PhonegapCartService, PhonegapListService, PhonegapOrderService, PhonegapNotificationService) {
-            return {};
-        }
-    ]);
+  .factory('PhonegapServices', ['PhonegapAuthenticationService', 'PhonegapCartService', 'PhonegapListService', 'PhonegapOrderService', 'PhonegapNotificationService', 'PhonegapMarketingService', 'PhonegapCustomerService',
+    function(PhonegapAuthenticationService, PhonegapCartService, PhonegapListService, PhonegapOrderService, PhonegapNotificationService, PhonegapMarketingService, PhonegapCustomerService) {
+      return {};
+    }
+  ]);
