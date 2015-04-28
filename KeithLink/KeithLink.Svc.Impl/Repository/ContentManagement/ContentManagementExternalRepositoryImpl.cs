@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Repository.ContentManagement {
 
                     if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
                         using (System.IO.MemoryStream tempImgStream = new System.IO.MemoryStream()) {
-                            string rawJson = response.Content.ReadAsStringAsync().Result;
+                            string rawJson = System.Net.WebUtility.HtmlDecode(response.Content.ReadAsStringAsync().Result);
                             
                             return Newtonsoft.Json.JsonConvert.DeserializeObject<List<ContentItem>>(rawJson);
                         }
