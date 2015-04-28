@@ -20,8 +20,9 @@ namespace KeithLink.Svc.Core.Extensions.ContentManagement {
             retVal.TargetUrlText = value.Title;
             retVal.TargetUrl = value.UrlTitle;
             retVal.CampaignId = value.AdditionalData.Count == 0 ? string.Empty : value.AdditionalData[0].CampaignId;
-            retVal.Content = value.Summary;
-            retVal.IsContentHtml = true;
+            //retVal.Content = value.Summary;
+            //retVal.IsContentHtml = true;
+            retVal.IsContentHtml = false;
             retVal.ProductId = (value.AdditionalData.Count > 0 && value.AdditionalData[0].ProductId.Count > 0) ? value.AdditionalData[0].ProductId[0].ItemNumber : string.Empty;
 
             // takes too long to process
