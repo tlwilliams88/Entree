@@ -319,7 +319,12 @@ angular.module('bekApp')
  
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/orderimportmodal.html',
-        controller: 'ImportModalController'
+        controller: 'ImportModalController',
+        resolve: {
+          customListHeaders: ['ListService', function(ListService) {
+            return ListService.getCustomListHeaders();
+          }]
+        }
       });
     };
  

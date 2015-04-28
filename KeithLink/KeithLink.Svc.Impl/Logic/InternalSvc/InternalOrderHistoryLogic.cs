@@ -75,44 +75,40 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
 																  h.InvoiceNumber.Equals(invoiceNumber),
 															 d => d.OrderDetails).FirstOrDefault();
-			Order returnOrder = null;
+            PurchaseOrder po = null;
+			
+            Order returnOrder = null;
 				
-			if (myOrder == null)
-			{
-				PurchaseOrder po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
-				
+			if (myOrder == null) {
+                po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
 				returnOrder = po.ToOrder();
-				
-			}
-			else
-			{
+			} else {
 				returnOrder = myOrder.ToOrder();
+
 				if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0)
 				{
-					var po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
-					if (po != null)
-					{
+					po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
+					if (po != null) {
 						returnOrder.Status = po.Status;
 					}
 
-					if (myOrder.ActualDeliveryTime != null)
-					{
+					if (myOrder.ActualDeliveryTime != null) {
 						returnOrder.Status = "Delivered";
 					}
-
 				}
-				
 			}
 
 			LookupProductDetails(branchId, returnOrder);
 
-			if (returnOrder.Status == "Submitted" && returnOrder.Items != null)
-			{
+            if (po != null) {
+                returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
+            }
+
+			if (returnOrder.Status == "Submitted" && returnOrder.Items != null) {
 				//Set all item status' to Pending. This is kind of a hack, but the correct fix will require more effort than available at the moment. The Status/Mainframe status changes are what's causing this issue
 				foreach (var item in returnOrder.Items)
 					item.MainFrameStatus = "Pending";
 			}
-
 
 			returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 

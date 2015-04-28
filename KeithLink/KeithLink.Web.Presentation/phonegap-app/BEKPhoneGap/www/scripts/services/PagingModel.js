@@ -29,16 +29,17 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
   // };
 
   // Define the constructor function.
-  function PagingModel( getData, setData, appendData, startLoading, stopLoading, sort, secondarySort, filter, additionalParams  ) {
+  function PagingModel( getData, setData, appendData, startLoading, stopLoading, sort, secondarySort, filter, additionalParams, errorHandler  ) {
     this.pageSize = Constants.infiniteScrollPageSize;
     this.pageIndex = 0;
     this.sort = sort;
     this.secondarySort = secondarySort;
     this.filter = filter;
     this.additionalParams = additionalParams;
-    
+
     this.getData = getData;
     this.setData = setData;
+    this.errorHandler = errorHandler;
     this.appendData = appendData;
     this.startLoading = startLoading;
     this.stopLoading = stopLoading;
@@ -118,7 +119,7 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
       }
 
       return this.getData(params)
-        .then(setData)
+        .then(setData, this.errorHandler)
         .finally(this.stopLoading);
     },
 
@@ -131,6 +132,7 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
     clearFilters: function() {
       this.pageIndex = 0;
       this.filter = [];
+      this.additionalParams = null;
       this.loadData();
     },
 

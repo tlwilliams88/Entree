@@ -7,8 +7,19 @@ adds Authorization, apiKey, and userSelectedContext headers to http requests
 ***********/
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage',
-  function ($q, $location, $log, ENV, LocalStorage) {
+.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage', 'toaster',
+  function ($q, $location, $log, ENV, LocalStorage, toaster) {
+
+  var userWasLoggedOut = false;
+  function logout(showMessage) {
+    LocalStorage.clearAll();
+    $location.path('/register');
+
+    if (showMessage === true && userWasLoggedOut === false) {
+      toaster.pop('error', null, 'An error occured: no branch ID was selected.');
+      userWasLoggedOut = true;
+    }
+  }
 
   var authInterceptorServiceFactory = {
     request: function (config) {
@@ -35,8 +46,15 @@ angular.module('bekApp')
         // userSelectedContext - add branch and customer information header based on the customer dropdown
         var urlsWithoutCustomerInfo = ['/profile/users', '/profile', '/authen', '/profile/customer'];
         if (doesUrlRequireHeader(config.url, urlsWithoutCustomerInfo)) {
+
+          if (!LocalStorage.getBranchId()) {
+            logout(true);
+          } else {
+            userWasLoggedOut = false;
+          }
+
           var catalogInfo = {
-            customerid: LocalStorage.getCustomerNumber(), //'020348', //
+            customerid: LocalStorage.getCustomerNumber(),
             branchid: LocalStorage.getBranchId()
           };
           config.headers.userSelectedContext = JSON.stringify(catalogInfo);
@@ -54,8 +72,7 @@ angular.module('bekApp')
       // log user out if token has expired or they don't have access to a url
       // should we log the user out if they tried to hit an endpoint they don't have access? I think it should go to the homepage
       if (rejection.status === 401) {
-        LocalStorage.clearAll();
-        $location.path('/register');
+        logout();
       }
 
       // force hard refresh if api key is outdated

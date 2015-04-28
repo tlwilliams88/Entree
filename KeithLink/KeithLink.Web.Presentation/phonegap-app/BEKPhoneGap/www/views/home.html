@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    <span class="hidden-xs hidden-sm">Welcome Back </span>{{::userProfile.displayname}}!
+    <span class="hidden-xs hidden-sm">Welcome Back </span>{{::userProfile.displayname}}<span class="hidden-xs hidden-sm">!</span>
     <order-dropdown open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
   </div>
   <div header-buttons>
@@ -187,7 +187,7 @@
             <span 
               ng-if="
                 order.actualdeliverytime == null && (order.estimateddeliverytime == null 
-                || order.deliveryoutofsequence == true") >
+                || order.deliveryoutofsequence == true)" >
               <span class="small-icon icon-truck"></span><br />Out For Delivery
             </span>
           </div> <!-- Display ETA info once it s available -->
@@ -208,7 +208,7 @@
       <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
         No Recent Orders
       </div>
-        <div class="text-red" ng-show="ordersMessage">{{ordersMessage}}</div>
+        <div class="text-red hidden-xs hidden-sm" ng-show="ordersMessage">{{ordersMessage}}</div>
         <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
           <h3>Pending Orders</h3>
@@ -256,7 +256,7 @@
           </div>
         </div>           
       </div>      
-         <div class="row sub-content visible-xs visible-sm">
+      <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
           <h3>Confirmed Orders</h3>
         </div>
@@ -264,6 +264,7 @@
           <a ui-sref="menu.order" class="btn btn-default pull-right btn-lg">View All</a>
         </div>
       </div>
+      <p class="text-red hidden-md hidden-lg" ng-show="ordersMessage">{{ordersMessage}}</p>
       <div  ng-show="orders && orders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2" ng-class="order.highlightClass">
                <div class="order-col">
           <div class="row">

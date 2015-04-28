@@ -16,7 +16,15 @@ angular.module('bekApp')
         } else {
           return originalNotificationService.getUnreadMessageCount();
         }
-      }
+      };
+
+      Service.getMessages = function(params) {
+        if (navigator.connection.type === 'none') {
+          return $q.reject('Offline: cannot load recent activity.');
+        } else {
+          return originalNotificationService.getMessages(params);
+        }
+      };
 
       return Service;
 

@@ -112,7 +112,6 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
 			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
 			builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
-			builder.RegisterType<InvoiceLogicImpl>().As<IInvoiceLogic>();
 			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
 			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
 			builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();

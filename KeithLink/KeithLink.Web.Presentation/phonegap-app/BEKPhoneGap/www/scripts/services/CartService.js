@@ -117,6 +117,7 @@ angular.module('bekApp')
       createCart: function(items, shipDate, name) {
         var newCart = Service.beforeCreateCart(items, shipDate, name);
  
+        newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
           Service.renameCart = true;
           newCart.id = response.listitemid;
@@ -187,7 +188,19 @@ angular.module('bekApp')
       // accepts cart object and params (deleteOmitted?)
       // returns promise and updated cart object
       updateCart: function(cart, params) {
+        cart.message = 'Saving cart...';
         return Cart.update(params, cart).$promise.then(function(response) {
+
+          // update cache
+          Service.cartHeaders.forEach(function(cartHeader, index) {
+            if (cartHeader.id === cart.id) {
+              var cartHeaderToUpdate = Service.cartHeaders[index];
+              cartHeaderToUpdate.requestedshipdate = cart.requestedshipdate;
+              cartHeaderToUpdate.subtotal = cart.subtotal;
+              cartHeaderToUpdate.name = cart.name;
+            }
+          });
+
           return Service.getCart(response.id);
         });
       },
@@ -301,7 +314,12 @@ angular.module('bekApp')
       submitOrder: function(cartId) {
         return Cart.submit({
           cartId: cartId
-        }, null).$promise;
+        }, { message: 'Submitting Order...' }).$promise.then(function(data) {
+          var deletedCart = Service.findCartById(cartId);
+          var idx = Service.cartHeaders.indexOf(deletedCart);
+          Service.cartHeaders.splice(idx, 1);
+          return data;
+        });
       },
  
       setActiveCart: function(cartId) {

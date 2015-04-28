@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .factory('PhonegapDbService', [ '$q',
-    function($q) {
+  .factory('PhonegapDbService', [ '$q', '$log',
+    function($q, $log) {
 
   //
   var dbName = 'bek_offline_storage';
@@ -12,7 +12,7 @@ angular.module('bekApp')
   function openDB() {
     if (!db) {
       db = window.openDatabase(dbName, '1.0', 'Ben E Keith Entree', 1000000, function() {
-        console.log('opened database');
+        $log.debug('opened database');
       }); 
     }
     return db;
@@ -26,20 +26,20 @@ angular.module('bekApp')
   }
 
   function errorHandler(tx, error) {
-    console.log('DB error');
+    $log.debug('DB error');
     debugger;
-    console.log(error);
+    $log.debug(error);
   }
 
   var Service = {
 
     dropTable: function(table) {
-      console.log('PhonegapDbService: drop table ' + table);
+      $log.debug('PhonegapDbService: drop table ' + table);
       var deferred = $q.defer();
       var db = openDB();
       db.transaction(function(tx) {
         return tx.executeSql('drop table if exists ' + table + ';', [], function(tx, res) {
-          console.log('drop table success');
+          $log.debug('drop table success');
           return deferred.resolve(true);
         }, errorHandler);
       });
@@ -47,7 +47,7 @@ angular.module('bekApp')
     },
 
     getAllItems: function(table) {
-      console.log('PhonegapDbService: get all items');
+      $log.debug('PhonegapDbService: get all items');
       var deferred = $q.defer();
       var db = openDB();
       db.transaction(function(tx) {
@@ -59,7 +59,7 @@ angular.module('bekApp')
               var item = JSON.parse(res.rows.item(i).data);
               items.push(item);
             }
-            console.log('found ' + items.length + ' items');
+            $log.debug('found ' + items.length + ' items');
 
             return deferred.resolve(items);
           } else {
@@ -70,7 +70,7 @@ angular.module('bekApp')
       return deferred.promise;
     },
     getItem: function(table, key) {
-      console.log('PhonegapDbService: get item');
+      $log.debug('PhonegapDbService: get item');
       var deferred = $q.defer();
       var db = openDB();
       key = convertKeyToString(key);
@@ -79,8 +79,8 @@ angular.module('bekApp')
         return tx.executeSql("select data from " + table + " WHERE key = ?;", [key], function(tx, res) {
           if (res.rows.length > 0) {
             var item = JSON.parse(res.rows.item(0).data);
-            console.log('found item');
-            console.log(item);
+            $log.debug('found item');
+            $log.debug(item);
             return deferred.resolve(item);
           } else {
             return deferred.resolve(false);
@@ -90,7 +90,7 @@ angular.module('bekApp')
       return deferred.promise;
     },
     setItem: function(table, key, data) {
-      console.log('PhonegapDbService: set item');
+      $log.debug('PhonegapDbService: set item');
       data = JSON.stringify(data);
       key = convertKeyToString(key);
       var db = openDB();
@@ -98,15 +98,15 @@ angular.module('bekApp')
         tx.executeSql('create table if not exists ' + table + ' (id integer primary key, key text, data text)');
         return tx.executeSql("select data from " + table + " where key=?;", [key], function(tx, res) {
           if (res.rows.length > 0) {
-            console.log('update');
+            $log.debug('update');
             return tx.executeSql("UPDATE " + table + " SET data = ? WHERE key = ?;", [data, key], function(tx, res) {
-              console.log('update success');
+              $log.debug('update success');
               return true;
             }, errorHandler);
           } else {
-            console.log('insert');
+            $log.debug('insert');
             return tx.executeSql("INSERT INTO " + table + " (key, data) VALUES (?,?)", [key, data], function(tx, res) {
-              console.log('insert success');
+              $log.debug('insert success');
               return true;
             }, errorHandler);
           }

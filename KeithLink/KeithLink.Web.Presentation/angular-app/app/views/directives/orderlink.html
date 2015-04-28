@@ -1,7 +1,7 @@
 <a 
   ng-if="order.ischangeorderallowed"
   format="telephone=no"
-  ui-sref="menu.cart.items({ cartId: order.ordernumber })">
+  ui-sref="menu.orderitems({invoiceNumber: order.ordernumber})">
   {{order.invoicenumber}}
   <span class="icon-pencil"></span>
 </a>

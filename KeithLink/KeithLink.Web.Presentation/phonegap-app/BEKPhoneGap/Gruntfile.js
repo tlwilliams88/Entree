@@ -211,7 +211,7 @@ module.exports = function(grunt) {
             name: '<%= config.environment.test.name %>',
             apiKey: '<%= config.environment.test.apiKey %>',
             apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
-            loggingEnabled: config.environment.test.loggingEnabled,
+            loggingEnabled: config.environment.prod.loggingEnabled,
             googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
             mobileApp: true
           }
