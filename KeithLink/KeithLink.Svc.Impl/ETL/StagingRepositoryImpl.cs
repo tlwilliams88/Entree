@@ -8,11 +8,22 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.ETL
 {
     public class StagingRepositoryImpl: IStagingRepository
     {
+        private readonly IEventLogRepository eventLog;
+
+        #region constructor
+        public StagingRepositoryImpl(IEventLogRepository eventLog)
+        {
+            this.eventLog = eventLog;
+        }
+        #endregion
+
+
         public DataTable ReadAllBranches()
         {
             return PopulateDataTable("[ETL].[ReadBranches]");
@@ -199,30 +210,46 @@ namespace KeithLink.Svc.Impl.ETL
 
 		public void ProcessContractItems()
 		{
-			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
-			{
-				using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
-					cmd.CommandTimeout = 0;
-					conn.Open();
-					cmd.ExecuteNonQuery();
-				}
-			}
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+                {
+                    using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog("Error Processing Contract Lists", ex);
+            }
+            
 		}
 
 		public void ProcessWorksheetItems()
 		{
-			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
-			{
-				using (var cmd = new SqlCommand("[ETL].[ProcessWorksheetList]", conn))
-				{
-					cmd.CommandType = CommandType.StoredProcedure;
-					cmd.CommandTimeout = 0;
-					conn.Open();
-					cmd.ExecuteNonQuery();
-				}
-			}
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+                {
+                    using (var cmd = new SqlCommand("[ETL].[ProcessWorksheetList]", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog("Error Processing History Lists", ex);
+            }
+            
 		}
 	}
 }
