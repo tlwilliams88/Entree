@@ -97,7 +97,9 @@ angular.module('bekApp')
   $scope.selectAll = function(allSelected, source){
     if(source=='add'){
       $scope.customers.forEach(function(customer) {
+        if(customer.selected == false){
        customer.isChecked = allSelected;
+     }
       })
     }
     if(source=='remove'){
