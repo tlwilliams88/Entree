@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
-    function ($scope, $state, $stateParams, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
+  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
+    function ($scope, $state, $stateParams, $filter, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
 
 
   $scope.groupId = $stateParams.groupId;
@@ -54,6 +54,7 @@ angular.module('bekApp')
 
       if (!customer.selected) {
         customer.selected = false;
+        customer.isChecked = false;
       }
     });
     return customers;
@@ -151,20 +152,56 @@ angular.module('bekApp')
     customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
   };
 
-  $scope.selectCustomer = function(customer) {
-    $scope.profile.customers.push(customer);
-    customer.selected = true;
+    $scope.selectCustomer = function(customer) {
+    customer.isChecked = true;
+    $scope.customers.forEach(function(customer) {
+      if(customer.isChecked){    
+        customer.isChecked = false;
+        customer.selected = true;
+         $scope.profile.customers.push(angular.copy(customer));  
+      }
+    })    
+      if($scope.filteredCustomers.length<30 || $scope.allAvailableSelected ){
+        $scope.infiniteScrollLoadMore();
+      }
+       $scope.allAvailableSelected = $scope.allRemovableSelected = false;
   };
 
-  $scope.unselectCustomer = function(customer) {
-    var idx = $scope.profile.customers.indexOf(customer);
-    $scope.profile.customers.splice(idx, 1);
-    $scope.customers.forEach(function(availableCustomer) {
-      if (customer.customerNumber === availableCustomer.customerNumber) {
-        availableCustomer.selected = false;
-      }
-    });
-    customer.selected = false;
+    $scope.selectAll = function(allSelected, source){
+    if(source=='add'){
+      $scope.customers.forEach(function(customer) {
+        if(customer.selected == false){
+       customer.isChecked = allSelected;
+     }
+      })
+    }
+    if(source=='remove'){
+      $scope.profile.customers.forEach(function(availableCustomer) {
+        availableCustomer.isChecked = allSelected;
+      })
+    }
+  };
+
+    $scope.unselectCustomer = function(selectedCustomer) {
+    $scope.foundMatch = false;
+    selectedCustomer.isChecked = true;
+    $scope.profile.customers.forEach(function(availableCust){
+        if(availableCust.isChecked){   
+            $scope.customers.forEach(function(customer) {
+                if (availableCust.customerNumber === customer.customerNumber) {
+                  $scope.foundMatch = true;                                  
+                  customer.selected  = customer.isChecked = false;
+                  availableCust.selected  = availableCust.isChecked = false;
+                }
+            });
+            if(!$scope.foundMatch){
+              $scope.infiniteScrollLoadMore();
+              $scope.unselectCustomer(selectedCustomer);
+            } 
+        }  
+    })
+     $scope.profile.customers = $filter('filter')($scope.profile.customers, {selected: 'true'});
+     $scope.allAvailableSelected = $scope.allRemovableSelected = false;  
   };
 
 }]);
