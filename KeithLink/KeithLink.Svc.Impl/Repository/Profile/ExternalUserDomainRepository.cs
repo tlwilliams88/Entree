@@ -12,6 +12,7 @@ using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Authentication;
 using KeithLink.Svc.Core.Enumerations.Authentication;
 using System.Text.RegularExpressions;
+using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -32,13 +33,15 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         IEventLogRepository _logger;
+		IAuditLogRepository _auditLog;
         //ICustomerContainerRepository _containerRepo;
         #endregion
 
         #region ctor
-        public ExternalUserDomainRepository(IEventLogRepository logger)
+        public ExternalUserDomainRepository(IEventLogRepository logger, IAuditLogRepository auditLog)
         {
             _logger = logger;
+			_auditLog = auditLog;
             //_containerRepo = customerContainerRepo;
         }
         #endregion
@@ -568,7 +571,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return "guest";
         }
 
-        public void GrantAccess(string userName, string roleName) {
+        public void GrantAccess(string grantedBy, string userName, string roleName) {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (roleName.Length == 0) { throw new ArgumentException("roleName is required", "roleName"); }
@@ -592,6 +595,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         groupDE.Properties["member"].Add(user.DistinguishedName);
 
                         groupDE.CommitChanges();
+
+						_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.GrantUserAccess, grantedBy, String.Format("User: {0} Granted: {1}", userName, roleName));
                     }
                 }
             } catch (Exception ex) {
@@ -696,7 +701,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
         }
 
-        public void RevokeAccess(string userName, string roleName) {
+        public void RevokeAccess(string revokedBy, string userName, string roleName) {
             if (userName.Length == 0) { throw new ArgumentException("userName is required", "userName"); }
             if (userName == null) { throw new ArgumentNullException("userName", "userName is null"); }
             if (roleName.Length == 0) { throw new ArgumentException("roleName is required", "roleName"); }
@@ -720,6 +725,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         groupDE.Properties["member"].Remove(user.DistinguishedName);
 
                         groupDE.CommitChanges();
+
+						_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.RevokeUserAccess, revokedBy, string.Format("User: {0} Revoked: {0}", userName, roleName));
                     }
                 }
             } catch (Exception ex) {
@@ -755,7 +762,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public bool UpdatePassword(string emailAddress, string oldPassword, string newPassword) {
+        public bool UpdatePassword(string updatedBy, string emailAddress, string oldPassword, string newPassword) {
             try {
                 using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
                                                                          Configuration.ActiveDirectoryExternalServerName,
@@ -771,7 +778,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                     if (principal.ValidateCredentials(emailAddress, oldPassword)) {
 						user.ChangePassword(oldPassword, newPassword);
-
+						_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.ChagnePassword, updatedBy, string.Format("User {0} Password Updated", emailAddress));
                         return true;
                     } else {
                         if (user.IsAccountLockedOut()) {

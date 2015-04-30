@@ -163,6 +163,11 @@ namespace KeithLink.Svc.Impl
         private const string KEY_POWERMENU_PERMISSIONS_URL = "PowerMenuPermissionsUrl";
         private const string KEY_POWERMENU_LOGIN_URL = "PowerMenuLoginUrl";
         private const string KEY_POWERMENU_GROUP_SETUP_URL = "PowerMenuGroupSetupUrl";
+
+        // Content Management
+        private const string KEY_MARKETINGCONTENT_BRANCHITEMCOUNT = "MarketingBranchItemCount";
+        private const string KEY_MARKETINGCONTENT_TOTALITEMCOUNT = "MarketingTotalItemCount";
+        private const string KEY_MARKETINGCONTENT_URL = "MarketingContentUrl";
         #endregion
 
         #region methods
@@ -180,14 +185,6 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);
             }
         }
-
-		public static string EntreeSiteURL
-		{
-			get
-			{
-				return GetValue(KEY_ENTREE_SITE_URL, string.Empty);
-			}
-		}
 
         public static string AccessGroupKbitCustomer {
             get {
@@ -328,27 +325,10 @@ namespace KeithLink.Svc.Impl
             } 
         }
 
-        public static bool WhiteListedBekUsersEnforced
-        {
-            get
-            {
-                try
-                {
-                    return Convert.ToBoolean(GetValue(KEY_WHITE_LISTED_BEK_USERS_ENFORCED, "true"));
-                }
-                catch
-                {
-                    return true;
-                }
-            }
-        }
-
-        public static List<string> WhiteListedBekUsers
-        {
-            get
-            {
-                string val = GetValue(KEY_WHITE_LISTED_BEK_USERS, string.Empty);
-                return GetCommaSeparatedValues(val);
+        public static bool AddServerNameToHeader {
+            get {
+                var value = GetValue(KEY_ADD_SERVERNAME_TO_HEADER, "false");
+                return ValueParsingUtil.ParseBool(value, "false");
             }
         }
 
@@ -361,15 +341,30 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-		public static List<string> CacheServersEndpoints
-		{
-			get
-			{
-				string value = GetValue(KEY_CACHE_SERVERSENDPOINTS, string.Empty);
-				return GetCommaSeparatedValues(value);
-			}
-		}
+        public static string AmazonSnsAccessKey {
+            get {
+                return GetValue(KEY_AMAZON_SNS_ACCESS_KEY, string.Empty);
+            }
+        }
+
+        public static string AmazonSnsMobilePlatformAppArnAndroid {
+            get {
+                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID, string.Empty);
+            }
+        }
         
+        public static string AmazonSnsMobilePlatformAppArnIOS {
+            get {
+                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS, string.Empty);
+            }
+        }
+
+        public static string AmazonSnsSecretKey {
+            get {
+                return GetValue(KEY_AMAZON_SNS_SECRET_KEY, string.Empty);
+            }
+        }
+
         public static string AppDataConnectionString
         {
             get { return GetConnectionString(KEY_APPDATA_CONNECTIONSTRING); }
@@ -397,6 +392,13 @@ namespace KeithLink.Svc.Impl
         public static string BrandAssetsUrl
         {
             get { return GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
+        }
+
+        public static List<string> CacheServersEndpoints {
+            get {
+                string value = GetValue(KEY_CACHE_SERVERSENDPOINTS, string.Empty);
+                return GetCommaSeparatedValues(value);
+            }
         }
 
         public static string CategoryPrefixesToExclude
@@ -488,6 +490,12 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
         }
 
+        public static string EntreeSiteURL {
+            get {
+                return GetValue(KEY_ENTREE_SITE_URL, string.Empty);
+            }
+        }
+
         public static string ImagingServerUrl {
             get {
                 return GetValue(KEY_IMG_SERVER, string.Empty);
@@ -512,9 +520,23 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static bool IsDemoEnvironment {
+            get {
+                var value = GetValue(KEY_ENVIRONMENT_DEMO, "false");
+                return ValueParsingUtil.ParseBool(value, "false");
+            }
+        }
+
         public static string KbitConnectionString {
             get {
                 return GetConnectionString(KEY_SSO_KBIT_CONNECTIONSTRING);
+            }
+        }
+
+        public static double ListItemsDaysNew {
+            get {
+                string value = GetValue(LIST_ITEM_DAYS_NEW, String.Empty);
+                return ValueParsingUtil.ParseDouble(value, String.Empty);
             }
         }
 
@@ -559,6 +581,24 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_MF_TRANS_ORDER, string.Empty);
+            }
+        }
+
+        public static int MarketingContentBranchItemCount {
+            get {
+                return int.Parse(GetValue(KEY_MARKETINGCONTENT_BRANCHITEMCOUNT, "0"));
+            }
+        }
+
+        public static int MarketingContentTotalItemCount {
+            get {
+                return int.Parse(GetValue(KEY_MARKETINGCONTENT_TOTALITEMCOUNT, "0"));
+            }
+        }
+
+        public static string MarketingContentUrl {
+            get {
+                return GetValue(KEY_MARKETINGCONTENT_URL, string.Empty);
             }
         }
 
@@ -887,124 +927,20 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static bool RunInternalServiceQueues
-        {
-            get
-            {
-                return bool.Parse(GetValue(KEY_RUN_INTERNAL_SERVICE_QUEUES, "true"));
-            }
-        }
-
-        public static string AmazonSnsAccessKey
-        {
-            get
-            {
-                return GetValue(KEY_AMAZON_SNS_ACCESS_KEY, string.Empty);
-            }
-        }
-
-        public static string AmazonSnsSecretKey
-        {
-            get
-            {
-                return GetValue(KEY_AMAZON_SNS_SECRET_KEY, string.Empty);
-            }
-        }
-
-        public static string AmazonSnsMobilePlatformAppArnIOS
-        {
-            get
-            {
-                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS, string.Empty);
-            }
-        }
-
-        public static string AmazonSnsMobilePlatformAppArnAndroid
-        {
-            get
-            {
-                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID, string.Empty);
-            }
-        }
-
-		public static bool RequireHttps
-		{
-			get
-			{
-				var value = GetValue(KEY_REQUIRE_HTTPS, "false");
-				return ValueParsingUtil.ParseBool(value, "false");
-			}
-		}
-
-		public static bool AddServerNameToHeader
-		{
-			get
-			{
-				var value = GetValue(KEY_ADD_SERVERNAME_TO_HEADER, "false");
-				return ValueParsingUtil.ParseBool(value, "false");
-			}
-		}
-
-		public static int RecentItemsToKeep
-		{
-			get
-			{
-				string value = GetValue(KEY_RECENT_ITEMS_TO_KEEP, DEFAULT_RECENT_ITEMS_TO_KEEP);
-				return ValueParsingUtil.ParseInt(value, DEFAULT_RECENT_ITEMS_TO_KEEP);
-			}
-		}
-
-        public static double ListItemsDaysNew
-        {
-            get
-            {
-                string value = GetValue(LIST_ITEM_DAYS_NEW, String.Empty);
-                return ValueParsingUtil.ParseDouble(value, String.Empty);
-            }
-        }
-
-		public static string SMTPHostName
-		{
-			get { return GetValue(KEY_SMTP_SERVERNAME, null); }
-		}
-
-		public static int SMTPSendPort
-		{
-			get
-			{
-				string value = GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
-				return ValueParsingUtil.ParseInt(value, DEFAULT_SMTP_SEND_PORT);
-			}
-		}
-
-		public static string SMTPUsername
-		{
-			get { return GetValue(KEY_SMTP_USERNAME, null); }
-		}
-
-		public static string SMTPPassword
-		{
-			get { return GetValue(KEY_SMTP_PASSWORD, null); }
-		}
-
-		public static string ServiceEmailAddress
-		{
-			get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
-		}
-
-        public static string WebNowUrl {
+        public static int RecentItemsToKeep {
             get {
-                return GetValue(KEY_URL_WEBNOW, string.Empty);
+                string value = GetValue(KEY_RECENT_ITEMS_TO_KEEP, DEFAULT_RECENT_ITEMS_TO_KEEP);
+                return ValueParsingUtil.ParseInt(value, DEFAULT_RECENT_ITEMS_TO_KEEP);
             }
         }
 
-        public static bool IsDemoEnvironment {
+        public static bool RequireHttps {
             get {
-                var value = GetValue(KEY_ENVIRONMENT_DEMO, "false");
-				return ValueParsingUtil.ParseBool(value, "false");
+                var value = GetValue(KEY_REQUIRE_HTTPS, "false");
+                return ValueParsingUtil.ParseBool(value, "false");
             }
         }
-
+		
         public static string RoleNameAccounting {
             get {
                 return GetValue(KEY_AD_EXTERNAL_ROLENAME_ACCOUNTING, string.Empty);
@@ -1032,6 +968,66 @@ namespace KeithLink.Svc.Impl
         public static string RoleNameOwner {
             get {
                 return GetValue(KEY_AD_EXTERNAL_ROLENAME_OWNER, string.Empty);
+            }
+        }
+
+        public static bool RunInternalServiceQueues
+        {
+            get
+            {
+                return bool.Parse(GetValue(KEY_RUN_INTERNAL_SERVICE_QUEUES, "true"));
+            }
+        }
+		
+        public static string ServiceEmailAddress
+		{
+			get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
+		}
+
+        public static string SMTPHostName
+		{
+			get { return GetValue(KEY_SMTP_SERVERNAME, null); }
+		}
+
+		public static int SMTPSendPort
+		{
+			get
+			{
+				string value = GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
+				return ValueParsingUtil.ParseInt(value, DEFAULT_SMTP_SEND_PORT);
+			}
+		}
+
+		public static string SMTPUsername
+		{
+			get { return GetValue(KEY_SMTP_USERNAME, null); }
+		}
+
+		public static string SMTPPassword
+		{
+			get { return GetValue(KEY_SMTP_PASSWORD, null); }
+		}
+
+        public static string WebNowUrl {
+            get {
+                return GetValue(KEY_URL_WEBNOW, string.Empty);
+            }
+        }
+
+        public static List<string> WhiteListedBekUsers {
+            get {
+                string val = GetValue(KEY_WHITE_LISTED_BEK_USERS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
+        public static bool WhiteListedBekUsersEnforced {
+            get {
+                try {
+                    return Convert.ToBoolean(GetValue(KEY_WHITE_LISTED_BEK_USERS_ENFORCED, "true"));
+                } catch {
+                    return true;
+                }
             }
         }
         #endregion

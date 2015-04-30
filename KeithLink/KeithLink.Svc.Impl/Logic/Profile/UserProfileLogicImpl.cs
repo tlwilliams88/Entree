@@ -4,7 +4,7 @@ using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Svc.Core.Helpers;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Cache;
@@ -84,21 +84,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #endregion
 
         #region methods
-        public void AddCustomerToAccount(Guid accountId, Guid customerId) {
-            _accountRepo.AddCustomerToAccount(accountId, customerId);
-        }
-
-        public string AddProfileImageUrl(Guid userId) {
+		public string AddProfileImageUrl(Guid userId) {
             return String.Format("{0}{1}{2}", Configuration.MultiDocsProxyUrl, "avatar/", userId);
         }
 
-        public void AddUserToCustomer(Guid customerId, Guid userId, string role) {
-            // TODO: Create user if they don't exist....   Add ROLE to call
-            _accountRepo.AddCustomerToAccount(customerId, userId);
-        }
-
-        public void AddUserToCustomer(Guid customerId, Guid userId) {
-            _customerRepo.AddUserToCustomer(customerId, userId);
+		public void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId) {
+            _customerRepo.AddUserToCustomer(addedBy.EmailAddress ,customerId, userId);
         }
 
         /// <summary>
@@ -315,9 +306,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return string.Format("{0}-{1}", "bek", email);
         }
 
-        public AccountReturn CreateAccount(string name) {
+        public AccountReturn CreateAccount(UserProfile createdBy, string name) {
             // call CS account repository -- hard code it for now
-            Guid newAcctId = _accountRepo.CreateAccount(name);
+            Guid newAcctId = _accountRepo.CreateAccount(createdBy.EmailAddress, name);
             return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
         }
 
@@ -354,7 +345,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             System.DirectoryServices.AccountManagement.UserPrincipal bekUser = _intAd.GetUser(emailAddress);
             string fName = bekUser.DisplayName.Split(' ')[0];
 
-            _csProfile.CreateUserProfile(emailAddress, fName, bekUser.Surname, bekUser.GetPhoneNumber(), GetBranchFromOU(bekUser.GetOrganizationalunit()));
+            _csProfile.CreateUserProfile(emailAddress, emailAddress, fName, bekUser.Surname, bekUser.GetPhoneNumber(), GetBranchFromOU(bekUser.GetOrganizationalunit()));
         }
 
         /// <summary>
@@ -368,7 +359,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// jwames - 4/1/2015 - change AD structure
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId) {
+        public UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
@@ -383,7 +374,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                               Configuration.RoleNameGuest
                               );
 
-            _csProfile.CreateUserProfile(emailAddress,
+            _csProfile.CreateUserProfile(actiingUser.EmailAddress,
+										 emailAddress,
                                          Core.Constants.AD_GUEST_FIRSTNAME,
                                          Core.Constants.AD_GUEST_LASTNAME,
                                          string.Empty,
@@ -417,7 +409,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId) {
+		public UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId)
+		{
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
@@ -429,7 +422,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                               ConvertRoleName(roleName)
                               );
 
-            _csProfile.CreateUserProfile(emailAddress,
+            _csProfile.CreateUserProfile(actiingUser.EmailAddress,
+										 emailAddress,
                                          firstName,
                                          lastName,
                                          phone,
@@ -1071,7 +1065,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void GrantRoleAccess(string emailAddress, AccessRequestType requestedApp) {
+        public void GrantRoleAccess(UserProfile updatedBy, string emailAddress, AccessRequestType requestedApp) {
             string appRoleName;
 
             switch (requestedApp) {
@@ -1086,8 +1080,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             }
 
             _eventLog.WriteInformationLog(string.Format("Granting role access in active directory ({0}, {1})", emailAddress, appRoleName));
-
-            _extAd.GrantAccess(emailAddress, appRoleName);
+			
+            _extAd.GrantAccess(updatedBy.EmailAddress, emailAddress, appRoleName);
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
@@ -1180,7 +1174,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return powerMenuRequest;
         }
 
-        public void RemoveUserFromAccount(Guid accountId, Guid userId) {
+		public void RemoveUserFromAccount(UserProfile removedBy, Guid accountId, Guid userId)
+		{
             List<Account> allAccounts = _accountRepo.GetAccounts();
             Account acct = allAccounts.Where(x => x.Id == accountId).FirstOrDefault();
             acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
@@ -1190,25 +1185,25 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             usersReturn.CustomerUserProfiles = new List<UserProfile>();
 
 			var user = GetUserProfile(userId);
-			_extAd.RevokeAccess(user.UserProfiles[0].EmailAddress, ConvertRoleName(user.UserProfiles[0].RoleName));
-			_extAd.GrantAccess(user.UserProfiles[0].EmailAddress, ConvertRoleName(Constants.ROLE_NAME_GUEST));
+			_extAd.RevokeAccess(removedBy.EmailAddress, user.UserProfiles[0].EmailAddress, ConvertRoleName(user.UserProfiles[0].RoleName));
+			_extAd.GrantAccess(removedBy.EmailAddress, user.UserProfiles[0].EmailAddress, ConvertRoleName(Constants.ROLE_NAME_GUEST));
 
             foreach (Customer c in acct.Customers) {
-                RemoveUserFromCustomer(c.CustomerId, userId);
+                RemoveUserFromCustomer(removedBy, c.CustomerId, userId);
             }
 
 			
 
             //Remove directly from account
-            _accountRepo.RemoveUserFromAccount(accountId, userId);
+            _accountRepo.RemoveUserFromAccount(removedBy.EmailAddress, accountId, userId);
 
 			// remove the old user profile from cache and then update it with the new profile
 			_cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(user.UserProfiles[0].EmailAddress));
 
         }
 
-        public void RemoveUserFromCustomer(Guid customerId, Guid userId) {
-            _customerRepo.RemoveUserFromCustomer(customerId, userId);
+        public void RemoveUserFromCustomer(UserProfile removedBy, Guid customerId, Guid userId) {
+            _customerRepo.RemoveUserFromCustomer(removedBy.EmailAddress, customerId, userId);
         }
 
         private void RequestKbitAccess(string emailAddress) {
@@ -1253,7 +1248,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 3/10/2015 - original code
         /// </remarks>
-        public void RevokeRoleAccess(string emailAddress, AccessRequestType requestedApp) {
+        public void RevokeRoleAccess(UserProfile updatedBy, string emailAddress, AccessRequestType requestedApp) {
             string appRoleName;
 
             switch (requestedApp) {
@@ -1267,16 +1262,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     return;
             }
 
-            _extAd.RevokeAccess(emailAddress, appRoleName);
+            _extAd.RevokeAccess(updatedBy.EmailAddress, emailAddress, appRoleName);
 
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
             switch (requestedApp) {
                 case AccessRequestType.KbitCustomer:
                     RemoveKbitAccess(emailAddress);
-                    break;
-                case AccessRequestType.PowerMenu:
-                    RemovePowerMenuAccess( emailAddress );
                     break;
                 default:
                     break;
@@ -1353,7 +1345,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 4/2/2015 - change AD structure
         /// </remarks>
-        public UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId ) {
+		public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId)
+		{
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             string generatedPassword = GenerateTemporaryPassword();
 
@@ -1369,6 +1362,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 );
 
             _csProfile.CreateUserProfile(
+				actiingUser.EmailAddress,
                 emailAddress,
                 Core.Constants.AD_GUEST_FIRSTNAME,
                 Core.Constants.AD_GUEST_LASTNAME,
@@ -1383,7 +1377,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return GetUserProfile( emailAddress );
         }
 
-        public bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users) {
+        public bool UpdateAccount(UserProfile updatedBy, Guid accountId, string name, List<Customer> customers, List<UserProfile> users) {
             List<Customer> existingCustomers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
             List<UserProfile> existingUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
 
@@ -1403,17 +1397,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 
             foreach (Guid g in customersToAdd)
-                _accountRepo.AddCustomerToAccount(accountId, g);
+                _accountRepo.AddCustomerToAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in customersToDelete)
-                _accountRepo.RemoveCustomerFromAccount(accountId, g);
+                _accountRepo.RemoveCustomerFromAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in usersToAdd)
-                _accountRepo.AddUserToAccount(accountId, g);
+                _accountRepo.AddUserToAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in usersToDelete)
-                _accountRepo.RemoveUserFromAccount(accountId, g);
+                _accountRepo.RemoveUserFromAccount(updatedBy.EmailAddress, accountId, g);
 
             // update account user roles to owner
             foreach (UserProfile user in users) // all account users are assumed to be owners on all customers
-                UpdateCustomersForUser(customers, user.RoleName, user);
+                UpdateCustomersForUser(updatedBy, customers, user.RoleName, user);
 
             _accountRepo.UpdateAccount(name, accountId);
 
@@ -1422,19 +1416,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return true;
         }
 
-        private void UpdateCustomersForUser(List<Customer> customerList, string roleName, UserProfile existingUser) {
+        private void UpdateCustomersForUser(UserProfile updatedBy, List<Customer> customerList, string roleName, UserProfile existingUser) {
             var customers = GetNonPagedCustomersForUser(existingUser);
 
             IEnumerable<Guid> custsToAdd = customerList.Select(c => c.CustomerId).Except(customers.Select(b => b.CustomerId));
             IEnumerable<Guid> custsToRemove = customers.Select(b => b.CustomerId).Except(customerList.Select(c => c.CustomerId));
             foreach (Guid c in custsToAdd)
-                AddUserToCustomer(c, existingUser.UserId);
+                AddUserToCustomer(updatedBy, c, existingUser.UserId);
             foreach (Guid c in custsToRemove)
-                RemoveUserFromCustomer(c, existingUser.UserId);
+				RemoveUserFromCustomer(updatedBy, c, existingUser.UserId);
             //UpdateUserRoles(customerList.Select(x => x.CustomerName).ToList(), existingUser.EmailAddress, roleName);
             if (!roleName.Equals(existingUser.RoleName, StringComparison.InvariantCultureIgnoreCase)) {
-                _extAd.GrantAccess(existingUser.EmailAddress, ConvertRoleName(roleName));
-                _extAd.RevokeAccess(existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
+                _extAd.GrantAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(roleName));
+                _extAd.RevokeAccess(updatedBy.EmailAddress, existingUser.EmailAddress, ConvertRoleName(existingUser.RoleName));
             }
         }
 
@@ -1448,7 +1442,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword) {
+        public bool UpdateUserPassword(UserProfile updatedBy, string emailAddress, string originalPassword, string newPassword) {
             bool retVal = false;
 
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
@@ -1459,7 +1453,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             AssertPasswordComplexity(newPassword);
             AssertPasswordVsAttributes(newPassword, existingUser.FirstName, existingUser.LastName);
 
-            if (_extAd.UpdatePassword(emailAddress, originalPassword, newPassword)) {
+            if (_extAd.UpdatePassword(updatedBy.EmailAddress, emailAddress, originalPassword, newPassword)) {
                 retVal = true;
             } else {
                 throw new ApplicationException("Password was invalid");
@@ -1474,7 +1468,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 8/18/2014 - documented
         /// </remarks>
-        public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId,
+		public void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId,
             bool updateCustomerListAndRole, List<Customer> customerList, string roleName) {
             AssertEmailAddressLength(emailAddress);
             AssertEmailAddress(emailAddress);
@@ -1489,13 +1483,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 throw new ApplicationException("Cannot update profile information for BEK user.");
             }
 
-            _csProfile.UpdateUserProfile(id, emailAddress, firstName, lastName, phoneNumber, branchId);
+            _csProfile.UpdateUserProfile(updatedBy.EmailAddress, id, emailAddress, firstName, lastName, phoneNumber, branchId);
 
             _extAd.UpdateUserAttributes(existingUser.UserProfiles[0].EmailAddress, emailAddress, firstName, lastName);
 			
             // update customer list
             if (updateCustomerListAndRole && customerList != null && customerList.Count > 0) {
-                UpdateCustomersForUser(customerList, roleName, existingUser.UserProfiles[0]);
+                UpdateCustomersForUser(updatedBy, customerList, roleName, existingUser.UserProfiles[0]);
             }
 
             // remove the old user profile from cache and then update it with the new profile

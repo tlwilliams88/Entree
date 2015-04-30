@@ -207,6 +207,7 @@
     <Compile Include="Helpers\FoundationService.cs" />
     <Compile Include="Helpers\RetryHelper.cs" />
     <Compile Include="Logic\BasketLogicImpl.cs" />
+    <Compile Include="Logic\ContentManagement\ContentManagementLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
@@ -251,6 +252,7 @@
     <Compile Include="Repository\Cache\CacheRepositoryImpl.cs" />
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
+    <Compile Include="Repository\ContentManagement\ContentManagementExternalRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">

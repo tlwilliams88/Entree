@@ -13,6 +13,7 @@ using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Export;
 using KeithLink.Svc.Core.Interface.Invoices;
@@ -23,12 +24,12 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Core.Interface.Reports;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.Export;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Invoices;
@@ -37,6 +38,7 @@ using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Impl.Repository.ContentManagement;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
@@ -48,6 +50,8 @@ using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.WebApi.Repository.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
+using KeithLink.Common.Impl.AuditLog;
+using KeithLink.Common.Core.AuditLog;
 #endregion
 
 namespace KeithLink.Svc.WebApi
@@ -134,12 +138,17 @@ namespace KeithLink.Svc.WebApi
 
 			builder.RegisterType<com.benekeith.ConfigurationService.ConfigurationServiceClient>().As<com.benekeith.ConfigurationService.IConfigurationService>();
 
+            builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
+            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
+
 			builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
 
 			builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
 			builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
+
+			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
             // Build the container.
             var container = builder.Build();

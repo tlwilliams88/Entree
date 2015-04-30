@@ -1,29 +1,35 @@
 ﻿#region Using
+using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Impl.Logging;
+
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.ContentManagement;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+
+using KeithLink.Svc.Impl.ETL;
+using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.ContentManagement;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.BranchSupports;
+using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Impl.Repository.ContentManagement;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Lists;
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
+
+using KeithLink.Svc.Test.Mock;
+
+using Autofac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Autofac;
-using KeithLink.Svc.Test.Mock;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Impl.Repository.Lists;
-using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Impl.Logic.SiteCatalog;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.Cache;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Repository.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Repository.BranchSupports;
-
 #endregion
 
 namespace KeithLink.Svc.Test
@@ -48,6 +54,7 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
+            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 					
 			//*******************************************
 			//Repositories
@@ -70,6 +77,7 @@ namespace KeithLink.Svc.Test
 			builder.Register(c => new EventLogRepositoryImpl("Entree Test")).As<IEventLogRepository>();
 			builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
+            builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
 
 			//Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();

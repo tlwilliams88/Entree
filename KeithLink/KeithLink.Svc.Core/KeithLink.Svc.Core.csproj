@@ -159,6 +159,7 @@
     <Compile Include="Exceptions\Profile\InvalidApiKeyException.cs" />
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
+    <Compile Include="Extensions\ContentManagement\ContentItemExtension.cs" />
     <Compile Include="Extensions\DsrExtensions.cs" />
     <Compile Include="Extensions\PowerMenu\PowerMenuSystemRequestExtensions.cs" />
     <Compile Include="Extensions\SingleSignOn\AccessRequestExtension.cs" />
@@ -176,12 +177,13 @@
     <Compile Include="Extensions\Orders\History\OrderHistoryFileExtension.cs" />
     <Compile Include="Extensions\Orders\PurchaseOrderExtension.cs" />
     <Compile Include="Extensions\Paging.cs" />
-    <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Interface\Cache\ICacheRefreshRepository.cs" />
     <Compile Include="Interface\Cache\ICacheRepository.cs" />
     <Compile Include="Interface\Configuration\IExportSettingServiceRepository.cs" />
     <Compile Include="Interface\Configuration\IInternalExportSettingLogic.cs" />
     <Compile Include="Interface\Configuration\IExportSettingRepository.cs" />
+    <Compile Include="Interface\ContentManagement\IContentManagementExternalRepository.cs" />
+    <Compile Include="Interface\ContentManagement\IContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
@@ -232,6 +234,9 @@
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
     <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
+    <Compile Include="Models\ContentManagement\ExpressEngine\AdditionalData.cs" />
+    <Compile Include="Models\ContentManagement\ExpressEngine\ContentItem.cs" />
+    <Compile Include="Models\ContentManagement\ExpressEngine\Product.cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
@@ -517,6 +522,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
   </ItemGroup>

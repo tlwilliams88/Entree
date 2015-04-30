@@ -13,7 +13,7 @@ angular.module('bekApp')
   var Service = {
   
     getPromoItems: function() {
-      var promise = $http.get('/cms/promoitems/' + LocalStorage.getBranchId() + '/' + Constants.promoItemsSize);
+      var promise = $http.get('/cms/promoitems/' + LocalStorage.getBranchId());
       return UtilityService.resolvePromise(promise).then(function(data) {
         return data;
       }, function() {

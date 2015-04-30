@@ -236,7 +236,8 @@
                 <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="(!landscapeOrient || !useParlevel) && isMobile"></div>
                   <input              
                   type="text" 
-                  ng-if="(landscapeOrient && useParlevel && item.canOrder) || !isMobile"                
+                  ng-if="(landscapeOrient && useParlevel && item.canOrder) || !isMobile"
+                  ng-show="item.hasCasePrice"              
                   class="input-number text-right" 
                   allow-one-positive-decimal
                   ng-model="item.quantity">                
