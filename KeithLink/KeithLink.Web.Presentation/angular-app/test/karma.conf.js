@@ -34,6 +34,8 @@ module.exports = function(config) {
       'app/lib/angular-sticky-header/fsm-sticky-header.js',
       'app/lib/angular-block-ui/angular-block-ui.js',
       'app/lib/ng-sticky/sticky.min.js',
+      'app/lib/angulartics/angulartics.min.js',
+      'app/lib/angulartics/angulartics-ga.min.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',
