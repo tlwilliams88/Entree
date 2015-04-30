@@ -6,7 +6,6 @@ angular.module('bekApp')
 
   var init = function(){
     $scope.branches = branches;
-    $scope.dirty = false;
     if (AccessService.isOrderEntryCustomer()){
       MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
         $scope.defaultPreferences = preferences;
