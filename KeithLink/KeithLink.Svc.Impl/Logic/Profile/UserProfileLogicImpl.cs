@@ -84,20 +84,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #endregion
 
         #region methods
-        public void AddCustomerToAccount(Guid accountId, Guid customerId) {
-            _accountRepo.AddCustomerToAccount(accountId, customerId);
-        }
-
-        public string AddProfileImageUrl(Guid userId) {
+		public string AddProfileImageUrl(Guid userId) {
             return String.Format("{0}{1}{2}", Configuration.MultiDocsProxyUrl, "avatar/", userId);
         }
 
-        public void AddUserToCustomer(Guid customerId, Guid userId, string role) {
-            // TODO: Create user if they don't exist....   Add ROLE to call
-            _accountRepo.AddCustomerToAccount(customerId, userId);
-        }
-
-        public void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId) {
+		public void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId) {
             _customerRepo.AddUserToCustomer(addedBy.EmailAddress ,customerId, userId);
         }
 
@@ -1406,9 +1397,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 
             foreach (Guid g in customersToAdd)
-                _accountRepo.AddCustomerToAccount(accountId, g);
+                _accountRepo.AddCustomerToAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in customersToDelete)
-                _accountRepo.RemoveCustomerFromAccount(accountId, g);
+                _accountRepo.RemoveCustomerFromAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in usersToAdd)
                 _accountRepo.AddUserToAccount(updatedBy.EmailAddress, accountId, g);
             foreach (Guid g in usersToDelete)

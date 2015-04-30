@@ -7,9 +7,7 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IUserProfileLogic {
-        void AddCustomerToAccount(Guid accountId, Guid customerId);
-        
-        void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId);
+		void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId);
 
 		AccountReturn CreateAccount(UserProfile createdBy, string name);
 

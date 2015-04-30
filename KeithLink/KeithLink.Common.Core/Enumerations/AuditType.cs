@@ -10,26 +10,30 @@ namespace KeithLink.Common.Core.Enumerations
 	public enum AuditType
 	{
 		[Description("User Created")]
-			UserCreated,
+		UserCreated,
 		[Description("User Update")]
-			UserUpdate,
+		UserUpdate,
 		[Description("Customer Group Created")]
-			CustomerGroupCreated,
+		CustomerGroupCreated,
 		[Description("Customer Group Deleted")]
-			CustomerGroupDeleted,//System doesn't have this ability yet
+		CustomerGroupDeleted,//System doesn't have this ability yet
 		[Description("User Added To Customer Group")]
-			UserAddedToCustomerGroup,
+		UserAddedToCustomerGroup,
 		[Description("User Removed From Customer Group")]
-			UserRemovedFromCustomerGroup,
+		UserRemovedFromCustomerGroup,
 		[Description("User Assigned To Customer")]
-			UserAssignedToCustomer,
+		UserAssignedToCustomer,
 		[Description("User Removed From Customer")]
-			UserRemovedFromCustomer,
+		UserRemovedFromCustomer,
 		[Description("Grant User Access")]
 		GrantUserAccess,
 		[Description("Revoke User Access")]
 		RevokeUserAccess,
 		[Description("Change Password")]
-		ChagnePassword
+		ChagnePassword,
+		[Description("Customer Added To Customer Group")]
+		CustomerAddedToCustomerGroup,
+		[Description("Customer Removed From Customer Group")]
+		CustomerRemovedFromCustomerGroup,
 	}
 }
