@@ -1279,9 +1279,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 case AccessRequestType.KbitCustomer:
                     RemoveKbitAccess(emailAddress);
                     break;
-                case AccessRequestType.PowerMenu:
-                    RemovePowerMenuAccess( emailAddress );
-                    break;
                 default:
                     break;
             }
