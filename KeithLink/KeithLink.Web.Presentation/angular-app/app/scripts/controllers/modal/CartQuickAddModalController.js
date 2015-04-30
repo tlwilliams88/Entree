@@ -28,24 +28,30 @@ angular.module('bekApp')
   $scope.validateItems = function(items) {
     var invalidItemsExist = false;
     $scope.items = getRowsWithQuantity(items);
-    CartService.validateQuickAdd($scope.items).then(function(validatedItems) {
-      $scope.items.forEach(function(item, index) {
-        var validatedItem = validatedItems[index];
-        item.valid = validatedItem.valid;
 
-        if (validatedItem.valid === false) {
-          invalidItemsExist = true;
-        }
+    if ($scope.items.length > 0) {
+      CartService.validateQuickAdd($scope.items).then(function(validatedItems) {
+        $scope.items.forEach(function(item, index) {
+          var validatedItem = validatedItems[index];
+          item.valid = validatedItem.valid;
 
-        if (validatedItem.reason === 0) {
-          item.reason = 'Invalid item number';
-        } else if (validatedItem.reason === 1) {
-          item.reason = 'Each not allowed for this item';
-        }
+          if (validatedItem.valid === false) {
+            invalidItemsExist = true;
+          }
+
+          if (validatedItem.reason === 0) {
+            item.reason = 'Invalid item number';
+          } else if (validatedItem.reason === 1) {
+            item.reason = 'Each not allowed for this item';
+          }
+        });
+        $scope.enableSubmit = !invalidItemsExist;
       });
+    } else {
+      $scope.enableSubmit = false;
+      $scope.addRow();
+    }
 
-      $scope.enableSubmit = !invalidItemsExist;
-    });
   };
 
   $scope.saveCart = function(items) {
