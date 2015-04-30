@@ -15,6 +15,7 @@ angular.module('bekApp')
     $scope.isNew = false;
   }
   $scope.customerGroup = angular.copy($scope.originalCustomerGroup);
+  $scope.dirty = false;
 
   /**********
   CUSTOMERS
@@ -66,6 +67,7 @@ angular.module('bekApp')
   }
 
   $scope.searchCustomers = function (searchTerm) {
+    $scope.dirty = ture;
     customerPagingModel.filterCustomers(searchTerm);
   };
 
@@ -80,6 +82,7 @@ angular.module('bekApp')
   };
 
   $scope.selectCustomer = function(customer) {
+    $scope.dirty = true;
     customer.isChecked = true;
     $scope.customers.forEach(function(customer) {
       if(customer.isChecked){    
@@ -110,6 +113,7 @@ angular.module('bekApp')
   };
 
   $scope.unselectCustomer = function(selectedCustomer) {
+    $scope.dirty = true;
     $scope.foundMatch = false;
     selectedCustomer.isChecked = true;
     $scope.customerGroup.customers.forEach(function(availableCust){
@@ -145,6 +149,7 @@ angular.module('bekApp')
 
   $scope.addUserError = '';
   $scope.checkUserAndAddAdmin = function(emailAddress) {
+    if(emailAddress){$scope.dirty = true;}    
     var isDuplicateUser = false;
     $scope.addUserError = '';
 
@@ -182,8 +187,13 @@ angular.module('bekApp')
   };
 
   $scope.removeUser = function(user) {
+    $scope.dirty = true;
     var idx = $scope.customerGroup.adminusers.indexOf(user);
     $scope.customerGroup.adminusers.splice(idx, 1);
+  };
+
+  $scope.goBack = function(){
+ $state.go('menu.admin.customergroup');
   };
 
   /***********
@@ -220,6 +230,11 @@ angular.module('bekApp')
   }
 
   $scope.submitForm = function(group) {
+    $scope.dirty = false;
+    $scope.customerGroupDetailsForm.$setPristine();
+    $scope.addNewAdminUserForm.$setPristine();
+    $scope.customerSearchForm.$setPristine();
+
     if ($scope.isNew) {
       createNewCustomerGroup(group);
     } else {

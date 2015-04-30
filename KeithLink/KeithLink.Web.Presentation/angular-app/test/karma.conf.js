@@ -33,6 +33,7 @@ module.exports = function(config) {
       'app/lib/angular-ui-select2/select2.js',
       'app/lib/angular-sticky-header/fsm-sticky-header.js',
       'app/lib/angular-block-ui/angular-block-ui.js',
+      'app/lib/ng-sticky/sticky.min.js',
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',

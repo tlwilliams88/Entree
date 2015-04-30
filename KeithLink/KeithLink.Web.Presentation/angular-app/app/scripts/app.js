@@ -31,6 +31,7 @@ angular
     'fcsa-number',            // used for number validation
     'ui.select2',
     'blockUI',            // used for context menu dropdown in upper left corner
+    'sticky',
     'configenv'               // used to inject environment variables into angular through Grunt
   ])
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig',
