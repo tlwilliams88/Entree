@@ -984,6 +984,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jmmcmillan - 10/6/2014 - documented
         /// </remarks>
         public UserProfileReturn GetUserProfileByGuid(Guid UserId) {
+
+			//TODO: This is a Foundation Service Query. It should be moved to the profile repository
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
@@ -1503,5 +1505,26 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         //}
 
         #endregion
-    }
+
+
+		public List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId)
+		{
+			//Retrieve all CS internal users
+			var internalUsers = _csProfile.GetCSProfileForInternalUsers();
+
+			var usersWithAccess = new List<UserProfile>();
+
+			foreach (var user in internalUsers)
+			{
+				var userProfile = FillUserProfile(user);
+				var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null);
+				if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any())
+				{
+					usersWithAccess.Add(userProfile);
+				}
+			}
+
+			return usersWithAccess;
+		}
+	}
 }

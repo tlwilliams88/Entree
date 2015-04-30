@@ -16,5 +16,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
         Core.Models.Generated.UserProfile GetCSProfile(Guid userId);
 		void UpdateUserProfile(string updatedBy, Guid id, string emailAddres, string firstName, string lastName, string phoneNumber, string branchId);
         List<Core.Models.Profile.UserProfile> GetUsersForCustomerOrAccount(Guid orgId);
+
+		List<Core.Models.Generated.UserProfile> GetCSProfileForInternalUsers();
     }
 }

@@ -42,15 +42,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer)
         {
             Svc.Core.Models.Profile.UserProfileReturn users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
+			users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
             List<UserMessagingPreference> userDefaultMessagingPreferences = // list of each user's default prefs
                 userMessagingPreferenceRepository.ReadByUserIdsAndNotificationType(users.UserProfiles.Select(u => u.UserId), notificationType, true).ToList();
             List<UserMessagingPreference> customerMessagingPreferences = // list of customer's user specific pref
                 userMessagingPreferenceRepository.ReadByCustomerAndNotificationType(customer.CustomerNumber, customer.CustomerBranch, notificationType).ToList();
-            foreach (Guid userId in customerMessagingPreferences.Select(x => x.UserId).Except(users.UserProfiles.Select(x => x.UserId)))
-            {
-                // this will handle internal users that have a messaging pref setup for a customer
-                users.UserProfiles.Add(userProfileLogic.GetUserProfile(userId).UserProfiles.FirstOrDefault());
-            }
+
+			//foreach (Guid userId in customerMessagingPreferences.Select(x => x.UserId).Except(users.UserProfiles.Select(x => x.UserId)))
+			//{
+			//	// this will handle internal users that have a messaging pref setup for a customer
+			//	users.UserProfiles.Add(userProfileLogic.GetUserProfile(userId).UserProfiles.FirstOrDefault());
+			//}
             List<UserMessagingPreference> ump = new List<UserMessagingPreference>();
             ump.AddRange(userDefaultMessagingPreferences);
             ump.AddRange(customerMessagingPreferences);

@@ -91,10 +91,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public Core.Models.Generated.UserProfile GetCSProfile(string emailAddress) {
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+			var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
-
+			
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
@@ -112,6 +112,22 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 return (Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0];
             }
         }
+
+		public List<Core.Models.Generated.UserProfile> GetCSProfileForInternalUsers()
+		{
+			var queryOrg = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("ProfileCustomSearch");
+			queryOrg.SearchCriteria.WhereClause = "u_email_address like '%benekeith.com'"; // org type of customer
+
+			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+			List<Core.Models.Generated.UserProfile> users = new List<Core.Models.Generated.UserProfile>();
+			if (res.CommerceEntities.Count > 0)
+			{
+				foreach (CommerceEntity ent in res.CommerceEntities)
+					users.Add((Core.Models.Generated.UserProfile)ent);			
+			}
+
+			return users;
+		}
 
         /// <summary>
         /// retrieve the user's profile from commerce server
