@@ -153,12 +153,12 @@
 }
 
 @media (min-width: $screen-md-min) {
-  .list-form {
-    // max-height: 523px;
-    height: 523px;
-    overflow-y: auto;
-    overflow-x: auto;
-  }
+  // .list-form {
+  //   // max-height: 523px;
+  //   height: 523px;
+  //   overflow-y: auto;
+  //   overflow-x: auto;
+  // }
 }
 
 @media (max-width: $screen-sm-max) {
