@@ -85,16 +85,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuditLog\IAuditLogRepository.cs" />
     <Compile Include="ConfigurationHelper.cs" />
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationFacade.cs" />
     <Compile Include="Crypto.cs" />
     <Compile Include="Email\NewUserEmail.cs" />
     <Compile Include="Email\ExceptionEmail.cs" />
+    <Compile Include="Enumerations\AuditType.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\GuidExtensions.cs" />
     <Compile Include="Extensions\SQLDataRowExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Logging\IEventLogRepository.cs" />
     <Compile Include="Parsing\StringHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -53,7 +53,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// </summary>
 		/// <param name="userInfo">User</param>
 		/// <returns></returns>
-		[AllowAnonymous]
 		[HttpPost]
 		[ApiKeyedRoute("profile/create")]
 		public OperationReturnModel<UserProfileReturn> CreateUser(UserProfileModel userInfo)
@@ -62,7 +61,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(userInfo.CustomerName, userInfo.Email, userInfo.Password,
+				retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(this.AuthenticatedUser, userInfo.CustomerName, userInfo.Email, userInfo.Password,
 																			userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
 																			userInfo.Role, userInfo.BranchId);
 			}
@@ -96,7 +95,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+				retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
 			}
 			catch (ApplicationException axe)
 			{
@@ -128,7 +127,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword(guestInfo.Email, guestInfo.BranchId);
+				returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword(this.AuthenticatedUser, guestInfo.Email, guestInfo.BranchId);
 			}
 			catch (ApplicationException ex)
 			{
@@ -205,7 +204,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
 			try
 			{
-				returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
+				returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(this.AuthenticatedUser, pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
 			}
 			catch (Exception ex)
 			{
@@ -234,7 +233,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 				if (!_profileLogic.IsInternalAddress(userInfo.Email))
 				{
-					_profileLogic.UpdateUserProfile(userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
+					_profileLogic.UpdateUserProfile(this.AuthenticatedUser, userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
 												  userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId,
 												  true /* hard coded security for now */, userInfo.Customers, userInfo.Role);
 				}
@@ -272,7 +271,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				retVal.SuccessResponse = _profileLogic.CreateAccount(account.Name);
+				retVal.SuccessResponse = _profileLogic.CreateAccount(this.AuthenticatedUser, account.Name);
 			}
 			catch (ApplicationException axe)
 			{
@@ -305,7 +304,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			retVal.SuccessResponse = false;
 			try
 			{
-				retVal.SuccessResponse = _profileLogic.UpdateAccount(account.Id, account.Name, account.Customers, account.AdminUsers);
+				retVal.SuccessResponse = _profileLogic.UpdateAccount(this.AuthenticatedUser, account.Id, account.Name, account.Customers, account.AdminUsers);
 			}
 			catch (ApplicationException axe)
 			{
@@ -419,7 +418,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				_profileLogic.RemoveUserFromAccount(accountId, userId);
+				_profileLogic.RemoveUserFromAccount(this.AuthenticatedUser, accountId, userId);
 				retVal.SuccessResponse = true;
 			}
 			catch (ApplicationException axe)
@@ -452,7 +451,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				_profileLogic.AddUserToCustomer(info.customerId, info.userId);
+				_profileLogic.AddUserToCustomer(this.AuthenticatedUser, info.customerId, info.userId);
 				retVal.SuccessResponse = true;
 			}
 			catch (ApplicationException axe)
@@ -730,7 +729,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 				}
 				else
 				{
-					_profileLogic.GrantRoleAccess(email, selectedApp);
+					_profileLogic.GrantRoleAccess(this.AuthenticatedUser, email, selectedApp);
 
 					retVal.SuccessResponse = true;
 				}
@@ -778,7 +777,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 				}
 				else
 				{
-					_profileLogic.RevokeRoleAccess(email, selectedApp);
+					_profileLogic.RevokeRoleAccess(this.AuthenticatedUser, email, selectedApp);
 
 					retVal.SuccessResponse = true;
 				}

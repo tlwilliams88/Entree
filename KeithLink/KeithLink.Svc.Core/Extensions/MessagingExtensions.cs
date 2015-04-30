@@ -1,5 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Svc.Core.Helpers;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Messaging;

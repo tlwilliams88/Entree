@@ -14,8 +14,8 @@ namespace KeithLink.Svc.Core.Interface.Profile
 		
 		Customer GetCustomerById(Guid customerId);
         Customer GetCustomerByCustomerNumber(string customerNumber, string branchId);
-        void AddUserToCustomer(Guid customerId, Guid userId);
-        void RemoveUserFromCustomer(Guid customerId, Guid userId);
+        void AddUserToCustomer(string addedBy, Guid customerId, Guid userId);
+        void RemoveUserFromCustomer(string removedBy, Guid customerId, Guid userId);
         List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId);
         List<Customer> GetCustomersByNameSearch(string searchText);
         List<Customer> GetCustomersByNameSearchAndBranch(string search, string branchId);

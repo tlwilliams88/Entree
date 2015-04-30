@@ -50,6 +50,8 @@ using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.WebApi.Repository.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
+using KeithLink.Common.Impl.AuditLog;
+using KeithLink.Common.Core.AuditLog;
 #endregion
 
 namespace KeithLink.Svc.WebApi
@@ -145,6 +147,8 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
 			builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
+
+			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
             // Build the container.
             var container = builder.Build();

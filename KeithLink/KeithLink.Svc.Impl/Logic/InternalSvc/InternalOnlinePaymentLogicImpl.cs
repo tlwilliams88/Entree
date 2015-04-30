@@ -6,7 +6,7 @@ using KeithLink.Svc.Core.Extensions.OnlinePayments;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Enumerations;
-using KeithLink.Svc.Core.Helpers;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
