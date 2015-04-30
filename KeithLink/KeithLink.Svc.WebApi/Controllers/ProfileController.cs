@@ -767,6 +767,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 					case "kbit":
 						selectedApp = AccessRequestType.KbitCustomer;
 						break;
+                    case "powermenu":
+                        selectedApp = AccessRequestType.PowerMenu;
+                        break;
 					default:
 						break;
 				}
