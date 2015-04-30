@@ -6,7 +6,6 @@ angular.module('bekApp')
 
   var init = function(){
     $scope.branches = branches;
-    
     if (AccessService.isOrderEntryCustomer()){
       MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
         $scope.defaultPreferences = preferences;
@@ -51,12 +50,16 @@ angular.module('bekApp')
     UserProfileService.removeAvatar().then(refreshAvatarUrl);
   };
 
+  $scope.goBack = function(){
+    $state.go('menu.home');
+  };
+
   $scope.cancelChanges = function () {
     $scope.userProfile = angular.copy(SessionService.userProfile);
     $scope.updateProfileForm.$setPristine();
   };
 
-  $scope.updateUserProfile = function(userProfile) {
+  $scope.updateUserProfile = function(userProfile) {     
     userProfile.email = userProfile.emailaddress;
     $scope.updateProfileErrorMessage = null;
     
