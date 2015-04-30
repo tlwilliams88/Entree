@@ -177,7 +177,6 @@
     <Compile Include="Extensions\Orders\History\OrderHistoryFileExtension.cs" />
     <Compile Include="Extensions\Orders\PurchaseOrderExtension.cs" />
     <Compile Include="Extensions\Paging.cs" />
-    <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Interface\Cache\ICacheRefreshRepository.cs" />
     <Compile Include="Interface\Cache\ICacheRepository.cs" />
     <Compile Include="Interface\Configuration\IExportSettingServiceRepository.cs" />
@@ -523,6 +522,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Helpers\" />
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
   </ItemGroup>

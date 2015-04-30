@@ -74,6 +74,8 @@ using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Impl.Repository.Profile.PasswordReset;
+using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Impl.AuditLog;
 #endregion
 
 namespace KeithLink.Svc.InternalSvc
@@ -248,6 +250,8 @@ namespace KeithLink.Svc.InternalSvc
 			//Password Reset
 			builder.RegisterType<InternalPasswordResetRequestLogicImpl>().As<IInternalPasswordResetLogic>();
 			builder.RegisterType<PasswordResetRequestRepositoryImpl>().As<IPasswordResetRequestRepository>();
+
+			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
             return builder.Build();
         }

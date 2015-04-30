@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Reflection;
 
-namespace KeithLink.Svc.Core.Helpers
+namespace KeithLink.Common.Core.Helpers
 {
 	public static class EnumUtils<T>
 	{

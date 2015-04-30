@@ -61,6 +61,8 @@ using KeithLink.Svc.Impl.Logic.Messaging;
 using Autofac.Features.Indexed;
 using KeithLink.Svc.Core.Interface.Configuration;
 using KeithLink.Svc.Impl.Repository.Configurations;
+using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Windows.QueueService
 {
@@ -207,6 +209,7 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
+			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
 			// dsr repository
 			builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();

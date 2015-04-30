@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -16,12 +17,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
     {
         #region attributes
         IEventLogRepository _logger;
+		private readonly IAuditLogRepository _auditLog;
        #endregion
 
         #region ctor
-        public AccountRepository(IEventLogRepository logger)
+        public AccountRepository(IEventLogRepository logger, IAuditLogRepository auditLog)
         {
             _logger = logger;
+			_auditLog = auditLog;
         }
         #endregion
 
@@ -33,7 +36,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public Guid CreateAccount(string name) {
+		public Guid CreateAccount(string createdBy, string name)
+		{
             KeithLink.Svc.Core.Models.Generated.SiteTerm orgTypes = GetOrganizationTypes();
             string accountOrgTypeId = orgTypes.Elements.Where(o => o.DisplayName == "Account").FirstOrDefault().Id;
 
@@ -44,7 +48,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             createOrg.CreateOptions.ReturnModel = new Core.Models.Generated.Organization();
 
             CommerceCreateOperationResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(createOrg.ToRequest()).OperationResponses[0] as CommerceCreateOperationResponse;
-
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.CustomerGroupCreated, createdBy, name);
             return new Guid(res.CommerceEntity.Id);
         }
 
@@ -85,7 +89,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return  accounts.ToList();
         }
 
-        public void AddCustomerToAccount(Guid accountId, Guid customerId)
+        public void AddCustomerToAccount(string addedBy, Guid accountId, Guid customerId)
         {
             var updateQuery = new CommerceUpdate<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
             updateQuery.SearchCriteria.Model.Properties["Id"] = customerId.ToCommerceServerFormat();
@@ -93,15 +97,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             updateQuery.Model.ParentOrganizationId = accountId.ToCommerceServerFormat();
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.CustomerAddedToCustomerGroup, addedBy, string.Format("Customer: {0}, Account: {1}", customerId, accountId));
         }
 
-        public void AddUserToAccount(Guid accountId, Guid userId)
+        public void AddUserToAccount(string addedBy, Guid accountId, Guid userId)
         {
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserAddedToCustomerGroup, addedBy, string.Format("Account: {0}, User: {1}", accountId, userId));
             base.AddUserToOrg(accountId, userId);
         }
         
-        public void RemoveUserFromAccount(Guid accountId, Guid userId)
+        public void RemoveUserFromAccount(string removedBy, Guid accountId, Guid userId)
         {
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserRemovedFromCustomerGroup, removedBy, string.Format("Account: {0}, User: {1}", accountId, userId));
+            
             base.RemoveUserFromOrg(accountId, userId);
         }
 
@@ -156,7 +164,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         #endregion
 
 
-        public void RemoveCustomerFromAccount(Guid accountId, Guid customerId)
+        public void RemoveCustomerFromAccount(string removedBy, Guid accountId, Guid customerId)
         {
             var updateQuery = new CommerceUpdate<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
             updateQuery.SearchCriteria.Model.Properties["Id"] = customerId.ToCommerceServerFormat();
@@ -165,6 +173,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
 
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.CustomerRemovedFromCustomerGroup, removedBy, string.Format("Customer: {0}, Account: {1}", customerId, accountId));
             // TODO: remove all users associated directly to the customer
         }
     }

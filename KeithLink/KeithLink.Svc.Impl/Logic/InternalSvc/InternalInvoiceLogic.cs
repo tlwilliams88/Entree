@@ -17,7 +17,7 @@ using KeithLink.Common.Core.Extensions;
 using EntityFramework.BulkInsert.Extensions;
 using System.Transactions;
 using KeithLink.Svc.Core.Enumerations;
-using KeithLink.Svc.Core.Helpers;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Enumerations.List;
 

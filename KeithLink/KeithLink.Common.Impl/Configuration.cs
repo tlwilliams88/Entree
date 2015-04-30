@@ -11,6 +11,7 @@ namespace KeithLink.Common.Impl
         #region attributes
         private const string KEY_LOGGING_CONNECTIONSTRING = "EventLog";
 		private const string KEY_LOG_SYSTEM_PERFORMANCE = "LogSystemPerformanceWithErrors";
+		private const string KEY_AUDITLOG_CONNECTIONSTRING = "AuditLog";
         
         #endregion
 
@@ -43,6 +44,12 @@ namespace KeithLink.Common.Impl
 				return retVal;
 			}
 		}
+
+		public static string AuditLogConnectionString
+		{
+			get { return GetConnectionString(KEY_AUDITLOG_CONNECTIONSTRING); }
+		}
+
         #endregion
 
 

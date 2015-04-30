@@ -11,6 +11,7 @@ using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System.Data.Entity;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -22,20 +23,22 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		protected string CACHE_NAME { get { return "Profile"; } }
 		protected string CACHE_PREFIX { get { return "Default"; } }
 
-        IEventLogRepository _logger;
-        ICacheRepository _customerCacheRepository;
-        IDsrServiceRepository _dsrService;
+        private readonly IEventLogRepository _logger;
+        private readonly ICacheRepository _customerCacheRepository;
+        private readonly IDsrServiceRepository _dsrService;
+		private readonly IAuditLogRepository _auditLogRepository;
 
 		
 
         #endregion
 
         #region ctor
-		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrServiceRepository dsrService)
+		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrServiceRepository dsrService, IAuditLogRepository auditLogRepository)
         {
             _logger = logger;
             _customerCacheRepository = customerCacheRepository;
             _dsrService = dsrService;
+			_auditLogRepository = auditLogRepository;
         }
         #endregion
 
@@ -77,10 +80,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			_customerCacheRepository.ResetAllItems(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME);
         }
 
-        public void AddUserToCustomer(Guid customerId, Guid userId)
+        public void AddUserToCustomer(string addedBy, Guid customerId, Guid userId)
         {
             base.AddUserToOrg(customerId, userId);
 			_customerCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("user_{0}", userId.ToString())));
+			_auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserAssignedToCustomer, addedBy, string.Format("Customer: {0}, User: {1}", customerId, userId));
 		}
 
         private static string GetUserOrgKey(Guid customerId, Guid userId)
@@ -88,10 +92,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return customerId.ToCommerceServerFormat() + "__" + userId.ToCommerceServerFormat();
         }
 
-        public void RemoveUserFromCustomer(Guid customerId, Guid userId)
+        public void RemoveUserFromCustomer(string removedBy, Guid customerId, Guid userId)
         {
             base.RemoveUserFromOrg(customerId, userId);
 			_customerCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("user_{0}", userId.ToString())));
+			_auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserRemovedFromCustomer, removedBy, string.Format("Customer: {0}, User: {1}", customerId, userId));
         }
 
         public List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId)

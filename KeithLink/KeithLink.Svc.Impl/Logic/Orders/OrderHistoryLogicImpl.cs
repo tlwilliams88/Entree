@@ -32,7 +32,7 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Impl.Helpers;
-using KeithLink.Svc.Core.Helpers;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Enumerations;
 
 namespace KeithLink.Svc.Impl.Logic.Orders {

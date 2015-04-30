@@ -4,6 +4,7 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
@@ -18,8 +19,9 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #region ctor
         public UserProfileRepositoryTests() {
             _log = new EventLogRepositoryImpl("Unit tests");
+			var _auditLog = new AuditLogRepositoryImpl();
             _cache = new NoCacheRepositoryImpl();
-            _profile = new UserProfileRepository(_log);
+            _profile = new UserProfileRepository(_log, _auditLog);
         }
         #endregion
 

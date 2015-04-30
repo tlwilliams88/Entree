@@ -7,17 +7,15 @@ using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IUserProfileLogic {
-        void AddCustomerToAccount(Guid accountId, Guid customerId);
-        
-        void AddUserToCustomer(Guid customerId, Guid userId);
-        
-        AccountReturn CreateAccount(string name);
+		void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId);
+
+		AccountReturn CreateAccount(UserProfile createdBy, string name);
 
         void CreateBekUserProfile(string emailAddress);
 
-        UserProfileReturn CreateGuestUserAndProfile(string emailAddress, string password, string branchId);
-		
-        UserProfileReturn CreateUserAndProfile(string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
+		UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId);
+
+		UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
 
         PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
 
@@ -53,26 +51,26 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         UserProfileReturn GetUsers(UserFilterModel userFilters);
 
-        void GrantRoleAccess(string emailAddress, AccessRequestType requestedApp);
+		void GrantRoleAccess(UserProfile updatedBy, string emailAddress, AccessRequestType requestedApp);
 
         bool IsInternalAddress(string emailAddress);
 
-        void RemoveUserFromAccount(Guid accountId, Guid userId);
+        void RemoveUserFromAccount(UserProfile removedBy, Guid accountId, Guid userId);
 
-        void RemoveUserFromCustomer(Guid customerId, Guid userId);
+        void RemoveUserFromCustomer(UserProfile removedBy, Guid customerId, Guid userId);
 
         void ResetPassword(Guid userId, string newPassword);
 
-        void RevokeRoleAccess(string emailAddress, AccessRequestType requestedApp);
+		void RevokeRoleAccess(UserProfile updatedBy, string emailAddress, AccessRequestType requestedApp);
 
-        bool UpdateAccount(Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
+		bool UpdateAccount(UserProfile updatedBy, Guid accountId, string name, List<Customer> customers, List<UserProfile> users);
 
-        bool UpdateUserPassword(string emailAddress, string originalPassword, string newPassword);
+		bool UpdateUserPassword(UserProfile updatedBy, string emailAddress, string originalPassword, string newPassword);
 
-        void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName);
+        void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName);
 
         //void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName);
-        
-        UserProfileReturn UserCreatedGuestWithTemporaryPassword( string emailAddress, string branchId );
+
+		UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId);
     }
 }

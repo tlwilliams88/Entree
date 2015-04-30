@@ -22,6 +22,7 @@ using KeithLink.Svc.WebApi.Repository.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Test.Repositories.Order
     {
@@ -43,17 +44,18 @@ namespace KeithLink.Svc.Test.Repositories.Order
         public OrderNotificationTests()
         {
             _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
+			var _auditLog = new AuditLogRepositoryImpl();
 			_cache = new NoCacheRepositoryImpl();
 			var _custCach = new NoCacheRepositoryImpl();
             var dsrService = new NoDsrServiceRepository();
 
-            _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log);
+            _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log, _auditLog);
             _intAd = new Impl.Repository.Profile.InternalUserDomainRepository(_log);
 
-            _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);
+			_csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _auditLog);
 
-            _acct = new AccountRepository(_log);
-            _cust = new CustomerRepository(_log, _custCach, dsrService);
+			_acct = new AccountRepository(_log, _auditLog);
+			_cust = new CustomerRepository(_log, _custCach, dsrService, _auditLog);
             _userProfileLogic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository(), new GenericQueueRepositoryImpl());
             //_orderHistoryRepo = new OrderHistoryHeaderRepositoryImpl(
         
