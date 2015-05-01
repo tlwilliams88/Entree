@@ -37,6 +37,8 @@ namespace KeithLink.Svc.Core.Extensions.Messaging
                         return (BaseNotification)new DataContractJsonSerializer(typeof(EtaNotification)).ReadObject(ms);
                     case Core.Enumerations.Messaging.NotificationType.PaymentConfirmation:
                         return (BaseNotification)new DataContractJsonSerializer(typeof(PaymentConfirmationNotification)).ReadObject(ms);
+					case Core.Enumerations.Messaging.NotificationType.HasNews:
+						return (BaseNotification)new DataContractJsonSerializer(typeof(HasNewsNotification)).ReadObject(ms);
                     default:
                         return notification;
                 }
