@@ -104,12 +104,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
             }
 
-            if (searchModel.SField == "caseprice" && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
+            if ((searchModel.SField == "caseprice" || searchModel.SField == "unitprice") && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
             {
                 if (searchModel.SDir == "asc")
-                    prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
+					if(searchModel.SField == "caseprice")
+						prods.Products.Sort((x, y) => x.CasePriceNumeric.CompareTo(y.CasePriceNumeric));
+					else
+						prods.Products.Sort((x, y) => x.UnitCost.CompareTo(y.UnitCost));
                 else
-                    prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
+					if (searchModel.SField == "caseprice")
+						prods.Products.Sort((x, y) => y.CasePriceNumeric.CompareTo(x.CasePriceNumeric));
+					else
+						prods.Products.Sort((x, y) => y.UnitCost.CompareTo(x.UnitCost));
             }
         }
 
@@ -276,7 +282,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             ProductsReturn ret;
 
             // special handling for price sorting
-            if (searchModel.SField == "caseprice")
+            if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
                 ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
                 ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
