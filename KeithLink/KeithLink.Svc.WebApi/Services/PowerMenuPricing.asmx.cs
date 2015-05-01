@@ -21,7 +21,8 @@ namespace KeithLink.Svc.WebApi.Services {
         public string Password { get; set; }
     }
 
-    [WebService(Namespace = "http://ABC.org/")]
+    // per Josh's request, we are making the namespace match that of the request from PowerMenu
+    [WebService(Namespace = "http://HawkeyeFoodservice.org/")]
     [WebServiceBinding(ConformsTo = WsiProfiles.BasicProfile1_1)]
     [System.ComponentModel.ToolboxItem(false)]
     public class PowerMenuPricing : System.Web.Services.WebService {

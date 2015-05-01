@@ -235,6 +235,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Lists.PagedListModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.ListCopyResultModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Profile.EF.DsrAlias.datasource" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
@@ -417,6 +418,12 @@
     <None Include="Service References\com.benekeith.ProfileService\ProfileService2.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.ProfileService\ProfileService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ProfileService\ProfileService31.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.ReportService\ReportService.disco" />
     <None Include="Service References\com.benekeith.ReportService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ReportService\configuration.svcinfo" />
@@ -490,6 +497,7 @@
     <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\DsrServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
     <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
