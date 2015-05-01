@@ -272,5 +272,6 @@ angular.module('bekApp')
     $scope.canEditUsers = AccessService.canEditUsers();
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
+    $scope.canEditDsrAliases = AccessService.canEditDsrAliases();
   }
 }]);
