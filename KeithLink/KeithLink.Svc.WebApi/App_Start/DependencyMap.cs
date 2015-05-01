@@ -145,6 +145,9 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
 			builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
+            builder.RegisterType<DsrAliasServiceImpl>().As<IDsrAliasService>();
+            builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
 
             // Build the container.
             var container = builder.Build();

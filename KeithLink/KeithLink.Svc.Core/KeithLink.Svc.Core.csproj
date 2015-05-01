@@ -216,6 +216,9 @@
     <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
+    <Compile Include="Interface\Profile\IDsrAliasLogic.cs" />
+    <Compile Include="Interface\Profile\IDsrAliasRepository.cs" />
+    <Compile Include="Interface\Profile\IDsrAliasService.cs" />
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
     <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
@@ -254,6 +257,8 @@
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
+    <Compile Include="Models\Profile\DsrAliasModel.cs" />
+    <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />
