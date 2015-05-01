@@ -17,7 +17,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         
         string GetUserGroup(string userName, List<string> groupNames);
 
-        void GrantAccess(string userName, string roleName);
+		void GrantAccess(string grantedBy, string userName, string roleName);
 
         bool HasAccess(string userName, string roleName);
 
@@ -25,13 +25,13 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void JoinGroup(string customerName, string roleName, UserPrincipal user);
 
-        void RevokeAccess(string userName, string roleName);
+		void RevokeAccess(string revokedBy, string userName, string roleName);
 
         void UnlockAccount(string emailAddress);
 
         //void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail);
 
-        bool UpdatePassword(string emailAddress, string oldPassword, string newPassword);
+		bool UpdatePassword(string updatedBy, string emailAddress, string oldPassword, string newPassword);
 
         void UpdatePassword( string emailAddress, string newPassword );
 

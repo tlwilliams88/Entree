@@ -158,80 +158,82 @@
     <!-- Available Lists -->
     <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists">
       <div class="row">
-        <div class="col-sm-12 custom-lists">
-          <h3>Your Lists</h3>
+        <div class="col-sm-12">
+          <div class="custom-lists" sticky confine="true">
+            <h3>Your Lists</h3>
 
-          <div class="btn-group-vertical list-names text-blue">
+            <div class="btn-group-vertical list-names text-blue">
+              <button 
+                type="button" 
+                ng-repeat="list in lists | sortLists | limitTo: showMoreListNames ? numberListNamesToShow : lists.length track by list.listid" 
+                ng-click="goToList(list)" 
+                ng-class="{'current-list' : list.listid == selectedList.listid}" 
+                class="btn-lg custom-lists__name btn btn-default btn-list" 
+                data-drop="isDragging && list.permissions.canAddItems" 
+                data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
+                jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}">
+                {{list.name}}
+              </button>
+            </div>
+            <h5>
+              <a 
+                ng-show="lists.length > numberListNamesToShow" 
+                ng-click="showMoreListNames = !showMoreListNames">
+                {{showMoreListNames ? '+ Show More' : '- Show Less'}}
+              </a>
+            </h5>
+            
+            <div class="btn-group-vertical">
             <button 
               type="button" 
-              ng-repeat="list in lists | sortLists | limitTo: showMoreListNames ? numberListNamesToShow : lists.length track by list.listid" 
-              ng-click="goToList(list)" 
-              ng-class="{'current-list' : list.listid == selectedList.listid}" 
-              class="btn-lg custom-lists__name btn btn-default btn-list" 
-              data-drop="isDragging && list.permissions.canAddItems" 
+              ng-click="createList()" 
+              data-drop="isDragging" 
               data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
-              jqyoui-droppable="{onDrop: 'addItemFromDrag(list)'}">
-              {{list.name}}
+              jqyoui-droppable="{onDrop: 'createListFromDrag()'}" 
+              class="btn btn-default btn-list text-light btn-lg">
+              Create A List...
             </button>
+
+            <button
+              type="button" 
+              ng-click="createMandatoryList()" 
+              data-drop="isDragging" 
+              data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
+              jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}" 
+              class="btn btn-default btn-list text-left text-light btn-lg"
+              ng-if="::isInternalAccountAdminUser && !hideMandatoryListCreateButton"
+              title="Create Mandatory Items List for Customer">
+              Create <br>Mandatory...
+            </button>
+
+            <button
+              type="button" 
+              ng-click="createRecommendedList()" 
+              data-drop="isDragging" 
+              data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
+              jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}" 
+              class="btn btn-default btn-list text-left text-light btn-lg"
+              ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"
+              title="Create Recommended Items List for Customer">
+              Create <br>Recommended...
+            </button>
+            </div>
+            
+            <button 
+              ng-if="::selectedList.permissions.canDeleteItems" 
+              type="button" 
+              class="btn btn-icon btn-default large-icon btn-trash" 
+              ng-disabled="!isDragging" 
+              data-drop="isDragging" 
+              data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
+              jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}">
+              <span class="icon-trash"></span>
+            </button>
+
+            <p style="margin-top: 10px; font-size: 14px;">
+              <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid})">Organize this list <span class="icon-arrow-right6"></span></a>
+            </p>
           </div>
-          <h5>
-            <a 
-              ng-show="lists.length > numberListNamesToShow" 
-              ng-click="showMoreListNames = !showMoreListNames">
-              {{showMoreListNames ? '+ Show More' : '- Show Less'}}
-            </a>
-          </h5>
-          
-          <div class="btn-group-vertical">
-          <button 
-            type="button" 
-            ng-click="createList()" 
-            data-drop="isDragging" 
-            data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
-            jqyoui-droppable="{onDrop: 'createListFromDrag()'}" 
-            class="btn btn-default btn-list text-light btn-lg">
-            Create A List...
-          </button>
-
-          <button
-            type="button" 
-            ng-click="createMandatoryList()" 
-            data-drop="isDragging" 
-            data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
-            jqyoui-droppable="{onDrop: 'createMandatoryListFromDrag()'}" 
-            class="btn btn-default btn-list text-left text-light btn-lg"
-            ng-if="::isInternalAccountAdminUser && !hideMandatoryListCreateButton"
-            title="Create Mandatory Items List for Customer">
-            Create <br>Mandatory...
-          </button>
-
-          <button
-            type="button" 
-            ng-click="createRecommendedList()" 
-            data-drop="isDragging" 
-            data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
-            jqyoui-droppable="{onDrop: 'createRecommendedListFromDrag()'}" 
-            class="btn btn-default btn-list text-left text-light btn-lg"
-            ng-if="isInternalAccountAdminUser && !hideRecommendedListCreateButton"
-            title="Create Recommended Items List for Customer">
-            Create <br>Recommended...
-          </button>
-          </div>
-          
-          <button 
-            ng-if="::selectedList.permissions.canDeleteItems" 
-            type="button" 
-            class="btn btn-icon btn-default large-icon btn-trash" 
-            ng-disabled="!isDragging" 
-            data-drop="isDragging" 
-            data-jqyoui-options="{hoverClass:'bek-drag-hover',tolerance:'pointer',activeClass:'bek-drag-active'}" 
-            jqyoui-droppable="{onDrop: 'deleteItemFromDrag(selectedList)'}">
-            <span class="icon-trash"></span>
-          </button>
-
-          <p style="margin-top: 10px; font-size: 14px;">
-            <a ng-if="selectedList.permissions.canReorderItems" ui-sref="menu.organizelist({listId: selectedList.listid})">Organize this list <span class="icon-arrow-right6"></span></a>
-          </p>
         </div>
       </div>
     </div>
@@ -340,7 +342,7 @@
           navigate-table="lists" 
           class="custom-lists__table table table-border table-striped-rows" 
           infinite-scroll="infiniteScrollLoadMore()" 
-          infinite-scroll-container="'.list-form'" 
+          
           ui-sortable="{ 
             handle: '.bek-sortable-handle', 
             stop: stopReorder, 
@@ -349,7 +351,7 @@
           ng-model="selectedList.items">
 
           <thead>
-            <tr list-header-sticky-scroll scrollable-container="'.list-form'" scroll-body="'.custom-lists__table'" scroll-stop="0">
+            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort.sortDescending)"> 
@@ -400,7 +402,8 @@
                 helper:generateDragHelper, 
                 cursorAt: { top: -5, left: -5 }, 
                 cancel: '.bek-no-drag', 
-                handle: '.bek-drag-handle'}" 
+                handle: '.bek-drag-handle',
+                delay: 200}" 
               jqyoui-draggable="{
                 onStart: 'setIsDragging(true)', 
                 onStop: 'setIsDragging(false)'}">

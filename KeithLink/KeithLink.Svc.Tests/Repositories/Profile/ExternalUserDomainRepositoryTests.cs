@@ -7,6 +7,7 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
@@ -20,7 +21,8 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #region ctor
         public ExternalUserDomainRepositoryTests() {
             _log = new EventLogRepositoryImpl("Unit Tests");
-            _custUserRepo = new ExternalUserDomainRepository(_log);
+			var _auditLog = new AuditLogRepositoryImpl();
+            _custUserRepo = new ExternalUserDomainRepository(_log, _auditLog);
         }
         #endregion
 
@@ -102,7 +104,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
 
         [TestMethod]
         public void UpdateUserPasswordGood() {
-            Assert.IsTrue(_custUserRepo.UpdatePassword("lockeduser@somecompany.com", "Ab12345", "Ab12345"));
+			Assert.IsTrue(_custUserRepo.UpdatePassword(TestSessionObject.TestAuthenticatedUser.EmailAddress, "lockeduser@somecompany.com", "Ab12345", "Ab12345"));
         }
 
         //[TestMethod]

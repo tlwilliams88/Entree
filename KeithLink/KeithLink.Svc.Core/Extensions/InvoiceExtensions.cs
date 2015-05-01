@@ -1,5 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations;
-using KeithLink.Svc.Core.Helpers;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Invoices;
 using EFInvoice = KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;

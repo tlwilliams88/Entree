@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -15,12 +16,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
     {
         #region attributes
         IEventLogRepository _logger;
+		private readonly IAuditLogRepository _auditLog;
         #endregion
 
         #region ctor
-        public UserProfileRepository(IEventLogRepository logger)
+        public UserProfileRepository(IEventLogRepository logger, IAuditLogRepository auditLog)
         {
             _logger = logger;
+			_auditLog = auditLog;
         }
         #endregion
 
@@ -35,7 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-        public void CreateUserProfile(string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
+        public void CreateUserProfile(string createdBy, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
             var createUser = new CommerceServer.Foundation.CommerceCreate<KeithLink.Svc.Core.Models.Generated.UserProfile>("UserProfile");
 
             createUser.Model.FirstName = firstName;
@@ -44,6 +47,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             createUser.Model.Telephone = phoneNumber;
 
             Svc.Impl.Helpers.FoundationService.ExecuteRequest(createUser.ToRequest());
+
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserCreated, createdBy, Newtonsoft.Json.JsonConvert.SerializeObject(createUser.Model));
         }
 
         /// <summary>
@@ -86,10 +91,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// jwames - 10/3/2014 - documented
         /// </remarks>
         public Core.Models.Generated.UserProfile GetCSProfile(string emailAddress) {
-            var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
+			var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Email"] = emailAddress;
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
-
+			
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
@@ -107,6 +112,22 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 return (Core.Models.Generated.UserProfile)profileResponse.CommerceEntities[0];
             }
         }
+
+		public List<Core.Models.Generated.UserProfile> GetCSProfileForInternalUsers()
+		{
+			var queryOrg = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("ProfileCustomSearch");
+			queryOrg.SearchCriteria.WhereClause = "u_email_address like '%benekeith.com'"; // org type of customer
+
+			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+			List<Core.Models.Generated.UserProfile> users = new List<Core.Models.Generated.UserProfile>();
+			if (res.CommerceEntities.Count > 0)
+			{
+				foreach (CommerceEntity ent in res.CommerceEntities)
+					users.Add((Core.Models.Generated.UserProfile)ent);			
+			}
+
+			return users;
+		}
 
         /// <summary>
         /// retrieve the user's profile from commerce server
@@ -145,7 +166,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         ///// <remarks>
         ///// jwames - 8/18/2014 - documented
         ///// </remarks>
-        public void UpdateUserProfile(Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
+        public void UpdateUserProfile(string updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId) {
             var updateQuery = new CommerceUpdate<Core.Models.Generated.UserProfile>("UserProfile");
             updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToCommerceServerFormat();
 
@@ -157,6 +178,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             // TODO: add DefaultCustomer
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, updatedBy, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
         }
         #endregion
     }

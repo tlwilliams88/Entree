@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			throw new NotImplementedException();
 		}
 
-		public bool UpdatePassword(string emailAddress, string oldPassword, string newPassword)
+		public bool UpdatePassword(string updatedBy, string emailAddress, string oldPassword, string newPassword)
 		{
 			throw new NotImplementedException();
 		}
@@ -82,12 +82,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             throw new NotImplementedException();
         }
 
-        public void GrantAccess(string userName, string roleName) {
-            throw new NotImplementedException();
+		public void GrantAccess(string grantedBy, string userName, string roleName)
+		{
+            
         }
 
-        public void RevokeAccess(string userName, string roleName) {
-            throw new NotImplementedException();
+		public void RevokeAccess(string revokedBy, string userName, string roleName)
+		{
+            
         }
     }
 }

@@ -13,6 +13,7 @@ using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.WebApi.Repository.Messaging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
@@ -32,18 +33,19 @@ namespace KeithLink.Svc.Test.Logic {
         #region ctor
         public UserProfileLogicImplTests() {
             _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
+			var _auditLog = new AuditLogRepositoryImpl();
 			_cache = new NoCacheRepositoryImpl();
 			var _custCach = new NoCacheRepositoryImpl();
             var dsrService = new NoDsrServiceRepository();
-            
-            _extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log);
+
+			_extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log, _auditLog);
             _intAd = new Impl.Repository.Profile.InternalUserDomainRepository(_log);
 
 
-            _csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log);
+			_csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _auditLog);
 
-            _acct = new AccountRepository(_log);
-            _cust = new CustomerRepository(_log, _custCach, dsrService);
+			_acct = new AccountRepository(_log, _auditLog);
+			_cust = new CustomerRepository(_log, _custCach, dsrService, _auditLog);
             _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository(), new GenericQueueRepositoryImpl());
         }
         #endregion
@@ -72,12 +74,12 @@ namespace KeithLink.Svc.Test.Logic {
 
         [TestMethod]
         public void SuccessfullyGrantAccessToKbitCustomer() {
-            _logic.GrantRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer);
+            _logic.GrantRoleAccess(TestSessionObject.TestAuthenticatedUser, "sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer);
         }
 
         [TestMethod]
         public void SuccessfullyRemoveAccessToKbitCustomer() {
-            _logic.RevokeRoleAccess("sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer);
+			_logic.RevokeRoleAccess(TestSessionObject.TestAuthenticatedUser, "sabroussard@somecompany.com", Core.Enumerations.SingleSignOn.AccessRequestType.KbitCustomer);
         }
         #endregion
     }

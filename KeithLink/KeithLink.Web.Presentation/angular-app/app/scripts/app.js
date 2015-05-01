@@ -31,7 +31,10 @@ angular
     'fcsa-number',            // used for number validation
     'ui.select2',
     'blockUI',            // used for context menu dropdown in upper left corner
-    'configenv'               // used to inject environment variables into angular through Grunt
+    'sticky',
+    'configenv',               // used to inject environment variables into angular through Grunt
+    'angulartics', 
+    'angulartics.google.analytics'
   ])
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig) {
@@ -168,12 +171,6 @@ angular
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
     }
- 
-    // updates google analytics when state changes
-    if (!$window.ga) {
-      return;
-    }
-    $window.ga('send', 'pageview', { page: $location.path() });
  
     // remove lists and carts from memory
     if (fromState.data && toState.data) {

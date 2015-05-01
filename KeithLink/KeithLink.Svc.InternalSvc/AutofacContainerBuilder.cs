@@ -74,6 +74,8 @@ using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Impl.Repository.Profile.PasswordReset;
+using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Impl.AuditLog;
 #endregion
 
 namespace KeithLink.Svc.InternalSvc
@@ -253,6 +255,9 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
             builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+
+			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+
 
             return builder.Build();
         }

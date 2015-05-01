@@ -15,7 +15,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Helpers;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Interface.Profile;
 
