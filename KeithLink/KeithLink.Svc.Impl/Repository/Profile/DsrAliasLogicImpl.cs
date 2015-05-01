@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
         #endregion
 
         #region methods
-        public void CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             DsrAlias alias = new DsrAlias();
             alias.UserId = userId;
             alias.UserName = email;
@@ -33,6 +33,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
 
             _repo.Create(alias);
             _uow.SaveChanges();
+
+            return alias;
         }
 
         public void DeleteDsrAlias(int dsrAliasId) {

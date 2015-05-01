@@ -16,10 +16,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
     public interface IProfileService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/CreateDsrAlias", ReplyAction="http://tempuri.org/IProfileService/CreateDsrAliasResponse")]
-        void CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
+        KeithLink.Svc.Core.Models.Profile.EF.DsrAlias CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/CreateDsrAlias", ReplyAction="http://tempuri.org/IProfileService/CreateDsrAliasResponse")]
-        System.Threading.Tasks.Task CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.EF.DsrAlias> CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteDsrAlias", ReplyAction="http://tempuri.org/IProfileService/DeleteDsrAliasResponse")]
         void DeleteDsrAlias(int dsrAliasId);
@@ -79,11 +79,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
                 base(binding, remoteAddress) {
         }
         
-        public void CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
-            base.Channel.CreateDsrAlias(userId, email, dsr);
+        public KeithLink.Svc.Core.Models.Profile.EF.DsrAlias CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
+            return base.Channel.CreateDsrAlias(userId, email, dsr);
         }
         
-        public System.Threading.Tasks.Task CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.EF.DsrAlias> CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
             return base.Channel.CreateDsrAliasAsync(userId, email, dsr);
         }
         

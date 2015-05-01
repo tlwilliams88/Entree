@@ -30,8 +30,8 @@ namespace KeithLink.Svc.InternalSvc
         #endregion
 
         #region methods
-        public void CreateDsrAlias(Guid userId, string email, Dsr dsr) {
-            _aliasLogic.CreateDsrAlias(userId, email, dsr);
+        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+            return _aliasLogic.CreateDsrAlias(userId, email, dsr);
         }
 
         public void DeleteDsrAlias(int dsrAliasId) {

@@ -20,5 +20,6 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
 
         [DataMember(Name = "notificationtype")]
         public NotificationType NotificationType { get; set; }
+				
     }
 }

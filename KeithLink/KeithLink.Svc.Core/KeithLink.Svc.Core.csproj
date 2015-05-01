@@ -256,6 +256,7 @@
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
+    <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
