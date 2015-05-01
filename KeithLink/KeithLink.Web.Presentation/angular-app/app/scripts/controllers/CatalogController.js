@@ -17,6 +17,8 @@ angular.module('bekApp')
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
+    $scope.isMobile = ENV.mobileApp;
+    $scope.glossaryUrl = "/Assets/help/Glossary.pdf";
 
     ProductService.getRecentlyViewedItems().then(function(items) {
       $scope.loadingRecentlyViewedItems = false;

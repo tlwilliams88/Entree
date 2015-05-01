@@ -15,7 +15,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 	public interface IProfileService
 	{
         [OperationContract]
-        void CreateDsrAlias(Guid userId, string email, Dsr dsr);
+        DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr);
 
         [OperationContract]
         void DeleteDsrAlias(int dsrAliasId);

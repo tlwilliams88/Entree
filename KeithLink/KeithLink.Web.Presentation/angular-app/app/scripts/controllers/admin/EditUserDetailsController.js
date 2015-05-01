@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
-    function ($scope, $state, $stateParams, $filter, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
-
+  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel', 'DsrAliasService',
+    function ($scope, $state, $stateParams, $filter, UserProfileService, userProfile, userCustomers, CustomerPagingModel, DsrAliasService) {
 
   $scope.groupId = $stateParams.groupId;
   
@@ -39,8 +38,17 @@ angular.module('bekApp')
     newProfile.role = newProfile.rolename;
     delete newProfile.rolename;
 
+    $scope.isInternalUser = newProfile.email.indexOf('@benekeith.com') > -1;
+
     $scope.profile = newProfile;
     $scope.profile.customers = userCustomers;
+
+    // get dsr aliases for internal users
+    if ($scope.isInternalUser) {
+      DsrAliasService.getAliasesForUser(userProfile.userid).then(function(aliases) {
+        $scope.dsrAliases = aliases;
+      });
+    }
   };
 
   function findSelectedCustomers(customers) {
@@ -118,6 +126,33 @@ angular.module('bekApp')
 
   $scope.changeUserAccess = function(isGrantingAccess, program) {
     UserProfileService.changeProgramAccess(email, program, isGrantingAccess);
+  };
+
+  /**********
+  DSR ALIAS EVENTS
+  **********/
+
+  $scope.addDsrAlias = function(dsrNumber) {
+    $scope.dsrAliasErrorMessage = '';
+    var alias = {
+      userId: userProfile.userid,
+      email: userProfile.email,
+      branchId: $scope.selectedUserContext.customer.customerBranch,
+      dsrNumber: dsrNumber
+    };
+
+    DsrAliasService.createAlias(alias).then(function(id) {
+      alias.id = id;
+      $scope.dsrAliases.push(alias);
+    }, function(errorMessage) {
+      $scope.dsrAliasErrorMessage = errorMessage;
+    });
+  };
+
+  $scope.removeDsrAlias = function(alias) {
+    DsrAliasService.deleteAlias(alias.id).then(function() {
+      $scope.dsrAliases.splice($scope.dsrAliases.indexOf(alias), 1);
+    });
   };
 
   /**********

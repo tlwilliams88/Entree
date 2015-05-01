@@ -68,12 +68,20 @@ angular.module('bekApp')
       return subtotal;
     },
 
+    hasPrice: function(price) {
+      if (typeof price === 'number') {
+        return price > 0;
+      } else {
+        return price !== '$0.00' && price !== '0';
+      }
+    },
+
     hasPackagePrice: function(item) {
-      return (item.packageprice > 0 || (item.packageprice !== '$0.00' && item.packageprice !== '0'));
+      return Service.hasPrice(item.packageprice);
     },
 
     hasCasePrice: function(item) {
-      return (item.caseprice > 0 || (item.caseprice !== '$0.00' && item.caseprice !== '0'));
+      return Service.hasPrice(item.caseprice);
     },
 
     canOrderItem: function(item) {
@@ -84,6 +92,7 @@ angular.module('bekApp')
       if (items && items.length) {
         items.forEach(function(item) {
           item.canOrder = Service.canOrderItem(item);
+          item.hasUnitPrice = Service.hasPrice(item.unitPrice);
           item.hasPackagePrice = Service.hasPackagePrice(item);
           item.hasCasePrice = Service.hasCasePrice(item);
         });

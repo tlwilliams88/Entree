@@ -52,6 +52,8 @@ angular.module('bekApp')
         } else {
           menuElement.removeAttr('style');
         }
+
+        opened = true;
       }
         
       function openContextMenuMouseoverEvent(event) {
