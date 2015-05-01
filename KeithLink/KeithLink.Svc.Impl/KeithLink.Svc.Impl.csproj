@@ -226,6 +226,7 @@
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EtaNotificationHandlerImpl.cs" />
+    <Compile Include="Logic\Messaging\HasNewsNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\InvoiceNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EmailMessageProvider.cs" />
     <Compile Include="Logic\Messaging\PaymentConfirmationNotificationHandlerImpl.cs" />
