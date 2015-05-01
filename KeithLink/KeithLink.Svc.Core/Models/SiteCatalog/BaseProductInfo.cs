@@ -50,6 +50,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 				}
 				catch { return 0; }
 			}
+			set
+			{
+				//This is just for xml serlization, do nothing.
+			}
 		}
 
         [IgnoreDataMember]

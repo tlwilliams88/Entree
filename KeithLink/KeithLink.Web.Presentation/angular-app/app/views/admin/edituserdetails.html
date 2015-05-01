@@ -86,9 +86,7 @@
     </div>
   </div>
 
-  <hr>
-
-  <div class="row">
+  <div class="row sub-content">
     <div class="col-md-6">
       <h3 class="no-margin-top">Customers Available to Assign</h3>
       Showing {{filteredCustomers.length}} of {{totalCustomers}} Customers
@@ -183,6 +181,54 @@
     <div class="col-md-6 button-row">
       <button type="button" ng-click="updateProfile()" class="btn btn-lg btn-primary">Save Updates</button>
       <a ui-sref="menu.admin.customergroupdashboard({customerGroupId: groupId})">Cancel</a>
+    </div>
+  </div>
+  
+  <div class="clearfix"></div>
+  <hr ng-if="isInternalUser && canEditDsrAliases">
+
+  <div class="row" ng-if="isInternalUser && canEditDsrAliases">
+    <div class="col-xs-12">
+      <h3>DSR Aliases</h3>
+
+      <form class="form-horizontal style-validation-errors" name="dsrAliasForm">
+        <p ng-show="dsrAliasForm.dsrNumber.$invalid" class="text-red">Please enter a valid DSR Number</p>
+        <p ng-show="dsrAliasErrorMessage" class="text-red">{{dsrAliasErrorMessage}}</p>
+        <table style="width: 50%; margin-bottom: 15px;" class="table no-margin table-border table-striped-rows">
+          <thead>
+            <tr>
+              <th>Branch</th>
+              <th>DSR Number</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tr ng-repeat="alias in dsrAliases" ng-class="{ odd : $odd, even: $even }">
+            <td>{{alias.branchId}}</td>
+            <td>{{alias.dsrNumber}}</td>
+            <td class="input-col">
+              <button type="button" ng-click="removeDsrAlias(alias)" class="btn btn-danger">Remove Alias</button>
+            </td>
+          </tr>
+          <tfoot>
+            <tr>
+              <td colspan="2">
+                <input 
+                type="text" 
+                class="form-control form-control-lg" 
+                id="dsrNumber" 
+                name="dsrNumber"
+                ng-model="dsrAliasNumber"
+                ng-minlength="3"
+                ng-maxlength="3"
+                integer>
+              </td>
+              <td>
+                <button class="btn btn-primary" ng-disabled="dsrAliasForm.$invalid" ng-click="addDsrAlias(dsrAliasNumber)" type="submit">Add Alias</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
     </div>
   </div>
 </div>

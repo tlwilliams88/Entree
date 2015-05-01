@@ -14,7 +14,7 @@
               <td>{{cart.itemcount}}</td>
               <td class="nowrap">{{cart.requestedshipdate | formatDate}}</td>
             </tr>
-            <tr ng-click="createNewCart()" analytics-on="click" analytics-category="Create Order" analytics-event="Cart Page">
+            <tr ng-click="createNewCart()" analytics-on="click" analytics-category="Orders" analytics-event="Create Order" analytics-label="Cart Page">
               <td colspan="3">Create a Cart...</td>
             </tr>
           </table>
@@ -171,14 +171,14 @@
               <button class="btn btn-primary btn-mobile" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
 
               <button type="button" class="btn btn-default btn-mobile" ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
-              <button type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Submit Order" analytics-event="Order">Submit Order</button>
+              <button type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Order">Submit Order</button>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
               <button type="button" class="btn btn-primary  btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
 
               <button type="button" class=" btn btn-default btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
 
-              <button type="button" class=" btn btn-primary btn-mobile pull-right"  ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" analytics-on analytics-category="Submit Order" analytics-event="Change Order">Submit Changes</button>
+              <button type="button" class=" btn btn-primary btn-mobile pull-right"  ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Change Order">Submit Changes</button>
             </div>
           </div>
           <div class="col-xs-12">
