@@ -23,6 +23,7 @@ angular.module('bekApp')
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
     $scope.hasCasePrice = PricingService.hasCasePrice;
+    $scope.hasPrice = PricingService.hasPrice;
     $scope.hasPackagePrice = PricingService.hasPackagePrice;
 
     $scope.paramType = $stateParams.type; // Category, Search, Brand
