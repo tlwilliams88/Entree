@@ -107,6 +107,12 @@ namespace KeithLink.Svc.Impl.ETL
                     prof.Properties["GeneralInfo.balance_age_3"].Value = org.BalanceAge3;
                     prof.Properties["GeneralInfo.balance_age_4"].Value = org.BalanceAge4;
                     prof.Properties["GeneralInfo.customer_ach_type"].Value = org.AchType;
+                    prof.Properties["GeneralInfo.national_id"].Value = org.NationalId;
+                    prof.Properties["GeneralInfo.national_number"].Value = org.NationalNumber;
+                    prof.Properties["GeneralInfo.national_sub_number"].Value = org.NationalSubNumber;
+                    prof.Properties["GeneralInfo.regional_id"].Value = org.RegionalId;
+                    prof.Properties["GeneralInfo.regional_number"].Value = org.RegionalNumber;
+                    prof.Properties["GeneralInfo.is_keithnet_customer"].Value = org.IsKeithnetCustomer;
 
                     Profile addressProfile = null;
                     if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))

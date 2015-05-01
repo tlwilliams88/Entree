@@ -1660,6 +1660,12 @@ This file contains the Metadata Repository
               <PropertyMapping property="DateCreated"				csProperty="ProfileSystem.date_created" />
               <PropertyMapping property="DateModified"			csProperty="ProfileSystem.date_last_changed" />
 							<PropertyMapping property="AchType" csProperty="GeneralInfo.customer_ach_type" />
+              <PropertyMapping property="NationalId" csProperty="GeneralInfo.national_id" />
+              <PropertyMapping property="NationalNumber" csProperty="GeneralInfo.national_number" />
+              <PropertyMapping property="NationalSubNumber" csProperty="GeneralInfo.national_sub_number" />
+              <PropertyMapping property="RegionalId" csProperty="GeneralInfo.regional_id" />
+              <PropertyMapping property="RegionalNumber" csProperty="GeneralInfo.regional_number" />
+              <PropertyMapping property="IsKeithnetCustomer" csProperty="GeneralInfo.is_keithnet_customer" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
