@@ -3,8 +3,10 @@
     Add To Order
 
     <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Save</button>
+    <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" style="margin-right:3px;" ui-sref="menu.home">Cancel Order</button>
   </div>
   <div header-buttons ng-hide="invalidParams">
+    <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ui-sref="menu.home">Cancel Order</button>
     <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Save</button>
     <a class="btn-lg btn btn-default pull-right-sm hidden-print" ui-sref="menu.cart.items({cartId: basketId})">Proceed to Checkout</a>
     <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
@@ -179,8 +181,7 @@
             <th class="hidden-mobile-visible-print">
               Ext Price
             </th>
-            <th class="large-icon icon-col">
-              <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+            <th>             
             </th>
           </tr>
         </thead>

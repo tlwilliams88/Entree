@@ -1,20 +1,22 @@
-﻿using KeithLink.Svc.Core.Models.Configuration.EF;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Core.Models.Orders.History.EF;
-using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.ContentManagement.EF;
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Models.Orders.EF;
+using KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Profile.EF;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Common;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Data.Entity.Infrastructure;
-using KeithLink.Svc.Core.Models.Orders.EF;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.Repository.EF.Operational {
     public class BEKDBContext : DbContext {
@@ -37,6 +39,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
         public DbSet<BranchSupport> BranchSupports { get; set; }
         public DbSet<Dsr> Dsrs { get; set; }
+        public DbSet<DsrAlias> DsrAliases { get; set; }
         public DbSet<MessageTemplate> MessageTemplates { get; set; }
         public DbSet<Term> Terms { get; set; }
         public DbSet<ListShare> ListShares { get; set; }
@@ -64,6 +67,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 
             modelBuilder.Entity<BranchSupport>().ToTable( "BranchSupports", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<Dsr>().ToTable( "Dsrs", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<DsrAlias>().ToTable("DsrAliases", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<UserMessage>().ToTable( "UserMessages", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<CustomerTopic>().ToTable( "CustomerTopics", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );

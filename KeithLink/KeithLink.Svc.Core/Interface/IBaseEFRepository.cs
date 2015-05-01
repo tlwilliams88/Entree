@@ -14,6 +14,7 @@ namespace KeithLink.Svc.Core.Interface
 		void CreateOrUpdate(T domainObject);
 		void Update(T domainObject);
 		void Delete(T domainObject);
+        void Delete(Expression<Func<T, bool>> where);
 		T ReadById(long Id);
 		IEnumerable<T> Read<TProperty>(Expression<Func<T, bool>> where, Expression<Func<T, TProperty>> include) where TProperty : class;
 		IEnumerable<T> Read(Expression<Func<T, bool>> where);

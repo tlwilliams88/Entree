@@ -1,4 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Profile.EF;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,22 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 	[ServiceContract]
 	public interface IProfileService
 	{
+        [OperationContract]
+        void CreateDsrAlias(Guid userId, string email, Dsr dsr);
+
+        [OperationContract]
+        void DeleteDsrAlias(int dsrAliasId);
+
 		[OperationContract]
 		void GeneratePasswordResetRequest(string email);
-		[OperationContract]
+
+        [OperationContract]
 		bool IsTokenValid(string token);
-		[OperationContract]
+
+        [OperationContract]
+        List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId);
+
+        [OperationContract]
 		bool ResetPassword(ResetPasswordModel resetPassword);
 	}
 }

@@ -27,11 +27,13 @@
     <MetadataSource Address="http://localhost:1317/ProfileService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ProfileService.xsd" MetadataType="Schema" ID="265c520f-b174-464a-a336-a9b2cbf2b319" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?xsd=xsd2" />
     <MetadataFile FileName="ProfileService1.xsd" MetadataType="Schema" ID="4656aa30-02f1-45ef-b897-9cd8f6c85179" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ProfileService2.xsd" MetadataType="Schema" ID="5afd7f53-0bfc-46e1-812e-61b8da59e31b" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ProfileService.xsd" MetadataType="Schema" ID="265c520f-b174-464a-a336-a9b2cbf2b319" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ProfileService3.xsd" MetadataType="Schema" ID="64a0dbee-ee81-4c51-8d11-bc7bae7c72e0" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?xsd=xsd3" />
+    <MetadataFile FileName="ProfileService31.xsd" MetadataType="Schema" ID="acc12003-3755-4fa6-9ce4-2445bda464ea" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?xsd=xsd4" />
     <MetadataFile FileName="ProfileService.wsdl" MetadataType="Wsdl" ID="9fde316c-3331-482c-a118-c0f49613cdcb" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?wsdl" />
     <MetadataFile FileName="ProfileService.disco" MetadataType="Disco" ID="2a26067a-f08b-4fb1-abda-488f58f161cc" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?disco" />
-    <MetadataFile FileName="ProfileService2.xsd" MetadataType="Schema" ID="5afd7f53-0bfc-46e1-812e-61b8da59e31b" SourceId="1" SourceUrl="http://localhost:1317/ProfileService.svc?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

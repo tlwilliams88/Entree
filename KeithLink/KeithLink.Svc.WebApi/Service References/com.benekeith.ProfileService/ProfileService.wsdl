@@ -5,8 +5,22 @@
       <xsd:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
       <xsd:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
+      <xsd:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile.EF" />
+      <xsd:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
     </xsd:schema>
   </wsdl:types>
+  <wsdl:message name="IProfileService_CreateDsrAlias_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateDsrAlias" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_CreateDsrAlias_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateDsrAliasResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_DeleteDsrAlias_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteDsrAlias" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_DeleteDsrAlias_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteDsrAliasResponse" />
+  </wsdl:message>
   <wsdl:message name="IProfileService_GeneratePasswordResetRequest_InputMessage">
     <wsdl:part name="parameters" element="tns:GeneratePasswordResetRequest" />
   </wsdl:message>
@@ -19,6 +33,12 @@
   <wsdl:message name="IProfileService_IsTokenValid_OutputMessage">
     <wsdl:part name="parameters" element="tns:IsTokenValidResponse" />
   </wsdl:message>
+  <wsdl:message name="IProfileService_GetAllDsrAliasesByUserId_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllDsrAliasesByUserId" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_GetAllDsrAliasesByUserId_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAllDsrAliasesByUserIdResponse" />
+  </wsdl:message>
   <wsdl:message name="IProfileService_ResetPassword_InputMessage">
     <wsdl:part name="parameters" element="tns:ResetPassword" />
   </wsdl:message>
@@ -26,6 +46,14 @@
     <wsdl:part name="parameters" element="tns:ResetPasswordResponse" />
   </wsdl:message>
   <wsdl:portType name="IProfileService">
+    <wsdl:operation name="CreateDsrAlias">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/CreateDsrAlias" message="tns:IProfileService_CreateDsrAlias_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/CreateDsrAliasResponse" message="tns:IProfileService_CreateDsrAlias_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDsrAlias">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/DeleteDsrAlias" message="tns:IProfileService_DeleteDsrAlias_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/DeleteDsrAliasResponse" message="tns:IProfileService_DeleteDsrAlias_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="GeneratePasswordResetRequest">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/GeneratePasswordResetRequest" message="tns:IProfileService_GeneratePasswordResetRequest_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/GeneratePasswordResetRequestResponse" message="tns:IProfileService_GeneratePasswordResetRequest_OutputMessage" />
@@ -34,6 +62,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/IsTokenValid" message="tns:IProfileService_IsTokenValid_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/IsTokenValidResponse" message="tns:IProfileService_IsTokenValid_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="GetAllDsrAliasesByUserId">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserId" message="tns:IProfileService_GetAllDsrAliasesByUserId_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserIdResponse" message="tns:IProfileService_GetAllDsrAliasesByUserId_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ResetPassword">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/ResetPassword" message="tns:IProfileService_ResetPassword_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/ResetPasswordResponse" message="tns:IProfileService_ResetPassword_OutputMessage" />
@@ -41,6 +73,24 @@
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IProfileService" type="tns:IProfileService">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="CreateDsrAlias">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/CreateDsrAlias" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteDsrAlias">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/DeleteDsrAlias" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="GeneratePasswordResetRequest">
       <soap:operation soapAction="http://tempuri.org/IProfileService/GeneratePasswordResetRequest" style="document" />
       <wsdl:input>
@@ -52,6 +102,15 @@
     </wsdl:operation>
     <wsdl:operation name="IsTokenValid">
       <soap:operation soapAction="http://tempuri.org/IProfileService/IsTokenValid" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllDsrAliasesByUserId">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserId" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

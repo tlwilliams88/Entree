@@ -251,7 +251,13 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<InternalPasswordResetRequestLogicImpl>().As<IInternalPasswordResetLogic>();
 			builder.RegisterType<PasswordResetRequestRepositoryImpl>().As<IPasswordResetRequestRepository>();
 
+            // DSR Alias
+            builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
+            builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+
 			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+
 
             return builder.Build();
         }

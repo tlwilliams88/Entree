@@ -30,6 +30,32 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "caseonly")]
 		public bool CaseOnly { get; set; }
 
+		[DataMember(Name = "unitprice")]
+		public decimal UnitCost
+		{
+			get
+			{
+				try
+				{
+					decimal casePrice = 0;
+					decimal servingPerPack = 0;
+					decimal.TryParse(this.CasePrice, out casePrice);
+					decimal.TryParse(this.Nutritional.ServingsPerPack, out servingPerPack);
+
+
+					if (casePrice == 0)
+						return 0;
+
+					return servingPerPack / casePrice;
+				}
+				catch { return 0; }
+			}
+			set
+			{
+				//This is just for xml serlization, do nothing.
+			}
+		}
+
         [IgnoreDataMember]
         public double CasePriceNumeric { get; set; }
 
