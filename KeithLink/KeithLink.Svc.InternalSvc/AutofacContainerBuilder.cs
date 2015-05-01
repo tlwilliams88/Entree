@@ -109,7 +109,7 @@ namespace KeithLink.Svc.InternalSvc
 			#endif
 
 
-				builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
+			builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();

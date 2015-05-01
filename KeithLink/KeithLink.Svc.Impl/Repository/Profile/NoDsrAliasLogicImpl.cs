@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
     public class NoDsrAliasLogicImpl : IDsrAliasLogic {
         #region IDsrAliasLogic Members
 
-        public void CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             throw new NotImplementedException();
         }
 

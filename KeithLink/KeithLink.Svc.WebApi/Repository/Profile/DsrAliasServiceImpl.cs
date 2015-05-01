@@ -21,8 +21,8 @@ namespace KeithLink.Svc.WebApi.Repository.Profile {
 		#endregion
 
         #region methods
-        public void CreateDsrAlias(Guid userId, string email, Dsr dsr) {
-            _client.CreateDsrAlias(userId, email, dsr);
+        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+            return _client.CreateDsrAlias(userId, email, dsr);
         }
 
         public void DeleteDsrAlias(int dsrAliasId) {

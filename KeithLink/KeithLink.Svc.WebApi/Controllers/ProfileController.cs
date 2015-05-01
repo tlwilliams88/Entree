@@ -873,13 +873,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [ApiKeyedRoute("profile/dsralias")]
-        public OperationReturnModel<bool> CreateDsrAlias(DsrAliasModel model) {
-            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+        public OperationReturnModel<DsrAlias> CreateDsrAlias(DsrAliasModel model) {
+            OperationReturnModel<DsrAlias> retVal = new OperationReturnModel<DsrAlias>();
 
             try {
-                _dsrAliasService.CreateDsrAlias(model.UserId, model.Email, new Dsr() { Branch = model.BranchId, DsrNumber = model.DsrNumber });
-
-                retVal.SuccessResponse = true;
+                retVal.SuccessResponse = _dsrAliasService.CreateDsrAlias(model.UserId, model.Email, new Dsr() { Branch = model.BranchId, DsrNumber = model.DsrNumber });
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not create alias";
                 _log.WriteErrorLog("Could not create alias", ex);
