@@ -25,6 +25,8 @@ angular.module('bekApp')
     $scope.hasCasePrice = PricingService.hasCasePrice;
     $scope.hasPrice = PricingService.hasPrice;
     $scope.hasPackagePrice = PricingService.hasPackagePrice;
+    $scope.isMobile = ENV.mobileApp;
+    $scope.glossaryUrl = "/Assets/help/Glossary.pdf";
 
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
