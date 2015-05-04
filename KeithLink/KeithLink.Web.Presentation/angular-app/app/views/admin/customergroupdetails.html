@@ -77,21 +77,6 @@
           </span>
         </div>
       </form>     
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group button-row">
-            <button 
-              type="button" 
-              ng-disabled="customerGroupDetailsForm.$invalid" 
-              class="btn btn-lg btn-primary" 
-              ng-click="submitForm(customerGroup)">
-              {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
-            </button>          
-            <button  ng-if="!(dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty)" type="button" class="btn btn-lg btn-danger"ui-sref="menu.admin.customergroup">Back</button>
-            <button  ng-if="dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty" type="button"  confirmed-click="goBack()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-lg btn-danger">Back</button>
-          </div>
-        </div>
-      </div>
 
       <div class="infiniteScroll">
         <table class="table no-margin table-border table-striped-rows" 
@@ -167,6 +152,21 @@
     </div>
   </div>
    <hr>
+   <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group button-row">
+        <button 
+          type="button" 
+          ng-disabled="customerGroupDetailsForm.$invalid" 
+          class="btn btn-lg btn-primary" 
+          ng-click="submitForm(customerGroup)">
+          {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
+        </button>          
+        <button  ng-if="!(dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty)" type="button" class="btn btn-lg btn-danger"ui-sref="menu.admin.customergroup">Back</button>
+        <button  ng-if="dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty" type="button"  confirmed-click="goBack()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-lg btn-danger">Back</button>
+      </div>
+    </div>
+  </div>
 </div>
   
   
