@@ -91,6 +91,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 
+		/// <summary>
+		/// Retrieve Inventory Valuation report
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("report/inventoryvalue")]
 		public HttpResponseMessage GenerateInventoryValuationReport(InventoryValuationRequestModel request)
