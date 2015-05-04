@@ -42,7 +42,7 @@ module.exports = function (grunt) {
           },
           jsTest: {
               files: ['test/unit/{,*/}*.js'],
-              tasks: ['newer:jshint:test']
+              tasks: []//['newer:jshint:test']
           },
           compass: {
               files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}', '<%= yeoman.app %>/styles/**/*.{scss,sass}'],
