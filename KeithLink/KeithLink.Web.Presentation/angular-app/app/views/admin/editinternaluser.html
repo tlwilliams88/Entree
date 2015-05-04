@@ -40,7 +40,7 @@
       <div class="row">
         <label for="userRole" class="col-md-2 control-label">User Role</label>
         <div class="col-md-4">
-          {{::displayRole}}
+          {{::profile.displayRole}}
         </div>
       
       </div>
@@ -55,7 +55,7 @@
       <h3>DSR Aliases</h3>
 
       <form class="form-horizontal style-validation-errors" name="dsrAliasForm">
-        <p ng-show="dsrAliasForm.dsrNumber.$invalid" class="text-red">Please enter a valid DSR Number</p>
+        <p ng-show="(dsrAliasForm.dsrNumber.$error.minlength || dsrAliasForm.dsrNumber.$error.maxlength) && dsrAliasForm.dsrNumber.$dirty" class="text-red">Please enter a valid DSR Number</p>
         <p ng-show="dsrAliasErrorMessage" class="text-red">{{dsrAliasErrorMessage}}</p>
         <table class="table no-margin table-border table-striped-rows">
           <thead>
@@ -74,7 +74,12 @@
           </tr>
           <tfoot>
             <tr>
-              <td colspan="2">
+              <td>
+                <select required name="branch" id="branch" class="form-control" ng-options="branch.id as branch.id for branch in branches" ng-model="branchId">
+                  <option value="">Select a branch</option>
+                </select>
+              </td>
+              <td>
                 <input 
                 type="text" 
                 class="form-control form-control-lg" 
@@ -83,10 +88,11 @@
                 ng-model="dsrAliasNumber"
                 ng-minlength="3"
                 ng-maxlength="3"
+                required 
                 integer>
               </td>
               <td>
-                <button class="btn btn-primary" ng-disabled="dsrAliasForm.$invalid" ng-click="addDsrAlias(dsrAliasNumber)" type="submit">Add Alias</button>
+                <button class="btn btn-primary" ng-disabled="dsrAliasForm.$invalid" ng-click="addDsrAlias(branchId, dsrAliasNumber)" type="submit">Add Alias</button>
               </td>
             </tr>
           </tfoot>
