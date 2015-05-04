@@ -294,6 +294,40 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 		/// <summary>
+		/// Delete account (customer group)
+		/// </summary>
+		/// <param name="accountId">Id for account to delete</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpDelete]
+		[ApiKeyedRoute("profile/account/{accountId}")]
+		public OperationReturnModel<bool> DeleteAccount(Guid accountId)
+		{
+			OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+			try
+			{
+				_profileLogic.DeleteAccount(this.AuthenticatedUser, accountId);
+				retVal.SuccessResponse = true;
+			}
+			catch (ApplicationException axe)
+			{
+				retVal.ErrorMessage = axe.Message;
+				retVal.SuccessResponse = false;
+				_log.WriteErrorLog("Application exception", axe);
+			}
+			catch (Exception ex)
+			{
+				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+				retVal.SuccessResponse = false;
+				_log.WriteErrorLog("Unhandled exception", ex);
+			}
+
+			return retVal;
+		}
+
+
+		/// <summary>
 		/// Update account
 		/// </summary>
 		/// <param name="account">Account</param>

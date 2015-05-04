@@ -33,8 +33,8 @@ angular.module('bekApp')
     });
   };
 
-  $scope.removeDsrAlias = function(alias) {
-    DsrAliasService.deleteAlias(alias.id).then(function() {
+  $scope.removeDsrAlias = function(alias, email) {
+    DsrAliasService.deleteAlias(alias.id, email).then(function() {
       $scope.dsrAliases.splice($scope.dsrAliases.indexOf(alias), 1);
     });
   };
