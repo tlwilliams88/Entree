@@ -3,8 +3,8 @@
     Item Usage
   </div>
   <div header-buttons>
-    <button class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></button>
-    <button title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></button>    
+    <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
+    <a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>    
   </div>
 </div>
 
@@ -45,7 +45,7 @@
             {{itemusagequery.toDate | formatDate}}
           </td>
           <td class="hidden-print">
-            <button ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
+            <button type="submit" ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="itemUsageForm.updateItems()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
           </td>
         </tr>
       </table>

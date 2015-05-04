@@ -1,5 +1,6 @@
-<div ng-show="item.imageurl" class="col-xs-4 no-padding text-left">
-  <img ng-src="{{item.imageurl}}" alt="image">
+<div class="col-xs-4 no-padding text-left">
+  <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
+  <img ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
 </div>
 <div class="col-xs-8 no-padding featured-item-mobile__detail">
   <div>{{item.tagline}}</div>

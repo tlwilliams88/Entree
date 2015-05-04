@@ -150,6 +150,12 @@ angular.module('bekApp')
     canEditUsers: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
     },
+    
+    // editing DSR Aliases
+    canEditInternalUsers: function() {
+      return ( isSysAdmin() || isBranchManager() );
+    },
+
     isDemo: function() {
       return isDemo();
     }

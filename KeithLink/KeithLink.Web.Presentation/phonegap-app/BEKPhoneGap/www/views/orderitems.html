@@ -3,10 +3,10 @@
     Order Details
   </div>
   <div header-buttons>
-    <a class="btn-lg btn btn-success" ng-click="getOrder(order.ordernumber)" ng-if="order.status === 'Submitted'">Check Status</a>
-    <button title="Save As List" ng-click="saveAsList()" class="btn btn-icon btn-default"><span class="icon-text2"></span></button>
-    <button ng-click="print()" title="Print" class="btn btn-icon btn-default"><span class="icon-printer"></span></button>
-    <button ng-click="openExportModal()" title="Export" class="btn btn-icon btn-default"><span class="icon-export"></span></button>
+    <a title="Check Status" class="btn-lg btn btn-success" ng-click="getOrder(order.ordernumber)" ng-if="order.status === 'Submitted'">Check Status</a>
+    <a title="Save As List" class="btn btn-icon btn-default" ng-click="saveAsList()"><span class="icon-text2"></span></a>
+    <a title="Print" class="btn btn-icon btn-default" ng-click="print()"><span class="icon-printer"></span></a>
+    <a title="Export" class="btn btn-icon btn-default" ng-click="openExportModal()"><span class="icon-export"></span></a>
   </div>
 </div>
 

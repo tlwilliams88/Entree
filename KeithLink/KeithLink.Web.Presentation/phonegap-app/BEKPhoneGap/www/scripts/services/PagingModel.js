@@ -49,6 +49,9 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
   // and standard prototypal inheritance.
   PagingModel.prototype = {
 
+    setFilter: function(filter) {
+      this.filter = filter;
+    },
     setAdditionalParams: function(params) {
       this.additionalParams = params;
     },

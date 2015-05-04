@@ -36,9 +36,13 @@ angular
     'angulartics', 
     'angulartics.google.analytics'
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig',
-  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig) {
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', '$analyticsProvider',
+  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, $analyticsProvider) {
  
+  //googleAnalyticsCordovaProvider.trackingId = 'UA-62498504-2';
+  //googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
+  //googleAnalyticsCordovaProvider.debug = true; // default: false
+
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
   // cfpLoadingBarProvider.latencyThreshold = 500;

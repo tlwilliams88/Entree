@@ -1,12 +1,13 @@
 <div page-header-bar>
   <div header-message>
     Product Catalog
-    <a target="_tab" href="/Assets/help/Glossary.pdf" title="Glossary of Abbreviations" class="large-icon icon-book"></a> 
+    <a target="_tab" ng-if"!isMobile" href="/Assets/help/Glossary.pdf" title="Glossary of Abbreviations" class="large-icon icon-book"></a> 
+    <a target="_tab" ng-if="isMobile" ng-click="openExternalLink(glossaryUrl)" title="Glossary of Abbreviations" class="large-icon icon-book"></a> 
   </div>
 
   <div header-buttons>
-    <button class="btn btn-icon btn-default" title="Print" ng-click="print()"><span class="icon-printer"></span></button>
-    <button class="btn btn-icon btn-default" title="Export" ng-click="openExportModal()"><span class="icon-export"></span></button>
+    <a class="btn btn-icon btn-default" title="Print" ng-click="print()"><span class="icon-printer"></span></a>
+    <a class="btn btn-icon btn-default" title="Export" ng-click="openExportModal()"><span class="icon-export"></span></a>
   </div>
 </div>
 
@@ -25,7 +26,7 @@
     <div class="page-subheader-bar__message" style="width: calc(100% - 80px)">
       {{featuredBreadcrumb.displayText}}
     </div>
-    <button ng-click="hideMobileFilters = ! hideMobileFilters"  class="nowrap hidden-print btn-no-style page-subheader-bar__button button-right">
+    <button type="button" ng-click="hideMobileFilters = ! hideMobileFilters"  class="nowrap hidden-print btn-no-style page-subheader-bar__button button-right">
       Filter <span ng-show="filterCount > 0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
     </button>
   </div>
@@ -248,6 +249,9 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         <th class="sort-col-header hidden-mobile-visible-print" ng-if="canSeePrices" ng-click="sortBy='each';sortOrder=!sortOrder;">
           <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
+        <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('unitprice')">
+          <span>Portion Cost <span ng-show="totalItems <= maxSortCount" sort-icons field="'unitprice'" sortorder="sortReverse" sortby="sortField"></span></span>
+        </th>
         <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
           <span>Price <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span></span>
         </th>
@@ -279,6 +283,9 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
             <label for="each"></label>
           </ng-form>
         </td>
+      <td class="hidden-mobile-visible-print" ng-if="canSeePrices">
+        <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
+      </td>
       <td class="hidden-mobile-visible-print" ng-if="canSeePrices">
         <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
         <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
@@ -313,6 +320,10 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
         </tr>
         <tr>
           <td colspan="2" item-icons></td>
+        </tr>
+        <tr ng-show="canSeePrices" ng-if="hasPrice(item.unitprice)">
+          <td>Portion Cost</td>
+          <td>{{item.unitprice | currency}}</td>
         </tr>
         <tr ng-if="hasCasePrice(item)" ng-show="canSeePrices">
           <td>Price</td>
