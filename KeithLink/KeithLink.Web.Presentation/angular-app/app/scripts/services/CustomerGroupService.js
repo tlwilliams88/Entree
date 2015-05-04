@@ -71,6 +71,11 @@ angular.module('bekApp')
     updateGroup: function(customerGroup) {
       var promise = $http.put('/profile/account', customerGroup);
       return UtilityService.resolvePromise(promise);
+    },
+
+    deleteGroup: function(id) {
+      var promise = $http.delete('/profile/account/' + id);
+      return UtilityService.resolvePromise(promise);
     }
   };
 
