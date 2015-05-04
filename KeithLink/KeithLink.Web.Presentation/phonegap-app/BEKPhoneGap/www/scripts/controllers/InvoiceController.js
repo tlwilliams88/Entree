@@ -316,6 +316,7 @@ angular.module('bekApp')
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
       InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
+        $scope.invoiceForm.$setPristine();
         $state.go('menu.transaction');
       }).finally(function () {
         processingPayInvoices = false;

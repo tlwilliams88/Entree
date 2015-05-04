@@ -20,7 +20,8 @@ module.exports = function(grunt) {
           'org.apache.cordova.statusbar',
           'org.apache.cordova.console',
           'org.apache.cordova.inappbrowser',
-          'https://github.com/wildabeast/BarcodeScanner.git'
+          'https://github.com/wildabeast/BarcodeScanner.git',
+          'https://github.com/phonegap-build/GAPlugin.git'
           // ,'https://github.com/brodysoft/Cordova-SQLitePlugin.git'
         ],
         maxBuffer: 500,
@@ -198,7 +199,7 @@ module.exports = function(grunt) {
             apiKey: '<%= config.environment.test.apiKey %>',
             apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
             loggingEnabled: config.environment.test.loggingEnabled,
-            googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
+            googleAnalytics: '<%= config.environment.test.googleAnalytics.mobile %>',
             mobileApp: true,
             username: 'bek.qa.user@gmail.com',
             password: 'Ab12345'
@@ -212,7 +213,7 @@ module.exports = function(grunt) {
             apiKey: '<%= config.environment.test.apiKey %>',
             apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
             loggingEnabled: config.environment.prod.loggingEnabled,
-            googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
+            googleAnalytics: '<%= config.environment.test.googleAnalytics.mobile %>',
             mobileApp: true
           }
         }
@@ -224,10 +225,58 @@ module.exports = function(grunt) {
             apiKey: '<%= config.environment.prod.apiKey %>',
             apiEndpoint: '<%= config.environment.prod.apiEndpoint %>',
             loggingEnabled: config.environment.prod.loggingEnabled,
-            googleAnalytics: '<%= config.environment.prod.googleAnalytics %>',
+            googleAnalytics: '<%= config.environment.prod.googleAnalytics.mobile %>',
             mobileApp: true
           }
         }
+      }
+    },
+    replace: {
+      indexhtml: {
+        options: {
+            patterns: [{
+              json: {
+                '<!--REPLACEHERE':        ' ',
+                'REPLACEHERE-->':         ' ',
+                'angulartics-ga.min.js':  'angulartics-ga-cordova.min.js',
+                ' ng-app="bekApp"':       ' ',
+                'styles/main.css':        'css/main.css'
+              }
+            }],
+            usePrefix: false
+          },
+          files: [
+            {expand: true, flatten: true, src: ['www/index.html'], dest: 'www/'}
+          ]
+      },
+      appjs: {
+        options: {
+            patterns: [{
+              json: {
+                '//googleAnalyticsCordovaProvider': 'googleAnalyticsCordovaProvider',
+                '$analyticsProvider':               'googleAnalyticsCordovaProvider',
+                'angulartics.google.analytics':     'angulartics.google.analytics.cordova'
+              }
+            }],
+            usePrefix: false
+          },
+          files: [
+            {expand: true, flatten: true, src: ['www/scripts/app.js'], dest: 'www/scripts/'}
+          ]
+      },
+      googleservicesjs: {
+        options: {
+          patterns: [{
+            json: {
+              '//REPLACEHERESTART': '/*',
+              '//REPLACEHEREEND': '*/'
+            }
+          }],
+          usePrefix: false
+        },
+        files: [
+          {expand: true, flatten: true, src: ['www/scripts/controllers/GoogleServicesController.js'], dest: 'www/scripts/controllers/'}
+        ]
       }
     }
   });
@@ -240,10 +289,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-compass');
   grunt.loadNpmTasks('grunt-ng-constant');
+  grunt.loadNpmTasks('grunt-replace');
 
   grunt.registerTask('update', [
     'clean',
     'copy:all',
+    'replace:indexhtml',
+    'replace:appjs',
+    'replace:googleservicesjs',
     'compass:all'
   ]);
 
@@ -258,10 +311,10 @@ module.exports = function(grunt) {
     if (!target) { target = 'test' };
 
     // select correct app id
-    var phonegapAppId = config.environment.test.iosStoreId;
+    var phonegapAppId = config.environment.test.phonegapAppId;
     // deploy to the production ios app
     if (target === 'prod' || target === 'review') {
-      phonegapAppId = config.environment.prod.iosStoreId;
+      phonegapAppId = config.environment.prod.phonegapAppId;
     }
     grunt.option('phonegapAppId', phonegapAppId);
 
