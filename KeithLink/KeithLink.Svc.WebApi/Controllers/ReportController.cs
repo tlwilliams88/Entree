@@ -97,13 +97,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			var stream = inventoryValuationReportLogic.GenerateReport(request);
 
-
-			byte[] byteArray = stream.ToArray();
-				
-				System.IO.File.WriteAllBytes("C:\\temp\\newName.xlsx", stream.ToArray());
-			
-
-
 			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
 			result.Content = new StreamContent(stream);
 			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
@@ -115,24 +108,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			return result;
 		}
-
-		[HttpGet]
-		[ApiKeyedRoute("report/inventoryvalue/test")]
-		public InventoryValuationRequestModel Test()
-		{
-			return new Core.Models.Reports.InventoryValuationRequestModel() { ReportFormat = "excel", ReportData = new List<Core.Models.Reports.InventoryValuationModel>() { new InventoryValuationModel() { ItemId = "123", Name = "test", Price = 5.49M, Quantity = 6, ExtPrice = 23.54M } } };
-		}
-
-		private void GeneratePDFReport()
-		{
-			throw new NotImplementedException();
-		}
-
-		private void GenerateExcelReport()
-		{
-			throw new NotImplementedException();
-		}
-
+		
         #endregion
 
     }
