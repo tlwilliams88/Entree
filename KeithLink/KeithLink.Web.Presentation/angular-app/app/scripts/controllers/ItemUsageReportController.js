@@ -48,6 +48,14 @@ angular.module('bekApp')
         //     });
         // };
 
+        $scope.openInventoryModal = function() {
+        var modalInstance = $modal.open({
+          templateUrl: 'views/modals/cartquickaddmodal.html',
+          controller: 'CartQuickAddModalController'
+        });  
+
+      };
+   
         $scope.sortTable = function (field) {
             $scope.itemsPerPage = 50;
             $scope.itemIndex = 0;

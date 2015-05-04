@@ -1,0 +1,86 @@
+<div page-header-bar>
+  <div header-message>
+    Inventory Valuation Report
+
+  </div>
+  <div header-buttons>
+     <td class="hidden-print">       
+          <button class="btn-lg btn btn-danger hidden-print"  ui-sref="menu.reports" style="margin-right:3px;">Cancel Report</button>
+          </td>
+    <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
+     <!--<a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>-->  </div>
+</div>
+
+<div class="page-content">
+  <div class="row">
+    <form id="inventoryForm" class="item-usage-form col-md-6">
+      <div class="info-box hidden-print" style="display:inline-block;">
+      <table>
+        <tr>              
+          <td>
+      <div class="row  mobile-user-context " style="background-color:white; border:none;"> 
+    <div class="btn-group hidden-print" dropdown is-open="status.listactions">
+      <button type="button" class="btn btn-default dropdown-toggle"  ng-disabled="listsLoading">
+        <div ng-if="!listsLoading"><span   class="pull-right icon-arrow-down6"></span>Add List</div>
+        <div class="text-red"  ng-if="listsLoading" ><span class="pull-right"></span>Loading Lists...
+        </div>
+      </button>
+            <ul class="dropdown-menu" role="menu">
+        <div class="btn-group-vertical" style="width:100%">
+          <button ng-repeat="list in ::lists | sortLists" type="button" class="btn btn-default" ng-click="selectList(list)">{{::list.name}}</button>
+        </div>
+      </ul>
+    </div>
+      </div>
+    </td>
+    </div>
+        </tr>
+      </table>
+      </div>
+    </form>
+  </div>
+</div> 
+
+  <form name="inventoryForm" class=" style-validation-errors col-md-8 col-lg-8">
+    <div>
+      <button type="button" class="btn btn-primary btn-lg pull-right hidden-print" style="margin-bottom:6px;" ng-click="addRow()">Add Row</button>
+    </div> 
+        <div class="row sub-content">
+        <div class="pull-left col-xs-7">
+          Showing {{items.length}} Item<span ng-if="items.length > 1">s</span>   
+        </div>
+      </div>
+      <table class="table table-border" navigate-quick-add>
+      <thead>
+        <tr>
+          <th>Item #</th>          
+          <th>Qty</th>
+          <th>Each</th>
+          <th>Delete Row</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="item in items">
+          <td class="input-col" ng-class="{ 'red-border': item.valid === false }">
+            <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" ng-model-options="{ debounce: 300 }" fcsa-number="{ 'noFormat': true, 'minDigits': 6, 'maxDigits': 6 }">
+            <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
+          </td>
+          <td class="input-col">
+            <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
+          </td>
+          <td class="input-col">
+            <input name="each" type="checkbox" ng-model="item.each">
+          </td>
+
+          <td>
+            <a ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
+  <div class="text-center" loading-spinner="loadingResults"></div>
+
+  
+
+ 
