@@ -15,18 +15,19 @@ angular.module('bekApp')
   DSR ALIAS EVENTS
   **********/
 
-  $scope.addDsrAlias = function(dsrNumber) {
+  $scope.addDsrAlias = function(branchId, dsrNumber) {
     $scope.dsrAliasErrorMessage = '';
     var alias = {
       userId: userProfile.userid,
       email: userProfile.emailaddress,
-      branchId: $scope.selectedUserContext.customer.customerBranch,
+      branchId: branchId,
       dsrNumber: dsrNumber
     };
 
     DsrAliasService.createAlias(alias).then(function(newAlias) {
       alias.id = newAlias.id;
       $scope.dsrAliasNumber = '';
+      $scope.branchId = '';
       $scope.dsrAliases.push(alias);
     }, function(errorMessage) {
       $scope.dsrAliasErrorMessage = errorMessage;
