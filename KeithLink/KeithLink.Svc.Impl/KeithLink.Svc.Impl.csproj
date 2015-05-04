@@ -226,6 +226,7 @@
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EtaNotificationHandlerImpl.cs" />
+    <Compile Include="Logic\Messaging\HasNewsNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\InvoiceNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EmailMessageProvider.cs" />
     <Compile Include="Logic\Messaging\PaymentConfirmationNotificationHandlerImpl.cs" />
@@ -510,6 +511,14 @@
     <Compile Include="Repository\EF\Migrations\201504161516299_Create_PasswordResetRequest_table.Designer.cs">
       <DependentUpon>201504161516299_Create_PasswordResetRequest_table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201504301620237_20150430_Add DSR Aliases.cs" />
+    <Compile Include="Repository\EF\Migrations\201504301620237_20150430_Add DSR Aliases.Designer.cs">
+      <DependentUpon>201504301620237_20150430_Add DSR Aliases.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.cs" />
+    <Compile Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.Designer.cs">
+      <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -584,9 +593,14 @@
     <Compile Include="Repository\Orders\ShipDateRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
     <Compile Include="Repository\Profile\DemoExternalUserDomainRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\DsrAliasLogicImpl.cs" />
+    <Compile Include="Repository\Profile\DsrAliasRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
+    <Compile Include="Repository\Profile\NoDsrAliasLogicImpl.cs" />
+    <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
@@ -1034,6 +1048,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201504161516299_Create_PasswordResetRequest_table.resx">
       <DependentUpon>201504161516299_Create_PasswordResetRequest_table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201504301620237_20150430_Add DSR Aliases.resx">
+      <DependentUpon>201504301620237_20150430_Add DSR Aliases.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.resx">
+      <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

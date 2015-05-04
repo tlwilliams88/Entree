@@ -3,6 +3,7 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.WebApi.Models;
 using KeithLink.Svc.WebApi.Attribute;
 using System;
@@ -27,6 +28,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		private IEventLogRepository _log;
 		private IUserProfileLogic _profileLogic;
 		private readonly IPasswordResetService _passwordResetService;
+        private readonly IDsrAliasService _dsrAliasService;
 		#endregion
 
 		#region ctor
@@ -35,7 +37,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 								 IUserProfileLogic profileLogic,
 								 IAvatarRepository avatarRepository,
 								 ICustomerDomainRepository customerADRepo,
-			IPasswordResetService passwordResetService)
+			                     IPasswordResetService passwordResetService,
+                                 IDsrAliasService dsrAliasService)
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -44,6 +47,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			_avatarRepository = avatarRepository;
 			_extAd = customerADRepo;
 			_passwordResetService = passwordResetService;
+            _dsrAliasService = dsrAliasService;
 		}
 		#endregion
 
@@ -858,6 +862,94 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return returnValue;
 		}
 
-		#endregion
+        /// <summary>
+        /// create a new alias for a user
+        /// </summary>
+        /// <param name="model">needs the user id, email, branch, and dsr number</param>
+        /// <returns>true if successful</returns>
+        /// <remarks>
+        /// jwames - 4/30/2015 - original code
+        /// </remarks>
+        [Authorize]
+        [HttpPost]
+        [ApiKeyedRoute("profile/dsralias")]
+        public OperationReturnModel<DsrAlias> CreateDsrAlias(DsrAliasModel model) {
+            OperationReturnModel<DsrAlias> retVal = new OperationReturnModel<DsrAlias>();
+
+            try {
+                retVal.SuccessResponse = _dsrAliasService.CreateDsrAlias(model.UserId, model.Email, new Dsr() { Branch = model.BranchId, DsrNumber = model.DsrNumber });
+            } catch (Exception ex) {
+                retVal.ErrorMessage = "Could not create alias";
+                _log.WriteErrorLog("Could not create alias", ex);
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// delete the dsr alias
+        /// </summary>
+        /// <param name="model">only needs the dsr alias id</param>
+        /// <returns>true if successful</returns>
+        /// <remarks>
+        /// jwames - 4/30/2015 - original code
+        /// </remarks>
+        [Authorize]
+        [HttpDelete]
+        [ApiKeyedRoute("profile/dsralias")]
+        public OperationReturnModel<bool> DeleteDsrAlias(DsrAliasModel model) {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try {
+                _dsrAliasService.DeleteDsrAlias(model.DsrAliasId);
+
+                retVal.SuccessResponse = true;
+            } catch (Exception ex) {
+                retVal.ErrorMessage = "Could not delete alias";
+                _log.WriteErrorLog("Could not delete alias", ex);
+            }
+
+            return retVal;
+        }
+
+        /// <summary>
+        /// return all of the DSR aliases for the current user
+        /// </summary>
+        /// <returns>list of dsr aliases</returns>
+        /// <remarks>
+        /// jwames - 4/30/2015 - original code
+        /// </remarks>
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/dsralias")]
+        public OperationReturnModel<List<DsrAlias>> GetDsrAliases() {
+            OperationReturnModel<List<DsrAlias>> retVal = new OperationReturnModel<List<DsrAlias>>();
+
+            try {
+                retVal.SuccessResponse = _dsrAliasService.GetAllDsrAliasesByUserId(AuthenticatedUser.UserId);
+            } catch (Exception ex) {
+                retVal.ErrorMessage = "Could not get aliases for current user";
+                _log.WriteErrorLog(retVal.ErrorMessage, ex);
+            }
+
+            return retVal;
+        }
+
+        [Authorize]
+        [HttpGet]
+        [ApiKeyedRoute("profile/dsralias/{userId}")]
+        public OperationReturnModel<List<DsrAlias>> GetDsrAliases(Guid userId) {
+            OperationReturnModel<List<DsrAlias>> retVal = new OperationReturnModel<List<DsrAlias>>();
+
+            try {
+                retVal.SuccessResponse = _dsrAliasService.GetAllDsrAliasesByUserId(userId);
+            } catch (Exception ex) {
+                retVal.ErrorMessage = string.Format("Could not get aliases for speicified user {0}", userId);
+                _log.WriteErrorLog(retVal.ErrorMessage, ex);
+            }
+
+            return retVal;
+        }
+        #endregion
 	}
 }

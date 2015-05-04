@@ -12,7 +12,7 @@
     <h3>Carts</h3>
     <ul class="list-group">
       <li ng-repeat="cart in ::carts | orderBy: ['name']" ng-click="addItemToCart(cart.id, item)" class="hand list-group-item">{{::cart.name}}</li>
-      <li class="hand list-group-item" ng-click="createCartWithItem(item)">Create New Cart...</li>
+      <li class="hand list-group-item" analytics-on analytics-category="Orders" analytics-event="Create Order" analytics-label="From Context Menu" ng-click="createCartWithItem(item)">Create New Cart...</li>
     </ul>
   </div>
   

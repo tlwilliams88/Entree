@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -453,21 +454,33 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 
             if (IsInternalAddress(user.EmailAddress)) {
+
+				PagedResults<Customer> returnValue = new PagedResults<Customer>();
+
                 if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber)) {
                     // lookup customers by their assigned dsr number
-                    return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
+					returnValue = _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
 
                 }
                 if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber)) {
                     // lookup customers by their assigned dsr number
-                    return _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
 
                 } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
-                    return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
                 } else { // assume admin user with access to all customers or PowerUser from GOF
-                    return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
                 }
+
+				//For internal users, switch displayname to include branch id
+				Parallel.ForEach(returnValue.Results, customer =>
+				{
+					customer.DisplayName = string.Format("{0} ({1}) - {2}", customer.CustomerNumber, customer.CustomerBranch, customer.CustomerName);
+				});
+
+				return returnValue;
+
             } else { // external user
 				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
 					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
@@ -984,6 +997,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jmmcmillan - 10/6/2014 - documented
         /// </remarks>
         public UserProfileReturn GetUserProfileByGuid(Guid UserId) {
+
+			//TODO: This is a Foundation Service Query. It should be moved to the profile repository
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
             profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
@@ -1503,5 +1518,26 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         //}
 
         #endregion
-    }
+
+
+		public List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId)
+		{
+			//Retrieve all CS internal users
+			var internalUsers = _csProfile.GetCSProfileForInternalUsers();
+
+			var usersWithAccess = new List<UserProfile>();
+
+			foreach (var user in internalUsers)
+			{
+				var userProfile = FillUserProfile(user);
+				var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null);
+				if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any())
+				{
+					usersWithAccess.Add(userProfile);
+				}
+			}
+
+			return usersWithAccess;
+		}
+	}
 }

@@ -39,6 +39,19 @@
 
       <div class="col-md-6">
         <a ng-href="{{userProfile.powermenugroupsetupurl}}" target="_blank">eMenu Manage Group Setup</a>
+
+        <div class="form-inline">
+          <h3>Find Internal User</h3>
+          <form class="form-horizontal style-validation-errors" name="findInternalUserForm">
+            <p class="text-red" ng-show="findInternalUserError">{{findInternalUserError}}</p>
+            <div class="form-group">
+              <div class="col-xs-12">
+                <input type="text" class="form-control" ng-model="internalUserEmail" validate-email="{{true}}">
+                <button class="btn btn-primary" type="submit" ng-disabled="findInternalUserForm.$invalid" ng-click="goToInternalUser(internalUserEmail)">Find</button> 
+              </div>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 

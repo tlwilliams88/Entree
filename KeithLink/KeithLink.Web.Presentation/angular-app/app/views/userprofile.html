@@ -87,7 +87,9 @@
           <button class="btn-lg btn btn-primary" ng-disabled="updateProfileForm.$invalid || updateProfileForm.$pristine"
                   type="submit" ng-click="updateUserProfile(userProfile)">Update Profile
           </button>
-          <a ng-click="cancelChanges()">Cancel</a>
+          <button  ng-if="!(updateProfileForm.$dirty || changePasswordForm.$dirty || notificationPreferencesForm.$dirty)" type="button" class="btn btn-lg btn-danger"ui-sref="menu.home">Back</button>
+            <button  ng-if="updateProfileForm.$dirty || changePasswordForm.$dirty || notificationPreferencesForm.$dirty" type="button"  confirmed-click="goBack()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-lg btn-danger">Back</button>
+          <a ng-click="cancelChanges()">Cancel Changes</a>
         </div>
       </div>
     </form>
@@ -181,6 +183,28 @@
         </div>
       </div>
     </form>
+
+    <div class="clearfix"></div>
+    <h2 ng-if="isInternalUser">DSR Aliases</h2>
+    <table ng-if="isInternalUser" class="table no-margin table-border table-striped-rows">
+      <thead>
+        <tr>
+          <th>Branch</th>
+          <th>DSR Number</th>
+        </tr>
+      </thead>
+      <tbody ng-repeat="alias in dsrAliases">
+        <tr ng-class="{ odd : $odd, even: $even }">
+          <td>{{alias.branchId}}</td>
+          <td>{{alias.dsrNumber}}</td>
+        </tr>
+      </tbody>
+      <tfoot ng-if="dsrAliases && !dsrAliases.length">
+        <tr>
+          <td colspan="2">No DSR Aliases to display.</td>
+        </tr>
+      </tfoot>
+    </table>
   </div>
   <div class="col-md-6" ng-show="isOrderEntryCustomer" ng-controller="CustomerController">
     <h2>Assigned Customers</h2>

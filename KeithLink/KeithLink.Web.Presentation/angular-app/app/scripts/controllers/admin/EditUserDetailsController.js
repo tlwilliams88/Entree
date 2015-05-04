@@ -4,7 +4,6 @@ angular.module('bekApp')
   .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
     function ($scope, $state, $stateParams, $filter, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
 
-
   $scope.groupId = $stateParams.groupId;
   
   function checkIfUserExistsOnAnotherGroup() {
@@ -119,6 +118,7 @@ angular.module('bekApp')
   $scope.changeUserAccess = function(isGrantingAccess, program) {
     UserProfileService.changeProgramAccess(email, program, isGrantingAccess);
   };
+
 
   /**********
   CUSTOMERS

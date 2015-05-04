@@ -109,7 +109,7 @@ namespace KeithLink.Svc.InternalSvc
 			#endif
 
 
-				builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
+			builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
             
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
@@ -183,6 +183,8 @@ namespace KeithLink.Svc.InternalSvc
                 .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.Eta);
             builder.RegisterType<PaymentConfirmationNotificationHandlerImpl>()
                 .Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.PaymentConfirmation);
+			builder.RegisterType<HasNewsNotificationHandlerImpl>()
+				.Keyed<INotificationHandler>(Svc.Core.Enumerations.Messaging.NotificationType.HasNews);
             builder.Register<Func<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>(
                 c => {
                     var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.NotificationType, INotificationHandler>>();
@@ -251,7 +253,13 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<InternalPasswordResetRequestLogicImpl>().As<IInternalPasswordResetLogic>();
 			builder.RegisterType<PasswordResetRequestRepositoryImpl>().As<IPasswordResetRequestRepository>();
 
+            // DSR Alias
+            builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
+            builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+
 			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+
 
             return builder.Build();
         }

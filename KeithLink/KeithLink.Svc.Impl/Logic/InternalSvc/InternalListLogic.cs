@@ -21,6 +21,9 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Common.Core.Logging;
 using System.Collections.Concurrent;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
+using KeithLink.Svc.Core.Extensions.Messaging;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
@@ -37,6 +40,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly IUserActiveCartRepository userActiveCartRepository;
 		private readonly ICustomerRepository customerRepository;
 		private readonly IEventLogRepository eventLogRepository;
+		private readonly IGenericQueueRepository queueRepository;
 
 
 		private const string CACHE_GROUPNAME = "UserList";
@@ -48,7 +52,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
 			IListItemRepository listItemRepository,
 			ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
-			IUserActiveCartRepository userActiveCartRepository, ICustomerRepository customerRepository, IEventLogRepository eventLogRepository)
+			IUserActiveCartRepository userActiveCartRepository, ICustomerRepository customerRepository, IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -61,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.userActiveCartRepository = userActiveCartRepository;
 			this.customerRepository = customerRepository;
 			this.eventLogRepository = eventLogRepository;
+			this.queueRepository = queueRepository;
 		}
         #endregion
 
@@ -97,8 +102,33 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			list.Items.Add(item);
 			listRepository.CreateOrUpdate(list);
 			unitOfWork.SaveChanges();
+
+			if (list.Type == ListType.RecommendedItems)
+				GenerateNewRecommendItemNotification(list.CustomerId, list.BranchId); //Send a notification that new recommended items have been added
+
 			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
 			return item.Id;
+		}
+
+		private void GenerateNewRecommendItemNotification(string customerId, string branchId)
+		{
+			try
+			{
+				var notifcation = new HasNewsNotification()
+				{
+					CustomerNumber = customerId,
+					BranchId = branchId,
+					Subject = "New recommended items",
+					Notification = "New recommended item(s) have been added to your list"
+				};
+				queueRepository.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
+							Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+							Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+			}
+			catch (Exception ex)
+			{
+				eventLogRepository.WriteInformationLog("Error creating new recommended item notification", ex);
+			}
 		}
 
 		public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
@@ -129,6 +159,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			listRepository.CreateOrUpdate(list);
 			unitOfWork.SaveChanges();
+
+			if (list.Type == ListType.RecommendedItems)
+				GenerateNewRecommendItemNotification(list.CustomerId, list.BranchId); //Send a notification that new recommended items have been added
+
 			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
 			return ReadList(user, catalogInfo, listId);
 		}
@@ -615,6 +649,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public void UpdateList(ListModel userList)
 		{
+			bool itemsAdded = false;
 			var currentList = listRepository.Read(l => l.Id.Equals(userList.ListId), i => i.Items).FirstOrDefault();
 
 			if (currentList == null)
@@ -624,13 +659,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             
 			if (userList.Items == null)
 				userList.Items = new List<ListItemModel>();
-
-			//if (currentList.Items != null)
-			//	currentList.Items.Where(i => !userList.Items.Any(l => l.ListItemId.Equals(i.Id))).ToList().ForEach(delegate(ListItem item)
-			//	{
-			//		listItemRepository.Delete(item);
-			//	});
-
 
 			if (currentList.Items == null && userList.Items != null)
 				currentList.Items = new List<ListItem>();
@@ -648,8 +676,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     currentList.Items.Add(new ListItem() { ItemNumber = li.ItemNumber, Par = li.ParLevel, Label = li.Label, Each = li.Each });
                 }
             }
-
-            if (userList.Type != ListType.Worksheet && userList.Type != ListType.Contract)
+            else
             {
                 foreach (var updateItem in userList.Items)
                 {
@@ -679,13 +706,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                                 continue;
 
                             currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label, Each = updateItem.Each });
-
+							itemsAdded = true;
                         }
                     }
                 }
             }
 
             unitOfWork.SaveChanges();
+
+			if (currentList.Type == ListType.RecommendedItems && itemsAdded)
+				GenerateNewRecommendItemNotification(currentList.CustomerId, currentList.BranchId); //Send a notification that new recommended items have been added
+
 			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
 		}
 
