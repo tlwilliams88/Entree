@@ -1,17 +1,26 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'MessagePreferenceService',
-    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, MessagePreferenceService) {
+  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'MessagePreferenceService', 'DsrAliasService',
+    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, MessagePreferenceService, DsrAliasService) {
 
   var init = function(){
     $scope.branches = branches;
+
+    $scope.isInternalUser = $scope.userProfile.emailaddress.indexOf('@benekeith.com') > -1;
+
     if (AccessService.isOrderEntryCustomer()){
       MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
         $scope.defaultPreferences = preferences;
       });
     } else {
       $scope.hideNotificationPreferences = true;
+    }
+
+    if ($scope.isInternalUser) {
+      DsrAliasService.getAliasesForCurrentUser().then(function(aliases) {
+        $scope.dsrAliases = aliases;
+      });
     }
   };
 

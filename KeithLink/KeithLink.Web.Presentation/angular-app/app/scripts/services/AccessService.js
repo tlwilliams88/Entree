@@ -151,7 +151,8 @@ angular.module('bekApp')
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
     },
     
-    canEditDsrAliases: function() {
+    // editing DSR Aliases
+    canEditInternalUsers: function() {
       return ( isSysAdmin() || isBranchManager() );
     },
 

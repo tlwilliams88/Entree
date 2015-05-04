@@ -25,6 +25,7 @@ angular.module('bekApp')
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
+  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -272,6 +273,5 @@ angular.module('bekApp')
     $scope.canEditUsers = AccessService.canEditUsers();
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
-    $scope.canEditDsrAliases = AccessService.canEditDsrAliases();
   }
 }]);
