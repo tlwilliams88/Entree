@@ -31,6 +31,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -453,21 +454,33 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 
             if (IsInternalAddress(user.EmailAddress)) {
+
+				PagedResults<Customer> returnValue = new PagedResults<Customer>();
+
                 if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber)) {
                     // lookup customers by their assigned dsr number
-                    return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
+					returnValue = _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
 
                 }
                 if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber)) {
                     // lookup customers by their assigned dsr number
-                    return _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
 
                 } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
-                    return _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
                 } else { // assume admin user with access to all customers or PowerUser from GOF
-                    return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
                 }
+
+				//For internal users, switch displayname to include branch id
+				Parallel.ForEach(returnValue.Results, customer =>
+				{
+					customer.DisplayName = string.Format("{0} ({1}) - {2}", customer.CustomerNumber, customer.CustomerBranch, customer.CustomerName);
+				});
+
+				return returnValue;
+
             } else { // external user
 				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
 					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
