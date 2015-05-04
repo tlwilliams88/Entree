@@ -1,4 +1,6 @@
 ﻿using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Profile.EF;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,13 @@ namespace KeithLink.Svc.Core.Models.Profile
 {
     [DataContract(Name="userprofile")]
 	[Serializable]
-    public class UserProfile : System.Security.Principal.IIdentity
-    {
-        
+    public class UserProfile : System.Security.Principal.IIdentity {
+        #region ctor
+        public UserProfile() {
+            DsrAliases = new List<DsrAlias>();
+        }
+        #endregion
+
         public string AuthenticationType
         {
             get { return "Active Directory"; }
@@ -93,6 +99,7 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "isdemo", EmitDefaultValue = false)]
 		public bool? IsDemo { get; set; }
 
-        
+        [DataMember(Name = "dsraliases")]
+        public List<DsrAlias> DsrAliases { get; set; }        
     }
 }

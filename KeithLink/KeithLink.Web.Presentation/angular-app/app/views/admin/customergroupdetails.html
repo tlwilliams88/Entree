@@ -8,7 +8,7 @@
 <div class="page-content">
   <div class="row">
     <div class="col-md-6">
-      <form name="customerGroupDetailsForm" novalidate>
+      <form name="customerGroupDetailsForm" unsaved-warning-form novalidate>
         <div class="form-group">
           <label for="customerGroupName" class="control-label">Name</label>
           <span class="text-red" ng-show="customerGroupDetailsForm.customerGroupName.$dirty && customerGroupDetailsForm.customerGroupName.$error.required">Customer group name is required.</span>
@@ -19,7 +19,7 @@
     <div class="col-md-6" ng-if="!isNew">
       <h3>Admin Users</h3>
 
-      <form name="addNewAdminUserForm" class="form-inline search-form">
+      <form name="addNewAdminUserForm" class="form-inline search-form"  novalidate>
         <div class="text-red">
           {{addUserError}}
         </div>
@@ -162,8 +162,7 @@
           ng-click="submitForm(customerGroup)">
           {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
         </button>          
-        <button  ng-if="!(dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty)" type="button" class="btn btn-lg btn-danger"ui-sref="menu.admin.customergroup">Back</button>
-        <button  ng-if="dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty" type="button"  confirmed-click="goBack()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-lg btn-danger">Back</button>
+        <a class="btn btn-lg btn-danger" ui-sref="menu.admin.customergroup">Back</a>
       </div>
     </div>
   </div>
