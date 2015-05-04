@@ -313,6 +313,20 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
         }
 
+		public void DeleteAccount(UserProfile deletedBy, Guid accountId)
+		{
+			List<Customer> existingCustomers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+			List<UserProfile> existingUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
+
+			//Remove all existing customers and users
+			foreach (Customer cust in existingCustomers)
+				_accountRepo.RemoveCustomerFromAccount(deletedBy.EmailAddress, accountId, cust.CustomerId);
+			foreach (UserProfile user in existingUsers)
+				this.RemoveUserFromAccount(deletedBy, accountId, user.UserId);
+
+			_accountRepo.DeleteAccount(deletedBy.EmailAddress, accountId);
+		}
+
         /// <summary>
         /// take the role name that is passed in and convert it to the name that is actually used in AD
         /// </summary>

@@ -11,6 +11,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
 		AccountReturn CreateAccount(UserProfile createdBy, string name);
 
+		void DeleteAccount(UserProfile deletedBy, Guid accountId);
+
         void CreateBekUserProfile(string emailAddress);
 
 		UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId);

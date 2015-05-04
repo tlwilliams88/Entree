@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Profile
     public interface IAccountRepository
     {
         Guid CreateAccount(string createdBy, string name);
+		void DeleteAccount(string deletedBy, Guid accountId);
         List<Account> GetAccounts();
         List<Account> GetAccountsForUser(Guid userId);
         void AddCustomerToAccount(string addedBy, Guid accountId, Guid customerId);
