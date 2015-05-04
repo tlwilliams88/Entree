@@ -19,7 +19,8 @@ namespace KeithLink.Svc.Core.Interface.Profile
         List<Core.Models.Profile.Customer> GetCustomersForUser(Guid userId);
         List<Customer> GetCustomersByNameSearch(string searchText);
         List<Customer> GetCustomersByNameSearchAndBranch(string search, string branchId);
-		List<Customer> GetCustomersForDSR(string dsrNumber, string branchId);
+        //List<Customer> GetCustomersForDSR(string dsrNumber, string branchId);
+        List<Customer> GetCustomersForDSR(List<Dsr> dsrs);
         List<Customer> GetCustomersForDSM(string dsmNumber, string branchId);
 		List<Customer> GetCustomersForAccount(string accountId);
 		List<Customer> GetCustomersByNameOrNumber(string search);
@@ -29,7 +30,8 @@ namespace KeithLink.Svc.Core.Interface.Profile
 		Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId);
 
 		PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm);
-		PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm);
+        //PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm);
+        PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string searchTerm, List<Dsr> dsrList);
 		PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm);
 		PagedResults<Customer> GetPagedCustomersForBranch(int size, int from, string branchId, string searchTerm);
 		PagedResults<Customer> GetPagedCustomersForUser(int size, int from, Guid userId, string searchTerm);

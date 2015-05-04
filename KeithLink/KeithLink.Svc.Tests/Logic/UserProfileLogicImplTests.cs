@@ -1,52 +1,20 @@
-﻿using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Impl.Logic.Profile;
-using KeithLink.Svc.Impl.Repository.Cache;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-using KeithLink.Svc.Impl.Repository.Invoices;
-using KeithLink.Svc.Impl.Repository.Messaging;
-using KeithLink.Svc.Impl.Repository.Queue;
-using KeithLink.Svc.Impl.Repository.OnlinePayments;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.WebApi.Repository.Messaging;
+﻿using Autofac;
+using KeithLink.Svc.Core.Interface.Profile;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Test.Logic {
     [TestClass]
     public class UserProfileLogicImplTests {
-
         #region attrbitues
-		private NoCacheRepositoryImpl _cache;
-        private UserProfileRepository               _csProfileRepo;
-        private ExternalUserDomainRepository        _extAd;
-        private InternalUserDomainRepository        _intAd;
-        private EventLogRepositoryImpl              _log;
-        private UserProfileLogicImpl                _logic;
-        private AccountRepository                   _acct;
-        private CustomerRepository _cust;
+        private IUserProfileLogic _logic;
         #endregion
 
         #region ctor
         public UserProfileLogicImplTests() {
-            _log = new Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Unit Tests");
-			var _auditLog = new AuditLogRepositoryImpl();
-			_cache = new NoCacheRepositoryImpl();
-			var _custCach = new NoCacheRepositoryImpl();
-            var dsrService = new NoDsrServiceRepository();
+            var container = DependencyMap.Build();
 
-			_extAd = new Impl.Repository.Profile.ExternalUserDomainRepository(_log, _auditLog);
-            _intAd = new Impl.Repository.Profile.InternalUserDomainRepository(_log);
-
-
-			_csProfileRepo = new Impl.Repository.Profile.UserProfileRepository(_log, _auditLog);
-
-			_acct = new AccountRepository(_log, _auditLog);
-			_cust = new CustomerRepository(_log, _custCach, dsrService, _auditLog);
-            _logic = new UserProfileLogicImpl(_extAd, _intAd, _csProfileRepo, _cache, _acct, _cust, new NoOrderServiceRepositoryImpl(), new NoMessagingServiceRepositoryImpl(), new NoInvoiceServiceRepositoryImpl(), new EmailClientImpl(), new NoMessagingServiceRepositoryImpl(), new EventLogRepositoryImpl("Test"), new NoOnlinePaymentServiceRepository(), new GenericQueueRepositoryImpl());
+            _logic = container.Resolve<IUserProfileLogic>();
         }
         #endregion
 

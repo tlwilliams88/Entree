@@ -22,10 +22,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.EF.DsrAlias> CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteDsrAlias", ReplyAction="http://tempuri.org/IProfileService/DeleteDsrAliasResponse")]
-        void DeleteDsrAlias(int dsrAliasId);
+        void DeleteDsrAlias(int dsrAliasId, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteDsrAlias", ReplyAction="http://tempuri.org/IProfileService/DeleteDsrAliasResponse")]
-        System.Threading.Tasks.Task DeleteDsrAliasAsync(int dsrAliasId);
+        System.Threading.Tasks.Task DeleteDsrAliasAsync(int dsrAliasId, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/GeneratePasswordResetRequest", ReplyAction="http://tempuri.org/IProfileService/GeneratePasswordResetRequestResponse")]
         void GeneratePasswordResetRequest(string email);
@@ -87,12 +87,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
             return base.Channel.CreateDsrAliasAsync(userId, email, dsr);
         }
         
-        public void DeleteDsrAlias(int dsrAliasId) {
-            base.Channel.DeleteDsrAlias(dsrAliasId);
+        public void DeleteDsrAlias(int dsrAliasId, string email) {
+            base.Channel.DeleteDsrAlias(dsrAliasId, email);
         }
         
-        public System.Threading.Tasks.Task DeleteDsrAliasAsync(int dsrAliasId) {
-            return base.Channel.DeleteDsrAliasAsync(dsrAliasId);
+        public System.Threading.Tasks.Task DeleteDsrAliasAsync(int dsrAliasId, string email) {
+            return base.Channel.DeleteDsrAliasAsync(dsrAliasId, email);
         }
         
         public void GeneratePasswordResetRequest(string email) {
