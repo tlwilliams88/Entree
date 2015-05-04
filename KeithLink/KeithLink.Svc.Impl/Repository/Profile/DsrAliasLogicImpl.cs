@@ -13,18 +13,12 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Repository.Profile {
     public class DsrAliasLogicImpl : IDsrAliasLogic {
         #region attributes
-        protected string CACHE_GROUPNAME { get { return "Profile"; } }
-        protected string CACHE_NAME { get { return "Profile"; } }
-        protected string CACHE_PREFIX { get { return "Default"; } }
-
-        private readonly ICacheRepository _cache;
         private readonly IDsrAliasRepository _repo;
         private readonly IUnitOfWork _uow;
         #endregion
 
         #region ctor
-        public DsrAliasLogicImpl(IDsrAliasRepository aliasRepo, IUnitOfWork uow, ICacheRepository cacheRepo) {
-            _cache = cacheRepo;
+        public DsrAliasLogicImpl(IDsrAliasRepository aliasRepo, IUnitOfWork uow) {
             _repo = aliasRepo;
             _uow = uow;
         }
@@ -41,24 +35,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
             _repo.Create(alias);
             _uow.SaveChanges();
 
-            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(email));
-
             return alias;
         }
 
         public void DeleteDsrAlias(int dsrAliasId, string email) {
             _repo.Delete(d => d.Id.Equals(dsrAliasId));
             _uow.SaveChanges();
-
-            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(email));
         }
 
         public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {
             return _repo.ReadByUser(userId).ToList();
-        }
-
-        private string GetCacheKey(string email) {
-            return string.Format("{0}-{1}", "bek", email);
         }
 
         #endregion

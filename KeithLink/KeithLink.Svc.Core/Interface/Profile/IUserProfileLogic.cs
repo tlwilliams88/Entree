@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Profile.EF;
 using System;
 using System.Collections.Generic;
 
@@ -15,11 +16,15 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void CreateBekUserProfile(string emailAddress);
 
-		UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId);
+        DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr);
+        
+        UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId);
 
 		UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
 
         PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
+
+        void DeleteDsrAlias(int dsrAliasId, string email);
 
         //UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
         UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false);
@@ -29,6 +34,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
         
         AccountUsersReturn GetAccountUsers(Guid id);
+
+        List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId);
 
         CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId);
 
