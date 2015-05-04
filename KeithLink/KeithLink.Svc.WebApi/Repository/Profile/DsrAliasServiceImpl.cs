@@ -25,8 +25,8 @@ namespace KeithLink.Svc.WebApi.Repository.Profile {
             return _client.CreateDsrAlias(userId, email, dsr);
         }
 
-        public void DeleteDsrAlias(int dsrAliasId) {
-            _client.DeleteDsrAlias(dsrAliasId);
+        public void DeleteDsrAlias(int dsrAliasId, string email) {
+            _client.DeleteDsrAlias(dsrAliasId, email);
         }
 
         public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {

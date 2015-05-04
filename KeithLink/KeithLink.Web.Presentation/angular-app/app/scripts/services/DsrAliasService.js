@@ -28,11 +28,12 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
-      deleteAlias: function(aliasId) {
+      deleteAlias: function(aliasId, email) {
         var promise = $http.delete('/profile/dsralias', { 
           headers: {'Content-Type': 'application/json'},
           data: {
-            dsrAliasId: aliasId
+            dsrAliasId: aliasId,
+            email: email
           }
          });
         return UtilityService.resolvePromise(promise);

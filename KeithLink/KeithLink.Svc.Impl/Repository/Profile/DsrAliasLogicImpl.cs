@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Profile;
+﻿using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
@@ -37,7 +38,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
             return alias;
         }
 
-        public void DeleteDsrAlias(int dsrAliasId) {
+        public void DeleteDsrAlias(int dsrAliasId, string email) {
             _repo.Delete(d => d.Id.Equals(dsrAliasId));
             _uow.SaveChanges();
         }
