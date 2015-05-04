@@ -8,11 +8,11 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'ENV',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', 'ProductService', 'CategoryService', 'Constants', 'PricingService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
-      ProductService, CategoryService, Constants, PricingService, ENV // bek custom services
+      ProductService, CategoryService, Constants, PricingService // bek custom services
     ) {
     
     // clear keyword search term at top of the page
@@ -25,8 +25,6 @@ angular.module('bekApp')
     $scope.hasCasePrice = PricingService.hasCasePrice;
     $scope.hasPrice = PricingService.hasPrice;
     $scope.hasPackagePrice = PricingService.hasPackagePrice;
-    $scope.isMobile = ENV.mobileApp;
-    $scope.glossaryUrl = "/Assets/help/Glossary.pdf";
 
     $scope.paramType = $stateParams.type; // Category, Search, Brand
     $scope.paramId = $stateParams.id; // search term, brand id, category id
