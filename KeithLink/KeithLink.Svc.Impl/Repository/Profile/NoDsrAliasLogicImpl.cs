@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
             throw new NotImplementedException();
         }
 
-        public void DeleteDsrAlias(int dsrAliasId) {
+        public void DeleteDsrAlias(int dsrAliasId, string email) {
             throw new NotImplementedException();
         }
 

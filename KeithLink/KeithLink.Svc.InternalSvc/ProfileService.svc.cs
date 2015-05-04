@@ -34,8 +34,8 @@ namespace KeithLink.Svc.InternalSvc
             return _aliasLogic.CreateDsrAlias(userId, email, dsr);
         }
 
-        public void DeleteDsrAlias(int dsrAliasId) {
-            _aliasLogic.DeleteDsrAlias(dsrAliasId);
+        public void DeleteDsrAlias(int dsrAliasId, string email) {
+            _aliasLogic.DeleteDsrAlias(dsrAliasId, email);
         }
 
         public void GeneratePasswordResetRequest(string email) {

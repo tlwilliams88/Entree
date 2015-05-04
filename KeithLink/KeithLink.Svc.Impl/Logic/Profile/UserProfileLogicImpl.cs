@@ -19,6 +19,7 @@ using KeithLink.Svc.Core.Models.SingleSignOn;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.PowerMenu;
 using KeithLink.Svc.Core.Extensions.PowerMenu;
@@ -58,14 +59,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IEventLogRepository _eventLog;
 		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
         private IGenericQueueRepository _queue;
+        private IDsrAliasService _dsrAliasService;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
-									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, IOrderServiceRepository orderServiceRepository,
-									IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository,
-									IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue)
-		{
+									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
+                                    IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, 
+                                    IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog, 
+                                    IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -80,6 +82,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_eventLog = eventLog;
 			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
             _queue = queue;
+            _dsrAliasService = dsrAliasService;
         }
         #endregion
 
@@ -443,6 +446,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>paged list of Customers</returns>
         /// <remarks>
         /// jwames - 4/9/2015 - add support for GOF power users
+        /// jwames - 5/1/2015 - add DSR Alias support
         /// </remarks>
         public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account) {
             if (string.IsNullOrEmpty(searchTerms))
@@ -455,8 +459,16 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (IsInternalAddress(user.EmailAddress)) {
                 if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber)) {
                     // lookup customers by their assigned dsr number
-                    return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
-
+                    //return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
+                    return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, 
+                                                                 paging.From.HasValue ? paging.From.Value : 0, 
+                                                                 searchTerms,
+                                                                 (from DsrAlias d in user.DsrAliases
+                                                                  select new Dsr() {
+                                                                      Branch = d.BranchId,
+                                                                      DsrNumber = d.DsrNumber
+                                                                  })
+                                                                 .ToList());
                 }
                 if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber)) {
                     // lookup customers by their assigned dsr number
@@ -484,6 +496,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - derived from CombineCSAndADProfile method
         /// jwames - 4/13/2015 - handle the DSM number when it is two or three digits
+        /// jwames - 5/1/2015 - add dsr alias support
         /// </remarks>
         public UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false) {
             //List<Customer> userCustomers;
@@ -554,51 +567,39 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             byte[] tokenBytes = System.Text.Encoding.UTF8.GetBytes(userNameToken);
             string tokenBase64 = Convert.ToBase64String(tokenBytes);
 
-            return new UserProfile() {
-                UserId = Guid.Parse(csProfile.Id),
-                IsInternalUser = IsInternalAddress(csProfile.Email),
-                PasswordExpired = (isInternalUser) ? false : _extAd.IsPasswordExpired(csProfile.Email),
-                FirstName = csProfile.FirstName,
-                LastName = csProfile.LastName,
-                EmailAddress = csProfile.Email,
-                PhoneNumber = csProfile.Telephone,
-                CustomerNumber = csProfile.DefaultCustomer,
-                BranchId = userBranch,
-                RoleName = userRole,
-                DSMRole = dsmRole,
-                DSRNumber = dsrNumber,
-				DSMNumber = dsmNumber,
-                //UserCustomers = userCustomers,
-                ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id)),
-                UserName = adUser.SamAccountName,
-                UserNameToken = tokenBase64,
-                IsKBITCustomer = isKbitCustomer,
-                IsPowerMenuCustomer = isPowerMenuCustomer,
-                PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email):"",
-                PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName),
-                PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl):""
+            UserProfile retVal = new UserProfile();
+
+            retVal.UserId = Guid.Parse(csProfile.Id);
+            retVal.IsInternalUser = IsInternalAddress(csProfile.Email);
+            retVal.PasswordExpired = (isInternalUser) ? false : _extAd.IsPasswordExpired(csProfile.Email);
+            retVal.FirstName = csProfile.FirstName;
+            retVal.LastName = csProfile.LastName;
+            retVal.EmailAddress = csProfile.Email;
+            retVal.PhoneNumber = csProfile.Telephone;
+            retVal.CustomerNumber = csProfile.DefaultCustomer;
+            retVal.BranchId = userBranch;
+            retVal.RoleName = userRole;
+            retVal.DSMRole = dsmRole;
+            retVal.DSRNumber = dsrNumber;
+			retVal.DSMNumber = dsmNumber;
+            //retVal.UserCustomers = userCustomers;
+            retVal.ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id));
+            retVal.UserName = adUser.SamAccountName;
+            retVal.UserNameToken = tokenBase64;
+            retVal.IsKBITCustomer = isKbitCustomer;
+            retVal.IsPowerMenuCustomer = isPowerMenuCustomer;
+            retVal.PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email):"";
+            retVal.PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName);
+            retVal.PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl) : "";
 #if DEMO
-				,IsDemo = true
+		    retVal.IsDemo = true
 #endif
-			};
-
-        }
-
-        private string GetPowerMenuLoginUrl( Guid userId, string userName, string samAccountName ) {
-            string returnValue = String.Empty;
-
-            List<Customer> customers = GetCustomersForExternalUser( userId );
-
-            string customerNumbers = string.Join("|", (from customer in customers 
-                         where customer.IsPowerMenu == true
-                         select customer.CustomerNumber));
-
-            if (customerNumbers.Length > 0) {
-                string password = String.Concat(samAccountName, userId.ToString().Substring(0,4));
-                returnValue = String.Format( Configuration.PowerMenuLoginUrl, userName, password, customerNumbers );
+            if (isInternalUser) { 
+                retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
+                if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAlias() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
             }
 
-            return returnValue;
+            return retVal;
         }
 
         private string GenerateTemporaryPassword() {
@@ -746,6 +747,23 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return _customerRepo.GetCustomerForUser(customerNumber, branchId, userId);
         }
 
+        public List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId) {
+            //Retrieve all CS internal users
+            var internalUsers = _csProfile.GetCSProfileForInternalUsers();
+
+            var usersWithAccess = new List<UserProfile>();
+
+            foreach (var user in internalUsers) {
+                var userProfile = FillUserProfile(user);
+                var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null);
+                if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any()) {
+                    usersWithAccess.Add(userProfile);
+                }
+            }
+
+            return usersWithAccess;
+        }
+
         public List<ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid) {
             var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
             var userCustomers = _customerRepo.GetCustomersForUser(guid);
@@ -793,6 +811,23 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			return returnedMsgPrefModel;
 		}
 
+        private string GetPowerMenuLoginUrl(Guid userId, string userName, string samAccountName) {
+            string returnValue = String.Empty;
+
+            List<Customer> customers = GetCustomersForExternalUser(userId);
+
+            string customerNumbers = string.Join("|", (from customer in customers
+                                                       where customer.IsPowerMenu == true
+                                                       select customer.CustomerNumber));
+
+            if (customerNumbers.Length > 0) {
+                string password = String.Concat(samAccountName, userId.ToString().Substring(0, 4));
+                returnValue = String.Format(Configuration.PowerMenuLoginUrl, userName, password, customerNumbers);
+            }
+
+            return returnValue;
+        }
+
         /// <summary>
         /// return all customers for user
         /// </summary>
@@ -801,6 +836,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>list of customers that a user has access to</returns>
         /// <remarks>
         /// jwames - 4/9/2015 - add support for GOF PowerUser
+        /// jwames - 5/1/2015 - add dsr alias support
         /// </remarks>
         public List<Customer> GetNonPagedCustomersForUser(UserProfile user, string search = "") {
             List<Customer> allCustomers = new List<Customer>();
@@ -809,7 +845,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (IsInternalAddress(user.EmailAddress)) {
                 if (!String.IsNullOrEmpty(user.DSRNumber)) {
                     // lookup customers by their assigned dsr number
-                    allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber, user.BranchId);
+                    //allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber, user.BranchId);
+                    allCustomers = _customerRepo.GetCustomersForDSR((from DsrAlias d in user.DsrAliases
+                                                                     select new Dsr() { Branch = d.BranchId, 
+                                                                                        DsrNumber = d.DsrNumber })
+                                                                     .ToList());
                 } else if (!String.IsNullOrEmpty(user.DSMRole)) {
                     //lookup customers by their assigned dsm number
                     _customerRepo.GetCustomersForDSM(user.DSMNumber, user.BranchId);
@@ -1507,24 +1547,5 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #endregion
 
 
-		public List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId)
-		{
-			//Retrieve all CS internal users
-			var internalUsers = _csProfile.GetCSProfileForInternalUsers();
-
-			var usersWithAccess = new List<UserProfile>();
-
-			foreach (var user in internalUsers)
-			{
-				var userProfile = FillUserProfile(user);
-				var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null);
-				if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any())
-				{
-					usersWithAccess.Add(userProfile);
-				}
-			}
-
-			return usersWithAccess;
-		}
 	}
 }

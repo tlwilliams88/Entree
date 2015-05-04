@@ -889,7 +889,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// delete the dsr alias
         /// </summary>
-        /// <param name="model">only needs the dsr alias id</param>
+        /// <param name="model">the dsr alias id and the email address are required</param>
         /// <returns>true if successful</returns>
         /// <remarks>
         /// jwames - 4/30/2015 - original code
@@ -901,7 +901,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                _dsrAliasService.DeleteDsrAlias(model.DsrAliasId);
+                _dsrAliasService.DeleteDsrAlias(model.DsrAliasId, model.Email);
 
                 retVal.SuccessResponse = true;
             } catch (Exception ex) {
@@ -935,6 +935,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
+        /// <summary>
+        /// return all of the DSR Aliases for the speicified user
+        /// </summary>
+        /// <param name="userId">the user's id</param>
+        /// <returns>list of dsr aliases</returns>
+        /// <remarks>
+        /// jwames - 4/30/2015 - original code
+        /// </remarks>
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile/dsralias/{userId}")]
