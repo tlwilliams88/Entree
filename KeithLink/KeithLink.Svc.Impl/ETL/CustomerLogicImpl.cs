@@ -214,7 +214,13 @@ namespace KeithLink.Svc.Impl.ETL
                 BalanceAge2 = row.GetNullableDecimal("BalanceAge2"),
                 BalanceAge3 = row.GetNullableDecimal("BalanceAge3"),
                 BalanceAge4 = row.GetNullableDecimal("BalanceAge4"),
-                AchType = row.GetString("AchType")
+                AchType = row.GetString("AchType"),
+                NationalId = row.GetString("NationalId"),
+                NationalNumber = row.GetString("NationalNumber"),
+                NationalSubNumber = row.GetString("NationalSubNumber"),
+                RegionalId = row.GetString("RegionalId"),
+                RegionalNumber = row.GetString("RegionalNumber"),
+                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer")
                 
                 // NationalAccountId = row.Get // this will come from a separate file
                 // TODO, add address info
