@@ -67,7 +67,6 @@ angular.module('bekApp')
   }
 
   $scope.searchCustomers = function (searchTerm) {
-    $scope.dirty = true;
     customerPagingModel.filterCustomers(searchTerm);
   };
 
@@ -82,7 +81,7 @@ angular.module('bekApp')
   };
 
   $scope.selectCustomer = function(customer) {
-    $scope.dirty = true;
+    $scope.customerGroupDetailsForm.$setDirty();
     customer.isChecked = true;
     $scope.customers.forEach(function(customer) {
       if(customer.isChecked){    
@@ -113,7 +112,7 @@ angular.module('bekApp')
   };
 
   $scope.unselectCustomer = function(selectedCustomer) {
-    $scope.dirty = true;
+    $scope.customerGroupDetailsForm.$setDirty();
     $scope.foundMatch = false;
     selectedCustomer.isChecked = true;
     $scope.customerGroup.customers.forEach(function(availableCust){
@@ -222,7 +221,8 @@ angular.module('bekApp')
       CustomerGroupService.updateGroup(group).then(function(groups) {
         $scope.displayMessage('success', 'Successfully saved customer group.');
       }, function(error) {
-        $scope.displayMessage('error', 'Error saving customer group.');
+        var message = error ? error : 'Error updating customer group.';
+        $scope.displayMessage('error', message);
       }).finally(function() {
         processingSaveCustomerGroup = false;
       });
@@ -230,10 +230,7 @@ angular.module('bekApp')
   }
 
   $scope.submitForm = function(group) {
-    $scope.dirty = false;
     $scope.customerGroupDetailsForm.$setPristine();
-    $scope.addNewAdminUserForm.$setPristine();
-    $scope.customerSearchForm.$setPristine();
 
     if ($scope.isNew) {
       createNewCustomerGroup(group);
