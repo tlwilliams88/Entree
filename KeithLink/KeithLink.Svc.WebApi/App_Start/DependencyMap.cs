@@ -52,6 +52,7 @@ using KeithLink.Svc.WebApi.Repository.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Common.Impl.AuditLog;
 using KeithLink.Common.Core.AuditLog;
+using KeithLink.Svc.Impl.Logic.Reports;
 #endregion
 
 namespace KeithLink.Svc.WebApi
@@ -152,6 +153,8 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
 
 			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+
+			builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
 
             // Build the container.
             var container = builder.Build();
