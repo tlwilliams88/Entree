@@ -2,10 +2,12 @@
 using DocumentFormat.OpenXml.Spreadsheet;
 using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.Reports;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,9 +23,21 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 				return GeneratePDFReport(request.ReportData);
 		}
 
-		private MemoryStream GeneratePDFReport(List<InventoryValuationModel> list)
+		private MemoryStream GeneratePDFReport(List<InventoryValuationModel> data)
 		{
-			throw new NotImplementedException();
+			ReportViewer rv = new ReportViewer();
+
+			rv.ProcessingMode = ProcessingMode.Local;
+
+			Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+			Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuation.rdlc");
+			rv.LocalReport.LoadReportDefinition(rdlcStream);
+			
+			rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", data));
+
+			var bytes = rv.LocalReport.Render("PDF");
+
+			return new MemoryStream(bytes);
 		}
 
 		#region Generate Excel Report
