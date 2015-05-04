@@ -225,6 +225,7 @@
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
     <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
+    <Compile Include="Interface\Reports\IInventoryValuationReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
     <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IAccessRequestLogic.cs" />
@@ -261,6 +262,8 @@
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
+    <Compile Include="Models\Reports\InventoryValuationModel.cs" />
+    <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />
     <Compile Include="Models\SingleSignOn\KbitCustomerAccessRequest.cs" />
     <Compile Include="Models\ImportFiles\BaseFileImportModel.cs" />

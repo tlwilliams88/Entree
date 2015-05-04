@@ -244,6 +244,7 @@
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
+    <Compile Include="Logic\Reports\InventoryValuationReportLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />

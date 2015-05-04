@@ -13,7 +13,6 @@
     <div class="form-inline">
       <div class="form-group">
         
-        <!-- <p class="text-red" ng-show="checkUserExists">This user already exists.</p> -->
         <p class="text-red" ng-show="userOnCurrentCustomerGroup">
           This user already exists and has access to this customer group.
         </p>
@@ -30,7 +29,7 @@
         <span class="text-red" ng-show="addNewUserForm.newUserEmail.$error.emailLengthValidation && addNewUserForm.newUserEmail.$dirty">Please choose a shorter email address</span>
         <br ng-if="addNewUserForm.newUserEmail.$error.emailLengthValidation && addNewUserForm.newUserEmail.$dirty">
         <input email-length-validation type="email" class="form-control" placeholder="Enter email address" name = "newUserEmail" ng-model="addNewUserEmail"/>
-        <button ng-disabled="addNewUserForm.$invalid" class="btn btn-primary" ng-click="checkUser(addNewUserEmail)">Create New User</button>
+        <button  type="submit" ng-disabled="addNewUserForm.$invalid" class="btn btn-primary" ng-click="checkUser(addNewUserEmail)">Create New User</button>
       </div>
     </div>
   </div>
@@ -207,7 +206,7 @@
       <br>
       <label for="bodyContent" class="control-label">Body Content</label>
       <textarea id="bodyContent" style="resize: vertical;" rows="3" class="form-control" placeholder="Enter Body Content Here" ng-model="broadcast.bodyContent"></textarea>
-      <button class="btn btn-primary btn-lg top-buffer" ng-disabled="broadcastMessageForm.$invalid || (customerRecipients.length === 0 && userRecipients.length === 0)" ng-click="sendMessage(broadcast, customerRecipients, userRecipients)">Send Message</button>
+      <button type="submit" class="btn btn-primary btn-lg top-buffer" ng-disabled="broadcastMessageForm.$invalid || (customerRecipients.length === 0 && userRecipients.length === 0)" ng-click="sendMessage(broadcast, customerRecipients, userRecipients)">Send Message</button>
     </div>
     <div class="col-md-6 padding-top-xs padding-top-sm">
       <label class="control-label">Broadcast Recipients <span class="text-red">*</span> <span style="color: grey; font-size: 10px;">(Add more with the + button on the tables above)</span></label>

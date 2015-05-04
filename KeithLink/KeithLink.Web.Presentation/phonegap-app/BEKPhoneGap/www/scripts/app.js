@@ -31,11 +31,18 @@ angular
     'fcsa-number',            // used for number validation
     'ui.select2',
     'blockUI',            // used for context menu dropdown in upper left corner
-    'configenv'               // used to inject environment variables into angular through Grunt
+    'sticky',
+    'configenv',               // used to inject environment variables into angular through Grunt
+    'angulartics', 
+    'angulartics.google.analytics.cordova'
   ])
-.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig',
-  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig) {
+.config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', 'googleAnalyticsCordovaProvider',
+  function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, googleAnalyticsCordovaProvider) {
  
+  googleAnalyticsCordovaProvider.trackingId = 'UA-62498504-2';
+  googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
+  googleAnalyticsCordovaProvider.debug = true; // default: false
+
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
   // cfpLoadingBarProvider.latencyThreshold = 500;
@@ -168,12 +175,6 @@ angular
     if (AccessService.isOrderEntryCustomer()) {
       NotificationService.getUnreadMessageCount();
     }
- 
-    // updates google analytics when state changes
-    if (!$window.ga) {
-      return;
-    }
-    $window.ga('send', 'pageview', { page: $location.path() });
  
     // remove lists and carts from memory
     if (fromState.data && toState.data) {

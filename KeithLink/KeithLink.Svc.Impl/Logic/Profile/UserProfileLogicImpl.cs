@@ -61,6 +61,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
         private IGenericQueueRepository _queue;
         private IDsrAliasService _dsrAliasService;
+        //private IDsrAliasLogic _dsrAliasLogic;
         #endregion
 
         #region ctor
@@ -84,6 +85,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
             _queue = queue;
             _dsrAliasService = dsrAliasService;
+            //_dsrAliasLogic = dsrAliasLogic;
         }
         #endregion
 
@@ -316,6 +318,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
         }
 
+        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
+
+            return _dsrAliasService.CreateDsrAlias(userId, email, dsr);
+        }
+
 		public void DeleteAccount(UserProfile deletedBy, Guid accountId)
 		{
 			List<Customer> existingCustomers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
@@ -329,6 +337,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 			_accountRepo.DeleteAccount(deletedBy.EmailAddress, accountId);
 		}
+
+        public void DeleteDsrAlias(int dsrAliasId, string email) {
+            _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
+
+            _dsrAliasService.DeleteDsrAlias(dsrAliasId, email);
+        }
 
         /// <summary>
         /// take the role name that is passed in and convert it to the name that is actually used in AD
@@ -620,7 +634,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             retVal.PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName);
             retVal.PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl) : "";
 #if DEMO
-		    retVal.IsDemo = true
+		    retVal.IsDemo = true;
 #endif
             if (isInternalUser) { 
                 retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
@@ -773,6 +787,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId) {
             return _customerRepo.GetCustomerForUser(customerNumber, branchId, userId);
+        }
+
+        public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {
+            return _dsrAliasService.GetAllDsrAliasesByUserId(userId);
         }
 
         public List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId) {
