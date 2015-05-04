@@ -634,7 +634,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             retVal.PowerMenuLoginUrl = (isInternalUser) ? "":GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName);
             retVal.PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl) : "";
 #if DEMO
-		    retVal.IsDemo = true
+		    retVal.IsDemo = true;
 #endif
             if (isInternalUser) { 
                 retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
