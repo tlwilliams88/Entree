@@ -67,7 +67,7 @@ angular.module('bekApp')
   }
 
   $scope.searchCustomers = function (searchTerm) {
-    $scope.dirty = ture;
+    $scope.dirty = true;
     customerPagingModel.filterCustomers(searchTerm);
   };
 
