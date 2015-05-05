@@ -4,21 +4,23 @@
   </div>
   <div header-buttons>
     <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
-    <!--<a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>-->
+    <a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>
   </div>
 </div>
 
-<div class="page-content">
+<div class="page-content inventory-report">
   
   <a class="text-large btn-link" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
   
   <div class="row sub-content">
-    <form class="col-xs-8 form-inline" name="addItemByNumberForm">
+    <form class="col-sm-12 col-md-10 col-lg-7 form-inline" name="addItemByNumberForm">
       <div style="width:100%" class="form-group">
-        <input type="text" placeholder="Item Number" ng-model="itemNumber" class="form-control input-lg">
+        
+        <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg">
+
         <button type="submit" class="btn btn-primary btn-lg" ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
         
-        <div class="pull-right btn-group hidden-print" dropdown is-open="status.listactions">
+        <div class="lists-dropdown btn-group hidden-print" dropdown is-open="status.listactions">
           <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
             <div ng-if="!listsLoading">Add Items from List <span class="icon-arrow-down6"></span></div>
             <div class="text-red" ng-if="listsLoading">Loading Lists...
@@ -31,10 +33,11 @@
           </ul>
         </div>
 
+        <div class="clearfix"></div>
       </div>
     </form>
     
-    <form name="inventoryForm" class=" style-validation-errors col-md-8 col-lg-8">
+    <form name="inventoryForm" class="style-validation-errors col-sm-12 col-md-10 col-lg-7">
       <div class="row sub-content">
         <div class="col-xs-7" style="margin-top: 10px;">
           Showing {{items.length}} Item<span ng-if="items.length !== 1">s</span>
@@ -43,42 +46,88 @@
           {{subtotal | currency}}
         </div>
       </div>
-      <table class="table table-border table-striped-rows" navigate-quick-add>
+      <table class="table table-border table-striped-rows" navigate-table>
         <thead>
           <tr>
             <th>Item #</th>
             <th>Name</th>
-            <th>Pack/Size</th>
-            <th>Label</th>
+            <th class="hidden-mobile-visible-print">Pack/Size</th>
+            <th class="hidden-mobile-visible-print">Label</th>
             <th>Qty</th>
-            <th>Each</th>
-            <th>Price</th>
-            <th>Ext. Price</th>
+            <th class="hidden-xs hidden-sm">Each</th>
+            <th class="hidden-mobile-visible-print">Price</th>
+            <th class="hidden-mobile-visible-print">Ext. Price</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="item in items" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat-start="item in items" ng-class="{ odd : $odd, even: $even }">
             <td>
-              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
+              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemid})">{{::item.itemid}}</a>
             </td>
             <td>{{::item.name}}</td>
-            <td>{{::item.packsize}}</td>
-            <td>{{::item.label}}</td>
-            <td class="input-col">
-              <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
-            </td>
-            <td class="input-col">
+            <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
+            <td class="hidden-mobile-visible-print">{{::item.label}}</td>
+            <td class="input-col hidden-xs hidden-sm">
               <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">
             </td>
-            <td>
-              {{(item.each ? item.packageprice : item.caseprice) | currency}}
+            <td class="input-col nowrap">
+              <div type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.quantity"></div>
             </td>
-            <td>
+            <td class="hidden-mobile-visible-print">
+              {{item.price | currency}}
+              <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+            </td>
+            <td class="hidden-mobile-visible-print">
               {{item.extprice | currency}}
             </td>
-            <td>
-              <a ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
+            <td class="icon-col">
+              <a class="hidden-xs hidden-sm" ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
+              <a class="hidden-print visible-xs-inline visible-sm-inline" ng-click="showDetails = !showDetails;"><span class="text-light large-icon icon-ellipsis"></span></a>
+            </td>
+          </tr>
+          <tr ng-repeat-end ng-show="showDetails" class="mobile-details-row" ng-class="{ odd : $odd, even: $even }">
+            <td colspan="4">
+              <table>
+                <colgroup>
+                  <col width="25%" />
+                  <col width="75%" />
+                </colgroup>
+                <tr>
+                  <td>Pack/Size</td>
+                  <td>{{::item.packsize}}</td>
+                </tr>
+                <tr>
+                  <td>Label</td>
+                  <td>{{::item.label}}</td>
+                </tr>
+                <tr ng-if="item.hasPackagePrice">
+                  <td>Each</td>
+                  <td>
+                    <ng-form name="eachForm_mobile">
+                      <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                    </ng-form>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Price</td>
+                  <td>
+                    {{item.price | currency}}
+                    <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ext. Price</td>
+                  <td>
+                    {{item.extprice | currency}}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <button class="btn btn-lg btn-danger" type="button" ng-click="removeRow(item)">Remove Item</button>
+                  </td>
+                </tr>
+              </table>
             </td>
           </tr>
         </tbody>

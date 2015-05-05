@@ -33,12 +33,16 @@ angular.module('bekApp')
       unitPrice = item.price;
     } else {
       // determine if using case price or package price
-      unitPrice = item.each ? item.packageprice : item.caseprice;
+      unitPrice = Service.getUnitPriceForItem(item);
     }
     return parseFloat(unitPrice) * quantity;
   }
 
   var Service = {
+
+    getUnitPriceForItem: function(item) {
+      return Math.round(parseFloat(item.each ? item.packageprice : item.caseprice) * 100) / 100;
+    },
     
     getPriceForItem: function(item) {
       var price = 0;

@@ -47,8 +47,6 @@ angular.module('bekApp')
       },
 
       exportItem: function(config, url) {  
-
-
         ExportService.export(url, config);
       }
   };

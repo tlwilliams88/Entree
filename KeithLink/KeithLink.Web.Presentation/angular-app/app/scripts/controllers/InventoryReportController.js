@@ -30,7 +30,10 @@ angular.module('bekApp')
         var changedExpression = this.exp; // jshint ignore:line
         var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
         var item = $scope.items[idx];
+
+        item.price = PricingService.getUnitPriceForItem(item);
         item.extprice = PricingService.getPriceForItem(item);
+        item.quantity = parseInt(item.quantity, 10);
 
         refreshSubtotal();
       }
@@ -52,7 +55,7 @@ angular.module('bekApp')
 
       $scope.addRow = function(item) {
         $scope.items.push({
-          itemnumber: item.itemnumber,
+          itemid: item.itemnumber,
           name: item.name,
           packsize: item.packsize,
           label: item.label,
@@ -60,6 +63,7 @@ angular.module('bekApp')
           each: false,
           packageprice: item.packageprice,
           caseprice: item.caseprice,
+          catchweight: item.catchweight,
           hasPackagePrice: PricingService.hasPackagePrice(item)
         });
 
@@ -84,30 +88,17 @@ angular.module('bekApp')
         });
       };
 
-      //     $scope.openExportModal = function() {
-      //     var modalInstance = $modal.open({
-      //     templateUrl: 'views/modals/exportmodal.html',
-      //     controller: 'ExportModalController',
-      //     resolve: {
-      //       headerText: function () {
-      //         return 'Item Usage';
-      //       },
-      //       exportMethod: function() {
-      //         return ReportService.exportItem;
-      //       },
-      //       exportConfig: function() {
-      //         return ReportService.getExportConfig();
-      //       },
-      //       exportParams: function() {
-      //         var params = {                
-      //             sortfield: $scope.sortField,
-      //             sortdir: $scope.sortReverse === true ? 'desc' : 'asc'
-      //            };
-      //         return '/report/itemusage/export?' + jQuery.param(params);
-      //       }
-      //     }
-      //   });
-      // };
+      $scope.openExportModal = function() {
+      var modalInstance = $modal.open({
+      templateUrl: 'views/modals/inventoryreportexportmodal.html',
+      controller: 'InventoryReportExportModalController',
+      resolve: {
+        items: function () {
+          return $scope.items;
+        }
+      }
+    });
+  };
 
     }
   ]);
