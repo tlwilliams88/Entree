@@ -136,6 +136,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			var customerFromCache = _customerCacheRepository.GetItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("{0}-{1}",customerNumber, branchId)));
 			if (customerFromCache != null)
 				return customerFromCache;
+            
 
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 			queryOrg.SearchCriteria.WhereClause = "u_organization_type = '0' AND u_customer_number = '" + customerNumber + "' AND u_branch_number = '" + branchId + "'"; // org type of customer
@@ -205,12 +206,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 TermCode = org.TermCode,
 				KPayCustomer = org.AchType == "2" || org.AchType == "3",
 				Dsr = dsrs == null || dsrs.Count == 0 ? null : dsrs.Where(d => d.Branch.Equals(org.BranchNumber, StringComparison.CurrentCultureIgnoreCase) && d.DsrNumber.Equals(org.DsrNumber)).DefaultIfEmpty(dsrs.Where(s => s.DsrNumber.Equals("000")).FirstOrDefault()).FirstOrDefault()
-                , NationalId = org.NationalId
-                , NationalNumber = org.NationalNumber
-                , NationalSubNumber = org.NationalSubNumber
-                , RegionalId = org.RegionalId
-                , RegionalNumber = org.RegionalNumber
-                , IsKeithNetCustomer = org.IsKeithnetCustomer.ToLower() == "y" ? true : false
+                
             };
 
             // fill in the address
