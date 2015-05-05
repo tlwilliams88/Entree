@@ -119,7 +119,7 @@ angular.module('bekApp')
  
         newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
-          Service.renameCart = true;
+          
           newCart.id = response.listitemid;
           newCart.items = [];
           Service.cartHeaders.push(newCart);
