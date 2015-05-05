@@ -1,86 +1,95 @@
 <div page-header-bar>
   <div header-message>
     Inventory Valuation Report
-
   </div>
   <div header-buttons>
-     <td class="hidden-print">       
-          <button class="btn-lg btn btn-danger hidden-print"  ui-sref="menu.reports" style="margin-right:3px;">Cancel Report</button>
-          </td>
     <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
-     <!--<a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>-->  </div>
+    <!--<a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>-->
+  </div>
 </div>
 
 <div class="page-content">
-  <div class="row">
-    <form id="inventoryForm" class="item-usage-form col-md-6">
-      <div class="info-box hidden-print" style="display:inline-block;">
-      <table>
-        <tr>              
-          <td>
-      <div class="row  mobile-user-context " style="background-color:white; border:none;"> 
-    <div class="btn-group hidden-print" dropdown is-open="status.listactions">
-      <button type="button" class="btn btn-default dropdown-toggle"  ng-disabled="listsLoading">
-        <div ng-if="!listsLoading"><span   class="pull-right icon-arrow-down6"></span>Add List</div>
-        <div class="text-red"  ng-if="listsLoading" ><span class="pull-right"></span>Loading Lists...
+  
+  <a class="text-large btn-link" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
+  
+  <div class="row sub-content">
+    <form class="col-xs-8 form-inline" name="addItemByNumberForm">
+      <div style="width:100%" class="form-group">
+        <input type="text" placeholder="Item Number" ng-model="itemNumber" class="form-control input-lg">
+        <button type="submit" class="btn btn-primary btn-lg" ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
+        
+        <div class="pull-right btn-group hidden-print" dropdown is-open="status.listactions">
+          <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
+            <div ng-if="!listsLoading">Add Items from List <span class="icon-arrow-down6"></span></div>
+            <div class="text-red" ng-if="listsLoading">Loading Lists...
+            </div>
+          </button>
+          <ul class="dropdown-menu" role="menu">
+            <li ng-repeat="list in ::lists | sortLists">
+              <a ng-click="addItemsFromList(list.listid)">{{::list.name}}</a>
+            </li>
+          </ul>
         </div>
-      </button>
-            <ul class="dropdown-menu" role="menu">
-        <div class="btn-group-vertical" style="width:100%">
-          <button ng-repeat="list in ::lists | sortLists" type="button" class="btn btn-default" ng-click="selectList(list)">{{::list.name}}</button>
-        </div>
-      </ul>
-    </div>
-      </div>
-    </td>
-    </div>
-        </tr>
-      </table>
+
       </div>
     </form>
-  </div>
-</div> 
-
-  <form name="inventoryForm" class=" style-validation-errors col-md-8 col-lg-8">
-    <div>
-      <button type="button" class="btn btn-primary btn-lg pull-right hidden-print" style="margin-bottom:6px;" ng-click="addRow()">Add Row</button>
-    </div> 
-        <div class="row sub-content">
-        <div class="pull-left col-xs-7">
-          Showing {{items.length}} Item<span ng-if="items.length > 1">s</span>   
+    
+    <form name="inventoryForm" class=" style-validation-errors col-md-8 col-lg-8">
+      <div class="row sub-content">
+        <div class="col-xs-7" style="margin-top: 10px;">
+          Showing {{items.length}} Item<span ng-if="items.length !== 1">s</span>
+        </div>
+        <div class="text-green currency-value col-xs-5 text-right">
+          {{subtotal | currency}}
         </div>
       </div>
-      <table class="table table-border" navigate-quick-add>
-      <thead>
-        <tr>
-          <th>Item #</th>          
-          <th>Qty</th>
-          <th>Each</th>
-          <th>Delete Row</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr ng-repeat="item in items">
-          <td class="input-col" ng-class="{ 'red-border': item.valid === false }">
-            <input name="itemNumber" focus-me="true" type="text" ng-model="item.itemnumber" ng-model-options="{ debounce: 300 }" fcsa-number="{ 'noFormat': true, 'minDigits': 6, 'maxDigits': 6 }">
-            <span ng-if="item.valid === false" class="text-red">{{item.reason}}</span>
-          </td>
-          <td class="input-col">
-            <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
-          </td>
-          <td class="input-col">
-            <input name="each" type="checkbox" ng-model="item.each">
-          </td>
+      <table class="table table-border table-striped-rows" navigate-quick-add>
+        <thead>
+          <tr>
+            <th>Item #</th>
+            <th>Name</th>
+            <th>Pack/Size</th>
+            <th>Label</th>
+            <th>Qty</th>
+            <th>Each</th>
+            <th>Price</th>
+            <th>Ext. Price</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="item in items" ng-class="{ odd : $odd, even: $even }">
+            <td>
+              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
+            </td>
+            <td>{{::item.name}}</td>
+            <td>{{::item.packsize}}</td>
+            <td>{{::item.label}}</td>
+            <td class="input-col">
+              <input name="quantity" type="text" ng-model="item.quantity" class="input-number" integer>
+            </td>
+            <td class="input-col">
+              <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">
+            </td>
+            <td>
+              {{(item.each ? item.packageprice : item.caseprice) | currency}}
+            </td>
+            <td>
+              {{item.extprice | currency}}
+            </td>
+            <td>
+              <a ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
+            </td>
+          </tr>
+        </tbody>
+        <tfoot ng-show="items && items.length === 0">
+          <tr>
+            <td colspan="9">There are no items to display.</td>
+          </tr>
+        </tfoot>
+      </table>
+    </form>
+    <div class="text-center" loading-spinner="loadingResults"></div>
 
-          <td>
-            <a ng-click="removeRow(item)"><span class="large-icon text-red icon-cross"></span></a>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </form>
-  <div class="text-center" loading-spinner="loadingResults"></div>
-
-  
-
- 
+  </div>
+</div>

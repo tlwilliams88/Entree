@@ -409,6 +409,9 @@ angular.module('bekApp')
       url: '/reports/inventory',
       templateUrl: 'views/inventoryreport.html',
       controller: 'InventoryReportController',
+      data: {
+        authorize: 'canManageLists'
+      }
     })
 
 

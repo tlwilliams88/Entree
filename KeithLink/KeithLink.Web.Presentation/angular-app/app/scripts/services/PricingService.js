@@ -60,10 +60,13 @@ angular.module('bekApp')
       return subtotal;
     },
 
-    getSubtotalForItemsWithPrice: function(itemsWithPrice) {
+    getSubtotalForItemsWithPrice: function(itemsWithPrice, fieldName) {
+      if (!fieldName) {
+        fieldName = 'extPrice';
+      }
       var subtotal = 0;
       angular.forEach(itemsWithPrice, function(item, index) {
-        subtotal += item.extPrice;
+        subtotal += item[fieldName];
       });
       return subtotal;
     },
