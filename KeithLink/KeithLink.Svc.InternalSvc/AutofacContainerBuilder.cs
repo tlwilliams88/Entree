@@ -260,6 +260,8 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
+			builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
+
 
             return builder.Build();
         }

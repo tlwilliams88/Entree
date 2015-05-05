@@ -45,6 +45,12 @@
   <wsdl:message name="IProfileService_ResetPassword_OutputMessage">
     <wsdl:part name="parameters" element="tns:ResetPasswordResponse" />
   </wsdl:message>
+  <wsdl:message name="IProfileService_GeneratePasswordForNewUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:GeneratePasswordForNewUser" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_GeneratePasswordForNewUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GeneratePasswordForNewUserResponse" />
+  </wsdl:message>
   <wsdl:portType name="IProfileService">
     <wsdl:operation name="CreateDsrAlias">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/CreateDsrAlias" message="tns:IProfileService_CreateDsrAlias_InputMessage" />
@@ -69,6 +75,10 @@
     <wsdl:operation name="ResetPassword">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/ResetPassword" message="tns:IProfileService_ResetPassword_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/ResetPasswordResponse" message="tns:IProfileService_ResetPassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GeneratePasswordForNewUser">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/GeneratePasswordForNewUser" message="tns:IProfileService_GeneratePasswordForNewUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/GeneratePasswordForNewUserResponse" message="tns:IProfileService_GeneratePasswordForNewUser_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IProfileService" type="tns:IProfileService">
@@ -120,6 +130,15 @@
     </wsdl:operation>
     <wsdl:operation name="ResetPassword">
       <soap:operation soapAction="http://tempuri.org/IProfileService/ResetPassword" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GeneratePasswordForNewUser">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/GeneratePasswordForNewUser" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

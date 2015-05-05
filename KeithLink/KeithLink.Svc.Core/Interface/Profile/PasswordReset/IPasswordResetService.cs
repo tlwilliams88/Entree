@@ -10,6 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Profile.PasswordReset
 	public interface IPasswordResetService
 	{
 		void GeneratePasswordResetRequest(string email);
+		void GeneratePasswordForNewUser(string email);
 		bool IsTokenValid(string token);
 		bool ResetPassword(ResetPasswordModel resetPassword);
 	}

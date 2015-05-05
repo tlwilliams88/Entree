@@ -41,6 +41,11 @@ namespace KeithLink.Svc.InternalSvc
         public void GeneratePasswordResetRequest(string email) {
 			_passwordResetLogic.GeneratePasswordResetLink(email);
 		}
+
+		public void GeneratePasswordForNewUser(string email)
+		{
+			_passwordResetLogic.GenerateNewUserPasswordLink(email);
+		}
 		
 		public bool IsTokenValid(string token) {
 			return _passwordResetLogic.IsTokenValid(token);
