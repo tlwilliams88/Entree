@@ -23,7 +23,7 @@ angular.module('bekApp')
         ctrl.$validate();
       });
     },
-    EMAIL_REGEXP : /^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/
+    EMAIL_REGEXP : /^[a-z]+[a-z0-9-._]+@[a-z]+\.[a-z.]{2,5}$/
   };
 
   return directive;

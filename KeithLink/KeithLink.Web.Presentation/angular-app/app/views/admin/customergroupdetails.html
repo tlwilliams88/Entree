@@ -1,6 +1,11 @@
 <div page-header-bar>
   <div header-message>
     {{ isNew ? 'Add New Customer Group' : 'Customer Group Details' }}
+    <button type="button"
+      confirmed-click="deleteGroup(customerGroup.id)" 
+      class="hidden-print btn btn-sm btn-danger" 
+      ng-if="!isNew"
+      ng-confirm-click="{{'This will delete the customer group and remove all customer and user associations with this group. Are you sure you want to delete this customer group?'}}">Delete Group</button>
   </div>
   <div header-buttons></div>
 </div>
@@ -8,7 +13,7 @@
 <div class="page-content">
   <div class="row">
     <div class="col-md-6">
-      <form name="customerGroupDetailsForm" novalidate>
+      <form name="customerGroupDetailsForm" unsaved-warning-form novalidate>
         <div class="form-group">
           <label for="customerGroupName" class="control-label">Name</label>
           <span class="text-red" ng-show="customerGroupDetailsForm.customerGroupName.$dirty && customerGroupDetailsForm.customerGroupName.$error.required">Customer group name is required.</span>
@@ -19,7 +24,7 @@
     <div class="col-md-6" ng-if="!isNew">
       <h3>Admin Users</h3>
 
-      <form name="addNewAdminUserForm" class="form-inline search-form">
+      <form name="addNewAdminUserForm" class="form-inline search-form"  novalidate>
         <div class="text-red">
           {{addUserError}}
         </div>
@@ -77,21 +82,6 @@
           </span>
         </div>
       </form>     
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="form-group button-row">
-            <button 
-              type="button" 
-              ng-disabled="customerGroupDetailsForm.$invalid" 
-              class="btn btn-lg btn-primary" 
-              ng-click="submitForm(customerGroup)">
-              {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
-            </button>          
-            <button  ng-if="!(dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty)" type="button" class="btn btn-lg btn-danger"ui-sref="menu.admin.customergroup">Back</button>
-            <button  ng-if="dirty || customerGroupDetailsForm.$dirty || customerSearchForm.$dirty" type="button"  confirmed-click="goBack()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-lg btn-danger">Back</button>
-          </div>
-        </div>
-      </div>
 
       <div class="infiniteScroll">
         <table class="table no-margin table-border table-striped-rows" 
@@ -167,6 +157,20 @@
     </div>
   </div>
    <hr>
+   <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group button-row">
+        <button 
+          type="button" 
+          ng-disabled="customerGroupDetailsForm.$invalid" 
+          class="btn btn-lg btn-primary" 
+          ng-click="submitForm(customerGroup)">
+          {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
+        </button>          
+        <a ui-sref="menu.admin.customergroup" class="text-large">Back</a>
+      </div>
+    </div>
+  </div>
 </div>
   
   

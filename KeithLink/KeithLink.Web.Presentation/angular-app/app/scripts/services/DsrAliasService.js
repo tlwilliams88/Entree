@@ -8,17 +8,14 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('DsrAliasService', [ '$http', '$q', 'UtilityService',
-    function ($http, $q, UtilityService) {
+  .factory('DsrAliasService', [ '$http', 'UtilityService',
+    function ($http, UtilityService) {
 
     var Service = {
 
       getAliasesForCurrentUser: function() {
         var promise = $http.get('/profile/dsralias');
-        return UtilityService.resolvePromise(promise).then(function(response) {
-          console.log(response.data);
-          return response.data;
-        });
+        return UtilityService.resolvePromise(promise);
       },
 
       getAliasesForUser: function(userId) {
@@ -31,11 +28,12 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
-      deleteAlias: function(aliasId) {
+      deleteAlias: function(aliasId, email) {
         var promise = $http.delete('/profile/dsralias', { 
           headers: {'Content-Type': 'application/json'},
           data: {
-            dsrAliasId: aliasId
+            dsrAliasId: aliasId,
+            email: email
           }
          });
         return UtilityService.resolvePromise(promise);

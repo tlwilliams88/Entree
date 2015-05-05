@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel', 'DsrAliasService',
-    function ($scope, $state, $stateParams, $filter, UserProfileService, userProfile, userCustomers, CustomerPagingModel, DsrAliasService) {
+  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
+    function ($scope, $state, $stateParams, $filter, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
 
   $scope.groupId = $stateParams.groupId;
   
@@ -38,17 +38,8 @@ angular.module('bekApp')
     newProfile.role = newProfile.rolename;
     delete newProfile.rolename;
 
-    $scope.isInternalUser = newProfile.email.indexOf('@benekeith.com') > -1;
-
     $scope.profile = newProfile;
     $scope.profile.customers = userCustomers;
-
-    // get dsr aliases for internal users
-    if ($scope.isInternalUser) {
-      DsrAliasService.getAliasesForUser(userProfile.userid).then(function(aliases) {
-        $scope.dsrAliases = aliases;
-      });
-    }
   };
 
   function findSelectedCustomers(customers) {
@@ -117,6 +108,7 @@ angular.module('bekApp')
   $scope.deleteProfile = function (profile) {
     var customerGroupId = $stateParams.groupId;
     UserProfileService.removeUserFromCustomerGroup(profile.userid, customerGroupId).then(function(newProfile){
+      $scope.editUserForm.$setPristine();
       $scope.displayMessage('success', 'The user was successfully removed.');
       $state.go('menu.admin.customergroupdashboard', { customerGroupId: customerGroupId });
     }, function(error){
@@ -128,32 +120,6 @@ angular.module('bekApp')
     UserProfileService.changeProgramAccess(email, program, isGrantingAccess);
   };
 
-  /**********
-  DSR ALIAS EVENTS
-  **********/
-
-  $scope.addDsrAlias = function(dsrNumber) {
-    $scope.dsrAliasErrorMessage = '';
-    var alias = {
-      userId: userProfile.userid,
-      email: userProfile.email,
-      branchId: $scope.selectedUserContext.customer.customerBranch,
-      dsrNumber: dsrNumber
-    };
-
-    DsrAliasService.createAlias(alias).then(function(id) {
-      alias.id = id;
-      $scope.dsrAliases.push(alias);
-    }, function(errorMessage) {
-      $scope.dsrAliasErrorMessage = errorMessage;
-    });
-  };
-
-  $scope.removeDsrAlias = function(alias) {
-    DsrAliasService.deleteAlias(alias.id).then(function() {
-      $scope.dsrAliases.splice($scope.dsrAliases.indexOf(alias), 1);
-    });
-  };
 
   /**********
   CUSTOMERS
@@ -187,7 +153,8 @@ angular.module('bekApp')
     customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
   };
 
-    $scope.selectCustomer = function(customer) {
+  $scope.selectCustomer = function(customer) {
+    $scope.editUserForm.$setDirty();
     customer.isChecked = true;
     $scope.customers.forEach(function(customer) {
       if(customer.isChecked){    
@@ -217,7 +184,8 @@ angular.module('bekApp')
     }
   };
 
-    $scope.unselectCustomer = function(selectedCustomer) {
+  $scope.unselectCustomer = function(selectedCustomer) {
+    $scope.editUserForm.$setDirty();
     $scope.foundMatch = false;
     selectedCustomer.isChecked = true;
     $scope.profile.customers.forEach(function(availableCust){

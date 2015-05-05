@@ -255,7 +255,6 @@ angular.module('bekApp')
   **********/
 
   function refreshAccessPermissions(userProfile) {
-    $scope.displayRole = AccessService.getRoleDisplayString(userProfile.rolename);
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
     $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();
@@ -273,6 +272,5 @@ angular.module('bekApp')
     $scope.canEditUsers = AccessService.canEditUsers();
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
-    $scope.canEditDsrAliases = AccessService.canEditDsrAliases();
   }
 }]);

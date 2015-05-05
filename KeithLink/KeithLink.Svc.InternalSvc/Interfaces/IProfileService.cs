@@ -18,7 +18,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr);
 
         [OperationContract]
-        void DeleteDsrAlias(int dsrAliasId);
+        void DeleteDsrAlias(int dsrAliasId, string email);
 
 		[OperationContract]
 		void GeneratePasswordResetRequest(string email);

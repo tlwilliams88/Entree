@@ -136,6 +136,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			var customerFromCache = _customerCacheRepository.GetItem<Customer>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("{0}-{1}",customerNumber, branchId)));
 			if (customerFromCache != null)
 				return customerFromCache;
+            
 
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 			queryOrg.SearchCriteria.WhereClause = "u_organization_type = '0' AND u_customer_number = '" + customerNumber + "' AND u_branch_number = '" + branchId + "'"; // org type of customer
@@ -196,7 +197,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 DsrNumber = org.DsrNumber,
                 IsPoRequired = org.IsPoRequired.HasValue ? org.IsPoRequired.Value : false,
                 IsPowerMenu = org.IsPowerMenu.HasValue ? org.IsPowerMenu.Value : false,
-                NationalId = org.NationalAccountId,
                 // TODO - fill this in from real data source
                 Phone = org.PreferredAddress != null 
                             && !String.IsNullOrEmpty(org.PreferredAddress.Telephone)
@@ -206,6 +206,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 TermCode = org.TermCode,
 				KPayCustomer = org.AchType == "2" || org.AchType == "3",
 				Dsr = dsrs == null || dsrs.Count == 0 ? null : dsrs.Where(d => d.Branch.Equals(org.BranchNumber, StringComparison.CurrentCultureIgnoreCase) && d.DsrNumber.Equals(org.DsrNumber)).DefaultIfEmpty(dsrs.Where(s => s.DsrNumber.Equals("000")).FirstOrDefault()).FirstOrDefault()
+                
             };
 
             // fill in the address
@@ -224,14 +225,26 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return customer;
         }
 		
-		public List<Customer> GetCustomersForDSR(string dsrNumber, string branchId)
-		{
-			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsrNumber));
+		//public List<Customer> GetCustomersForDSR(string dsrNumber, string branchId)
+        public List<Customer> GetCustomersForDSR(List<Dsr> dsrList) {
+            //var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsrNumber));
+            List<Customer> customerFromCache = null;
+            foreach (Dsr d in dsrList) {
+                customerFromCache.AddRange(_customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(d.Branch + d.DsrNumber)));
+            }
+            
 			if (customerFromCache != null)
 				return customerFromCache;
 
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
-            queryOrg.SearchCriteria.WhereClause = "u_dsr_number = '" + dsrNumber + "' AND u_branch_number = '" + branchId + "'"; // org type of customer
+            //queryOrg.SearchCriteria.WhereClause = "u_dsr_number = '" + dsrNumber + "' AND u_branch_number = '" + branchId + "'"; // org type of customer
+
+            System.Text.StringBuilder whereText = new System.Text.StringBuilder();
+            for (int i = 0; i < dsrList.Count; i++) {
+                if (i>0) {whereText.Append(" OR ");}
+                whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
+            }
+            queryOrg.SearchCriteria.WhereClause = whereText.ToString();
 
 			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
             List<Customer> customers = new List<Customer>();
@@ -247,7 +260,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 					}
 				}
 
-				_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsrNumber), TimeSpan.FromHours(4), customers);
+				//_customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(dsrNumber), TimeSpan.FromHours(4), customers);
+                foreach (Dsr d in dsrList) {
+                    _customerCacheRepository.AddItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, 
+                                                                     GetCacheKey(d.Branch + d.DsrNumber), 
+                                                                     TimeSpan.FromHours(4), 
+                                                                     (from Customer c in customers
+                                                                      where c.CustomerBranch.Equals(d.Branch, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                            c.DsrNumber.Equals(d.DsrNumber, StringComparison.InvariantCultureIgnoreCase)
+                                                                      select c
+                                                                      ).ToList());
+                }
 			}
 
             return customers;
@@ -441,11 +464,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			return RetrievePagedResults(size, from, searchTerm, whereClause);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm)
+		//public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm)
+        public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string searchTerm, List<Dsr> dsrList)
 		{
-			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsr_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
-			
-			return RetrievePagedResults(size, from, searchTerm, whereClause);
+			//var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsr_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
+            System.Text.StringBuilder whereText = new System.Text.StringBuilder();
+            for (int i = 0; i < dsrList.Count; i++) {
+                if (i > 0) { whereText.Append(" OR "); }
+                whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
+            }
+            
+
+            //return RetrievePagedResults(size, from, searchTerm, whereClause);
+            return RetrievePagedResults(size, from, searchTerm, whereText.ToString());
 		}
 
 		public PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm)

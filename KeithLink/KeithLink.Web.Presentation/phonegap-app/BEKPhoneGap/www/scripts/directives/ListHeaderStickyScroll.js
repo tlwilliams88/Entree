@@ -34,7 +34,7 @@ angular.module('bekApp')
           clonedHeader.addClass('fsm-sticky-header');
           clonedHeader.css({
             position: 'fixed',
-            'z-index': 10000,
+            'z-index': 500,
             visibility: 'hidden'
           });                
           calculateSize();

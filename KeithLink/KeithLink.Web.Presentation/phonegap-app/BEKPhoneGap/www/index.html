@@ -6,6 +6,7 @@
     <title>Entree</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
     <meta name="google-translate-customization" content="5a38f0b9c30a1e39-6cd1be521a76df8d-gec30a383844c0600-14">
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(app) styles/vendor.css -->
@@ -16,11 +17,11 @@
     <link rel="stylesheet" href="lib/angular-carousel/angular-carousel.css" />
     <link rel="stylesheet" href="lib/c3/c3.css" />
     <!-- endbuild -->
-    <!-- build:css(.tmp) styles/main.css -->
+    <!-- build:css(.tmp) css/main.css -->
     <link rel="stylesheet" href="css/main.css">
     <!-- endbuild -->
   </head>
-  <body>
+  <body >
 
     <!--[if lt IE 9]>
     <p>Entree does not support older browsers. Please upgrade or use KeithNet.</p>
@@ -64,9 +65,13 @@
     <script src="lib/Filesaver/Filesaver.js"></script>
     <script src="lib/angular-sticky-header/fsm-sticky-header.js"></script>
     <script src="lib/angular-block-ui/angular-block-ui.js"></script>
+    <script src="lib/ng-sticky/sticky.min.js"></script>
+    <script src="lib/angulartics/angulartics.min.js"></script>
+    <script src="lib/angulartics/angulartics-ga-cordova.min.js"></script>
 
     <!-- endbuild -->
 
+     
     <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
     <script type="text/javascript" src="scripts/index.js"></script>
     <script>
@@ -77,6 +82,7 @@
             }, false);
         });
     </script>
+     
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script type="text/javascript" src="scripts/app.js"></script>
@@ -119,6 +125,7 @@
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/EditUserDetailsController.js"></script>
+    <script type="text/javascript" src="scripts/controllers/admin/EditInternalUserController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/ViewUserDetailsController.js"></script>
     <script type="text/javascript" src="scripts/controllers/admin/CustomerGroupDetailsController.js"></script>    
     <script type="text/javascript" src="scripts/controllers/admin/OrderManagementController.js"></script>
@@ -188,6 +195,7 @@
     <script type="text/javascript" src="scripts/services/ExportService.js"></script>
     <script type="text/javascript" src="scripts/services/BroadcastService.js"></script>
     <script type="text/javascript" src="scripts/services/SessionService.js"></script>
+    <script type="text/javascript" src="scripts/services/DsrAliasService.js"></script>
     <script type="text/javascript" src="scripts/resources/CartResource.js"></script>
     <script type="text/javascript" src="scripts/resources/InvoiceResource.js"></script>
     <script type="text/javascript" src="scripts/resources/ListResource.js"></script>

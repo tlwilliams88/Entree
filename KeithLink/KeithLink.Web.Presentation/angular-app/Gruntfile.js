@@ -42,7 +42,7 @@ module.exports = function (grunt) {
           },
           jsTest: {
               files: ['test/unit/{,*/}*.js'],
-              tasks: ['newer:jshint:test']
+              tasks: []//['newer:jshint:test']
           },
           compass: {
               files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}', '<%= yeoman.app %>/styles/**/*.{scss,sass}'],
@@ -467,7 +467,7 @@ module.exports = function (grunt) {
                     apiKey: '<%= config.environment.debug.apiKey %>',
                     apiEndpoint: '<%= config.environment.debug.apiEndpoint %>',
                     loggingEnabled: config.environment.debug.loggingEnabled,
-                    googleAnalytics: '<%= config.environment.debug.googleAnalytics %>',
+                    googleAnalytics: '<%= config.environment.debug.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.debug.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
@@ -482,7 +482,7 @@ module.exports = function (grunt) {
                     apiKey: '<%= config.environment.demo.apiKey %>',
                     apiEndpoint: '<%= config.environment.demo.apiEndpoint %>',
                     loggingEnabled: config.environment.demo.loggingEnabled,
-                    googleAnalytics: '<%= config.environment.demo.googleAnalytics %>',
+                    googleAnalytics: '<%= config.environment.demo.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.demo.cognosUrl %>',
                     mobileApp: false
                   }
@@ -495,7 +495,7 @@ module.exports = function (grunt) {
                     apiKey: '<%= config.environment.dev.apiKey %>',
                     apiEndpoint: '<%= config.environment.dev.apiEndpoint %>',
                     loggingEnabled: config.environment.dev.loggingEnabled,
-                    googleAnalytics: '<%= config.environment.dev.googleAnalytics %>',
+                    googleAnalytics: '<%= config.environment.dev.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.dev.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
@@ -510,7 +510,7 @@ module.exports = function (grunt) {
                     apiKey: '<%= config.environment.test.apiKey %>',
                     apiEndpoint: '<%= config.environment.test.apiEndpoint %>',
                     loggingEnabled: config.environment.test.loggingEnabled,
-                    googleAnalytics: '<%= config.environment.test.googleAnalytics %>',
+                    googleAnalytics: '<%= config.environment.test.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.test.cognosUrl %>',
                     mobileApp: false
                   }
@@ -523,7 +523,7 @@ module.exports = function (grunt) {
                     apiKey: '<%= config.environment.prod.apiKey %>',
                     apiEndpoint: '<%= config.environment.prod.apiEndpoint %>',
                     loggingEnabled: config.environment.prod.loggingEnabled,
-                    googleAnalytics: '<%= config.environment.prod.googleAnalytics %>',
+                    googleAnalytics: '<%= config.environment.prod.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.prod.cognosUrl %>',
                     mobileApp: false
                   }

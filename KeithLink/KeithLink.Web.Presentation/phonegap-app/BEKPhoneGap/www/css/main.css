@@ -8208,32 +8208,37 @@ table tr > td.input-col input[type="text"], table tr > th.input-col input[type="
   padding: 5px;
   width: 100%;
 }
-/* line 137, ../scss/components/_table.scss */
+/* line 135, ../scss/components/_table.scss */
+table tr > td.input-col .btn.btn-sm, table tr > td.input-col .btn-group-sm > .btn, table tr > th.input-col .btn.btn-sm, table tr > th.input-col .btn-group-sm > .btn {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+/* line 141, ../scss/components/_table.scss */
 table tr > td.icon-col, table tr > th.icon-col {
   padding: 7px 5px;
 }
-/* line 141, ../scss/components/_table.scss */
+/* line 145, ../scss/components/_table.scss */
 table tr > td.notes-col, table tr > th.notes-col {
   max-width: 100px;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
 }
-/* line 150, ../scss/components/_table.scss */
+/* line 154, ../scss/components/_table.scss */
 table tr.filter-row input {
   width: 100%;
 }
-/* line 155, ../scss/components/_table.scss */
+/* line 159, ../scss/components/_table.scss */
 table tr.mobile-details-row table {
   width: 100%;
 }
-/* line 157, ../scss/components/_table.scss */
+/* line 161, ../scss/components/_table.scss */
 table tr.mobile-details-row table > tbody > tr > td {
   padding-top: 5px;
 }
 
 @media print {
-  /* line 171, ../scss/components/_table.scss */
+  /* line 175, ../scss/components/_table.scss */
   .table > thead > tr > th,
   .table > thead > tr > td,
   .table > tbody > tr > th,
@@ -8243,36 +8248,36 @@ table tr.mobile-details-row table > tbody > tr > td {
     padding: 8px 3px;
   }
 
-  /* line 182, ../scss/components/_table.scss */
+  /* line 186, ../scss/components/_table.scss */
   table tr > td.input-col, table tr > th.input-col {
     padding: 5px 3px;
   }
-  /* line 185, ../scss/components/_table.scss */
+  /* line 189, ../scss/components/_table.scss */
   table tr > td.input-col input[type="text"], table tr > th.input-col input[type="text"] {
     border: 1px solid #c3bc9c;
     padding: 3px;
     width: 100%;
   }
-  /* line 192, ../scss/components/_table.scss */
+  /* line 196, ../scss/components/_table.scss */
   table tr > td.icon-col, table tr > th.icon-col {
     padding: 4px 3px;
   }
-  /* line 196, ../scss/components/_table.scss */
+  /* line 200, ../scss/components/_table.scss */
   table tr > td.notes-col, table tr > th.notes-col {
     max-width: 100px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  /* line 205, ../scss/components/_table.scss */
+  /* line 209, ../scss/components/_table.scss */
   table tr.filter-row input {
     width: 100%;
   }
-  /* line 210, ../scss/components/_table.scss */
+  /* line 214, ../scss/components/_table.scss */
   table tr.mobile-details-row table {
     width: 100%;
   }
-  /* line 212, ../scss/components/_table.scss */
+  /* line 216, ../scss/components/_table.scss */
   table tr.mobile-details-row table > tbody > tr > td {
     padding-top: 5px;
   }
@@ -8552,77 +8557,51 @@ form.style-validation-errors .form-error-message {
   white-space: nowrap;
 }
 
-/*.featured-item-mobile {
-
-
-  .carousel-counter{
-    display: none;
-  }
+/* line 32, ../scss/components/_featured-items.scss */
+.product-placeholder-image {
+  padding: 50px 39px;
 }
 
-.carousel-control.right, .carousel-control.left{
-  background-image: none;
-  color: $color-border;
-}
-
-.carousel-control{
-  .glyphicon-chevron-left,.glyphicon-chevron-right {
-    top: 38%;
-  }
-}
-
-.carousel-paging {
-  position: absolute;
-  z-index: 15;
-  list-style: none;
-  margin-top: -25px;
-  right: 0;
-  cursor: auto;
-
-  .showIndex {
-    display: none;
-  }
-}*/
-/* line 64, ../scss/components/_featured-items.scss */
+/* line 36, ../scss/components/_featured-items.scss */
 .featured-item-carousel {
   height: 84px;
   background-color: #fff;
   box-shadow: 0px 0px 10px #c3bc9c;
 }
-/* line 69, ../scss/components/_featured-items.scss */
+/* line 41, ../scss/components/_featured-items.scss */
 .featured-item-carousel img {
   height: 84px;
   max-width: 100%;
 }
-/* line 73, ../scss/components/_featured-items.scss */
+/* line 45, ../scss/components/_featured-items.scss */
 .featured-item-carousel img.product-placeholder-image {
   padding: 23px 15px;
 }
-/* line 78, ../scss/components/_featured-items.scss */
+/* line 50, ../scss/components/_featured-items.scss */
 .featured-item-carousel .featured-item-mobile__detail {
   text-align: left;
   padding: 25px 15px 25px 20px;
 }
-/* line 82, ../scss/components/_featured-items.scss */
+/* line 54, ../scss/components/_featured-items.scss */
 .featured-item-carousel .featured-item-mobile__detail a, .featured-item-carousel .featured-item-mobile__detail .nav-tabs li a:hover, .nav-tabs li .featured-item-carousel .featured-item-mobile__detail a:hover {
   font-size: 12px;
 }
 
-/* line 88, ../scss/components/_featured-items.scss */
+/* line 60, ../scss/components/_featured-items.scss */
 .carousel-index {
   margin-top: -25px;
   float: right;
 }
 
-/* line 93, ../scss/components/_featured-items.scss */
+/* line 65, ../scss/components/_featured-items.scss */
 .rn-carousel-controls {
   color: #c3bc9c;
 }
-/* line 95, ../scss/components/_featured-items.scss */
+/* line 67, ../scss/components/_featured-items.scss */
 .rn-carousel-controls .carousel-control-prev {
   left: 0.5em;
 }
-/* line 98, ../scss/components/_featured-items.scss */
+/* line 70, ../scss/components/_featured-items.scss */
 .rn-carousel-controls .carousel-control-next {
   right: 0.5em;
 }
@@ -9117,25 +9096,34 @@ form.style-validation-errors .form-error-message {
   color: #9E987E;
   text-decoration: none;
 }
-/* line 95, ../scss/components/_user-bar.scss */
+/* line 94, ../scss/components/_user-bar.scss */
+.user-bar-mobile ul li.tablet-menu-item {
+  display: inline-block;
+  padding: 5px 10px;
+  font-size: 24px;
+  color: #9E987E;
+  text-decoration: none;
+  height: 39px;
+}
+/* line 105, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.left-mobile-menu {
   float: left;
 }
-/* line 97, ../scss/components/_user-bar.scss */
+/* line 107, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.left-mobile-menu li.mobile-menu-item {
   border-right: 1px solid #c3bc9c;
 }
-/* line 101, ../scss/components/_user-bar.scss */
+/* line 111, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.right-mobile-menu {
   float: right;
 }
-/* line 104, ../scss/components/_user-bar.scss */
+/* line 114, ../scss/components/_user-bar.scss */
 .user-bar-mobile ul.right-mobile-menu li.mobile-menu-item {
   border-left: 1px solid #c3bc9c;
 }
 
 @media (max-width: 991px) {
-  /* line 111, ../scss/components/_user-bar.scss */
+  /* line 121, ../scss/components/_user-bar.scss */
   .hide-searchbar {
     display: none;
   }
@@ -9808,16 +9796,12 @@ ul.horizontal-slide {
 ul.horizontal-slide .item-holder {
   display: inline-block;
 }
-/* line 12, ../scss/pages/_catalog.scss */
-ul.horizontal-slide .product-placeholder-image {
-  padding: 50px 39px;
-}
 
-/* line 18, ../scss/pages/_catalog.scss */
+/* line 14, ../scss/pages/_catalog.scss */
 .catalog-search input {
   font-size: 14px;
 }
-/* line 22, ../scss/pages/_catalog.scss */
+/* line 18, ../scss/pages/_catalog.scss */
 .catalog-search input, .catalog-search button {
   height: 60px;
 }
@@ -10361,14 +10345,6 @@ ul.horizontal-slide .product-placeholder-image {
   /* line 150, ../scss/pages/_lists.scss */
   table.custom-lists__table tbody tr:hover td {
     background-color: #EBE7D9;
-  }
-}
-@media (min-width: 992px) {
-  /* line 156, ../scss/pages/_lists.scss */
-  .list-form {
-    height: 523px;
-    overflow-y: auto;
-    overflow-x: auto;
   }
 }
 @media (max-width: 991px) {

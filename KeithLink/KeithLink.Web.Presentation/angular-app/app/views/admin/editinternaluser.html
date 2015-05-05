@@ -1,0 +1,106 @@
+<div page-header-bar>
+  <div header-message>
+    Update Internal User Profile
+  </div>
+  <div header-buttons>
+
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="row">
+        <label for="firstName" class="col-md-2 control-label">First Name</label>
+
+        <div class="col-md-4">
+          {{::profile.firstname}}
+        </div>
+        <label for="lastName" class="col-md-2 control-label">Last Name</label>
+
+        <div class="col-md-4">
+          {{::profile.lastname}}
+        </div>
+      </div>
+      <div class="row">
+        <label for="emailAddress" class="col-md-2 control-label">Email</label>
+
+        <div class="col-md-10">
+          {{::profile.emailaddress}}
+        </div>
+      </div>
+      <div class="row">
+        <label for="phoneNumber" class="col-md-2 control-label">Phone</label>
+
+        <div class="col-md-4">
+          {{::profile.phonenumber}}
+        </div>
+      </div>
+        
+      <div class="row">
+        <label for="userRole" class="col-md-2 control-label">User Role</label>
+        <div class="col-md-4">
+          {{::profile.displayRole}}
+        </div>
+      
+      </div>
+
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-md-6 col-xs-12">
+      <h3>DSR Aliases</h3>
+
+      <form class="form-horizontal style-validation-errors" name="dsrAliasForm">
+        <p ng-show="(dsrAliasForm.dsrNumber.$error.minlength || dsrAliasForm.dsrNumber.$error.maxlength) && dsrAliasForm.dsrNumber.$dirty" class="text-red">Please enter a valid DSR Number</p>
+        <p ng-show="dsrAliasErrorMessage" class="text-red">{{dsrAliasErrorMessage}}</p>
+        <table class="table no-margin table-border table-striped-rows">
+          <thead>
+            <tr>
+              <th>Branch</th>
+              <th>DSR Number</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tr ng-repeat="alias in dsrAliases" ng-class="{ odd : $odd, even: $even }">
+            <td>{{alias.branchId}}</td>
+            <td>{{alias.dsrNumber}}</td>
+            <td class="input-col">
+              <button type="button" ng-click="removeDsrAlias(alias, profile.emailaddress)" class="btn btn-danger">Remove Alias</button>
+            </td>
+          </tr>
+          <tfoot>
+            <tr>
+              <td>
+                <select required name="branch" id="branch" class="form-control" ng-options="branch.id as branch.id for branch in branches" ng-model="branchId">
+                  <option value="">Select a branch</option>
+                </select>
+              </td>
+              <td>
+                <input 
+                type="text" 
+                class="form-control form-control-lg" 
+                id="dsrNumber" 
+                name="dsrNumber"
+                ng-model="dsrAliasNumber"
+                ng-minlength="3"
+                ng-maxlength="3"
+                required 
+                integer>
+              </td>
+              <td>
+                <button class="btn btn-primary" ng-disabled="dsrAliasForm.$invalid" ng-click="addDsrAlias(branchId, dsrAliasNumber)" type="submit">Add Alias</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </form>
+
+      <div class="clearfix sub-content"></div>
+      <a ui-sref="menu.admin.customergroup" style="font-size: 14px;"><span class="icon-arrow-left6"></span> Back</a>
+    </div>
+  </div>
+</div>

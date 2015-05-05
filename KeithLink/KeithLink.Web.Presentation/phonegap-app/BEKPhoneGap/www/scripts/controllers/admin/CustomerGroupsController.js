@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupsController', ['$scope', 'CustomerGroupService', 'PagingModel',
+  .controller('CustomerGroupsController', ['$scope', '$state', 'CustomerGroupService', 'PagingModel',
     function (
       $scope, // angular
+      $state,
       CustomerGroupService, PagingModel // custom bek service
     ) {
 
@@ -51,6 +52,9 @@ angular.module('bekApp')
   customerGroupsPagingModel.loadData();
     
   $scope.searchCustomerGroups = function(searchObj) {
+    customerGroupsPagingModel.setFilter();
+    customerGroupsPagingModel.setAdditionalParams();
+
     if (searchObj.field === 'customergroup') {
       customerGroupsPagingModel.filterData({ name: searchObj.term });
     } else {
@@ -69,6 +73,17 @@ angular.module('bekApp')
 
   $scope.infiniteScrollLoadMore = function() {
     customerGroupsPagingModel.loadMoreData($scope.customerGroups, $scope.totalGroups, $scope.loadingResults);
+  };
+
+  $scope.goToInternalUser = function(email) {
+    $scope.findInternalUserError = '';
+
+    if (email.indexOf('@benekeith.com') === -1) {
+      $scope.findInternalUserError = 'Please enter an internal email address.';
+      return;
+    }
+
+    $state.go('menu.admin.editinternaluser', {email: email});
   };
 
 }]);

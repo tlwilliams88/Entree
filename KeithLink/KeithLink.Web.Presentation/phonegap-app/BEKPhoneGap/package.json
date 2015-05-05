@@ -16,6 +16,7 @@
     "grunt-contrib-sass": "~0.7.3",
     "grunt-contrib-watch": "~0.4.0",
     "grunt-ng-constant": "^1.1.0",
-    "grunt-phonegap": "~0.15.2"
+    "grunt-phonegap": "~0.15.2",
+    "grunt-replace": "^0.9.1"
   }
 }

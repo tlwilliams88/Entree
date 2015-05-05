@@ -52,6 +52,18 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return new Guid(res.CommerceEntity.Id);
         }
 
+		public void DeleteAccount(string deletedBy, Guid accountId)
+		{
+			var deleteOrg = new CommerceServer.Foundation.CommerceDelete<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+
+			deleteOrg.SearchCriteria.Model.Id = accountId.ToCommerceServerFormat();
+			deleteOrg.DeleteOptions.ReturnDeletedCount = true;
+
+			CommerceCreateOperationResponse res = Svc.Impl.Helpers.FoundationService.ExecuteRequest(deleteOrg.ToRequest()).OperationResponses[0] as CommerceCreateOperationResponse;
+			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.CustomerGroupDeleted, deletedBy, accountId.ToString());
+		}
+
+
         public Guid UpdateAccount(string name, Guid accountId) {
             KeithLink.Svc.Core.Models.Generated.SiteTerm orgTypes = GetOrganizationTypes();
             string accountOrgTypeId = orgTypes.Elements.Where(o => o.DisplayName == "Account").FirstOrDefault().Id;

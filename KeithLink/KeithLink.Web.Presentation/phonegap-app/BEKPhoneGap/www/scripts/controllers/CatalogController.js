@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'BrandService', 'ListService',
-    function ($scope, $state, CategoryService, ProductService, BrandService, ListService) {
+  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'BrandService', 'ListService', 'ENV',
+    function ($scope, $state, CategoryService, ProductService, BrandService, ListService, ENV) {
     
     $scope.myInterval = -1;
 
@@ -17,6 +17,8 @@ angular.module('bekApp')
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
+    $scope.isMobile = ENV.mobileApp;
+    $scope.glossaryUrl = "/Assets/help/Glossary.pdf";
 
     ProductService.getRecentlyViewedItems().then(function(items) {
       $scope.loadingRecentlyViewedItems = false;
