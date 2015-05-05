@@ -84,6 +84,15 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 								org.SetPropertyValue("BalanceAge4", dataReader.GetNullableDecimal("u_balance_age_4"));
 								org.SetPropertyValue("AmountDue", dataReader.GetNullableDecimal("u_amount_due"));
 								org.SetPropertyValue("AchType", dataReader.GetString("u_customer_ach_type"));
+                                org.SetPropertyValue("DsmNumber", dataReader.GetString("u_dsm_number"));
+                                org.SetPropertyValue("NationalId", dataReader.GetString("u_national_id"));
+                                org.SetPropertyValue("NationalNumber", dataReader.GetString("u_national_number"));
+                                org.SetPropertyValue("NationalSubNumber", dataReader.GetString("u_national_sub_number"));
+                                org.SetPropertyValue("RegionalId", dataReader.GetString("u_regional_id"));
+                                org.SetPropertyValue("RegionalNumber", dataReader.GetString("u_regional_number"));
+                                org.SetPropertyValue("IsKeithnetCustomer", dataReader.GetString("u_is_keithnet_customer"));
+
+
 								org.SetPropertyValue("GeneralInfo.preferred_address", dataReader.GetString("u_preferred_address"));
 								response.CommerceEntities.Add(org);
 
