@@ -50,6 +50,11 @@
           </button>
           <button
             class="btn-no-style"
+            ng-click="openExternalLink(userGuideUrl)">
+            <li>User Guide</li>
+          </button>
+          <button
+            class="btn-no-style"
             ng-click="logout()">
             <li>Sign Out</li>
           </button>
@@ -184,6 +189,11 @@
            }
        </script>
       <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+      <div>
+        <!-- <a href="https://play.google.com/store/apps/details?id=com.benekeith.entreeprod" target="_blank">iOS App</a>
+        <span class="icon-dot"></span> -->
+        <a href="https://play.google.com/store/apps/details?id=com.benekeith.entreeprod" target="_blank">Android App</a>
+      </div>
       <span style="display:block;">Copyright 2015 Ben E. Keith</span>
       <a href="#">benekeith.com</a>
     </div>
@@ -231,20 +241,25 @@
       </div>
 
     <div class="row hidden-md hidden-lg mobile-user-context"> 
-      <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
-    
+      <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>    
       <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
       </div>
     </div>
 
-      <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }">
-        <div class="col-md-4 hidden-xs hidden-sm" ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">
-          <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>
-          
+      <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }" >
+
+         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;">
+           <ul style="float: left;">
+            <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()" ><li class="tablet-menu-item" ><span title="Back" class="icon-back"></span></li></a>
+          </ul>
+         </div>
+
+        <div class="col-md-3 hidden-xs hidden-sm"  ng-hide="$state.includes('menu.admin') || $state.includes('menu.transaction') || $state.includes('menu.notifications')">         
+          <select class="input-lg form-control" ng-if="::!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select> 
           <div ui-select2="customerSelectOptions" ng-if="::isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
           </div>
-
         </div>
+
         <div class="col-md-4">
           <form name="universalSearchForm" novalidate ng-if="::canBrowseCatalog">
             <div class="input-group input-group-lg">
@@ -256,7 +271,8 @@
             </div>
           </form>
         </div>
-        <div class="col-md-4 hidden-sm hidden-xs text-right nowrap pull-right">
+
+        <div class="col-md-4 hidden-sm hidden-xs text-right nowrap pull-right" style="margin-left:none; padding-left:none;">
           <div>
             <a ng-if="::isOrderEntryCustomer" ui-sref="menu.notifications" class="text-regular"><span class="user-bar__notification badge-parent">
               <span class="icon-bell"></span>
@@ -269,6 +285,7 @@
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                   <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
+                  <button class="btn btn-lg btn-default"><a target="_tab" href="/Assets/help/User_Guide.pdf" title="Users Guide" style="color:#504938;">Users Guide</a></button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>
               </div>
@@ -279,6 +296,7 @@
             </div>
           </div>
         </div>
+
       </div>
 
       <div class="view" ui-view="">

@@ -26,9 +26,6 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "nationalOrRegionalAccountNumber")]
         public string NationalOrRegionalAccountNumber { get; set; }
 
-        [DataMember(Name = "customerNationalId")]
-        public string NationalId { get; set; }
-
         [DataMember(Name = "dsrNumber")]
         public string DsrNumber { get; set; }
 
@@ -77,6 +74,20 @@ namespace KeithLink.Svc.Core.Models.Profile
 
 		[DataMember(Name = "kpay")]
 		public bool KPayCustomer { get; set; }
+
+        [DataMember(Name = "nationalId")]
+        public string NationalId { get; set; }
+        [DataMember(Name = "nationalNumber")]
+        public string NationalNumber { get; set; }
+        [DataMember(Name = "nationalSubNumber")]
+        public string NationalSubNumber { get; set; }
+        [DataMember(Name = "regionalId")]
+        public string RegionalId { get; set; }
+        [DataMember(Name = "regionalNumber")]
+        public string RegionalNumber { get; set; }
+        [DataMember(Name = "isKeithnetCustomer")]
+        public bool IsKeithNetCustomer { get; set; }
+
     }
 
 }

@@ -72,6 +72,7 @@ angular.module('bekApp')
           }
           var profile = response.data.userProfiles[0];
           $log.debug(profile);
+          profile.displayRole = AccessService.getRoleDisplayString(profile.rolename);
           Service.updateDisplayName(profile);  
           return profile;
         });

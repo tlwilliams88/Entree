@@ -10,7 +10,7 @@
 <div class="page-content">
   <div class="row">
     <div class="col-md-8">
-      <form class="form-horizontal style-validation-errors" name="editUserForm">
+      <form class="form-horizontal style-validation-errors" name="editUserForm" novalidate unsaved-warning-form novalidate>
         <div class="form-group">
           <label for="firstName" class="col-md-2 control-label">First Name</label>
 
@@ -58,7 +58,8 @@
           </div>
         
         </div>
-
+      </form>
+      <form class="form-horizontal style-validation-errors" name="editUserPermissionsForm">
         <div class="form-group" ng-if="canGrantAccessToOtherServices">
           <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
           <div class="col-md-4">
@@ -68,14 +69,10 @@
         </div>
         <div class="form-group" ng-if="canGrantAccessToOtherServices">
           <label for="powerMenuAccess" class="col-md-2 control-label">Power Menu Access</label>
-          <div class="col-md-4">
+          <div class="col-md-2">
             <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" />
           </div>
-        
-        </div>
-
-        <div>
-          <a ng-if="profile.powermenupermissionslink" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
+          <a ng-if="profile.powermenupermissionslink" class="col-md-4 btn-link" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
         </div>
 
         <a 
@@ -182,7 +179,7 @@
   <div class="form-group sub-content">
     <div class="col-md-6 button-row">
       <button type="button" ng-click="updateProfile()" class="btn btn-lg btn-primary">Save Updates</button>
-      <a ui-sref="menu.admin.customergroupdashboard({customerGroupId: groupId})">Cancel</a>
+      <a class="text-large" ui-sref="menu.admin.customergroupdashboard({customerGroupId: groupId})">Back</a>
     </div>
   </div>
   

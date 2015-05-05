@@ -15,16 +15,22 @@
       "loggingEnabled": true,
       "username": "sabroussard@somecompany.com",
       "password": "L1ttleStev1e",
-      "googleAnalytics": "UA-58495462-2",
-      "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm"
+      "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
     },
 	"demo": {
       "name": "demo",
       "apiKey": "web_test_v1",
       "apiEndpoint": "https://shopapistaging.benekeith.com",
       "loggingEnabled": false,
-      "googleAnalytics": "UA-58495462-2",
-	  "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm"
+      "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
     },
     "dev": {
       "name": "dev",
@@ -33,17 +39,23 @@
       "loggingEnabled": true,
       "username": "sabroussard@somecompany.com",
       "password": "L1ttleStev1e",
-      "googleAnalytics": "UA-58495462-2",
-      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm"
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
     },
     "test": {
       "name": "test",
       "apiKey": "web_test_v1",
       "apiEndpoint": "https://shopqa.benekeith.com/api",
       "loggingEnabled": true,
-      "googleAnalytics": "UA-58495462-2",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
-      "iosStoreId": "com.benekeith.entree"
+      "phonegapAppId": "com.benekeith.entree",
+      "googleAnalytics": {
+        "web": "UA-58495462-2",
+        "mobile": "UA-58495462-4"
+      }
     },
     "prod": {
       "name": "prod",
@@ -51,15 +63,21 @@
 	    "apiEndpoint": "https://shop.benekeith.com/api",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "loggingEnabled": false,
-      "googleAnalytics": "UA-58495462-1",
-      "iosStoreId": "com.benekeith.entreeprod"
+      "phonegapAppId": "com.benekeith.entreeprod",
+      "googleAnalytics": {
+        "web": "UA-58495462-1",
+        "mobile": "UA-58495462-3"
+      }
     },
     "stage": {
       "name": "stage",
       "apiKey": "web_stage_v1",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "loggingEnabled": false,
-      "googleAnalytics": "UA-58495303-1"
+      "googleAnalytics": {
+        "web": "UA-58495303-1",
+        "mobile": "UA-58495462-4"
+      }
     }
   },
   "build": {

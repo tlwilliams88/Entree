@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel',
-    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, Constants, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', '$analytics',
+    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, $analytics) {
     
     // redirect to url with correct parameters
     var basketId;
@@ -272,6 +272,7 @@ angular.module('bekApp')
 
     var processingSaveCart = false;
     function createNewCart(items, shipDate, name) {
+      $analytics.eventTrack('Create Order', {  category: 'Orders', label: 'From List' });
       if (!processingSaveCart) {
         processingSaveCart = true;
         CartService.createCart(items, shipDate, name).then(function(cart) {

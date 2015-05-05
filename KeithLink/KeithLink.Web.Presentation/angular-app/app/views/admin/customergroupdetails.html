@@ -1,6 +1,11 @@
 <div page-header-bar>
   <div header-message>
     {{ isNew ? 'Add New Customer Group' : 'Customer Group Details' }}
+    <button type="button"
+      confirmed-click="deleteGroup(customerGroup.id)" 
+      class="hidden-print btn btn-sm btn-danger" 
+      ng-if="!isNew"
+      ng-confirm-click="{{'This will delete the customer group and remove all customer and user associations with this group. Are you sure you want to delete this customer group?'}}">Delete Group</button>
   </div>
   <div header-buttons></div>
 </div>
@@ -162,7 +167,7 @@
           ng-click="submitForm(customerGroup)">
           {{isNew ? 'Create New Customer Group' : 'Save Customer Group'}}
         </button>          
-        <a class="btn btn-lg btn-danger" ui-sref="menu.admin.customergroup">Back</a>
+        <a ui-sref="menu.admin.customergroup" class="text-large">Back</a>
       </div>
     </div>
   </div>

@@ -239,4 +239,14 @@ angular.module('bekApp')
     }
   };
 
+  $scope.deleteGroup = function(id) {
+    CustomerGroupService.deleteGroup(id).then(function() {
+      $scope.customerGroupDetailsForm.$setPristine();
+      $state.go('menu.admin.customergroup');
+      $scope.displayMessage('success', 'Successfully deleted customer group.');
+    }, function() {
+      $scope.displayMessage('error', 'Error deleting customer group.');
+    })
+  };
+
 }]);
