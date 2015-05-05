@@ -212,7 +212,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 , NationalSubNumber = org.NationalSubNumber
                 , RegionalId = org.RegionalId
                 , RegionalNumber = org.RegionalNumber
-                , IsKeithNetCustomer = org.IsKeithnetCustomer.ToLower() == "y" ? true : false
+                , IsKeithNetCustomer = org.IsKeithnetCustomer !=null && org.IsKeithnetCustomer.ToLower() == "y" ? true : false
                 
             };
 
