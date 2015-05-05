@@ -7950,6 +7950,120 @@ public partial class Organization : ICommerceEntity
 	}
 
 
+    /// <summary>
+    /// Gets or sets the NationalId property.
+    /// </summary>
+    /// <value>
+    /// The NationalId property from the property collection.
+    /// </value>
+    public virtual string NationalId
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.NationalId) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.NationalId, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the NationalNumber property.
+    /// </summary>
+    /// <value>
+    /// The NationalNumber property from the property collection.
+    /// </value>
+    public virtual string NationalNumber
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.NationalNumber) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.NationalNumber, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the NationalSubNumber property.
+    /// </summary>
+    /// <value>
+    /// The NationalSubNumber property from the property collection.
+    /// </value>
+    public virtual string NationalSubNumber
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.NationalSubNumber) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.NationalSubNumber, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the RegionalId property.
+    /// </summary>
+    /// <value>
+    /// The RegionalId property from the property collection.
+    /// </value>
+    public virtual string RegionalId
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.RegionalId) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.RegionalId, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the RegionalNumber property.
+    /// </summary>
+    /// <value>
+    /// The RegionalNumber property from the property collection.
+    /// </value>
+    public virtual string RegionalNumber
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.RegionalNumber) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.RegionalNumber, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the IsKeithnetCustomer property.
+    /// </summary>
+    /// <value>
+    /// The IsKeithnetCustomer property from the property collection.
+    /// </value>
+    public virtual string IsKeithnetCustomer
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.IsKeithnetCustomer) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.IsKeithnetCustomer, value);
+        }
+    }
+
 	/// <summary>
     /// Gets or sets the ProfileSystemuserIdChangedBy property.
     /// </summary>
@@ -8162,8 +8276,37 @@ public partial class Organization : ICommerceEntity
         /// </summary>
 		public const string AchType = "AchType";
 
+        /// <summary>
+        /// Constant for accessing NationalId property.
+        /// </summary>
+        public const string NationalId = "NationalId";
 
-		/// <summary>
+        /// <summary>
+        /// Constant for accessing NationalNumber property.
+        /// </summary>
+        public const string NationalNumber = "NationalNumber";
+
+        /// <summary>
+        /// Constant for accessing NationalSubNumber property.
+        /// </summary>
+        public const string NationalSubNumber = "NationalSubNumber";
+
+        /// <summary>
+        /// Constant for accessing RegionalId property.
+        /// </summary>
+        public const string RegionalId = "RegionalId";
+
+        /// <summary>
+        /// Constant for accessing RegionalNumber property.
+        /// </summary>
+        public const string RegionalNumber = "RegionalNumber";
+
+        /// <summary>
+        /// Constant for accessing IsKeithnetCustomer property.
+        /// </summary>
+        public const string IsKeithnetCustomer = "IsKeithnetCustomer";
+
+        /// <summary>
         /// Constant for accessing ProfileSystem.user_id_changed_by property.
         /// </summary>
 		public const string ProfileSystemuserIdChangedBy = "ProfileSystem.user_id_changed_by";
