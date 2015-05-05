@@ -421,12 +421,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 				var printModel = list.ToReportModel();
 
-				//TODO: Cleanup, some is test code
 				ReportViewer rv = new ReportViewer();
 
 				rv.ProcessingMode = ProcessingMode.Local;
-				//rv.LocalReport.ReportPath = "Report1.rdlc";
-
+				
 				Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
 				Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
 				rv.LocalReport.LoadReportDefinition(rdlcStream);

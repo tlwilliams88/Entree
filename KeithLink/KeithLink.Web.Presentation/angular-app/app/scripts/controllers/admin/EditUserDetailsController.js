@@ -108,6 +108,7 @@ angular.module('bekApp')
   $scope.deleteProfile = function (profile) {
     var customerGroupId = $stateParams.groupId;
     UserProfileService.removeUserFromCustomerGroup(profile.userid, customerGroupId).then(function(newProfile){
+      $scope.editUserForm.$setPristine();
       $scope.displayMessage('success', 'The user was successfully removed.');
       $state.go('menu.admin.customergroupdashboard', { customerGroupId: customerGroupId });
     }, function(error){
@@ -152,7 +153,8 @@ angular.module('bekApp')
     customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
   };
 
-    $scope.selectCustomer = function(customer) {
+  $scope.selectCustomer = function(customer) {
+    $scope.editUserForm.$setDirty();
     customer.isChecked = true;
     $scope.customers.forEach(function(customer) {
       if(customer.isChecked){    
@@ -182,7 +184,8 @@ angular.module('bekApp')
     }
   };
 
-    $scope.unselectCustomer = function(selectedCustomer) {
+  $scope.unselectCustomer = function(selectedCustomer) {
+    $scope.editUserForm.$setDirty();
     $scope.foundMatch = false;
     selectedCustomer.isChecked = true;
     $scope.profile.customers.forEach(function(availableCust){

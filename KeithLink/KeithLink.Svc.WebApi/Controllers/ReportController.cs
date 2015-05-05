@@ -18,15 +18,17 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         IReportServiceRepository reportServiceRepository;
 		private readonly IExportSettingServiceRepository exportSettingRepository;
+		private readonly IInventoryValuationReportLogic inventoryValuationReportLogic;
        
         #endregion
 
         #region ctor
-		public ReportController(IReportServiceRepository reportServiceRepository, IUserProfileLogic profileLogic, IExportSettingServiceRepository exportSettingRepository)
+		public ReportController(IReportServiceRepository reportServiceRepository, IUserProfileLogic profileLogic, IExportSettingServiceRepository exportSettingRepository, IInventoryValuationReportLogic inventoryValuationReportLogic)
             : base(profileLogic)
         {
             this.reportServiceRepository = reportServiceRepository;
 			this.exportSettingRepository = exportSettingRepository;
+			this.inventoryValuationReportLogic = inventoryValuationReportLogic;
         }
         #endregion
 
@@ -61,7 +63,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("report/itemusage/export")]
-		public HttpResponseMessage ExportList([FromUri] ItemUsageReportQueryModel usageQuery, ExportRequestModel exportRequest)
+		public HttpResponseMessage ExportItemUsage([FromUri] ItemUsageReportQueryModel usageQuery, ExportRequestModel exportRequest)
 		{
 			if (usageQuery != null && usageQuery.fromDate.HasValue && usageQuery.toDate.HasValue)
 			{
@@ -89,6 +91,29 @@ namespace KeithLink.Svc.WebApi.Controllers
 		}
 
 
+		/// <summary>
+		/// Retrieve Inventory Valuation report
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		[HttpPost]
+		[ApiKeyedRoute("report/inventoryvalue")]
+		public HttpResponseMessage GenerateInventoryValuationReport(InventoryValuationRequestModel request)
+		{
+			var stream = inventoryValuationReportLogic.GenerateReport(request);
+
+			HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+			result.Content = new StreamContent(stream);
+			result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+
+			if (request.ReportFormat.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			else
+				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+
+			return result;
+		}
+		
         #endregion
 
     }

@@ -255,7 +255,6 @@ angular.module('bekApp')
   **********/
 
   function refreshAccessPermissions(userProfile) {
-    $scope.displayRole = AccessService.getRoleDisplayString(userProfile.rolename);
     $scope.isLoggedIn = AccessService.isLoggedIn();
     $scope.isOrderEntryCustomer = AccessService.isOrderEntryCustomer();
     $scope.isInternalAccountAdminUser = AccessService.isInternalAccountAdminUser();

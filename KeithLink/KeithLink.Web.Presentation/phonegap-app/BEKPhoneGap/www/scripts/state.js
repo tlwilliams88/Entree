@@ -414,6 +414,19 @@ angular.module('bekApp')
       template: '<ui-view>'
     })
 
+    .state('menu.admin.editinternaluser', {
+      url: 'user/:email/',
+      templateUrl: 'views/admin/editinternaluser.html',
+      controller:'EditInternalUserController',
+      data: {
+        authorize: 'canEditInternalUsers'
+      },
+      resolve: {
+        userProfile : ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+          return UserProfileService.getUserProfile($stateParams.email);
+        }]
+      }
+    })
     .state('menu.admin.user', {
       url: 'customergroup/:groupId/user/:email/',
       abstract: true,
