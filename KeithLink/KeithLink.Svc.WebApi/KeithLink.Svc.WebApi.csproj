@@ -236,6 +236,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Lists.ListCopyResultModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.EF.DsrAlias.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Profile.DsrAliasModel.datasource" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
@@ -416,12 +417,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.ProfileService\ProfileService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService31.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.ReportService\ReportService.disco" />

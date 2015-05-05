@@ -12,18 +12,22 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
     public class NoDsrAliasServiceImpl : IDsrAliasService {
         #region IDsrAliasService Members
 
-        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+        public DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             throw new NotImplementedException();
         }
 
-        public void DeleteDsrAlias(int dsrAliasId, string email) {
-            throw new NotImplementedException();
-        }
+      
 
-        public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {
+        public List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId) {
             throw new NotImplementedException();
         }
 
         #endregion
-    }
+
+
+		public void DeleteDsrAlias(long dsrAliasId, string email)
+		{
+			throw new NotImplementedException();
+		}
+	}
 }

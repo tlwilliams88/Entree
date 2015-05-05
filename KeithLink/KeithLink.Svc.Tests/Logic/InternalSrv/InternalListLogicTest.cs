@@ -151,7 +151,7 @@ namespace KeithLink.Svc.Test.Logic
 		public void UpdateItem()
 		{
 			var list = listLogic.ReadList(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext, 1);
-			listLogic.UpdateItem(list.Items[0]);
+			//listLogic.UpdateItem(list.Items[0]);
 		}
 		
 		[TestMethod]

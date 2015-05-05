@@ -57,7 +57,7 @@ namespace KeithLink.Svc.Test
 			//*******************************************
 			//Mock Items
 			//*******************************************
-			builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>();
+			builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
 
 			//*******************************************
             //Logic Classes
@@ -68,7 +68,7 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
-            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
 					
 			//*******************************************
 			//Repositories

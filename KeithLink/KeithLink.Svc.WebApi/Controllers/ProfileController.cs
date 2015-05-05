@@ -909,8 +909,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [ApiKeyedRoute("profile/dsralias")]
-        public OperationReturnModel<DsrAlias> CreateDsrAlias(DsrAliasModel model) {
-            OperationReturnModel<DsrAlias> retVal = new OperationReturnModel<DsrAlias>();
+        public OperationReturnModel<DsrAliasModel> CreateDsrAlias(DsrAliasModel model) {
+			OperationReturnModel<DsrAliasModel> retVal = new OperationReturnModel<DsrAliasModel>();
 
             try {
                 retVal.SuccessResponse = _profileLogic.CreateDsrAlias(model.UserId, model.Email, new Dsr() { Branch = model.BranchId, DsrNumber = model.DsrNumber });
@@ -937,7 +937,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                _profileLogic.DeleteDsrAlias(model.DsrAliasId, model.Email);
+                _profileLogic.DeleteDsrAlias(model.Id, model.Email);
 
                 retVal.SuccessResponse = true;
             } catch (Exception ex) {
@@ -958,8 +958,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile/dsralias")]
-        public OperationReturnModel<List<DsrAlias>> GetDsrAliases() {
-            OperationReturnModel<List<DsrAlias>> retVal = new OperationReturnModel<List<DsrAlias>>();
+		public OperationReturnModel<List<DsrAliasModel>> GetDsrAliases()
+		{
+			OperationReturnModel<List<DsrAliasModel>> retVal = new OperationReturnModel<List<DsrAliasModel>>();
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetAllDsrAliasesByUserId(AuthenticatedUser.UserId);
@@ -982,8 +983,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile/dsralias/{userId}")]
-        public OperationReturnModel<List<DsrAlias>> GetDsrAliases(Guid userId) {
-            OperationReturnModel<List<DsrAlias>> retVal = new OperationReturnModel<List<DsrAlias>>();
+		public OperationReturnModel<List<DsrAliasModel>> GetDsrAliases(Guid userId)
+		{
+			OperationReturnModel<List<DsrAliasModel>> retVal = new OperationReturnModel<List<DsrAliasModel>>();
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetAllDsrAliasesByUserId(userId);
