@@ -4,7 +4,7 @@
 
   </div>
   
-  <div class="page-header__orders" ng-if="isOrderEntryCustomer">
+  <div class="page-header__orders" ng-if="isOrderEntryCustomer && canCreateOrders">
     <div class="btn-group" dropdown is-open="status.cartisopen">
       <button class="badge-parent btn-no-style dropdown-toggle">
         <span title="Carts" class="text-blue icon-truck"></span>
