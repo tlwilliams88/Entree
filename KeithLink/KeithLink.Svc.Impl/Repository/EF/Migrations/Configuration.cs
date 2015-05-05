@@ -147,20 +147,28 @@ namespace KeithLink.Svc.Impl.Migrations
 
             /**** User account created temporary password email ****/
             System.Text.StringBuilder newUserPasswordBody = new System.Text.StringBuilder();
-            newUserPasswordBody.AppendLine( "Welcome to Entrée!" );
-            newUserPasswordBody.AppendLine();
-            newUserPasswordBody.AppendLine( "An account has been created for you. Please use the temporary password to login and get started" );
-            newUserPasswordBody.AppendLine();
-            newUserPasswordBody.AppendLine( "Password: {password}" );
-            newUserPasswordBody.AppendLine( "Url: {url}");
-            newUserPasswordBody.AppendLine();
+			newUserPasswordBody.AppendLine("<div>");
+			newUserPasswordBody.AppendLine("<p>");
+			newUserPasswordBody.AppendLine("Welcome to Entrée!");
+			newUserPasswordBody.AppendLine("</p>");
+			newUserPasswordBody.AppendLine("");
+			newUserPasswordBody.AppendLine("<p>");
+			newUserPasswordBody.AppendLine("An account has been created for you. Please use the following link to create a password for your account.");
+			newUserPasswordBody.AppendLine("</p>");
+			newUserPasswordBody.AppendLine("<p>");
+			newUserPasswordBody.AppendLine("<a href=\"{resetLink}\" target=\"_blank\">{resetLink}</a>");
+			newUserPasswordBody.AppendLine("</p>");
+			newUserPasswordBody.AppendLine("<p>");
+			newUserPasswordBody.AppendLine("If clicking the link doesn't seem to work, you can copy and paste the link into your browser's address window, or retype it there.");
+			newUserPasswordBody.AppendLine("</p>");
+			newUserPasswordBody.AppendLine("</div>");
 
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
                 new MessageTemplate {
                     TemplateKey = "CreatedUserWelcome",
                     Subject = "Welcome to Entrée",
-                    IsBodyHtml = false,
+                    IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
                     Body = newUserPasswordBody.ToString()
                 } );

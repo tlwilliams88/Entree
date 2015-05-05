@@ -31,5 +31,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
 		bool ResetPassword(ResetPasswordModel resetPassword);
+
+		[OperationContract]
+		void GeneratePasswordForNewUser(string email);
 	}
 }
