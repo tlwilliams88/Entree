@@ -75,7 +75,7 @@ angular.module('bekApp')
       $scope.addItemByItemNumber = function(itemNumber) {
         ProductService.getProductDetails(itemNumber)
           .then(function(item) {
-            $scope.displayMessage('success', 'Adding ' + item.name + ' to report.');  
+            $scope.displayMessage('success', 'Adding ' + item.name + ' to report.');
             return item;
           })
           .then($scope.addRow);
@@ -88,17 +88,22 @@ angular.module('bekApp')
         });
       };
 
+      $scope.sortTable = function(field, sortDescending) {
+        $scope.sortDescending = $scope.sortField === field ? true : false;
+        $scope.sortField = field;
+      };
+
       $scope.openExportModal = function() {
-      var modalInstance = $modal.open({
-      templateUrl: 'views/modals/inventoryreportexportmodal.html',
-      controller: 'InventoryReportExportModalController',
-      resolve: {
-        items: function () {
-          return $scope.items;
-        }
-      }
-    });
-  };
+        var modalInstance = $modal.open({
+          templateUrl: 'views/modals/inventoryreportexportmodal.html',
+          controller: 'InventoryReportExportModalController',
+          resolve: {
+            items: function() {
+              return $scope.items;
+            }
+          }
+        });
+      };
 
     }
   ]);

@@ -49,10 +49,16 @@
       <table class="table table-border table-striped-rows" navigate-table>
         <thead>
           <tr>
-            <th>Item #</th>
-            <th>Name</th>
+            <th class="sort-col-header" ng-click="sortTable('itemid', sortDescending)">
+              Item <span># <span sort-icons field="'itemid'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortTable('name', sortDescending)">
+              <span>Name <span sort-icons field="'name'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
             <th class="hidden-mobile-visible-print">Pack/Size</th>
-            <th class="hidden-mobile-visible-print">Label</th>
+            <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortTable('label', sortDescending)">
+              <span>Label <span sort-icons field="'label'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
             <th>Qty</th>
             <th class="hidden-xs hidden-sm">Each</th>
             <th class="hidden-mobile-visible-print">Price</th>
@@ -61,7 +67,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="item in items" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat-start="item in items | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even }">
             <td>
               <a ui-sref="menu.catalog.products.details({itemNumber: item.itemid})">{{::item.itemid}}</a>
             </td>
