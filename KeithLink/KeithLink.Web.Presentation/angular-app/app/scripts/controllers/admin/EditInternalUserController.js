@@ -20,8 +20,8 @@ angular.module('bekApp')
     var alias = {
       userId: userProfile.userid,
       email: userProfile.emailaddress,
-      branchId: branchId,
-      dsrNumber: dsrNumber
+      branchid: branchId,
+      dsrnumber: dsrNumber
     };
 
     DsrAliasService.createAlias(alias).then(function(newAlias) {
