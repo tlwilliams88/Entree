@@ -202,6 +202,7 @@ angular.module('bekApp')
     };
  
     $scope.createNewCart = function() {
+      CartService.renameCart = true;
       CartService.createCart().then(function(newCart) {
         $state.go('menu.cart.items', {cartId: newCart.id});
         $scope.displayMessage('success', 'Successfully created new cart.');
