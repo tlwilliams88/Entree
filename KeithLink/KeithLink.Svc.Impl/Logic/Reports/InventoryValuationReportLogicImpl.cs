@@ -96,9 +96,12 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 			string[] excelColumnNames = new string[5];
 			excelColumnNames[0] = "Item";
 			excelColumnNames[1] = "Name";
-			excelColumnNames[2] = "Price";
-			excelColumnNames[3] = "Quantity";
-			excelColumnNames[4] = "Value";
+			excelColumnNames[2] = "PackSize";
+			excelColumnNames[3] = "Label";
+			excelColumnNames[4] = "Each";
+			excelColumnNames[5] = "Price";
+			excelColumnNames[6] = "Quantity";
+			excelColumnNames[7] = "ExtPrice";
 
 			//
 			//  Create the Header row in our Excel Worksheet
@@ -108,11 +111,15 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 			var headerRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
 			sheetData.Append(headerRow);
 
-			AppendTextCell(excelColumnNames[0] + "1", excelColumnNames[0], headerRow);
-			AppendTextCell(excelColumnNames[0] + "1", excelColumnNames[1], headerRow);
-			AppendTextCell(excelColumnNames[0] + "1", excelColumnNames[2], headerRow);
-			AppendTextCell(excelColumnNames[0] + "1", excelColumnNames[3], headerRow);
-			AppendTextCell(excelColumnNames[0] + "1", excelColumnNames[4], headerRow);
+			AppendTextCell(excelColumnNames[0] + "1", "Item", headerRow);
+			AppendTextCell(excelColumnNames[1] + "1", "Name", headerRow);
+			AppendTextCell(excelColumnNames[2] + "1", "Pack/Size", headerRow);
+			AppendTextCell(excelColumnNames[3] + "1", "Label", headerRow);
+			AppendTextCell(excelColumnNames[4] + "1", "Each", headerRow);
+			AppendTextCell(excelColumnNames[5] + "1", "Price", headerRow);
+			AppendTextCell(excelColumnNames[6] + "1", "Quantity", headerRow);
+			AppendTextCell(excelColumnNames[7] + "1", "Ext. Price", headerRow);
+
 			
 			//
 			//  Now, step through each row of data in our DataTable...
@@ -126,9 +133,12 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 
 					AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), item.ItemId, newExcelRow);
 					AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Name, newExcelRow);
-					AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.Price.ToString(), newExcelRow, CellValues.Number);
-					AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Quantity.ToString(), newExcelRow, CellValues.Number);
-					AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.ExtPrice.ToString(), newExcelRow, CellValues.Number);
+					AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.PackSize, newExcelRow);
+					AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Label, newExcelRow);
+					AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.Each ? "Y" : "N", newExcelRow);
+					AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), item.Price.ToString(), newExcelRow, CellValues.Number);
+					AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), item.Quantity.ToString(), newExcelRow, CellValues.Number);
+					AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), item.ExtPrice.ToString(), newExcelRow, CellValues.Number);
 
 				}
 			}
@@ -139,9 +149,12 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 
 			AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), "", newRow);
 			AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), "", newRow);
-			AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "", newRow);		
-			AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "Total", newRow);
-			AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), data.Sum(s => s.ExtPrice).ToString(), newRow, CellValues.Number);
+			AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "", newRow);
+			AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "", newRow);
+			AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), "", newRow);
+			AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), "", newRow);
+			AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "Total", newRow);
+			AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), data.Sum(s => s.ExtPrice).ToString(), newRow, CellValues.Number);
 
 		}
 

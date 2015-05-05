@@ -710,6 +710,7 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.InventoryValuationModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
