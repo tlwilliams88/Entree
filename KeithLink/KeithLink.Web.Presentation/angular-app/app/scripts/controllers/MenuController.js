@@ -42,7 +42,7 @@ angular.module('bekApp')
     $scope.numOrdersToDisplay = 6;
     $scope.numCartsToDisplay = 4;
 
-    if (CartService.cartHeaders.length === 0) {
+    if (CartService.cartHeaders.length === 0 && $scope.canCreateOrders) {
       $scope.loadingCarts = true;
       delete $scope.cartMessage;
       CartService.getCartHeaders().then(
@@ -66,11 +66,6 @@ angular.module('bekApp')
   var db_table_name_lists = 'lists',
     db_table_name_carts = 'carts';
 
-  if (ENV.mobileApp && AccessService.isOrderEntryCustomer()) {
-    console.log('downloading data');  
-    downloadDataForOfflineStorage();
-  }
-
   function downloadDataForOfflineStorage() {
     $q.all([
       ListService.getAllListsForOffline(),
@@ -78,6 +73,11 @@ angular.module('bekApp')
     ]).then(function() {
       console.log('Downloaded data for offline use.');
     });
+  }
+
+  if (ENV.mobileApp && AccessService.isOrderEntryCustomer() && AccessService.canCreateOrders()) {
+    console.log('downloading data');  
+    downloadDataForOfflineStorage();
   }
 
   /**********

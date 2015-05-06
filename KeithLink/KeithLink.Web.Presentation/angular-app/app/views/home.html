@@ -34,7 +34,7 @@
           </div>
         </div>
       </div>
-      <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController">
+      <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController" ng-if="canCreateOrders">
         <div style="margin-left: 15px;">
           <h4 class="no-margin-top"><strong>Order Summary Last 6 Months</strong></h4>
           <div loading-spinner="loadingOrderGraph"></div>
