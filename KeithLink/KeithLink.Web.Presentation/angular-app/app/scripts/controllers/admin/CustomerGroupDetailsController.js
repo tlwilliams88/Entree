@@ -87,7 +87,6 @@ angular.module('bekApp')
 
   $scope.addSelected = function(){
     $scope.customerGroupDetailsForm.$setDirty();
-    //customer.isChecked = true;
     $scope.customers.forEach(function(customer) {
       if(customer.isChecked){    
         customer.isChecked = false;
@@ -99,11 +98,6 @@ angular.module('bekApp')
         $scope.infiniteScrollLoadMore();
       }
        $scope.allAvailableSelected = $scope.allRemovableSelected = false;
-  };
-
-  $scope.removeSelected = function() {
-
-
   };
 
   $scope.selectAll = function(allSelected, source){
@@ -135,7 +129,6 @@ angular.module('bekApp')
   $scope.removeSelected = function(selectedCustomer) {
     $scope.customerGroupDetailsForm.$setDirty();
     $scope.foundMatch = false;
-//selectedCustomer.isChecked = true;
     $scope.customerGroup.customers.forEach(function(availableCust){
         if(availableCust.isChecked){   
             $scope.customers.forEach(function(customer) {
