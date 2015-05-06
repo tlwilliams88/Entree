@@ -18,7 +18,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
 	public class InternalPasswordResetRequestLogicImpl: IInternalPasswordResetLogic
 	{
-		private const string emailTemplateKey = "ResetPasswordRequest";
+		private const string resetEmailTemplateKey = "ResetPasswordRequest";
+		private const string newUserEmailTemplateKey = "CreatedUserWeclome";
 
 		private readonly IUnitOfWork unitOfWork;
 		private readonly IUserProfileLogic userProfileLogic;
@@ -37,6 +38,28 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.messageTemplateRepository = messageTemplateRepository;
 			this.emailClient = emailClient;
 			this.eventLog = eventLog;
+		}
+
+		public void GenerateNewUserPasswordLink(string emailAddress)
+		{
+			var profile = userProfileLogic.GetUserProfile(emailAddress);
+
+			if (profile.UserProfiles.Count() == 0 || profile.UserProfiles[0].IsInternalUser) //Profile not found, do nothing. Don't do anything if internal user
+				return;
+
+			var token = Crypto.GenerateRandomToken();
+			var passwordRequest = new PasswordResetRequest()
+			{
+				UserId = profile.UserProfiles[0].UserId,
+				Token = token,
+				Expiration = DateTime.UtcNow.AddYears(5) //Don't want this link to expire for new accounts, but 5 years is plenty of time
+			};
+
+			passwordResetRequestRepository.Create(passwordRequest);
+
+			unitOfWork.SaveChanges();
+
+			SendResetPasswordEmail(emailAddress, token, newUserEmailTemplateKey, "setpassword");
 		}
 
 		public void GeneratePasswordResetLink(string emailAddress)
@@ -59,7 +82,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			unitOfWork.SaveChanges();
 
-			SendResetPasswordEmail(emailAddress, token);
+			SendResetPasswordEmail(emailAddress, token, resetEmailTemplateKey, "forgotpassword");
 
 		}
 		
@@ -94,18 +117,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 		}
 
-
-
-		private void SendResetPasswordEmail(string emailAddress, string token)
+		private void SendResetPasswordEmail(string emailAddress, string token, string templateKey, string baseURL)
 		{
-			var template = messageTemplateRepository.Read(m => m.TemplateKey.Equals(emailTemplateKey)).FirstOrDefault();
+			var template = messageTemplateRepository.Read(m => m.TemplateKey.Equals(templateKey)).FirstOrDefault();
 
 			if (template == null)
 				throw new Exception("Reset Password Request email template not found");
 
-			emailClient.SendTemplateEmail(template.ToMessageTemplateModel(), new List<string>() { emailAddress }, new { resetLink = string.Format("{0}/#/forgotpassword/?t={1}", Configuration.EntreeSiteURL, Uri.EscapeDataString(token)) });
+			emailClient.SendTemplateEmail(template.ToMessageTemplateModel(), new List<string>() { emailAddress }, new { resetLink = string.Format("{0}/#/{1}/?t={2}", Configuration.EntreeSiteURL, baseURL, Uri.EscapeDataString(token)) });
 
 		}
 
+
+
+		
 	}
 }

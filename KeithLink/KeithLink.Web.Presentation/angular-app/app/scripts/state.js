@@ -405,6 +405,15 @@ angular.module('bekApp')
         authorize: 'canPayInvoices'
       }
     })
+    .state('menu.inventoryreport', {
+      url: '/reports/inventory',
+      templateUrl: 'views/inventoryreport.html',
+      controller: 'InventoryReportController',
+      data: {
+        authorize: 'canManageLists'
+      }
+    })
+
 
     /**********
     ADMIN
@@ -525,6 +534,17 @@ angular.module('bekApp')
     /************************/
     .state('forgotpassword', {
         url: '/forgotpassword/?t',
+        templateUrl: 'views/forgotpassword.html',
+        controller: 'ForgotPasswordController',
+        data: {},
+        resolve: {
+        validToken: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
+         return UserProfileService.validateToken($stateParams.t);
+        }]
+      }
+    })
+    .state('setpassword', {
+        url: '/setpassword/?t',
         templateUrl: 'views/forgotpassword.html',
         controller: 'ForgotPasswordController',
         data: {},

@@ -33,12 +33,16 @@ angular.module('bekApp')
       unitPrice = item.price;
     } else {
       // determine if using case price or package price
-      unitPrice = item.each ? item.packageprice : item.caseprice;
+      unitPrice = Service.getUnitPriceForItem(item);
     }
     return parseFloat(unitPrice) * quantity;
   }
 
   var Service = {
+
+    getUnitPriceForItem: function(item) {
+      return Math.round(parseFloat(item.each ? item.packageprice : item.caseprice) * 100) / 100;
+    },
     
     getPriceForItem: function(item) {
       var price = 0;
@@ -60,10 +64,13 @@ angular.module('bekApp')
       return subtotal;
     },
 
-    getSubtotalForItemsWithPrice: function(itemsWithPrice) {
+    getSubtotalForItemsWithPrice: function(itemsWithPrice, fieldName) {
+      if (!fieldName) {
+        fieldName = 'extPrice';
+      }
       var subtotal = 0;
       angular.forEach(itemsWithPrice, function(item, index) {
-        subtotal += item.extPrice;
+        subtotal += item[fieldName];
       });
       return subtotal;
     },

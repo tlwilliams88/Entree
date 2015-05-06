@@ -32,7 +32,7 @@ angular.module('bekApp')
         var promise = $http.delete('/profile/dsralias', { 
           headers: {'Content-Type': 'application/json'},
           data: {
-            dsrAliasId: aliasId,
+            id: aliasId,
             email: email
           }
          });

@@ -15,10 +15,10 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 	public interface IProfileService
 	{
         [OperationContract]
-        DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr);
+        DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr);
 
         [OperationContract]
-        void DeleteDsrAlias(int dsrAliasId, string email);
+        void DeleteDsrAlias(long dsrAliasId, string email);
 
 		[OperationContract]
 		void GeneratePasswordResetRequest(string email);
@@ -27,9 +27,12 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		bool IsTokenValid(string token);
 
         [OperationContract]
-        List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId);
+        List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId);
 
         [OperationContract]
 		bool ResetPassword(ResetPasswordModel resetPassword);
+
+		[OperationContract]
+		void GeneratePasswordForNewUser(string email);
 	}
 }

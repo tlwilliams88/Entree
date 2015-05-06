@@ -234,6 +234,7 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
+    <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalExportSettingsLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
@@ -615,7 +616,6 @@
     <Compile Include="Repository\Orders\ShipDateRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\CustomerContainerRepository.cs" />
     <Compile Include="Repository\Profile\DemoExternalUserDomainRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\DsrAliasLogicImpl.cs" />
     <Compile Include="Repository\Profile\DsrAliasRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
@@ -624,6 +624,7 @@
     <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
+    <Compile Include="Repository\Profile\PasswordReset\NoPasswordResetServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />

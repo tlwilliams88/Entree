@@ -33,6 +33,7 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -61,15 +62,16 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
         private IGenericQueueRepository _queue;
         private IDsrAliasService _dsrAliasService;
-        //private IDsrAliasLogic _dsrAliasLogic;
+		private IPasswordResetService _passwordService;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
                                     IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, 
-                                    IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog, 
-                                    IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService) {
+                                    IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog,
+									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService)
+		{
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -85,7 +87,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
             _queue = queue;
             _dsrAliasService = dsrAliasService;
-            //_dsrAliasLogic = dsrAliasLogic;
+			_passwordService = passwordService;
         }
         #endregion
 
@@ -318,7 +320,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
         }
 
-        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+        public DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
 
             return _dsrAliasService.CreateDsrAlias(userId, email, dsr);
@@ -338,7 +340,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_accountRepo.DeleteAccount(deletedBy.EmailAddress, accountId);
 		}
 
-        public void DeleteDsrAlias(int dsrAliasId, string email) {
+        public void DeleteDsrAlias(long dsrAliasId, string email) {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
 
             _dsrAliasService.DeleteDsrAlias(dsrAliasId, email);
@@ -638,7 +640,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 #endif
             if (isInternalUser) { 
                 retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
-                if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAlias() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
+                if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAliasModel() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
             }
 
             return retVal;
@@ -789,7 +791,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return _customerRepo.GetCustomerForUser(customerNumber, branchId, userId);
         }
 
-        public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {
+        public List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId) {
             return _dsrAliasService.GetAllDsrAliasesByUserId(userId);
         }
 
@@ -1436,7 +1438,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId)
 		{
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
-            string generatedPassword = GenerateTemporaryPassword();
+            string generatedPassword = GenerateTemporaryPassword(); //This generated password is no longer being sent to the user, but it's still needed to create the account in AD
 
             AssertGuestProfile( emailAddress, generatedPassword );
 
@@ -1458,9 +1460,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 branchId
                 );
 
-            // Expire the users password so they can change it at neck login
-            _extAd.ExpirePassword( emailAddress );
-            SendPasswordChangeEmail( emailAddress, generatedPassword, CREATED_USER_WELCOME );
+			_passwordService.GeneratePasswordForNewUser(emailAddress);
+            
 
             return GetUserProfile( emailAddress );
         }

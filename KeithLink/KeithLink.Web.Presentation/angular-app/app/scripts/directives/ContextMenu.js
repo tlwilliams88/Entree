@@ -82,6 +82,7 @@ angular.module('bekApp')
 
       $scope.createCartWithItem = function(item) {
         var items = [item];
+        CartService.renameCart = true;
         CartService.createCart(items).then(function(data) {
           closeModal();
           $state.go('menu.cart.items', { cartId: data.id, renameCart: true });

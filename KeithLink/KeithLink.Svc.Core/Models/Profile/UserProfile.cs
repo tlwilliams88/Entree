@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Core.Models.Profile
     public class UserProfile : System.Security.Principal.IIdentity {
         #region ctor
         public UserProfile() {
-            DsrAliases = new List<DsrAlias>();
+            DsrAliases = new List<DsrAliasModel>();
         }
         #endregion
 
@@ -100,6 +100,6 @@ namespace KeithLink.Svc.Core.Models.Profile
 		public bool? IsDemo { get; set; }
 
         [DataMember(Name = "dsraliases")]
-        public List<DsrAlias> DsrAliases { get; set; }        
+        public List<DsrAliasModel> DsrAliases { get; set; }        
     }
 }

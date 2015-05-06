@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Logic.Reports
 			var worksheet = worksheetPart.Worksheet;
 			var sheetData = worksheet.GetFirstChild<SheetData>();
 
-			string[] excelColumnNames = new string[5];
+			string[] excelColumnNames = new string[8];
 			excelColumnNames[0] = "Item";
 			excelColumnNames[1] = "Name";
 			excelColumnNames[2] = "PackSize";

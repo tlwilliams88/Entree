@@ -66,8 +66,8 @@
             </tr>
           </thead>
           <tr ng-repeat="alias in dsrAliases" ng-class="{ odd : $odd, even: $even }">
-            <td>{{alias.branchId}}</td>
-            <td>{{alias.dsrNumber}}</td>
+            <td>{{alias.branchid}}</td>
+            <td>{{alias.dsrnumber}}</td>
             <td class="input-col">
               <button type="button" ng-click="removeDsrAlias(alias, profile.emailaddress)" class="btn btn-danger">Remove Alias</button>
             </td>

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.Profile.EF {
-    public class DsrAlias : BaseEFModel {
+	public class DsrAlias : BaseEFModel {
         [Required]
         [Index]
         public Guid UserId { get; set; }
