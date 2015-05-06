@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	public class InternalPasswordResetRequestLogicImpl: IInternalPasswordResetLogic
 	{
 		private const string resetEmailTemplateKey = "ResetPasswordRequest";
-		private const string newUserEmailTemplateKey = "CreatedUserWeclome";
+		private const string newUserEmailTemplateKey = "CreatedUserWelcome";
 
 		private readonly IUnitOfWork unitOfWork;
 		private readonly IUserProfileLogic userProfileLogic;
