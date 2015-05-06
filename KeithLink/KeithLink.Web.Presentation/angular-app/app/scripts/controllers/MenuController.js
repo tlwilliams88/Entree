@@ -136,7 +136,7 @@ angular.module('bekApp')
 
         data.results.forEach(function(customer) {
           customerList.results.push({
-            id: customer.customerNumber, // value
+            id: customer.displayname, // value
             text: customer.displayname,  // display text
             customer: customer
           });
