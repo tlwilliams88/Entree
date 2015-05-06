@@ -188,16 +188,16 @@ angular.module('bekApp')
     }
   };
   
-$scope.unselectCustomer = function(customer) {   
-var idx = $scope.profile.customers.indexOf(customer);   
-$scope.profile.customers.splice(idx, 1);   
-$scope.customers.forEach(function(availableCustomer) {   
-if (customer.customerNumber === availableCustomer.customerNumber) {   
-availableCustomer.selected = false;   
-}   
-});   
-customer.selected = false; 
- };
+  $scope.unselectCustomer = function(customer) {   
+    var idx = $scope.profile.customers.indexOf(customer);   
+    $scope.profile.customers.splice(idx, 1);   
+    $scope.customers.forEach(function(availableCustomer) {   
+      if (customer.customerNumber === availableCustomer.customerNumber) {   
+        availableCustomer.selected = false;   
+      }   
+    });   
+    customer.selected = false; 
+  };
 
   $scope.removeSelected = function(selectedCustomer) {
     $scope.editUserForm.$setDirty();
