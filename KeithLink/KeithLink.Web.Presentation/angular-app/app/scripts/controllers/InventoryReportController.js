@@ -33,7 +33,9 @@ angular.module('bekApp')
 
         item.price = PricingService.getUnitPriceForItem(item);
         item.extprice = PricingService.getPriceForItem(item);
-        item.quantity = parseInt(item.quantity, 10);
+        if (item.quantity) {
+          item.quantity = parseFloat(item.quantity);
+        }
 
         refreshSubtotal();
       }
