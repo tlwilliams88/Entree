@@ -14,22 +14,25 @@ angular.module('bekApp')
     $scope.cartHeaders = CartService.cartHeaders;
 
     // get orders
-    $scope.loadingOrders = true;
-    OrderService.getOrders({
-      from: 0,
-      size: 6,
-      sort:  [{
-        field: 'createddate',
-        order: 'desc'
-      }]
-    }).then(function(data) {
-      $scope.orders = data.results;
-      delete $scope.ordersMessage;
-    }, function(errorMessage) {
-      $scope.ordersMessage = errorMessage;
-    }).finally(function() {
-      $scope.loadingOrders = false;
-    });
+    
+    if ($scope.canCreateOrders) {
+      $scope.loadingOrders = true;
+      OrderService.getOrders({
+        from: 0,
+        size: 6,
+        sort:  [{
+          field: 'createddate',
+          order: 'desc'
+        }]
+      }).then(function(data) {
+        $scope.orders = data.results;
+        delete $scope.ordersMessage;
+      }, function(errorMessage) {
+        $scope.ordersMessage = errorMessage;
+      }).finally(function() {
+        $scope.loadingOrders = false;
+      });
+    }
  
     // get promo/marketing items
     $scope.loadingPromoItems = true;

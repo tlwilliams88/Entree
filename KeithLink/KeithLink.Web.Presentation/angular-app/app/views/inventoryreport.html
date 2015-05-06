@@ -15,7 +15,9 @@
   <div class="row sub-content">
     <form class="col-sm-12 col-md-10 col-lg-7 form-inline" name="addItemByNumberForm">
       <div style="width:100%" class="form-group">
-        
+        <p class="text-green" ng-show="successMessage">{{successMessage}}</p>
+        <p class="text-red" ng-show="errorMessage">{{errorMessage}}</p>
+
         <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg">
 
         <button type="submit" class="btn btn-primary btn-lg" ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
@@ -46,9 +48,9 @@
           {{subtotal | currency}}
         </div>
       </div>
-      <table class="table table-border table-striped-rows" navigate-table>
+      <table class="table table-border table-striped-rows table-inventory-valuation" navigate-table>
         <thead>
-          <tr>
+        <tr fsm-sticky-header scroll-body="'.table-inventory-valuation'" scroll-stop="0" scroll-offset="245">
             <th class="sort-col-header" ng-click="sortTable('itemid', sortDescending)">
               Item <span># <span sort-icons field="'itemid'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
@@ -74,11 +76,12 @@
             <td>{{::item.name}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
             <td class="hidden-mobile-visible-print">{{::item.label}}</td>
+            <td class="input-col nowrap">
+              <!-- <div type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.quantity"></div> -->
+              <input type="text" allow-one-positive-decimal class="input-number" ng-model="item.quantity">
+            </td>
             <td class="input-col hidden-xs hidden-sm">
               <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">
-            </td>
-            <td class="input-col nowrap">
-              <div type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.quantity"></div>
             </td>
             <td class="hidden-mobile-visible-print">
               {{item.price | currency}}
