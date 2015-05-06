@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$modal', 'ProductService', 'PricingService', 'ListService',
-    function($scope, $modal, ProductService, PricingService, ListService) {
+  .controller('InventoryReportController', ['$scope', '$q', '$modal', 'ProductService', 'PricingService', 'ListService',
+    function($scope, $q, $modal, ProductService, PricingService, ListService) {
 
       $scope.items = [];
       $scope.subtotal = 0;
@@ -73,17 +73,25 @@ angular.module('bekApp')
       };
 
       $scope.addItemByItemNumber = function(itemNumber) {
+        $scope.successMessage = '';
+        $scope.errorMessage = '';
+
         ProductService.getProductDetails(itemNumber)
           .then(function(item) {
-            $scope.displayMessage('success', 'Adding ' + item.name + ' to report.');
+            $scope.successMessage = 'Added Item # ' + itemNumber + ' to the report.';
             return item;
+          }, function() {
+            $scope.errorMessage = 'Item # ' + itemNumber + ' not found.';
+            return $q.reject();
           })
           .then($scope.addRow);
       };
 
       $scope.addItemsFromList = function(listId) {
+        $scope.successMessage = '';
+
         ListService.getListWithItems(listId).then(function(listFound) {
-          $scope.displayMessage('success', 'Adding ' + listFound.items.length + ' items to report.');
+          $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.'
           listFound.items.forEach($scope.addRow);
         });
       };

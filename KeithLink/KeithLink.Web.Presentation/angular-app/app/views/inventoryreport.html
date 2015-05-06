@@ -15,7 +15,9 @@
   <div class="row sub-content">
     <form class="col-sm-12 col-md-10 col-lg-7 form-inline" name="addItemByNumberForm">
       <div style="width:100%" class="form-group">
-        
+        <p class="text-green" ng-show="successMessage">{{successMessage}}</p>
+        <p class="text-red" ng-show="errorMessage">{{errorMessage}}</p>
+
         <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg">
 
         <button type="submit" class="btn btn-primary btn-lg" ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
