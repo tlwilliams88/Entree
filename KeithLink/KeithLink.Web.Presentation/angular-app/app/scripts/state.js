@@ -405,6 +405,15 @@ angular.module('bekApp')
         authorize: 'canPayInvoices'
       }
     })
+    .state('menu.inventoryreport', {
+      url: '/reports/inventory',
+      templateUrl: 'views/inventoryreport.html',
+      controller: 'InventoryReportController',
+      data: {
+        authorize: 'canManageLists'
+      }
+    })
+
 
     /**********
     ADMIN

@@ -38,6 +38,7 @@ angular.module('bekApp')
           }
         }
         if (!basketFound) {
+          CartService.renameCart = true;
           return CartService.createCart().then(function(newCart) {
             return newCart.id;
           });
