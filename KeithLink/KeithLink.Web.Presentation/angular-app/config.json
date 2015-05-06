@@ -18,7 +18,7 @@
       "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
       "googleAnalytics": {
         "web": "UA-58495462-2",
-        "mobile": "UA-62498504-2"
+        "mobile": "UA-58495462-4"
       }
     },
 	"demo": {
@@ -29,7 +29,7 @@
       "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
       "googleAnalytics": {
         "web": "UA-58495462-2",
-        "mobile": "UA-62498504-2"
+        "mobile": "UA-58495462-4"
       }
     },
     "dev": {
@@ -42,7 +42,7 @@
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "googleAnalytics": {
         "web": "UA-58495462-2",
-        "mobile": "UA-62498504-2"
+        "mobile": "UA-58495462-4"
       }
     },
     "test": {
@@ -54,7 +54,7 @@
       "phonegapAppId": "com.benekeith.entree",
       "googleAnalytics": {
         "web": "UA-58495462-2",
-        "mobile": "UA-62498504-2"
+        "mobile": "UA-58495462-4"
       }
     },
     "prod": {
@@ -66,7 +66,7 @@
       "phonegapAppId": "com.benekeith.entreeprod",
       "googleAnalytics": {
         "web": "UA-58495462-1",
-        "mobile": "UA-62498504-2"
+        "mobile": "UA-58495462-3"
       }
     },
     "stage": {
@@ -76,7 +76,7 @@
       "loggingEnabled": false,
       "googleAnalytics": {
         "web": "UA-58495303-1",
-        "mobile": "UA-62498504-2"
+        "mobile": "UA-58495462-4"
       }
     }
   },

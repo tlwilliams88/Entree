@@ -59,50 +59,59 @@ namespace KeithLink.Svc.Test.Mock
 		};
 		#endregion
 
+		private BEKDBContext _context;
 		public BEKDBContext Context
 		{
 			get
 			{
-				#region Fake Db Sets
-				var mockListSet = new FakeDbSet<List>();
-				var mockListItemSet = new FakeDbSet<ListItem>();
-				var mockShareSet = new FakeDbSet<ListShare>();
-				var mockBranchSupportSet = new FakeDbSet<BranchSupport>();
-				#endregion
+				if (_context == null)
+				{
 
-				#region Generate data
+					#region Fake Db Sets
+					var mockListSet = new FakeDbSet<List>();
+					var mockListItemSet = new FakeDbSet<ListItem>();
+					var mockShareSet = new FakeDbSet<ListShare>();
+					var mockBranchSupportSet = new FakeDbSet<BranchSupport>();
+					#endregion
 
-				//List
-				var listItemTemp = new List<ListItem>();
-				IQueryable<List> listData;
-				IQueryable<ListItem> listItemData;
-				var shareItemData = new List<ListShare>().AsQueryable();
-				IQueryable<BranchSupport> branchSupportData;
+					#region Generate data
 
-				GenerateListData(listItemTemp, out listData, out listItemData);
+					//List
+					var listItemTemp = new List<ListItem>();
+					IQueryable<List> listData;
+					IQueryable<ListItem> listItemData;
+					var shareItemData = new List<ListShare>().AsQueryable();
+					IQueryable<BranchSupport> branchSupportData;
 
-				branchSupportData = Builder<BranchSupport>.CreateListOfSize(10).Build().AsQueryable();
+					GenerateListData(listItemTemp, out listData, out listItemData);
+
+					branchSupportData = Builder<BranchSupport>.CreateListOfSize(10).Build().AsQueryable();
+
+					#endregion
+
+					mockListSet.SetData(listData);
+					mockListItemSet.SetData(listItemData);
+					mockShareSet.SetData(shareItemData);
+					mockBranchSupportSet.SetData(branchSupportData);
+
+
+
+					mockListSet.Setup(s => s.Include(It.IsAny<string>())).Returns(mockListSet.Object);
+
+					#region Wire up Fake Db Sets with Mock Context
+					var mockContext = new Mock<BEKDBContext>();
+					mockContext.Setup(c => c.Set<List>()).Returns(mockListSet.Object);
+					mockContext.Setup(c => c.Set<ListItem>()).Returns(mockListItemSet.Object);
+					mockContext.Setup(c => c.Set<ListShare>()).Returns(mockShareSet.Object);
+					mockContext.Setup(c => c.Set<BranchSupport>()).Returns(mockBranchSupportSet.Object);
+					#endregion
+
+
+					_context = mockContext.Object;
+					Database.SetInitializer<BEKDBContext>(null);
 				
-				#endregion
-
-				mockListSet.SetData(listData);
-				mockListItemSet.SetData(listItemData);
-				mockShareSet.SetData(shareItemData);
-				mockBranchSupportSet.SetData(branchSupportData);
-
-
-
-				mockListSet.Setup(s => s.Include(It.IsAny<string>())).Returns(mockListSet.Object);
-
-				#region Wire up Fake Db Sets with Mock Context
-				var mockContext = new Mock<BEKDBContext>();
-				mockContext.Setup(c => c.Set<List>()).Returns(mockListSet.Object);
-				mockContext.Setup(c => c.Set<ListItem>()).Returns(mockListItemSet.Object);
-				mockContext.Setup(c => c.Set<ListShare>()).Returns(mockShareSet.Object);
-				mockContext.Setup(c => c.Set<BranchSupport>()).Returns(mockBranchSupportSet.Object);
-				#endregion
-
-				return mockContext.Object;
+				}
+				return _context;
 			}
 		}
 

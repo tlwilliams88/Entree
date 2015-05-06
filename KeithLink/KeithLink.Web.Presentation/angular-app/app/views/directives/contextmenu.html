@@ -11,7 +11,7 @@
     <!-- <button type="button" ng-repeat="list in lists | sortLists" ng-click="addItemToReminderList(item)" ng-if="list.isSpecialList && !list.isFavoritesList" class="btn btn-default text-uppercase">To {{list.name}}</button> -->
     
     <!-- CARTS -->
-    <div ng-if="item.nonstock !== 'Y'" ng-mouseenter="status.isopen1 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
+    <div ng-if="item.nonstock !== 'Y' && canCreateOrders" ng-mouseenter="status.isopen1 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen1 = false;" class="btn-group" ng-class="{ open: status.isopen1 }">
       <button type="button" class="btn btn-default dropdown-toggle">
         <span class="pull-right icon-arrow-right6"></span>Add to Cart
       </button>
@@ -37,7 +37,7 @@
     </div>
 
     <!-- CHANGE ORDERS -->
-    <div ng-mouseenter="status.isopen3 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen3 = false;" class="btn-group" ng-class="{ open: status.isopen3 }" ng-if="changeOrders.length > 0 && item.nonstock !== 'Y'">
+    <div ng-mouseenter="status.isopen3 = true; mouseenterEvent($event);" ng-mouseleave="status.isopen3 = false;" class="btn-group" ng-class="{ open: status.isopen3 }" ng-if="changeOrders.length > 0 && item.nonstock !== 'Y' && canCreateOrders">
       <button type="button" class="btn btn-default dropdown-toggle">
         <span class="pull-right icon-arrow-right6"></span>Add to Change Order
       </button>

@@ -196,6 +196,7 @@ angular.module('bekApp')
         // don't need to call the backend function for new cart
         $scope.selectedCart.name = name;
         $scope.isRenaming = false;
+        CartService.renameCart = false;
       } else {
         // call backend to update cart
         var cart = angular.copy($scope.selectedCart);
@@ -203,6 +204,7 @@ angular.module('bekApp')
         CartService.updateCart(cart).then(function(updatedCart) {
           $scope.selectedCart.name = updatedCart.name;
           $scope.isRenaming = false;
+          CartService.renameCart = false;
         });
       }
     };

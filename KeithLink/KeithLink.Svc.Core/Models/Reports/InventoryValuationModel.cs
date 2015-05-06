@@ -20,5 +20,11 @@ namespace KeithLink.Svc.Core.Models.Reports
 		public decimal Price { get; set; }
 		[DataMember(Name = "extprice")]
 		public decimal ExtPrice { get; set; }
+		[DataMember(Name = "each")]
+		public bool Each { get; set; }
+		[DataMember(Name = "packsize")]
+		public string PackSize { get; set; }
+		[DataMember(Name = "label")]
+		public string Label { get; set; }
 	}
 }

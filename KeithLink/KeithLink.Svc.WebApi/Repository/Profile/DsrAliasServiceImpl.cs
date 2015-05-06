@@ -21,15 +21,15 @@ namespace KeithLink.Svc.WebApi.Repository.Profile {
 		#endregion
 
         #region methods
-        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+        public DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             return _client.CreateDsrAlias(userId, email, dsr);
         }
 
-        public void DeleteDsrAlias(int dsrAliasId, string email) {
+        public void DeleteDsrAlias(long dsrAliasId, string email) {
             _client.DeleteDsrAlias(dsrAliasId, email);
         }
 
-        public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {
+        public List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId) {
             return _client.GetAllDsrAliasesByUserId(userId).ToList();
         }
         #endregion

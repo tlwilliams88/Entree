@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface IDsrAliasLogic {
-        DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr);
+        DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr);
 
-        void DeleteDsrAlias(int dsrAliasId, string email);
+        void DeleteDsrAlias(long dsrAliasId, string email);
 
-        List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId);
+		List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId);
     }
 }

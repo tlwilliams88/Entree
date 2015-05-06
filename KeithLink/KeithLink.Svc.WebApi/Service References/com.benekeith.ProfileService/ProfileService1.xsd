@@ -2,7 +2,6 @@
 <xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-  <xs:import schemaLocation="http://localhost:1317/ProfileService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile.EF" />
   <xs:element name="CreateDsrAlias">
     <xs:complexType>
       <xs:sequence>
@@ -15,14 +14,14 @@
   <xs:element name="CreateDsrAliasResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile.EF" minOccurs="0" name="CreateDsrAliasResult" nillable="true" type="q3:DsrAlias" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="CreateDsrAliasResult" nillable="true" type="q3:DsrAliasModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="DeleteDsrAlias">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="dsrAliasId" type="xs:int" />
+        <xs:element minOccurs="0" name="dsrAliasId" type="xs:long" />
         <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
@@ -68,7 +67,7 @@
   <xs:element name="GetAllDsrAliasesByUserIdResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile.EF" minOccurs="0" name="GetAllDsrAliasesByUserIdResult" nillable="true" type="q5:ArrayOfDsrAlias" />
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="GetAllDsrAliasesByUserIdResult" nillable="true" type="q5:ArrayOfDsrAliasModel" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -84,6 +83,18 @@
       <xs:sequence>
         <xs:element minOccurs="0" name="ResetPasswordResult" type="xs:boolean" />
       </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GeneratePasswordForNewUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GeneratePasswordForNewUserResponse">
+    <xs:complexType>
+      <xs:sequence />
     </xs:complexType>
   </xs:element>
 </xs:schema>

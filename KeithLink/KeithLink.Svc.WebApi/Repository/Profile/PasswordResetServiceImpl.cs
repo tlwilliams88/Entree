@@ -33,5 +33,10 @@ namespace KeithLink.Svc.WebApi.Repository.Profile
 		{
 			return _client.ResetPassword(resetPassword);
 		}
+
+		public void GeneratePasswordForNewUser(string email)
+		{
+			_client.GeneratePasswordForNewUser(email);
+		}
 	}
 }

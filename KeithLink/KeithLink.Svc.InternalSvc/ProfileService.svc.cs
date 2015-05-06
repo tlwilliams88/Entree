@@ -30,23 +30,29 @@ namespace KeithLink.Svc.InternalSvc
         #endregion
 
         #region methods
-        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+        public DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             return _aliasLogic.CreateDsrAlias(userId, email, dsr);
         }
 
-        public void DeleteDsrAlias(int dsrAliasId, string email) {
+        public void DeleteDsrAlias(long dsrAliasId, string email) {
             _aliasLogic.DeleteDsrAlias(dsrAliasId, email);
         }
 
         public void GeneratePasswordResetRequest(string email) {
 			_passwordResetLogic.GeneratePasswordResetLink(email);
 		}
+
+		public void GeneratePasswordForNewUser(string email)
+		{
+			_passwordResetLogic.GenerateNewUserPasswordLink(email);
+		}
 		
 		public bool IsTokenValid(string token) {
 			return _passwordResetLogic.IsTokenValid(token);
 		}
 
-        public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {
+		public List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId)
+		{
             return _aliasLogic.GetAllDsrAliasesByUserId(userId);
         }
 
