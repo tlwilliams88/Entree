@@ -185,11 +185,13 @@ angular.module('bekApp')
     UserProfileService.getAllUsers(data).then(function (profiles) {
       if (profiles.length === 1) {
         $scope.customerGroup.adminusers.push(profiles[0]);
+        $scope.submitForm($scope.customerGroup);
       } else {
         // display error message to user
         UserProfileService.createUserFromAdmin(data).then(function (profiles) {
           if (profiles.length === 1) {
             $scope.customerGroup.adminusers.push(profiles[0]);
+            $scope.submitForm($scope.customerGroup);
           } else {
             // display error message to user
           }
@@ -202,6 +204,7 @@ angular.module('bekApp')
     $scope.dirty = true;
     var idx = $scope.customerGroup.adminusers.indexOf(user);
     $scope.customerGroup.adminusers.splice(idx, 1);
+    $scope.submitForm($scope.customerGroup);
   };
 
   $scope.goBack = function(){
