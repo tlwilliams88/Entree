@@ -81,8 +81,13 @@ angular.module('bekApp')
   };
 
   $scope.selectCustomer = function(customer) {
+   $scope.customerGroup.customers.push(customer);
+  customer.selected = true;
+  };
+
+  $scope.addSelected = function(){
     $scope.customerGroupDetailsForm.$setDirty();
-    customer.isChecked = true;
+    //customer.isChecked = true;
     $scope.customers.forEach(function(customer) {
       if(customer.isChecked){    
         customer.isChecked = false;
@@ -94,6 +99,11 @@ angular.module('bekApp')
         $scope.infiniteScrollLoadMore();
       }
        $scope.allAvailableSelected = $scope.allRemovableSelected = false;
+  };
+
+  $scope.removeSelected = function() {
+
+
   };
 
   $scope.selectAll = function(allSelected, source){
@@ -111,10 +121,21 @@ angular.module('bekApp')
     }
   };
 
-  $scope.unselectCustomer = function(selectedCustomer) {
+ $scope.unselectCustomer = function(customer) {
+  var idx = $scope.customerGroup.customers.indexOf(customer);   
+  $scope.customerGroup.customers.splice(idx, 1);
+  $scope.customers.forEach(function(availableCustomer) {  
+   if (customer.customerNumber === availableCustomer.customerNumber) {    
+     availableCustomer.selected = false;
+    }    
+  });    
+  customer.selected = false;
+   };
+
+  $scope.removeSelected = function(selectedCustomer) {
     $scope.customerGroupDetailsForm.$setDirty();
     $scope.foundMatch = false;
-    selectedCustomer.isChecked = true;
+//selectedCustomer.isChecked = true;
     $scope.customerGroup.customers.forEach(function(availableCust){
         if(availableCust.isChecked){   
             $scope.customers.forEach(function(customer) {
@@ -125,7 +146,6 @@ angular.module('bekApp')
                 }
             });
             if(!$scope.foundMatch){
-              $scope.infiniteScrollLoadMore();
               $scope.unselectCustomer(selectedCustomer);
             } 
         }  
