@@ -82,7 +82,7 @@
           </span>
         </div>
       </form>     
-
+          <button class="btn btn-primary" style="margin-bottom:6px;" type="submit" ng-click="addSelected()" >Add Selected Customers</button>
       <div class="infiniteScroll">
         <table class="table no-margin table-border table-striped-rows" 
           infinite-scroll="infiniteScrollLoadMore()" 
@@ -91,7 +91,7 @@
             <tr>
               <th> 
                 <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected,'add')" ng-model="allAvailableSelected"/>
-                Select All
+                Select All               
               </th>
               <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
                 Number
@@ -122,10 +122,12 @@
         </table>
       </div>
       <div class="text-center" loading-spinner="loadingCustomers"></div>
-    </div>
+    </div>    
     <div class="col-md-6">
-      <span style="margin-top: 20px;" class="pull-right">({{customerGroup.customers.length}} Assigned)</span>
+      
       <h3>Assigned Customers</h3>
+      <button class="btn btn-primary" style="margin-bottom:6px;" type="submit" ng-click="removeSelected(customer)">Remove Selected Customers</button>
+      <span style="margin-top: 20px;" class="pull-right">({{customerGroup.customers.length}} Assigned)</span>
       <table class="table no-margin table-border table-striped-rows">
         <thead>
           <tr>
