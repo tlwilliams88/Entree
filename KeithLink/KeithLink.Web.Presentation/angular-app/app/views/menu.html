@@ -248,7 +248,7 @@
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }" >
 
-         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;">
+         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;" ng-if="isMobile">
            <ul style="float: left;">
             <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()" ><li class="tablet-menu-item" ><span title="Back" class="icon-back"></span></li></a>
           </ul>
