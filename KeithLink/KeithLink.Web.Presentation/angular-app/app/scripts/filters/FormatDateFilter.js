@@ -11,7 +11,7 @@ function getFormattedDateTime(dateTime, formatString, useTimezone) {
   var date = moment(dateTime);
   if (dateTime && date.isValid()) {
     if (useTimezone) {
-      var timezoneName = 'America/Chicago';
+      var timezoneName = jstz.determine().name();// 'America/Chicago';
       date.tz(timezoneName);
     }
     return date.format(formatString);
