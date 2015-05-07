@@ -123,6 +123,10 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     },
 
+    canViewOrders: function() {
+      return ( Service.isInternalAccountAdminUser() || isOwner()  || isApprover() || isBuyer() );
+    },
+
     canCreateOrders: function() {
       return ( Service.isInternalAccountAdminUser() || isOwner()  || isApprover() || isBuyer() ) && isKeithNetCustomer();
     },
