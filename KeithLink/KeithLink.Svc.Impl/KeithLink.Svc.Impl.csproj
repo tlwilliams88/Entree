@@ -883,6 +883,7 @@
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Reports\ListReport.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport_Landscape.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>

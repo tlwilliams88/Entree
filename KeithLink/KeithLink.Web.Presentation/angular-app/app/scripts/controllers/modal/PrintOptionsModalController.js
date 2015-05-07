@@ -11,6 +11,7 @@ angular.module('bekApp')
     columns: 3
   }];
   $scope.selectedLabelOption = $scope.labelOptions[0]; // pre-select first option
+  $scope.landscape = false;
 
   // $scope.printLabels = function(items, labelOption) {
   //   var data = {
@@ -24,8 +25,8 @@ angular.module('bekApp')
     ListService.printBarcodes(list.listid);
   };
 
-  $scope.printList = function(list) {
-    ListService.printList(list.listid, pagingModelOptions);
+  $scope.printList = function(list, landscape) {
+    ListService.printList(list.listid, landscape, pagingModelOptions);
   };
 
   $scope.cancel = function () {
