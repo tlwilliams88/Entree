@@ -320,7 +320,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = new List<Account>() { new Account() { Name = name, Id = newAcctId } } };
         }
 
-        public DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr) {
+        public DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
 
             return _dsrAliasService.CreateDsrAlias(userId, email, dsr);
@@ -340,7 +340,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_accountRepo.DeleteAccount(deletedBy.EmailAddress, accountId);
 		}
 
-        public void DeleteDsrAlias(int dsrAliasId, string email) {
+        public void DeleteDsrAlias(long dsrAliasId, string email) {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
 
             _dsrAliasService.DeleteDsrAlias(dsrAliasId, email);
@@ -640,7 +640,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 #endif
             if (isInternalUser) { 
                 retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
-                if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAlias() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
+                if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAliasModel() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
             }
 
             return retVal;
@@ -791,7 +791,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return _customerRepo.GetCustomerForUser(customerNumber, branchId, userId);
         }
 
-        public List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId) {
+        public List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId) {
             return _dsrAliasService.GetAllDsrAliasesByUserId(userId);
         }
 

@@ -26,9 +26,9 @@ angular.module('bekApp')
 
       if (fileType === 'CSV') {
         filename = 'entree.csv';
-      } else if (fileType === 'EXCEL') {
+      } else if (fileType === 'EXCEL' || fileType === 'excel' ) {
         filename = 'entree.xlsx';
-      } else if (fileType === 'PDF') {
+      } else if (fileType === 'PDF' || fileType === 'pdf' ) {
         filename = 'entree.pdf';
       }else {
         filename = 'entree.txt';
@@ -163,6 +163,16 @@ angular.module('bekApp')
 
             downloadFile(data, status, headers, selectedType, httpPath);
           });
+      },
+
+      exportInventoryValueReport: function(format, items) {
+        var options = {
+          format: format,
+          data: items
+        };
+        return $http.post('/report/inventoryvalue', options, { responseType: 'arraybuffer' }).success(function(data, status, headers) {
+          downloadFile(data, status, headers, options.format, '/report/inventoryvalue');
+        });
       },
 
       print: function(printPromise) {

@@ -48,6 +48,10 @@ angular.module('bekApp')
     return SessionService.userProfile.isdemo;
   }
 
+  function isKeithNetCustomer() {
+    return LocalStorage.getCurrentCustomer().customer.isKeithnetCustomer;
+  }
+
   function isValidRole() {
     return ( isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() || isSysAdmin() || isBranchManager() || isPowerUser() || isDsr() || isDsm() || isKbitAdmin() );
   }
@@ -116,11 +120,11 @@ angular.module('bekApp')
     },
 
     canCreateOrders: function() {
-      return ( Service.isInternalAccountAdminUser() || isOwner()  || isApprover() || isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || isOwner()  || isApprover() || isBuyer() ) && isKeithNetCustomer();
     },
 
     canSubmitOrders: function() {
-      return ( Service.isInternalAccountAdminUser() || isOwner() || isApprover() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isApprover() && isKeithNetCustomer());
     },
 
     canPayInvoices: function() {

@@ -256,7 +256,7 @@ namespace KeithLink.Svc.InternalSvc
             // DSR Alias
             builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
-            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+			builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
 
 			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 

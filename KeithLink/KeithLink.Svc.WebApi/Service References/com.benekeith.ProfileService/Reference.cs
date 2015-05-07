@@ -16,16 +16,16 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
     public interface IProfileService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/CreateDsrAlias", ReplyAction="http://tempuri.org/IProfileService/CreateDsrAliasResponse")]
-        KeithLink.Svc.Core.Models.Profile.EF.DsrAlias CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
+        KeithLink.Svc.Core.Models.Profile.DsrAliasModel CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/CreateDsrAlias", ReplyAction="http://tempuri.org/IProfileService/CreateDsrAliasResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.EF.DsrAlias> CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.DsrAliasModel> CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteDsrAlias", ReplyAction="http://tempuri.org/IProfileService/DeleteDsrAliasResponse")]
-        void DeleteDsrAlias(int dsrAliasId, string email);
+        void DeleteDsrAlias(long dsrAliasId, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteDsrAlias", ReplyAction="http://tempuri.org/IProfileService/DeleteDsrAliasResponse")]
-        System.Threading.Tasks.Task DeleteDsrAliasAsync(int dsrAliasId, string email);
+        System.Threading.Tasks.Task DeleteDsrAliasAsync(long dsrAliasId, string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/GeneratePasswordResetRequest", ReplyAction="http://tempuri.org/IProfileService/GeneratePasswordResetRequestResponse")]
         void GeneratePasswordResetRequest(string email);
@@ -40,10 +40,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         System.Threading.Tasks.Task<bool> IsTokenValidAsync(string token);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserId", ReplyAction="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserIdResponse")]
-        KeithLink.Svc.Core.Models.Profile.EF.DsrAlias[] GetAllDsrAliasesByUserId(System.Guid userId);
+        KeithLink.Svc.Core.Models.Profile.DsrAliasModel[] GetAllDsrAliasesByUserId(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserId", ReplyAction="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserIdResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.EF.DsrAlias[]> GetAllDsrAliasesByUserIdAsync(System.Guid userId);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.DsrAliasModel[]> GetAllDsrAliasesByUserIdAsync(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ResetPassword", ReplyAction="http://tempuri.org/IProfileService/ResetPasswordResponse")]
         bool ResetPassword([System.ServiceModel.MessageParameterAttribute(Name="resetPassword")] KeithLink.Svc.Core.Models.Profile.ResetPasswordModel resetPassword1);
@@ -85,19 +85,19 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
                 base(binding, remoteAddress) {
         }
         
-        public KeithLink.Svc.Core.Models.Profile.EF.DsrAlias CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
+        public KeithLink.Svc.Core.Models.Profile.DsrAliasModel CreateDsrAlias(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
             return base.Channel.CreateDsrAlias(userId, email, dsr);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.EF.DsrAlias> CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.DsrAliasModel> CreateDsrAliasAsync(System.Guid userId, string email, KeithLink.Svc.Core.Models.Profile.Dsr dsr) {
             return base.Channel.CreateDsrAliasAsync(userId, email, dsr);
         }
         
-        public void DeleteDsrAlias(int dsrAliasId, string email) {
+        public void DeleteDsrAlias(long dsrAliasId, string email) {
             base.Channel.DeleteDsrAlias(dsrAliasId, email);
         }
         
-        public System.Threading.Tasks.Task DeleteDsrAliasAsync(int dsrAliasId, string email) {
+        public System.Threading.Tasks.Task DeleteDsrAliasAsync(long dsrAliasId, string email) {
             return base.Channel.DeleteDsrAliasAsync(dsrAliasId, email);
         }
         
@@ -117,11 +117,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
             return base.Channel.IsTokenValidAsync(token);
         }
         
-        public KeithLink.Svc.Core.Models.Profile.EF.DsrAlias[] GetAllDsrAliasesByUserId(System.Guid userId) {
+        public KeithLink.Svc.Core.Models.Profile.DsrAliasModel[] GetAllDsrAliasesByUserId(System.Guid userId) {
             return base.Channel.GetAllDsrAliasesByUserId(userId);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.EF.DsrAlias[]> GetAllDsrAliasesByUserIdAsync(System.Guid userId) {
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.DsrAliasModel[]> GetAllDsrAliasesByUserIdAsync(System.Guid userId) {
             return base.Channel.GetAllDsrAliasesByUserIdAsync(userId);
         }
         

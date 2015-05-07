@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void CreateBekUserProfile(string emailAddress);
 
-        DsrAlias CreateDsrAlias(Guid userId, string email, Dsr dsr);
+        DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr);
         
         UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId);
 
@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
 
-        void DeleteDsrAlias(int dsrAliasId, string email);
+        void DeleteDsrAlias(long dsrAliasId, string email);
 
         //UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
         UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false);
@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         
         AccountUsersReturn GetAccountUsers(Guid id);
 
-        List<DsrAlias> GetAllDsrAliasesByUserId(Guid userId);
+        List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId);
 
         CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId);
 

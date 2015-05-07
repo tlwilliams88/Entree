@@ -22,6 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -37,12 +38,14 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IListServiceRepository listServiceRepository;
         private readonly IOrderQueueLogic orderQueueLogic;
 		private readonly IOrderServiceRepository orderServiceRepository;
+		private readonly IAuditLogRepository auditLogRepository;
 		#endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
-									 IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, ICustomerRepository customerRepository)
+									 IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, ICustomerRepository customerRepository,
+									IAuditLogRepository auditLogRepository)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
@@ -54,6 +57,7 @@ namespace KeithLink.Svc.Impl.Logic
             this.orderQueueLogic = orderQueueLogic;
 			this.orderServiceRepository = orderServiceRepository;
 			this.customerRepository = customerRepository;
+			this.auditLogRepository = auditLogRepository;
 		}
         #endregion
 
@@ -268,6 +272,8 @@ namespace KeithLink.Svc.Impl.Logic
 
             orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
             orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue
+
+			auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}

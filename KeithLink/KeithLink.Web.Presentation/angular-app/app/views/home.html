@@ -1,71 +1,61 @@
 <div page-header-bar>
   <div header-message>
     <span class="hidden-xs hidden-sm">Welcome Back </span>{{::userProfile.displayname}}<span class="hidden-xs hidden-sm">!</span>
-    <order-dropdown open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
+    <order-dropdown ng-if="canCreateOrders" open-scope="status.orderdropdownisopen1" class="hidden-md hidden-lg pull-right"></order-dropdown>
   </div>
   <div header-buttons>
-    <order-dropdown open-scope="status.orderdropdownisopen2"></order-dropdown>
+    <order-dropdown ng-if="canCreateOrders" open-scope="status.orderdropdownisopen2"></order-dropdown>
   </div>
 </div>
- 
 <!-- <ng-include src="'views/globalmessage.html'"></ng-include> -->
- 
 <div class="page-content">
   <div class="row">
     <div class="col-md-4 col-md-push-8">
       <!-- Account Summary -->
       <div class="info-box">
- 
-        <a ui-sref="menu.invoice" ng-hide = "isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
-        
+        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         <h4><strong>Account Balance</strong></h4>
-        
         <div loading-spinner="loadingAccountBalance"></div>
- 
         <div ng-show="!loadingAccountBalance">
           <p class="currency-value">
             {{selectedUserContext.customer.balance.totalbalance || 0 | currency}}
           </p>
-          
           <p class="">Your Terms: {{selectedUserContext.customer.termdescription || 'N/A'}}</p>
-          
           <div class="row text-center">
             <div class="balance__term--amount">
-              <strong>Current</strong>
-              {{selectedUserContext.customer.balance.currentbalance | currency}}
+              <strong>Current</strong> {{selectedUserContext.customer.balance.currentbalance | currency}}
             </div>
             <div class="balance__term--amount">
               <strong>Past Due</strong>
               <div ng-class="{ 'text-red': selectedUserContext.customer.balance.pastdue > 0 }">
-              <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
+                <strong>{{selectedUserContext.customer.balance.pastdue | currency}}</strong>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
-      <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController">
+      <div class="info-box account-summary__graph hidden-xs hidden-sm" style="padding-left: 0; padding-bottom: 0;" ng-controller="OrderSummaryGraphController" ng-if="canCreateOrders">
         <div style="margin-left: 15px;">
           <h4 class="no-margin-top"><strong>Order Summary Last 6 Months</strong></h4>
           <div loading-spinner="loadingOrderGraph"></div>
           <span class="text-red" ng-show="ordersGraphMessage">{{ordersGraphMessage}}</span>
         </div>
         <div id="chart_div" style="height:140px;width:100%;"></div>
-      </div> <!-- end Account Summary -->
- 
+      </div>
+      <!-- end Account Summary -->
       <!-- Recent Activity -->
       <div class="hidden-xs hidden-sm">
         <h3>Recent Activity</h3>
         <p ng-show="dates && dates.length === 0">No recent activity found for this customer.</p>
-        <div ng-repeat = "date in dates">
+        <div ng-repeat="date in dates">
           <div class="notification notification--date">
             <div class="notification__icon">
               <span class="icon-record"></span>
             </div>
             <div class="notification__date">{{date | formatDate}} </div>
           </div>
-          <div ng-repeat = "notification in notificationDates[date]">
-            <div  class="notification notification--activity hand" ng-click ="showAdditionalInfo(notification)">
+          <div ng-repeat="notification in notificationDates[date]">
+            <div class="notification notification--activity hand" ng-click="showAdditionalInfo(notification)">
               <div class="notification__icon">
                 <div class="icon" ng-show="notification.displayType === 'Order'"><span class="icon-truck"></span></div>
                 <div class="icon" ng-show="notification.displayType === 'Invoice'"><span class="icon-dollar"></span></div>
@@ -80,11 +70,13 @@
           </div>
         </div>
         <div loading-spinner="loadingRecentActivity"></div>
-      </div> <!-- end Recent Activity -->
+      </div>
+      <!-- end Recent Activity -->
     </div>
- 
+
     <!-- Cart Summary -->
     <div class="col-md-8 col-md-pull-4">
+      <div ng-if="canCreateOrders">
       <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin">
         <div class="col-md-3">
           Pending Orders
@@ -99,7 +91,6 @@
           Subtotal
         </div>
       </div>
- 
       <div ng-show="cartHeaders && cartHeaders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="cart in cartHeaders | orderBy:'createddate':true | limitTo: numCartsToDisplay">
         <div class="row no-margin">
           <div class="col-md-3 order-col">
@@ -115,20 +106,15 @@
           <div class="col-md-3 table-col">
             {{cart.subtotal | currency}}
           </div>
-        
         </div>
- 
       </div>
- 
       <div class="text-center hidden-xs hidden-sm" loading-spinner="loadingCarts" ng-show="loadingCarts"></div>
       <p class="hidden-xs hidden-sm" ng-hide="cartMessage || cartHeaders.length > 0 || loadingCarts">
         No Carts to Display
       </p>
- 
       <div class="text-center hidden-xs hidden-sm" ng-hide="loadingCarts || cartMessage || cartHeaders.length === 0">
         <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
- 
       <!-- Order Summary -->
       <div class="row hidden-xs hidden-sm text-center order-summary__header no-margin" style="margin-top:10px;">
         <div class="col-md-3">
@@ -147,11 +133,8 @@
           Invoice Status
         </div>
       </div>
- 
       <div ng-show="orders && orders.length > 0" class="order-summary__order hidden-xs hidden-sm text-center" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: numOrdersToDisplay | styleOrders" ng-class="order.highlightClass">
-        
         <div class="row no-margin">
-        
           <div class="col-md-3 order-col">
             <div class="order-col__number" order-link></div>
             <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
@@ -163,53 +146,44 @@
           <div class="col-md-2 table-col">
             {{order.ordertotal | currency}}
           </div>
-
           <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
-              {{order.status}}
+            {{order.status}}
           </div>
-
           <!-- Display order status before ETA info is available -->
-          <div
-            class="nowrap col-md-3 table-col highlight-col" 
-            ng-if="order.scheduleddeliverytime != null 
+          <div class="nowrap col-md-3 table-col highlight-col" ng-if="order.scheduleddeliverytime != null 
               || order.estimateddeliverytime != null 
-              || order. actualdeliverytime != null"
-            style="padding:12px 0">
-            <span 
-              ng-if="order.estimateddeliverytime != null 
+              || order. actualdeliverytime != null" style="padding:12px 0">
+            <span ng-if="order.estimateddeliverytime != null 
                 && order.actualdeliverytime == null 
                 && order.deliveryoutofsequence != true">
-                <span class="small-icon icon-truck"></span><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
+                <span class="small-icon icon-truck"></span>
+            <br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
             </span>
             <span ng-if="order.actualdeliverytime != null">
               Delivered<br />{{order.actualdeliverytime | formatDateWithTimezone}}
             </span>
-            <span 
-              ng-if="
+            <span ng-if="
                 order.actualdeliverytime == null && (order.estimateddeliverytime == null 
-                || order.deliveryoutofsequence == true)" >
-              <span class="small-icon icon-truck"></span><br />Out For Delivery
+                || order.deliveryoutofsequence == true)">
+              <span class="small-icon icon-truck"></span>
+            <br />Out For Delivery
             </span>
-          </div> <!-- Display ETA info once it s available -->
-
+          </div>
+          <!-- Display ETA info once it s available -->
           <div class="col-md-2 table-col highlight-col">
             {{order.invoicestatus || 'N/A'}}
           </div>
-        
         </div>
- 
       </div>
- 
       <div class="text-center hidden-xs hidden-sm" ng-hide="loadingOrders || ordersMessage">
         <a class="view-all" ui-sref="menu.order">View All</a>
       </div>
-
       <div class="text-center hidden-sm hidden-xs" loading-spinner="loadingOrders" ng-show="loadingOrders"></div>
       <div class="hidden-xs hidden-sm" ng-hide="ordersMessage || orders.length > 0 || loadingOrders">
         No Recent Orders
       </div>
-        <div class="text-red hidden-xs hidden-sm" ng-show="ordersMessage">{{ordersMessage}}</div>
-        <div class="row sub-content visible-xs visible-sm">
+      <div class="text-red hidden-xs hidden-sm" ng-show="ordersMessage">{{ordersMessage}}</div>
+      <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
           <h3>Pending Orders</h3>
         </div>
@@ -235,12 +209,12 @@
               Ship Date
             </div>
             <div class="item-value">
-            {{(cart.requestedshipdate || 'N/A') | formatDate}}
+              {{(cart.requestedshipdate || 'N/A') | formatDate}}
             </div>
           </div>
           <div class="details-item">
             <div class="item-title">
-             Item Count
+              Item Count
             </div>
             <div class="item-value">
               {{cart.itemcount}}
@@ -254,8 +228,8 @@
               {{cart.subtotal | currency}}
             </div>
           </div>
-        </div>           
-      </div>      
+        </div>
+      </div>
       <div class="row sub-content visible-xs visible-sm">
         <div class="col-xs-8">
           <h3>Confirmed Orders</h3>
@@ -265,8 +239,8 @@
         </div>
       </div>
       <p class="text-red hidden-md hidden-lg" ng-show="ordersMessage">{{ordersMessage}}</p>
-      <div  ng-show="orders && orders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2" ng-class="order.highlightClass">
-               <div class="order-col">
+      <div ng-show="orders && orders.length > 0" class="order-summary__order visible-xs visible-sm" ng-repeat="order in orders | orderBy:'createddate':true | limitTo: 2" ng-class="order.highlightClass">
+        <div class="order-col">
           <div class="row">
             <div class="col-xs-6">
               <span>INVOICE #</span>
@@ -283,13 +257,13 @@
               Delivery Date
             </div>
             <div class="item-value">
-            <div ng-if="order.deliverydate != null">{{order.deliverydate | formatDate}}</div>
-            <div ng-if="order.deliverydate == null">TBD</div>
+              <div ng-if="order.deliverydate != null">{{order.deliverydate | formatDate}}</div>
+              <div ng-if="order.deliverydate == null">TBD</div>
             </div>
           </div>
           <div class="details-item">
             <div class="item-title">
-             Total Cost
+              Total Cost
             </div>
             <div class="item-value">
               {{order.ordertotal | currency}}
@@ -302,82 +276,61 @@
             <div class="item-value highlight-col" ng-if="order.scheduleddeliverytime == null && order.estimateddeliverytime == null && order.actualdeliverytime == null">
               {{order.status}}
             </div>
-          
             <!-- Display order status before ETA info is available-->
-            <div 
-              ng-if="order.estimateddeliverytime != null 
+            <div ng-if="order.estimateddeliverytime != null 
               && order.actualdeliverytime == null 
-              && order.deliveryoutofsequence != true" 
-              class="item-value highlight-col">
-              <span class="small-icon icon-truck"></span><br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
+              && order.deliveryoutofsequence != true" class="item-value highlight-col">
+              <span class="small-icon icon-truck"></span>
+              <br/>ETA:&nbsp;{{order.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}
             </div>
-            <div 
-              class="item-value highlight-col" 
-              ng-if="order.actualdeliverytime != null">
-              Delivered<br/>{{order.actualdeliverytime | formatDateWithTimezone}}
+            <div class="item-value highlight-col" ng-if="order.actualdeliverytime != null">
+              Delivered
+              <br/>{{order.actualdeliverytime | formatDateWithTimezone}}
             </div>
-            <div 
-              ng-if="order.actualdeliverytime == null && (!order.estimateddeliverytime == null 
-              || order.deliveryoutofsequence == true)"
-              class="item-value highlight-col">
-              <span class="small-icon icon-truck"></span><br />Out For Delivery
+            <div ng-if="order.actualdeliverytime == null && (!order.estimateddeliverytime == null 
+              || order.deliveryoutofsequence == true)" class="item-value highlight-col">
+              <span class="small-icon icon-truck"></span>
+              <br />Out For Delivery
             </div>
-
           </div>
-           <div class="details-item">
+          <div class="details-item">
             <div class="item-title">
-             Invoice Status
+              Invoice Status
             </div>
             <div class="item-value highlight-col">
-               {{order.invoicestatus || 'N/A'}}
-            </div>
-          </div>
-        </div>           
-      </div>
- 
- 
-    
-      <!-- end Order Summary -->
-    
-    <!-- Featured Items -->
-    <div>
-      <h3>Latest From Ben E. Keith</h3>
-      <div class="row">
- 
-        <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
-        <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
-        <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
- 
-        <div class="col-sm-12 hidden-xs hidden-sm">
-          <div ng-repeat="item in promoItems">
-            <div class="featured-item text-center">
-              <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
-              <img ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
-              <div class="featured-item__detail">
-                {{item.tagline}}
-                <a 
-                  ng-if="item.targeturl" 
-                  ng-click="openExternalLink(item.targeturl)"
-                  class="text-uppercase">{{item.targeturltext}}</a>
-                <a 
-                  ng-if="item.productid" 
-                  ui-sref="menu.catalog.products.details({ itemId: item.productid})" 
-                  class="text-uppercase">{{item.targeturltext}}</a>
-                <a 
-                  ng-if="!item.targeturl && !item.productid && item.content" 
-                  ng-click="showPromoItemContent(item)"
-                  class="text-uppercase">{{item.targeturltext}}</a>
-              </div>
+              {{order.invoicestatus || 'N/A'}}
             </div>
           </div>
         </div>
- 
-        <div class="col-xs-12 hidden-md hidden-lg" ng-show="promoItems.length > 0">
-          <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
-        </div> 
- 
       </div>
-    </div> <!-- end Featured Items -->
- 
+      </div>
+      <!-- end Order Summary -->
+      <!-- Featured Items -->
+      <div>
+        <h3>Latest From Ben E. Keith</h3>
+        <div class="row">
+          <div class="col-xs-12" loading-spinner="loadingPromoItems" ng-show="loadingPromoItems"></div>
+          <p class="col-xs-12" ng-show="!promoMessage && promoItems && promoItems.length === 0">There are no promos to display at this time.</p>
+          <p class="col-xs-12 text-red" ng-show="promoMessage">{{promoMessage}}</p>
+          <div class="col-sm-12 hidden-xs hidden-sm">
+            <div ng-repeat="item in promoItems">
+              <div class="featured-item text-center">
+                <img ng-if="item.imageurl" ng-src="{{item.imageurl}}" alt="image">
+                <img ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
+                <div class="featured-item__detail">
+                  {{item.tagline}}
+                  <a ng-if="item.targeturl" ng-click="openExternalLink(item.targeturl)" class="text-uppercase">{{item.targeturltext}}</a>
+                  <a ng-if="item.productid" ui-sref="menu.catalog.products.details({ itemId: item.productid})" class="text-uppercase">{{item.targeturltext}}</a>
+                  <a ng-if="!item.targeturl && !item.productid && item.content" ng-click="showPromoItemContent(item)" class="text-uppercase">{{item.targeturltext}}</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 hidden-md hidden-lg" ng-show="promoItems.length > 0">
+            <div featured-item-carousel="promoItems" template="{{'views/featuredItemTemplates/featureditem.html'}}"></div>
+          </div>
+        </div>
+      </div>
+      <!-- end Featured Items -->
+    </div>
   </div>
-</div>

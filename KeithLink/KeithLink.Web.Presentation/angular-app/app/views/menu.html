@@ -181,7 +181,7 @@
            function googleTranslateElementInit() {
              new google.translate.TranslateElement({
               pageLanguage: 'en',
-              includedLanguages: 'es',
+              includedLanguages: 'zh-CN,zh-TW,es,it',
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
               gaTrack: true,
               gaId: 'UA-58495462-2'},
@@ -208,7 +208,7 @@
         </ul>
         <ul class="right-mobile-menu">
           <a ng-click="isMobileSearchBarDisplayed = !isMobileSearchBarDisplayed"><li class="mobile-menu-item"><span class="icon-search"></span></li></a>
-          <li class="mobile-menu-item">
+          <li class="mobile-menu-item" ng-if="canCreateOrders">
             
             <div class="btn-group" dropdown is-open="status.cartisopenmobile" style="  margin-top: -2px;margin-bottom: -3px;">
               <button class="badge-parent btn-no-style dropdown-toggle" style="padding: 0;">

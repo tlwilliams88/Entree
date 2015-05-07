@@ -160,6 +160,7 @@
     <Compile Include="Exceptions\Queue\QueueConnectionException.cs" />
     <Compile Include="Extensions\AccountManagementExtension.cs" />
     <Compile Include="Extensions\ContentManagement\ContentItemExtension.cs" />
+    <Compile Include="Extensions\DsarAliasExtensions.cs" />
     <Compile Include="Extensions\DsrExtensions.cs" />
     <Compile Include="Extensions\PowerMenu\PowerMenuSystemRequestExtensions.cs" />
     <Compile Include="Extensions\SingleSignOn\AccessRequestExtension.cs" />

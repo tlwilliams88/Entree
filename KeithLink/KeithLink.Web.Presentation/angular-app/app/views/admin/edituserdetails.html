@@ -102,7 +102,7 @@
           </span>
         </div>
       </form>
-
+      <button class="btn btn-primary" style="margin-bottom:6px;" type="submit" ng-click="addSelected()" >Add Selected Customers</button>
       <div class="infiniteScroll">
         <table class="table no-margin table-border table-striped-rows" 
           infinite-scroll="infiniteScrollLoadMore()" 
@@ -145,6 +145,8 @@
     </div>
     <div class="col-md-6">
       <h3 class="no-margin-top">Assigned Customers</h3>
+      <button class="btn btn-primary" style="margin-bottom:6px;" type="submit" ng-click="removeSelected(customer)">Remove Selected Customers</button>
+      <span style="margin-top: 20px;" class="pull-right">({{profile.customers.length}} Assigned)</span>
       <table class="table no-margin table-border table-striped-rows">
         <thead>
           <tr>
