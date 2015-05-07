@@ -7,8 +7,8 @@ adds Authorization, apiKey, and userSelectedContext headers to http requests
 ***********/
 
 angular.module('bekApp')
-.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage', 'toaster',
-  function ($q, $location, $log, ENV, LocalStorage, toaster) {
+.factory('AuthenticationInterceptor', ['$q', '$location', '$log', 'ENV', 'LocalStorage', 'AccessService', 'toaster',
+  function ($q, $location, $log, ENV, LocalStorage, AccessService, toaster) {
 
   var userWasLoggedOut = false;
   function logout(showMessage) {
@@ -16,7 +16,8 @@ angular.module('bekApp')
     $location.path('/register');
 
     if (showMessage === true && userWasLoggedOut === false) {
-      toaster.pop('error', null, 'An error occured: no branch ID was selected.');
+      // toaster.pop('error', null, 'An error occured: no branch ID was selected.');
+      $log.debug('An error occured: no branch ID was selected.');
       userWasLoggedOut = true;
     }
   }
