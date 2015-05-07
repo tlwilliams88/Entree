@@ -561,6 +561,9 @@
       <DependentUpon>PowerMenuPricing.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Services\PowerMenuPricingHandler.ashx.cs">
+      <DependentUpon>PowerMenuPricingHandler.ashx</DependentUpon>
+    </Compile>
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -677,6 +680,7 @@
     <None Include="Service References\com.benekeith.ReportService\ReportService3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Services\PowerMenuPricingHandler.ashx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -699,7 +703,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Schemas\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
