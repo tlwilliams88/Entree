@@ -58,6 +58,10 @@ angular.module('bekApp')
 
   var Service = {
 
+    clearLocalStorage: function() {
+      LocalStorage.clearAll();
+    },
+
     getRoleDisplayString: function(role) {
       var displayRole = role;
       switch (role) {

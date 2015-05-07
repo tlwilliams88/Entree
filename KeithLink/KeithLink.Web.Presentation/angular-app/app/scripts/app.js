@@ -154,6 +154,7 @@ angular
 
     } else { // no token, no profile
       if (isStateRestricted(toState.data)) {
+        AccessService.clearLocalStorage();
         $log.debug('user NOT logged in, redirecting to register page');
         $state.go('register');
       } else {
