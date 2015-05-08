@@ -25,7 +25,7 @@ angular.module('bekApp')
      
         if(attrs.id === 'inventoryRep'){
           //allows for 2 decimal places
-         scope.checkRegex = directive.REGEXP2.test(viewValue);
+         scope.checkRegex = (directive.REGEXP2.test(viewValue) || directive.REGEXP.test(viewValue));
         } else{
           scope.checkRegex = directive.REGEXP.test(viewValue);
         }
