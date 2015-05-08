@@ -95,7 +95,7 @@
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
-            <span class="order-col__date" style="font-size:11px;">{{cart.createddate || '2015-03-31' | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
+            <span class="order-col__date" style="font-size:11px;">{{cart.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
           </div>
           <div class="col-md-3 table-col">
             <span>{{(cart.requestedshipdate || 'N/A') | formatDate}}</span>
