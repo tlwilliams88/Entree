@@ -46,9 +46,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 try
                 {
                     System.Threading.Thread.Sleep(2000);
-                    //string msg = ConsumeMessageFromQueue();
-					string msg = "{\"branchid\":\"fdf\",\"customernumber\":\"714113\",\"notificationtype\":1,\"orderchange\":{\"currentstatus\":\"Confirmed\",\"itemchanges\":[],\"items\":[{\"itemdescription\":\"Banana Green Tip Single\",\"itemnumber\":\"018075\",\"newstatus\":null,\"originalstatus\":null,\"quantityordered\":1,\"quantityshipped\":1,\"substituteditemnumber\":\"\"},{\"itemdescription\":\"Lemon Choice 165 Ct\",\"itemnumber\":\"028074\",\"newstatus\":null,\"originalstatus\":null,\"quantityordered\":1,\"quantityshipped\":1,\"substituteditemnumber\":\"\"}],\"ordername\":\"New Cart 0\",\"originalstatus\":\"Submitted\",\"specialinstructions\":\"\"}}";
-                    if (msg != null)
+                    string msg = ConsumeMessageFromQueue();
+					if (msg != null)
                     {
                         BaseNotification notification = NotificationExtension.Deserialize(msg);
                         var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
