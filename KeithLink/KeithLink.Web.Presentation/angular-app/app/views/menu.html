@@ -240,7 +240,7 @@
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'menu.home'}" />
       </div>
 
-    <div class="row hidden-md hidden-lg mobile-user-context"> 
+    <div class="row hidden-md hidden-lg mobile-user-context hidden-print"> 
       <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>    
       <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
       </div>
