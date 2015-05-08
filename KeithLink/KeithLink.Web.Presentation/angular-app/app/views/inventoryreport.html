@@ -78,7 +78,7 @@
             <td class="hidden-mobile-visible-print">{{::item.label}}</td>
             <td class="input-col nowrap">
               <!-- <div type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.quantity"></div> -->
-              <input type="text" allow-one-positive-decimal class="input-number" ng-model="item.quantity">
+              <input type="text" allow-one-positive-decimal class="input-number" id="inventoryRep" ng-model="item.quantity">
             </td>
             <td class="input-col hidden-xs hidden-sm">
               <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">
