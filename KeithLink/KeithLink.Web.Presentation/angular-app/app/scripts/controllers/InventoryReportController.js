@@ -81,6 +81,7 @@ angular.module('bekApp')
         ProductService.getProductDetails(itemNumber)
           .then(function(item) {
             $scope.successMessage = 'Added Item # ' + itemNumber + ' to the report.';
+            $scope.inventoryForm.$setDirty();
             return item;
           }, function() {
             $scope.errorMessage = 'Item # ' + itemNumber + ' not found.';
@@ -94,6 +95,7 @@ angular.module('bekApp')
 
         ListService.getListWithItems(listId).then(function(listFound) {
           $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.'
+          $scope.inventoryForm.$setDirty();
           listFound.items.forEach($scope.addRow);
         });
       };
