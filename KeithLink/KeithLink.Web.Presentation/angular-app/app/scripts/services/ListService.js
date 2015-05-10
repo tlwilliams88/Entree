@@ -270,8 +270,15 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(listId, options) {
-          var promise = $http.post('/list/print/' + listId, options, {
+        printList: function(listId, landscape, options) {
+
+            var printparams = {
+              landscape: landscape,
+              paging: options
+            };
+
+
+          var promise = $http.post('/list/print/' + listId, printparams, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);
