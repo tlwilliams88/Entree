@@ -478,6 +478,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 4/9/2015 - add support for GOF power users
         /// jwames - 5/1/2015 - add DSR Alias support
+        /// jwames - 5/10/2015 - cast to the DSR Alias Model
         /// </remarks>
         public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account) {
             if (string.IsNullOrEmpty(searchTerms))
@@ -497,7 +498,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, 
                                                                  paging.From.HasValue ? paging.From.Value : 0, 
                                                                  searchTerms,
-                                                                 (from DsrAlias d in user.DsrAliases
+                                                                 (from DsrAliasModel d in user.DsrAliases
                                                                   select new Dsr() {
                                                                       Branch = d.BranchId,
                                                                       DsrNumber = d.DsrNumber
