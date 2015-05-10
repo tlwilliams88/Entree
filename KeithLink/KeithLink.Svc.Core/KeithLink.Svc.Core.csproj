@@ -479,6 +479,7 @@
     <Compile Include="Models\SiteCatalog\ItemValidationResultModel.cs" />
     <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\AuthHeader.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\PricingRequest.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\Product.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductLine.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductReturn.cs" />
