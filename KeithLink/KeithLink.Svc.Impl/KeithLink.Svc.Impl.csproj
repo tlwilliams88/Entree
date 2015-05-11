@@ -542,6 +542,10 @@
     <Compile Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.Designer.cs">
       <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.cs" />
+    <Compile Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.Designer.cs">
+      <DependentUpon>201505111534370_Add quantity to list item.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1081,6 +1085,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.resx">
       <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.resx">
+      <DependentUpon>201505111534370_Add quantity to list item.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

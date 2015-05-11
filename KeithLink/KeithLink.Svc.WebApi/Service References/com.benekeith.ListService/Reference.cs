@@ -76,10 +76,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel> ReadListAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, long Id, bool includePrice);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadListByType", ReplyAction="http://tempuri.org/IListServcie/ReadListByTypeResponse")]
-        KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly);
+        KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadListByType", ReplyAction="http://tempuri.org/IListServcie/ReadListByTypeResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadListByTypeAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly);
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadListByTypeAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ReadListLabels", ReplyAction="http://tempuri.org/IListServcie/ReadListLabelsResponse")]
         string[] ReadListLabels(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
@@ -273,12 +273,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
             return base.Channel.ReadListAsync(user, catalogInfo, Id, includePrice);
         }
         
-        public KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly) {
-            return base.Channel.ReadListByType(catalogInfo, type, headerOnly);
+        public KeithLink.Svc.Core.Models.Lists.ListModel[] ReadListByType(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly) {
+            return base.Channel.ReadListByType(user, catalogInfo, type, headerOnly);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadListByTypeAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly) {
-            return base.Channel.ReadListByTypeAsync(catalogInfo, type, headerOnly);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.ListModel[]> ReadListByTypeAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, KeithLink.Svc.Core.Enumerations.List.ListType type, bool headerOnly) {
+            return base.Channel.ReadListByTypeAsync(user, catalogInfo, type, headerOnly);
         }
         
         public string[] ReadListLabels(KeithLink.Svc.Core.Models.Profile.UserProfile user, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {

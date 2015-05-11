@@ -48,7 +48,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 
         [OperationContract]
-		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
+		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
 
         [OperationContract]
 		List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);

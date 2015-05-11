@@ -25,5 +25,6 @@ namespace KeithLink.Svc.Core.Models.EF
 		public DateTime? ToDate { get; set; }
 		public List ParentList { get; set; }
 		public bool? Each { get; set; }
+		public decimal Quantity { get; set; }
 	}
 }

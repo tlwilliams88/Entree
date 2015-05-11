@@ -106,7 +106,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/type/{type}")]
 		public List<ListModel> List(ListType type, bool headerOnly = false)
 		{
-			return listServiceRepository.ReadListByType(this.SelectedUserContext, type, headerOnly);
+			return listServiceRepository.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
 		}
 		
 		/// <summary>
@@ -159,9 +159,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
         [HttpPost]
 		[ApiKeyedRoute("list/")]
-		public NewListItem List(ListModel list, bool isMandatory = false, bool isRecommended = false)
+		public NewListItem List(ListModel list, [FromUri] ListType type = ListType.Custom)
         {
-			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? ListType.Mandatory : isRecommended ? ListType.RecommendedItems : ListType.Custom) };
+			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, type) };
         }
 		
 

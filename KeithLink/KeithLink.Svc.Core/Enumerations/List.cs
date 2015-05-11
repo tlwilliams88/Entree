@@ -32,6 +32,7 @@ namespace KeithLink.Svc.Core.Enumerations.List
 		ContractItemsDeleted,
 		Reminder,
 		Mandatory,
-		RecommendedItems
+		RecommendedItems,
+		InventoryValuation
 	}
 }
