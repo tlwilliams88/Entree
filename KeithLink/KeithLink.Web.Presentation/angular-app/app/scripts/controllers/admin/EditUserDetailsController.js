@@ -96,6 +96,7 @@ angular.module('bekApp')
 
     //pushes profile object to database
     UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
+      // update currently logged in user profile
       if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {
         $scope.$parent.$parent.userProfile = newProfile;
       }
