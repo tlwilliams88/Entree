@@ -108,7 +108,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void ReadListByType()
 		{
-			var list = listLogic.ReadListByType(TestSessionObject.TestUserContext, Core.Enumerations.List.ListType.Custom);
+			var list = listLogic.ReadListByType(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext, Core.Enumerations.List.ListType.Custom);
 			Assert.IsNotNull(list);
 		}
 		
