@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 					if (casePrice == 0)
 						return 0;
 
-					return servingPerPack / casePrice;
+					return casePrice / servingPerPack;
 				}
 				catch { return 0; }
 			}

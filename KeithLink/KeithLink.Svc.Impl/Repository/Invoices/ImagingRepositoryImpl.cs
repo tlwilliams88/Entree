@@ -15,6 +15,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.Invoices {
     public class ImagingRepositoryImpl : IImagingRepository {
@@ -148,13 +149,14 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                         string rawJson = response.Content.ReadAsStringAsync().Result;
                         ImageNowPageReturnModel jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ImageNowPageReturnModel>(rawJson);
 
-                        List<string> retVal = new List<string>();
+						List<Tuple<int, string>> processedImages = new List<Tuple<int, string>>();
 
-                        foreach (Page imagePage in jsonResponse.pages) {
-                            retVal.Add(GetImageString(sessionToken, documentId, imagePage.id));
-                        }
+						Parallel.ForEach(jsonResponse.pages, page => {
+							processedImages.Add(new Tuple<int, string>(page.pageNumber, GetImageString(sessionToken, documentId, page.id)));
+						});
 
-                        return retVal;
+						return processedImages.OrderBy(p => p.Item1).Select(t => t.Item2).ToList();
+
                     } else {
                         throw new ApplicationException("Document not found");
                     }

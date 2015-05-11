@@ -47,7 +47,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 {
                     System.Threading.Thread.Sleep(2000);
                     string msg = ConsumeMessageFromQueue();
-                    if (msg != null)
+					if (msg != null)
                     {
                         BaseNotification notification = NotificationExtension.Deserialize(msg);
                         var handler = notificationHandlerFactory(notification.NotificationType); // autofac will get the right handler
