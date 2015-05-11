@@ -188,6 +188,10 @@ angular.module('bekApp')
           });
         },
 
+        getListsByType: function(type, params) {
+          return List.getByType({ type: type }, { params: params }).$promise;
+        },
+
         // accepts listId (guid)
         // returns list object
         getListWithItems: function(listId, params) {
@@ -326,7 +330,7 @@ angular.module('bekApp')
         },
 
         // items: accepts null, item object, or array of item objects
-        // params: isMandatory param for creating mandatory list
+        // params: type (recommendedItems, Mandatory, InventoryValuation)
         // returns promise and new list object
         createList: function(items, params) {
           var newList = Service.beforeCreateList(items, params);
@@ -334,7 +338,7 @@ angular.module('bekApp')
             params = {};
           }
 
-          newList.message = 'Creating list...';          
+          newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');

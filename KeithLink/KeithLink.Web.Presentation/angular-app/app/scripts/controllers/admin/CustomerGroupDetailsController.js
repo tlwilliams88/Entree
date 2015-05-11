@@ -3,7 +3,7 @@
 angular.module('bekApp')
   .controller('CustomerGroupDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'originalCustomerGroup', 'CustomerGroupService', 'CustomerPagingModel', 'UserProfileService',
     function ($scope, $state, $stateParams, $filter, originalCustomerGroup, CustomerGroupService, CustomerPagingModel, UserProfileService) {
-    //comment
+
   if ($stateParams.groupId === 'new') {
     $scope.originalCustomerGroup = {
       customers: [],

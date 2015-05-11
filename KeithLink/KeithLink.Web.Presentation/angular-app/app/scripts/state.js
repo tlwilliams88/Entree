@@ -409,6 +409,11 @@ angular.module('bekApp')
       url: '/reports/inventory',
       templateUrl: 'views/inventoryreport.html',
       controller: 'InventoryReportController',
+      resolve: {
+        reports: ['ListService', function(ListService) {
+          return ListService.getListsByType('inventoryValuation');
+        }]
+      },
       data: {
         authorize: 'canManageLists'
       }
