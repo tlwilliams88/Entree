@@ -13,7 +13,11 @@ angular.module('bekApp')
 
       function checkValidity(viewValue) {
         if(scope.$modelValue || scope.$modelValue === undefined){
-          if (directive.INTEGER_REGEXP.test(viewValue)) {
+          var regex = directive.INTEGER_REGEXP;
+          if (attrs.allowLeadingZeroes === 'true') {
+            regex = directive.INTEGER_LEADING_ZEROS;
+          }
+          if (regex.test(viewValue)) {
             // it is valid
             ctrl.$setValidity('integer', true);
             return viewValue;
@@ -32,7 +36,8 @@ angular.module('bekApp')
         }
       }
     },
-    INTEGER_REGEXP : /^\+?(0|[1-9]\d*)$/
+    INTEGER_REGEXP : /^\+?(0|[1-9]\d*)$/,
+    INTEGER_LEADING_ZEROS : /^\+?([0-9]\d*)$/
   };
 
   return directive;
