@@ -41,6 +41,9 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[Description("To Date")]
 		public DateTime? ToDate { get; set; }
 
+		[DataMember(Name = "quantity")]
+		public decimal Quantity { get; set; }
+
         public DateTime CreatedUtc { get; set; }
         public DateTime ModifiedUtc { get; set; }
 

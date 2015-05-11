@@ -497,8 +497,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		//	}
 		//	return activeCart;
 		//}
-		
-        public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
+
+		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
 			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type == type && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
@@ -521,7 +521,31 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)
 				}).ToList();
 			else
-				return list.Select(b => b.ToListModel(catalogInfo)).ToList();
+			{
+				var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
+
+				var processedList = new List<ListModel>();
+				//Lookup product details for each item
+				returnList.ForEach(delegate(ListModel listItem)
+				{
+					var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId));
+					if (cachedList != null)
+					{
+						processedList.Add(cachedList);
+						return;
+					}
+
+					LookupProductDetails(user, listItem, catalogInfo);
+					processedList.Add(listItem);
+					listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId), TimeSpan.FromHours(2), listItem);
+
+				});
+
+				foreach(var tempList in returnList)
+					LookupPrices(user, tempList.Items, catalogInfo);
+			
+				return returnList;
+			}
 		}
 
 		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
