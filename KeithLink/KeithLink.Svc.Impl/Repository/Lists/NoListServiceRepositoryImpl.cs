@@ -164,5 +164,11 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			throw new NotImplementedException();
 		}
+
+
+		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
