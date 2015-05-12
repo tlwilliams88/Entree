@@ -29,13 +29,12 @@ namespace KeithLink.Svc.Core.Interface.Profile
 
 		Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId);
 
-		PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm);
-        //PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm);
-        PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string searchTerm, List<Dsr> dsrList);
-		PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm);
-		PagedResults<Customer> GetPagedCustomersForBranch(int size, int from, string branchId, string searchTerm);
-		PagedResults<Customer> GetPagedCustomersForUser(int size, int from, Guid userId, string searchTerm);
-		PagedResults<Customer> GetPagedCustomersForAccount(int size, int from, string searchTerm, string accountId);
+		PagedResults<Customer> GetPagedCustomers(PagingModel paging, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForDSR(PagingModel paging, string searchTerm, List<Dsr> dsrList);
+		PagedResults<Customer> GetPagedCustomersForDSM(PagingModel paging, string dsrNumber, string branchId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForBranch(PagingModel paging, string branchId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForUser(PagingModel paging, Guid userId, string searchTerm);
+		PagedResults<Customer> GetPagedCustomersForAccount(PagingModel paging, string searchTerm, string accountId);
 		
     }
 }
