@@ -485,7 +485,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 searchTerms = "";
 
             if (!string.IsNullOrEmpty(account))
-                return _customerRepo.GetPagedCustomersForAccount(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms, account.ToGuid().ToCommerceServerFormat());
+                return _customerRepo.GetPagedCustomersForAccount(paging, searchTerms, account.ToGuid().ToCommerceServerFormat());
 
 
             if (IsInternalAddress(user.EmailAddress)) {
@@ -495,8 +495,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber)) {
                     // lookup customers by their assigned dsr number
                     //return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
-                    return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, 
-                                                                 paging.From.HasValue ? paging.From.Value : 0, 
+                    return _customerRepo.GetPagedCustomersForDSR(paging, 
                                                                  searchTerms,
                                                                  (from DsrAliasModel d in user.DsrAliases
                                                                   select new Dsr() {
@@ -508,13 +507,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 }
                 if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber)) {
                     // lookup customers by their assigned dsr number
-                    returnValue = _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForDSM(paging, user.DSMNumber, user.BranchId, searchTerms);
 
                 } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
-                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms);
 
                 } else { // assume admin user with access to all customers or PowerUser from GOF
-                    returnValue = _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomers(paging, searchTerms);
                 }
 
 				//For internal users, switch displayname to include branch id
@@ -527,9 +526,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             } else { // external user
 				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
-					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+					return _customerRepo.GetPagedCustomers(paging, searchTerms);
 				else
-					return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
+					return _customerRepo.GetPagedCustomersForUser(paging, user.UserId, searchTerms);
             }
         }
 
