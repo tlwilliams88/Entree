@@ -97,6 +97,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				Label = newItem.Label,
 				Par = newItem.ParLevel,
 				Position = position,
+				Quantity = newItem.Quantity
 			};
 
 			list.Items.Add(item);
@@ -152,7 +153,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         Label = item.Label, 
                         Par = item.ParLevel, 
                         Each = !item.Each.Equals(null) ? item.Each : false,
- 						Position = nextPosition
+ 						Position = nextPosition,
+						Quantity = item.Quantity
                     });
 				nextPosition++;
 			}
@@ -541,10 +543,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 				});
 
-				foreach(var tempList in returnList)
+				foreach (var tempList in processedList)
 					LookupPrices(user, tempList.Items, catalogInfo);
-			
-				return returnList;
+
+				return processedList;
 			}
 		}
 
@@ -723,13 +725,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                             item.Par = updateItem.ParLevel;
                             item.Position = updateItem.Position;
                             item.Each = updateItem.Each;
+							item.Quantity = updateItem.Quantity;
                         }
                         else
                         {
                             if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
                                 continue;
 
-                            currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label, Each = updateItem.Each });
+                            currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label, Each = updateItem.Each, Quantity = updateItem.Quantity });
 							itemsAdded = true;
                         }
                     }
