@@ -20,13 +20,15 @@
           <th>
             <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
           </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
+          <!-- <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);"> -->
+          <th>
             Number
-            <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
+            <!-- <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span> -->
           </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
+          <!-- <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)"> -->
+          <th>
             Name
-            <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
+            <!-- <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span> -->
           </th>
         </tr>
       </thead>

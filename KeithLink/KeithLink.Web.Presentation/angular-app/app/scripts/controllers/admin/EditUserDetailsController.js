@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('EditUserDetailsController', ['$scope', '$state', '$stateParams', '$filter', 'UserProfileService', 'userProfile', 'userCustomers', 'CustomerPagingModel',
-    function ($scope, $state, $stateParams, $filter, UserProfileService, userProfile, userCustomers, CustomerPagingModel) {
+  .controller('EditUserDetailsController', ['$scope', '$q', '$state', '$stateParams', '$modal', 'UserProfileService', 'userProfile', 'userCustomers',
+    function ($scope, $q, $state, $stateParams, $modal, UserProfileService, userProfile, userCustomers) {
 
   $scope.groupId = $stateParams.groupId;
   
   function checkIfUserExistsOnAnotherGroup() {
     // add check if userCustomers are in a different customer group
-    // throw warning to user that assigning different custoemr will change the customer group
+    // throw warning to user that assigning different customers will change the customer group
     var userIsOnAnotherCustomerGroup = false;
     userCustomers.forEach(function(customer) {
       if (customer.accountId !== $scope.groupId) {
@@ -42,68 +42,40 @@ angular.module('bekApp')
     $scope.profile.customers = userCustomers;
   };
 
-  function findSelectedCustomers(customers) {
-    // check if customer is selected
-    customers.forEach(function(customer) {
-      $scope.profile.customers.forEach(function(profileCustomer) {
-        if (customer.customerId === profileCustomer.customerId) {
-          customer.selected = true;
-        }
-      });
-
-      if (!customer.selected) {
-        customer.selected = false;
-        customer.isChecked = false;
-      }
-    });
-    return customers;
-  }
-
-  $scope.customersSortDesc = false;
-  $scope.customersSortField = 'customerName';
-
-  var customerPagingModel = new CustomerPagingModel(
-    setCustomers,
-    appendCustomers,
-    startLoading,
-    stopLoading,
-    $scope.customersSortField,
-    $scope.customersSortDesc
-  );
-  customerPagingModel.accountId = $scope.groupId; 
 
   // TODO: get available roles <----NEEDS ENDPOINT
   $scope.roles = ['owner', 'accounting', 'approver', 'buyer', 'guest'];
 
   processProfile(userProfile);
-  customerPagingModel.loadCustomers()
-    .then(checkIfUserExistsOnAnotherGroup);
+  checkIfUserExistsOnAnotherGroup();
 
   /**********
   FORM EVENTS
   **********/
 
-  $scope.updateProfile = function () {
-    //attaches only selected customers to profile object before it is pushed to the database
-    var selectedCustomers = [];
-    $scope.customers.forEach(function(customer){
-      if(customer.selected) {
-        selectedCustomers.push(customer);
-      }
-    });
-
-    $scope.profile.customers = selectedCustomers;
-
-    //pushes profile object to database
-    UserProfileService.updateUserProfile($scope.profile).then(function(newProfile){
-      // update currently logged in user profile
-      if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {
-        $scope.$parent.$parent.userProfile = newProfile;
-      }
-      $scope.displayMessage('success', 'The user was successfully updated.');
-    }, function(error){
-      $scope.displayMessage('error', 'An error occurred: ' + error);
-    });
+  var processingSaveProfile = false;
+  $scope.updateProfile = function (profile) {
+    var deferred = $q.defer();
+    if (!processingSaveProfile) {
+      processingSaveProfile = true;
+      UserProfileService.updateUserProfile(profile).then(function(newProfile){
+        // update currently logged in user profile
+        if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {
+          $scope.$parent.$parent.userProfile = newProfile;
+        }
+        $scope.editUserForm.$setPristine();
+        $scope.displayMessage('success', 'The user was successfully updated.');
+        deferred.resolve();
+      }, function(error){
+        $scope.displayMessage('error', 'An error occurred: ' + error);
+        deferred.reject();
+      }).finally(function() {
+        processingSaveProfile = false;
+      });
+    } else {
+      deferred.reject();
+    }
+    return deferred.promise;
   };
 
   $scope.deleteProfile = function (profile) {
@@ -126,99 +98,50 @@ angular.module('bekApp')
   CUSTOMERS
   **********/
   
-  function setCustomers(data) {
-    $scope.customers = findSelectedCustomers(data.results);
-    $scope.totalCustomers = data.totalResults;
-  }
-  function appendCustomers(data) {
-    $scope.customers = $scope.customers.concat(findSelectedCustomers(data.results));
-  }
-  function startLoading() {
-    $scope.loadingCustomers = true;
-  }
-  function stopLoading() {
-    $scope.loadingCustomers = false;
-  }
-
-  $scope.searchCustomers = function (searchTerm) {
-    customerPagingModel.filterCustomers(searchTerm);
-  };
-
-  $scope.sortCustomers = function(field, sortDescending) {
-    $scope.customersSortDesc = sortDescending;
-    $scope.customersSortField = field;
-    customerPagingModel.sortCustomers(field, sortDescending);
-  };
-
-  $scope.infiniteScrollLoadMore = function() {
-    customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
-  };
-
-  $scope.selectCustomer = function(customer) {    
-  $scope.profile.customers.push(customer);
-   customer.selected = true;   
-  };
-
-  $scope.addSelected = function() {
-   $scope.editUserForm.$setDirty();
-    $scope.customers.forEach(function(customer) {
-      if(customer.isChecked){    
-        customer.isChecked = false;
-        customer.selected = true;
-         $scope.profile.customers.push(angular.copy(customer));  
+  $scope.openCustomerAssignmentModal = function() {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/customerassignmentmodal.html',
+      controller: 'CustomerAssignmentModalController',
+      size: 'lg',
+      resolve: {
+        customerGroupId: function() {
+          return $scope.groupId;
+        },
+        selectedCustomers: function() {
+          return $scope.profile.customers;
+        }
       }
-    })    
-      if($scope.filteredCustomers.length<30 || $scope.allAvailableSelected ){
-        $scope.infiniteScrollLoadMore();
-      }
-       $scope.allAvailableSelected = $scope.allRemovableSelected = false;
+    });
+
+    modalInstance.result.then(function(selectedCustomers) {
+      
+      // save new customers
+      var profile = angular.copy($scope.profile);
+      profile.customers = $scope.profile.customers.concat(selectedCustomers);
+      $scope.updateProfile(profile).then(function() {
+        $scope.profile = profile;
+      });
+    });
   };
 
-    $scope.selectAll = function(allSelected, source){
-    if(source=='add'){
-      $scope.customers.forEach(function(customer) {
-        if(customer.selected == false){
-       customer.isChecked = allSelected;
-     }
-      })
-    }
-    if(source=='remove'){
-      $scope.profile.customers.forEach(function(availableCustomer) {
-        availableCustomer.isChecked = allSelected;
-      })
-    }
+  $scope.selectAllCustomers = function(allSelected) {
+    $scope.profile.customers.forEach(function(availableCustomer) {
+      availableCustomer.selected = allSelected;
+    });
+  };
+
+  $scope.removeSelectedCustomers = function() {
+    $scope.editUserForm.$setDirty();
+
+    var assignedCustomers = [];
+    $scope.profile.customers.forEach(function(customer) {
+      if (customer.selected !== true) {
+        assignedCustomers.push(customer);
+      }
+    });
+
+    // console.log(assignedCustomers);
+    $scope.profile.customers = assignedCustomers;
   };
   
-  $scope.unselectCustomer = function(customer) {   
-    var idx = $scope.profile.customers.indexOf(customer);   
-    $scope.profile.customers.splice(idx, 1);   
-    $scope.customers.forEach(function(availableCustomer) {   
-      if (customer.customerNumber === availableCustomer.customerNumber) {   
-        availableCustomer.selected = false;   
-      }   
-    });   
-    customer.selected = false; 
-  };
-
-  $scope.removeSelected = function(selectedCustomer) {
-    $scope.editUserForm.$setDirty();
-    $scope.foundMatch = false;
-    $scope.profile.customers.forEach(function(availableCust){
-        if(availableCust.isChecked){   
-            $scope.customers.forEach(function(customer) {
-                if (availableCust.customerNumber === customer.customerNumber) {
-                  $scope.foundMatch = true;                                  
-                  customer.selected  = customer.isChecked = false;
-                  availableCust.selected  = availableCust.isChecked = false;
-                }
-            });
-            if(!$scope.foundMatch){
-              $scope.unselectCustomer(selectedCustomer);
-            } 
-        }  
-    })
-     $scope.profile.customers = $filter('filter')($scope.profile.customers, {selected: 'true'});
-     $scope.allAvailableSelected = $scope.allRemovableSelected = false;  
-  };
-
 }]);

@@ -51,7 +51,7 @@ angular.module('bekApp')
   );
 
   if (customerGroupId) {
-    customerPagingModel.accountId = $scope.groupId; 
+    customerPagingModel.accountId = customerGroupId;
   }
 
   customerPagingModel.loadCustomers();
@@ -104,6 +104,10 @@ angular.module('bekApp')
     customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
   };
 
+
+  /* ******
+  * FORM EVENTS
+  * *******/
   $scope.addSelectedCustomers = function(customers) {
     var selectedCustomers = [];
     customers.forEach(function(customer) {
@@ -112,7 +116,7 @@ angular.module('bekApp')
         selectedCustomers.push(customer);
       }
     });
-
+      
     $modalInstance.close(selectedCustomers);
   };
 

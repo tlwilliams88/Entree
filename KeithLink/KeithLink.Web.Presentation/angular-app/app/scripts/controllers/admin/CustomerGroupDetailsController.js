@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('bekApp').controller('CustomerGroupDetailsController', ['$scope', '$state', '$stateParams', '$modal', '$filter', 'originalCustomerGroup', 'CustomerGroupService', 'UserProfileService', function($scope, $state, $stateParams, $modal, $filter, originalCustomerGroup, CustomerGroupService, UserProfileService) {
+angular.module('bekApp')
+  .controller('CustomerGroupDetailsController', ['$scope', '$q', '$state', '$stateParams', '$modal', 'originalCustomerGroup', 'CustomerGroupService', 'UserProfileService', 
+    function($scope, $q, $state, $stateParams, $modal, originalCustomerGroup, CustomerGroupService, UserProfileService) {
   
   if ($stateParams.groupId === 'new') {
     $scope.originalCustomerGroup = {
@@ -35,10 +37,12 @@ angular.module('bekApp').controller('CustomerGroupDetailsController', ['$scope',
     });
 
     modalInstance.result.then(function(selectedCustomers) {
-
-      $scope.customerGroup.customers = $scope.customerGroup.customers.concat(selectedCustomers);
-      saveCustomerGroup($scope.customerGroup);
-
+      // save new customers
+      var group = angular.copy($scope.customerGroup);
+      group.customers = $scope.customerGroup.customers.concat(selectedCustomers);
+      saveCustomerGroup(group).then(function() {
+        $scope.customerGroup = group;
+      });
     });
   };
 
@@ -144,18 +148,25 @@ angular.module('bekApp').controller('CustomerGroupDetailsController', ['$scope',
   var processingSaveCustomerGroup = false;
 
   function saveCustomerGroup(group) {
+    var deferred = $q.defer();
     if (!processingSaveCustomerGroup) {
       processingSaveCustomerGroup = true;
       delete group.customerusers;
-      CustomerGroupService.updateGroup(group).then(function(groups) {
+      CustomerGroupService.updateGroup(group).then(function() {
         $scope.displayMessage('success', 'Successfully saved customer group.');
+        deferred.resolve();
       }, function(error) {
         var message = error ? error : 'Error updating customer group.';
         $scope.displayMessage('error', message);
+        deferred.reject();
       }).finally(function() {
         processingSaveCustomerGroup = false;
       });
+    } else {
+      // event still processing
+      deferred.reject();
     }
+    return deferred.promise;
   }
 
   $scope.submitForm = function(group) {

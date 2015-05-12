@@ -58,10 +58,10 @@
   </div>
   <div class="row sub-content" ng-show="!isNew">
     <div class="col-md-12">
-      <h3>Assigned Customers</h3>
-      <p>
-        <button class="btn btn-lg btn-default" type="button" ng-click="openCustomerAssignmentModal()">Assign Additional Customers</button>
-      </p>
+      <h3>
+        Assigned Customers
+        <button style="margin-left: 5px;" class="btn btn-lg btn-default" type="button" ng-click="openCustomerAssignmentModal()">Assign Additional Customers</button>
+      </h3>
       <div>
         <a ng-click="removeSelectedCustomers()">Remove Selected Customers</a>
         <span class="pull-right">({{customerGroup.customers.length}} Assigned)</span>
