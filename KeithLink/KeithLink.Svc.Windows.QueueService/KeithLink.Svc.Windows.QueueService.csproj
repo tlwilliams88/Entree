@@ -96,6 +96,7 @@
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Management" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -143,6 +144,10 @@
     <ProjectReference Include="..\KeithLink.Svc.Impl\KeithLink.Svc.Impl.csproj">
       <Project>{878aa2e7-769b-409c-8285-3a7faca750f9}</Project>
       <Name>KeithLink.Svc.Impl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\KeithLink.Svc.WebApi\KeithLink.Svc.WebApi.csproj">
+      <Project>{43f5b3cd-d277-4fac-97ff-170ddfa48549}</Project>
+      <Name>KeithLink.Svc.WebApi</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -75,7 +75,7 @@
           <button
             class="btn-no-style"
             type="button"
-            ng-disabled="::!canCreateOrders"
+            ng-disabled="::!canViewOrders"
             ui-sref="menu.order"
             ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
             <li>
@@ -240,7 +240,7 @@
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'menu.home'}" />
       </div>
 
-    <div class="row hidden-md hidden-lg mobile-user-context"> 
+    <div class="row hidden-md hidden-lg mobile-user-context hidden-print"> 
       <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>    
       <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
       </div>
@@ -248,7 +248,7 @@
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }" >
 
-         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;">
+         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;" ng-if="isMobile">
            <ul style="float: left;">
             <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()" ><li class="tablet-menu-item" ><span title="Back" class="icon-back"></span></li></a>
           </ul>

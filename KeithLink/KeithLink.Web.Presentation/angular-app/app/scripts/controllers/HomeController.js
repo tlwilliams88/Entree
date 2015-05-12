@@ -14,8 +14,8 @@ angular.module('bekApp')
     $scope.cartHeaders = CartService.cartHeaders;
 
     // get orders
-    
-    if ($scope.canCreateOrders) {
+    $scope.orders = [];
+    if ($scope.canViewOrders) {
       $scope.loadingOrders = true;
       OrderService.getOrders({
         from: 0,

@@ -58,6 +58,10 @@ angular.module('bekApp')
 
   var Service = {
 
+    clearLocalStorage: function() {
+      LocalStorage.clearAll();
+    },
+
     getRoleDisplayString: function(role) {
       var displayRole = role;
       switch (role) {
@@ -117,6 +121,10 @@ angular.module('bekApp')
 
     canManageLists: function() {
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
+    },
+
+    canViewOrders: function() {
+      return ( Service.isInternalAccountAdminUser() || isOwner()  || isApprover() || isBuyer() );
     },
 
     canCreateOrders: function() {

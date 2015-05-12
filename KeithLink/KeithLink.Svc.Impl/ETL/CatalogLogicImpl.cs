@@ -740,273 +740,273 @@ namespace KeithLink.Svc.Impl.ETL
 
         #region Contract and Worksheet Helpers
 
-        private void CreateOrUpdateContractLists(
-            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
-            , KeithLink.Svc.Core.Models.Profile.Customer customerProfile
-            )
-        {
+		//private void CreateOrUpdateContractLists(
+		//	KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+		//	, KeithLink.Svc.Core.Models.Profile.Customer customerProfile
+		//	)
+		//{
 
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
-            List<ListModel> lists = listLogic.ReadListByType(userSelectedContext, ListType.Contract);
+		//	KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
+		//	List<ListModel> lists = listLogic.ReadListByType(userSelectedContext, ListType.Contract);
 
 
-            if (lists.Count == 0 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
-            {
-                listLogic.CreateList(   
-                    userProfile.UserId 
-                    , userSelectedContext 
-                    , CreateUserList(
-                        customerProfile.ContractId
-                        , GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId)
-                        , ListType.Contract
-                        , true)
-                    , ListType.Contract);
-                return;
-            }
+		//	if (lists.Count == 0 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
+		//	{
+		//		listLogic.CreateList(   
+		//			userProfile.UserId 
+		//			, userSelectedContext 
+		//			, CreateUserList(
+		//				customerProfile.ContractId
+		//				, GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId)
+		//				, ListType.Contract
+		//				, true)
+		//			, ListType.Contract);
+		//		return;
+		//	}
 
-            if (lists.Count == 1 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
-            {
-                Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId));
-                Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
-                SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
-                SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
+		//	if (lists.Count == 1 && customerProfile.ContractId != null && !customerProfile.ContractId.Equals(String.Empty))
+		//	{
+		//		Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId));
+		//		Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
+		//		SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
+		//		SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
 
-				if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
-                {
-                    List<ListItemModel> newItems = CompareNewToExistingListItems(lists[0], newItemDictionary, existingItemDictionary);
-                    List<ListItemModel> deletedItems = CompareExistingToNewListItems(newItemDictionary, existingItemDictionary);
+		//		if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
+		//		{
+		//			List<ListItemModel> newItems = CompareNewToExistingListItems(lists[0], newItemDictionary, existingItemDictionary);
+		//			List<ListItemModel> deletedItems = CompareExistingToNewListItems(newItemDictionary, existingItemDictionary);
                     
-                    if (newItems.Count > 0)
-                    {
-                        long addedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, ListType.ContractItemsAdded);
-                        listLogic.AddItems(userProfile, userSelectedContext, addedItemsListId, newItems);
-                    }
+		//			if (newItems.Count > 0)
+		//			{
+		//				long addedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, ListType.ContractItemsAdded);
+		//				listLogic.AddItems(userProfile, userSelectedContext, addedItemsListId, newItems);
+		//			}
                     
-                    if (deletedItems.Count > 0)
-                    {
-                        long deletedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, ListType.ContractItemsDeleted);
-                        listLogic.AddItems(userProfile, userSelectedContext, deletedItemsListId, deletedItems);
-                    }
+		//			if (deletedItems.Count > 0)
+		//			{
+		//				long deletedItemsListId = GetContractItemChangesListId(userProfile, userSelectedContext, ListType.ContractItemsDeleted);
+		//				listLogic.AddItems(userProfile, userSelectedContext, deletedItemsListId, deletedItems);
+		//			}
 
-                    lists[0].Items = GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId);
-                    listLogic.UpdateList(lists[0]);
+		//			lists[0].Items = GetContractItems(userSelectedContext.CustomerId, userSelectedContext.BranchId, customerProfile.ContractId);
+		//			listLogic.UpdateList(lists[0]);
 
-                    SendContractDiffMessages(customerProfile);
+		//			SendContractDiffMessages(customerProfile);
 
-                }
-            }
-            else if (lists.Count == 1 && (customerProfile.ContractId == null || customerProfile.ContractId.Equals(String.Empty)))
-            {
-                listLogic.DeleteList(lists[0].ListId);
-            }
-        }
+		//		}
+		//	}
+		//	else if (lists.Count == 1 && (customerProfile.ContractId == null || customerProfile.ContractId.Equals(String.Empty)))
+		//	{
+		//		listLogic.DeleteList(lists[0].ListId);
+		//	}
+		//}
 
-        private void CreateOrUpdateWorksheetLists(
-            KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
-            , KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
-        {
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
-            List<ListModel> lists = listLogic.ReadListByType(userSelectedContext, ListType.Worksheet);
+		//private void CreateOrUpdateWorksheetLists(
+		//	KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+		//	, KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
+		//{
+		//	KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
+		//	List<ListModel> lists = listLogic.ReadListByType(userSelectedContext, ListType.Worksheet);
 
-            if (lists.Count == 0)
-            {
-                listLogic.CreateList(
-                    userProfile.UserId
-                    , userSelectedContext
-                    , CreateUserList(
-                        String.Empty
-                        , GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId)
-                        , ListType.Worksheet
-                        , true)
-                    , ListType.Worksheet);
-            }
+		//	if (lists.Count == 0)
+		//	{
+		//		listLogic.CreateList(
+		//			userProfile.UserId
+		//			, userSelectedContext
+		//			, CreateUserList(
+		//				String.Empty
+		//				, GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId)
+		//				, ListType.Worksheet
+		//				, true)
+		//			, ListType.Worksheet);
+		//	}
 
-            if (lists.Count == 1)
-            {
-                Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId));
-                Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
-                SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
-                SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
+		//	if (lists.Count == 1)
+		//	{
+		//		Dictionary<string, ListItemModel> newItemDictionary = CreateListItemDictionary(GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId));
+		//		Dictionary<string, ListItemModel> existingItemDictionary = CreateListItemDictionary(lists[0].Items);
+		//		SortedSet<string> existingItemNumbers = new SortedSet<string>(existingItemDictionary.Keys);
+		//		SortedSet<string> newItemNumbers = new SortedSet<string>(newItemDictionary.Keys);
 
-                if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
-                {
-                    lists[0].Items = GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId);
-                    listLogic.UpdateList(lists[0]);
-                }
-            }
-        }
+		//		if (!Crypto.CalculateMD5Hash(existingItemNumbers).Equals(Crypto.CalculateMD5Hash(newItemNumbers)))
+		//		{
+		//			lists[0].Items = GetWorksheetItems(userSelectedContext.CustomerId, userSelectedContext.BranchId);
+		//			listLogic.UpdateList(lists[0]);
+		//		}
+		//	}
+		//}
 
-        private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateUserSelectedContext(string customerNumber, string branchId)
-        {
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext();
-            userSelectedContext.BranchId = branchId;
-            userSelectedContext.CustomerId = customerNumber;
-            return userSelectedContext;
-        }
+		//private KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext CreateUserSelectedContext(string customerNumber, string branchId)
+		//{
+		//	KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = new KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext();
+		//	userSelectedContext.BranchId = branchId;
+		//	userSelectedContext.CustomerId = customerNumber;
+		//	return userSelectedContext;
+		//}
 
-        private ListModel CreateUserList(string name, List<ListItemModel> items, ListType listType, bool readOnly)
-        {
-            ListModel list = new ListModel();
-            list.Name = GetListName(name, listType);
-            list.Items = items;
-            list.ReadOnly = readOnly;
-            return list;
-        }
+		//private ListModel CreateUserList(string name, List<ListItemModel> items, ListType listType, bool readOnly)
+		//{
+		//	ListModel list = new ListModel();
+		//	list.Name = GetListName(name, listType);
+		//	list.Items = items;
+		//	list.ReadOnly = readOnly;
+		//	return list;
+		//}
 
-        private string GetListName(string name, ListType listType)
-        {
-            string listName = name;
+		//private string GetListName(string name, ListType listType)
+		//{
+		//	string listName = name;
 
-            switch (listType)
-            {
-                case ListType.Contract:
-                    listName = "Contract - " + listName;
-                    break;
-                case ListType.Worksheet:
-                    listName = "History";
-                    break;
-                case ListType.ContractItemsAdded:
-                    listName = "Contract Items Added";
-                    break;
-                case ListType.ContractItemsDeleted:
-                    listName = "Contract Items Deleted";
-                    break;
-            }
+		//	switch (listType)
+		//	{
+		//		case ListType.Contract:
+		//			listName = "Contract - " + listName;
+		//			break;
+		//		case ListType.Worksheet:
+		//			listName = "History";
+		//			break;
+		//		case ListType.ContractItemsAdded:
+		//			listName = "Contract Items Added";
+		//			break;
+		//		case ListType.ContractItemsDeleted:
+		//			listName = "Contract Items Deleted";
+		//			break;
+		//	}
 
-            return listName;
-        }
+		//	return listName;
+		//}
 
-        private List<ListItemModel> GetContractItems(
-             string customerNumber,
-             string branchId,
-             string contractId
-             )
-        {
-            List<ListItemModel> contractItems = stagingRepository
-                            .ReadContractItems(customerNumber, branchId, contractId)
-                            .AsEnumerable()
-                            .Select(itemRow =>
-                                new ListItemModel
-                                {
-                                    ItemNumber = itemRow.GetString("ItemNumber"),
-                                    Position = itemRow.GetInt("BidLineNumber"),
-                                    Category = itemRow.GetString("CategoryDescription"),
-                                    Each = itemRow.GetString("BrokenCaseCode").Equals("Y") ? true : false
-                                }).ToList();
-            return contractItems;
-        }
+		//private List<ListItemModel> GetContractItems(
+		//	 string customerNumber,
+		//	 string branchId,
+		//	 string contractId
+		//	 )
+		//{
+		//	List<ListItemModel> contractItems = stagingRepository
+		//					.ReadContractItems(customerNumber, branchId, contractId)
+		//					.AsEnumerable()
+		//					.Select(itemRow =>
+		//						new ListItemModel
+		//						{
+		//							ItemNumber = itemRow.GetString("ItemNumber"),
+		//							Position = itemRow.GetInt("BidLineNumber"),
+		//							Category = itemRow.GetString("CategoryDescription"),
+		//							Each = itemRow.GetString("BrokenCaseCode").Equals("Y") ? true : false
+		//						}).ToList();
+		//	return contractItems;
+		//}
 
-        private List<ListItemModel> GetWorksheetItems(
-             string customerNumber,
-             string branchId
-             )
-        {
-            List<ListItemModel> contractItems = stagingRepository
-                            .ReadWorksheetItems(customerNumber, branchId)
-                            .AsEnumerable()
-                            .Select(itemRow =>
-                                new ListItemModel
-                                {
-                                    ItemNumber = itemRow.GetString("ItemNumber"),
-                                    Each = itemRow.GetString("BrokenCaseCode").Equals("Y") ? true : false
-                                }).ToList();
-            return contractItems;
-        }
+		//private List<ListItemModel> GetWorksheetItems(
+		//	 string customerNumber,
+		//	 string branchId
+		//	 )
+		//{
+		//	List<ListItemModel> contractItems = stagingRepository
+		//					.ReadWorksheetItems(customerNumber, branchId)
+		//					.AsEnumerable()
+		//					.Select(itemRow =>
+		//						new ListItemModel
+		//						{
+		//							ItemNumber = itemRow.GetString("ItemNumber"),
+		//							Each = itemRow.GetString("BrokenCaseCode").Equals("Y") ? true : false
+		//						}).ToList();
+		//	return contractItems;
+		//}
 		        
-        private Dictionary<string, ListItemModel> CreateListItemDictionary(List<ListItemModel> listItems)
-        {
-            Dictionary<string, ListItemModel> itemDictionary = new Dictionary<string, ListItemModel>();
+		//private Dictionary<string, ListItemModel> CreateListItemDictionary(List<ListItemModel> listItems)
+		//{
+		//	Dictionary<string, ListItemModel> itemDictionary = new Dictionary<string, ListItemModel>();
             
-            foreach (ListItemModel lim in listItems)
-            {
-                if (!itemDictionary.ContainsKey(lim.ItemNumber + lim.Each.ToString()))
-                {
-                    itemDictionary.Add(lim.ItemNumber + lim.Each.ToString(), lim);
-                }
-            }
+		//	foreach (ListItemModel lim in listItems)
+		//	{
+		//		if (!itemDictionary.ContainsKey(lim.ItemNumber + lim.Each.ToString()))
+		//		{
+		//			itemDictionary.Add(lim.ItemNumber + lim.Each.ToString(), lim);
+		//		}
+		//	}
 
-            return itemDictionary;
-        }
+		//	return itemDictionary;
+		//}
 
-        private List<ListItemModel> CompareNewToExistingListItems(ListModel list, Dictionary<string, ListItemModel> newItemDictionary, Dictionary<string, ListItemModel> existingItemDictionary)
-        {
-            List<ListItemModel> newItems = new List<ListItemModel>();
-            foreach (KeyValuePair<string, ListItemModel> kvp in newItemDictionary)
-            {
-                if (!existingItemDictionary.ContainsKey(kvp.Key))
-                {
-                    newItems.Add(kvp.Value);
-                }
-            }
-            return newItems;
-        }
+		//private List<ListItemModel> CompareNewToExistingListItems(ListModel list, Dictionary<string, ListItemModel> newItemDictionary, Dictionary<string, ListItemModel> existingItemDictionary)
+		//{
+		//	List<ListItemModel> newItems = new List<ListItemModel>();
+		//	foreach (KeyValuePair<string, ListItemModel> kvp in newItemDictionary)
+		//	{
+		//		if (!existingItemDictionary.ContainsKey(kvp.Key))
+		//		{
+		//			newItems.Add(kvp.Value);
+		//		}
+		//	}
+		//	return newItems;
+		//}
 
-        private List<ListItemModel> CompareExistingToNewListItems(Dictionary<string, ListItemModel> newItemDictionary, Dictionary<string, ListItemModel> existingItemDictionary)
-        {
-            List<ListItemModel> existingItems = new List<ListItemModel>();
-            foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
-            {
-                if (!newItemDictionary.ContainsKey(kvp.Key))
-                {
-                    existingItems.Add(kvp.Value);
-                }
-            }
+		//private List<ListItemModel> CompareExistingToNewListItems(Dictionary<string, ListItemModel> newItemDictionary, Dictionary<string, ListItemModel> existingItemDictionary)
+		//{
+		//	List<ListItemModel> existingItems = new List<ListItemModel>();
+		//	foreach (KeyValuePair<string, ListItemModel> kvp in existingItemDictionary)
+		//	{
+		//		if (!newItemDictionary.ContainsKey(kvp.Key))
+		//		{
+		//			existingItems.Add(kvp.Value);
+		//		}
+		//	}
 
-            return existingItems;
-        }
+		//	return existingItems;
+		//}
 
-        private long GetContractItemChangesListId(
-             KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
-            , KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
-            , ListType listType)
-        {
-            long listId = -1;
-            List<ListModel> addedItemsList = listLogic.ReadListByType(userSelectedContext, listType);
+		//private long GetContractItemChangesListId(
+		//	 KeithLink.Svc.Core.Models.Profile.UserProfile userProfile
+		//	, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext
+		//	, ListType listType)
+		//{
+		//	long listId = -1;
+		//	List<ListModel> addedItemsList = listLogic.ReadListByType(userSelectedContext, listType);
 
-            if (addedItemsList.Count == 0)
-            {
-                listId = listLogic.CreateList(
-                                                userProfile.UserId
-                                                , userSelectedContext
-                                                , CreateUserList(
-                                                    ""
-                                                    , null
-                                                    , listType
-                                                    , true)
-                                                , listType);
-            }
-            else
-            {
-                listId = addedItemsList[0].ListId;
-            }
+		//	if (addedItemsList.Count == 0)
+		//	{
+		//		listId = listLogic.CreateList(
+		//										userProfile.UserId
+		//										, userSelectedContext
+		//										, CreateUserList(
+		//											""
+		//											, null
+		//											, listType
+		//											, true)
+		//										, listType);
+		//	}
+		//	else
+		//	{
+		//		listId = addedItemsList[0].ListId;
+		//	}
 
-            return listId;
-        }
+		//	return listId;
+		//}
 
-        private void SendContractDiffMessages(KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
-        {
-            KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
-            KeithLink.Svc.Core.Models.Profile.UserFilterModel filter = new KeithLink.Svc.Core.Models.Profile.UserFilterModel();
-            filter.CustomerId = customerProfile.CustomerId;
-            KeithLink.Svc.Core.Models.Profile.UserProfileReturn userQuery = userProfileLogic.GetUsers(filter);
+		//private void SendContractDiffMessages(KeithLink.Svc.Core.Models.Profile.Customer customerProfile)
+		//{
+		//	KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext = CreateUserSelectedContext(customerProfile.CustomerNumber, customerProfile.CustomerBranch);
+		//	KeithLink.Svc.Core.Models.Profile.UserFilterModel filter = new KeithLink.Svc.Core.Models.Profile.UserFilterModel();
+		//	filter.CustomerId = customerProfile.CustomerId;
+		//	KeithLink.Svc.Core.Models.Profile.UserProfileReturn userQuery = userProfileLogic.GetUsers(filter);
 
-            List<KeithLink.Svc.Core.Models.Profile.UserProfile> users = userQuery.UserProfiles;
+		//	List<KeithLink.Svc.Core.Models.Profile.UserProfile> users = userQuery.UserProfiles;
 
-            foreach (KeithLink.Svc.Core.Models.Profile.UserProfile up in users)
-            {
-                CreateContractDiffMessage(up.UserId, userSelectedContext);
-            }
+		//	foreach (KeithLink.Svc.Core.Models.Profile.UserProfile up in users)
+		//	{
+		//		CreateContractDiffMessage(up.UserId, userSelectedContext);
+		//	}
 
-        }
+		//}
 
-        private void CreateContractDiffMessage(Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
-        {
-            KeithLink.Svc.Core.Models.Messaging.UserMessageModel messageModel = new KeithLink.Svc.Core.Models.Messaging.UserMessageModel();
-            messageModel.Body = "Your contract items have changed.  Please check your contract added and removed items lists for details.";
-            messageModel.Subject = "Your contract items have changed";
-            messageModel.NotificationType = Core.Enumerations.Messaging.NotificationType.HasNews;
-            messageLogic.CreateUserMessage(userId, userSelectedContext, messageModel);
-        }
+		//private void CreateContractDiffMessage(Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userSelectedContext)
+		//{
+		//	KeithLink.Svc.Core.Models.Messaging.UserMessageModel messageModel = new KeithLink.Svc.Core.Models.Messaging.UserMessageModel();
+		//	messageModel.Body = "Your contract items have changed.  Please check your contract added and removed items lists for details.";
+		//	messageModel.Subject = "Your contract items have changed";
+		//	messageModel.NotificationType = Core.Enumerations.Messaging.NotificationType.HasNews;
+		//	messageLogic.CreateUserMessage(userId, userSelectedContext, messageModel);
+		//}
 
         #endregion
         #endregion

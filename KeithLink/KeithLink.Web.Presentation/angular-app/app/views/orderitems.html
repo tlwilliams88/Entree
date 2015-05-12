@@ -48,8 +48,8 @@
           <div class="order-item-title">PO Number</div>
           <div class="order-item-value-2">{{order.ponumber}}</div>
         </div>
-        <hr ng-if="order.ischangeorderallowed">
-        <div ng-if="order.ischangeorderallowed">
+        <hr ng-if="order.ischangeorderallowed && canCreateOrders">
+        <div ng-if="order.ischangeorderallowed && canCreateOrders">
           <a ui-sref="menu.cart.items({ cartId: order.ordernumber })">View and Edit Change Order</a>
         </div>
       </div>

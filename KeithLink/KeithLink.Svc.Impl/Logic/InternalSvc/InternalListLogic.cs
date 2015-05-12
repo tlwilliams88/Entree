@@ -97,6 +97,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				Label = newItem.Label,
 				Par = newItem.ParLevel,
 				Position = position,
+				Quantity = newItem.Quantity
 			};
 
 			list.Items.Add(item);
@@ -152,7 +153,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         Label = item.Label, 
                         Par = item.ParLevel, 
                         Each = !item.Each.Equals(null) ? item.Each : false,
- 						Position = nextPosition
+ 						Position = nextPosition,
+						Quantity = item.Quantity
                     });
 				nextPosition++;
 			}
@@ -497,8 +499,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		//	}
 		//	return activeCart;
 		//}
-		
-        public List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
+
+		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
 		{
 			var list = listRepository.ReadListForCustomer(catalogInfo, headerOnly).Where(l => l.Type == type && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
@@ -521,7 +523,31 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					IsShared = !l.CustomerId.Equals(catalogInfo.CustomerId)
 				}).ToList();
 			else
-				return list.Select(b => b.ToListModel(catalogInfo)).ToList();
+			{
+				var returnList = list.Select(b => b.ToListModel(catalogInfo)).ToList();
+
+				var processedList = new List<ListModel>();
+				//Lookup product details for each item
+				returnList.ForEach(delegate(ListModel listItem)
+				{
+					var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId));
+					if (cachedList != null)
+					{
+						processedList.Add(cachedList);
+						return;
+					}
+
+					LookupProductDetails(user, listItem, catalogInfo);
+					processedList.Add(listItem);
+					listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listItem.ListId), TimeSpan.FromHours(2), listItem);
+
+				});
+
+				foreach (var tempList in processedList)
+					LookupPrices(user, tempList.Items, catalogInfo);
+
+				return processedList;
+			}
 		}
 
 		public List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo)
@@ -699,13 +725,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                             item.Par = updateItem.ParLevel;
                             item.Position = updateItem.Position;
                             item.Each = updateItem.Each;
+							item.Quantity = updateItem.Quantity;
                         }
                         else
                         {
                             if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
                                 continue;
 
-                            currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label, Each = updateItem.Each });
+                            currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label, Each = updateItem.Each, Quantity = updateItem.Quantity });
 							itemsAdded = true;
                         }
                     }

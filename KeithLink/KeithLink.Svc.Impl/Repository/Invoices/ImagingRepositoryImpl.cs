@@ -4,16 +4,18 @@ using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Models.Invoices.Imaging.Document;
 using KeithLink.Svc.Core.Models.Invoices.Imaging.View;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Repository.Invoices {
     public class ImagingRepositoryImpl : IImagingRepository {
@@ -147,13 +149,14 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                         string rawJson = response.Content.ReadAsStringAsync().Result;
                         ImageNowPageReturnModel jsonResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<ImageNowPageReturnModel>(rawJson);
 
-                        List<string> retVal = new List<string>();
+						List<Tuple<int, string>> processedImages = new List<Tuple<int, string>>();
 
-                        foreach (Page imagePage in jsonResponse.pages) {
-                            retVal.Add(GetImageString(sessionToken, documentId, imagePage.id));
-                        }
+						Parallel.ForEach(jsonResponse.pages, page => {
+							processedImages.Add(new Tuple<int, string>(page.pageNumber, GetImageString(sessionToken, documentId, page.id)));
+						});
 
-                        return retVal;
+						return processedImages.OrderBy(p => p.Item1).Select(t => t.Item2).ToList();
+
                     } else {
                         throw new ApplicationException("Document not found");
                     }
@@ -189,14 +192,18 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                     System.Net.Http.HttpResponseMessage response = client.GetAsync(endPoint).Result;
 
                     if (response.StatusCode.Equals(System.Net.HttpStatusCode.OK) || response.StatusCode.Equals(System.Net.HttpStatusCode.NoContent)) {
-                        using (System.IO.MemoryStream tempImgStream = new System.IO.MemoryStream()) {
-                            //System.Drawing.Bitmap.FromStream(response.Content.ReadAsStreamAsync().Result).Save(tempImgStream, System.Drawing.Imaging.ImageFormat.Png);
-                            System.Drawing.Bitmap.FromStream(response.Content.ReadAsStreamAsync().Result).Save(tempImgStream, System.Drawing.Imaging.ImageFormat.Jpeg);
+						Bitmap image = (Bitmap)System.Drawing.Bitmap.FromStream(response.Content.ReadAsStreamAsync().Result);
 
-                            byte[] bytes = tempImgStream.GetBuffer();
+						Rectangle resizeRect = this.GetResizedRectangleWithAspectRatio(image, 1024, 768);
+						image = ResizeImage(image, new Size() { Height = resizeRect.Height, Width = resizeRect.Width });
+						image.SetResolution(120, 120);
+						using (MemoryStream stream = new MemoryStream())
+						{
+							image.Save(stream, ImageFormat.Jpeg);
+							byte[] bytes = stream.GetBuffer();
 
-                            return Convert.ToBase64String(bytes);
-                        }
+							return Convert.ToBase64String(bytes);
+						}    
                     } else {
                         throw new ApplicationException("Page preview not found");
                     }
@@ -206,6 +213,33 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                 }
             }
         }
+
+		private Bitmap ResizeImage(Bitmap imgToResize, Size size)
+		{
+
+			Bitmap b = new Bitmap(size.Width, size.Height);
+			using (Graphics g = Graphics.FromImage((Image)b))
+			{
+				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+				g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);
+			}
+			return b;
+		}
+
+		private Rectangle GetResizedRectangleWithAspectRatio(Bitmap image, double targetWidth, double targetheight)
+		{
+			double ratioX = (double)targetWidth / (double)image.Width;
+			double ratioY = (double)targetheight / (double)image.Height;
+			// use whichever multiplier is smaller 
+			double ratio = ratioX < ratioY ? ratioX : ratioY;
+
+			// now we can get the new height and width 
+			int newHeight = Convert.ToInt32(image.Height * ratio);
+			int newWidth = Convert.ToInt32(image.Width * ratio);
+
+			return new Rectangle(0, 0, newWidth, newHeight);
+		}
+
         #endregion
     }
 }

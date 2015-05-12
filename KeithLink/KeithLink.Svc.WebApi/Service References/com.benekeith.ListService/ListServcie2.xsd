@@ -6,6 +6,7 @@
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="defaultcustomer" nillable="true" type="tns:customer" />
+      <xs:element minOccurs="0" name="dsraliases" nillable="true" type="tns:ArrayOfDsrAliasModel" />
       <xs:element minOccurs="0" name="emailaddress" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="firstname" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="imageurl" nillable="true" type="xs:string" />
@@ -40,19 +41,24 @@
       <xs:element minOccurs="0" name="customerBranch" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customerId" type="ser:guid" />
       <xs:element minOccurs="0" name="customerName" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="customerNationalId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customerNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="displayname" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="dsmNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="dsr" nillable="true" type="tns:dsr" />
       <xs:element minOccurs="0" name="dsrNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="isKeithnetCustomer" type="xs:boolean" />
       <xs:element minOccurs="0" name="isPoRequired" type="xs:boolean" />
       <xs:element minOccurs="0" name="isPowerMenu" type="xs:boolean" />
       <xs:element minOccurs="0" name="kpay" type="xs:boolean" />
+      <xs:element minOccurs="0" name="nationalId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nationalNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="nationalOrRegionalAccountNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nationalSubNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="pointofcontact" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="regionalId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="regionalNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="termcode" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="termdescription" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -78,6 +84,22 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="dsr" nillable="true" type="tns:dsr" />
+  <xs:complexType name="ArrayOfDsrAliasModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DsrAliasModel" nillable="true" type="tns:DsrAliasModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDsrAliasModel" nillable="true" type="tns:ArrayOfDsrAliasModel" />
+  <xs:complexType name="DsrAliasModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="dsrnumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:long" />
+      <xs:element minOccurs="0" name="userid" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DsrAliasModel" nillable="true" type="tns:DsrAliasModel" />
   <xs:complexType name="ArrayOfcustomer">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="customer" nillable="true" type="tns:customer" />

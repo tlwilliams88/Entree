@@ -63,6 +63,8 @@ using KeithLink.Svc.Core.Interface.Configuration;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using KeithLink.Common.Core.AuditLog;
 using KeithLink.Common.Impl.AuditLog;
+using KeithLink.Svc.Impl.Repository.Profile.PasswordReset;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 
 namespace KeithLink.Svc.Windows.QueueService
 {
@@ -216,6 +218,10 @@ namespace KeithLink.Svc.Windows.QueueService
 			// dsr repository
 			builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
 			builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+
+			builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
+			builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
+			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
 
 			return builder.Build();
 		}

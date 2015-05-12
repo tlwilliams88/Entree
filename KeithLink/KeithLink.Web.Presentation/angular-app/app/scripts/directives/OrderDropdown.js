@@ -6,10 +6,15 @@ angular.module('bekApp')
     restrict: 'E',
     // replace : true,
     scope: {
-      openScope: '='
+      openScope: '=',
+      isDisabled: '='
     },
     templateUrl: 'views/directives/orderdropdown.html',
     controller: ['$scope', '$modal', '$state', function($scope, $modal, $state){
+
+      if ($scope.isDisabled) {
+        $scope.tooltipMessage = 'Customer is not set up for ordering in the Entrée System.';
+      }
 
       $scope.openQuickAddModal = function() {
         var modalInstance = $modal.open({
