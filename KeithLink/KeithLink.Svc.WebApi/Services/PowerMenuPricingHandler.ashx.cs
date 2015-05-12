@@ -59,7 +59,7 @@ namespace KeithLink.Svc.WebApi.Services {
             PricingRequest body = GetSoapBody(doc.Descendants(xns + "Body").First().FirstNode);
 
             // process pricing
-            ProductReturn retVal = new ProductReturn();
+            PricingResponse retVal = new PricingResponse();
 
             IUserProfileLogic profileLogic = _scope.GetService(typeof(IUserProfileLogic)) as IUserProfileLogic;
             UserProfileReturn profileLogicReturn = profileLogic.GetUserProfile(header.UserName, false);
@@ -70,12 +70,12 @@ namespace KeithLink.Svc.WebApi.Services {
                 PagedResults<Customer> customers = profileLogic.CustomerSearch(profile, body.customerNumber, new Core.Models.Paging.PagingModel(), string.Empty);
 
                 if (customers.TotalResults > 0) {
-                    retVal.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, body.customerNumber, body.products, ConvertEffectiveDate(body.effDate)));
+                    retVal.Results.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, body.customerNumber, body.products, ConvertEffectiveDate(body.effDate)));
                 }
             }
 
             // return results
-            XmlSerializer serializer = new XmlSerializer(typeof(ProductReturn));
+            XmlSerializer serializer = new XmlSerializer(typeof(PricingResponse));
 
             context.Response.ContentType = "text/xml";
             serializer.Serialize(context.Response.OutputStream, retVal);
