@@ -142,15 +142,15 @@ angular
    var notificationParams = {     
     size: 50,
     from: 0,
-    filter: {
+        filter: [{
         field: "mandatory",
-        value: "true"
+        value: "false"
       },
-      filter:{
+      {
         field: "messagereadutc",
         value: 'null'
-    }
-    }
+    }]
+    };
     NotificationService.getMessages(notificationParams);
 
     event.preventDefault();
