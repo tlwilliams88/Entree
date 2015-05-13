@@ -29,9 +29,8 @@
           {{addUserError}}
         </div>
         <div class="form-group">
-          <span class="text-red" ng-show="addNewAdminUserForm.newAdminUserEmail.$dirty && addNewAdminUserForm.newAdminUserEmail.$error.emailLengthValidation">Please choose a shorter email address</span>
           <br ng-if="addNewAdminUserForm.newAdminUserEmail.$dirty && addNewAdminUserForm.newAdminUserEmail.$error.emailLengthValidation">
-          <input email-length-validation type="text" class="form-control" name ="newAdminUserEmail" placeholder="Email address" ng-model="adminUserEmail"/>
+          <input type="text" class="form-control" name ="newAdminUserEmail" placeholder="Email address" ng-model="adminUserEmail"/>
           <button ng-disabled="addNewAdminUserForm.$invalid" type="submit" class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add New Admin User</button>
         </div>
       </form>
