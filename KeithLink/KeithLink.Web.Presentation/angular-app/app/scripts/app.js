@@ -138,10 +138,24 @@ angular
       bypass = false;
       return; 
     }
+    //Pull mandatory unread messages to use in notification header bar
+   var notificationParams = {     
+    size: 50,
+    from: 0,
+    filter: {
+        field: "mandatory",
+        value: "true"
+      },
+      filter:{
+        field: "messagereadutc",
+        value: 'null'
+    }
+    };
+    NotificationService.getMessages(notificationParams);
 
     event.preventDefault();
 
-    // Validate teh state the user is trying to access
+    // Validate the state the user is trying to access
     
     if (AccessService.isLoggedIn()) {
       $log.debug('user logged in');
