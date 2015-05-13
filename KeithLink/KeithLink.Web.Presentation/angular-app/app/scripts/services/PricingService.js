@@ -92,7 +92,7 @@ angular.module('bekApp')
     },
 
     canOrderItem: function(item) {
-      return Service.hasCasePrice(item) || item.price;
+      return Service.hasCasePrice(item) || Service.hasPackagePrice(item) || item.price;
     },
 
     updateCaculatedFields: function(items) {
