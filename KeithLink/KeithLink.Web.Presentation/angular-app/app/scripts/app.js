@@ -144,7 +144,7 @@ angular
     from: 0,
         filter: [{
         field: "mandatory",
-        value: "false"
+        value: "true"
       },
       {
         field: "messagereadutc",
