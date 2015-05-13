@@ -89,7 +89,8 @@
                 ng-minlength="3"
                 ng-maxlength="3"
                 required 
-                integer>
+                integer
+                allow-leading-zeroes="true">
               </td>
               <td>
                 <button class="btn btn-primary" ng-disabled="dsrAliasForm.$invalid" ng-click="addDsrAlias(branchId, dsrAliasNumber)" type="submit">Add Alias</button>

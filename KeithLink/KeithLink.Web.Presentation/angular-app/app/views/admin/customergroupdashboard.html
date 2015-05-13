@@ -29,9 +29,8 @@
           This user exists and has access to another customer group. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and move the user to this customer group.
         </p>
                 
-        <span class="text-red" ng-show="addNewUserForm.newUserEmail.$error.emailLengthValidation && addNewUserForm.newUserEmail.$dirty">Please choose a shorter email address</span>
         <br ng-if="addNewUserForm.newUserEmail.$error.emailLengthValidation && addNewUserForm.newUserEmail.$dirty">
-        <input email-length-validation type="email" class="form-control" placeholder="Enter email address" name = "newUserEmail" ng-model="addNewUserEmail"/>
+        <input type="email" class="form-control" placeholder="Enter email address" name = "newUserEmail" ng-model="addNewUserEmail"/>
         <button  type="submit" ng-disabled="addNewUserForm.$invalid" class="btn btn-primary" ng-click="checkUser(addNewUserEmail)">Create New User</button>
       </div>
     </div>
