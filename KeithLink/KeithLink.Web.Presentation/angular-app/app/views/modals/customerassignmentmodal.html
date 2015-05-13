@@ -14,9 +14,9 @@
     <div style="width: 75%; display: inline-block;" class="text-right">Showing {{customers.length}} of {{totalCustomers}} Customers</div>
   </div>
   <div class="infiniteScroll">
-    <table class="table table-border table-striped-rows" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.infiniteScroll'">
+    <table class="table table-border table-striped-rows customer-assignment-table" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.infiniteScroll'">
       <thead>
-        <tr>
+        <tr fsm-sticky-header scroll-body="'.customer-assignment-table'" scroll-stop="0" scroll-offset="0">
           <th>
             <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
           </th>
