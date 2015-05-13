@@ -432,14 +432,19 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         /// <returns>a user name</returns>
         /// <remarks>
         /// jwames - 8/18/2014 - documented
+        /// jwames - 5/11/2015 - add logic to keep the user name under 20 chars
         /// </remarks>
         public string GetNewUserName(string emailAddress) {
+            const int MAX_LENGTH_SAMACCOUNTNAME = 20;
+
             string userName = null;
 
             if (emailAddress.IndexOf('@') == -1)
                 userName = emailAddress;
             else
                 userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
+
+            if (userName.Length > MAX_LENGTH_SAMACCOUNTNAME) { userName = userName.Substring(0, MAX_LENGTH_SAMACCOUNTNAME); }
 
             if (UsernameExists(userName)) {
                 string adPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
@@ -461,7 +466,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 SearchResultCollection results = userSearch.FindAll();
 
                 // recursive call to make sure that the new user name does not also exist
-                return GetNewUserName(string.Format("{0}{1}", userName, results.Count));
+                string resultCountString = results.Count.ToString();
+                string attemptedUserName = null;
+                int userNameLength = MAX_LENGTH_SAMACCOUNTNAME - resultCountString.Length - 1;
+
+                if (userName.Length > userNameLength) {
+                    attemptedUserName = string.Format("{0}-{1}", userName.Substring(0, userNameLength), results.Count);
+                } else {
+                    attemptedUserName = string.Format("{0}-{1}", userName, results.Count);
+                }
+
+                return GetNewUserName(attemptedUserName);
             } else {
                 return userName;
             }

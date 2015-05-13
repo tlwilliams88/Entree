@@ -12,6 +12,7 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System.Data.Entity;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Common.Core.AuditLog;
+using KeithLink.Svc.Core.Interface.Invoices;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -27,18 +28,20 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         private readonly ICacheRepository _customerCacheRepository;
         private readonly IDsrServiceRepository _dsrService;
 		private readonly IAuditLogRepository _auditLogRepository;
+		private readonly IInvoiceServiceRepository _invoiceServiceRepository;
 
 		
 
         #endregion
 
         #region ctor
-		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrServiceRepository dsrService, IAuditLogRepository auditLogRepository)
+		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrServiceRepository dsrService, IAuditLogRepository auditLogRepository, IInvoiceServiceRepository invoiceServiceRepository)
         {
             _logger = logger;
             _customerCacheRepository = customerCacheRepository;
             _dsrService = dsrService;
 			_auditLogRepository = auditLogRepository;
+			_invoiceServiceRepository = invoiceServiceRepository;
         }
         #endregion
 
@@ -215,6 +218,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 , IsKeithNetCustomer = org.IsKeithnetCustomer !=null && org.IsKeithnetCustomer.ToLower() == "y" ? true : false
                 
             };
+
+			var term = _invoiceServiceRepository.ReadTermInformation(customer.CustomerBranch, customer.TermCode);
+			if (term != null)
+				customer.TermDescription = term.Description;
 
             // fill in the address
             customer.Address = org.PreferredAddress != null ? new Address()
