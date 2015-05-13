@@ -150,7 +150,7 @@ angular
         field: "messagereadutc",
         value: 'null'
     }
-    };
+    }
     NotificationService.getMessages(notificationParams);
 
     event.preventDefault();
