@@ -171,14 +171,14 @@ angular
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
     $log.debug('state change success');
-    
+
     // Pull Mandatory notifications for header bar
        var notificationParams = {     
     size: 50,
     from: 0,
         filter: {
         field: "mandatory",
-        value: "false",
+        value: "true",
         filter:[
         {
         field: "messagereadutc",
