@@ -88,9 +88,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             MessageTemplateModel orderEtaMainTemplate = messageTemplateLogic.ReadForKey("OrderEtaMain");
 
             Message message = new Message();
-            message.MessageSubject = orderEtaMainTemplate.Subject.Inject(new { CustomerName = customer.CustomerName });
+            message.MessageSubject = orderEtaMainTemplate.Subject.Inject(new { CustomerName = string.Format("{0-{1}", customer.CustomerNumber, customer.CustomerName) });
             message.MessageBody = orderEtaMainTemplate.Body.Inject(new { TimeZoneName = timeZoneName, EtaOrderLines = orderInfoDetails.ToString() });
             message.CustomerNumber = customer.CustomerNumber;
+			message.CustomerName = customer.CustomerName;
+			message.BranchId = customer.CustomerBranch;
 			message.NotificationType = NotificationType.OrderConfirmation;
             return message;
         }

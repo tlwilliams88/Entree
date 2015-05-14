@@ -141,7 +141,7 @@ angular
 
     event.preventDefault();
 
-    // Validate teh state the user is trying to access
+    // Validate the state the user is trying to access
     
     if (AccessService.isLoggedIn()) {
       $log.debug('user logged in');
@@ -171,6 +171,23 @@ angular
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
     $log.debug('state change success');
+
+    // Pull Mandatory notifications for header bar
+       var notificationParams = {     
+    size: 50,
+    from: 0,
+        filter: {
+        field: "mandatory",
+        value: "true",
+        filter:[
+        {
+        field: "messagereadutc",
+        value: 'null'
+        }
+        ]
+      }
+    };
+    NotificationService.getMessages(notificationParams);
 
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {

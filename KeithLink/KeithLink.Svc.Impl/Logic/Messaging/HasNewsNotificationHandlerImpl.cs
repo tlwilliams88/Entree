@@ -51,6 +51,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 			{
 				CustomerName = customer.CustomerName,
 				CustomerNumber = customer.CustomerNumber,
+				BranchId = customer.CustomerBranch,
 				MessageSubject = hasNewsNotification.Subject,
 				MessageBody = hasNewsNotification.Notification,
 				NotificationType = NotificationType.HasNews
