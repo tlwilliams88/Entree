@@ -382,7 +382,7 @@ angular.module('bekApp')
       templateUrl: 'views/marketing.html',
       controller: 'MarketingController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canViewMarketing'
       }
     })
 
@@ -418,7 +418,6 @@ angular.module('bekApp')
         authorize: 'canManageLists'
       }
     })
-
 
     /**********
     ADMIN

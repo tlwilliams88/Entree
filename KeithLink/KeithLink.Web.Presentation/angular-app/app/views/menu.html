@@ -148,6 +148,17 @@
             </li>
           </button>
           <button
+            class="btn-no-style"
+            type="button"
+            ng-if="::canViewMarketing"
+            ui-sref="menu.marketing"
+            ui-sref-active="is-selected" >
+            <li>
+              <span class="icon-user sidebar-nav__icon"></span>
+              Marketing
+            </li>
+          </button>
+          <button
             class="btn-no-style hidden-md hidden-lg"
             type="button"
             ng-disabled="!isOrderEntryCustomer"
