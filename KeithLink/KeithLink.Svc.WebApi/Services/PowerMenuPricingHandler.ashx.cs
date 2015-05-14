@@ -81,20 +81,11 @@ namespace KeithLink.Svc.WebApi.Services {
             namespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
             namespaces.Add("soap", "http://schemas.xmlsoap.org/soap/envelope/");
             soap.Body.Response.Results = returnedPrices;
-            //XmlWriter writer = XmlWriter.Create(context.Response.OutputStream, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 });
 
-            //XmlTypeMapping soapMapping = new SoapReflectionImporter().ImportTypeMapping(retVal.GetType());
-            //XmlTypeMapping soapMapping = new SoapReflectionImporter().ImportTypeMapping(typeof(ProductReturn));
-            //XmlSerializer serializer = new XmlSerializer(typeof(PricingResponse));
             XmlSerializer serializer = new XmlSerializer(typeof(SoapEnvelope));
-            //XmlSerializer serializer = new XmlSerializer(soapMapping);
 
             context.Response.ContentType = "text/xml";
-            //serializer.Serialize(context.Response.OutputStream, returnedPrices);
             serializer.Serialize(context.Response.OutputStream, soap, namespaces);
-            //writer.WriteStartElement("GetProductsWithPriceResponse", "http://benekeith.com");
-            //serializer.Serialize(writer, retVal);
-            //return retVal;
         }
 
         private List<Core.Models.SiteCatalog.Pricing.PowerMenu.Product> GetItemPricing(string branchId, string customerNumber, List<ProductLine> products,
