@@ -6,13 +6,14 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu {
     public class PricingResponse {
         #region ctor
         public PricingResponse() {
-            Results = new ProductReturn();
+            //Results = new ProductReturn();
         }
         #endregion
 
         #region properties
         [XmlElement("GetProductsWithPriceResult")]
-        public ProductReturn Results { get; set; }
+        public String Results { get; set; }
+        //public ProductReturn Results { get; set; }
         #endregion
     }
 }
