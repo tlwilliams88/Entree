@@ -120,10 +120,10 @@
           <span ng-show="changePasswordForm.newPassword.$error.required && changePasswordForm.newPassword.$dirty"
                 class="text-red">Password is required</span>
           <span
-            ng-show="changePasswordForm.newPassword.$error.validatePassword && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.required"
+            ng-show="changePasswordForm.newPassword.$error.passwordRequirements && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.required"
             class="text-red">Must contain one uppercase letter, lowercase letter, and number.</span>
           <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" required
-                 validate-password ng-model="changePasswordData.newpassword">
+                 password-requirements ng-model="changePasswordData.newpassword">
         </div>
       </div>
       <div class="form-group ">

@@ -15,10 +15,14 @@ angular.module('bekApp')
       matchInput: '='
     },
     link: function(scope, elem, attrs, ctrl) {
-      scope.$watch(function() {
-        return (ctrl.$pristine || angular.isUndefined(ctrl.$modelValue)) || scope.matchInput === ctrl.$modelValue;
-      }, function(currentValue) {
-        ctrl.$setValidity('matchInput', currentValue);
+      if (!ctrl) { return; }
+
+      ctrl.$validators.matchInput = function(modelValue, viewValue) {
+        return ctrl.$isEmpty(modelValue) || scope.matchInput === modelValue;
+      };
+
+      scope.$watch('matchInput', function() {
+        ctrl.$validate();
       });
     }
   };

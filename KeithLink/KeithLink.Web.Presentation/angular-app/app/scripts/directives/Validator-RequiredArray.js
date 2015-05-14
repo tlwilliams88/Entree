@@ -4,6 +4,7 @@
  * @ngdoc function
  * @name bekApp.directive:requiredArray
  * @description
+ * Form validation that checks that an array has a length > 0
  */
 angular.module('bekApp')
 .directive('requiredArray', function () {

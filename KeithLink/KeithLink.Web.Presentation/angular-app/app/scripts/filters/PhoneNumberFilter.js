@@ -1,4 +1,9 @@
 'use strict';
+
+/**
+ * phoneNumber filter
+ * Formats phone numbers
+ */
 angular.module('bekApp')
 .filter('phoneNumber', function () {
   return function (tel) {

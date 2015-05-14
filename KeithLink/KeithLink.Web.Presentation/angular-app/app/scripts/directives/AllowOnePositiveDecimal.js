@@ -4,9 +4,8 @@
  * @ngdoc function
  * @name bekApp.directive:allowOnePositiveDecimal
  * @description
- * form validation where the input can have only one decimal place and must be positive
- *
- * used for list parlevel
+ * Form validation where the input can have only one decimal place and must be positive. 
+ * Used for list parlevel
  */
 angular.module('bekApp')
 .directive('allowOnePositiveDecimal',function(){
@@ -15,7 +14,6 @@ angular.module('bekApp')
     restrict: 'A', 
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
-
         
         // add a leading zero if value starts with a decimal
         if (typeof viewValue === 'string' && viewValue.indexOf('.') === 0) {
@@ -23,7 +21,7 @@ angular.module('bekApp')
           ctrl.$render();
         }
      
-        if(attrs.id === 'inventoryRep'){
+        if (attrs.id === 'inventoryRep') {
           //allows for 2 decimal places
          scope.checkRegex = (directive.REGEXP2.test(viewValue) || directive.REGEXP.test(viewValue));
         } else{
@@ -42,7 +40,7 @@ angular.module('bekApp')
       ctrl.$parsers.unshift(checkValidity);
       ctrl.$formatters.unshift(checkValidity);
     }, 
-    REGEXP : /^([1-9]\d*|0)(\.\d)?$/  ,  
+    REGEXP : /^([1-9]\d*|0)(\.\d)?$/,
     REGEXP2 : /^([1-9]\d*|0)(\.\d\d)?$/ 
   };
 
