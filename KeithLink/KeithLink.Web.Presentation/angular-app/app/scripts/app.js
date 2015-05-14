@@ -138,20 +138,6 @@ angular
       bypass = false;
       return; 
     }
-    //Pull mandatory unread messages to use in notification header bar
-   // var notificationParams = {     
-   //  size: 50,
-   //  from: 0,
-   //      filter: [{
-   //      field: "mandatory",
-   //      value: "true"
-   //    },
-   //    {
-   //      field: "messagereadutc",
-   //      value: 'null'
-   //  }]
-   //  };
-   //  NotificationService.getMessages(notificationParams);
 
     event.preventDefault();
 
@@ -185,6 +171,23 @@ angular
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
     $log.debug('state change success');
+    
+    // Pull Mandatory notifications for header bar
+       var notificationParams = {     
+    size: 50,
+    from: 0,
+        filter: {
+        field: "mandatory",
+        value: "false",
+        filter:[
+        {
+        field: "messagereadutc",
+        value: 'null'
+        }
+        ]
+      }
+    };
+    NotificationService.getMessages(notificationParams);
 
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
