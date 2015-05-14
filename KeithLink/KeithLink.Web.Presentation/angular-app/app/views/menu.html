@@ -240,6 +240,12 @@
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'menu.home'}" />
       </div>
 
+      <div ng-if="mandatoryMessages.length" class="row user-notification-bar hidden-print" style="background-color:rgb(250, 255, 189); height:40px; border: 1px solid #c3bc9c; ">   
+        <button class="btn btn-primary" style="margin-left:6px; margin-top: 4px;"  ng-click="showNotification(mandatoryMessages[0])"  type="submit">View Notification</button>
+        <button class="btn btn-danger" style="margin-right:6px; margin-top: 4px;" ng-click="dismissNotification(mandatoryMessages[0])">Dismiss</button>
+       <td>{{mandatoryMessages[0].subject}}</td>  
+      </div>
+      
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print"> 
       <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>    
       <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">

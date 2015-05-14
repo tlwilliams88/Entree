@@ -59,7 +59,7 @@ namespace KeithLink.Svc.WebApi.Services {
             PricingRequest body = GetSoapBody(doc.Descendants(xns + "Body").First().FirstNode);
 
             // process pricing
-            ProductReturn retVal = new ProductReturn();
+            ProductReturn returnedPrices = new ProductReturn();
 
             IUserProfileLogic profileLogic = _scope.GetService(typeof(IUserProfileLogic)) as IUserProfileLogic;
             UserProfileReturn profileLogicReturn = profileLogic.GetUserProfile(header.UserName, false);
@@ -70,15 +70,30 @@ namespace KeithLink.Svc.WebApi.Services {
                 PagedResults<Customer> customers = profileLogic.CustomerSearch(profile, body.customerNumber, new Core.Models.Paging.PagingModel(), string.Empty);
 
                 if (customers.TotalResults > 0) {
-                    retVal.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, body.customerNumber, body.products, ConvertEffectiveDate(body.effDate)));
+                    returnedPrices.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, body.customerNumber, body.products, ConvertEffectiveDate(body.effDate)));
                 }
             }
 
             // return results
-            XmlSerializer serializer = new XmlSerializer(typeof(ProductReturn));
+            SoapEnvelope soap = new SoapEnvelope();
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            namespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+            namespaces.Add("soap", "http://schemas.xmlsoap.org/soap/envelope/");
+            soap.Body.Response.Results = returnedPrices;
+            //XmlWriter writer = XmlWriter.Create(context.Response.OutputStream, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 });
+
+            //XmlTypeMapping soapMapping = new SoapReflectionImporter().ImportTypeMapping(retVal.GetType());
+            //XmlTypeMapping soapMapping = new SoapReflectionImporter().ImportTypeMapping(typeof(ProductReturn));
+            //XmlSerializer serializer = new XmlSerializer(typeof(PricingResponse));
+            XmlSerializer serializer = new XmlSerializer(typeof(SoapEnvelope));
+            //XmlSerializer serializer = new XmlSerializer(soapMapping);
 
             context.Response.ContentType = "text/xml";
-            serializer.Serialize(context.Response.OutputStream, retVal);
+            //serializer.Serialize(context.Response.OutputStream, returnedPrices);
+            serializer.Serialize(context.Response.OutputStream, soap, namespaces);
+            //writer.WriteStartElement("GetProductsWithPriceResponse", "http://benekeith.com");
+            //serializer.Serialize(writer, retVal);
             //return retVal;
         }
 

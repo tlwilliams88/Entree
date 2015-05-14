@@ -69,9 +69,9 @@ angular
       return config.data.message;
     } else if (config.data && typeof config.data === 'string' && config.data.indexOf('message')) { // authen
       return config.data.substr(config.data.indexOf('message')+8);
-    } else if (config.url === '/invoice/payment' && config.method === 'POST') {
+    } else if (config.url === '/invoice/payment' && config.method === 'POST') { // submit payments
       return 'Submitting payments...';
-    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) {
+    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) { // show overlay for all PUT requests except for active cart 
       return 'Saving...';
     } else if (config.method === 'DELETE') {
       return 'Deleting...';
@@ -141,7 +141,7 @@ angular
 
     event.preventDefault();
 
-    // Validate teh state the user is trying to access
+    // Validate the state the user is trying to access
     
     if (AccessService.isLoggedIn()) {
       $log.debug('user logged in');
@@ -171,6 +171,23 @@ angular
   $rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
 
     $log.debug('state change success');
+
+    // Pull Mandatory notifications for header bar
+       var notificationParams = {     
+    size: 50,
+    from: 0,
+        filter: {
+        field: "mandatory",
+        value: "true",
+        filter:[
+        {
+        field: "messagereadutc",
+        value: 'null'
+        }
+        ]
+      }
+    };
+    NotificationService.getMessages(notificationParams);
 
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
