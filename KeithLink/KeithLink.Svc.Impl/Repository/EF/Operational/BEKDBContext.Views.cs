@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets64f513858381492ac03ab88b36eecdbc55281a3b7a242451d53b567ab971e572))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsa7987e952cfade73d4bd20fedfa77fa487487982c5982b45d5d5552c34ae9ea6))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets64f513858381492ac03ab88b36eecdbc55281a3b7a242451d53b567ab971e572 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySetsa7987e952cfade73d4bd20fedfa77fa487487982c5982b45d5d5552c34ae9ea6 : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "64f513858381492ac03ab88b36eecdbc55281a3b7a242451d53b567ab971e572"; }
+            get { return "a7987e952cfade73d4bd20fedfa77fa487487982c5982b45d5d5552c34ae9ea6"; }
         }
 
         /// <summary>
@@ -1384,7 +1384,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessage
-        [CodeFirstDatabaseSchema.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
+        [CodeFirstDatabaseSchema.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CustomerName, T1.UserMessage_BranchId, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserMessage_Id, 
@@ -1396,6 +1396,8 @@ namespace Edm_EntityMappingGeneratedViews
             T.Subject AS UserMessage_Subject, 
             T.Body AS UserMessage_Body, 
             T.Mandatory AS UserMessage_Mandatory, 
+            T.CustomerName AS UserMessage_CustomerName, 
+            T.BranchId AS UserMessage_BranchId, 
             T.CreatedUtc AS UserMessage_CreatedUtc, 
             T.ModifiedUtc AS UserMessage_ModifiedUtc, 
             True AS _from0
@@ -1411,7 +1413,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessages
-        [KeithLink.Svc.Impl.Repository.EF.Operational.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CustomerName, T1.UserMessage_BranchId, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserMessage_Id, 
@@ -1423,6 +1425,8 @@ namespace Edm_EntityMappingGeneratedViews
             T.Subject AS UserMessage_Subject, 
             T.Body AS UserMessage_Body, 
             T.Mandatory AS UserMessage_Mandatory, 
+            T.CustomerName AS UserMessage_CustomerName, 
+            T.BranchId AS UserMessage_BranchId, 
             T.CreatedUtc AS UserMessage_CreatedUtc, 
             T.ModifiedUtc AS UserMessage_ModifiedUtc, 
             True AS _from0

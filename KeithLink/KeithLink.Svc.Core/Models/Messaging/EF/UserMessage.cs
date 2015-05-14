@@ -25,5 +25,11 @@ namespace KeithLink.Svc.Core.Models.Messaging.EF
         public string Subject { get; set; }
         public string Body { get; set; }
         public bool Mandatory { get; set; }
+
+		[MaxLength(250)]
+		public string CustomerName { get; set; }
+
+		[MaxLength(3)]
+		public string BranchId { get; set; }
     }
 }
