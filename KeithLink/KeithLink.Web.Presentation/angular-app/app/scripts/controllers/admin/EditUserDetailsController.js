@@ -99,6 +99,7 @@ angular.module('bekApp')
       if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {
         $scope.$parent.$parent.userProfile = newProfile;
       }
+      $scope.editUserForm.$setPristine();
       $scope.displayMessage('success', 'The user was successfully updated.');
     }, function(error){
       $scope.displayMessage('error', 'An error occurred: ' + error);
