@@ -582,6 +582,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 						userRole = Constants.ROLE_NAME_POWERUSER;
 						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
 					}
+					else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0)
+					{
+						userRole = Constants.ROLE_NAME_MARKETING;
+						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+					}
 					else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0)
 					{
 						dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();

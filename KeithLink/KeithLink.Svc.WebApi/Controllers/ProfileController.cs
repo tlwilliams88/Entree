@@ -31,6 +31,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		private IUserProfileLogic _profileLogic;
 		private readonly IPasswordResetService _passwordResetService;
         private readonly IDsrAliasService _dsrAliasService;
+		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
 		#endregion
 
 		#region ctor
@@ -40,7 +41,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 								 IAvatarRepository avatarRepository,
 								 ICustomerDomainRepository customerADRepo,
 			                     IPasswordResetService passwordResetService,
-                                 IDsrAliasService dsrAliasService)
+                                 IDsrAliasService dsrAliasService,
+								IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo)
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -50,6 +52,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			_extAd = customerADRepo;
 			_passwordResetService = passwordResetService;
             _dsrAliasService = dsrAliasService;
+			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
 		}
 		#endregion
 
@@ -102,6 +105,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			try
 			{
 				retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+				_marketingPreferencesServicesRepository.CreateMarketingPref(new MarketingPreferenceModel() { Email = guestInfo.Email, BranchId = guestInfo.BranchId, LearnMore = guestInfo.MarketingFlag, CurrentCustomer = guestInfo.ExistingCustomer });
 			}
 			catch (ApplicationException axe)
 			{
@@ -996,6 +1000,22 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="from"></param>
+		/// <param name="to"></param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/marketinginfo")]
+		public List<MarketingPreferenceModel> GetMarketingInfo([FromUri] DateTime from, [FromUri] DateTime to)
+		{
+			return _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
+		}
+
         #endregion
 	}
 }
