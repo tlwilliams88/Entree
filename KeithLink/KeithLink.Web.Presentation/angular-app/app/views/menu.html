@@ -148,6 +148,17 @@
             </li>
           </button>
           <button
+            class="btn-no-style"
+            type="button"
+            ng-if="::canViewMarketing"
+            ui-sref="menu.marketing"
+            ui-sref-active="is-selected" >
+            <li>
+              <span class="icon-user sidebar-nav__icon"></span>
+              Marketing
+            </li>
+          </button>
+          <button
             class="btn-no-style hidden-md hidden-lg"
             type="button"
             ng-disabled="!isOrderEntryCustomer"
@@ -198,6 +209,8 @@
       <a href="#">benekeith.com</a>
     </div>
   </div> <!-- end Desktop Sidebar -->
+
+  <div class="mobile-menu-overlay hidden-md hidden-lg" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
 
   <div class="row main-content">
     <div class="col-sm-12">

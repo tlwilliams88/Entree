@@ -40,6 +40,9 @@ angular.module('bekApp')
   function isDsm() {
     return ( getRole() === Constants.roles.DSM );
   }
+  function isMarketing() {
+    return ( getRole() === Constants.roles.MARKETING );
+  }
   function isKbitAdmin() {
     return ( getRole() === Constants.roles.KBIT_ADMIN );
   }
@@ -53,7 +56,7 @@ angular.module('bekApp')
   }
 
   function isValidRole() {
-    return ( isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() || isSysAdmin() || isBranchManager() || isPowerUser() || isDsr() || isDsm() || isKbitAdmin() );
+    return ( isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() || isSysAdmin() || isBranchManager() || isPowerUser() || isDsr() || isDsm() || isKbitAdmin() || isMarketing() );
   }
 
   var Service = {
@@ -106,7 +109,7 @@ angular.module('bekApp')
     },
 
     isInternalAccountAdminUser: function() {
-      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() ) );
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() || isMarketing() ) );
     },
 
     // PRIVILEDGES
@@ -169,6 +172,10 @@ angular.module('bekApp')
     // editing DSR Aliases
     canEditInternalUsers: function() {
       return ( isSysAdmin() || isBranchManager() );
+    },
+
+    canViewMarketing: function() {
+      return ( isSysAdmin() || isBranchManager() || isMarketing() );
     },
 
     isDemo: function() {

@@ -88,6 +88,10 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "isKeithnetCustomer")]
         public bool IsKeithNetCustomer { get; set; }
 
+
+		[DataMember(Name = "canmessage")]
+		public bool CanMessage { get; set; }
+
     }
 
 }

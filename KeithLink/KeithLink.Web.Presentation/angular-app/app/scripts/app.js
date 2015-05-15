@@ -187,10 +187,10 @@ angular
         ]
       }
     };
-    NotificationService.getMessages(notificationParams);
 
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
+      NotificationService.getMessages(notificationParams);
       NotificationService.getUnreadMessageCount();
     }
  

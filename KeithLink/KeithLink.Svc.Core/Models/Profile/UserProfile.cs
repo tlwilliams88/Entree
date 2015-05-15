@@ -100,6 +100,9 @@ namespace KeithLink.Svc.Core.Models.Profile
 		public bool? IsDemo { get; set; }
 
         [DataMember(Name = "dsraliases")]
-        public List<DsrAliasModel> DsrAliases { get; set; }        
+        public List<DsrAliasModel> DsrAliases { get; set; }
+
+		[DataMember(Name = "canmessage")]
+		public bool CanMessage { get; set; }
     }
 }
