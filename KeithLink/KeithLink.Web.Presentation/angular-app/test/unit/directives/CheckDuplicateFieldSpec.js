@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Directive: CheckDuplicateField', function () {
+describe('Directive: NoDuplicates', function () {
 
   // load the controller's module
   beforeEach(module('bekApp'));
@@ -17,7 +17,7 @@ describe('Directive: CheckDuplicateField', function () {
     $scope = $rootScope;
     var element = angular.element(
       '<form name="form">' +
-        '<input ng-model="model.title" type="text" name="title" check-duplicate-field="title" collection="list" />' +
+        '<input ng-model="model.title" type="text" name="title" no-duplicates="title" collection="list" />' +
       '</form>'
     );
     $scope.model = { title: 'Second Name' };
