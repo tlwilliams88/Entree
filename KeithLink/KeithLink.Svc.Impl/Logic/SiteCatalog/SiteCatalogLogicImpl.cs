@@ -90,8 +90,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private void AddPricingInfo(ProductsReturn prods, UserProfile profile, UserSelectedContext context, SearchInputModel searchModel) {
-            if (profile == null || context == null || String.IsNullOrEmpty(context.CustomerId))
+        private void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel) {
+            if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
 
             PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
@@ -101,6 +101,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 prod.CasePrice = p.CasePrice.ToString();
                 prod.CasePriceNumeric = p.CasePrice;
                 prod.PackagePrice = p.PackagePrice.ToString();
+                prod.PackagePriceNumeric = p.PackagePrice;
                 prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
             }
 
@@ -172,7 +173,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             else
                 returnValue = _catalogRepository.GetHouseProductsByBranch(catalogInfo, brandControlLabel, searchModel);
 
-            AddPricingInfo(returnValue, profile, catalogInfo, searchModel);
+            AddPricingInfo(returnValue, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, returnValue, catalogInfo);
 
             return returnValue;
@@ -196,6 +197,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret.CasePrice = price.CasePrice.ToString();
                 ret.CasePriceNumeric = price.CasePrice;
                 ret.PackagePrice = price.PackagePrice.ToString();
+                ret.PackagePriceNumeric = price.PackagePrice;
                 ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
             }
 
@@ -233,6 +235,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret.CasePrice = price.CasePrice.ToString();
                 ret.CasePriceNumeric = price.CasePrice;
                 ret.PackagePrice = price.PackagePrice.ToString();
+                ret.PackagePriceNumeric = price.PackagePrice;
                 ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
             }
 
@@ -254,7 +257,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             else
                 ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
 
-            AddPricingInfo(ret, profile, catalogInfo, searchModel);
+            AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
             return ret;
         }
@@ -278,6 +281,27 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return products;
         }
 
+        public ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids) {
+            int totalProcessed = 0;
+            var products = new ProductsReturn() { Products = new List<Product>() };
+
+            while (totalProcessed < ids.Count) {
+                var tempProducts = _catalogRepository.GetProductsByIds(catalogInfo.BranchId, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
+
+                if (tempProducts != null && tempProducts.Products != null) {
+                    products.Count += tempProducts.Count;
+                    products.TotalCount += tempProducts.TotalCount;
+                    products.Products.AddRange(tempProducts.Products);
+                }
+
+                totalProcessed += 500;
+            }
+
+            AddPricingInfo(products, catalogInfo, new SearchInputModel());
+
+            return products;
+        }
+
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
 
@@ -287,7 +311,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             else
                 ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
 
-            AddPricingInfo(ret, profile, catalogInfo, searchModel);
+            AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
             return ret;
         }
