@@ -23,6 +23,7 @@ using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.PowerMenu;
 using KeithLink.Svc.Core.Extensions.PowerMenu;
+using KeithLink.Svc.Core.Extensions.Messaging;
 
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -97,8 +99,38 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
 		public void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId) {
+
             _customerRepo.AddUserToCustomer(addedBy.EmailAddress ,customerId, userId);
+
+			GenerateUserAddedNotification(customerId, userId);
         }
+
+		private void GenerateUserAddedNotification(Guid customerId, Guid userId)
+		{
+			try
+			{
+				//Lookup customer
+				var customer = _customerRepo.GetCustomerById(customerId);
+				//Lookup User
+				var user = _csProfile.GetCSProfile(userId);
+
+				var notifcation = new HasNewsNotification()
+				{
+					CustomerNumber = customer.CustomerNumber,
+					BranchId = customer.CustomerBranch,
+					Subject = string.Format("New user added to {0}-{1}", customer.CustomerNumber, customer.CustomerName),
+					Notification = string.Format("User {0} has been added to {1}-{2}", user.Email, customer.CustomerNumber, customer.CustomerName),
+					DSRDSMOnly = true
+				};
+				_queue.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
+							Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+							Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+			}
+			catch (Exception ex)
+			{
+				_eventLog.WriteErrorLog("Error generating DSR/DSM new user notification", ex);
+			}
+		}
 
         /// <summary>
         /// check that the customer name is longer the 0 characters
@@ -726,24 +758,49 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
-        public Account GetAccount(Guid accountId) {
+		public Account GetAccount(UserProfile user, Guid accountId)
+		{
             Account acct = _accountRepo.GetAccounts().Where(x => x.Id == accountId).FirstOrDefault();
             acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+
+			foreach (var cust in acct.Customers)
+			{
+				cust.CanMessage = true;
+				if (user.IsDSR && user.DSRNumber != cust.DsmNumber)
+					cust.CanMessage = false;
+				else if (user.IsDSM && user.DSMNumber != cust.DsmNumber)
+					cust.CanMessage = false;
+			}
+
+
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
             acct.CustomerUsers = new List<UserProfile>();
             foreach (Customer c in acct.Customers) {
-                acct.CustomerUsers.AddRange(_csProfile.GetUsersForCustomerOrAccount(c.CustomerId));
+				var users = _csProfile.GetUsersForCustomerOrAccount(c.CustomerId);
+				foreach (var custUser in users)
+				{
+					custUser.CanMessage = true;
+					if (user.IsDSR && user.DSRNumber != c.DsmNumber)
+						custUser.CanMessage = false;
+					else if (user.IsDSM && user.DSMNumber != c.DsmNumber)
+						custUser.CanMessage = false;
+				}
+                acct.CustomerUsers.AddRange(users);
             }
             acct.CustomerUsers = acct.CustomerUsers
+				.OrderByDescending(o => o.CanMessage)
                                     .GroupBy(x => x.UserId)
                                     .Select(grp => grp.First())
-                                    .ToList();
+									.ToList();
 
 			foreach (var up in acct.AdminUsers)
 				up.RoleName = GetUserRole(up.EmailAddress);
 
             foreach (var up in acct.CustomerUsers)
                 up.RoleName = GetUserRole(up.EmailAddress);
+
+			
+
 
             return acct;
         }
@@ -1121,15 +1178,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 			//TODO: This is a Foundation Service Query. It should be moved to the profile repository
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
+            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToCommerceServerFormat();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
             profileQuery.Model.Properties.Add("PhoneNumber");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -1178,6 +1233,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             return roleName;
         }
+
+		
 
         public UserProfileReturn GetUsers(UserFilterModel userFilters) {
             if (userFilters != null) {

@@ -67,19 +67,11 @@
           <thead>
             <tr>
               <th>Customer Group Name</th>
-              <th ng-if="canManageCustomerGroups"></th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr ng-repeat="customerGroup in customerGroups | orderBy:'name'" ng-class="{ odd : $odd, even: $even }">
-              <td>{{customerGroup.name}}</td>
-              <td ng-if="canManageCustomerGroups">
-                <a ui-sref="menu.admin.customergroupdetails({groupId: customerGroup.id})">Edit Details</a>
-              </td>
-              <td>
-                <a ui-sref="menu.admin.customergroupdashboard({customerGroupId: customerGroup.id})">View Dashboard</a>
-              </td>
+              <td><a ui-sref="menu.admin.customergroupdashboard({customerGroupId: customerGroup.id})">{{customerGroup.name}}</a></td>
             </tr>
           </tbody>
         </table>
