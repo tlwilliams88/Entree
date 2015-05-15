@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MarketingController', ['$scope', 'MarketingService', 'UtilityService',
-    function($scope, MarketingService, UtilityService) {
+  .controller('MarketingController', ['$scope', '$modal', 'MarketingService', 'UtilityService', 'ReportService',
+    function($scope, $modal, MarketingService, UtilityService, ReportService) {
 
       function getRegisteredUsers() {
         $scope.loadingResults = true;
@@ -66,16 +66,14 @@ angular.module('bekApp')
               return ReportService.exportItem;
             },
             exportConfig: function() {
-              return ReportService.getExportConfig();
+              return MarketingService.getMarketingInfoExportConfig();
             },
             exportParams: function() {
               var params = {
-                fromdate: $scope.itemusagequery.fromDate,
-                todate: $scope.itemusagequery.toDate,
-                sortfield: $scope.sortField,
-                sortdir: $scope.sortReverse === true ? 'desc' : 'asc'
+                from: UtilityService.formatJavascriptDate($scope.fromDate),
+                to: UtilityService.formatJavascriptDate($scope.toDate)
               };
-              return '/report/itemusage/export?' + jQuery.param(params);
+              return '/profile/export/marketinginfo?' + jQuery.param(params);
             }
           }
         });

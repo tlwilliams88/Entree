@@ -3,6 +3,8 @@
     Registered Users
   </div>
   <div header-buttons>
+    <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
+    <a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>
   </div>
 </div>
 
@@ -68,28 +70,50 @@
           Division
           <span sort-icons field="'branchid'" sortorder="sortDescending" sortby="sortField"></span>
         </th>
-        <th class="sort-col-header" ng-click="sortTable('iscustomer', sortDescending)">
-          Customer Status
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortTable('iscustomer', sortDescending)">
+          Is Customer?
           <span sort-icons field="'iscustomer'" sortorder="sortDescending" sortby="sortField"></span>
         </th>
-        <th class="sort-col-header" ng-click="sortTable('learnmore', sortDescending)">
-          Learn More
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortTable('learnmore', sortDescending)">
+          Learn More?
           <span sort-icons field="'learnmore'" sortorder="sortDescending" sortby="sortField"></span>
         </th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="user in users | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even}">
-        <td>{{user.registeredon | formatDateWithTimezone}}</td>
+      <tr ng-repeat-start="user in users | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even}">
+        <td>{{user.registeredon | formatDate}}</td>
         <td>{{user.email}}</td>
         <td>{{user.branchid}}</td>
-        <td>{{user.iscustomer ? 'Y' : 'N'}}</td>
-        <td>{{user.learnmore ? 'Y' : 'N'}}</td>
+        <td class="hidden-mobile-visible-print">{{user.iscustomer ? 'Y' : 'N'}}</td>
+        <td class="hidden-mobile-visible-print">{{user.learnmore ? 'Y' : 'N'}}</td>
+        <td class="large-icon icon-col">
+          <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+        </td>
+      </tr>
+      <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
+        <td colspan="6">
+          <table>
+            <colgroup>
+              <col width="25%" />
+              <col width="75%" />
+            </colgroup>
+            <tr>
+              <td>Is Customer?</td>
+              <td>{{user.iscustomer ? 'Y' : 'N'}}</td>
+            </tr>
+            <tr>
+              <td>Learn More?</td>
+              <td>{{user.learnmore ? 'Y' : 'N'}}</td>
+            </tr>
+          </table>
+        </td>
       </tr>
     </tbody>
     <tfoot ng-show="users.length === 0">
       <tr>
-        <td colspan="5">
+        <td colspan="6">
           No users to display.
         </td>
       </tr>

@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('MarketingService', ['$http', '$q', 'LocalStorage', 'Constants', 'UtilityService', function ($http, $q, LocalStorage, Constants, UtilityService) {
+  .factory('MarketingService', ['$http', '$q', 'LocalStorage', 'Constants', 'UtilityService', 'ExportService', function ($http, $q, LocalStorage, Constants, UtilityService, ExportService) {
 
   var Service = {
   
@@ -37,8 +37,13 @@ angular.module('bekApp')
       return $http.get('/profile/marketinginfo', data).then(function(response) {
         return response.data;
       });
-    }
+    },
 
+    getMarketingInfoExportConfig: function() {
+      return $http.get('/profile/export/marketinginfo').then(function(response) {
+        return response.data;
+      });
+    }
   };
 
   return Service;
