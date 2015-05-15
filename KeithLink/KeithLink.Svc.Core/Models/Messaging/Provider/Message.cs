@@ -17,6 +17,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.Provider
         public bool BodyIsHtml { get; set; }
         public string CustomerName { get; set; }
         public string CustomerNumber { get; set; }
+		public string BranchId { get; set; }
         public string MessageBody { get; set; }
         public string MessageSubject { get; set; }
         public Svc.Core.Enumerations.Messaging.NotificationType NotificationType { get; set; }

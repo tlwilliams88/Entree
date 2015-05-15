@@ -6,15 +6,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu {
     public class SoapEnvelope {
         #region ctor
         public SoapEnvelope() {
-            //NameSpaces = new XmlSerializerNamespaces();
             Body = new SoapBody();
         }
         #endregion
 
         #region properties
-        //[XmlNamespaceDeclarations()]
-        //public XmlSerializerNamespaces NameSpaces;
-
         [XmlElement(Namespace = "http://schemas.xmlsoap.org/soap/envelope/")]
         public SoapBody Body { get; set; }
         #endregion
