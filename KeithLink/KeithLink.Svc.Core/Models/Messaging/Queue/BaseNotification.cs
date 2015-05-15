@@ -20,6 +20,8 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
 
         [DataMember(Name = "notificationtype")]
         public NotificationType NotificationType { get; set; }
-				
+
+		[DataMember(Name = "dsrdsmonly")]
+		public bool DSRDSMOnly { get; set; }
     }
 }

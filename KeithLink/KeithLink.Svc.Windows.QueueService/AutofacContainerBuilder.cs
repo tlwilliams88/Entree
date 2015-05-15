@@ -220,8 +220,10 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
 			builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
+			builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.DsrService.DsrServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.DsrService.IDsrService>();
 			builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
+			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
 
 			return builder.Build();
 		}

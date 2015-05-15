@@ -31,15 +31,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         Func<Channel, IMessageProvider> messageProviderFactory;
         IMessageTemplateLogic messageTemplateLogic;
         IUnitOfWork unitOfWork;
+		IDsrServiceRepository dsrServiceRepository;
         #endregion
 
         #region ctor
         public EtaNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
             , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory
-            , IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork)
+			, IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork, IDsrServiceRepository dsrServiceRepository)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
         {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;

@@ -156,6 +156,8 @@ namespace KeithLink.Svc.WebApi
 
 			builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
 
+			builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
+
             // Build the container.
             var container = builder.Build();
 

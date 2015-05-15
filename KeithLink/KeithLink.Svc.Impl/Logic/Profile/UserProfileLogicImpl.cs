@@ -23,6 +23,7 @@ using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.PowerMenu;
 using KeithLink.Svc.Core.Extensions.PowerMenu;
+using KeithLink.Svc.Core.Extensions.Messaging;
 
 using System;
 using System.Collections.Generic;
@@ -34,6 +35,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -97,8 +99,38 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
 		public void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId) {
+
             _customerRepo.AddUserToCustomer(addedBy.EmailAddress ,customerId, userId);
+
+			GenerateUserAddedNotification(customerId, userId);
         }
+
+		private void GenerateUserAddedNotification(Guid customerId, Guid userId)
+		{
+			try
+			{
+				//Lookup customer
+				var customer = _customerRepo.GetCustomerById(customerId);
+				//Lookup User
+				var user = _csProfile.GetCSProfile(userId);
+
+				var notifcation = new HasNewsNotification()
+				{
+					CustomerNumber = customer.CustomerNumber,
+					BranchId = customer.CustomerBranch,
+					Subject = string.Format("New user added to {0}-{1}", customer.CustomerNumber, customer.CustomerName),
+					Notification = string.Format("User {0} has been added to {1}-{2}", user.Email, customer.CustomerNumber, customer.CustomerName),
+					DSRDSMOnly = true
+				};
+				_queue.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
+							Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+							Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+			}
+			catch (Exception ex)
+			{
+				_eventLog.WriteErrorLog("Error generating DSR/DSM new user notification", ex);
+			}
+		}
 
         /// <summary>
         /// check that the customer name is longer the 0 characters
@@ -580,6 +612,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0)
 					{
 						userRole = Constants.ROLE_NAME_POWERUSER;
+						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+					}
+					else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0)
+					{
+						userRole = Constants.ROLE_NAME_MARKETING;
 						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
 					}
 					else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0)
@@ -1116,15 +1153,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 			//TODO: This is a Foundation Service Query. It should be moved to the profile repository
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
+            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToCommerceServerFormat();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
             profileQuery.Model.Properties.Add("PhoneNumber");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -1173,6 +1208,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             return roleName;
         }
+
+		
 
         public UserProfileReturn GetUsers(UserFilterModel userFilters) {
             if (userFilters != null) {

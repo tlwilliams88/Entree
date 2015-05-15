@@ -237,6 +237,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.EF.DsrAlias.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.DsrAliasModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel.datasource" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
@@ -494,6 +495,7 @@
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\DsrServiceRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
     <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />

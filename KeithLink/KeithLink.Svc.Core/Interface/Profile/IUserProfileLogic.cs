@@ -60,6 +60,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         UserProfileReturn GetUsers(UserFilterModel userFilters);
 
+
 		void GrantRoleAccess(UserProfile updatedBy, string emailAddress, AccessRequestType requestedApp);
 
         bool IsInternalAddress(string emailAddress);
