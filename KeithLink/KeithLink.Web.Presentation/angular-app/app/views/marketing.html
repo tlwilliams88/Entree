@@ -1,0 +1,99 @@
+<div page-header-bar>
+  <div header-message>
+    Registered Users
+  </div>
+  <div header-buttons>
+  </div>
+</div>
+
+<div class="page-content">
+  <div class="row">
+    <form id="itemUsageForm" class="item-usage-form col-md-6">
+      <div class="info-box" style="display:inline-block;">
+      <table>
+        <tr>              
+          <td class="datepicker">
+            <label>From: </label>
+            <a
+              ng-click="openDatepickerFrom = true"
+              class="icon-calendar"
+              datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+              ng-model="fromDate"
+              is-open="openDatepickerFrom"
+              min-date="datepickerOptions.minDate"
+              max-date="datepickerOptions.maxDate"
+              datepicker-options="datepickerOptions.options"
+              date-disabled="disabled(date, mode)"
+              close-text="Close"></a>
+            {{fromDate | formatDate}}
+          </td>
+          <td class="datepicker">
+            <label>To: </label>
+            <a
+              ng-click="openDatepickerTo = true"
+              class="icon-calendar"
+              datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+              ng-model="toDate"
+              is-open="openDatepickerTo"
+              min-date="datepickerOptions.minDate"
+              max-date="datepickerOptions.maxDate"
+              datepicker-options="datepickerOptions.options"
+              date-disabled="disabled(date, mode)"
+              close-text="Close"></a>
+            {{toDate | formatDate}}
+          </td>
+          <td class="hidden-print">
+            <button type="submit" ng-disabled="itemUsageForm.$invalid || itemUsageForm.$pristine" ng-click="refreshSearch()" class="btn btn-primary btn-lg" disabled="disabled">Update</button>
+          </td>
+        </tr>
+      </table>
+      </div>
+    </form>
+  </div>
+
+  
+      
+  <table class="table table-striped-rows table-border table-marketing" style="margin-top: 10px;">
+    <thead>
+      <tr fsm-sticky-header scroll-body="'.table-marketing'" scroll-stop="0">
+        <th class="sort-col-header" ng-click="sortTable('registeredon', sortDescending)">
+          Date
+          <span sort-icons field="'registeredon'" sortorder="sortDescending" sortby="sortField"></span>
+        </th>
+        <th class="sort-col-header" ng-click="sortTable('email', sortDescending)">
+          Email Address
+          <span sort-icons field="'email'" sortorder="sortDescending" sortby="sortField"></span>
+        </th>
+        <th class="sort-col-header" ng-click="sortTable('branchid', sortDescending)">
+          Division
+          <span sort-icons field="'branchid'" sortorder="sortDescending" sortby="sortField"></span>
+        </th>
+        <th class="sort-col-header" ng-click="sortTable('iscustomer', sortDescending)">
+          Customer Status
+          <span sort-icons field="'iscustomer'" sortorder="sortDescending" sortby="sortField"></span>
+        </th>
+        <th class="sort-col-header" ng-click="sortTable('learnmore', sortDescending)">
+          Learn More
+          <span sort-icons field="'learnmore'" sortorder="sortDescending" sortby="sortField"></span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="user in users | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even}">
+        <td>{{user.registeredon | formatDateWithTimezone}}</td>
+        <td>{{user.email}}</td>
+        <td>{{user.branchid}}</td>
+        <td>{{user.iscustomer ? 'Y' : 'N'}}</td>
+        <td>{{user.learnmore ? 'Y' : 'N'}}</td>
+      </tr>
+    </tbody>
+    <tfoot ng-show="users.length === 0">
+      <tr>
+        <td colspan="5">
+          No users to display.
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+      
+</div>
