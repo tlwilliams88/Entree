@@ -74,27 +74,22 @@ namespace KeithLink.Svc.WebApi.Services {
                 }
             }
 
+            
             // return results
+            
             SoapEnvelope soap = new SoapEnvelope();
+            soap.Body.Response.Results = GetProductString(returnedPrices);
+
+            XmlSerializer serializer = new XmlSerializer(soap.GetType());
+
             XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
             namespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
             namespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
             namespaces.Add("soap", "http://schemas.xmlsoap.org/soap/envelope/");
-            soap.Body.Response.Results = returnedPrices;
-            //XmlWriter writer = XmlWriter.Create(context.Response.OutputStream, new XmlWriterSettings() { Encoding = System.Text.Encoding.UTF8 });
-
-            //XmlTypeMapping soapMapping = new SoapReflectionImporter().ImportTypeMapping(retVal.GetType());
-            //XmlTypeMapping soapMapping = new SoapReflectionImporter().ImportTypeMapping(typeof(ProductReturn));
-            //XmlSerializer serializer = new XmlSerializer(typeof(PricingResponse));
-            XmlSerializer serializer = new XmlSerializer(typeof(SoapEnvelope));
-            //XmlSerializer serializer = new XmlSerializer(soapMapping);
+            
+            serializer.Serialize(context.Response.OutputStream, soap, namespaces);
 
             context.Response.ContentType = "text/xml";
-            //serializer.Serialize(context.Response.OutputStream, returnedPrices);
-            serializer.Serialize(context.Response.OutputStream, soap, namespaces);
-            //writer.WriteStartElement("GetProductsWithPriceResponse", "http://benekeith.com");
-            //serializer.Serialize(writer, retVal);
-            //return retVal;
         }
 
         private List<Core.Models.SiteCatalog.Pricing.PowerMenu.Product> GetItemPricing(string branchId, string customerNumber, List<ProductLine> products,
@@ -136,6 +131,25 @@ namespace KeithLink.Svc.WebApi.Services {
             }
 
             return retVal;
+        }
+
+        private string GetProductString(ProductReturn products) {
+            XmlSerializer productXmlSerializer = new XmlSerializer(typeof(Core.Models.SiteCatalog.Pricing.PowerMenu.Product));
+            System.Text.StringBuilder productStringBuilder = new System.Text.StringBuilder("<products>");
+            XmlSerializerNamespaces productNamespaces = new XmlSerializerNamespaces();
+            productNamespaces.Add("", "");
+            foreach (Core.Models.SiteCatalog.Pricing.PowerMenu.Product product in products.Products) {
+                XmlWriter productXmlWriter = XmlWriter.Create(productStringBuilder, new XmlWriterSettings() {
+                    OmitXmlDeclaration = true,
+                    ConformanceLevel = ConformanceLevel.Auto,
+                    Indent = false
+                });
+
+                productXmlSerializer.Serialize(productXmlWriter, product, productNamespaces);
+            }
+            productStringBuilder.Append("</products>");
+
+            return productStringBuilder.ToString();
         }
 
         private PricingRequest GetSoapBody(XNode bodyNode) {

@@ -79,7 +79,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             Message message = new Message();
             message.BodyIsHtml = template.IsBodyHtml;
-            message.MessageSubject = template.Subject.Inject(customer);
+			message.MessageSubject = template.Subject.Inject(customer);
             message.MessageBody = template.Body.Inject(new { 
                                                                 CustomerNumber = customer.CustomerNumber,
                                                                 CustomerName = customer.CustomerName,
@@ -89,6 +89,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                                                                 TotalPayments = notification.Payments.Sum(p => p.PaymentAmount)
                                                            });
             message.CustomerNumber = customer.CustomerNumber;
+			message.CustomerName = customer.CustomerName;
+			message.BranchId = customer.CustomerBranch;
             message.NotificationType = NotificationType.PaymentConfirmation;
             return message;
         }

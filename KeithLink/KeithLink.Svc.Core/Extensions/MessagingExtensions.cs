@@ -25,7 +25,10 @@ namespace KeithLink.Svc.Core.Extensions
                  NotificationType = userMessage.NotificationType,
                  Subject = userMessage.Subject,
                  Mandatory = userMessage.Mandatory,
-                 Label = userMessage.Label
+                 Label = userMessage.Label,
+				 CustomerName = userMessage.CustomerName,
+				 CustomerNumber = userMessage.CustomerNumber,
+				 BranchId = userMessage.BranchId
             };
         }
 

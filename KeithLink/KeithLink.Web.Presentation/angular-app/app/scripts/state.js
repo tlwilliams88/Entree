@@ -295,7 +295,7 @@ angular.module('bekApp')
       templateUrl: 'views/order.html',
       controller: 'OrderController',
       data: {
-        authorize: 'canSubmitOrders'
+        authorize: 'canViewOrders'
       }
     })
     .state('menu.orderitems', {
@@ -303,7 +303,7 @@ angular.module('bekApp')
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
       data: {
-        authorize: 'canSubmitOrders'
+        authorize: 'canViewOrders'
       },
       resolve: {
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {

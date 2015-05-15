@@ -47,8 +47,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public long CreateUserMessage(Guid userId, UserSelectedContext catalogInfo, UserMessageModel userMessage)
         {
             var newUserMessage = userMessage.ToEFUserMessage();
-            newUserMessage.CustomerNumber = catalogInfo.CustomerId;
-            newUserMessage.UserId = userId;
+			newUserMessage.UserId = userId;
 
             userMessageRepository.CreateOrUpdate(newUserMessage);
             unitOfWork.SaveChanges();
