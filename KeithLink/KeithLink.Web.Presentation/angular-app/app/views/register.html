@@ -90,7 +90,7 @@
             <label for="customerStatus">Customer Status</label>
             <div class="radio">
               <label>
-                <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus1" ng-value="false" ng-checked="true">
+                <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus1" ng-value="false" ng-init="registerUser.existingcustomer = false">
                 I am NOT a current customer
               </label>
             </div>
@@ -119,7 +119,7 @@
           <div class="col-xs-12">
             <div class="checkbox">
               <label for="discounts">
-                <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-checked="true">
+                <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-init="registerUser.marketingflag = true">
                 Select checkbox to learn more about Ben E. Keith
               </label>
             </div>
