@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService', 'CustomerPagingModel',
+  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', 'UserProfileService', 'CustomerGroupService', 'BroadcastService',
     function (
       $scope, $q, $log, // angular
       $stateParams, $state, $modal, // ui router
-      UserProfileService, CustomerService, CustomerGroupService, BroadcastService, CustomerPagingModel // custom bek services
+      UserProfileService, CustomerGroupService, BroadcastService // custom bek services
     ) {
 
   function getCustomerGroupDetails(customerGroupId) {
     CustomerGroupService.getGroupDetails(customerGroupId).then(function(customerGroup) {
-      $scope.loadingUsers = false;
+      $scope.loadingResults = false;
       $scope.customerGroup = customerGroup;
     }, function() {
       $scope.displayMessage('error', 'An error occured loading the customer group dashboard page (ID: ' + customerGroupId + ').');
@@ -18,7 +18,7 @@ angular.module('bekApp')
     });
   }
 
-  $scope.loadingUsers = true;
+  $scope.loadingResults = true;
   
   // set correct user details link based on role
   $scope.userDetailState = 'menu.admin.user.view';
@@ -76,55 +76,13 @@ angular.module('bekApp')
   /**
    * CUSTOMERS
    */
-
-  function setCustomers(data) {
-    $scope.customers = data.results;
-    $scope.totalCustomers = data.totalResults;
-  }
-  function appendCustomers(data) {
-    $scope.customers = $scope.customers.concat(data.results);
-  }
-  function startLoading() {
-    $scope.loadingCustomers = true;
-  }
-  function stopLoading() {
-    $scope.loadingCustomers = false;
-  }
-
+  
   $scope.customersSortDesc = false;
   $scope.customersSortField = 'customerName';
 
-  var customerPagingModel = new CustomerPagingModel(
-    setCustomers,
-    appendCustomers,
-    startLoading,
-    stopLoading,
-    $scope.customersSortField,
-    $scope.customersSortDesc
-  );
-  if ($stateParams.customerGroupId) {
-    customerPagingModel.accountId = $stateParams.customerGroupId;
-  }
-
-  customerPagingModel.loadCustomers();
-
-  $scope.searchCustomers = function (searchTerm) {
-    customerPagingModel.filterCustomers(searchTerm);
-  };
-  
-  $scope.clearFilter = function(){    
-     $scope.customerSearchTerm = '';   
-     $scope.searchCustomers($scope.customerSearchTerm);    
-  };
-
   $scope.sortCustomers = function(field, sortDescending) {
-    $scope.customersSortDesc = sortDescending;
+    $scope.customersSortDesc = $scope.customersSortField === field ? !sortDescending : false;
     $scope.customersSortField = field;
-    customerPagingModel.sortCustomers(field, sortDescending);
-  };
-
-  $scope.infiniteScrollLoadMore = function() {
-    customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
   };
 
   $scope.openCustomerAssignmentModal = function() {
@@ -148,7 +106,6 @@ angular.module('bekApp')
       group.customers = $scope.customerGroup.customers.concat(selectedCustomers);
       saveCustomerGroup(group).then(function() {
         $scope.customerGroup = group;
-        customerPagingModel.loadCustomers();
       });
     });
   };
@@ -167,8 +124,9 @@ angular.module('bekApp')
       }
     });
 
-    // console.log(assignedCustomers);
     $scope.customerGroup.customers = assignedCustomers;
+
+    saveCustomerGroup($scope.customerGroup);
   };
 
   /**
