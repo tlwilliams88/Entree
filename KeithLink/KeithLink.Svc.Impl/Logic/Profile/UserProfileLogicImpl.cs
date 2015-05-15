@@ -758,24 +758,49 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
-        public Account GetAccount(Guid accountId) {
+		public Account GetAccount(UserProfile user, Guid accountId)
+		{
             Account acct = _accountRepo.GetAccounts().Where(x => x.Id == accountId).FirstOrDefault();
             acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+
+			foreach (var cust in acct.Customers)
+			{
+				cust.CanMessage = true;
+				if (user.IsDSR && user.DSRNumber != cust.DsmNumber)
+					cust.CanMessage = false;
+				else if (user.IsDSM && user.DSMNumber != cust.DsmNumber)
+					cust.CanMessage = false;
+			}
+
+
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
             acct.CustomerUsers = new List<UserProfile>();
             foreach (Customer c in acct.Customers) {
-                acct.CustomerUsers.AddRange(_csProfile.GetUsersForCustomerOrAccount(c.CustomerId));
+				var users = _csProfile.GetUsersForCustomerOrAccount(c.CustomerId);
+				foreach (var custUser in users)
+				{
+					custUser.CanMessage = true;
+					if (user.IsDSR && user.DSRNumber != c.DsmNumber)
+						custUser.CanMessage = false;
+					else if (user.IsDSM && user.DSMNumber != c.DsmNumber)
+						custUser.CanMessage = false;
+				}
+                acct.CustomerUsers.AddRange(users);
             }
             acct.CustomerUsers = acct.CustomerUsers
+				.OrderByDescending(o => o.CanMessage)
                                     .GroupBy(x => x.UserId)
                                     .Select(grp => grp.First())
-                                    .ToList();
+									.ToList();
 
 			foreach (var up in acct.AdminUsers)
 				up.RoleName = GetUserRole(up.EmailAddress);
 
             foreach (var up in acct.CustomerUsers)
                 up.RoleName = GetUserRole(up.EmailAddress);
+
+			
+
 
             return acct;
         }
