@@ -9,7 +9,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu {
         public bool IsAuthorized;
         [XmlAttribute]
         public bool IsActive;
-        [XmlAttribute]
+        [XmlAttribute("PBUnit")]
         public string PurchaseByUnit;
         [XmlAttribute]
         public decimal AvailableQty;
