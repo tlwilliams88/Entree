@@ -9,36 +9,19 @@
 <h2 ng-if="customerGroup">
   <a class="text-large btn-link" ui-sref="menu.admin.customergroup" ng-if="canViewCustomerGroups"><span class="icon-arrow-left6"></span> Back</a>
   Customer Group: {{customerGroup.name}}
+  <button type="button" confirmed-click="deleteGroup(customerGroup.id)" class="hidden-print btn btn-sm btn-danger" ng-if="canManageCustomerGroups" ng-confirm-click="{{'This will delete the customer group and remove all customer and user associations with this group. Are you sure you want to delete this customer group?'}}">Delete Group</button>
 </h2>
-<form name="addNewUserForm" ng-show="canEditUsers">
-<div class="row">
-  <div class="col-md-6">
-    <div class="form-inline">
-      <div class="form-group">
-        
-        <p class="text-red" ng-show="userOnCurrentCustomerGroup">
-          This user already exists and has access to this customer group.
-        </p>
-        <p class="text-red" ng-show="canAddUser">
-          This user already exists. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and add the user to this customer group.
-        </p>
-        <p class="text-red" ng-show="checkUserExists && cannotMoveUser">
-          This user already exists and has access to another customer group. Contact BEK to move this user to this customer group.
-        </p>
-        <p class="text-red" ng-show="canMoveUser">
-          This user exists and has access to another customer group. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and move the user to this customer group.
-        </p>                
-        
-        <input type="email" class="form-control" placeholder="Enter email address" name = "newUserEmail" ng-model="addNewUserEmail"/>
-        <button  type="submit" ng-disabled="addNewUserForm.$invalid" class="btn btn-primary" ng-click="checkUser(addNewUserEmail)">Create New User</button>
-      </div>
-    </div>
-  </div>
-</div>
-</form>
 <div class="row">
   <div class="col-md-6">
     <h3>Assigned Admin Users</h3>
+
+    <form ng-if="canManageCustomerGroups" name="addNewAdminUserForm" class="form-inline search-form" novalidate>
+      <p class="text-red" ng-show="addNewAdminUserForm.newAdminUserEmail.$error.noDuplicates">This user is already an admin for this customer group.</p>
+      <div class="form-group">
+        <input no-duplicates="emailaddress" collection="customerGroup.adminusers" required type="text" class="form-control" name="newAdminUserEmail" placeholder="Enter email address" ng-model="adminUserEmail" />
+        <button ng-disabled="addNewAdminUserForm.$invalid" type="submit" class="btn btn-primary" ng-click="checkUserAndAddAdmin(adminUserEmail)">Add Admin User</button>
+      </div>
+    </form>
 
     <div class="infiniteScroll">
       <table class="table no-margin table-border table-striped-rows">
@@ -77,6 +60,29 @@
     <div class="text-center" loading-spinner="loadingUsers"></div>
 
     <h3>Assigned Customer Users</h3>
+
+    <form name="addNewCustomerUserForm" class="search-form" ng-show="canEditUsers">
+      <div class="form-inline">
+        <div class="form-group">
+          
+          <p class="text-red" ng-show="userOnCurrentCustomerGroup">
+            This user already exists and has access to this customer group.
+          </p>
+          <p class="text-red" ng-show="canAddUser">
+            This user already exists. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and add the user to this customer group.
+          </p>
+          <p class="text-red" ng-show="checkUserExists && cannotMoveUser">
+            This user already exists and has access to another customer group. Contact BEK to move this user to this customer group.
+          </p>
+          <p class="text-red" ng-show="canMoveUser">
+            This user exists and has access to another customer group. Click <a ui-sref="{{userDetailState}}({email: checkEmail, groupId: customerGroup.id})">here</a> to assign customers and move the user to this customer group.
+          </p>                
+          
+          <input type="email" class="form-control" placeholder="Enter email address" name = "newUserEmail" ng-model="addNewUserEmail"/>
+          <button  type="submit" ng-disabled="addNewCustomerUserForm.$invalid" class="btn btn-primary" ng-click="addCustomerUser(addNewUserEmail)">Add Customer User</button>
+        </div>
+      </div>
+    </form>
 
     <div class="infiniteScroll">
       <table class="table no-margin table-border table-striped-rows">
@@ -139,7 +145,10 @@
 
   </div>
   <div class="col-md-6">
-    <h3>Assigned Customers</h3>
+    <h3>
+      Assigned Customers
+      <button ng-if="canManageCustomerGroups" style="margin-left: 5px;" class="btn btn-lg btn-default" type="button" ng-click="openCustomerAssignmentModal()">Assign Additional Customers</button>
+    </h3>
     Showing {{customers.length}} of {{totalCustomers}} Customers
 
     <form name="customerSearchForm" class="search-form">
