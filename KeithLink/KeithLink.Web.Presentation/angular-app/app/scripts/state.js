@@ -517,20 +517,11 @@ angular.module('bekApp')
       }
     })
     .state('menu.admin.customergroupdetails', {
-      url: 'customergroup/:groupId/',
+      url: 'customergroup/new/',
       templateUrl: 'views/admin/customergroupdetails.html',
       controller: 'CustomerGroupDetailsController',
       data: {
         authorize: 'canManageCustomerGroups'
-      },
-      resolve: {
-        originalCustomerGroup: ['$stateParams', 'CustomerGroupService', function($stateParams, CustomerGroupService) {
-          if ($stateParams.groupId === 'new') {
-            return {};
-          } else {
-            return CustomerGroupService.getGroupDetails($stateParams.groupId);
-          }
-        }]
       }
     })
 

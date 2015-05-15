@@ -147,6 +147,7 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() );
     },
 
+    // create, delete, assign customers, add admin users
     canManageCustomerGroups: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() );
     },
@@ -155,10 +156,12 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || isOwner() );
     },
 
+    // moving a user with customers to a different customer group
     canMoveUserToAnotherGroup: function() {
       return ( isSysAdmin() );
     },
 
+    // changing user info and role on the edit user details page
     canEditUsers: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
     },
