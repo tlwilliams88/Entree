@@ -1,7 +1,12 @@
 'use strict';
 
+/**
+ * formatDate filter
+ * Uses moment.js library to format datetimes and convert times to correct timezone
+ */
 angular.module('bekApp')
   .filter('formatDate', [function() {
+
     function getFormattedDateTime(dateTime, formatString) {
 
       // check UTC time and convert to format 2015-02-13 00:00:00 -- all times coming from the backend are Central
@@ -25,6 +30,7 @@ angular.module('bekApp')
     }
 
     return function(dateTime, formatString) {
+      // use default format string if none is provided
       if (!formatString) {
         formatString = 'ddd, MMM D, YYYY';
       }
@@ -35,6 +41,7 @@ angular.module('bekApp')
   .filter('formatDateWithTimezone', ['$filter', function($filter) {
     return function(dateTime, formatString) {
 
+      // use default format string if none is provided
       if (!formatString) {
         formatString = 'ddd, MMM D, YYYY h:mma z';
       }

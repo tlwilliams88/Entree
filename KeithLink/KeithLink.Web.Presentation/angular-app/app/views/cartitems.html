@@ -50,7 +50,7 @@
 
     <form name="renameCartForm" class="style-validation-errors inline-header-form nowrap" ng-show="currentCart.isRenaming" autocomplete="off">
       <input 
-        check-duplicate-field="name" 
+        no-duplicates="name" 
         collection="carts" 
         type="text" 
         max-length="15" 
@@ -69,10 +69,10 @@
         ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();">
         <span class="large-icon text-green icon-checkmark"></span>
       </button>
-       <br class='visible-xs' ng-show="renameCartForm.cartName.$error.checkDuplicateField || renameCartForm.cartName.$error.required">
+       <br class='visible-xs' ng-show="renameCartForm.cartName.$error.noDuplicates || renameCartForm.cartName.$error.required">
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>     
-      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
+      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.noDuplicates">Duplicate cart name</span>
     </form>
 
   </div>

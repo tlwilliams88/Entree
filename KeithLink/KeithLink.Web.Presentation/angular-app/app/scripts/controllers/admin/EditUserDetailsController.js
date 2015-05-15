@@ -53,7 +53,6 @@ angular.module('bekApp')
   FORM EVENTS
   **********/
 
-<<<<<<< HEAD
   var processingSaveProfile = false;
   $scope.updateProfile = function (profile) {
     var deferred = $q.defer();

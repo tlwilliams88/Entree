@@ -75,8 +75,8 @@
           <div class="col-md-6 form-group">
             <label for="password">Password</label>
             <span ng-show="registrationForm.password.$error.required && registrationForm.password.$dirty" class="text-red">Password is required</span>
-            <span ng-show="registrationForm.password.$error.validatePassword && registrationForm.password.$dirty && !registrationForm.password.$error.required" class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Cannot contain any part of your name or email address</span>
-            <input validate-password required class="form-control" id="password" type="password" name="password" ng-model="registerUser.password">
+            <span ng-show="registrationForm.password.$error.passwordRequirements && registrationForm.password.$dirty && !registrationForm.password.$error.required" class="text-red">Must contain one uppercase letter, one lowercase letter, and a number.  Cannot contain any part of your name or email address.</span>
+            <input password-requirements required class="form-control" id="password" type="password" name="password" ng-model="registerUser.password">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmPassword">Confirm Password</label>

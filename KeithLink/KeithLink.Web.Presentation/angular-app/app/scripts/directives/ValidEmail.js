@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * validateEmail directive
+ * Checks that input has a valid email address
+ */
 angular.module('bekApp')
 .directive('validateEmail', [function() {
   var directive = {

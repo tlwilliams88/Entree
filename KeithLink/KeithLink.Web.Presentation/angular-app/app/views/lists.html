@@ -32,7 +32,7 @@
 
     <form name="renameListForm" class="style-validation-errors inline-header-form nowrap" ng-show="selectedList.isRenaming">
       <input 
-        check-duplicate-field="name" 
+        no-duplicates="name" 
         collection="lists" 
         type="text" 
         focus-me="selectedList.isRenaming" 
@@ -53,7 +53,7 @@
       <a ng-click="cancelRenameList()"><span class="large-icon text-red icon-cross"></span></a>
       
       <span class="form-error-message" ng-show="renameListForm.listName.$error.required">List name is required</span>
-      <span class="form-error-message" ng-show="renameListForm.listName.$error.checkDuplicateField">Duplicate list name</span>
+      <span class="form-error-message" ng-show="renameListForm.listName.$error.noDuplicates">Duplicate list name</span>
     </form>
 
   </div>
