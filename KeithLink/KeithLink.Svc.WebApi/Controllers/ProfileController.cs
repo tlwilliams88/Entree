@@ -381,7 +381,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				retVal.SuccessResponse = _profileLogic.GetAccount(accountid);
+				retVal.SuccessResponse = _profileLogic.GetAccount(this.AuthenticatedUser, accountid);
 			}
 			catch (ApplicationException axe)
 			{

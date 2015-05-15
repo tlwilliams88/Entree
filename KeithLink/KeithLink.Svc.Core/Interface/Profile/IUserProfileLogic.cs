@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         //UserProfile FillUserProfile(Models.Generated.UserProfile csProfile);
         UserProfile FillUserProfile(Core.Models.Generated.UserProfile csProfile, bool includeLastOrderDate = true, bool includeTermInformation = false);
 
-        Account GetAccount(Guid id);
+        Account GetAccount(UserProfile user, Guid id);
         
         AccountReturn GetAccounts(AccountFilterModel accountFilters);
         

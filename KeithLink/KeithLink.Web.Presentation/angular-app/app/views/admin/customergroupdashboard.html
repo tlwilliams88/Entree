@@ -45,7 +45,7 @@
             <td>{{adminUser.firstname}}</td>
             <td>{{adminUser.lastname}}</td>
             <td>
-              <a ng-click="addUserToRecipients(adminUser)" class="glyphicon glyphicon-plus"></a>
+              <a ng-click="addUserToRecipients(adminUser)" ng-if="adminUser.canmessage" class="glyphicon glyphicon-plus"></a>
             </td>
           </tr>
         </tbody>
@@ -129,7 +129,7 @@
           <td>{{customerUser.lastname}}</td>
           <td class="text-capitalize">{{customerUser.rolename}}</td>
           <td>
-            <a ng-click="addUserToRecipients(customerUser)" class="glyphicon glyphicon-plus"></a>
+            <a ng-click="addUserToRecipients(customerUser)" ng-if="customerUser.canmessage" class="glyphicon glyphicon-plus"></a>
           </td>
         </tr>
         </tbody>
@@ -197,7 +197,7 @@
           <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})"><span
             class="glyphicon glyphicon-pencil"></span> Customer Details</a></td>
           <td>
-            <a ng-click="addCustomerToRecipients(customer)" class="glyphicon glyphicon-plus"></a>
+            <a ng-click="addCustomerToRecipients(customer)" ng-if="customer.canmessage" class="glyphicon glyphicon-plus"></a>
           </td>
         </tr>
         </tbody>
