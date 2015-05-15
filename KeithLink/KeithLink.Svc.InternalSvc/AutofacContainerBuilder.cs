@@ -262,6 +262,8 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
 
+			builder.RegisterType<MarketingPreferencesRepositoryImpl>().As<IMarketingPreferencesRepository>();
+			builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
 
             return builder.Build();
         }
