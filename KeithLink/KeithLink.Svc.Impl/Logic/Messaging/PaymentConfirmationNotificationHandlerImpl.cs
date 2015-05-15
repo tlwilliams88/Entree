@@ -33,15 +33,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private readonly IMessageTemplateLogic _messageTemplateLogic;
         private readonly IKPayInvoiceRepository _invoiceRepo;
         private readonly ICustomerBankRepository _bankRepo;
+		private readonly IDsrServiceRepository dsrServiceRepository;
         #endregion
 
         #region ctor
         public PaymentConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, 
                                                           IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository, 
                                                           IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory,
-                                                          IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo)
+														  IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo, IDsrServiceRepository dsrServiceRepository)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, 
-                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
         {
             _log = eventLogRepository;
             _userLogic = userProfileLogic;

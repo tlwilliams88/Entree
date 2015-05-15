@@ -22,12 +22,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         ICustomerRepository customerRepository;
         IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
+		private readonly IDsrServiceRepository dsrServiceRepository;
         #endregion
         public OrderConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
-            , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory)
+			, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, IDsrServiceRepository dsrServiceRepository)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
         {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
