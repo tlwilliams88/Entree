@@ -96,21 +96,16 @@ namespace KeithLink.Svc.WebApi.Services {
                                                                                                                         DateTime effectiveDate) {
             List<Core.Models.SiteCatalog.Pricing.PowerMenu.Product> retVal = new List<Core.Models.SiteCatalog.Pricing.PowerMenu.Product>();
 
-            //List<Core.Models.SiteCatalog.Product> productList = (from ProductLine p in products
-            //                                                     select new Core.Models.SiteCatalog.Product { ItemNumber = p.ProductNumber }).ToList();
             List<string> itemNumbers = (from ProductLine p in products
                                         select p.ProductNumber).ToList();
-            //IPriceLogic priceLogic = _scope.GetService(typeof(IPriceLogic)) as IPriceLogic;
-            //PriceReturn prices = priceLogic.GetPrices(branchId, customerNumber, effectiveDate, productList);
             ICatalogLogic catLogic = _scope.GetService(typeof(ICatalogLogic)) as ICatalogLogic;
             ProductsReturn items = catLogic.GetProductsByIdsWithPricing(new UserSelectedContext() { BranchId = branchId, CustomerId = customerNumber }, itemNumbers);
 
-            //foreach (Price price in prices.Prices) {
             foreach (Svc.Core.Models.SiteCatalog.Product item in items.Products) {
                 KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu.Product currentItem = new KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu.Product();
 
-                currentItem.ProductNumber = item.ItemNumber; //price.ItemNumber;
-                currentItem.IsAuthorized = item.HasPrice; //(price.CasePrice > 0 || price.PackagePrice > 0);
+                currentItem.ProductNumber = item.ItemNumber;
+                currentItem.IsAuthorized = item.HasPrice;
                 currentItem.IsActive = true;
                 currentItem.AvailableQty = 0;
                 currentItem.IsCatchWeight = item.CatchWeight;
@@ -122,10 +117,10 @@ namespace KeithLink.Svc.WebApi.Services {
                     currentItem.Price = (decimal)item.CasePriceNumeric;
                     currentItem.PurchaseByUnit = "lb";
                 } else if (myProduct.Unit.Length == 0 || myProduct.Unit.Equals("case", StringComparison.InvariantCultureIgnoreCase)) {
-                    currentItem.Price = (decimal)item.CasePriceNumeric; //price.CasePrice;
+                    currentItem.Price = (decimal)item.CasePriceNumeric;
                     currentItem.PurchaseByUnit = "cs";
                 } else if (myProduct.Unit.Equals("each", StringComparison.InvariantCultureIgnoreCase)) {
-                    currentItem.Price = (decimal)item.PackagePriceNumeric; //price.PackagePrice;
+                    currentItem.Price = (decimal)item.PackagePriceNumeric;
                     currentItem.PurchaseByUnit = "ea";
                 } else {
                     currentItem.Price = 0;
