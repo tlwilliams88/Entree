@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService', 'CustomerPagingModel',
+  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService', 'CustomerPagingModel',
     function (
       $scope, $q, $log, // angular
-      $stateParams, $state, // ui router
+      $stateParams, $state, $modal, // ui router
       UserProfileService, CustomerService, CustomerGroupService, BroadcastService, CustomerPagingModel // custom bek services
     ) {
 
@@ -148,6 +148,7 @@ angular.module('bekApp')
       group.customers = $scope.customerGroup.customers.concat(selectedCustomers);
       saveCustomerGroup(group).then(function() {
         $scope.customerGroup = group;
+        customerPagingModel.loadCustomers();
       });
     });
   };
@@ -186,7 +187,6 @@ angular.module('bekApp')
     if (!processingCreateUser) {
       processingCreateUser = true;
       UserProfileService.createUserFromAdmin(newProfile).then(function (profiles) {
-        debugger;
         deferred.resolve(profiles[0]);
       }, function (errorMessage) {
         $log.debug(errorMessage);
@@ -260,22 +260,6 @@ angular.module('bekApp')
   };
 
   $scope.addAdminUser = function(emailAddress) {
-    // var isDuplicateUser = false;
-    // $scope.addUserError = '';
-
-    // // check if user is already in list of selected users
-    // $scope.customerGroup.adminusers.forEach(function(user) {
-
-    //   if (user.emailaddress === emailAddress) {
-    //     isDuplicateUser = true;
-    //   }
-    // });
-
-    // if (isDuplicateUser) {
-    //   $scope.addUserError = 'This user is already an admin on this customer group.';
-    //   return;
-    // }
-
     // check if user exists in the database
     var data = {
       email: emailAddress
@@ -284,13 +268,13 @@ angular.module('bekApp')
       // if user exists, add him to the customer group
       if (profiles.length === 1) {
         $scope.customerGroup.adminusers.push(profiles[0]);
-        $scope.submitForm($scope.customerGroup);
+        saveCustomerGroup($scope.customerGroup);
 
       // if user does NOT exist, create user
       } else {
         createUser(data.email).then(function(profile) {
-            $scope.customerGroup.adminusers.push(profiles[0]);
-            $scope.submitForm($scope.customerGroup);
+            $scope.customerGroup.adminusers.push(profile);
+            saveCustomerGroup($scope.customerGroup);
         });
 
       }
