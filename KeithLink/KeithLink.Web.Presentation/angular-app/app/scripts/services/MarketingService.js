@@ -19,6 +19,24 @@ angular.module('bekApp')
       }, function() {
         return $q.reject('Error loading promo items.');
       });
+    },
+
+    /**
+     * Gets array of users who registered for the site
+     * @param  {String} fromDate String date in the format YYYY-MM-DD for the start of the date range
+     * @param  {String} toDate   String date in the format YYYY-MM-DD for the end of the date range
+     * @return {Promise}          
+     */
+    getUsersAndMarketingInfo: function(fromDate, toDate) {
+      var data = { 
+        params: {
+          from: fromDate,
+          to: toDate
+        }
+      };
+      return $http.get('/profile/marketinginfo', data).then(function(response) {
+        return response.data;
+      });
     }
 
   };

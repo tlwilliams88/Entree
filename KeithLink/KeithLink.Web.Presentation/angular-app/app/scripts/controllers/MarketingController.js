@@ -14,21 +14,22 @@ angular.module('bekApp')
 
       function getRegisteredUsers() {
         $scope.loadingResults = true;
-
-
-
+        MarketingService.getUsersAndMarketingInfo(UtilityService.formatJavascriptDate($scope.fromDate), UtilityService.formatJavascriptDate($scope.toDate)).then(function(users) {
+          $scope.users = users;
+        }).finally(function() {
+          $scope.loadingResults = false;
+        });
       }
 
       $scope.loadingResults = false;
-      $scope.registeredUsersQuery = {};
-
+      
       // determine starting date of 1 month in the past
       var initialFromDate = new Date();
       initialFromDate = initialFromDate.setMonth(initialFromDate.getMonth() - 1);
       initialFromDate = new Date(initialFromDate);
 
-      $scope.registeredUsersQuery.fromDate = initialFromDate;
-      $scope.registeredUsersQuery.toDate = new Date();
+      $scope.fromDate = initialFromDate;
+      $scope.toDate = new Date();
 
       $scope.sortField = 'date';
       $scope.sortDescending = true;
@@ -44,15 +45,9 @@ angular.module('bekApp')
         }
       };
 
-
-
-      var itemsPerPage = 50,
-        itemIndex = 0;
       $scope.sortTable = function(field, sortDescending) {
         $scope.sortDescending = field === $scope.sortField ? !sortDescending : false;
         $scope.sortField = field;
-
-        getRegisteredUsers();
       };
 
       $scope.refreshSearch = function() {

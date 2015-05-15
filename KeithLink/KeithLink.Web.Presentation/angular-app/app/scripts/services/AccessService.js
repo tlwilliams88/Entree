@@ -41,7 +41,6 @@ angular.module('bekApp')
     return ( getRole() === Constants.roles.DSM );
   }
   function isMarketing() {
-    return true;
     return ( getRole() === Constants.roles.MARKETING );
   }
   function isKbitAdmin() {
