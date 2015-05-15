@@ -3,15 +3,17 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu {
     public class Product {
-        [XmlAttribute]
+        [XmlAttribute("Number")]
         public string ProductNumber;
         [XmlAttribute]
         public bool IsAuthorized;
-        [XmlAttribute]
+        [XmlAttribute("Active")]
         public bool IsActive;
         [XmlAttribute("PBUnit")]
         public string PurchaseByUnit;
-        [XmlAttribute]
+        [XmlAttribute("IsCatchwgt")]
+        public bool IsCatchWeight;
+        [XmlIgnore]
         public decimal AvailableQty;
         [XmlAttribute]
         public decimal Price;
