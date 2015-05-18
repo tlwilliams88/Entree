@@ -18,6 +18,8 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -31,6 +33,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 		private IUserProfileLogic _profileLogic;
 		private readonly IPasswordResetService _passwordResetService;
         private readonly IDsrAliasService _dsrAliasService;
+		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
+		private readonly IExportSettingServiceRepository _exportSettingRepository;
+		
 		#endregion
 
 		#region ctor
@@ -40,7 +45,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 								 IAvatarRepository avatarRepository,
 								 ICustomerDomainRepository customerADRepo,
 			                     IPasswordResetService passwordResetService,
-                                 IDsrAliasService dsrAliasService)
+                                 IDsrAliasService dsrAliasService,
+								IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
+			IExportSettingServiceRepository exportSettingRepository)
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -50,6 +57,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			_extAd = customerADRepo;
 			_passwordResetService = passwordResetService;
             _dsrAliasService = dsrAliasService;
+			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
+			_exportSettingRepository = exportSettingRepository;
 		}
 		#endregion
 
@@ -102,6 +111,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			try
 			{
 				retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+				_marketingPreferencesServicesRepository.CreateMarketingPref(new MarketingPreferenceModel() { Email = guestInfo.Email, BranchId = guestInfo.BranchId, LearnMore = guestInfo.MarketingFlag, CurrentCustomer = guestInfo.ExistingCustomer });
 			}
 			catch (ApplicationException axe)
 			{
@@ -377,7 +387,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			try
 			{
-				retVal.SuccessResponse = _profileLogic.GetAccount(accountid);
+				retVal.SuccessResponse = _profileLogic.GetAccount(this.AuthenticatedUser, accountid);
 			}
 			catch (ApplicationException axe)
 			{
@@ -996,6 +1006,51 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="from">Registered from date</param>
+		/// <param name="to">Registered to date</param>
+		/// <returns></returns>
+		[Authorize]
+		[HttpGet]
+		[ApiKeyedRoute("profile/marketinginfo")]
+		public List<MarketingPreferenceModel> GetMarketingInfo([FromUri] DateTime from, [FromUri] DateTime to)
+		{
+			return _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
+		}
+
+
+		// <summary>
+		/// Export marketing info to CSV, TAB, or Excel
+		/// </summary>
+		/// <param name="from">Registered from date</param>
+		/// <param name="to">Registered to date</param>
+		/// <returns></returns>
+		[HttpPost]
+		[ApiKeyedRoute("profile/export/marketinginfo")]
+		public HttpResponseMessage ExportMarketingPrefs([FromUri] DateTime from, [FromUri] DateTime to, ExportRequestModel exportRequest)
+		{
+			var marketinginfo = _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
+
+			if (exportRequest.Fields != null)
+				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+			return ExportModel<MarketingPreferenceModel>(marketinginfo, exportRequest);
+		}
+
+		/// <summary>
+		/// Retrieve export options for marketing prefs
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet]
+		[ApiKeyedRoute("profile/export/marketinginfo")]
+		public ExportOptionsModel ExportMarketingPref()
+		{
+			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
+		}
+
         #endregion
 	}
 }

@@ -22,13 +22,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
         KeithLink.Common.Core.Logging.IEventLogRepository log;
+		IDsrServiceRepository dsrServiceRepository;
         #endregion
 
         #region ctor
         public BaseNotificationHandlerImpl(IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
             , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory,
-            KeithLink.Common.Core.Logging.IEventLogRepository log)
+            KeithLink.Common.Core.Logging.IEventLogRepository log, IDsrServiceRepository dsrServiceRepository)
         {
             this.userProfileLogic = userProfileLogic;
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
@@ -36,14 +37,36 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.messageProviderFactory = messageProviderFactory;
             this.log = log;
+			this.dsrServiceRepository = dsrServiceRepository;
         }
         #endregion
 
-        protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer)
+        protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer, bool dsrDSMOnly = false)
         {
-            Svc.Core.Models.Profile.UserProfileReturn users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
-			users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
-            List<UserMessagingPreference> userDefaultMessagingPreferences = // list of each user's default prefs
+			Svc.Core.Models.Profile.UserProfileReturn users = new Core.Models.Profile.UserProfileReturn();
+
+			if (dsrDSMOnly)
+			{
+				//Only load DSRs and DSMs for the customer
+
+				//Load DSRs
+				var dsr = dsrServiceRepository.GetDsr(customer.CustomerBranch, customer.DsrNumber);
+				if (dsr != null && dsr.DsrNumber != "000" && !string.IsNullOrEmpty(dsr.EmailAddress))
+				{
+					users = (userProfileLogic.GetUserProfile(dsr.EmailAddress));
+				}
+
+				//TODO: Load DSM once DSMs are being loaded into the system
+
+
+			}
+			else
+			{
+				users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
+				users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
+			}
+						
+			List<UserMessagingPreference> userDefaultMessagingPreferences = // list of each user's default prefs
                 userMessagingPreferenceRepository.ReadByUserIdsAndNotificationType(users.UserProfiles.Select(u => u.UserId), notificationType, true).ToList();
             List<UserMessagingPreference> customerMessagingPreferences = // list of customer's user specific pref
                 userMessagingPreferenceRepository.ReadByCustomerAndNotificationType(customer.CustomerNumber, customer.CustomerBranch, notificationType).ToList();
@@ -57,7 +80,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             ump.AddRange(userDefaultMessagingPreferences);
             ump.AddRange(customerMessagingPreferences);
             string prefs = string.Empty;
-            foreach (var u in ump)
+            
+			foreach (var u in ump)
                 prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType;
             log.WriteInformationLog("notification prefs: " + prefs + ", numProfiles: " + users.UserProfiles.Count + ", userDefaultMessagingPreferences: " + userDefaultMessagingPreferences + ", customerMessagingPreferences: " + customerMessagingPreferences);
                 

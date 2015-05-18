@@ -45,7 +45,7 @@ angular.module('bekApp')
         }
 
         // userSelectedContext - add branch and customer information header based on the customer dropdown
-        var urlsWithoutCustomerInfo = ['/profile/users', '/profile', '/authen', '/profile/customer'];
+        var urlsWithoutCustomerInfo = ['/profile/users', '/profile', '/authen', '/profile/customer', '/profile/forgotpassword/validatetoken/'];
         if (doesUrlRequireHeader(config.url, urlsWithoutCustomerInfo)) {
 
           if (!LocalStorage.getBranchId()) {

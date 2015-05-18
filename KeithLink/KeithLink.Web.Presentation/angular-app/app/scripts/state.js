@@ -295,7 +295,7 @@ angular.module('bekApp')
       templateUrl: 'views/order.html',
       controller: 'OrderController',
       data: {
-        authorize: 'canSubmitOrders'
+        authorize: 'canViewOrders'
       }
     })
     .state('menu.orderitems', {
@@ -303,7 +303,7 @@ angular.module('bekApp')
       templateUrl: 'views/orderitems.html',
       controller: 'OrderItemsController',
       data: {
-        authorize: 'canSubmitOrders'
+        authorize: 'canViewOrders'
       },
       resolve: {
         order: [ '$stateParams', 'OrderService', function($stateParams, OrderService) {
@@ -382,7 +382,7 @@ angular.module('bekApp')
       templateUrl: 'views/marketing.html',
       controller: 'MarketingController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canViewMarketing'
       }
     })
 
@@ -418,7 +418,6 @@ angular.module('bekApp')
         authorize: 'canManageLists'
       }
     })
-
 
     /**********
     ADMIN
@@ -517,20 +516,11 @@ angular.module('bekApp')
       }
     })
     .state('menu.admin.customergroupdetails', {
-      url: 'customergroup/:groupId/',
+      url: 'customergroup/new/',
       templateUrl: 'views/admin/customergroupdetails.html',
       controller: 'CustomerGroupDetailsController',
       data: {
         authorize: 'canManageCustomerGroups'
-      },
-      resolve: {
-        originalCustomerGroup: ['$stateParams', 'CustomerGroupService', function($stateParams, CustomerGroupService) {
-          if ($stateParams.groupId === 'new') {
-            return {};
-          } else {
-            return CustomerGroupService.getGroupDetails($stateParams.groupId);
-          }
-        }]
       }
     })
 

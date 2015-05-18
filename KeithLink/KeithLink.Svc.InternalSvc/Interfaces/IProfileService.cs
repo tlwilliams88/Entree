@@ -34,5 +34,12 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
 		[OperationContract]
 		void GeneratePasswordForNewUser(string email);
+
+		[OperationContract]
+		void CreateMarketingPref(MarketingPreferenceModel preference);
+
+		[OperationContract]
+		List<MarketingPreferenceModel> ReadMarketingPreferences(DateTime from, DateTime to);
+		
 	}
 }

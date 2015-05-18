@@ -59,7 +59,7 @@ namespace KeithLink.Svc.WebApi.Services {
             PricingRequest body = GetSoapBody(doc.Descendants(xns + "Body").First().FirstNode);
 
             // process pricing
-            PricingResponse retVal = new PricingResponse();
+            ProductReturn returnedPrices = new ProductReturn();
 
             IUserProfileLogic profileLogic = _scope.GetService(typeof(IUserProfileLogic)) as IUserProfileLogic;
             UserProfileReturn profileLogicReturn = profileLogic.GetUserProfile(header.UserName, false);
@@ -70,47 +70,57 @@ namespace KeithLink.Svc.WebApi.Services {
                 PagedResults<Customer> customers = profileLogic.CustomerSearch(profile, body.customerNumber, new Core.Models.Paging.PagingModel(), string.Empty);
 
                 if (customers.TotalResults > 0) {
-                    retVal.Results.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, body.customerNumber, body.products, ConvertEffectiveDate(body.effDate)));
+                    returnedPrices.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, body.customerNumber, body.products, ConvertEffectiveDate(body.effDate)));
                 }
             }
 
+            
             // return results
-            XmlSerializer serializer = new XmlSerializer(typeof(PricingResponse));
+            
+            SoapEnvelope soap = new SoapEnvelope();
+            soap.Body.Response.Results = GetProductString(returnedPrices);
+
+            XmlSerializer serializer = new XmlSerializer(soap.GetType());
+
+            XmlSerializerNamespaces namespaces = new XmlSerializerNamespaces();
+            namespaces.Add("xsi", "http://www.w3.org/2001/XMLSchema-instance");
+            namespaces.Add("xsd", "http://www.w3.org/2001/XMLSchema");
+            namespaces.Add("soap", "http://schemas.xmlsoap.org/soap/envelope/");
+            
+            serializer.Serialize(context.Response.OutputStream, soap, namespaces);
 
             context.Response.ContentType = "text/xml";
-            serializer.Serialize(context.Response.OutputStream, retVal);
-            //return retVal;
         }
 
         private List<Core.Models.SiteCatalog.Pricing.PowerMenu.Product> GetItemPricing(string branchId, string customerNumber, List<ProductLine> products,
                                                                                                                         DateTime effectiveDate) {
             List<Core.Models.SiteCatalog.Pricing.PowerMenu.Product> retVal = new List<Core.Models.SiteCatalog.Pricing.PowerMenu.Product>();
 
-            List<Core.Models.SiteCatalog.Product> productList = (from ProductLine p in products
-                                                                 select new Core.Models.SiteCatalog.Product { ItemNumber = p.ProductNumber }).ToList();
+            List<string> itemNumbers = (from ProductLine p in products
+                                        select p.ProductNumber).ToList();
+            ICatalogLogic catLogic = _scope.GetService(typeof(ICatalogLogic)) as ICatalogLogic;
+            ProductsReturn items = catLogic.GetProductsByIdsWithPricing(new UserSelectedContext() { BranchId = branchId, CustomerId = customerNumber }, itemNumbers);
 
-            IPriceLogic priceLogic = _scope.GetService(typeof(IPriceLogic)) as IPriceLogic;
-            PriceReturn prices = priceLogic.GetPrices(branchId, customerNumber, effectiveDate, productList);
-
-            foreach (Price price in prices.Prices) {
+            foreach (Svc.Core.Models.SiteCatalog.Product item in items.Products) {
                 KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu.Product currentItem = new KeithLink.Svc.Core.Models.SiteCatalog.Pricing.PowerMenu.Product();
 
-                currentItem.ProductNumber = price.ItemNumber;
-                currentItem.IsAuthorized = (price.CasePrice > 0 || price.PackagePrice > 0);
+                currentItem.ProductNumber = item.ItemNumber;
+                currentItem.IsAuthorized = item.HasPrice;
                 currentItem.IsActive = true;
                 currentItem.AvailableQty = 0;
+                currentItem.IsCatchWeight = item.CatchWeight;
 
                 ProductLine myProduct = (from ProductLine p in products
                                          where p.ProductNumber == currentItem.ProductNumber
                                          select p).FirstOrDefault();
-                //if (item.CatchWeight) {
-                //    currentItem.Price = decimal.Parse(item.CasePrice);
-                //    currentItem.PurchaseByUnit = "Lb";
-                if (myProduct.Unit.Length == 0 || myProduct.Unit.Equals("case", StringComparison.InvariantCultureIgnoreCase)) {
-                    currentItem.Price = (decimal)price.CasePrice;
+                if (item.CatchWeight) {
+                    currentItem.Price = (decimal)item.CasePriceNumeric;
+                    currentItem.PurchaseByUnit = "lb";
+                } else if (myProduct.Unit.Length == 0 || myProduct.Unit.Equals("case", StringComparison.InvariantCultureIgnoreCase)) {
+                    currentItem.Price = (decimal)item.CasePriceNumeric;
                     currentItem.PurchaseByUnit = "cs";
                 } else if (myProduct.Unit.Equals("each", StringComparison.InvariantCultureIgnoreCase)) {
-                    currentItem.Price = (decimal)price.PackagePrice;
+                    currentItem.Price = (decimal)item.PackagePriceNumeric;
                     currentItem.PurchaseByUnit = "ea";
                 } else {
                     currentItem.Price = 0;
@@ -121,6 +131,25 @@ namespace KeithLink.Svc.WebApi.Services {
             }
 
             return retVal;
+        }
+
+        private string GetProductString(ProductReturn products) {
+            XmlSerializer productXmlSerializer = new XmlSerializer(typeof(Core.Models.SiteCatalog.Pricing.PowerMenu.Product));
+            System.Text.StringBuilder productStringBuilder = new System.Text.StringBuilder("<products>");
+            XmlSerializerNamespaces productNamespaces = new XmlSerializerNamespaces();
+            productNamespaces.Add("", "");
+            foreach (Core.Models.SiteCatalog.Pricing.PowerMenu.Product product in products.Products) {
+                XmlWriter productXmlWriter = XmlWriter.Create(productStringBuilder, new XmlWriterSettings() {
+                    OmitXmlDeclaration = true,
+                    ConformanceLevel = ConformanceLevel.Auto,
+                    Indent = false
+                });
+
+                productXmlSerializer.Serialize(productXmlWriter, product, productNamespaces);
+            }
+            productStringBuilder.Append("</products>");
+
+            return productStringBuilder.ToString();
         }
 
         private PricingRequest GetSoapBody(XNode bodyNode) {

@@ -50,7 +50,7 @@
 
     <form name="renameCartForm" class="style-validation-errors inline-header-form nowrap" ng-show="currentCart.isRenaming" autocomplete="off">
       <input 
-        check-duplicate-field="name" 
+        no-duplicates="name" 
         collection="carts" 
         type="text" 
         max-length="15" 
@@ -69,10 +69,10 @@
         ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();">
         <span class="large-icon text-green icon-checkmark"></span>
       </button>
-       <br class='visible-xs' ng-show="renameCartForm.cartName.$error.checkDuplicateField || renameCartForm.cartName.$error.required">
+       <br class='visible-xs' ng-show="renameCartForm.cartName.$error.noDuplicates || renameCartForm.cartName.$error.required">
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>     
-      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
+      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.noDuplicates">Duplicate cart name</span>
     </form>
 
   </div>
@@ -171,14 +171,14 @@
               <button class="btn btn-primary btn-mobile" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
 
               <button type="button" class="btn btn-default btn-mobile" ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
-              <button type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Order">Submit Order</button>
+              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Order">Submit Order</button>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
               <button type="button" class="btn btn-primary  btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
 
               <button type="button" class=" btn btn-default btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
 
-              <button type="button" class=" btn btn-primary btn-mobile pull-right"  ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Change Order">Submit Changes</button>
+              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary btn-mobile pull-right"  ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Change Order">Submit Changes</button>
             </div>
           </div>
           <div class="col-xs-12">

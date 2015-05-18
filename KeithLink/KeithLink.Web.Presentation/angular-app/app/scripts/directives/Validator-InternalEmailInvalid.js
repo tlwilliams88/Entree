@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * internalEmailInvalid directive
+ * Checks for internal BEK emails and does not allow them
+ */
 angular.module('bekApp')
 .directive('internalEmailInvalid', [function() {
   var directive = {

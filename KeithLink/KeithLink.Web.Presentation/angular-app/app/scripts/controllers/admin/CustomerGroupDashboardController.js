@@ -1,16 +1,16 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$log', '$stateParams', '$state', 'UserProfileService', 'CustomerService', 'CustomerGroupService', 'BroadcastService', 'CustomerPagingModel',
+  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', 'UserProfileService', 'CustomerGroupService', 'BroadcastService',
     function (
-      $scope, $log, // angular
-      $stateParams, $state, // ui router
-      UserProfileService, CustomerService, CustomerGroupService, BroadcastService, CustomerPagingModel // custom bek services
+      $scope, $q, $log, // angular
+      $stateParams, $state, $modal, // ui router
+      UserProfileService, CustomerGroupService, BroadcastService // custom bek services
     ) {
 
   function getCustomerGroupDetails(customerGroupId) {
     CustomerGroupService.getGroupDetails(customerGroupId).then(function(customerGroup) {
-      $scope.loadingUsers = false;
+      $scope.loadingResults = false;
       $scope.customerGroup = customerGroup;
     }, function() {
       $scope.displayMessage('error', 'An error occured loading the customer group dashboard page (ID: ' + customerGroupId + ').');
@@ -18,7 +18,7 @@ angular.module('bekApp')
     });
   }
 
-  $scope.loadingUsers = true;
+  $scope.loadingResults = true;
   
   // set correct user details link based on role
   $scope.userDetailState = 'menu.admin.user.view';
@@ -37,87 +37,129 @@ angular.module('bekApp')
     });
   }
 
-  /**********
-  CUSTOMERS
-  **********/
+  /**
+   * CUSTOMER GROUP
+   */
+  
+  var processingSaveCustomerGroup = false;
+  function saveCustomerGroup(group) {
+    var deferred = $q.defer();
+    if (!processingSaveCustomerGroup) {
+      processingSaveCustomerGroup = true;
+      delete group.customerusers;
+      CustomerGroupService.updateGroup(group).then(function() {
+        $scope.displayMessage('success', 'Successfully saved customer group.');
+        deferred.resolve();
+      }, function(error) {
+        var message = error ? error : 'Error updating customer group.';
+        $scope.displayMessage('error', message);
+        deferred.reject();
+      }).finally(function() {
+        processingSaveCustomerGroup = false;
+      });
+    } else {
+      // event still processing
+      deferred.reject();
+    }
+    return deferred.promise;
+  }
 
-  function setCustomers(data) {
-    $scope.customers = data.results;
-    $scope.totalCustomers = data.totalResults;
-  }
-  function appendCustomers(data) {
-    $scope.customers = $scope.customers.concat(data.results);
-  }
-  function startLoading() {
-    $scope.loadingCustomers = true;
-  }
-  function stopLoading() {
-    $scope.loadingCustomers = false;
-  }
+  $scope.deleteGroup = function(id) {
+    CustomerGroupService.deleteGroup(id).then(function() {
+      $state.go('menu.admin.customergroup');
+      $scope.displayMessage('success', 'Successfully deleted customer group.');
+    }, function() {
+      $scope.displayMessage('error', 'Error deleting customer group.');
+    })
+  };
 
+  /**
+   * CUSTOMERS
+   */
+  
   $scope.customersSortDesc = false;
   $scope.customersSortField = 'customerName';
 
-  var customerPagingModel = new CustomerPagingModel(
-    setCustomers,
-    appendCustomers,
-    startLoading,
-    stopLoading,
-    $scope.customersSortField,
-    $scope.customersSortDesc
-  );
-  if ($stateParams.customerGroupId) {
-    customerPagingModel.accountId = $stateParams.customerGroupId;
-  }
-
-  customerPagingModel.loadCustomers();
-
-  $scope.searchCustomers = function (searchTerm) {
-    customerPagingModel.filterCustomers(searchTerm);
-  };
-  
-  $scope.clearFilter = function(){    
-     $scope.customerSearchTerm = '';   
-     $scope.searchCustomers($scope.customerSearchTerm);    
-  };
-
   $scope.sortCustomers = function(field, sortDescending) {
-    $scope.customersSortDesc = sortDescending;
+    $scope.customersSortDesc = $scope.customersSortField === field ? !sortDescending : false;
     $scope.customersSortField = field;
-    customerPagingModel.sortCustomers(field, sortDescending);
   };
 
-  $scope.infiniteScrollLoadMore = function() {
-    customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
+  $scope.openCustomerAssignmentModal = function() {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/customerassignmentmodal.html',
+      controller: 'CustomerAssignmentModalController',
+      size: 'lg',
+      resolve: {
+        customerGroupId: function() {
+          return null; // used for edit user page to limit which customers can be assigned
+        },
+        selectedCustomers: function() {
+          return $scope.customerGroup.customers;
+        }
+      }
+    });
+
+    modalInstance.result.then(function(selectedCustomers) {
+      // save new customers
+      var group = angular.copy($scope.customerGroup);
+      group.customers = $scope.customerGroup.customers.concat(selectedCustomers);
+      saveCustomerGroup(group).then(function() {
+        $scope.customerGroup = group;
+      });
+    });
   };
 
-  /**********
-  USERS
-  **********/
+  $scope.selectAllCustomers = function(allSelected) {
+    $scope.customerGroup.customers.forEach(function(availableCustomer) {
+      availableCustomer.selected = allSelected;
+    });
+  };
 
-  var processingCreateUser;
+  $scope.removeSelectedCustomers = function() {
+    var assignedCustomers = [];
+    $scope.customerGroup.customers.forEach(function(customer) {
+      if (customer.selected !== true) {
+        assignedCustomers.push(customer);
+      }
+    });
+
+    $scope.customerGroup.customers = assignedCustomers;
+
+    saveCustomerGroup($scope.customerGroup);
+  };
+
+  /**
+   * USERS
+   */
+
+  var processingCreateUser = false;
   function createUser(email) {
+    var deferred = $q.defer();
+
     var newProfile = {
-      email: email,
-      branchId: ''
+      email: email
+      // , branchId: ''
     };
 
     if (!processingCreateUser) {
-      UserProfileService.createUserFromAdmin(newProfile).then(function (profile) {
-        processingCreateUser = true;
-        // TODO: user must immediately assign customers to the new user or else that user will be lost in limbo
-        //redirects to user profile page
-        $state.go('menu.admin.user.edit', { groupId: $scope.customerGroup.id, email: email });
+      processingCreateUser = true;
+      UserProfileService.createUserFromAdmin(newProfile).then(function (profiles) {
+        deferred.resolve(profiles[0]);
       }, function (errorMessage) {
         $log.debug(errorMessage);
+        deferred.reject(errorMessage);
         $scope.displayMessage('error', 'An error occurred creating the user: ' + errorMessage);
       }).finally(function() {
         processingCreateUser = false;
       });
+    } else {
+      deferred.reject();
     }
+    return deferred.promise;
   }
 
-  $scope.checkUser = function (checkEmail) {  
+  $scope.addCustomerUser = function (checkEmail) {  
     //set email as a parameter
     var params = {
       email: checkEmail
@@ -141,7 +183,8 @@ angular.module('bekApp')
           type: 'user',
           terms: checkEmail
         }).then(function(customerGroups) {
-          // if user is already associated with a customer group
+          
+          // check if user is already associated with a customer group
           if (customerGroups.totalResults) {
             // check if user already exists on the current customer group
             $scope.userOnCurrentCustomerGroup = false;
@@ -164,17 +207,41 @@ angular.module('bekApp')
           }
         });
       } else {
-        //make user profile then redirect to profile page
-        createUser(checkEmail);
+        // make user profile then redirect to profile page
+        createUser(checkEmail).then(function(profile) {
+          $state.go('menu.admin.user.edit', { groupId: $scope.customerGroup.id, email: profile.emailaddress });
+        });
       }
     }, function (errorMessage) {
       $scope.displayMessage('error', 'An error occurred checking if the user exists: ' + errorMessage);
     });
   };
 
-  /**********
-  MESSAGING
-  **********/
+  $scope.addAdminUser = function(emailAddress) {
+    // check if user exists in the database
+    var data = {
+      email: emailAddress
+    };
+    UserProfileService.getAllUsers(data).then(function(profiles) {
+      // if user exists, add him to the customer group
+      if (profiles.length === 1) {
+        $scope.customerGroup.adminusers.push(profiles[0]);
+        saveCustomerGroup($scope.customerGroup);
+
+      // if user does NOT exist, create user
+      } else {
+        createUser(data.email).then(function(profile) {
+            $scope.customerGroup.adminusers.push(profile);
+            saveCustomerGroup($scope.customerGroup);
+        });
+
+      }
+    });
+  };
+
+  /**
+   * MESSAGING
+   */
 
   var resetMessageFields = function() {
     $scope.broadcast = {};

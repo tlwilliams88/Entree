@@ -49,6 +49,18 @@
   <wsdl:message name="IProfileService_GeneratePasswordForNewUser_OutputMessage">
     <wsdl:part name="parameters" element="tns:GeneratePasswordForNewUserResponse" />
   </wsdl:message>
+  <wsdl:message name="IProfileService_CreateMarketingPref_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateMarketingPref" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_CreateMarketingPref_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateMarketingPrefResponse" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_ReadMarketingPreferences_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadMarketingPreferences" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_ReadMarketingPreferences_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadMarketingPreferencesResponse" />
+  </wsdl:message>
   <wsdl:portType name="IProfileService">
     <wsdl:operation name="CreateDsrAlias">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/CreateDsrAlias" message="tns:IProfileService_CreateDsrAlias_InputMessage" />
@@ -77,6 +89,14 @@
     <wsdl:operation name="GeneratePasswordForNewUser">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/GeneratePasswordForNewUser" message="tns:IProfileService_GeneratePasswordForNewUser_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/GeneratePasswordForNewUserResponse" message="tns:IProfileService_GeneratePasswordForNewUser_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateMarketingPref">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/CreateMarketingPref" message="tns:IProfileService_CreateMarketingPref_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/CreateMarketingPrefResponse" message="tns:IProfileService_CreateMarketingPref_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadMarketingPreferences">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/ReadMarketingPreferences" message="tns:IProfileService_ReadMarketingPreferences_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/ReadMarketingPreferencesResponse" message="tns:IProfileService_ReadMarketingPreferences_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IProfileService" type="tns:IProfileService">
@@ -137,6 +157,24 @@
     </wsdl:operation>
     <wsdl:operation name="GeneratePasswordForNewUser">
       <soap:operation soapAction="http://tempuri.org/IProfileService/GeneratePasswordForNewUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateMarketingPref">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/CreateMarketingPref" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadMarketingPreferences">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/ReadMarketingPreferences" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

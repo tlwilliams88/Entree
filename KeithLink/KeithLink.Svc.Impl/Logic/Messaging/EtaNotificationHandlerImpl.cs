@@ -31,15 +31,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         Func<Channel, IMessageProvider> messageProviderFactory;
         IMessageTemplateLogic messageTemplateLogic;
         IUnitOfWork unitOfWork;
+		IDsrServiceRepository dsrServiceRepository;
         #endregion
 
         #region ctor
         public EtaNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
             , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory
-            , IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork)
+			, IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork, IDsrServiceRepository dsrServiceRepository)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
         {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
@@ -88,9 +89,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             MessageTemplateModel orderEtaMainTemplate = messageTemplateLogic.ReadForKey("OrderEtaMain");
 
             Message message = new Message();
-            message.MessageSubject = orderEtaMainTemplate.Subject.Inject(new { CustomerName = customer.CustomerName });
+            message.MessageSubject = orderEtaMainTemplate.Subject.Inject(new { CustomerName = string.Format("{0-{1}", customer.CustomerNumber, customer.CustomerName) });
             message.MessageBody = orderEtaMainTemplate.Body.Inject(new { TimeZoneName = timeZoneName, EtaOrderLines = orderInfoDetails.ToString() });
             message.CustomerNumber = customer.CustomerNumber;
+			message.CustomerName = customer.CustomerName;
+			message.BranchId = customer.CustomerBranch;
 			message.NotificationType = NotificationType.OrderConfirmation;
             return message;
         }
