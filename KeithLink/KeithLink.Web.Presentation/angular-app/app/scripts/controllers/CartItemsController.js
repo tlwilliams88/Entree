@@ -215,6 +215,7 @@ angular.module('bekApp')
       CartService.deleteCart(cart.id).then(function() {
         $scope.goToCart();
         $scope.displayMessage('success', 'Successfully deleted cart.');
+        $state.go('menu.order');
       }, function() {
         $scope.displayMessage('error', 'Error deleting cart.');
       });
@@ -297,6 +298,7 @@ angular.module('bekApp')
           $scope.changeOrders.splice(idx, 1);
           $scope.goToCart();
           $scope.displayMessage('success', 'Successfully cancelled order ' + changeOrder.ordernumber + '.');
+          $state.go('menu.order');
         }, function(error) {
           $scope.displayMessage('error', 'Error cancelling order ' + changeOrder.ordernumber + '.');
         }).finally(function() {
