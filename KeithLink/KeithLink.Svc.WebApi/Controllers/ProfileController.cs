@@ -87,38 +87,41 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return retVal;
 		}
 
-		/// <summary>
-		/// Register as guest
-		/// </summary>
-		/// <param name="guestInfo">Guest</param>
-		/// <returns></returns>
-		[AllowAnonymous]
-		[HttpPost]
-		[ApiKeyedRoute("profile/register")] // Discussion on route naming
-		public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo)
-		{
-			OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
-			try
-			{
-				retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
-			}
-			catch (ApplicationException axe)
-			{
-				retVal.ErrorMessage = axe.Message;
+        /// <summary>
+        /// Register as guest
+        /// </summary>
+        /// <param name="guestInfo">Guest</param>
+        /// <returns></returns>
+        /// <remarks>
+        /// jwames - 5/19/2015 - handle the auditing of registering a new user
+        /// </remarks>
+        [AllowAnonymous]
+        [HttpPost]
+        [ApiKeyedRoute("profile/register")] // Discussion on route naming
+        public OperationReturnModel<UserProfileReturn> CreateGuest(GuestProfileModel guestInfo) {
+            OperationReturnModel<UserProfileReturn> retVal = new OperationReturnModel<UserProfileReturn>();
 
-				_log.WriteErrorLog("Application exception", axe);
-			}
-			catch (Exception ex)
-			{
-				retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+            try {
+                if (this.AuthenticatedUser == null) {
+                    // fake a user profile for registration
+                    UserProfile tempUser = new UserProfile() { EmailAddress = "registration" };
+                    retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(tempUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                } else {
+                    retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
+                }
+            } catch (ApplicationException axe) {
+                retVal.ErrorMessage = axe.Message;
 
-				_log.WriteErrorLog("Unhandled exception", ex);
-			}
+                _log.WriteErrorLog("Application exception", axe);
+            } catch (Exception ex) {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
 
-			return retVal;
-		}
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
 
+            return retVal;
+        }
 		/// <summary>
 		/// Create guest and assign a temporary password
 		/// </summary>
