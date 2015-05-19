@@ -793,14 +793,14 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>0.65625in</Height>
+    <Height>1.05208in</Height>
     <Style>
       <Border>
         <Style>None</Style>
       </Border>
     </Style>
   </Body>
-  <Width>7.48833in</Width>
+  <Width>9.27083in</Width>
   <Page>
     <PageHeader>
       <Height>0.3425in</Height>

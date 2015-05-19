@@ -35,12 +35,25 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 				string fields = string.Join(", ", Array.ConvertAll(this.ProfileEntityMappings.PropertyMappings.ToArray(), i => i.Value));
 				CommerceServer.Core.Runtime.Profiles.ProfileContext ctxt = CommerceServer.Foundation.SequenceComponents.ContextProviders.CommerceSiteContexts.Profile[SiteHelper.GetSiteName()];
 
-				var sqlFormat = " SELECT * FROM [BEK_Commerce_profiles].[dbo].[OrganizationObject] oo {0} Order By oo.u_name OFFSET {1} ROWS FETCH NEXT {2} ROWS ONLY;";
+				var sortField = "u_name";
+
+				if (search.SortProperties != null && search.SortProperties.Any())
+				{
+					sortField = search.SortProperties.First().CommerceEntityModelName + (search.SortProperties.First().SortDirection == SortDirection.Descending ? " desc" : "");
+					
+				}
+
+				var sqlFormat = " SELECT * FROM [BEK_Commerce_profiles].[dbo].[OrganizationObject] oo {0} Order By oo.{1} OFFSET {2} ROWS FETCH NEXT {3} ROWS ONLY;";
 
 				var pageSize = queryOperation.SearchCriteria.NumberOfItemsToReturn.HasValue ? queryOperation.SearchCriteria.NumberOfItemsToReturn.Value : int.MaxValue;
 				var from = queryOperation.SearchCriteria.FirstItemIndex.HasValue ? queryOperation.SearchCriteria.FirstItemIndex.Value : 0;
 
-				string dataSQLText = string.Format(sqlFormat, search.WhereClause.IndexOf("where", StringComparison.CurrentCultureIgnoreCase) >= 0 ? search.WhereClause : "WHERE " + search.WhereClause, from, pageSize);
+				string dataSQLText = string.Format(sqlFormat, 
+					search.WhereClause.IndexOf("where", StringComparison.CurrentCultureIgnoreCase) >= 0 ? search.WhereClause : "WHERE " + search.WhereClause,
+ 					sortField,
+					from, 
+					pageSize);
+
 				string countSQLText = string.Format("SELECT count(*) FROM [BEK_Commerce_profiles].[dbo].[OrganizationObject] oo {0}", search.WhereClause.IndexOf("where", StringComparison.CurrentCultureIgnoreCase) >= 0 ? search.WhereClause : "WHERE " + search.WhereClause);
 
 

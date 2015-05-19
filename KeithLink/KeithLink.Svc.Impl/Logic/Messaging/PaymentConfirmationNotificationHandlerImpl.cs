@@ -33,15 +33,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private readonly IMessageTemplateLogic _messageTemplateLogic;
         private readonly IKPayInvoiceRepository _invoiceRepo;
         private readonly ICustomerBankRepository _bankRepo;
+		private readonly IDsrServiceRepository dsrServiceRepository;
         #endregion
 
         #region ctor
         public PaymentConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, 
                                                           IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository, 
                                                           IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory,
-                                                          IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo)
+														  IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo, IDsrServiceRepository dsrServiceRepository)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, 
-                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
         {
             _log = eventLogRepository;
             _userLogic = userProfileLogic;
@@ -79,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             Message message = new Message();
             message.BodyIsHtml = template.IsBodyHtml;
-            message.MessageSubject = template.Subject.Inject(customer);
+			message.MessageSubject = template.Subject.Inject(customer);
             message.MessageBody = template.Body.Inject(new { 
                                                                 CustomerNumber = customer.CustomerNumber,
                                                                 CustomerName = customer.CustomerName,
@@ -89,6 +90,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                                                                 TotalPayments = notification.Payments.Sum(p => p.PaymentAmount)
                                                            });
             message.CustomerNumber = customer.CustomerNumber;
+			message.CustomerName = customer.CustomerName;
+			message.BranchId = customer.CustomerBranch;
             message.NotificationType = NotificationType.PaymentConfirmation;
             return message;
         }

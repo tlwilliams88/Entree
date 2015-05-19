@@ -222,6 +222,9 @@
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
     <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
+    <Compile Include="Interface\Profile\IInternalMarketingPreferenceLogic.cs" />
+    <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
+    <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
@@ -258,9 +261,12 @@
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
+    <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
+    <Compile Include="Models\Profile\EF\MarketingPreference.cs" />
+    <Compile Include="Models\Profile\MarketingPreferenceModel.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
@@ -478,9 +484,14 @@
     <Compile Include="Models\SiteCatalog\ItemNote.cs" />
     <Compile Include="Models\SiteCatalog\ItemValidationResultModel.cs" />
     <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\AuthHeader.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\PricingRequest.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\PricingResponse.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\Product.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductLine.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductReturn.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\SoapBody.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\SoapEnvelope.cs" />
     <Compile Include="Models\SiteCatalog\ProductImage.cs" />
     <Compile Include="Models\SiteCatalog\ProductImageReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductsReturn.cs" />

@@ -122,6 +122,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					options.Fields.Add(new ExportModelConfiguration() { Field = "AccountNumber", Order = 50, Label = "Account" });
 
 					return options;
+				case ExportType.MarketingPreferences:
+					options.Fields.Add(new ExportModelConfiguration() { Field = "Email", Order = 1, Label = "Email" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "BranchId", Order = 10, Label = "BranchId" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "CurrentCustomer", Order = 20, Label = "Current Customer?" });
+
+					options.Fields.Add(new ExportModelConfiguration() { Field = "LearnMore", Order = 21, Label = "Learn More?" });
+					options.Fields.Add(new ExportModelConfiguration() { Field = "RegisteredOn", Order = 30, Label = "Date Registered" });
+				return options;
 			}
 				
 

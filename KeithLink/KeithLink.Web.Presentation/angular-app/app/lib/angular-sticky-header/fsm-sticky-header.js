@@ -32,7 +32,7 @@ fsm.directive('fsmStickyHeader', function(){
                 clonedHeader.addClass('fsm-sticky-header');
                 clonedHeader.css({
                     position: 'fixed',
-                    'z-index': 10000,
+                    'z-index': 999,
                     visibility: 'hidden'
                 });                
                 calculateSize();

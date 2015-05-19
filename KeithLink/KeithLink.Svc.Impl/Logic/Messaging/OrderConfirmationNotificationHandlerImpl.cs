@@ -22,12 +22,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         ICustomerRepository customerRepository;
         IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
+		private readonly IDsrServiceRepository dsrServiceRepository;
         #endregion
         public OrderConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
             , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
-            , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory)
+			, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, IDsrServiceRepository dsrServiceRepository)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
         {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
@@ -59,7 +60,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             string statusString = String.IsNullOrEmpty(notification.OrderChange.OriginalStatus)
                 ? notification.OrderChange.CurrentStatus.Equals("rejected", StringComparison.CurrentCultureIgnoreCase) ? "Order Rejected: " + notification.OrderChange.SpecialInstructions :  "Order confirmed with status: " + notification.OrderChange.CurrentStatus
                 : "Order updated from status: " + notification.OrderChange.OriginalStatus + " to " + notification.OrderChange.CurrentStatus;
-
+			
             string orderLineChanges = string.Empty;
             foreach (var line in notification.OrderChange.ItemChanges)
                 orderLineChanges += orderLineChanges + "Item: " + line.ItemNumber +
@@ -74,13 +75,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             Message message = new Message();
 
 			if (!string.IsNullOrEmpty(notification.OrderChange.CurrentStatus) && notification.OrderChange.CurrentStatus.Equals("rejected", StringComparison.CurrentCultureIgnoreCase))
-				message.MessageSubject = "BEK: Order Rejected for " + notification.CustomerNumber + " (" + notification.OrderChange.OrderName + ")";
+				message.MessageSubject = "BEK: Order Rejected for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
 			else
-				message.MessageSubject = "BEK: Order Confirmation for " + notification.CustomerNumber + " (" + notification.OrderChange.OrderName + ")";
+				message.MessageSubject = "BEK: Order Confirmation for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
 
-            message.MessageBody = statusString + System.Environment.NewLine + orderLineChanges + System.Environment.NewLine + originalOrderInfo;
+            message.MessageBody = (!string.IsNullOrEmpty(notification.OrderChange.SpecialInstructions) ? "Instructions: " + notification.OrderChange.SpecialInstructions + System.Environment.NewLine : "") +
+				statusString + System.Environment.NewLine + 
+				orderLineChanges + System.Environment.NewLine + 
+				originalOrderInfo;
             message.CustomerNumber = customer.CustomerNumber;
-            message.CustomerNumber = customer.CustomerNumber;
+            message.CustomerName = customer.CustomerName;
+			message.BranchId = customer.CustomerBranch;
 			message.NotificationType = NotificationType.OrderConfirmation;
             return message;
         }

@@ -236,6 +236,7 @@
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalExportSettingsLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
@@ -542,6 +543,18 @@
     <Compile Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.Designer.cs">
       <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.cs" />
+    <Compile Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.Designer.cs">
+      <DependentUpon>201505111534370_Add quantity to list item.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201505131809528_Added_CustomerName_Branch_To_UserMessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201505131809528_Added_CustomerName_Branch_To_UserMessage.Designer.cs">
+      <DependentUpon>201505131809528_Added_CustomerName_Branch_To_UserMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.cs" />
+    <Compile Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.Designer.cs">
+      <DependentUpon>201505151602520_Add_Mkting_Pref_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -620,6 +633,7 @@
     <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
+    <Compile Include="Repository\Profile\MarketingPreferencesRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasLogicImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
@@ -883,6 +897,7 @@
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Reports\ListReport.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport_Landscape.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>
@@ -1080,6 +1095,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.resx">
       <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.resx">
+      <DependentUpon>201505111534370_Add quantity to list item.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505131809528_Added_CustomerName_Branch_To_UserMessage.resx">
+      <DependentUpon>201505131809528_Added_CustomerName_Branch_To_UserMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.resx">
+      <DependentUpon>201505151602520_Add_Mkting_Pref_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

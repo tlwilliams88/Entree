@@ -20,7 +20,7 @@ angular.module('bekApp')
 
   $scope.$state = $state;
   $scope.isMobileApp = ENV.mobileApp;
-
+  $scope.mandatoryMessages = NotificationService.mandatoryMessages;
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
@@ -42,7 +42,7 @@ angular.module('bekApp')
     $scope.numOrdersToDisplay = 6;
     $scope.numCartsToDisplay = 4;
 
-    if (CartService.cartHeaders.length === 0) {
+    if (CartService.cartHeaders.length === 0 && $scope.canCreateOrders) {
       $scope.loadingCarts = true;
       delete $scope.cartMessage;
       CartService.getCartHeaders().then(
@@ -66,11 +66,6 @@ angular.module('bekApp')
   var db_table_name_lists = 'lists',
     db_table_name_carts = 'carts';
 
-  if (ENV.mobileApp && AccessService.isOrderEntryCustomer()) {
-    console.log('downloading data');  
-    downloadDataForOfflineStorage();
-  }
-
   function downloadDataForOfflineStorage() {
     $q.all([
       ListService.getAllListsForOffline(),
@@ -78,6 +73,11 @@ angular.module('bekApp')
     ]).then(function() {
       console.log('Downloaded data for offline use.');
     });
+  }
+
+  if (ENV.mobileApp && AccessService.isOrderEntryCustomer() && AccessService.canCreateOrders()) {
+    console.log('downloading data');  
+    downloadDataForOfflineStorage();
   }
 
   /**********
@@ -136,7 +136,7 @@ angular.module('bekApp')
 
         data.results.forEach(function(customer) {
           customerList.results.push({
-            id: customer.customerNumber, // value
+            id: customer.displayname, // value
             text: customer.displayname,  // display text
             customer: customer
           });
@@ -159,6 +159,27 @@ angular.module('bekApp')
       }, 500);
       searchTerm = query.term;
     }
+  };
+
+  $scope.showNotification = function(notification) {
+    var modalInstance = $modal.open({
+      templateUrl: 'views/modals/notificationdetailsmodal.html',
+      controller: 'NotificationDetailsModalController',
+      windowClass: 'color-background-modal',
+      scope: $scope,
+      resolve: {
+        notification: function() {
+          return notification;
+        }
+      }
+    });
+     $scope.dismissNotification(notification);
+  };
+
+  $scope.dismissNotification = function(notification) {
+    var messageRead = $scope.mandatoryMessages.slice(0,1);
+    NotificationService.updateUnreadMessages(messageRead);
+    $scope.mandatoryMessages.splice(0,1);
   };
 
   $scope.goToAdminLandingPage = function() {
@@ -263,6 +284,7 @@ angular.module('bekApp')
     $scope.canBrowseCatalog = AccessService.canBrowseCatalog();
     $scope.canSeePrices = AccessService.canSeePrices();
     $scope.canManageLists = AccessService.canManageLists();
+    $scope.canViewOrders = AccessService.canViewOrders();
     $scope.canCreateOrders = AccessService.canCreateOrders();
     $scope.canSubmitOrders = AccessService.canSubmitOrders();
     $scope.canPayInvoices = AccessService.canPayInvoices();
@@ -272,5 +294,6 @@ angular.module('bekApp')
     $scope.canEditUsers = AccessService.canEditUsers();
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
+    $scope.canViewMarketing = AccessService.canViewMarketing();
   }
 }]);

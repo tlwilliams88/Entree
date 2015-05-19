@@ -20,5 +20,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
 
 		[DataMember(Name = "subject")]
 		public string Subject { get; set; }
+
+		
 	}
 }

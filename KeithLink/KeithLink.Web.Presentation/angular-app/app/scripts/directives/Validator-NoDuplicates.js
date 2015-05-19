@@ -2,19 +2,19 @@
 
 /**
  * @ngdoc function
- * @name bekApp.directive:allowOnePositiveDecimal
+ * @name bekApp.directive:noDuplicates
  * @description
  * form validation where the input value cannot match the given field in the given array of objects
  * is not case sensitive
  *
  * Inputs:
- * checkDuplicateField: object property name to check against
+ * noDuplicates: object property name to check against
  * collection: array of JS objects to check against for duplicates
  *
  * used for list and order renaming
  */
 angular.module('bekApp')
-.directive('checkDuplicateField', function () {
+.directive('noDuplicates', function () {
     return {
     require: 'ngModel',
     restrict: 'A',
@@ -22,28 +22,20 @@ angular.module('bekApp')
       collection: '='
     },
     link: function(scope, elm, attrs, ctrl) {
-      function checkValidity(viewValue) {
+      if (!ctrl) { return; }
 
+      ctrl.$validators.noDuplicates = function(modelValue, viewValue) {
         var isDuplicate = false;
         if (viewValue !== ctrl.$modelValue) { // check only if the user has tried to change the name
           angular.forEach(scope.collection, function(item, index) {
-            if (item[attrs.checkDuplicateField].toUpperCase() === viewValue.toUpperCase()) {
+            if (item[attrs.noDuplicates].toUpperCase() === viewValue.toUpperCase()) {
               isDuplicate = true;
             }
           });
         }
 
-        if (!isDuplicate) {
-          ctrl.$setValidity('checkDuplicateField', true);
-          return viewValue;
-        } else {
-          ctrl.$setValidity('checkDuplicateField', false);
-          return ctrl.$modelValue;
-        }
-      }
-
-      ctrl.$parsers.unshift(checkValidity);
-      ctrl.$formatters.unshift(checkValidity);
+        return !isDuplicate;
+      };
     }
   };
 });

@@ -46,7 +46,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 					if (casePrice == 0)
 						return 0;
 
-					return servingPerPack / casePrice;
+					return casePrice / servingPerPack;
 				}
 				catch { return 0; }
 			}
@@ -61,6 +61,16 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "packageprice", EmitDefaultValue = false)]
 		public string PackagePrice { get; set; }
+
+        [IgnoreDataMember]
+        public double PackagePriceNumeric { get; set; }
+
+        [IgnoreDataMember]
+        public bool HasPrice {
+            get {
+                return (CasePriceNumeric > 0 || PackagePriceNumeric > 0);
+            }
+        }
 
 		[DataMember(Name = "replacementitem", EmitDefaultValue = false)]
 		public string ReplacementItem { get; set; }

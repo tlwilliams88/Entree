@@ -20,12 +20,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 		private readonly ICustomerRepository customerRepository;
 		private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
 		private readonly Func<Channel, IMessageProvider> messageProviderFactory;
+		private readonly IDsrServiceRepository dsrServiceRepository;
 
 		public HasNewsNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
 			, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
-			, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory) :
+			, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, IDsrServiceRepository dsrServiceRepository) :
 			base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-					, userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+					, userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
 		{
 			this.eventLogRepository = eventLogRepository;
 			this.userProfileLogic = userProfileLogic;
@@ -44,13 +45,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
 			Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, hasNewsNotification.BranchId);
             
-			List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer);
+			List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer, notification.DSRDSMOnly);
 
 			// send messages to providers...
 			base.SendMessage(recipients, new Message()
 			{
 				CustomerName = customer.CustomerName,
 				CustomerNumber = customer.CustomerNumber,
+				BranchId = customer.CustomerBranch,
 				MessageSubject = hasNewsNotification.Subject,
 				MessageBody = hasNewsNotification.Notification,
 				NotificationType = NotificationType.HasNews

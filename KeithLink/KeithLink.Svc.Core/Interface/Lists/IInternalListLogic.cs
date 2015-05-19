@@ -37,7 +37,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
         
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 
-		List<ListModel> ReadListByType(UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
+		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
         
         List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
         

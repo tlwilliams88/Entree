@@ -56,6 +56,18 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/GeneratePasswordForNewUser", ReplyAction="http://tempuri.org/IProfileService/GeneratePasswordForNewUserResponse")]
         System.Threading.Tasks.Task GeneratePasswordForNewUserAsync(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/CreateMarketingPref", ReplyAction="http://tempuri.org/IProfileService/CreateMarketingPrefResponse")]
+        void CreateMarketingPref(KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel preference);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/CreateMarketingPref", ReplyAction="http://tempuri.org/IProfileService/CreateMarketingPrefResponse")]
+        System.Threading.Tasks.Task CreateMarketingPrefAsync(KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel preference);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadMarketingPreferences", ReplyAction="http://tempuri.org/IProfileService/ReadMarketingPreferencesResponse")]
+        KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[] ReadMarketingPreferences(System.DateTime from, System.DateTime to);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadMarketingPreferences", ReplyAction="http://tempuri.org/IProfileService/ReadMarketingPreferencesResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[]> ReadMarketingPreferencesAsync(System.DateTime from, System.DateTime to);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -139,6 +151,22 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         
         public System.Threading.Tasks.Task GeneratePasswordForNewUserAsync(string email) {
             return base.Channel.GeneratePasswordForNewUserAsync(email);
+        }
+        
+        public void CreateMarketingPref(KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel preference) {
+            base.Channel.CreateMarketingPref(preference);
+        }
+        
+        public System.Threading.Tasks.Task CreateMarketingPrefAsync(KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel preference) {
+            return base.Channel.CreateMarketingPrefAsync(preference);
+        }
+        
+        public KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[] ReadMarketingPreferences(System.DateTime from, System.DateTime to) {
+            return base.Channel.ReadMarketingPreferences(from, to);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[]> ReadMarketingPreferencesAsync(System.DateTime from, System.DateTime to) {
+            return base.Channel.ReadMarketingPreferencesAsync(from, to);
         }
     }
 }

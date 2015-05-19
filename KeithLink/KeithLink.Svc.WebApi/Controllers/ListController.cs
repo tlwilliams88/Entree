@@ -106,7 +106,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("list/type/{type}")]
 		public List<ListModel> List(ListType type, bool headerOnly = false)
 		{
-			return listServiceRepository.ReadListByType(this.SelectedUserContext, type, headerOnly);
+			return listServiceRepository.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
 		}
 		
 		/// <summary>
@@ -159,9 +159,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
         [HttpPost]
 		[ApiKeyedRoute("list/")]
-		public NewListItem List(ListModel list, bool isMandatory = false, bool isRecommended = false)
+		public NewListItem List(ListModel list, [FromUri] ListType type = ListType.Custom)
         {
-			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, isMandatory ? ListType.Mandatory : isRecommended ? ListType.RecommendedItems : ListType.Custom) };
+			return new NewListItem() { Id = listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, type) };
         }
 		
 
@@ -389,32 +389,32 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// Retrieve the list printing report (PDF)
 		/// </summary>
 		/// <param name="listId">List Id</param>
-		/// <param name="paging">Paging options</param>
+		/// <param name="options">Paging options</param>
 		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("list/print/{listId}")]
-		public HttpResponseMessage Print(long listId, PagingModel paging)
+		public HttpResponseMessage Print(long listId, PrintListModel options)
 		{
 			try
 			{
 
-				if (!string.IsNullOrEmpty(paging.Terms))
+				if (!string.IsNullOrEmpty(options.Paging.Terms))
 				{
 					//Build filter
-					paging.Filter = new FilterInfo()
+					options.Paging.Filter = new FilterInfo()
 					{
 						Field = "ItemNumber",
 						FilterType = "contains",
-						Value = paging.Terms,
+						Value = options.Paging.Terms,
 						Condition = "||",
-						Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = paging.Terms, FilterType = "contains" }, new FilterInfo() { Condition = "||", Field = "Name", Value = paging.Terms, FilterType = "contains" } }
+						Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = options.Paging.Terms, FilterType = "contains" }, new FilterInfo() { Condition = "||", Field = "Name", Value = options.Paging.Terms, FilterType = "contains" } }
 					};
 				}
 
-				paging.Size = int.MaxValue;
-				paging.From = 0;
+				options.Paging.Size = int.MaxValue;
+				options.Paging.From = 0;
 
-				var list = listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, paging);
+				var list = listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, options.Paging);
 
 				if (list == null)
 					return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };
@@ -426,7 +426,20 @@ namespace KeithLink.Svc.WebApi.Controllers
 				rv.ProcessingMode = ProcessingMode.Local;
 				
 				Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
-				Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
+
+				Stream rdlcStream = null;
+				var deviceInfo = string.Empty;
+				if (options.Landscape)
+				{
+					deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
+					rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport_Landscape.rdlc");
+				}
+				else
+				{
+					deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
+					rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
+				}
+
 				rv.LocalReport.LoadReportDefinition(rdlcStream);
 				ReportParameter[] parameters = new ReportParameter[1];
 				parameters[0] = new ReportParameter("ListName", printModel.Name);
@@ -434,7 +447,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 				rv.LocalReport.SetParameters(parameters);
 				rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", printModel.Items));
 
-				var bytes = rv.LocalReport.Render("PDF");
+				
+				var bytes = rv.LocalReport.Render("PDF", deviceInfo);
 
 				Stream stream = new MemoryStream(bytes);
 

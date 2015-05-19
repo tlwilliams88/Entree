@@ -40,6 +40,9 @@ angular.module('bekApp')
   function isDsm() {
     return ( getRole() === Constants.roles.DSM );
   }
+  function isMarketing() {
+    return ( getRole() === Constants.roles.MARKETING );
+  }
   function isKbitAdmin() {
     return ( getRole() === Constants.roles.KBIT_ADMIN );
   }
@@ -53,10 +56,14 @@ angular.module('bekApp')
   }
 
   function isValidRole() {
-    return ( isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() || isSysAdmin() || isBranchManager() || isPowerUser() || isDsr() || isDsm() || isKbitAdmin() );
+    return ( isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() || isSysAdmin() || isBranchManager() || isPowerUser() || isDsr() || isDsm() || isKbitAdmin() || isMarketing() );
   }
 
   var Service = {
+
+    clearLocalStorage: function() {
+      LocalStorage.clearAll();
+    },
 
     getRoleDisplayString: function(role) {
       var displayRole = role;
@@ -102,7 +109,7 @@ angular.module('bekApp')
     },
 
     isInternalAccountAdminUser: function() {
-      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() ) );
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() || isMarketing() ) );
     },
 
     // PRIVILEDGES
@@ -117,6 +124,10 @@ angular.module('bekApp')
 
     canManageLists: function() {
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
+    },
+
+    canViewOrders: function() {
+      return ( Service.isInternalAccountAdminUser() || isOwner()  || isApprover() || isBuyer() );
     },
 
     canCreateOrders: function() {
@@ -139,6 +150,7 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() );
     },
 
+    // create, delete, assign customers, add admin users
     canManageCustomerGroups: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() );
     },
@@ -147,10 +159,12 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || isOwner() );
     },
 
+    // moving a user with customers to a different customer group
     canMoveUserToAnotherGroup: function() {
       return ( isSysAdmin() );
     },
 
+    // changing user info and role on the edit user details page
     canEditUsers: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() || isOwner() );
     },
@@ -158,6 +172,10 @@ angular.module('bekApp')
     // editing DSR Aliases
     canEditInternalUsers: function() {
       return ( isSysAdmin() || isBranchManager() );
+    },
+
+    canViewMarketing: function() {
+      return ( isSysAdmin() || isBranchManager() || isMarketing() );
     },
 
     isDemo: function() {

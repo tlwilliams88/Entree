@@ -25,6 +25,7 @@
           <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="parlevel" type="xs:decimal" />
           <xs:element minOccurs="0" name="position" type="xs:int" />
+          <xs:element minOccurs="0" name="quantity" type="xs:decimal" />
           <xs:element minOccurs="0" name="storagetemp" nillable="true" type="xs:string">
             <xs:annotation>
               <xs:appinfo>

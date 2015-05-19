@@ -6,6 +6,13 @@ angular.module('bekApp')
     return $resource('/list/:listId', { }, {
 
       // defaults: GET, QUERY, SAVE, DELETE
+ 
+      // accepts type of custom, inventoryvaluation, etc.
+      getByType: {
+        url: '/list/type/:type',
+        method: 'GET',
+        isArray: true
+      },
 
       // postData is the list
       update: {

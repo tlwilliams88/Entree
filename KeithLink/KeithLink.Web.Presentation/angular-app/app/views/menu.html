@@ -75,7 +75,7 @@
           <button
             class="btn-no-style"
             type="button"
-            ng-disabled="::!canCreateOrders"
+            ng-disabled="::!canViewOrders"
             ui-sref="menu.order"
             ng-class="{'is-selected': $state.includes('menu.order') || $state.includes('menu.orderitems')}" >
             <li>
@@ -148,6 +148,17 @@
             </li>
           </button>
           <button
+            class="btn-no-style"
+            type="button"
+            ng-if="::canViewMarketing"
+            ui-sref="menu.marketing"
+            ui-sref-active="is-selected" >
+            <li>
+              <span class="icon-user sidebar-nav__icon"></span>
+              Marketing
+            </li>
+          </button>
+          <button
             class="btn-no-style hidden-md hidden-lg"
             type="button"
             ng-disabled="!isOrderEntryCustomer"
@@ -181,7 +192,7 @@
            function googleTranslateElementInit() {
              new google.translate.TranslateElement({
               pageLanguage: 'en',
-              includedLanguages: 'es',
+              includedLanguages: 'zh-CN,zh-TW,es,it',
               layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
               gaTrack: true,
               gaId: 'UA-58495462-2'},
@@ -198,6 +209,8 @@
       <a href="#">benekeith.com</a>
     </div>
   </div> <!-- end Desktop Sidebar -->
+
+  <div class="mobile-menu-overlay hidden-md hidden-lg" ng-show="isSidebarOpen" ng-click="isSidebarOpen = false"></div>
 
   <div class="row main-content">
     <div class="col-sm-12">
@@ -240,7 +253,13 @@
         <img src="images/bek-logo.png" alt="logo" class="logo-mobile" ng-class="{'logo-margin-left': $state.current.name === 'menu.home'}" />
       </div>
 
-    <div class="row hidden-md hidden-lg mobile-user-context"> 
+      <div ng-if="mandatoryMessages.length" class="row user-notification-bar hidden-print" style="background-color:rgb(250, 255, 189); height:40px; border: 1px solid #c3bc9c; ">   
+        <button class="btn btn-primary" style="margin-left:6px; margin-top: 4px;"  ng-click="showNotification(mandatoryMessages[0])"  type="submit">View Notification</button>
+        <button class="btn btn-danger" style="margin-right:6px; margin-top: 4px;" ng-click="dismissNotification(mandatoryMessages[0])">Dismiss</button>
+       <td>{{mandatoryMessages[0].subject}}</td>  
+      </div>
+      
+    <div class="row hidden-md hidden-lg mobile-user-context hidden-print"> 
       <select class="input-lg form-control" ng-show="!isOrderEntryCustomer" ng-options="branch.id as branch.name for branch in branches" ng-model="selectedUserContext" ng-change="changeBranch(selectedUserContext)"></select>    
       <div ui-select2="customerSelectOptions" ng-if="isOrderEntryCustomer" ng-change="changeCustomerLocation(selectedUserContext)" ng-model="selectedUserContext" data-placeholder="Select a customer..." style="width:100%;">
       </div>
@@ -248,7 +267,7 @@
 
       <div class="row user-bar hidden-print" ng-init="isMobileSearchBarDisplayed = true" ng-class="{ 'hide-searchbar' : isMobileSearchBarDisplayed }" >
 
-         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;">
+         <div class="pull-left row hidden-print user-bar-mobile visible-md" style="margin-left:0px; margin-right:none; border:none;" ng-if="isMobile">
            <ul style="float: left;">
             <a ng-hide="$state.current.name === 'menu.home'" ng-click="navigateBack()" ><li class="tablet-menu-item" ><span title="Back" class="icon-back"></span></li></a>
           </ul>
@@ -285,7 +304,7 @@
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                   <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
-                  <button class="btn btn-lg btn-default"><a target="_tab" ng-href="{{userGuideUrl}}" title="Users Guide" style="color:#504938;">Users Guide</a></button>
+                  <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>
               </div>
