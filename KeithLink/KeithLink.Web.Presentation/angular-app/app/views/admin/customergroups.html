@@ -31,17 +31,17 @@
             placeholder="Find customer group"
             validate-email="{{search.field === 'user'}}" />
           <span class="input-group-btn">
-            <button type="submit" ng-disabled="customerSearchForm.$invalid" ng-click="searchCustomerGroups(search)" class="btn btn-default"><span class="icon-search"></span></button>
-            <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+            <button type="submit" ng-disabled="customerSearchForm.$invalid" ng-click="searchCustomerGroups(search)" class="btn btn-default searchbar-btn"><span class="icon-search"></span></button>
+            <button type="button"  ng-click="clearFilter()" class="btn btn-default searchbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
           </span>
         </div>
       </form>
 
-      <div class="col-md-6">
-        <a ng-href="{{userProfile.powermenugroupsetupurl}}" target="_blank">eMenu Manage Group Setup</a>
+      <div class="col-md-6 internal-user-search-form"> 
+                  <a class="visible-xs visible-sm" ng-href="{{userProfile.powermenugroupsetupurl}}" target="_blank">eMenu Manage Group Setup</a>
 
         <div class="form-inline">
-          <h3>Find Internal User</h3>
+          <h3>Find Internal User</h3>          
           <form class="form-horizontal style-validation-errors" name="findInternalUserForm">
             <p class="text-red" ng-show="findInternalUserError">{{findInternalUserError}}</p>
             <div class="form-group">
@@ -80,6 +80,7 @@
 
         <div loading-spinner="loadingResults"></div>
       </div>
+      <a style="margin-left:17px;" class="hidden-xs hidden-sm" ng-href="{{userProfile.powermenugroupsetupurl}}" target="_blank">eMenu Manage Group Setup</a>
     </div>
     
   </div>
