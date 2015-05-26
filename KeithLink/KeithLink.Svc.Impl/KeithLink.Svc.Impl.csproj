@@ -721,6 +721,7 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListReportModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />

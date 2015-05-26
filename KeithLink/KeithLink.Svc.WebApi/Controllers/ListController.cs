@@ -441,11 +441,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 				}
 
 				rv.LocalReport.LoadReportDefinition(rdlcStream);
-				ReportParameter[] parameters = new ReportParameter[1];
+				ReportParameter[] parameters = new ReportParameter[2];
 				parameters[0] = new ReportParameter("ListName", printModel.Name);
+                //parameters[1] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
+                parameters[1] = new ReportParameter("ShowParValues", "true");
 
 				rv.LocalReport.SetParameters(parameters);
-				rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", printModel.Items));
+                //rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", printModel.Items));
+                rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
 
 				
 				var bytes = rv.LocalReport.Render("PDF", deviceInfo);
@@ -479,9 +482,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
 		}
-		
-		
-		
         #endregion
     }
 }
