@@ -447,9 +447,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 parameters[1] = new ReportParameter("ShowParValues", "true");
 
 				rv.LocalReport.SetParameters(parameters);
-                //rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", printModel.Items));
-                rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
-
+                rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", printModel.Items));
 				
 				var bytes = rv.LocalReport.Render("PDF", deviceInfo);
 
