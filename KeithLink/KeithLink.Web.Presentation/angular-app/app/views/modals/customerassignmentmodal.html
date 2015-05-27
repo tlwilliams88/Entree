@@ -4,8 +4,8 @@
     <div class="input-group">
       <input ng-model="customerSearchTerm" type="text" class="input-lg form-control" placeholder="Filter customers by name or number" />
       <span class="input-group-btn">
-        <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-lg btn-default"><span class="icon-search"></span></button>
-        <button type="button" ng-click="clearFilter()" class="btn btn-lg btn-default "><span class="icon-cross"></span></button>
+        <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-lg btn-default" style="height:40px;"><span class="icon-search"></span></button>
+        <button type="button" ng-click="clearFilter()" class="btn btn-lg btn-default " style="height:40px;"><span class="icon-cross"></span></button>
       </span>
     </div>
   </form>
@@ -33,7 +33,7 @@
       <tbody>
         <tr ng-repeat="customer in customers" class="hand" ng-class="{ odd : $odd, even: $even }" ng-click="selectCustomer(customer)">
           <td>
-            <input type="checkbox" ng-model="customer.selected" ng-change="updateCount(customer.selected)" ng-click="stopEvent($event)">
+            <input type="checkbox" ng-model="customer.selected" ng-change="updateCount(customer.selected)" ng-click="stopEvent($event, customer)">
           </td>
           <td>{{customer.customerNumber}}</td>
           <td>({{customer.customerBranch}})- {{customer.customerName}}</td>
@@ -49,6 +49,6 @@
   <div class="text-center" loading-spinner="loadingCustomers"></div>
 </div>
 <div class="modal-footer">
-  <button class="btn btn-lg btn-primary" type="submit" ng-click="addSelectedCustomers(customers)">Add Selected Customers</button>
+  <button class="btn btn-lg btn-primary" type="submit" ng-click="addSelectedCustomers()">Add Selected Customers</button>
   <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
 </div>
