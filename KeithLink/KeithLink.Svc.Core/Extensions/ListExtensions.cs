@@ -76,7 +76,7 @@ namespace KeithLink.Svc.Core.Extensions
 			{
 				Name = list.Name,
 				Items = list.Items == null || list.Items.Results == null ? null :
-					list.Items.Results.Select(i => new ListItemReportModel() { Brand = i.BrandExtendedDescription, ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList()
+					list.Items.Results.Select(i => new ListItemReportModel() { Brand = i.BrandExtendedDescription, ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize, ParLevel = i.ParLevel }).ToList()
 			};
 		}
 	}

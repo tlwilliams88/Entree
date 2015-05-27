@@ -121,7 +121,7 @@
                 class="text-red">Password is required</span>
           <span
             ng-show="changePasswordForm.newPassword.$error.passwordRequirements && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.required"
-            class="text-red">Must contain one uppercase letter, one lowercase letter, and a number.  Cannot contain any part of your name or email address.</span>
+            class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Minimum length is 8 characters. Cannot contain any part of your name or email address.</span>
           <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" required
                  password-requirements ng-model="changePasswordData.newpassword">
         </div>

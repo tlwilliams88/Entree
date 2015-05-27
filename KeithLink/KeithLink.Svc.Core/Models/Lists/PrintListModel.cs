@@ -15,5 +15,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public bool Landscape { get; set; }
 		[DataMember(Name = "paging")]
 		public PagingModel Paging { get; set; }
+        [DataMember(Name = "showparvalues")]
+        public bool ShowParValues { get; set; }
 	}
 }

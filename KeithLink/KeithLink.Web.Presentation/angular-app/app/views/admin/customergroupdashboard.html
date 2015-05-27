@@ -157,8 +157,8 @@
           class="form-control" 
           placeholder="Filter customers by name or number" />
         <span class="input-group-btn">
-          <button type="submit" ng-click="customerSearchTerm = tempCustomerSearchTerm" class="btn btn-default icon-search"></button>
-          <button type="button"  ng-click="tempCustomerSearchTerm = ''; customerSearchTerm = '';" class="btn btn-default "><span class="glyphicon glyphicon-remove"></span></button>
+          <button type="submit" ng-click="customerSearchTerm = tempCustomerSearchTerm" class="btn btn-default icon-search searchbar-btn"></button>
+          <button type="button"  ng-click="tempCustomerSearchTerm = ''; customerSearchTerm = '';" class="btn btn-default searchbar-btn"><span class="glyphicon glyphicon-remove"></span></button>
         </span>
       </div>
     </form>
@@ -193,7 +193,7 @@
           <td ng-if="canManageCustomerGroups"><input type="checkbox" ng-model="customer.selected"></td>
           <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})">{{customer.customerNumber}}</a>
           </td>
-          <td>{{customer.customerName}}</td>
+          <td>({{customer.customerBranch}})- {{customer.customerName}}</td>
           <td><a class="btn-link" ui-sref="menu.admin.customer({customerNumber: customer.customerNumber, branchNumber: customer.customerBranch})"><span
             class="glyphicon glyphicon-pencil"></span> Customer Details</a></td>
           <td>

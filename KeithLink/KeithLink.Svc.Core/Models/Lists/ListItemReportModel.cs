@@ -20,5 +20,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public int InCart { get; set; }
 		[DataMember]
 		public string Brand { get; set; }
+        [DataMember]
+        public decimal ParLevel { get; set; }
 	}
 }
