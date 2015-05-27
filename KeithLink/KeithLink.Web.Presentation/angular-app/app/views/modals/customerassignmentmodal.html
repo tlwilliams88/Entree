@@ -13,9 +13,26 @@
     <div style="width: 24%; display: inline-block;">{{selectedCount}} Selected</div>
     <div style="width: 75%; display: inline-block;" class="text-right">Showing {{customers.length}} of {{totalCustomers}} Customers</div>
   </div>
-  <div class="infiniteScroll">
+   <table class="table table-border table-striped-rows customer-assignment-table">
+      <thead >
+        <tr >
+          <th style="width:8%">
+            <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
+          </th>
+          <th style="width:22%;" class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
+            Number
+            <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
+          </th>
+          <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
+            Name
+            <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
+          </th>
+        </tr>
+      </thead>
+    </table>
+  <div class="infiniteScroll">       
     <table class="table table-border table-striped-rows customer-assignment-table" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.modal .infiniteScroll'">
-      <thead>
+      <thead ng-hide="true">
         <tr fsm-sticky-header scroll-body="'.customer-assignment-table'" scroll-stop="0" scroll-offset="0">
           <th>
             <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
@@ -31,7 +48,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="customer in customers" class="hand" ng-class="{ odd : $odd, even: $even }" ng-click="selectCustomer(customer)">
+        <tr ng-repeat="customer in customers" class="hand" ng-class="{ odd : $odd, even: $even }" ng-click="selectCustomer(customer)" style="border-top:1px solid #c3bc9c;">
           <td>
             <input type="checkbox" ng-model="customer.selected" ng-change="updateCount(customer.selected)" ng-click="stopEvent($event, customer)">
           </td>
