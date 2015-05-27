@@ -1261,4 +1261,42 @@ CREATE TABLE [ETL].[Staging_WorksheetItems](
 GO
 SET ANSI_PADDING OFF
 GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+SET ANSI_PADDING ON
+GO
+CREATE TABLE [ETL].[Staging_CustomerItemHistory](
+	[BranchId] [char](3),
+	[CustomerNumber] [char](6),
+	[ItemNumber] [char](6),
+	[EightWeekAverage] [int] 
+) ON [PRIMARY]
+
+GO
+SET ANSI_PADDING OFF
+GO
+
+CREATE PROCEDURE [ETL].[GetEightWeekItemHistory]
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    SELECT
+        oh.BranchId,
+        oh.CustomerNumber,
+        od.ItemNumber,
+        AVG(od.ShippedQuantity)
+    FROM List.Lists l
+        LEFT JOIN List.ListItems li ON li.ParentList_Id = l.Id
+        LEFT JOIN Orders.OrderHistoryHeader oh ON oh.BranchId = l.BranchId AND oh.CustomerNumber = l.CustomerId
+        LEFT JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
+    WHERE od.ItemNumber IS NOT NULL
+        AND oh.CreatedUtc > DATEADD(Day, -56, GETDATE())
+    GROUP BY oh.BranchId, oh.CustomerId, od.ItemNumber
+    
+END
 

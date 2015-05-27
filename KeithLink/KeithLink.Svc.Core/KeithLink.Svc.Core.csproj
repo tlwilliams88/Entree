@@ -245,6 +245,7 @@
     <Compile Include="Models\ContentManagement\ExpressEngine\AdditionalData.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\ContentItem.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\Product.cs" />
+    <Compile Include="Models\Customers\EF\ItemHistory.cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />

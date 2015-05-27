@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[DataMember(Name = "listid")]
 		public long ListId { get; set; }
 		[DataMember(Name = "customers")]
-		public List<Customer> Customers { get; set; }
+		public List<Profile.Customer> Customers { get; set; }
 	}
 		
 }

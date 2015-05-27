@@ -555,6 +555,10 @@
     <Compile Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.Designer.cs">
       <DependentUpon>201505151602520_Add_Mkting_Pref_Table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.cs" />
+    <Compile Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.Designer.cs">
+      <DependentUpon>201505261936245_Add_ItemHistory_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1104,6 +1108,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.resx">
       <DependentUpon>201505151602520_Add_Mkting_Pref_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.resx">
+      <DependentUpon>201505261936245_Add_ItemHistory_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
