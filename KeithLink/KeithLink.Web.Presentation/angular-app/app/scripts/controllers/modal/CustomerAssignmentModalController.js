@@ -30,12 +30,14 @@ angular.module('bekApp')
 
   function setSelected(){
     var idx =0;
-  $scope.customers.forEach(function(customer){
-      if($filter('filter')($scope.selectedCustStorage, {customerId: customer.customerId}).length != 0){
-        $scope.customers[idx].selected = true;
-      }
-      idx++;
-    });
+    if($scope.customers){
+      $scope.customers.forEach(function(customer){
+        if($filter('filter')($scope.selectedCustStorage, {customerId: customer.customerId}).length != 0){
+          $scope.customers[idx].selected = true;
+        }
+        idx++;
+      });
+    }
 }
   function updateStoredCustomers(customer){
     if(customer.selected){
@@ -105,19 +107,13 @@ angular.module('bekApp')
           }
       }); 
       $scope.selectedCount = $scope.selectedCustStorage.length;
-    } else {
-      $scope.selectedCount = 0;         
-
+    } else { 
         $scope.customers.forEach(function(customer){  
-
         $scope.selectedCustStorage.forEach(function(selectedCustomer){
-
           if(customer.customerId === selectedCustomer.customerId){
            selectedCustomer.isUnchecked = true;
           }   
-
         });
-
     });
         var customersToKeep=[];
         $scope.selectedCustStorage.forEach(function(customer){
@@ -129,6 +125,7 @@ angular.module('bekApp')
           }
         });
      $scope.selectedCustStorage = customersToKeep;
+     $scope.selectedCount = $scope.selectedCustStorage.length;
       }
   }; 
 
@@ -162,6 +159,7 @@ angular.module('bekApp')
 
   $scope.infiniteScrollLoadMore = function() {
     customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
+    setSelected();
   };
 
 
