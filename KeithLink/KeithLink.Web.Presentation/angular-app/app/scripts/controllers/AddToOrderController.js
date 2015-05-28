@@ -135,6 +135,23 @@ angular.module('bekApp')
     }); 
   });
 
+    $scope.confirmQuantity = function(type, item, value) {
+          var pattern = /^([0-9])\1+$/; // repeating digits pattern
+
+          if (value > 50 || pattern.test(value)) {
+            var isConfirmed = window.confirm('Do you want to continue with entered quatity of ' + value + '?');
+            if (!isConfirmed) {
+              // clear input
+            if(type==='quantity'){
+              item.quantity = null;
+            }
+            else{
+              item.onhand=null;
+            }
+            }
+          } 
+        };
+
   $scope.checkOrientation = function(){    
       $scope.isMobile = UtilityService.isMobileDevice(); 
        if($scope.isMobile && window.innerHeight < window.innerWidth){ 

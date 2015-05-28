@@ -224,6 +224,7 @@
                   <input 
                   type="text" 
                   ng-if="!isMobile"
+                  ng-blur="confirmQuantity('onhand', item, item.onhand)"
                   class="input-number text-right" 
                   allow-one-positive-decimal
                   ng-model="item.onhand"                        
@@ -234,9 +235,10 @@
             <td class="input-col nowrap"  >
               <ng-form class="hidden-print" name="quantityForm">
                 <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="(!landscapeOrient || !useParlevel) && isMobile"></div>
-                  <input              
+                  <input                             
                   type="text" 
                   ng-if="(landscapeOrient && useParlevel && item.canOrder) || !isMobile"
+                  ng-blur="confirmQuantity('quantity', item, item.quantity)"
                   ng-show="item.canOrder"                
                   class="input-number text-right" 
                   allow-one-positive-decimal
