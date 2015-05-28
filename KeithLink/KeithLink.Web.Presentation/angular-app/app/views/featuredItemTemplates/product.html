@@ -1,6 +1,6 @@
 <div class="col-xs-4 no-padding text-left">
   <img ng-if="item.images.length > 0" class="hand" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })" ng-src="{{item.images[0].url}}" alt="product image">
-  <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo-green.png" alt="default product image">
+  <img ng-if="item.images.length === 0" class="product-placeholder-image" src="images/bek-logo.png" alt="default product image">
 </div>
 <div class="col-xs-8 no-padding featured-item-mobile__detail">
   {{item.name}}<br />
