@@ -393,16 +393,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("list/print/{listId}")]
-		public HttpResponseMessage Print(long listId, PrintListModel options)
-		{
-			try
-			{
-
-				if (!string.IsNullOrEmpty(options.Paging.Terms))
-				{
+		public HttpResponseMessage Print(long listId, PrintListModel options) {
+			try {
+				if (!string.IsNullOrEmpty(options.Paging.Terms)) {
 					//Build filter
-					options.Paging.Filter = new FilterInfo()
-					{
+					options.Paging.Filter = new FilterInfo() {
 						Field = "ItemNumber",
 						FilterType = "contains",
 						Value = options.Paging.Terms,
@@ -429,13 +424,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 				Stream rdlcStream = null;
 				var deviceInfo = string.Empty;
-				if (options.Landscape)
-				{
+				if (options.Landscape) {
 					deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
 					rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport_Landscape.rdlc");
-				}
-				else
-				{
+				} else {
 					deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
 					rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
 				}
@@ -443,11 +435,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 				rv.LocalReport.LoadReportDefinition(rdlcStream);
 				ReportParameter[] parameters = new ReportParameter[2];
 				parameters[0] = new ReportParameter("ListName", printModel.Name);
-                //parameters[1] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
-                parameters[1] = new ReportParameter("ShowParValues", "true");
+                parameters[1] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
 
 				rv.LocalReport.SetParameters(parameters);
-                rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", printModel.Items));
+                rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
 				
 				var bytes = rv.LocalReport.Render("PDF", deviceInfo);
 
@@ -461,12 +452,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 				result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
 
 				return result;
-
-
-
-			}
-			catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				//TODO: This is test code to determine issue in dev. This should be removed.
 				elRepo.WriteErrorLog("e", ex);
 				if (ex.InnerException != null)
@@ -477,8 +463,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 				}
 			}
 			return null;
-
-
 		}
         #endregion
     }
