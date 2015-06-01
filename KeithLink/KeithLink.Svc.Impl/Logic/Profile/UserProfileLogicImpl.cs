@@ -480,7 +480,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 5/1/2015 - add DSR Alias support
         /// jwames - 5/10/2015 - cast to the DSR Alias Model
         /// </remarks>
-        public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account) {
+        public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account)
+        {
             if (string.IsNullOrEmpty(searchTerms))
                 searchTerms = "";
 
@@ -488,51 +489,71 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 return _customerRepo.GetPagedCustomersForAccount(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms, account.ToGuid().ToCommerceServerFormat());
 
 
-            if (IsInternalAddress(user.EmailAddress)) {
+            if (IsInternalAddress(user.EmailAddress))
+            {
 
-				PagedResults<Customer> returnValue = new PagedResults<Customer>();
+                PagedResults<Customer> returnValue = new PagedResults<Customer>();
 
-                if (user.IsDSR && !String.IsNullOrEmpty(user.DSRNumber)) {
-                    // lookup customers by their assigned dsr number
-                    //return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
-                    return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, 
-                                                                 paging.From.HasValue ? paging.From.Value : 0, 
-                                                                 searchTerms,
-                                                                 (from DsrAliasModel d in user.DsrAliases
-                                                                  select new Dsr() {
-                                                                      Branch = d.BranchId,
-                                                                      DsrNumber = d.DsrNumber
-                                                                  })
-                                                                 .ToList());
+                if (user.IsDSR)
+                {
+                    if (!String.IsNullOrEmpty(user.DSRNumber))
+                    {
+                        // lookup customers by their assigned dsr number
+                        //return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
+                        return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue,
+                                                                     paging.From.HasValue ? paging.From.Value : 0,
+                                                                     searchTerms,
+                                                                     (from DsrAliasModel d in user.DsrAliases
+                                                                      select new Dsr()
+                                                                      {
+                                                                          Branch = d.BranchId,
+                                                                          DsrNumber = d.DsrNumber
+                                                                      })
+                                                                     .ToList());
+                    }
+
+
 
                 }
-                if (user.IsDSM && !String.IsNullOrEmpty(user.DSMNumber)) {
-                    // lookup customers by their assigned dsr number
-                    returnValue = _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
-
-                } else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF)) {
+                if (user.IsDSM)
+                {
+                    if (!String.IsNullOrEmpty(user.DSMNumber))
+                    {
+                        // lookup customers by their assigned dsr number
+                        returnValue = _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+                    }
+                }
+                else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF))
+                {
                     returnValue = _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
 
-                } else { // assume admin user with access to all customers or PowerUser from GOF
+                }
+                else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId == Constants.BRANCH_GOF))
+                {
                     returnValue = _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
                 }
 
-				//For internal users, switch displayname to include branch id
-				Parallel.ForEach(returnValue.Results, customer =>
-				{
-					customer.DisplayName = string.Format("{0} ({1}) - {2}", customer.CustomerNumber, customer.CustomerBranch, customer.CustomerName);
-				});
+                if (returnValue.Results.Count > 0)
+                {
+                    //For internal users, switch displayname to include branch id
+                    Parallel.ForEach(returnValue.Results, customer =>
+                    {
+                        customer.DisplayName = string.Format("{0} ({1}) - {2}", customer.CustomerNumber, customer.CustomerBranch, customer.CustomerName);
+                    });
+                }
 
-				return returnValue;
+                return returnValue;
 
-            } else { // external user
-				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
-					return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
-				else
-					return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
+            }
+            else
+            { // external user
+                if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
+                    return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+                else
+                    return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
             }
         }
-
+        
         /// <summary>
         /// take all of the fields from the commerce server profile and put them into our custom object and load other custom data
         /// </summary>
