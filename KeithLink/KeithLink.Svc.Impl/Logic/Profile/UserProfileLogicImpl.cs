@@ -496,11 +496,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 if (user.IsDSR)
                 {
-                    if (!String.IsNullOrEmpty(user.DSRNumber))
+                    if (!String.IsNullOrEmpty(user.DSRNumber) || user.DsrAliases != null)
                     {
                         // lookup customers by their assigned dsr number
                         //return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
-                        return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue,
+                        returnValue = _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue,
                                                                      paging.From.HasValue ? paging.From.Value : 0,
                                                                      searchTerms,
                                                                      (from DsrAliasModel d in user.DsrAliases
@@ -511,9 +511,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                                                       })
                                                                      .ToList());
                     }
-
-
-
                 }
                 if (user.IsDSM)
                 {
@@ -533,7 +530,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     returnValue = _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
                 }
 
-                if (returnValue.Results.Count > 0)
+                if (returnValue.Results != null)
                 {
                     //For internal users, switch displayname to include branch id
                     Parallel.ForEach(returnValue.Results, customer =>
@@ -541,6 +538,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                         customer.DisplayName = string.Format("{0} ({1}) - {2}", customer.CustomerNumber, customer.CustomerBranch, customer.CustomerName);
                     });
                 }
+                
 
                 return returnValue;
 
