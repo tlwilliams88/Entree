@@ -108,15 +108,12 @@
   <form name="orderSearchForm" class="hidden-print">
     <div class="input-group input-group-lg">
       <input 
+        id="searchBar"
         ng-model="orderSearchTerm"
         type="text" 
-        class="form-control" 
+        class="form-control mousetrap" 
         placeholder="Search current list by keyword, item # or label" />
-      <span ng-show="addToOrderForm.$dirty" class="input-group-btn">
-        <button type="button" confirmed-click="filterItems(orderSearchTerm)" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}" class="btn btn-default"><span class="icon-search"></span></button>
-        <button type="button"  confirmed-click="clearFilter()" ng-confirm-click="{{'Unsaved data will be lost. Do you wish to continue?'}}"class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
-      </span>
-      <span ng-show="addToOrderForm.$pristine" class="input-group-btn">
+      <span class="input-group-btn">
         <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
         <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
       </span>
@@ -220,32 +217,37 @@
             </td>
             <td ng-show="useParlevel" class="input-col"  ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">            
               <ng-form name="parlevelForm" ng-if="item.canOrder">
+              <!--  ON HAND AMOUNT -->
                 <div style="display:inline-block; white-space:nowrap;" ng-if="isMobile" type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.onhand" name="onhand" ng-change="onItemOnHandAmountChanged(item)"></div>
                   <input 
                   type="text" 
                   ng-if="!isMobile"
-                  class="input-number text-right" 
+                  ng-blur="confirmQuantity('onhand', item, item.onhand)"
+                  class="input-number text-right mousetrap" 
                   allow-one-positive-decimal
                   ng-model="item.onhand"                        
                   name="onhand" 
                   ng-change="onItemOnHandAmountChanged(item)">
               </ng-form>  
             </td>
-            <td class="input-col nowrap"  >
+            <td class="input-col nowrap">
+              <!--  QUANTITY -->
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="(!landscapeOrient || !useParlevel) && isMobile"></div>
-                  <input              
-                  type="text" 
+                <div counter ng-model="item.quantity" min="0" length="5" class = "mousetrap" ng-hide="!item.canOrder" ng-if="(!landscapeOrient || !useParlevel) && isMobile"></div>
+                  <input                             
+                  type="text"                 
+                  focus-me="($first)"
                   ng-if="(landscapeOrient && useParlevel && item.canOrder) || !isMobile"
+                  ng-blur="confirmQuantity('quantity', item, item.quantity)"
                   ng-show="item.canOrder"                
-                  class="input-number text-right" 
+                  class="input-number text-right mousetrap" 
                   allow-one-positive-decimal
                   ng-model="item.quantity">                
               </ng-form>
             </td>
             <td class="input-col hidden-mobile-visible-print">
               <ng-form name="eachForm" ng-if="item.hasPackagePrice">
-                <input type="checkbox" ng-model="item.each"  ng-disabled="!item.hasCasePrice" id="each" name="each" />
+                <input type="checkbox" class="mousetrap" ng-model="item.each"  ng-disabled="!item.hasCasePrice" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
             </td>
@@ -308,7 +310,7 @@
                     <ng-form name="parlevelForm_mobile">
                       <input 
                         type="text" 
-                        class="input-number text-right" 
+                        class="input-number text-right mousetrap" 
                         allow-one-positive-decimal 
                         ng-model="item.onhand_mobile" 
                         ng-change="onItemOnHandAmountChanged(item)">
@@ -319,7 +321,7 @@
                   <td>Each</td>
                   <td>
                     <ng-form name="eachForm_mobile">
-                      <input type="checkbox" ng-model="item.each"  ng-disabled="!item.hasCasePrice" id="each" name="each" />
+                      <input type="checkbox" ng-model="item.each" class="mousetrap" ng-disabled="!item.hasCasePrice" id="each" name="each" />
                     </ng-form>
                   </td>
                 </tr>
@@ -389,12 +391,12 @@
         </td>
         <td class="input-col nowrap">
           <ng-form class="hidden-print" name="quantityForm">
-            <div counter ng-model="item.quantity" min="0" length="5"></div>
+            <div counter ng-model="item.quantity" class="mousetrap" min="0" length="5"></div>
           </ng-form>
         </td>
         <td class="input-col hidden-mobile-visible-print">
           <ng-form name="eachForm" ng-if="::item.hasPackagePrice">
-            <input type="checkbox" ng-model="item.each" id="each" name="each" />
+            <input type="checkbox" class="mousetrap" ng-model="item.each" id="each" name="each" />
             <label for="each"></label>
           </ng-form>
         </td>
@@ -435,7 +437,7 @@
             <tr ng-if="::item.hasPackagePrice">
               <td>Each</td>
               <td>
-                <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
+                <input type="checkbox" value="" class="mousetrap" name="each" id="each" ng-model="item.each">
               </td>
             </tr>
             

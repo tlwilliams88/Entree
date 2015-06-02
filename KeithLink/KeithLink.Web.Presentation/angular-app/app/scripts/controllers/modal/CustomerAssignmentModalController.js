@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('CustomerAssignmentModalController', ['$scope', '$modalInstance', 'CustomerPagingModel', 'customerGroupId', 'selectedCustomers',
-  function ($scope, $modalInstance, CustomerPagingModel, customerGroupId, selectedCustomers) {
+.controller('CustomerAssignmentModalController', ['$scope', '$filter', '$modalInstance', 'CustomerPagingModel', 'customerGroupId', 'selectedCustomers',
+  function ($scope, $filter, $modalInstance, CustomerPagingModel, customerGroupId, selectedCustomers) {
 
   function findSelectedCustomers(customers) {
     var unselectedCustomers = [];
@@ -25,7 +25,36 @@ angular.module('bekApp')
   function setCustomers(data) {
     $scope.customers = findSelectedCustomers(data.results);
     $scope.totalCustomers = data.totalResults;
+    setSelected();  
   }
+
+  function setSelected(){
+    var idx =0;
+    if($scope.customers){
+      $scope.customers.forEach(function(customer){
+        if($filter('filter')($scope.selectedCustStorage, {customerId: customer.customerId}).length != 0){
+          $scope.customers[idx].selected = true;
+        }
+        idx++;
+      });
+    }
+}
+  function updateStoredCustomers(customer){
+    if(customer.selected){
+    if($filter('filter')($scope.selectedCustStorage, {customerId: customer.customerId}).length === 0){
+      $scope.selectedCustStorage.push(customer);
+    }
+  }else{
+      var idx=0;
+      $scope.selectedCustStorage.forEach(function(selectedCust){
+        if(customer.customerId == selectedCust.customerId){
+          $scope.selectedCustStorage.splice(idx,1);
+        }
+        idx++;
+      });
+    }
+ }
+
   function appendCustomers(data) {
     $scope.customers = $scope.customers.concat(findSelectedCustomers(data.results));
   }
@@ -40,6 +69,7 @@ angular.module('bekApp')
   $scope.customerSearchTerm = '';
   $scope.customersSortDesc = false;
   $scope.customersSortField = 'customerName';
+  $scope.selectedCustStorage=[];
 
   var customerPagingModel = new CustomerPagingModel(
     setCustomers,
@@ -70,28 +100,55 @@ angular.module('bekApp')
     });
 
     if (allSelected === true) {
-      $scope.selectedCount = $scope.customers.length;
-    } else {
-      $scope.selectedCount = 0;
-    }
+     
+      $scope.customers.forEach(function(customer){
+        if($filter('filter')($scope.selectedCustStorage, {customerId: customer.customerId}).length === 0){
+            $scope.selectedCustStorage.push(customer);
+          }
+      }); 
+      $scope.selectedCount = $scope.selectedCustStorage.length;
+    } else { 
+        $scope.customers.forEach(function(customer){  
+        $scope.selectedCustStorage.forEach(function(selectedCustomer){
+          if(customer.customerId === selectedCustomer.customerId){
+           selectedCustomer.isUnchecked = true;
+          }   
+        });
+    });
+        var customersToKeep=[];
+        $scope.selectedCustStorage.forEach(function(customer){
+          if(customer.isUnchecked){
+            delete customer.isUnchecked;            
+          }
+          else{
+            customersToKeep.push(customer);
+          }
+        });
+     $scope.selectedCustStorage = customersToKeep;
+     $scope.selectedCount = $scope.selectedCustStorage.length;
+      }
   }; 
 
   $scope.selectCustomer = function(customer) {
     customer.selected = !customer.selected;
     $scope.updateCount(customer.selected);
+    updateStoredCustomers(customer);
   };
 
-  $scope.stopEvent = function(e) {
+  $scope.stopEvent = function(e, customer) {
     e.stopPropagation();
+    updateStoredCustomers(customer);
   };
 
   $scope.searchCustomers = function (searchTerm) {
     customerPagingModel.filterCustomers(searchTerm);
+    $scope.allAvailableSelected = false;
   };
 
   $scope.clearFilter = function() {
     $scope.customerSearchTerm = ''; 
     $scope.searchCustomers($scope.customerSearchTerm); 
+    setSelected(); 
   };
 
   $scope.sortCustomers = function(field, sortDescending) {
@@ -102,21 +159,19 @@ angular.module('bekApp')
 
   $scope.infiniteScrollLoadMore = function() {
     customerPagingModel.loadMoreData($scope.customers, $scope.totalCustomers, $scope.loadingCustomers);
+    setSelected();
   };
 
 
   /* ******
   * FORM EVENTS
   * *******/
-  $scope.addSelectedCustomers = function(customers) {
+  $scope.addSelectedCustomers = function() {
     var selectedCustomers = [];
-    customers.forEach(function(customer) {
-      if (customer.selected === true) {
+    $scope.selectedCustStorage.forEach(function(customer) {      
         delete customer.selected;
-        selectedCustomers.push(customer);
-      }
-    });
-      
+        selectedCustomers.push(customer);      
+    });      
     $modalInstance.close(selectedCustomers);
   };
 

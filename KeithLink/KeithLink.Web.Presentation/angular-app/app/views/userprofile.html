@@ -170,10 +170,10 @@
         </thead>
         <tbody>
           <tr ng-repeat="preference in defaultPreferences">
-            <td ng-repeat="channel in preference.channels track by $index" class="checkboxCenter">
+            <td ng-repeat="channel in preference.channels track by $index" ng-hide="preference.description === 'Mail'" class="checkboxCenter">
               <input type="checkbox" ng-model="preference.channels[$index]" ng-disabled="!canEditNotifications"/>
             </td>
-            <td>{{preference.description}}</td>
+            <td ng-hide="preference.description === 'Mail'">{{preference.description}}</td>
           </tr>
         </tbody>
       </table>

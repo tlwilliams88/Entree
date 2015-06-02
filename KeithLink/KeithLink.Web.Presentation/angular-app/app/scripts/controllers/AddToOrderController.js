@@ -17,6 +17,7 @@ angular.module('bekApp')
 
     $scope.basketId = basketId;
 
+
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
@@ -117,23 +118,84 @@ angular.module('bekApp')
     /**********
     PAGING
     **********/
-    $scope.filterItems = function(searchTerm) {  
-      $scope.addToOrderForm.$setPristine();
-      listPagingModel.filterListItems(searchTerm);
-      clearItemWatches(watches);
+    $scope.filterItems = function(searchTerm) {
+      if($scope.addToOrderForm.$pristine){
+        listPagingModel.filterListItems(searchTerm);
+        clearItemWatches(watches);
+      }
+      else{
+          var continueSearch = $scope.validateForSave();
+        if(continueSearch){ 
+          $scope.addToOrderForm.$setPristine();    
+          listPagingModel.filterListItems(searchTerm);
+          clearItemWatches(watches);
+        }          
+      }   
     };
 
-    $scope.clearFilter = function(){   
-      $scope.orderSearchTerm = '';
-      $scope.filterItems( $scope.orderSearchTerm );     
+    $scope.validateForSave = function(){
+      if($scope.addToOrderForm.$invalid){
+          var r = confirm('Unsaved data will be lost. Do you wish to continue?');
+          return r;   
+      }
+      else{             
+           $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);           
+           return true;            
+      }      
+    };
+
+    $scope.clearFilter = function(){  
+      if($scope.addToOrderForm.$pristine){
+         $scope.orderSearchTerm = '';
+      $scope.filterItems( $scope.orderSearchTerm);  
+    }
+    else{
+      var clearSearchTerm = $scope.validateForSave();
+      if(clearSearchTerm){       
+        $scope.orderSearchTerm = '';
+        $scope.filterItems( $scope.orderSearchTerm);   
+      }           
+    }
+    angular.element(orderSearchForm.searchBar).focus();
     };
   
-  //Used for Par Level colums in landscape view for mobile
-   $(window).resize(function(){ 
-    $scope.$apply(function(){ 
-      $scope.checkOrientation(); 
-    }); 
-  });
+      //Used for Par Level colums in landscape view for mobile
+       $(window).resize(function(){ 
+        $scope.$apply(function(){ 
+          $scope.checkOrientation(); 
+        }); 
+      });
+
+      Mousetrap.bind(['alt+x', 'option+x'], function(e) {  
+        $scope.clearFilter();
+      });
+
+      Mousetrap.bind(['alt+s', 'option+s'], function(e) {
+
+        $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+      });
+
+      Mousetrap.bind(['alt+z', 'option+z'], function(e) {      
+       angular.element(orderSearchForm.searchBar).focus();
+      });
+
+    
+    $scope.confirmQuantity = function(type, item, value) {
+          var pattern = /^([0-9])\1+$/; // repeating digits pattern
+
+          if (value > 50 || pattern.test(value)) {
+            var isConfirmed = window.confirm('Do you want to continue with entered quatity of ' + value + '?');
+            if (!isConfirmed) {
+              // clear input
+            if(type==='quantity'){
+              item.quantity = null;
+            }
+            else{
+              item.onhand=null;
+            }
+            }
+          } 
+        };
 
   $scope.checkOrientation = function(){    
       $scope.isMobile = UtilityService.isMobileDevice(); 
