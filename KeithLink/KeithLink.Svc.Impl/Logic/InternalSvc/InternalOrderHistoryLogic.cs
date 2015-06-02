@@ -98,6 +98,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 				}
 			}
 
+            var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
+            if (invoice != null) {
+                returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+            }
+
 			LookupProductDetails(branchId, returnOrder);
 
             if (po != null) {
@@ -140,7 +145,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 																			  h.CustomerNumber.Equals(customerInfo.CustomerId),
 																			d => d.OrderDetails);
 
-			return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
+            return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
 		}
 
 		public void StopListening()
@@ -275,13 +280,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 							//}
                         }
 
-						var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
-						if (invoice != null)
-						{
-							returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
-							
-						}
+                    }
 
+                    var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
+                    if (invoice != null) {
+                        returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
                     }
 
                     if (returnOrder.ActualDeliveryTime != null)
