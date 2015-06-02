@@ -188,6 +188,9 @@
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
+    <Compile Include="Interface\ETL\IElasticSearchCategoriesImport.cs" />
+    <Compile Include="Interface\ETL\IElasticSearchHouseBrandsImport.cs" />
+    <Compile Include="Interface\ETL\IElasticSearchItemImport.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />

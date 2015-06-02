@@ -20,6 +20,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 #endregion
 #region using__interface
 using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Lists;
@@ -66,6 +67,7 @@ using KeithLink.Svc.Impl.Repository.PowerMenu;
 #endregion
 #region using__logic
 using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.ETL;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Profile;
@@ -264,6 +266,11 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<MarketingPreferencesRepositoryImpl>().As<IMarketingPreferencesRepository>();
 			builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
+
+            // ElasticSearch ETL 
+            builder.RegisterType<ElasticSearchItemImportLogicImpl>().As<IElasticSearchItemImport>();
+            builder.RegisterType<ElasticSearchCategoriesImportLogicImpl>().As<IElasticSearchCategoriesImport>();
+            builder.RegisterType<ElasticSearchHouseBrandsImportLogicImpl>().As<IElasticSearchHouseBrandsImport>();
 
             return builder.Build();
         }

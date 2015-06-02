@@ -230,6 +230,9 @@
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearchCategoriesImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearchHouseBrandsImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearchItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
