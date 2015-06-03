@@ -125,7 +125,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders {
 
             ShippingDateResponseMain response = new ShippingDateResponseMain();
 
-            response.ReadXml(responseBody, System.Data.XmlReadMode.InferSchema);
+            response.ReadXml(responseBody, System.Data.XmlReadMode.IgnoreSchema);
 
             return response;
         }
