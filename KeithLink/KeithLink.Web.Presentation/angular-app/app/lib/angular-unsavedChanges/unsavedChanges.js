@@ -203,17 +203,20 @@ angular.module('unsavedChanges', ['resettable'])
 
             angular.forEach(eventsToWatchFor, function(aEvent) {
                 //calling this function later will unbind this, acting as $off()
+                var fffbreak = 5;
                 var removeFn = $rootScope.$on(aEvent, function(event, next, current) {
                     unsavedWarningsConfig.log("user is moving with " + aEvent);
                     // @todo this could be written a lot cleaner! 
-                    if (!allFormsClean()) {
+                    if (!allFormsClean() && !event.defaultPrevented) {
                         unsavedWarningsConfig.log("a form is dirty");
                         if (!confirm(messages.navigate)) {
                             unsavedWarningsConfig.log("user wants to cancel leaving");
                             event.preventDefault(); // user clicks cancel, wants to stay on page 
+                           
                         } else {
                             unsavedWarningsConfig.log("user doesn't care about loosing stuff");
                             $rootScope.$broadcast('resetResettables');
+
                         }
                     } else {
                         unsavedWarningsConfig.log("all forms are clean");
