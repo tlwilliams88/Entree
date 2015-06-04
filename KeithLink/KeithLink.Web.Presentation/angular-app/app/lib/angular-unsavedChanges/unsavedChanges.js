@@ -211,8 +211,7 @@ angular.module('unsavedChanges', ['resettable'])
                         unsavedWarningsConfig.log("a form is dirty");
                         if (!confirm(messages.navigate)) {
                             unsavedWarningsConfig.log("user wants to cancel leaving");
-                            event.preventDefault(); // user clicks cancel, wants to stay on page 
-                           
+                            event.preventDefault(); // user clicks cancel, wants to stay on page                            
                         } else {
                             unsavedWarningsConfig.log("user doesn't care about loosing stuff");
                             $rootScope.$broadcast('resetResettables');
