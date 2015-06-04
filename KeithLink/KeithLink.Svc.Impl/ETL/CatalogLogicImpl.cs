@@ -1,33 +1,40 @@
-﻿using System;
+﻿// Commerce Server
+using CommerceServer.Core.Catalog;
+using CommerceServer.Core.Profiles;
+
+// KeithLink
+using KeithLink.Common.Core;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
+
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.ETL;
+using KeithLink.Svc.Core.Interface.InternalCatalog;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+
+using KeithLink.Svc.Impl.Models;
+using KeithLink.Svc.Impl.Models.ETL;
+using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
+using KeithLink.Svc.Core.Models.Lists;
+
+// Core
+using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text.RegularExpressions;
 using System.Text;
 using System.Threading.Tasks;
-using CommerceServer.Core.Catalog;
-using KeithLink.Svc.Core.ETL;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core;
 using System.Xml.Serialization;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Runtime.Serialization;
-using KeithLink.Svc.Impl.Models.ETL;
-using KeithLink.Svc.Core.Interface.InternalCatalog;
-using CommerceServer.Core.Profiles;
-using System.Text.RegularExpressions;
-using KeithLink.Svc.Impl.Models;
-using System.Collections.Concurrent;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Interface.Messaging;
-using KeithLink.Svc.Core.Enumerations.List;
 
 namespace KeithLink.Svc.Impl.ETL
 {
@@ -125,16 +132,26 @@ namespace KeithLink.Svc.Impl.ETL
         {
             try
             {
+                // Note: Catalog processing stays here
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Catalog");
                 ImportCatalog();
+
+                // TODO: Elasticsearch processing needs to move to it's own logic class
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Items to Elastic Search");
                 ImportItemsToElasticSearch();
+
+                // TODO: Need to move category processing to an Elasticsearch logic class
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Categories to Elastic Search");
                 ImportCategoriesToElasticSearch();
+
+                // TODO: Need to move brands to an Elasticsearch logic class
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import House Brands to ElasticSearch");
                 ImportHouseBrandsToElasticSearch();
+
+                // TODO: Need to evaluate where this should go to
                 eventLog.WriteInformationLog("ETL Import Process Starting:  Import Pre-Populated Lists");
                 ImportPrePopulatedLists();
+
                 eventLog.WriteInformationLog("ETL Import Process Complete:  CatalogLogicImpl Tasks");
             }
             catch (Exception ex)
