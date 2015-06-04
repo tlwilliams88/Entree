@@ -5,10 +5,11 @@ angular.module('bekApp')
   function ($scope, $modalInstance, $sce, $state, notification) {
 
   $scope.notification = notification;
-
+  $scope.originalBody = notification.body;
   $scope.notification.body = $sce.trustAsHtml(notification.body);
 
   $scope.closeModal = function() {
+    $scope.notification.body = $scope.originalBody;
     $modalInstance.dismiss('cancel');
   };
 
