@@ -202,8 +202,7 @@ angular.module('unsavedChanges', ['resettable'])
             var eventsToWatchFor = unsavedWarningsConfig.routeEvent;
 
             angular.forEach(eventsToWatchFor, function(aEvent) {
-                //calling this function later will unbind this, acting as $off()
-                var fffbreak = 5;
+                //calling this function later will unbind this, acting as $off()             
                 var removeFn = $rootScope.$on(aEvent, function(event, next, current) {
                     unsavedWarningsConfig.log("user is moving with " + aEvent);
                     // @todo this could be written a lot cleaner! 
@@ -215,7 +214,6 @@ angular.module('unsavedChanges', ['resettable'])
                         } else {
                             unsavedWarningsConfig.log("user doesn't care about loosing stuff");
                             $rootScope.$broadcast('resetResettables');
-
                         }
                     } else {
                         unsavedWarningsConfig.log("all forms are clean");
