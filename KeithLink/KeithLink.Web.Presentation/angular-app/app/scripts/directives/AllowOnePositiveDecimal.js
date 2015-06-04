@@ -26,7 +26,7 @@ angular.module('bekApp')
         if(viewValue && viewValue !== undefined){
           var reg = /[a-zA-Z]/;
           if(reg.test(viewValue)){
-          viewValue = viewValue.replace(/[a-zA-Z]/,'');
+          viewValue = viewValue.replace(/[^0-9\.]+/g, '');
           ctrl.$setViewValue(viewValue);   
           ctrl.$render();
         }
