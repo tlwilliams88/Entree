@@ -96,10 +96,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 }
             }
 
-            var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
-            if (invoice != null) {
-                returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+            
+
+            try
+            {
+                var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
+                
+                if (invoice != null)
+                {
+                    returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+                }
             }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog(ex.Message + ex.StackTrace);
+            }
+
+            
 
             LookupProductDetails(branchId, returnOrder);
 
