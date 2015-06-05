@@ -214,11 +214,15 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             {
                 foreach (string g in ((DirectoryEntry)user.GetUnderlyingObject()).Properties["memberOf"])
                 {
-                    string groupName = g.Substring(3, g.ToLower().IndexOf(",ou=") - 3).ToLower(); // get group name from fully qualified AD string
-                    foreach (string s in groupNames)
+                    //test format
+                    if (g.ToLower().IndexOf(",ou=") >= 3)
                     {
-                        if (groupName.Equals(s, StringComparison.InvariantCultureIgnoreCase))
-                            returnValue.Add(s);
+                        string groupName = g.Substring(3, g.ToLower().IndexOf(",ou=") - 3).ToLower(); // get group name from fully qualified AD string
+                        foreach (string s in groupNames)
+                        {
+                            if (groupName.Equals(s, StringComparison.InvariantCultureIgnoreCase))
+                                returnValue.Add(s);
+                        }
                     }
                 }
             }

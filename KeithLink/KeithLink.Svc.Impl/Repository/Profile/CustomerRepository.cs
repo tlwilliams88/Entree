@@ -481,16 +481,23 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		//public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm)
         public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string searchTerm, List<Dsr> dsrList)
 		{
-			//var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsr_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
+			PagedResults<Customer> returnValue = new PagedResults<Customer>();
+
             System.Text.StringBuilder whereText = new System.Text.StringBuilder();
             for (int i = 0; i < dsrList.Count; i++) {
-                if (i > 0) { whereText.Append(" OR "); }
-                whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
+                if (!String.IsNullOrEmpty(dsrList[i].DsrNumber) && !String.IsNullOrEmpty(dsrList[i].Branch))
+                {
+                    if (i > 0) { whereText.Append(" OR "); }
+                    whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
+                }
             }
             
-
-            //return RetrievePagedResults(size, from, searchTerm, whereClause);
-            return RetrievePagedResults(size, from, searchTerm, whereText.ToString());
+            if (!String.IsNullOrEmpty(whereText.ToString()))
+            {
+                returnValue = RetrievePagedResults(size, from, searchTerm, whereText.ToString());
+            }
+                        
+            return returnValue;
 		}
 
 		public PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm)
