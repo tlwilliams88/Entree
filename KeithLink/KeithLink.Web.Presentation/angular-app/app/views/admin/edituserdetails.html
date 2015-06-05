@@ -67,14 +67,14 @@
         <div class="form-group" ng-if="canGrantAccessToOtherServices">
           <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
           <div class="col-md-4">
-            <input name="kbitAccess" type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeUserAccess(profile.iskbitcustomer, 'kbit')" />
+            <input name="kbitAccess" type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeUserAccess(profile.iskbitcustomer, 'kbit')" class="editDetailsCheckbox"/>
           </div>
         
         </div>
         <div class="form-group" ng-if="canGrantAccessToOtherServices">
-          <label for="powerMenuAccess" class="col-md-2 control-label">Power Menu Access</label>
+          <label for="powerMenuAccess" class="col-md-2 control-label">E-Menu Manage Access</label>
           <div class="col-md-2">
-            <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" />
+            <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" class="editDetailsCheckbox"/>
           </div>
           <a ng-if="profile.powermenupermissionslink" class="col-md-4 btn-link" target="_blank" ng-href="{{profile.powermenupermissionslink}}">Setup eMenuManage Permissions</a>
         </div>

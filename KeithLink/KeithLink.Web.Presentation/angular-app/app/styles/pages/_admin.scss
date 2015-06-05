@@ -37,3 +37,9 @@
 .searchbar-btn{
   height:31px;
 }
+
+@media (min-width: 769px) {
+ .editDetailsCheckbox {
+  margin-top:10px !important;
+ }
+}
