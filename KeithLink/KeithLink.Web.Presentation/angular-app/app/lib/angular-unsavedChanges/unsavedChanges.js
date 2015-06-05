@@ -12,8 +12,8 @@ angular.module('unsavedChanges', ['resettable'])
     var logEnabled = false;
     var useTranslateService = true;
     var routeEvent = ['$locationChangeStart', '$stateChangeStart'];
-    var navigateMessage = 'Click OK to proceed, or Cancel to return to the page and save your work';
-    var reloadMessage = 'You will lose unsaved changes if you reload this page';
+    var navigateMessage = 'You will lose unsaved changes if you leave this page. Click OK to proceed, or Cancel to return to the page and save your work.';
+    var reloadMessage = 'You will lose unsaved changes if you reload this page.';
 
     Object.defineProperty(_this, 'navigateMessage', {
         get: function() {
