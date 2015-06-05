@@ -23,7 +23,7 @@ angular.module('bekApp')
           ctrl.$render();
         }
      
-        if(attrs.id === 'inventoryRep'){
+        if(attrs.id === 'inventoryRep' || attrs.id=== 'parlevel'){
           //allows for 2 decimal places
          scope.checkRegex = (directive.REGEXP2.test(viewValue) || directive.REGEXP.test(viewValue));
         } else{
