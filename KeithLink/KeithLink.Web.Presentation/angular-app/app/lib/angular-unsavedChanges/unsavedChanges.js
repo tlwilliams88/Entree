@@ -12,8 +12,8 @@ angular.module('unsavedChanges', ['resettable'])
     var logEnabled = false;
     var useTranslateService = true;
     var routeEvent = ['$locationChangeStart', '$stateChangeStart'];
-    var navigateMessage = 'You will lose unsaved changes if you leave this page';
-    var reloadMessage = 'You will lose unsaved changes if you reload this page';
+    var navigateMessage = 'You will lose unsaved changes if you leave this page. Click OK to proceed, or Cancel to return to the page and save your work.';
+    var reloadMessage = 'You will lose unsaved changes if you reload this page.';
 
     Object.defineProperty(_this, 'navigateMessage', {
         get: function() {
@@ -202,15 +202,15 @@ angular.module('unsavedChanges', ['resettable'])
             var eventsToWatchFor = unsavedWarningsConfig.routeEvent;
 
             angular.forEach(eventsToWatchFor, function(aEvent) {
-                //calling this function later will unbind this, acting as $off()
+                //calling this function later will unbind this, acting as $off()             
                 var removeFn = $rootScope.$on(aEvent, function(event, next, current) {
                     unsavedWarningsConfig.log("user is moving with " + aEvent);
                     // @todo this could be written a lot cleaner! 
-                    if (!allFormsClean()) {
+                    if (!allFormsClean() && !event.defaultPrevented) {
                         unsavedWarningsConfig.log("a form is dirty");
                         if (!confirm(messages.navigate)) {
                             unsavedWarningsConfig.log("user wants to cancel leaving");
-                            event.preventDefault(); // user clicks cancel, wants to stay on page 
+                            event.preventDefault(); // user clicks cancel, wants to stay on page                            
                         } else {
                             unsavedWarningsConfig.log("user doesn't care about loosing stuff");
                             $rootScope.$broadcast('resetResettables');

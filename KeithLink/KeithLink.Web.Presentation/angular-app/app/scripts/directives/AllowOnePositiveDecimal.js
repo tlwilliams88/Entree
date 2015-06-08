@@ -22,8 +22,17 @@ angular.module('bekApp')
           ctrl.$setViewValue('0' + viewValue);
           ctrl.$render();
         }
-     
-        if(attrs.id === 'inventoryRep'){
+
+        if(viewValue && viewValue !== undefined){
+          var reg = /[a-zA-Z]/;
+          if(reg.test(viewValue)){
+          viewValue = viewValue.replace(/[^0-9\.]+/g, '');
+          ctrl.$setViewValue(viewValue);   
+          ctrl.$render();
+        }
+
+        }
+        if (attrs.id === 'inventoryRep' || attrs.id==="parlevel"  || attrs.id==="onHand") {
           //allows for 2 decimal places
          scope.checkRegex = (directive.REGEXP2.test(viewValue) || directive.REGEXP.test(viewValue));
         } else{
@@ -42,7 +51,7 @@ angular.module('bekApp')
       ctrl.$parsers.unshift(checkValidity);
       ctrl.$formatters.unshift(checkValidity);
     }, 
-    REGEXP : /^([1-9]\d*|0)(\.\d)?$/  ,  
+    REGEXP : /^([1-9]\d*|0)(\.\d)?$/,
     REGEXP2 : /^([1-9]\d*|0)(\.\d\d)?$/ 
   };
 
