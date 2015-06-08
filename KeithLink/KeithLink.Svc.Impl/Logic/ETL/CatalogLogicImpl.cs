@@ -8,7 +8,7 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 
 using KeithLink.Svc.Core.Enumerations.List;
-using KeithLink.Svc.Core.ETL;
+using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Messaging;
@@ -38,10 +38,11 @@ using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Impl.ETL
 {
-    public class CatalogLogicImpl: KeithLink.Svc.Core.ETL.ICatalogLogic
+    public class CatalogLogicImpl : KeithLink.Svc.Core.Interface.ETL.ICatalogLogic
     {
         #region " attributes "
         private const string Language = "en-US";
+        // Should this be removed?
 		private readonly string ItemSpec_NonStock = "NonStock";
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";
@@ -128,6 +129,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         //run all catalog, es, and pre-populated list tasks in a non-distributed manner
+        // TODO: Is this being used at all anymore? Does it need to be removed?
         public void ProcessCatalogDataSerial()
         {
             try
@@ -178,6 +180,8 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
+        // Refactored to ETL\ElasticSearch* classes
+        // TODO: Remove when new process is up and running
         public void ProcessElasticSearchData()
         {
             try
@@ -241,6 +245,7 @@ namespace KeithLink.Svc.Impl.ETL
         {   
         }
 
+        // Refactored to new ETL\ListImportLogic class
         private void ImportPrePopulatedLists()
         {
 
@@ -295,6 +300,7 @@ namespace KeithLink.Svc.Impl.ETL
             eventLog.WriteInformationLog(string.Format("ImportPrePopulatedLists Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
+        // Refactored to new ETL\ElasticSearchItemImportLogic class
         private void ImportItemsToElasticSearch()
         {
 			//For performance debugging purposes
@@ -344,6 +350,8 @@ namespace KeithLink.Svc.Impl.ETL
 			eventLog.WriteInformationLog(string.Format("ImportItemsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
+        // Refactored to new ETL\ElasticSearchCategoriesImortLogic
+        // TODO: Remove this when after the new import is tested
         private void ImportCategoriesToElasticSearch()
         {
 			//For performance debugging purposes
@@ -397,6 +405,8 @@ namespace KeithLink.Svc.Impl.ETL
 			eventLog.WriteInformationLog(string.Format("ImportCategoriesToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
 
+        // Refactored to new ETL\ElasticSearchHouseBrandsImport
+        // TODO: Remove after new import is tested.
         private void ImportHouseBrandsToElasticSearch()
         {
 			//For performance debugging purposes

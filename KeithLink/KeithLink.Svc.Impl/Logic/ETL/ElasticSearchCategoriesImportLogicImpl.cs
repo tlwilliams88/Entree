@@ -2,7 +2,6 @@
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 
-using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 
@@ -22,9 +21,11 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
     public class ElasticSearchCategoriesImportLogicImpl : IElasticSearchCategoriesImport {
 
         #region attributes
+
         private IStagingRepository _stagingRepository;
         private IElasticSearchRepository _elasticSearchRepository;
         private IEventLogRepository _eventLog;
+
         #endregion
 
         #region constructor

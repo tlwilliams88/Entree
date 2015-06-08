@@ -1,4 +1,7 @@
-﻿using KeithLink.Svc.Core.ETL;
+﻿// KeithLink
+using KeithLink.Svc.Core.Interface.ETL;
+
+// Core
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.ETL
 {
-	public class DemoStagingRepositoryImpl: IStagingRepository
+	public class DemoStagingRepositoryImpl : IStagingRepository
 	{
 		public DataTable ReadAllBranches()
 		{

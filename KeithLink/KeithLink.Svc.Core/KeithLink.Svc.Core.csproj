@@ -146,7 +146,7 @@
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
-    <Compile Include="ETL\ICustomerLogic.cs" />
+    <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
     <Compile Include="Exceptions\Orders\EarlySocketException.cs" />
@@ -499,10 +499,10 @@
     <Compile Include="Models\SiteCatalog\ProductImage.cs" />
     <Compile Include="Models\SiteCatalog\ProductImageReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductsReturn.cs" />
-    <Compile Include="ETL\ICatalogLogic.cs" />
+    <Compile Include="Interface\ETL\ICatalogLogic.cs" />
     <Compile Include="Models\SiteCatalog\Category.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="ETL\IStagingRepository.cs" />
+    <Compile Include="Interface\ETL\IStagingRepository.cs" />
     <Compile Include="Interface\InternalCatalog\ICatalogInternalRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IPriceRepository.cs" />
@@ -547,6 +547,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ETL\" />
     <Folder Include="Helpers\" />
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />

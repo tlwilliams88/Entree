@@ -1,5 +1,10 @@
-﻿using KeithLink.Svc.Core.ETL;
+﻿// KeithLink
+using KeithLink.Svc.Core.Interface.ETL;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl.Models;
+
+// Core
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,8 +12,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.Impl.ETL
 {

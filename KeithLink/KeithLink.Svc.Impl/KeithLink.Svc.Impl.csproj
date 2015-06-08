@@ -219,9 +219,9 @@
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
-    <Compile Include="ETL\DemoStagingRepositoryImpl.cs" />
-    <Compile Include="ETL\CustomerLogicImpl.cs" />
-    <Compile Include="ETL\StagingRepositoryImpl.cs" />
+    <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
+    <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
+    <Compile Include="Logic\ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\CommerceServerCore.cs" />
     <Compile Include="Helpers\DivisionHelper.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
@@ -577,7 +577,7 @@
     <Compile Include="Models\ETL\CatalogExport.cs" />
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="ETL\CatalogLogicImpl.cs" />
+    <Compile Include="Logic\ETL\CatalogLogicImpl.cs" />
     <Compile Include="Models\SiteCatalog\Schemas\PricingResponse.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -883,6 +883,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ETL\" />
     <Folder Include="Repository\InternalSvc\" />
     <Folder Include="Schemas\" />
   </ItemGroup>

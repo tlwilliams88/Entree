@@ -2,10 +2,8 @@
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 
-using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
-
 
 // Core
 using System;
@@ -20,9 +18,15 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Logic.ETL {
     public class ElasticSearchHouseBrandsImportLogicImpl : IElasticSearchHouseBrandsImport {
 
+        #region attributes
+
         private IStagingRepository _stagingRepository;
         private IElasticSearchRepository _elasticSearchRepository;
         private IEventLogRepository _eventLog;
+
+        #endregion
+
+        #region constructor
 
         public ElasticSearchHouseBrandsImportLogicImpl( IStagingRepository stagingRepository,
                                                   IElasticSearchRepository elasticSearchRepository,
@@ -32,6 +36,10 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             _elasticSearchRepository = elasticSearchRepository;
             _eventLog = eventLogRespository;
         }
+
+        #endregion
+
+        #region functions 
 
         public void ImportHouseBrands()
         {
@@ -62,6 +70,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
             _eventLog.WriteInformationLog(string.Format("ImportHouseBrandsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
         }
+
+        #endregion
 
     }
 

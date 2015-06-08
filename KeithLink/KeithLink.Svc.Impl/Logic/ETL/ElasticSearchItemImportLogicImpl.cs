@@ -2,7 +2,6 @@
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 
-using KeithLink.Svc.Core.ETL;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 
@@ -25,6 +24,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #region attributes
         private const string Language = "en-US";
+        // ItemSpec_NonStock is not being used, remove it?
 		private readonly string ItemSpec_NonStock = "NonStock";
 		private readonly string ItemSpec_ReplacementItem = "ReplacementItem";
 		private readonly string ItemSpec_Replaced = "ItemBeingReplaced";

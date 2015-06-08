@@ -1,21 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
-using System.Collections.Concurrent;
-using KeithLink.Svc.Core.ETL;
-using KeithLink.Svc.Core.Models.Generated;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Profile;
+﻿// Commerce Server
 using CommerceServer.Core.Profiles;
 using CommerceServer.Core.Runtime.Profiles;
 using CommerceServer.Core.Runtime;
 using CommerceServer.Core.Shared;
 using CommerceServer.Core.Runtime.Configuration;
 using CommerceServer.Core.Runtime.Diagnostics;
+
+// KeithLink
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.ETL;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Generated;
+
+// Core
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Data;
 
 namespace KeithLink.Svc.Impl.ETL
 {
