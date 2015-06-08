@@ -63,7 +63,7 @@ mod.directive('infiniteScroll', [
             elementBottom = height((elem[0].ownerDocument || elem[0].document).documentElement);
           }
           remaining = elementBottom - containerBottom;
-          shouldScroll = remaining <= height(container) * scrollDistance + 1;
+          shouldScroll = remaining <= height(container) * scrollDistance + 10;
           if (shouldScroll) {
             checkWhenEnabled = true;
             if (scrollEnabled) {
