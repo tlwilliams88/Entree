@@ -174,7 +174,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			{
 				UserProfileReturn retVal = new UserProfileReturn();
 				retVal.UserProfiles.Add(this.AuthenticatedUser);
-				retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault();
+                retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results != null ? _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault() : null;
 				return retVal;
 			}
 			else

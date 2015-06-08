@@ -215,12 +215,13 @@
             <td ng-show="useParlevel"ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">
               {{::item.parlevel}}
             </td>
-            <td ng-show="useParlevel" class="input-col"  ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">            
+            <td ng-show="useParlevel" class="input-col text-center"  ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">            
               <ng-form name="parlevelForm" ng-if="item.canOrder">
               <!--  ON HAND AMOUNT -->
                 <div style="display:inline-block; white-space:nowrap;" ng-if="isMobile" type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.onhand" name="onhand" ng-change="onItemOnHandAmountChanged(item)"></div>
                   <input 
                   type="text" 
+                  id="onHand"
                   ng-if="!isMobile"
                   ng-blur="confirmQuantity('onhand', item, item.onhand)"
                   class="input-number text-right mousetrap" 

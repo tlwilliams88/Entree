@@ -42,12 +42,19 @@ namespace KeithLink.Svc.WebApi
             app.UseWebApi(config);
         }
 
-        public void ConfigureOAuth(IAppBuilder app)
-        {
-            OAuthAuthorizationServerOptions serverOptions = new OAuthAuthorizationServerOptions(){
+        /// <summary>
+        /// sets all of the options for the OAuth tokens
+        /// </summary>
+        /// <param name="app"></param>
+        /// <remarks>
+        /// jwames - 5/29/2015 - change the duration of the token to 7 days
+        /// </remarks>
+        public void ConfigureOAuth(IAppBuilder app) {
+            OAuthAuthorizationServerOptions serverOptions = new OAuthAuthorizationServerOptions() {
                 AllowInsecureHttp = !KeithLink.Svc.Impl.Configuration.RequireHttps,
                 TokenEndpointPath = new PathString("/authen"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                //AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(7),
                 Provider = new SimpleAuthorizationServerProvider()
             };
 
@@ -55,8 +62,8 @@ namespace KeithLink.Svc.WebApi
             app.UseOAuthAuthorizationServer(serverOptions);
             app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
         }
-
-		protected static string GetXmlCommentsPath()
+        
+        protected static string GetXmlCommentsPath()
 		{
 			return System.String.Format(@"{0}\bin\KeithLink.Svc.WebApi.XML", System.AppDomain.CurrentDomain.BaseDirectory);
 		}
