@@ -14,6 +14,24 @@ namespace KeithLink.Svc.Impl.ETL
 {
 	public class DemoStagingRepositoryImpl : IStagingRepository
 	{
+        /// <summary>
+        /// Read customer item history
+        /// </summary>
+        /// <returns></returns>
+        public void ProcessItemHistoryData(int numDays) {
+                using (SqlConnection c = new SqlConnection( Configuration.AppDataConnectionString )) {
+                    using (SqlCommand cmd = new SqlCommand( "[ETL].[ProcessItemHistoryData]", c )) {
+                        cmd.CommandType = CommandType.StoredProcedure;
+
+                        cmd.Parameters.AddWithValue( "NumDays", numDays );
+
+                        cmd.CommandTimeout = 0;
+                        c.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+        }
+
 		public DataTable ReadAllBranches()
 		{
 			return PopulateDataTable("[ETL].[ReadBranches]");

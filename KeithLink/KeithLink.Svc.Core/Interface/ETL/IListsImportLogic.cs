@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.ETL {
-    public class IListsImportLogic {
-        public void ImportContractItems();
-        public void ImportWorksheetITems();
+    public interface IListsImportLogic {
+        void ImportContractItems();
+        void ImportWorksheetItems();
     }
 }

@@ -18,6 +18,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         bool ProcessCustomerData();
         [OperationContract]
+        bool ProcessCustomerItemHistory();
+        [OperationContract]
         bool ProcessInvoiceData();
         [OperationContract]
         bool ProcessContractAndWorksheetData();

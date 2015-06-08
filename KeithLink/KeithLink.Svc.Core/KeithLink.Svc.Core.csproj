@@ -191,6 +191,7 @@
     <Compile Include="Interface\ETL\IElasticSearchCategoriesImport.cs" />
     <Compile Include="Interface\ETL\IElasticSearchHouseBrandsImport.cs" />
     <Compile Include="Interface\ETL\IElasticSearchItemImport.cs" />
+    <Compile Include="Interface\ETL\IListsImportLogic.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
     <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
     <Compile Include="Interface\Profile\IInternalMarketingPreferenceLogic.cs" />
+    <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />

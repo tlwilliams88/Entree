@@ -1,6 +1,9 @@
-﻿using KeithLink.Svc.Core.Interface.Lists;
+﻿// KeithLink
+using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+// Core
 using System;
 using System.Collections.Generic;
 using System.Linq;

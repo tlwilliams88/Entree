@@ -12,7 +12,6 @@ using Autofac.Features.Indexed;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core;
-using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.ETL;
@@ -273,7 +272,10 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ElasticSearchHouseBrandsImportLogicImpl>().As<IElasticSearchHouseBrandsImport>();
 
             // List ETL
-            builder.RegisterType<ListImportLogicImpl>().As<IListItemRepository>();
+            builder.RegisterType<ListImportLogicImpl>().As<IListsImportLogic>();
+
+            // Item History
+            builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
 
             return builder.Build();
         }

@@ -25,7 +25,12 @@ namespace KeithLink.Svc.Core.Models.Customers.EF {
         [Index( "IdxItemHistory" , 3)]
         public string ItemNumber { get; set; }
 
-        public int EightWeekAverage { get; set; }
+        [MaxLength( 1 )]
+        [Column( TypeName = "char")]
+        [Index( "IdxItemHistory", 4)]
+        public string UnitOfMeasure { get; set; }
+
+        public int AverageUse { get; set; }
 
     }
 }

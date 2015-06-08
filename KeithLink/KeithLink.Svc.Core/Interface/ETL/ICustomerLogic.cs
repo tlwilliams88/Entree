@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.ETL
 {
-    public interface ICustomerLogic
-    {
+    public interface ICustomerLogic {
+        void ImportCustomerItemHistory();
+        void ImportCustomerTasks();
         void ImportCustomersToOrganizationProfile();
         void ImportDsrInfo();
-        void ImportCustomerTasks();
     }
 }

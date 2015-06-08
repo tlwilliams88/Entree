@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets27e2bf7a1956faf8580d8a9a45b80cbe9842f90a482c4af1fc7fcde0e2f9d133))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets672cd598d5fea30a4e290e0aea209cf3a48369bd55ba5f3201ad8a2bfc9337ad))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets27e2bf7a1956faf8580d8a9a45b80cbe9842f90a482c4af1fc7fcde0e2f9d133 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySets672cd598d5fea30a4e290e0aea209cf3a48369bd55ba5f3201ad8a2bfc9337ad : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "27e2bf7a1956faf8580d8a9a45b80cbe9842f90a482c4af1fc7fcde0e2f9d133"; }
+            get { return "672cd598d5fea30a4e290e0aea209cf3a48369bd55ba5f3201ad8a2bfc9337ad"; }
         }
 
         /// <summary>
@@ -804,14 +804,15 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ItemHistory
-        [CodeFirstDatabaseSchema.ItemHistory](T1.ItemHistory_Id, T1.ItemHistory_BranchId, T1.ItemHistory_CustomerNumber, T1.ItemHistory_ItemNumber, T1.ItemHistory_EightWeekAverage, T1.ItemHistory_CreatedUtc, T1.ItemHistory_ModifiedUtc)
+        [CodeFirstDatabaseSchema.ItemHistory](T1.ItemHistory_Id, T1.ItemHistory_BranchId, T1.ItemHistory_CustomerNumber, T1.ItemHistory_ItemNumber, T1.ItemHistory_UnitOfMeasure, T1.ItemHistory_AverageUse, T1.ItemHistory_CreatedUtc, T1.ItemHistory_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS ItemHistory_Id, 
             T.BranchId AS ItemHistory_BranchId, 
             T.CustomerNumber AS ItemHistory_CustomerNumber, 
             T.ItemNumber AS ItemHistory_ItemNumber, 
-            T.EightWeekAverage AS ItemHistory_EightWeekAverage, 
+            T.UnitOfMeasure AS ItemHistory_UnitOfMeasure, 
+            T.AverageUse AS ItemHistory_AverageUse, 
             T.CreatedUtc AS ItemHistory_CreatedUtc, 
             T.ModifiedUtc AS ItemHistory_ModifiedUtc, 
             True AS _from0
@@ -827,14 +828,15 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ItemHistory
-        [KeithLink.Svc.Impl.Repository.EF.Operational.ItemHistory](T1.ItemHistory_Id, T1.ItemHistory_BranchId, T1.ItemHistory_CustomerNumber, T1.ItemHistory_ItemNumber, T1.ItemHistory_EightWeekAverage, T1.ItemHistory_CreatedUtc, T1.ItemHistory_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.ItemHistory](T1.ItemHistory_Id, T1.ItemHistory_BranchId, T1.ItemHistory_CustomerNumber, T1.ItemHistory_ItemNumber, T1.ItemHistory_UnitOfMeasure, T1.ItemHistory_AverageUse, T1.ItemHistory_CreatedUtc, T1.ItemHistory_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS ItemHistory_Id, 
             T.BranchId AS ItemHistory_BranchId, 
             T.CustomerNumber AS ItemHistory_CustomerNumber, 
             T.ItemNumber AS ItemHistory_ItemNumber, 
-            T.EightWeekAverage AS ItemHistory_EightWeekAverage, 
+            T.UnitOfMeasure AS ItemHistory_UnitOfMeasure, 
+            T.AverageUse AS ItemHistory_AverageUse, 
             T.CreatedUtc AS ItemHistory_CreatedUtc, 
             T.ModifiedUtc AS ItemHistory_ModifiedUtc, 
             True AS _from0

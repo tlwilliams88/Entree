@@ -1261,7 +1261,38 @@ CREATE TABLE [ETL].[Staging_WorksheetItems](
 GO
 SET ANSI_PADDING OFF
 GO
-CREATE PROCEDURE ETL.ReadAverageItemUsage       
+--CREATE PROCEDURE ETL.ReadAverageItemUsage       
+--       @NumDays int
+--AS
+
+----NEED TO ADD SUMMARY COMMENTS HERE
+
+--SET NOCOUNT ON;
+
+--SELECT
+--       oh.BranchId
+--       , oh.CustomerNumber
+--       , od.ItemNumber
+--       , od.unitOfMeasure
+--       , AVG(od.ShippedQuantity) 'AverageUse'
+--FROM 
+--       Orders.OrderHistoryHeader oh
+--              INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
+--WHERE 
+--       oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
+--GROUP BY 
+--       oh.BranchId
+--       , oh.CustomerNumber
+--       , od.ItemNumber
+--       , od.unitOfMeasure
+USE [BEK_Commerce_AppData]
+GO
+/****** Object:  StoredProcedure [ETL].[ReadAverageItemUsage]    Script Date: 6/8/2015 3:51:09 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE [ETL].[ProcessItemHistoryData]       
        @NumDays int
 AS
 
@@ -1269,20 +1300,35 @@ AS
 
 SET NOCOUNT ON;
 
-SELECT
-       oh.BranchId
-       , oh.CustomerNumber
-       , od.ItemNumber
-       , od.unitOfMeasure
-       , AVG(od.ShippedQuantity) 'AverageUse'
-FROM 
-       Orders.OrderHistoryHeader oh
-              INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
-WHERE 
-       oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
-GROUP BY 
-       oh.BranchId
-       , oh.CustomerNumber
-       , od.ItemNumber
-       , od.unitOfMeasure
+MERGE [Customers].[ItemHistory] AS Target
+USING (
+		SELECT
+			   oh.BranchId
+			   , oh.CustomerNumber
+			   , od.ItemNumber
+			   , od.unitOfMeasure
+			   , AVG(od.ShippedQuantity) 'AverageUse'
+		FROM 
+			   Orders.OrderHistoryHeader oh
+					  INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
+		WHERE 
+			   oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
+		GROUP BY 
+			   oh.BranchId
+			   , oh.CustomerNumber
+			   , od.ItemNumber
+			   , od.unitOfMeasure) AS Source
+ON (
+	Source.BranchId = Target.BranchId 
+	AND Source.CustomerNumber = Target.CustomerNumber 
+	AND Source.ItemNumber = Target.ItemNumber 
+	AND Source.UnitOfMeasure = Target.UnitOfMeasure
+	)
+WHEN MATCHED THEN
+	UPDATE SET
+		Target.AverageUse = Source.AverageUse
+WHEN NOT MATCHED BY TARGET THEN
+	INSERT (BranchId, CustomerNumber, ItemNumber, UnitOfMeasure, AverageUse)
+	VALUES ( Source.BranchId, Source.CustomerNumber, Source.ItemNumber, Source.UnitOfMeasure, Source.AverageUse);
+
 

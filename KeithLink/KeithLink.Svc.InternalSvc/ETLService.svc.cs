@@ -78,6 +78,16 @@ namespace KeithLink.Svc.InternalSvc
 
             return true;
         }
+
+        /// <summary>
+        /// Process customer items
+        /// </summary>
+        /// <returns></returns>
+        public bool ProcessCustomerItemHistory() {
+            Task.Factory.StartNew( () => customerLogic.ImportCustomerItemHistory() ).ContinueWith( ( t ) => { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+
+            return true;
+        }
         
         /// <summary>
         /// Stub function possibly un-needed
@@ -97,7 +107,7 @@ namespace KeithLink.Svc.InternalSvc
             Task.Factory.StartNew(() => _listImportLogic.ImportContractItems()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
-            Task.Factory.StartNew(() => _listImportLogic.ImportWorksheetITems()).ContinueWith((t) =>
+            Task.Factory.StartNew(() => _listImportLogic.ImportWorksheetItems()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
             
             return true;

@@ -12,6 +12,7 @@ using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Customers.EF;
 
 // Core
 using System;
@@ -24,21 +25,114 @@ using System.Data;
 
 namespace KeithLink.Svc.Impl.ETL
 {
-    public class CustomerLogicImpl : ICustomerLogic
-    {
+    public class CustomerLogicImpl : ICustomerLogic {
+        #region attributes
+
         private IStagingRepository stagingRepository;
+        private IItemHistoryRepository _itemHistoryRepository;
         private IDsrLogic dsrLogic;
         static ProfileContext profileSystem = null;
         private readonly IEventLogRepository eventLog;
 
+        #endregion
 
-        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog)
+        #region constructor 
+
+        public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog, IItemHistoryRepository itemHistoryRepository)
         {
             this.stagingRepository = stagingRepository;
             this.dsrLogic = dsrLogic;
             this.eventLog = eventLog;
+            this._itemHistoryRepository = itemHistoryRepository;
         }
 
+        #endregion
+
+        #region functions
+
+        /// <summary>
+        /// Create address from stage data
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        private AddressProfiles CreateAddressFromStagedData(DataRow row)
+        {
+            return new AddressProfiles()
+            {
+                Description = row.GetString("CustomerNumber"), // use the customer number in description to look up the addy when creating the profile
+				AddressType = row.GetString("BranchNumber"), //Use AddressType for branch Id for look up when addy is created
+                AddressName = "Preferred",
+                Line1 = row.GetString("Address1"),
+                Line2 = row.GetString("Address2"),
+                City = row.GetString("City"),
+                StateProvinceCode = row.GetString("State"),
+                ZipPostalCode = row.GetString("ZipCode"),
+                Telephone = row.GetString("Telephone")
+				
+            };
+        }
+
+        /// <summary>
+        /// Create organization from staged data
+        /// </summary>
+        /// <param name="row"></param>
+        /// <returns></returns>
+        private Organization CreateOrganizationFromStagedData(DataRow row)
+        {
+            Organization org = new Organization()
+            {
+                Name = row.GetString("CustomerName"),
+                CustomerNumber = row.GetString("CustomerNumber"),
+                BranchNumber = row.GetString("BranchNumber"),
+                DsrNumber = row.GetString("DsrNumber"),
+                DsmNumber = row.GetString("DsmNumber"),
+                NationalOrRegionalAccountNumber = row.GetString("NationalOrRegionalAccountNumber"),
+                ContractNumber = row.GetString("ContractNumber"),
+                IsPoRequired = GetBoolFromYorN(row.GetString("PORequiredFlag")),
+                IsPowerMenu = GetBoolFromYorN(row.GetString("PowerMenu")),
+                TermCode = row.GetString("TermCode"),
+                CreditLimit = row.GetNullableDecimal("CreditLimit"),
+                CreditHoldFlag = row.GetString("CreditHoldFlag"),
+                DateOfLastPayment = row.GetNullableDateTime("DateOfLastPayment", "yyyyMMdd"),
+                AmountDue = row.GetNullableDecimal("AmountDue"),
+                CurrentBalance = row.GetNullableDecimal("CurrentBalance"),
+                BalanceAge1 = row.GetNullableDecimal("BalanceAge1"),
+                BalanceAge2 = row.GetNullableDecimal("BalanceAge2"),
+                BalanceAge3 = row.GetNullableDecimal("BalanceAge3"),
+                BalanceAge4 = row.GetNullableDecimal("BalanceAge4"),
+                AchType = row.GetString("AchType"),
+                NationalId = row.GetString("NationalId"),
+                NationalNumber = row.GetString("NationalNumber"),
+                NationalSubNumber = row.GetString("NationalSubNumber"),
+                RegionalId = row.GetString("RegionalId"),
+                RegionalNumber = row.GetString("RegionalNumber"),
+                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer")
+                
+                // NationalAccountId = row.Get // this will come from a separate file
+                // TODO, add address info
+            };
+            return org;
+        }
+
+        /// <summary>
+        /// Import customer item history
+        /// </summary>
+        public void ImportCustomerItemHistory() {
+            try {
+                eventLog.WriteInformationLog( "ETL Import Process Starting: Import Customer Item History" );
+
+                // Execute processing for 8 week average items
+                stagingRepository.ProcessItemHistoryData(56);
+
+                eventLog.WriteInformationLog( "ETL Import Process Finished: Import Customer Item History" );
+            } catch (Exception ex) {
+                eventLog.WriteErrorLog( "Error with ETL Import -- Customer Item History task", ex );
+            }
+        }
+
+        /// <summary>
+        /// Import customer tasks
+        /// </summary>
         public void ImportCustomerTasks()
         {
             try
@@ -57,6 +151,9 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
+        /// <summary>
+        /// Import customers to organization profile
+        /// </summary>
         public void ImportCustomersToOrganizationProfile()
         {
             DateTime start = DateTime.Now;
@@ -148,6 +245,9 @@ namespace KeithLink.Svc.Impl.ETL
             return;
         }
 
+        /// <summary>
+        /// Import DSR data
+        /// </summary>
         public void ImportDsrInfo()
         {
             DataTable dsrInfo = stagingRepository.ReadDsrInfo();
@@ -179,66 +279,22 @@ namespace KeithLink.Svc.Impl.ETL
             
         }
 
-        private AddressProfiles CreateAddressFromStagedData(DataRow row)
-        {
-            return new AddressProfiles()
-            {
-                Description = row.GetString("CustomerNumber"), // use the customer number in description to look up the addy when creating the profile
-				AddressType = row.GetString("BranchNumber"), //Use AddressType for branch Id for look up when addy is created
-                AddressName = "Preferred",
-                Line1 = row.GetString("Address1"),
-                Line2 = row.GetString("Address2"),
-                City = row.GetString("City"),
-                StateProvinceCode = row.GetString("State"),
-                ZipPostalCode = row.GetString("ZipCode"),
-                Telephone = row.GetString("Telephone")
-				
-            };
-        }
-
-        private Organization CreateOrganizationFromStagedData(DataRow row)
-        {
-            Organization org = new Organization()
-            {
-                Name = row.GetString("CustomerName"),
-                CustomerNumber = row.GetString("CustomerNumber"),
-                BranchNumber = row.GetString("BranchNumber"),
-                DsrNumber = row.GetString("DsrNumber"),
-                DsmNumber = row.GetString("DsmNumber"),
-                NationalOrRegionalAccountNumber = row.GetString("NationalOrRegionalAccountNumber"),
-                ContractNumber = row.GetString("ContractNumber"),
-                IsPoRequired = GetBoolFromYorN(row.GetString("PORequiredFlag")),
-                IsPowerMenu = GetBoolFromYorN(row.GetString("PowerMenu")),
-                TermCode = row.GetString("TermCode"),
-                CreditLimit = row.GetNullableDecimal("CreditLimit"),
-                CreditHoldFlag = row.GetString("CreditHoldFlag"),
-                DateOfLastPayment = row.GetNullableDateTime("DateOfLastPayment", "yyyyMMdd"),
-                AmountDue = row.GetNullableDecimal("AmountDue"),
-                CurrentBalance = row.GetNullableDecimal("CurrentBalance"),
-                BalanceAge1 = row.GetNullableDecimal("BalanceAge1"),
-                BalanceAge2 = row.GetNullableDecimal("BalanceAge2"),
-                BalanceAge3 = row.GetNullableDecimal("BalanceAge3"),
-                BalanceAge4 = row.GetNullableDecimal("BalanceAge4"),
-                AchType = row.GetString("AchType"),
-                NationalId = row.GetString("NationalId"),
-                NationalNumber = row.GetString("NationalNumber"),
-                NationalSubNumber = row.GetString("NationalSubNumber"),
-                RegionalId = row.GetString("RegionalId"),
-                RegionalNumber = row.GetString("RegionalNumber"),
-                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer")
-                
-                // NationalAccountId = row.Get // this will come from a separate file
-                // TODO, add address info
-            };
-            return org;
-        }
-
+        /// <summary>
+        /// Helper function to convert Y/N to boolean
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
         private static bool GetBoolFromYorN(string value)
         {
             // if we have a value and it is Y, return true
             return (!(String.IsNullOrEmpty(value)) && value.Equals("Y", StringComparison.CurrentCulture));
         }
 
+        /// <summary>
+        /// Get existing organizations
+        /// </summary>
+        /// <param name="organizationType"></param>
+        /// <returns></returns>
         private List<Organization> GetExistingOrganizations(string organizationType)
         {
             ProfileContext ctxt = GetProfileContext();
@@ -280,6 +336,10 @@ namespace KeithLink.Svc.Impl.ETL
             return existingOrgs;
         }
 
+        /// <summary>
+        /// Get profile context
+        /// </summary>
+        /// <returns></returns>
         private static ProfileContext GetProfileContext()
         {
             // Get the Profiles run-time object.
@@ -294,6 +354,7 @@ namespace KeithLink.Svc.Impl.ETL
             }
             return profileSystem;
         }
-       
+
+        #endregion
     }
 }

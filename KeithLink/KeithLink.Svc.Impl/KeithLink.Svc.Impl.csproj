@@ -221,6 +221,7 @@
     <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ListImportLogicImpl.cs" />
     <Compile Include="Logic\ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\CommerceServerCore.cs" />
     <Compile Include="Helpers\DivisionHelper.cs" />
@@ -562,6 +563,14 @@
     <Compile Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.Designer.cs">
       <DependentUpon>201505261936245_Add_ItemHistory_Table.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.cs" />
+    <Compile Include="Repository\EF\Migrations\201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.Designer.cs">
+      <DependentUpon>201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs" />
+    <Compile Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.Designer.cs">
+      <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -640,6 +649,7 @@
     <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
+    <Compile Include="Repository\Profile\ItemHistoryRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\MarketingPreferencesRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasLogicImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
@@ -1116,6 +1126,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.resx">
       <DependentUpon>201505261936245_Add_ItemHistory_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.resx">
+      <DependentUpon>201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.resx">
+      <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
