@@ -5,9 +5,13 @@ angular.module('bekApp')
     function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, $analytics) {
     
     // redirect to url with correct parameters
-    var basketId;
+       var basketId;
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
+      if($stateParams.continueToCart){
+      //continueToCart indicates the Proceed to Checkout button was pressed.
+      $state.go('menu.cart.items', {cartId: basketId});
+      }
     } else {
       basketId = 'New';
     }
@@ -16,7 +20,6 @@ angular.module('bekApp')
     }
 
     $scope.basketId = basketId;
-
 
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
@@ -239,8 +242,8 @@ angular.module('bekApp')
       } else {
         cartId = cart.id;
       }
-
-      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel });
+        var  continueToCart = $scope.continueToCart
+      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel, continueToCart: continueToCart});
     };
 
     /**********
@@ -369,6 +372,11 @@ angular.module('bekApp')
           processingSaveChangeOrder = false;
         });
       }
+    }
+
+    $scope.saveAndContinue = function(){
+      $scope.continueToCart = true;
+      $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
     }
 
     $scope.updateOrderClick = function(list, cart) {
