@@ -480,16 +480,24 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 		public PagedResults<Customer> GetPagedCustomersForDSR(PagingModel paging, string searchTerm, List<Dsr> dsrList)
 		{
-			//var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsr_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
+			PagedResults<Customer> returnValue = new PagedResults<Customer>();
+
             System.Text.StringBuilder whereText = new System.Text.StringBuilder();
             for (int i = 0; i < dsrList.Count; i++) {
-                if (i > 0) { whereText.Append(" OR "); }
-                whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
+                if (!String.IsNullOrEmpty(dsrList[i].DsrNumber) && !String.IsNullOrEmpty(dsrList[i].Branch))
+                {
+                    if (i > 0) { whereText.Append(" OR "); }
+                    whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
+                }
             }
-            
 
-            //return RetrievePagedResults(size, from, searchTerm, whereClause);
-			return RetrievePagedResults(paging, searchTerm, whereText.ToString());
+            if (!String.IsNullOrEmpty(whereText.ToString()))
+            {
+                returnValue = RetrievePagedResults(paging, searchTerm, whereText.ToString());
+            }
+                        
+            return returnValue;
+
 		}
 
 		public PagedResults<Customer> GetPagedCustomersForDSM(PagingModel paging, string dsrNumber, string branchId, string searchTerm)
@@ -520,50 +528,50 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			return RetrievePagedResults(paging, searchTerm, whereClause);
 		}
 
-		private PagedResults<Customer> RetrievePagedResults(PagingModel paging, string searchTerm, string whereClause)
-		{
-			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+        private PagedResults<Customer> RetrievePagedResults(PagingModel paging, string searchTerm, string whereClause)
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 
-			if (!string.IsNullOrEmpty(searchTerm))
-				whereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
+            if (!string.IsNullOrEmpty(searchTerm))
+                whereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
 
 
-			queryOrg.SearchCriteria.WhereClause = whereClause;
-			queryOrg.SearchCriteria.FirstItemIndex = paging.From.HasValue ? paging.From.Value : 0;
-			queryOrg.SearchCriteria.NumberOfItemsToReturn = paging.Size.HasValue ? paging.Size.Value : int.MaxValue;
-			queryOrg.SearchCriteria.ReturnTotalItemCount = true;
+            queryOrg.SearchCriteria.WhereClause = whereClause;
+            queryOrg.SearchCriteria.FirstItemIndex = paging.From.HasValue ? paging.From.Value : 0;
+            queryOrg.SearchCriteria.NumberOfItemsToReturn = paging.Size.HasValue ? paging.Size.Value : int.MaxValue;
+            queryOrg.SearchCriteria.ReturnTotalItemCount = true;
 
-			if (paging.Sort != null && paging.Sort.Count > 0)
-			{
-				queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>();
-				foreach (var sortOption in paging.Sort)
-				{
-					switch (sortOption.Field.ToLower())
-					{
-						case "customername":
-							queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_name", SortDirection = sortOption.SortOrder == SortOrder.Ascending? SortDirection.Ascending : SortDirection.Descending});
-							break;
-						case "customernumber":
-							queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_customer_number", SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending });
-							break;
-					}
-				}
-			}
-			
-			//queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>() { new CommerceSortProperty() { SortDirection = SortDirection.Descending, CommerceEntityModelName = "u_customer_number" } };
+            if (paging.Sort != null && paging.Sort.Count > 0)
+            {
+                queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>();
+                foreach (var sortOption in paging.Sort)
+                {
+                    switch (sortOption.Field.ToLower())
+                    {
+                        case "customername":
+                            queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_name", SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending });
+                            break;
+                        case "customernumber":
+                            queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_customer_number", SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending });
+                            break;
+                    }
+                }
+            }
 
-			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            //queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>() { new CommerceSortProperty() { SortDirection = SortDirection.Descending, CommerceEntityModelName = "u_customer_number" } };
 
-			var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
-			var dsrs = RetrieveDsrList();
-			System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
-			{
-				Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
-				customers.Add(OrgToCustomer(org, dsrs));
-			});
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
-			return new PagedResults<Customer>() { Results = customers.ToList(), TotalResults = res.TotalItemCount.HasValue ? res.TotalItemCount.Value : 0 };
-		}
+            var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
+            var dsrs = RetrieveDsrList();
+            System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
+            {
+                Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
+                customers.Add(OrgToCustomer(org, dsrs));
+            });
+
+            return new PagedResults<Customer>() { Results = customers.ToList(), TotalResults = res.TotalItemCount.HasValue ? res.TotalItemCount.Value : 0 };
+        }
 		
 		#endregion
 				

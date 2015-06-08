@@ -102,6 +102,9 @@ angular.module('bekApp')
           item.hasUnitPrice = Service.hasPrice(item.unitPrice);
           item.hasPackagePrice = Service.hasPackagePrice(item);
           item.hasCasePrice = Service.hasCasePrice(item);
+          if(item.each){
+            item.each = item.hasPackagePrice;
+          }
         });
       }
     }

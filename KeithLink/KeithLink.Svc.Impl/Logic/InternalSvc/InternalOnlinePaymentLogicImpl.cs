@@ -302,11 +302,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             foreach (var payment in payments) {
                 if (!payment.PaymentDate.HasValue) { payment.PaymentDate = DateTime.Now; }
+                payment.ConfirmationId = (int)confId;
 
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction() {
                     AccountNumber = payment.AccountNumber,
 					Division = DivisionHelper.GetDivisionFromBranchId(userContext.BranchId),
-                    ConfirmationId = (int)confId,
+                    ConfirmationId = payment.ConfirmationId,
                     CustomerNumber = userContext.CustomerId,
                     InvoiceNumber = payment.InvoiceNumber,
                     PaymentAmount = payment.PaymentAmount,
