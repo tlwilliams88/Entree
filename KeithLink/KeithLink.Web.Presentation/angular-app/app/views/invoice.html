@@ -41,7 +41,7 @@
         novalidate>
     <div class="col-md-12" ng-if="viewingAllCustomers">
       <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
-    </div>
+    </div>  
     <div class="col-sm-12 col-xs-12 col-md-4 pull-right" ng-if="!viewingAllCustomers &&  (!isInternalAccountAdminUser || isDemo)">
       <div class="info-box" ng-if="hasPayableInvoices">
         <h3 style="margin-top:0">Billing Information</h3>
@@ -52,7 +52,7 @@
         </address>
         <h3>Bank Account Info</h3>
 
-        <div class="btn-group" dropdown is-open="status.isopen">
+        <div class="btn-group" dropdown is-open="status.isopen" ng-if="accounts.length >= 1">
           <button type="button" class="btn-lg btn btn-default dropdown-toggle" style="text-align:left;" ng-disabled="accounts.length <= 1">
               <div style="display:inline-block;vertical-align:middle;">
                 {{selectedAccount.name}}<br>
@@ -63,7 +63,7 @@
 
             <div class="dropdown-menu">
               <table class="table no-margin">
-                <tr ng-click="selectAccount(account)" ng-show="account.id !== selectedAccount.id" ng-repeat="account in accounts | orderBy: 'name'">
+                <tr ng-click="selectAccount(account)" ng-repeat="account in accounts | orderBy: 'name'">
                   <td><span class="overflow">{{account.name}}</span></td>
                 </tr>
               </table>

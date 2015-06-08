@@ -23,6 +23,9 @@ angular.module('bekApp')
     $scope.loadingResults = false;
   }
 
+  // Remove focus from notifications icon in header bar
+  document.activeElement.blur();
+
   $scope.sort = {
     field: 'messagecreatedutc',
     sortDescending: true
