@@ -1,34 +1,47 @@
-﻿using KeithLink.Svc.Core.Interface.Lists;
+﻿// KeithLink
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
+
+using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Messaging;
+
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+
+using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Customers;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
+using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+// Core
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Enumerations.List;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Models.Reports;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Helpers;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Models.Paging;
-using KeithLink.Common.Core.Logging;
-using System.Collections.Concurrent;
-using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
-using KeithLink.Svc.Core.Extensions.Messaging;
+
+
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {
 	public class InternalListLogic : IInternalListLogic {
+
         #region attributes
+
         private readonly IUnitOfWork unitOfWork;
 		private readonly IListRepository listRepository;
 		private readonly IListItemRepository listItemRepository;
@@ -41,18 +54,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		private readonly ICustomerRepository customerRepository;
 		private readonly IEventLogRepository eventLogRepository;
 		private readonly IGenericQueueRepository queueRepository;
-
+        private readonly IItemHistoryRepository _itemHistoryRepository;
 
 		private const string CACHE_GROUPNAME = "UserList";
 		private const string CACHE_NAME = "UserList";
 		private const string CACHE_PREFIX = "Default";
+
         #endregion
 
         #region ctor
+
         public InternalListLogic(IUnitOfWork unitOfWork, IListRepository listRepository,
-			IListItemRepository listItemRepository,
-			ICatalogLogic catalogLogic, ICacheRepository listCacheRepository, IPriceLogic priceLogic, IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
-			IUserActiveCartRepository userActiveCartRepository, ICustomerRepository customerRepository, IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository)
+			IListItemRepository listItemRepository, ICatalogLogic catalogLogic, 
+            ICacheRepository listCacheRepository, IPriceLogic priceLogic,
+            IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
+			IUserActiveCartRepository userActiveCartRepository, ICustomerRepository customerRepository, 
+            IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository,
+            IItemHistoryRepository itemHistoryRepository)
 		{
 			this.listRepository = listRepository;
 			this.unitOfWork = unitOfWork;
@@ -66,7 +84,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.customerRepository = customerRepository;
 			this.eventLogRepository = eventLogRepository;
 			this.queueRepository = queueRepository;
+            this._itemHistoryRepository = itemHistoryRepository;
 		}
+        
         #endregion
 
         #region methods
@@ -348,10 +368,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 
 			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
+            List<ItemHistory> itemStatistics = _itemHistoryRepository.Read( f => f.BranchId.Equals( catalogInfo.BranchId ) && f.CustomerNumber.Equals( catalogInfo.CustomerId ) ).ToList();
 			
 			Parallel.ForEach(list.Items, listItem =>
 			{
 				var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
@@ -385,6 +407,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 						Ingredients = prod.Nutritional.Ingredients,
 						Width = prod.Nutritional.Width
 					};
+                    listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel() {
+                        CaseEightWeekAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("C")).Select(p => p.AverageUse).FirstOrDefault(),
+                        PackageEightWeekAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("P")).Select(p => p.AverageUse).FirstOrDefault()
+                    };
 
 				}
 				
@@ -471,8 +497,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return null;
 
 			var returnList = list.ToListModel(catalogInfo);
-
-
+            
 			LookupProductDetails(user, returnList, catalogInfo);
 			listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), returnList);
 
@@ -901,7 +926,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			var returnList = tempList.ShallowCopy();
 
 			MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
+
 			
+
 			var pagedList = ToPagedList(paging, returnList);
 			
 			LookupPrices(user, pagedList.Items.Results, catalogInfo);
