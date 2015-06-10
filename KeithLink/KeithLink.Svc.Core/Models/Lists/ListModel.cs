@@ -122,7 +122,8 @@ namespace KeithLink.Svc.Core.Models.Lists
 						PackagePrice = item.PackagePrice,
                         Each = item.Each,
 						CategoryName = item.CategoryName,
-						ItemClass = item.ItemClass
+						ItemClass = item.ItemClass,
+                        ItemStatistics = item.ItemStatistics
 					});
 				}
 

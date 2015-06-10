@@ -1292,43 +1292,65 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE PROCEDURE [ETL].[ProcessItemHistoryData]       
        @NumDays int
 AS
 
---NEED TO ADD SUMMARY COMMENTS HERE
+-- ==========================================================================================
+-- Author:		Matt Joiner
+-- Create date: 2015-06-09
+-- Description:	Look up item usage for time period specified by @NumDays
+--				and merges data in Customers.ItemHistory table
+-- ==========================================================================================
 
-SET NOCOUNT ON;
-
-MERGE [Customers].[ItemHistory] AS Target
-USING (
+MERGE 
+	[Customers].[ItemHistory] AS TARGET
+	USING (
 		SELECT
-			   oh.BranchId
-			   , oh.CustomerNumber
-			   , od.ItemNumber
-			   , od.unitOfMeasure
-			   , AVG(od.ShippedQuantity) 'AverageUse'
+			oh.BranchId
+			, oh.CustomerNumber
+			, od.ItemNumber
+			, od.unitOfMeasure
+			, AVG(od.ShippedQuantity) 'AverageUse'
 		FROM 
-			   Orders.OrderHistoryHeader oh
-					  INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
+			Orders.OrderHistoryHeader oh
+			INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
 		WHERE 
-			   oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
+			oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
 		GROUP BY 
-			   oh.BranchId
-			   , oh.CustomerNumber
-			   , od.ItemNumber
-			   , od.unitOfMeasure) AS Source
-ON (
-	Source.BranchId = Target.BranchId 
-	AND Source.CustomerNumber = Target.CustomerNumber 
-	AND Source.ItemNumber = Target.ItemNumber 
-	AND Source.UnitOfMeasure = Target.UnitOfMeasure
+			oh.BranchId
+			, oh.CustomerNumber
+			, od.ItemNumber
+			, od.unitOfMeasure
+	) AS Source
+ON 
+	(
+		SOURCE.BranchId = TARGET.BranchId 
+		AND SOURCE.CustomerNumber = TARGET.CustomerNumber 
+		AND SOURCE.ItemNumber = TARGET.ItemNumber 
+		AND SOURCE.UnitOfMeasure = TARGET.UnitOfMeasure
 	)
 WHEN MATCHED THEN
-	UPDATE SET
-		Target.AverageUse = Source.AverageUse
+	UPDATE 
+		SET TARGET.AverageUse = SOURCE.AverageUse
 WHEN NOT MATCHED BY TARGET THEN
-	INSERT (BranchId, CustomerNumber, ItemNumber, UnitOfMeasure, AverageUse)
-	VALUES ( Source.BranchId, Source.CustomerNumber, Source.ItemNumber, Source.UnitOfMeasure, Source.AverageUse);
+	INSERT 
+		(
+			BranchId
+			, CustomerNumber
+			, ItemNumber
+			, UnitOfMeasure
+			, AverageUse
+		)
+	VALUES 
+		( 
+			SOURCE.BranchId
+			, SOURCE.CustomerNumber
+			, SOURCE.ItemNumber
+			, SOURCE.UnitOfMeasure
+			, SOURCE.AverageUse
+		);
+	
 
 

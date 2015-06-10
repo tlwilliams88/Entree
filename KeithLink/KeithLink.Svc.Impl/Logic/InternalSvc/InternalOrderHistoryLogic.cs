@@ -106,7 +106,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog(ex.Message + ex.StackTrace);
+                _log.WriteErrorLog(String.Format("Error Looking up invoice number {0} for customer {1} - {2}." + ex.Message + ex.StackTrace, myOrder.InvoiceNumber, myOrder.CustomerNumber, myOrder.BranchId));
             }
 
 			LookupProductDetails(branchId, returnOrder);
