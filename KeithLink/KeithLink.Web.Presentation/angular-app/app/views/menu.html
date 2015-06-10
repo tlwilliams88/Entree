@@ -72,6 +72,7 @@
               Home
             </li>
           </button>
+            <span  ng-if="::!isOrderEntryCustomer" tooltip="A dashboard of orders, account balance, and recent activity. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -83,6 +84,7 @@
               Orders
             </li>
           </button>
+            <span  ng-if="::!canViewOrders" tooltip="Create and manage orders. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -114,6 +116,7 @@
               Reports
             </li>
           </button>
+            <a ng-if="::!canPayInvoices" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
           <button
             class="btn-no-style"
             type="button"
@@ -125,6 +128,7 @@
               Invoices
             </li>
           </button>
+            <a ng-if="::!canPayInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
           <button
             class="btn-no-style"
             type="button"
@@ -136,6 +140,7 @@
               My Lists
             </li>
           </button>
+            <a ng-if="::!canManageLists" tooltip="Create custom lists of items. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
           <button
             class="btn-no-style"
             type="button"
