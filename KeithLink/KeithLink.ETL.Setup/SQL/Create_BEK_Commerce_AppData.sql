@@ -1287,7 +1287,9 @@ GO
 --       , od.unitOfMeasure
 USE [BEK_Commerce_AppData]
 GO
-/****** Object:  StoredProcedure [ETL].[ReadAverageItemUsage]    Script Date: 6/8/2015 3:51:09 PM ******/
+USE [BEK_Commerce_AppData]
+GO
+/****** Object:  StoredProcedure [ETL].[ProcessItemHistoryData]    Script Date: 6/10/2015 2:55:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1297,60 +1299,46 @@ CREATE PROCEDURE [ETL].[ProcessItemHistoryData]
        @NumDays int
 AS
 
--- ==========================================================================================
--- Author:		Matt Joiner
--- Create date: 2015-06-09
--- Description:	Look up item usage for time period specified by @NumDays
---				and merges data in Customers.ItemHistory table
--- ==========================================================================================
+SET NOCOUNT ON;
 
-MERGE 
-	[Customers].[ItemHistory] AS TARGET
-	USING (
-		SELECT
-			oh.BranchId
-			, oh.CustomerNumber
-			, od.ItemNumber
-			, od.unitOfMeasure
-			, AVG(od.ShippedQuantity) 'AverageUse'
-		FROM 
-			Orders.OrderHistoryHeader oh
-			INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
-		WHERE 
-			oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
-		GROUP BY 
-			oh.BranchId
-			, oh.CustomerNumber
-			, od.ItemNumber
-			, od.unitOfMeasure
-	) AS Source
-ON 
+TRUNCATE TABLE [Customers].[ItemHistory];
+
+INSERT INTO
+	[Customers].[ItemHistory]
 	(
-		SOURCE.BranchId = TARGET.BranchId 
-		AND SOURCE.CustomerNumber = TARGET.CustomerNumber 
-		AND SOURCE.ItemNumber = TARGET.ItemNumber 
-		AND SOURCE.UnitOfMeasure = TARGET.UnitOfMeasure
+		BranchId
+		, CustomerNumber
+		, ItemNumber
+		, CreatedUtc
+		, ModifiedUtc
+		, UnitOfMeasure
+		, AverageUse
 	)
-WHEN MATCHED THEN
-	UPDATE 
-		SET TARGET.AverageUse = SOURCE.AverageUse
-WHEN NOT MATCHED BY TARGET THEN
-	INSERT 
-		(
-			BranchId
-			, CustomerNumber
-			, ItemNumber
-			, UnitOfMeasure
-			, AverageUse
-		)
-	VALUES 
-		( 
-			SOURCE.BranchId
-			, SOURCE.CustomerNumber
-			, SOURCE.ItemNumber
-			, SOURCE.UnitOfMeasure
-			, SOURCE.AverageUse
-		);
+SELECT
+	oh.BranchId
+	, oh.CustomerNumber
+	, od.ItemNumber
+	, GETUTCDATE()
+	, GETUTCDATE()
+	, od.unitOfMeasure
+	, AVG(od.ShippedQuantity)
+FROM 
+	Orders.OrderHistoryHeader oh
+	INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
+WHERE 
+	oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
+GROUP BY 
+	oh.BranchId
+	, oh.CustomerNumber
+	, od.ItemNumber
+	, od.unitOfMeasure
+
+IF @@ERROR = 0 
+	COMMIT TRANSACTION
+ELSE	
+	ROLLBACK TRANSACTION
+
+
 	
 
 
