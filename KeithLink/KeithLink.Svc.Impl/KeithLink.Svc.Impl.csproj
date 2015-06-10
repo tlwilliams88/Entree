@@ -231,9 +231,9 @@
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
-    <Compile Include="Logic\ETL\ElasticSearchCategoriesImportLogicImpl.cs" />
-    <Compile Include="Logic\ETL\ElasticSearchHouseBrandsImportLogicImpl.cs" />
-    <Compile Include="Logic\ETL\ElasticSearchItemImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearch\CategoriesImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearch\HouseBrandsImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
@@ -893,7 +893,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ETL\" />
     <Folder Include="Repository\InternalSvc\" />
     <Folder Include="Schemas\" />
   </ItemGroup>
