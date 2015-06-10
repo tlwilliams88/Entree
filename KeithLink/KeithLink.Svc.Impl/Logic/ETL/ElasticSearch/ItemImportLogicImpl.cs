@@ -3,6 +3,7 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 
 using KeithLink.Svc.Core.Interface.ETL;
+using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 
 using KeithLink.Svc.Impl.Models.ElasticSearch.Item;
@@ -20,7 +21,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.ETL {
-    public class ElasticSearchItemImportLogicImpl : IElasticSearchItemImport {
+    public class ItemImportLogicImpl : IItemImport {
 
         #region attributes
         private const string Language = "en-US";
@@ -99,7 +100,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #region constructor
 
-        public ElasticSearchItemImportLogicImpl(IStagingRepository stagingRepository,
+        public ItemImportLogicImpl(IStagingRepository stagingRepository,
                                                 IElasticSearchRepository elasticSearchRepository,
                                                 IEventLogRepository eventLogRepository) {
 
