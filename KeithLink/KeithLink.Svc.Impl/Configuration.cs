@@ -123,6 +123,7 @@ namespace KeithLink.Svc.Impl
 
         // Misc
         private const string KEY_APP_NAME = "AppName";
+        private const string KEY_DURATION_TOKEN = "TokenDuration";
         private const string KEY_MULTIDOCS_URL = "MultiDocsUrl";
         private const string KEY_MULTIDOCS_PROXY_URL = "MultiDocsProxyUrl";
 		private const string KEY_REQUIRE_HTTPS = "RequireHttps";
@@ -133,7 +134,6 @@ namespace KeithLink.Svc.Impl
         private const string KEY_URL_WEBNOW = "WebNowUrl";
         private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
 		private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
-
 
 		//Email
 		private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -537,6 +537,12 @@ namespace KeithLink.Svc.Impl
             get {
                 string value = GetValue(LIST_ITEM_DAYS_NEW, String.Empty);
                 return ValueParsingUtil.ParseDouble(value, String.Empty);
+            }
+        }
+
+        public static int LoginTokenDuration {
+            get {
+                return int.Parse(GetValue(KEY_DURATION_TOKEN, "1"));
             }
         }
 

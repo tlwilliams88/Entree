@@ -54,7 +54,7 @@ namespace KeithLink.Svc.WebApi
                 AllowInsecureHttp = !KeithLink.Svc.Impl.Configuration.RequireHttps,
                 TokenEndpointPath = new PathString("/authen"),
                 //AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(7),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(KeithLink.Svc.Impl.Configuration.LoginTokenDuration),
                 Provider = new SimpleAuthorizationServerProvider()
             };
 
