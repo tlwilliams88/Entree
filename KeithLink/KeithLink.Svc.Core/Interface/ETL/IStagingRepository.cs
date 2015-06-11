@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Interface.ETL
         DataTable ReadDsrImages();
         void ProcessContractItems();
 		void ProcessInvoices();
-        void ProcessItemHistoryData(int numDays);
+        void ProcessItemHistoryData(int weeks);
 		void ProcessWorksheetItems();
     }
 }

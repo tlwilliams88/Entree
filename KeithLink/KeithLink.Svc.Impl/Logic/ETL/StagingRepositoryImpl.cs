@@ -62,13 +62,13 @@ namespace KeithLink.Svc.Impl.ETL
         /// Read customer item history
         /// </summary>
         /// <returns></returns>
-        public void ProcessItemHistoryData(int numDays) {
+        public void ProcessItemHistoryData(int weeks) {
             try {
                 using (SqlConnection c = new SqlConnection( Configuration.AppDataConnectionString )) {
                     using (SqlCommand cmd = new SqlCommand( "[ETL].[ProcessItemHistoryData]", c )) {
                         cmd.CommandType = CommandType.StoredProcedure;
 
-                        cmd.Parameters.AddWithValue( "NumDays", numDays );
+                        cmd.Parameters.AddWithValue( "NumWeeks", weeks );
 
                         cmd.CommandTimeout = 0;
                         c.Open();

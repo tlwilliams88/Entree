@@ -121,9 +121,7 @@ namespace KeithLink.Svc.Impl.ETL
             try {
                 eventLog.WriteInformationLog( "ETL Import Process Starting: Import Customer Item History" );
 
-                // TODO: move this value into the configuration
-                // Execute processing for 8 week average items
-                stagingRepository.ProcessItemHistoryData(56);
+                stagingRepository.ProcessItemHistoryData(Configuration.ItemHistoryAverageWeeks);
 
                 eventLog.WriteInformationLog( "ETL Import Process Finished: Import Customer Item History" );
             } catch (Exception ex) {
