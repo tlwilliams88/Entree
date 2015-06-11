@@ -133,7 +133,7 @@ angular.module('bekApp')
         if (report.listid) {
           promise = List.update({}, report).$promise;
         } else {
-          promise = List.save({ type: 'InventoryValuation' }, report);
+          promise = List.save({ type: 'InventoryValuation' }, report).$promise;
         }
 
         promise.then(function(response) {
