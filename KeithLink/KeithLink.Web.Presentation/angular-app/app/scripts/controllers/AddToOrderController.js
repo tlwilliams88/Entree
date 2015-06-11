@@ -322,17 +322,18 @@ angular.module('bekApp')
     function updateCart(cart) {
       if (!processingUpdateCart) {
         processingUpdateCart = true;
-        CartService.updateCart(cart).then(function(updatedCart) {
-          
+        CartService.updateCart(cart).then(function(updatedCart) {          
           setSelectedCart(updatedCart);
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-
           $scope.addToOrderForm.$setPristine();
           $scope.displayMessage('success', 'Successfully added ' + updatedCart.items.length + ' Items to Cart ' + updatedCart.name + '.');
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function() {
           processingUpdateCart = false;
+          if($scope.continueToCart){ 
+          $state.go('menu.cart.items', {cartId: basketId});
+          }
         });
       }
     }
