@@ -118,14 +118,21 @@ namespace KeithLink.Svc.Impl.ETL
         /// Import customer item history
         /// </summary>
         public void ImportCustomerItemHistory() {
-            try {
-                eventLog.WriteInformationLog( "ETL Import Process Starting: Import Customer Item History" );
-
-                stagingRepository.ProcessItemHistoryData(Configuration.ItemHistoryAverageWeeks);
-
-                eventLog.WriteInformationLog( "ETL Import Process Finished: Import Customer Item History" );
+            try 
+            {
+                if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    eventLog.WriteInformationLog("ETL Import Process Starting: Import Customer Item History");
+                    stagingRepository.ProcessItemHistoryData(Configuration.ItemHistoryAverageWeeks);
+                    eventLog.WriteInformationLog("ETL Import Process Finished: Import Customer Item History");
+                }
+                else
+                {
+                    eventLog.WriteInformationLog("ETL Import Process: Import Customer Item History not running because it's not Sunday");
+                }
+                
             } catch (Exception ex) {
-                eventLog.WriteErrorLog( "Error with ETL Import -- Customer Item History task", ex );
+                eventLog.WriteErrorLog("Error with ETL Import -- Import Customer Item History", ex);
             }
         }
 
