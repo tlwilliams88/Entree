@@ -145,6 +145,14 @@ angular.module('bekApp')
     canGrantAccessToOtherServices: function() {
       return ( isSysAdmin() || isKbitAdmin() );
     },
+	
+	canGrantAccessToKbit: function() {
+      return ( isSysAdmin() || isKbitAdmin() || isBranchManager() );
+    },
+	
+	canGrantAccessToEmenuManage: function() {
+      return ( isSysAdmin() || isKbitAdmin());
+    },
 
     canViewCustomerGroups: function() {
       return ( Service.isInternalAccountAdminUser() );
