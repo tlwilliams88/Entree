@@ -28,7 +28,6 @@ angular.module('bekApp')
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
       var item = $scope[object].items[idx];
       item.extPrice = PricingService.getPriceForItem(item);
-
       refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
       $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
     }
