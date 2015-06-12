@@ -151,7 +151,7 @@ angular.module('bekApp')
     },
 	
 	canGrantAccessToEmenuManage: function() {
-      return ( isSysAdmin() || isKbitAdmin());
+      return ( isSysAdmin() );
     },
 
     canViewCustomerGroups: function() {

@@ -295,5 +295,7 @@ angular.module('bekApp')
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
     $scope.canViewMarketing = AccessService.canViewMarketing();
+	$scope.canGrantAccessToKbit = AccessService.canGrantAccessToKbit();
+	$scope.canGrantAccessToEmenuManage = AccessService.canGrantAccessToEmenuManage();
   }
 }]);
