@@ -252,6 +252,7 @@ angular.module('bekApp')
     })
     .state('menu.addtoorder.items', {
       url: ':cartId/list/:listId/?useParlevel/?continueToCart',
+      params: {listItems: null},
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
