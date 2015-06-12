@@ -60,7 +60,16 @@ angular.module('bekApp')
       angular.forEach(cartItems, function(cartItem) {
         var duplicateItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
         if (duplicateItem) {
-          duplicateItem.quantity = cartItem.quantity; // set list item quantity 
+          var tester = 0;
+          // 
+          listItems.forEach(function(item){
+            if(item.itemnumber === duplicateItem.itemnumber && item.quantity !== duplicateItem.quantity){
+                tester += item.quantity;
+            }
+          })
+          if(tester===0){
+            duplicateItem.quantity = cartItem.quantity; // set list item quantity
+          }
           cartItem.isHidden = true;
         } else {
           cartItem.isHidden = false;
