@@ -112,6 +112,10 @@ angular.module('bekApp')
       return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() || isMarketing() ) );
     },
 
+    isInternalUser: function() {
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser()) );
+    },
+
     // PRIVILEDGES
 
     canBrowseCatalog: function() {

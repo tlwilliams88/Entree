@@ -128,6 +128,13 @@ angular.module('bekApp')
  
       if($scope.currentCart && !$scope.currentCart.requestedshipdate){      
           $scope.selectShipDate($scope.shipDates[0]);   
+      }else{
+          var requestedDate = $scope.currentCart.requestedshipdate;
+          var firstAvailableDate = $scope.shipDates[0].shipdate;
+
+          if (requestedDate < firstAvailableDate) {
+           $scope.selectShipDate($scope.shipDates[0]);  
+          }
       }
  
     $scope.sortByPrice = function(item) {
