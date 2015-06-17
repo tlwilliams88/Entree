@@ -27,5 +27,8 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
 
 		[DataMember(Name = "specialinstructions")]
 		public string SpecialInstructions { get; set; }
+
+        [DataMember(Name = "shipdate")]
+        public DateTime ShipDate { get; set; }
     }
 }
