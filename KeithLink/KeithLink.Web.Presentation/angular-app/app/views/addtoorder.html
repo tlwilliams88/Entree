@@ -267,11 +267,11 @@
               </div>
             </td>
             <td  class="hidden-mobile-visible-print" >
-            <div ng-if="item.itemstatistics.packageaverage !== 0 || item.itemstatistics.caseaverage !== 0"> 
+            <div ng-if="item.itemstatistics.packageaverage || item.itemstatistics.caseaverage "> 
             <a><div ng-if="item.each" tooltip="View order history for this item." class="pull-left" ng-click="openItemUsageSummaryModal(item)">{{item.itemstatistics.packageaverage}} Packs</div></a>
             <a><div ng-if="!item.each" tooltip="View order history for this item." class="pull-left" ng-click="openItemUsageSummaryModal(item)">{{item.itemstatistics.caseaverage}} Cases</div></a>
           </div>
-          <div ng-click="openItemUsageSummaryModal(item)" ng-if="item.itemstatistics.packageaverage === 0 && item.itemstatistics.caseaverage === 0">
+          <div ng-click="openItemUsageSummaryModal(item)" ng-if="!item.itemstatistics.packageaverage && !item.itemstatistics.caseaverage">
             None
           </div>
            </td>
