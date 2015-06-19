@@ -110,7 +110,83 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #endregion
 
-        #region functions
+        #region methods
+        /// <summary>
+        /// Imports current staging item data to Elastic Search
+        /// </summary>
+        public void ImportItems()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import items to ES {0}", start.ToString()));
+
+                var branches = _stagingRepository.ReadAllBranches();
+
+                foreach (DataRow row in branches.Rows)
+                {
+                    try
+                    {
+                        if (!_elasticSearchRepository.CheckIfIndexExist(row.GetString("BranchId").ToLower()))
+                        {
+                            _elasticSearchRepository.CreateEmptyIndex(row.GetString("BranchId").ToLower());
+                            _elasticSearchRepository.MapProductProperties(row.GetString("BranchId").ToLower(), ProductMapping);
+                        }
+                        else
+                            _elasticSearchRepository.RefreshSynonyms(row.GetString("BranchId").ToLower());
+                    }
+                    catch (Exception ex1)
+                    {
+                        _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error updating indexes or synonyms.  {0} -- {1}", ex1.Message, ex1.StackTrace));
+                    }
+                }
+
+                var dataTable = _stagingRepository.ReadFullItemForElasticSearch();
+                var products = new BlockingCollection<ItemUpdate>();
+
+                var gsData = _stagingRepository.ReadGSDataForItems();
+
+                var itemNutritions = BuildNutritionDictionary(gsData);
+                var itemDiet = BuildDietDictionary(gsData);
+                var itemAllergens = BuildAllergenDictionary(gsData);
+                var proprietaryItems = BuildProprietaryItemDictionary(_stagingRepository.ReadProprietaryItems());
+
+                foreach (DataRow row in dataTable.Rows)
+                {
+                    products.Add(PopulateElasticSearchItem(row, itemNutritions, itemDiet, itemAllergens, proprietaryItems));
+                };
+
+                int totalProcessed = 0;
+
+                while (totalProcessed < products.Count)
+                {
+                    try
+                    {
+                        var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
+
+                        _elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
+
+                        totalProcessed += Configuration.ElasticSearchBatchSize;
+                    }
+                    catch (Exception ex2)
+                    {
+                        _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error importing individual item to ES.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+                    }
+                }
+
+                TimeSpan took = DateTime.Now - start;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import items to ES.  Process took {0}", took.ToString()));
+            }
+            catch (Exception e)
+            {
+                _eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+            }
+
+        }
+
+        #endregion
+
+        #region helper methods
 
         /// <summary>
         /// Builds a dictionary of Allergen information from a DataSet
@@ -221,53 +297,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
 			return proprietaryItems;
 		}
-
-        /// <summary>
-        /// Imports current staging item data to Elastic Search
-        /// </summary>
-        public void ImportItems() {
-            //For performance debugging purposes
-            var startTime = DateTime.Now;
-
-            var branches = _stagingRepository.ReadAllBranches();
-
-            //Parallel.ForEach(branches.AsEnumerable(), row =>
-            foreach (DataRow row in branches.Rows) {
-                if (!_elasticSearchRepository.CheckIfIndexExist( row.GetString( "BranchId" ).ToLower() )) {
-                    _elasticSearchRepository.CreateEmptyIndex( row.GetString( "BranchId" ).ToLower() );
-                    _elasticSearchRepository.MapProductProperties( row.GetString( "BranchId" ).ToLower(), ProductMapping );
-                } else
-                    _elasticSearchRepository.RefreshSynonyms( row.GetString( "BranchId" ).ToLower() );
-            }
-
-            var dataTable = _stagingRepository.ReadFullItemForElasticSearch();
-            var products = new BlockingCollection<ItemUpdate>();
-
-            var gsData = _stagingRepository.ReadGSDataForItems();
-
-            var itemNutritions = BuildNutritionDictionary( gsData );
-            var itemDiet = BuildDietDictionary( gsData );
-            var itemAllergens = BuildAllergenDictionary( gsData );
-            var proprietaryItems = BuildProprietaryItemDictionary( _stagingRepository.ReadProprietaryItems() );
-
-            //Parallel.ForEach(dataTable.AsEnumerable(), row =>
-            foreach (DataRow row in dataTable.Rows) {
-                products.Add( PopulateElasticSearchItem( row, itemNutritions, itemDiet, itemAllergens, proprietaryItems ) );
-            };
-
-            int totalProcessed = 0;
-
-            while (totalProcessed < products.Count) {
-                var batch = products.Skip( totalProcessed ).Take( Configuration.ElasticSearchBatchSize ).ToList();
-
-                _elasticSearchRepository.Create( string.Concat( batch.Select( i => i.ToJson() ) ) );
-
-                totalProcessed += Configuration.ElasticSearchBatchSize;
-            }
-
-            _eventLog.WriteInformationLog( string.Format( "ImportItemsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString( "h'h 'm'm 's's'" ) ) );
-        }
-
+        
         /// <summary>
         /// Maps Allergen information, this update happens by reference
         /// </summary>
@@ -430,7 +460,5 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         }
         #endregion
 
-        #region properties
-        #endregion
     }
 }
