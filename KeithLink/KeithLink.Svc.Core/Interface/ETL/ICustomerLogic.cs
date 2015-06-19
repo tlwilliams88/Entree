@@ -8,7 +8,6 @@ namespace KeithLink.Svc.Core.Interface.ETL
 {
     public interface ICustomerLogic {
         void ImportCustomerItemHistory();
-        void ImportCustomerTasks();
         void ImportCustomersToOrganizationProfile();
         void ImportDsrInfo();
     }
