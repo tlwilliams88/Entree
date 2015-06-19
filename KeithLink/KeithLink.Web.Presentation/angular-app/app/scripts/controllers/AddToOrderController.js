@@ -410,6 +410,9 @@ angular.module('bekApp')
     // update quantity from on hand amount and par level
     $scope.onItemOnHandAmountChanged = function(item) {
       if (!isNaN(item.onhand)) {
+        if(item.onhand < 0){
+          item.onhand = 0;
+        }
         var quantity = Math.ceil(item.parlevel - item.onhand);
         if (quantity > -1) {
           item.quantity = quantity;
