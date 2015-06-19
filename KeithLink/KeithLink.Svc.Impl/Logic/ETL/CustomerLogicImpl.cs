@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Impl.ETL
                 eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import customer item history {0}", start.ToString()));
 
                 // Execute processing for 8 week average items
-                stagingRepository.ProcessItemHistoryData(56);
+                stagingRepository.ProcessItemHistoryData(8);
 
                 TimeSpan took = DateTime.Now - start;
                 eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import customer item history.  Process took {0}", took.ToString()));
