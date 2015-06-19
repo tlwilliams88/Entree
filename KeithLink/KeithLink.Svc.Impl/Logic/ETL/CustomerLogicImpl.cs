@@ -48,7 +48,199 @@ namespace KeithLink.Svc.Impl.ETL
 
         #endregion
 
-        #region functions
+        #region methods
+
+        /// <summary>
+        /// Import customer item history
+        /// </summary>
+        public void ImportCustomerItemHistory()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import customer item history {0}", start.ToString()));
+
+                // Execute processing for 8 week average items
+                stagingRepository.ProcessItemHistoryData(56);
+
+                TimeSpan took = DateTime.Now - start;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import customer item history.  Process took {0}", took.ToString()));
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog(String.Format("ETL: Error Importing customer item history -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+            }
+        }
+
+        /// <summary>
+        /// Import customers to organization profile
+        /// </summary>
+        public void ImportCustomersToOrganizationProfile()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import customers to CS {0}", start.ToString()));
+
+                DataTable customers = stagingRepository.ReadCustomers();
+
+                BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
+                BlockingCollection<AddressProfiles> addressesForImport = new BlockingCollection<AddressProfiles>();
+
+                //Parallel.ForEach(customers.AsEnumerable(), row =>
+                foreach (DataRow row in customers.Rows)
+                {
+                    orgsForImport.Add(CreateOrganizationFromStagedData(row));
+                    addressesForImport.Add(CreateAddressFromStagedData(row));
+                }
+
+                // Get Existing Organizations from CS
+                List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type and natl_or_regl_account_number
+
+                ProfileContext ctxt = GetProfileContext();
+
+                //Parallel.ForEach(orgsForImport, org =>
+                foreach (Organization org in orgsForImport)
+                {
+                    try
+                    {
+                        // Create a new profile object.
+                        Profile prof = null;
+                        if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
+                        {
+                            prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id, "Organization");
+                        }
+                        else
+                        {
+                            prof = ctxt.CreateProfile((Guid.NewGuid()).ToCommerceServerFormat(), "Organization");
+                        }
+                        // Set the profile properties.
+                        prof.Properties["GeneralInfo.name"].Value = org.Name;
+                        prof.Properties["GeneralInfo.customer_number"].Value = org.CustomerNumber;
+                        prof.Properties["GeneralInfo.is_po_required"].Value = org.IsPoRequired;
+                        prof.Properties["GeneralInfo.is_power_menu"].Value = org.IsPowerMenu;
+                        prof.Properties["GeneralInfo.contract_number"].Value = org.ContractNumber;
+                        prof.Properties["GeneralInfo.dsr_number"].Value = org.DsrNumber;
+                        prof.Properties["GeneralInfo.dsm_number"].Value = org.DsmNumber;
+                        prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.NationalOrRegionalAccountNumber;
+                        prof.Properties["GeneralInfo.branch_number"].Value = org.BranchNumber;
+                        prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.OrganizationType;
+                        prof.Properties["GeneralInfo.term_code"].Value = org.TermCode;
+                        prof.Properties["GeneralInfo.amount_due"].Value = org.AmountDue;
+                        prof.Properties["GeneralInfo.credit_limit"].Value = org.CreditLimit;
+                        prof.Properties["GeneralInfo.credit_hold_flag"].Value = org.CreditHoldFlag;
+                        prof.Properties["GeneralInfo.date_of_last_payment"].Value = org.DateOfLastPayment;
+                        prof.Properties["GeneralInfo.current_balance"].Value = org.CurrentBalance;
+                        prof.Properties["GeneralInfo.balance_age_1"].Value = org.BalanceAge1;
+                        prof.Properties["GeneralInfo.balance_age_2"].Value = org.BalanceAge2;
+                        prof.Properties["GeneralInfo.balance_age_3"].Value = org.BalanceAge3;
+                        prof.Properties["GeneralInfo.balance_age_4"].Value = org.BalanceAge4;
+                        prof.Properties["GeneralInfo.customer_ach_type"].Value = org.AchType;
+                        prof.Properties["GeneralInfo.national_id"].Value = org.NationalId;
+                        prof.Properties["GeneralInfo.national_number"].Value = org.NationalNumber;
+                        prof.Properties["GeneralInfo.national_sub_number"].Value = org.NationalSubNumber;
+                        prof.Properties["GeneralInfo.regional_id"].Value = org.RegionalId;
+                        prof.Properties["GeneralInfo.regional_number"].Value = org.RegionalNumber;
+                        prof.Properties["GeneralInfo.is_keithnet_customer"].Value = org.IsKeithnetCustomer;
+
+                        Profile addressProfile = null;
+                        if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))
+                        { // create a new address
+                            string newAddressId = (Guid.NewGuid()).ToCommerceServerFormat();
+                            addressProfile = ctxt.CreateProfile(newAddressId, "Address");
+                            prof.Properties["GeneralInfo.preferred_address"].Value = newAddressId;
+                        }
+                        else
+                        { // update existing address
+                            addressProfile = ctxt.GetProfile((string)prof.Properties["GeneralInfo.preferred_address"].Value, "Address");
+                        }
+
+                        AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber && x.AddressType == org.BranchNumber).FirstOrDefault();
+                        addressProfile.Properties["GeneralInfo.address_name"].Value = address.AddressName;
+                        addressProfile.Properties["GeneralInfo.address_line1"].Value = address.Line1;
+                        addressProfile.Properties["GeneralInfo.address_line2"].Value = address.Line2;
+                        addressProfile.Properties["GeneralInfo.city"].Value = address.City;
+                        addressProfile.Properties["GeneralInfo.region_code"].Value = address.StateProvinceCode;
+                        addressProfile.Properties["GeneralInfo.postal_code"].Value = address.ZipPostalCode;
+                        addressProfile.Properties["GeneralInfo.tel_number"].Value = address.Telephone;
+                        addressProfile.Update();
+
+                        prof.Update();
+                    }
+                    catch (Exception ex)
+                    {
+                        eventLog.WriteErrorLog(String.Format("ETL: Error Importing customer to CS -- individual customer.  {0} -- {1}", ex.Message, ex.StackTrace));
+                    }
+
+                }
+
+                TimeSpan took = DateTime.Now - start;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import customers to CS.  Process took {0}", took.ToString()));
+            }
+            catch (Exception e)
+            {
+                eventLog.WriteErrorLog(String.Format("ETL: Error Importing customers to CS -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+            }
+        }
+
+        /// <summary>
+        /// Import DSR data
+        /// </summary>
+        public void ImportDsrInfo()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import dsrs to CS {0}", start.ToString()));
+
+                DataTable dsrInfo = stagingRepository.ReadDsrInfo();
+
+                foreach (DataRow row in dsrInfo.Rows)
+                {
+                    try
+                    {
+                        var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr();
+                        newDsr.Branch = row.GetString("BranchId");
+                        newDsr.DsrNumber = row.GetString("DsrNumber");
+                        newDsr.EmailAddress = row.GetString("EmailAddress");
+                        newDsr.Name = row.GetString("Name");
+                        newDsr.ImageUrl = row.GetString("ImageUrl");
+                        newDsr.PhoneNumber = row.GetString("Phone");
+
+                        dsrLogic.CreateOrUpdateDsr(newDsr);
+                    }
+                    catch (Exception ex1)
+                    {
+                        eventLog.WriteErrorLog(String.Format("ETL: Error importing dsr to CS.  {0} -- {1}", ex1.Message, ex1.StackTrace));
+                    }
+                }
+
+                //TODO: Move image to multidocs
+                //dsrInfo contains fields:  EmailAddress and EmployeePhoto
+                DataTable dsrImages = stagingRepository.ReadDsrImages();
+                foreach (DataRow row in dsrImages.Rows)
+                {
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(row["EmployeePhoto"].ToString()))
+                        {
+                            dsrLogic.SendImageToMultiDocs(row.GetString("EmailAddress"), (byte[])row["EmployeePhoto"]);
+                        }
+                    }
+                    catch (Exception ex2)
+                    {
+                        eventLog.WriteErrorLog(String.Format("ETL: Error sending dsr image to multi-docs.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+                    }
+                }
+
+                TimeSpan took = DateTime.Now - start;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import dsrs.  Process took {0}", took.ToString()));
+            }
+            catch (Exception e)
+            {
+                eventLog.WriteErrorLog(String.Format("ETL: Error Importing dsrs -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+            }
+        }
 
         /// <summary>
         /// Create address from stage data
@@ -112,171 +304,6 @@ namespace KeithLink.Svc.Impl.ETL
                 // TODO, add address info
             };
             return org;
-        }
-
-        /// <summary>
-        /// Import customer item history
-        /// </summary>
-        public void ImportCustomerItemHistory() {
-            try {
-                eventLog.WriteInformationLog( "ETL Import Process Starting: Import Customer Item History" );
-
-                // Execute processing for 8 week average items
-                stagingRepository.ProcessItemHistoryData(56);
-
-                eventLog.WriteInformationLog( "ETL Import Process Finished: Import Customer Item History" );
-            } catch (Exception ex) {
-                eventLog.WriteErrorLog( "Error with ETL Import -- Customer Item History task", ex );
-            }
-        }
-
-        /// <summary>
-        /// Import customer tasks
-        /// </summary>
-        public void ImportCustomerTasks()
-        {
-            try
-            {
-                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
-                var customerTask = Task.Factory.StartNew(() => ImportCustomersToOrganizationProfile());
-                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
-                var dsrTask = Task.Factory.StartNew(() => ImportDsrInfo());
-
-                Task.WaitAll(customerTask, dsrTask);
-            }
-            catch (Exception ex)
-            {
-                //log
-                eventLog.WriteErrorLog("Error with ETL Import -- Import Customer Tasks", ex);
-            }
-        }
-
-        /// <summary>
-        /// Import customers to organization profile
-        /// </summary>
-        public void ImportCustomersToOrganizationProfile()
-        {
-            DateTime start = DateTime.Now;
-            DataTable customers = stagingRepository.ReadCustomers();
-
-            BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
-            BlockingCollection<AddressProfiles> addressesForImport = new BlockingCollection<AddressProfiles>();
-
-            //Parallel.ForEach(customers.AsEnumerable(), row =>
-            foreach(DataRow row in customers.Rows)
-            {
-                orgsForImport.Add(CreateOrganizationFromStagedData(row));
-                addressesForImport.Add(CreateAddressFromStagedData(row));
-            }
-
-            // Get Existing Organizations from CS
-            List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type and natl_or_regl_account_number
-
-            ProfileContext ctxt = GetProfileContext();
-            
-            //Parallel.ForEach(orgsForImport, org =>
-            foreach(Organization org in orgsForImport)
-                {
-                    // Create a new profile object.
-                    Profile prof = null;
-                    if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
-                    {
-                        prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id, "Organization");
-                    }
-                    else
-                    {
-                        prof = ctxt.CreateProfile((Guid.NewGuid()).ToCommerceServerFormat(), "Organization");
-                    }
-                    // Set the profile properties.
-                    prof.Properties["GeneralInfo.name"].Value = org.Name;
-                    prof.Properties["GeneralInfo.customer_number"].Value = org.CustomerNumber;
-                    prof.Properties["GeneralInfo.is_po_required"].Value = org.IsPoRequired;
-                    prof.Properties["GeneralInfo.is_power_menu"].Value = org.IsPowerMenu;
-                    prof.Properties["GeneralInfo.contract_number"].Value = org.ContractNumber;
-                    prof.Properties["GeneralInfo.dsr_number"].Value = org.DsrNumber;
-                    prof.Properties["GeneralInfo.dsm_number"].Value = org.DsmNumber;
-                    prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.NationalOrRegionalAccountNumber;
-                    prof.Properties["GeneralInfo.branch_number"].Value = org.BranchNumber;
-                    prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.OrganizationType;
-                    prof.Properties["GeneralInfo.term_code"].Value = org.TermCode;
-                    prof.Properties["GeneralInfo.amount_due"].Value = org.AmountDue;
-                    prof.Properties["GeneralInfo.credit_limit"].Value = org.CreditLimit;
-                    prof.Properties["GeneralInfo.credit_hold_flag"].Value = org.CreditHoldFlag;
-                    prof.Properties["GeneralInfo.date_of_last_payment"].Value = org.DateOfLastPayment;
-                    prof.Properties["GeneralInfo.current_balance"].Value = org.CurrentBalance;
-                    prof.Properties["GeneralInfo.balance_age_1"].Value = org.BalanceAge1;
-                    prof.Properties["GeneralInfo.balance_age_2"].Value = org.BalanceAge2;
-                    prof.Properties["GeneralInfo.balance_age_3"].Value = org.BalanceAge3;
-                    prof.Properties["GeneralInfo.balance_age_4"].Value = org.BalanceAge4;
-                    prof.Properties["GeneralInfo.customer_ach_type"].Value = org.AchType;
-                    prof.Properties["GeneralInfo.national_id"].Value = org.NationalId;
-                    prof.Properties["GeneralInfo.national_number"].Value = org.NationalNumber;
-                    prof.Properties["GeneralInfo.national_sub_number"].Value = org.NationalSubNumber;
-                    prof.Properties["GeneralInfo.regional_id"].Value = org.RegionalId;
-                    prof.Properties["GeneralInfo.regional_number"].Value = org.RegionalNumber;
-                    prof.Properties["GeneralInfo.is_keithnet_customer"].Value = org.IsKeithnetCustomer;
-
-                    Profile addressProfile = null;
-                    if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))
-                    { // create a new address
-                        string newAddressId = (Guid.NewGuid()).ToCommerceServerFormat();
-                        addressProfile = ctxt.CreateProfile(newAddressId, "Address");
-                        prof.Properties["GeneralInfo.preferred_address"].Value = newAddressId;
-                    }
-                    else
-                    { // update existing address
-                        addressProfile = ctxt.GetProfile((string)prof.Properties["GeneralInfo.preferred_address"].Value, "Address");
-                    }
-
-                    AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber && x.AddressType == org.BranchNumber).FirstOrDefault();
-                    addressProfile.Properties["GeneralInfo.address_name"].Value = address.AddressName;
-                    addressProfile.Properties["GeneralInfo.address_line1"].Value = address.Line1;
-                    addressProfile.Properties["GeneralInfo.address_line2"].Value = address.Line2;
-                    addressProfile.Properties["GeneralInfo.city"].Value = address.City;
-                    addressProfile.Properties["GeneralInfo.region_code"].Value = address.StateProvinceCode;
-                    addressProfile.Properties["GeneralInfo.postal_code"].Value = address.ZipPostalCode;
-                    addressProfile.Properties["GeneralInfo.tel_number"].Value = address.Telephone;
-                    addressProfile.Update();
-
-                    prof.Update();
-                }
-
-            TimeSpan took = DateTime.Now - start;
-            return;
-        }
-
-        /// <summary>
-        /// Import DSR data
-        /// </summary>
-        public void ImportDsrInfo()
-        {
-            DataTable dsrInfo = stagingRepository.ReadDsrInfo();
-
-            foreach (DataRow row in dsrInfo.Rows)
-            {
-				var newDsr = new KeithLink.Svc.Core.Models.Profile.Dsr
-                {
-                    Branch = row.GetString("BranchId")
-                    , DsrNumber = row.GetString("DsrNumber")
-                    , EmailAddress = row.GetString("EmailAddress")
-                    , Name = row.GetString("Name")
-                    , ImageUrl = row.GetString("ImageUrl")
-                    , PhoneNumber = row.GetString("Phone")
-                };
-                dsrLogic.CreateOrUpdateDsr(newDsr);
-            }
-
-            //TODO: Move image to multidocs
-            //dsrInfo contains fields:  EmailAddress and EmployeePhoto
-            DataTable dsrImages = stagingRepository.ReadDsrImages();
-            foreach (DataRow row in dsrImages.Rows) {
-                if ( !string.IsNullOrEmpty(row["EmployeePhoto"].ToString()) ) {
-                    dsrLogic.SendImageToMultiDocs( row.GetString( "EmailAddress" ), (byte[])row["EmployeePhoto"] );
-                }
-            }
-            
-            
-            
         }
 
         /// <summary>

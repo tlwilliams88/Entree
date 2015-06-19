@@ -41,63 +41,77 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #endregion
 
-        #region functions
+        #region methods
 
         /// <summary>
         /// Import categories to elasatic search
         /// </summary>
         public void ImportCategories()
         {
-			//For performance debugging purposes
-			var startTime = DateTime.Now;
-
-            var parentCategories = _stagingRepository.ReadParentCategories();
-            var childCategories = _stagingRepository.ReadSubCategories();
-            var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
-
-            //Parent Categories
-            //Parallel.ForEach(parentCategories.AsEnumerable(), row =>
-            foreach(DataRow row in parentCategories.Rows)
+            try
             {
-                categories.Add(new ElasticSearchCategoryUpdate()
-                {
-                    index = new ESCategoryRootData()
-                    {
-                        _id = row.GetString("CategoryId"),
-                        data = new ESCategoryData()
-                        {
-                            parentcategoryid = null,
-                            name = row.GetString("CategoryName"),
-                            ppicode = row.GetString("PPICode"),
-                            subcategories = PopulateSubCategories(row.GetString("CategoryId"), childCategories)
-                        }
-                    }
-                });
-            };
+                DateTime start = DateTime.Now;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import categories to CS {0}", start.ToString()));
 
-            //Sub Categories
-            //Parallel.ForEach(childCategories.AsEnumerable(), row =>
-            foreach(DataRow row in childCategories.Rows)
-            {
-                categories.Add(new ElasticSearchCategoryUpdate()
+                var parentCategories = _stagingRepository.ReadParentCategories();
+                var childCategories = _stagingRepository.ReadSubCategories();
+                var categories = new BlockingCollection<ElasticSearchCategoryUpdate>();
+
+                //Parent Categories
+                //Parallel.ForEach(parentCategories.AsEnumerable(), row =>
+                foreach (DataRow row in parentCategories.Rows)
                 {
-                    index = new ESCategoryRootData()
+                    categories.Add(new ElasticSearchCategoryUpdate()
                     {
-                        _id = row.GetString("CategoryId"),
-                        data = new ESCategoryData()
+                        index = new ESCategoryRootData()
                         {
-                            parentcategoryid = row.GetString("ParentCategoryId"),
-                            name = row.GetString("CategoryName"),
-                            ppicode = row.GetString("PPICode")
+                            _id = row.GetString("CategoryId"),
+                            data = new ESCategoryData()
+                            {
+                                parentcategoryid = null,
+                                name = row.GetString("CategoryName"),
+                                ppicode = row.GetString("PPICode"),
+                                subcategories = PopulateSubCategories(row.GetString("CategoryId"), childCategories)
+                            }
                         }
-                    }
-                });
+                    });
+                };
+
+                //Sub Categories
+                //Parallel.ForEach(childCategories.AsEnumerable(), row =>
+                foreach (DataRow row in childCategories.Rows)
+                {
+                    categories.Add(new ElasticSearchCategoryUpdate()
+                    {
+                        index = new ESCategoryRootData()
+                        {
+                            _id = row.GetString("CategoryId"),
+                            data = new ESCategoryData()
+                            {
+                                parentcategoryid = row.GetString("ParentCategoryId"),
+                                name = row.GetString("CategoryName"),
+                                ppicode = row.GetString("PPICode")
+                            }
+                        }
+                    });
+                }
+
+                _elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
+                
+                TimeSpan took = DateTime.Now - start;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import categories to CS.  Process took {0}", took.ToString()));
             }
-
-            _elasticSearchRepository.Create(string.Concat(categories.Select(c => c.ToJson())));
-
-			_eventLog.WriteInformationLog(string.Format("ImportCategoriesToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+            catch (Exception e)
+            {
+                _eventLog.WriteErrorLog(String.Format("ETL: Error importing categories to CS -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+            }
+           
+            
         }
+
+        #endregion
+
+        #region helper methods
 
         /// <summary>
         /// Helps build a tree of sub categories

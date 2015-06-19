@@ -39,20 +39,22 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #endregion
 
-        #region functions 
+        #region methods 
 
         public void ImportHouseBrands()
         {
-            //For performance debugging purposes
-            var startTime = DateTime.Now;
+            try
+            {
+                DateTime start = DateTime.Now;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import house brands to ES {0}", start.ToString()));
 
-            var brandsDataTable = _stagingRepository.ReadBrandControlLabels();
-            var brands = new BlockingCollection<Models.ElasticSearch.BrandControlLabels.BrandUpdate>();
+                var brandsDataTable = _stagingRepository.ReadBrandControlLabels();
+                var brands = new BlockingCollection<Models.ElasticSearch.BrandControlLabels.BrandUpdate>();
 
-            //Parallel.ForEach(brandsDataTable.AsEnumerable(), row =>reach
-            foreach(DataRow row in brandsDataTable.Rows)
+                //Parallel.ForEach(brandsDataTable.AsEnumerable(), row =>reach
+                foreach (DataRow row in brandsDataTable.Rows)
                 {
-                    brands.Add(new Models.ElasticSearch.BrandControlLabels.BrandUpdate() 
+                    brands.Add(new Models.ElasticSearch.BrandControlLabels.BrandUpdate()
                     {
                         index = new Models.ElasticSearch.BrandControlLabels.RootData()
                         {
@@ -66,18 +68,20 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
                     });
                 }
 
-            _elasticSearchRepository.Create(string.Concat(brands.Select(c => c.ToJson())));
+                _elasticSearchRepository.Create(string.Concat(brands.Select(c => c.ToJson())));
 
-            _eventLog.WriteInformationLog(string.Format("ImportHouseBrandsToElasticSearch Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+                TimeSpan took = DateTime.Now - start;
+                _eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  house brands to ES.  Process took {0}", took.ToString()));
+            }
+            catch (Exception e)
+            {
+                _eventLog.WriteErrorLog(String.Format("ETL: Error importing house brands -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+            }
+
+           
         }
 
         #endregion
 
     }
-
-    
-
-
-
-
 }

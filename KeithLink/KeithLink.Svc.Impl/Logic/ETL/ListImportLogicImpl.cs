@@ -35,21 +35,25 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #endregion
 
-        #region functions
+        #region methods
 
         /// <summary>
         /// Process and import contract items
         /// </summary>
         public void ImportContractItems() {
-            DateTime startTime = DateTime.Now;
-
             try {
-                _stagingRepository.ProcessContractItems();
-            } catch (Exception ex) {
-                _eventLogRepository.WriteErrorLog( "Error importing contract items lists", ex );
-            }
+                DateTime start = DateTime.Now;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import contract lists {0}", start.ToString()));
 
-            _eventLogRepository.WriteInformationLog(string.Format("ImportContractItems Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+                _stagingRepository.ProcessContractItems();
+
+                TimeSpan took = DateTime.Now - start;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import contract lists.  Process took {0}", took.ToString()));
+
+            } 
+            catch (Exception ex) {
+                _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Importing contract lists -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+            }
         }
 
         /// <summary>
@@ -59,12 +63,20 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             DateTime startTime = DateTime.Now;
 
             try {
+                DateTime start = DateTime.Now;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import history lists {0}", start.ToString()));
+
                 _stagingRepository.ProcessWorksheetItems();
-            } catch (Exception ex) {
-                _eventLogRepository.WriteErrorLog( "Error importing Worksheet items lists", ex );
+
+                TimeSpan took = DateTime.Now - start;
+                _eventLogRepository.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import history lists.  Process took {0}", took.ToString()));
+
+            } 
+            catch (Exception ex) {
+                _eventLogRepository.WriteErrorLog(String.Format("ETL: Error Importing history lists -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
             }
 
-            _eventLogRepository.WriteInformationLog(string.Format("ImportWorksheetItems Runtime - {0}", (DateTime.Now - startTime).ToString("h'h 'm'm 's's'")));
+            
         }
 
         #endregion
