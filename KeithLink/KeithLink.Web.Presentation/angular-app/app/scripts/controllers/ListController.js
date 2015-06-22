@@ -572,6 +572,12 @@ angular.module('bekApp')
       $scope.filterItems( $scope.listSearchTerm );     
     };
 
+    $scope.initParLvl = function(item) {
+      if(!item.parlevel){
+        item.parlevel=0;
+      }
+    };
+
     $scope.openPrintOptionsModal = function(list) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/printoptionsmodal.html',

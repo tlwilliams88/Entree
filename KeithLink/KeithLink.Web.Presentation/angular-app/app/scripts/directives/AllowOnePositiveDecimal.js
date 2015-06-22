@@ -14,6 +14,10 @@ angular.module('bekApp')
     restrict: 'A', 
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
+        if(!viewValue){
+        ctrl.$setValidity('allowOnePositiveDecimal', true);
+        return;
+        }
         // add a leading zero if value starts with a decimal
         if (typeof viewValue === 'string') {
           if(viewValue.indexOf('.') === 0){
@@ -51,7 +55,6 @@ angular.module('bekApp')
       function truncateDecimals(limit,viewVal){
         //filter out special/alpha characters
            if(typeof viewVal === 'string'){
-            var parsed = '';
           for (var i = 0, length = viewVal.length; i < length; i++) {
             if(['1','2','3','4','5','6','7','8','9','0','.'].indexOf(viewVal[i]) === -1){
               viewVal = viewVal.replace(viewVal[i], '');
