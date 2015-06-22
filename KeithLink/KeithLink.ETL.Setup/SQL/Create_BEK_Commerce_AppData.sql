@@ -1285,18 +1285,18 @@ GO
 --       , oh.CustomerNumber
 --       , od.ItemNumber
 --       , od.unitOfMeasure
+
+
 USE [BEK_Commerce_AppData]
 GO
-USE [BEK_Commerce_AppData]
-GO
-/****** Object:  StoredProcedure [ETL].[ProcessItemHistoryData]    Script Date: 6/10/2015 2:55:25 PM ******/
+/****** Object:  StoredProcedure [ETL].[ProcessItemHistoryData]    Script Date: 6/17/2015 9:03:26 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [ETL].[ProcessItemHistoryData]       
-       @NumDays int
+ALTER PROCEDURE [ETL].[ProcessItemHistoryData]       
+       @NumWeeks int
 AS
 
 SET NOCOUNT ON;
@@ -1326,7 +1326,7 @@ FROM
 	Orders.OrderHistoryHeader oh
 	INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
 WHERE 
-	oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
+	CONVERT(DATE, oh.CreatedUtc) > DATEADD(ww, (@NumWeeks * -1), CONVERT(DATE, GETDATE()))
 GROUP BY 
 	oh.BranchId
 	, oh.CustomerNumber
@@ -1337,6 +1337,8 @@ IF @@ERROR = 0
 	COMMIT TRANSACTION
 ELSE	
 	ROLLBACK TRANSACTION
+
+
 
 
 	

@@ -11,7 +11,11 @@ angular.module('bekApp')
   .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService',
     function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService) {
     
-    $scope.cartHeaders = CartService.cartHeaders;
+
+      CartService.getCartHeaders().then(function(cartHeaders){
+        $scope.cartHeaders = cartHeaders;
+      })
+
 
     // get orders
     $scope.orders = [];

@@ -38,45 +38,35 @@ namespace KeithLink.Svc.Impl.ETL
         /// </summary>
 		public void ProcessContractItems()
 		{
-            try
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
-                using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+                using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
                 {
-                    using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandTimeout = 0;
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
-            {
-                eventLog.WriteErrorLog("Error Processing Contract Lists", ex);
-            }
-            
 		}
 
         /// <summary>
         /// Read customer item history
         /// </summary>
         /// <returns></returns>
-        public void ProcessItemHistoryData(int numDays) {
-            try {
-                using (SqlConnection c = new SqlConnection( Configuration.AppDataConnectionString )) {
-                    using (SqlCommand cmd = new SqlCommand( "[ETL].[ProcessItemHistoryData]", c )) {
-                        cmd.CommandType = CommandType.StoredProcedure;
+        public void ProcessItemHistoryData(int numWeeks) {
+            using (SqlConnection c = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("[ETL].[ProcessItemHistoryData]", c))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
 
-                        cmd.Parameters.AddWithValue( "NumDays", numDays );
+                    cmd.Parameters.AddWithValue("NumWeeks", numWeeks);
 
-                        cmd.CommandTimeout = 0;
-                        c.Open();
-                        cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandTimeout = 0;
+                    c.Open();
+                    cmd.ExecuteNonQuery();
                 }
-            } catch (Exception ex) {
-                eventLog.WriteErrorLog( "Error processing Item History data", ex );
             }
         }
 
