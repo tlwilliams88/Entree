@@ -1,13 +1,14 @@
 ﻿using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Exceptions.Orders;
-using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Orders;
+
 using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 
 namespace KeithLink.Svc.Impl.Repository.Orders.History {
-    public class OrderUpdateRequestSocketRepositoryImpl : ISocketConnectionRepository, IDisposable {
+    public class OrderUpdateRequestSocketRepositoryImpl : IOrderUpdateSocketConnectionRepository, IDisposable {
         #region attributes
         private TcpClient _clientConnection;
         private bool _connected;

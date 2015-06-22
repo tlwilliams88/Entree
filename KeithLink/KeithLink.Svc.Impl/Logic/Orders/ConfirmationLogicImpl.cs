@@ -47,8 +47,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region constructor
         public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IGenericQueueRepository internalMessagingLogic, 
-                                                   IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, ICatalogRepository catalogRepo) {
-                                                       _catRepo = catalogRepo;
+                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, ICatalogRepository catalogRepo) {
+            _catRepo = catalogRepo;
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             this.genericeQueueRepository = internalMessagingLogic;
@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region methods/functions
         private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, 
-                                                                                                                    string originalStatus, string specialInstructions, DateTime? shipDate) {
+                                                                          string originalStatus, string specialInstructions, DateTime? shipDate) {
             Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
             orderChange.OrderName = (string)po["DisplayName"];
             orderChange.OriginalStatus = originalStatus;
@@ -119,38 +119,38 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 if (newItem != null) {
                     if (origItem["MainFrameStatus"] != newItem["MainFrameStatus"])
                         orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
-                                                                                                                                                            NewStatus = (string)newItem["MainFrameStatus"], 
-                                                                                                                                                            OriginalStatus = (string)origItem["MainFrameStatus"], 
-                                                                                                                                                            ItemNumber = origItem.ProductId, 
-                                                                                                                                                            SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
-                                                                                                                                                            QuantityOrdered = (int)newItem["QuantityOrdered"], 
-                                                                                                                                                            QuantityShipped = (int)newItem["QuantityShipped"] ,
-                                                                                                                                                            ItemPrice = origItem.PlacedPrice
-                                                                                                                                                           });
+                                                        NewStatus = (string)newItem["MainFrameStatus"], 
+                                                        OriginalStatus = (string)origItem["MainFrameStatus"], 
+                                                        ItemNumber = origItem.ProductId, 
+                                                        SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
+                                                        QuantityOrdered = (int)newItem["QuantityOrdered"], 
+                                                        QuantityShipped = (int)newItem["QuantityShipped"] ,
+                                                        ItemPrice = origItem.PlacedPrice
+                                                    });
                 } else {
                     orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
-                                                                                                                                                        NewStatus = "Removed", 
-                                                                                                                                                        OriginalStatus = "", 
-                                                                                                                                                        ItemNumber = origItem.ProductId, 
-                                                                                                                                                        SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
-                                                                                                                                                        QuantityOrdered = (int)origItem["QuantityOrdered"], 
-                                                                                                                                                        QuantityShipped = (int)origItem["QuantityShipped"] , 
-                                                                                                                                                        ItemPrice = origItem.PlacedPrice
-                                                                                                                                                    }); // would we ever hit this?
+                                                    NewStatus = "Removed", 
+                                                    OriginalStatus = "", 
+                                                    ItemNumber = origItem.ProductId, 
+                                                    SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
+                                                    QuantityOrdered = (int)origItem["QuantityOrdered"], 
+                                                    QuantityShipped = (int)origItem["QuantityShipped"] , 
+                                                    ItemPrice = origItem.PlacedPrice
+                                                }); // would we ever hit this?
                 }
             }
             foreach (LineItem newItem in currLineItems) {
                 LineItem origItem = origLineItems.Where(o => o.ProductId == newItem.ProductId).FirstOrDefault();
                 if (origItem == null)
                     orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
-                                                                                                                                                        NewStatus = "Added", 
-                                                                                                                                                        OriginalStatus = "", 
-                                                                                                                                                        ItemNumber = newItem.ProductId, 
-                                                                                                                                                        SubstitutedItemNumber = (string)newItem["SubstitutedItemNumber"], 
-                                                                                                                                                        QuantityOrdered = (int)newItem["QuantityOrdered"], 
-                                                                                                                                                        QuantityShipped = (int)newItem["QuantityShipped"] ,
-                                                                                                                                                        ItemPrice = newItem.PlacedPrice
-                                                                                                                                                    }); // would we ever hit this?
+                                                    NewStatus = "Added", 
+                                                    OriginalStatus = "", 
+                                                    ItemNumber = newItem.ProductId, 
+                                                    SubstitutedItemNumber = (string)newItem["SubstitutedItemNumber"], 
+                                                    QuantityOrdered = (int)newItem["QuantityOrdered"], 
+                                                    QuantityShipped = (int)newItem["QuantityShipped"] ,
+                                                    ItemPrice = newItem.PlacedPrice
+                                                }); // would we ever hit this?
 
                 orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() {
                     ItemNumber = (string)newItem.ProductId,

@@ -123,8 +123,8 @@ namespace KeithLink.Svc.Windows.OrderService
 
 			builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
 			builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As <ISocketConnectionRepository>();
-            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl
+            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As <IOrderSocketConnectionRepository>();
+            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
 			builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
