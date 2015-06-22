@@ -46,7 +46,9 @@ namespace KeithLink.Svc.Core.Extensions
                 UserId = userMessage.UserId,
                 Id = userMessage.Id,
                 Label = userMessage.Label,
-				NotificationTypeDescription = EnumUtils<NotificationType>.GetDescription(userMessage.NotificationType)
+				NotificationTypeDescription = EnumUtils<NotificationType>.GetDescription(userMessage.NotificationType),
+                CustomerName = userMessage.CustomerName,
+                BranchId = userMessage.BranchId
             };
         }
 

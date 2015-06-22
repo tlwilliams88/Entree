@@ -1,16 +1,24 @@
-﻿using KeithLink.Common.Core.Email;
-using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Core.Email;
 using KeithLink.Svc.Core.Exceptions.Orders;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-using KeithLink.Svc.Impl.Repository.Network;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Orders.History;
-using KeithLink.Svc.Impl.Repository.Orders.History.EF;
+//using KeithLink.Svc.Impl.Logic.Orders;
+//using KeithLink.Svc.Impl.Repository.Cache;
+//using KeithLink.Svc.Impl.Repository.EF.Operational;
+//using KeithLink.Svc.Impl.Repository.Network;
+//using KeithLink.Svc.Impl.Repository.Orders;
+//using KeithLink.Svc.Impl.Repository.Orders.History;
+//using KeithLink.Svc.Impl.Repository.Orders.History.EF;
+//using KeithLink.Svc.Impl.Repository.Queue;
+
+using Autofac;
+using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Diagnostics;
@@ -19,15 +27,19 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using KeithLink.Svc.Impl.Repository.Queue;
-using Newtonsoft.Json;
-using KeithLink.Svc.Impl.Repository.Cache;
 
 namespace KeithLink.Svc.Windows.OrderService {
     partial class OrderService : ServiceBase {
 
         #region attributes
-        private EventLogRepositoryImpl _log;
+        private IContainer _diContainer;
+        private IEventLogRepository _log;
+
+        private ILifetimeScope _confirmationScope;
+        private ILifetimeScope _historyRequestScope;
+        private ILifetimeScope _historryResponseScope;
+        private ILifetimeScope _orderScope;
+        private ILifetimeScope _queueScope;
 
         private static bool _allowOrderUpdateProcessing;
         private static bool _historyRequestProcessing;
@@ -52,10 +64,13 @@ namespace KeithLink.Svc.Windows.OrderService {
         #endregion
 
         #region ctor
-        public OrderService() {
+        public OrderService(IContainer container) {
+            _diContainer = container;
+
             InitializeComponent();
 
-            _log = new EventLogRepositoryImpl(this.ServiceName);
+            _log = _diContainer.Resolve<IEventLogRepository>();
+
             _orderQueueProcessing = false;
             _successfulHistoryConnection = false;
             _successfulOrderConnection = false;
@@ -229,15 +244,20 @@ namespace KeithLink.Svc.Windows.OrderService {
 
         private void ProcessConfirmations() {
             try {
-				UnitOfWork uow = new UnitOfWork(_log);
-                OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
 
-                ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                                                                       new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl(),
-                                                                       conversionLogic,
-                                                                       uow);
-                confirmationLogic.ListenForMainFrameCalls();
+                //UnitOfWork uow = new UnitOfWork(_log);
+                //OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
+
+                //ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
+                //                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
+                //                                                       new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl(),
+                //                                                       conversionLogic,
+                //                                                       uow);
+                using (_confirmationScope = _diContainer.BeginLifetimeScope()) {
+                    IConfirmationLogic confirmationLogic = _confirmationScope.Resolve<IConfirmationLogic>();
+
+                    confirmationLogic.ListenForMainFrameCalls();
+                }
             }
             catch (Exception e) {
                 string logMessage = "Processing failed receiving confirmation. Processing of confirmations will not continue. Please restart this service.";
@@ -250,28 +270,31 @@ namespace KeithLink.Svc.Windows.OrderService {
 
         private void ProcessOrderHistoryListener() {
             try {
-				UnitOfWork uow = new UnitOfWork(_log);
-                OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
+                //UnitOfWork uow = new UnitOfWork(_log);
+                //OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
 
-                KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl divRepo = new KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
+                //KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl divRepo = new KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
 
-                KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic =
-                new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(),
-                                                                              new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
-																														  new NoCacheRepositoryImpl()),
-                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(),
-                                                                              new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
-                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
-																			  new NoCacheRepositoryImpl(),
-                                                                              new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo,
-                                                                                                                             new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
-                                                                              new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
+                //KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic =
+                //new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(),
+                //                                                              new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
+                //                                                                                                          new NoCacheRepositoryImpl()),
+                //                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(),
+                //                                                              new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
+                //                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
+                //                                                              new NoCacheRepositoryImpl(),
+                //                                                              new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo,
+                //                                                                                                             new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
+                //                                                              new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
 
-                OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
-                                                                       new GenericQueueRepositoryImpl(),
-                                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+                //OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
+                //                                                       new GenericQueueRepositoryImpl(),
+                //                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+                using (_historryResponseScope = _diContainer.BeginLifetimeScope()) {
+                    IOrderHistoryLogic logic = _historryResponseScope.Resolve<IOrderHistoryLogic>();
 
-                logic.ListenForMainFrameCalls();
+                    logic.ListenForMainFrameCalls();
+                }
             } catch (Exception e) {
                 string logMessage = "Processing failed receiving order updates. Processing of order updates will not continue. Please restart this service.";
 
@@ -292,9 +315,12 @@ namespace KeithLink.Svc.Windows.OrderService {
                         }
                     }
 
-					OrderHistoryRequestLogicImpl requestLogic = new OrderHistoryRequestLogicImpl(_log, new GenericQueueRepositoryImpl(), new OrderUpdateRequestSocketRepositoryImpl());
+					//OrderHistoryRequestLogicImpl requestLogic = new OrderHistoryRequestLogicImpl(_log, new GenericQueueRepositoryImpl(), new OrderUpdateRequestSocketRepositoryImpl());
+                    using (_historyRequestScope = _diContainer.BeginLifetimeScope()) {
+                        IOrderHistoryRequestLogic requestLogic = _historyRequestScope.Resolve<IOrderHistoryRequestLogic>();
 
-                    requestLogic.ProcessRequests();
+                        requestLogic.ProcessRequests();
+                    }
 
                     _successfulHistoryConnection = true;
                     _unsentCount = 0;
@@ -337,14 +363,19 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                     if (_allowOrderUpdateProcessing) {
                         string[] files = Directory.GetFiles(Configuration.OrderUpdateWatchPath);
-						GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
+                        _orderScope = _diContainer.BeginLifetimeScope();
+                        
+                        IGenericQueueRepository repo = _orderScope.Resolve<IGenericQueueRepository>();
+						//GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
 
 						
 						System.Threading.Tasks.Parallel.ForEach(files, filePath =>
 						{
-							OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
-																				   new GenericQueueRepositoryImpl(),
-																				   new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+                            //OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
+                            //                                                       new GenericQueueRepositoryImpl(),
+                            //                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
+
+                            IOrderHistoryLogic logic = _orderScope.Resolve<IOrderHistoryLogic>();
 
 							if (CanOpenFile(filePath))
 							{
@@ -392,8 +423,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 							} // end if CanOpenFile
 						});
 
-											
 
+                        _orderScope.Dispose();
                     }
                 } catch (Exception ex) {
                     HandleException(ex);
@@ -419,10 +450,14 @@ namespace KeithLink.Svc.Windows.OrderService {
                 }
 
                 try {
-                    OrderQueueLogicImpl orderQueue = new OrderQueueLogicImpl(_log,
-                                                                   new GenericQueueRepositoryImpl(),
-                                                                   new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
-                    orderQueue.ProcessOrders();
+                    //OrderQueueLogicImpl orderQueue = new OrderQueueLogicImpl(_log,
+                    //                                               new GenericQueueRepositoryImpl(),
+                    //                                               new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
+                    using (_queueScope = _diContainer.BeginLifetimeScope()) {
+                        IOrderQueueLogic orderQueue = _queueScope.Resolve<IOrderQueueLogic>();
+
+                        orderQueue.ProcessOrders();
+                    }
 
                     _successfulOrderConnection = true;
                     _unsentCount = 0;
@@ -446,17 +481,29 @@ namespace KeithLink.Svc.Windows.OrderService {
                 _historyRequestTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
                 _historyRequestTimer.Dispose();
             }
+
+            if (_historyRequestScope != null) {
+                _historyRequestScope.Dispose();
+            }
         }
 
         private void TerminateOrderUpdateTimer() {
             if (_orderUpdateTimer != null) {
                 _orderUpdateTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
             }
+
+            if (_orderScope != null) {
+                _orderScope.Dispose();
+            }
         }
 
         private void TerminateQueueTimer() {
             if (_queueTimer != null) {
                 _queueTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
+            }
+
+            if (_queueScope != null) {
+                _queueScope.Dispose();
             }
         }
 

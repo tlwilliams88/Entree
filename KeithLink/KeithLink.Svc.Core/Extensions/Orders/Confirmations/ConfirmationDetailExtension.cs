@@ -1,12 +1,15 @@
-﻿using System;
+﻿using KeithLink.Common.Core.Parsing;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Orders.Confirmations;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Globalization;
-using KeithLink.Svc.Core.Models.Orders.Confirmations;
-using KeithLink.Svc.Core;
-using KeithLink.Common.Core.Parsing;
 
 namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
 {
@@ -65,10 +68,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
 
         #endregion
 
-        #region methods / functions
-
-        public static void Parse(this ConfirmationDetail value, string Line)
-        {
+        #region methods 
+        public static void Parse(this ConfirmationDetail value, string Line, ICatalogRepository catRepo, string branchId){
             value.RecordNumber = StringHelpers.GetField(
                 CONFIRMATION_DETAIL_RECORD_NUMBER_INDEX, 
                 CONFIRMATION_DETAIL_RECORD_NUMBER_LENGTH, 
@@ -147,6 +148,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
                 CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_INDEX, 
                 CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_LENGTH, 
                 Line);
+
+            Product myItem =  catRepo.GetProductById(branchId, value.ItemNumber);
+            value.Catchweight = myItem.CatchWeight ? "Y" : "N";
         }
 
         public static string DisplayStatus(this ConfirmationDetail value) {

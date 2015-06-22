@@ -1,22 +1,26 @@
 ﻿using CommerceServer.Core;
 using CommerceServer.Core.Runtime.Orders;
+
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Events.EventArgs;
+using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Events.EventArgs;
-using KeithLink.Svc.Core.Extensions.Messaging;
-using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +28,13 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
     public class ConfirmationLogicImpl : IConfirmationLogic
     {
         #region attributes
+        private ICatalogRepository _catRepo;
         private IGenericQueueRepository genericeQueueRepository;
         private IOrderConversionLogic _conversionLogic;
         private IEventLogRepository _log;
@@ -42,8 +46,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region constructor
-        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository,
-                                     IGenericQueueRepository internalMessagingLogic, IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork) {
+        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IGenericQueueRepository internalMessagingLogic, 
+                                                   IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, ICatalogRepository catalogRepo) {
+                                                       _catRepo = catalogRepo;
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             this.genericeQueueRepository = internalMessagingLogic;
@@ -261,7 +266,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             for (int i = 1; i <= data.Length - 1; i++) {
                 if (data[i].Contains("END###") == false) {
                     ConfirmationDetail theDeets = new ConfirmationDetail();
-                    theDeets.Parse(data[i]);
+                    theDeets.Parse(data[i], _catRepo, confirmation.Header.Branch);
 
                     confirmation.Detail.Add(theDeets);
                 }

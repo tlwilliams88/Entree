@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
             string originalOrderInfo = "Original Order Information:" + System.Environment.NewLine;
             foreach (var line in notification.OrderChange.Items)
-                originalOrderInfo += line.ItemNumber + " - " + line.ItemDescription + " (" + line.QuantityOrdered + "@" + line.ItemPrice.ToString("f2") + ")" + System.Environment.NewLine;
+                originalOrderInfo += line.ItemNumber + " - " + line.ItemDescription + " (" + line.QuantityOrdered + " @ " + line.ItemPrice.ToString("f2") + ")" + System.Environment.NewLine;
 
             Message message = new Message();
 
@@ -80,7 +80,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 				message.MessageSubject = "BEK: Order Confirmation for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
 
             message.MessageBody = (!string.IsNullOrEmpty(notification.OrderChange.SpecialInstructions) ? "Instructions: " + notification.OrderChange.SpecialInstructions + System.Environment.NewLine : "") +
-                (notification.OrderChange.ShipDate > DateTime.MinValue ? "Ship Date: " + notification.OrderChange.ShipDate.ToShortDateString() + System.Environment.NewLine : "") +
+                (notification.OrderChange.ShipDate > DateTime.MinValue ? "Ship Date: " + notification.OrderChange.ShipDate.ToShortDateString() + System.Environment.NewLine + System.Environment.NewLine : "") +
 				statusString + System.Environment.NewLine + 
 				orderLineChanges + System.Environment.NewLine + 
 				originalOrderInfo;
