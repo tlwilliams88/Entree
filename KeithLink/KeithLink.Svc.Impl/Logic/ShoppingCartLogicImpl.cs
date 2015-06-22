@@ -285,7 +285,7 @@ namespace KeithLink.Svc.Impl.Logic
 				CartId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
-				RequestedShipDate = basket.RequestedShipDate,
+				RequestedShipDate = basket.RequestedShipDate.HasValue ? basket.RequestedShipDate.Value.ToLocalTime() : basket.RequestedShipDate,
 				Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
 				PONumber = basket.PONumber,
 				CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
