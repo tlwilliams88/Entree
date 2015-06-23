@@ -119,7 +119,7 @@ angular
       // redirect to homepage, if restricted state and user not authorized OR going to register page
       if (AccessService.isPasswordExpired() && toState.name !== 'changepassword') {
         $state.go('changepassword');
-      } else if ( toState.name === 'register' ) {
+      } else if ( ( isStateRestricted(toState.data) && !AccessService[toState.data.authorize]() ) || toState.name === 'register' ) {
         $log.debug('redirecting to homepage');
 
         // ask to allow push notifications
