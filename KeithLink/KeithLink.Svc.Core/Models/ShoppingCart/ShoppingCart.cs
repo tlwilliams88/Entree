@@ -18,8 +18,17 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name="name")]
 		public string Name { get; set; }
 		public string BranchId { get; set; }
-        [DataMember(Name = "requestedshipdate")]
-        public DateTime? RequestedShipDate { get; set; }
+        [DataMember(Name="requestedshipdate")]
+		public DateTime? RequestedShipDate
+		{
+			get { return _requestedShipDate; }
+			set {
+				if (value == null)
+					_requestedShipDate = null;
+				else
+					_requestedShipDate = DateTime.SpecifyKind(value.Value, DateTimeKind.Local); 
+			}
+		}
 		[DataMember(Name="ponumber")]
 		public string PONumber { get; set; }
 		[DataMember(Name="active")]
