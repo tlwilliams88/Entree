@@ -69,7 +69,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
         #endregion
 
         #region methods 
-        public static void Parse(this ConfirmationDetail value, string Line, ICatalogRepository catRepo, string branchId){
+        public static void Parse(this ConfirmationDetail value, string Line){
             value.RecordNumber = StringHelpers.GetField(
                 CONFIRMATION_DETAIL_RECORD_NUMBER_INDEX, 
                 CONFIRMATION_DETAIL_RECORD_NUMBER_LENGTH, 
@@ -148,9 +148,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
                 CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_INDEX, 
                 CONFIRMATION_DETAIL_CONFIRMATION_MESSAGE_LENGTH, 
                 Line);
-
-            Product myItem =  catRepo.GetProductById(branchId, value.ItemNumber);
-            value.Catchweight = myItem.CatchWeight ? "Y" : "N";
         }
 
         public static string DisplayStatus(this ConfirmationDetail value) {

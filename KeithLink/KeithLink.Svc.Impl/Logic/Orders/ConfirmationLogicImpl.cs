@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Newtonsoft.Json;
@@ -211,6 +212,40 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return JsonConvert.DeserializeObject<ConfirmationFile>(fileFromQueue);
         }
 
+        private double GetItemPrice(string branchId, string itemNumber, bool splitCase, ConfirmationDetail detail) {
+            Product myItem = _catRepo.GetProductById(branchId, itemNumber);
+            
+            double placedPrice = 0;
+
+            if (splitCase) {
+                // package price
+                if (myItem.CatchWeight) {
+                    // catch weight price
+                    int pack;
+
+                    try {
+                        pack = int.Parse(myItem.Pack);
+                    } catch {
+                        pack = 1;
+                    }
+                    
+                    placedPrice = ((detail.ShipWeight / pack) * detail.QuantityShipped) * detail.SplitPriceNet;
+                } else {
+                    placedPrice = detail.SplitPriceNet;
+                }
+            } else {
+                // case price
+                if (myItem.CatchWeight) {
+                    // catch weight price
+                    placedPrice = (detail.ShipWeight * detail.QuantityShipped) * detail.PriceNet;
+                } else {
+                    placedPrice = detail.PriceNet;
+                }
+            }
+
+            return placedPrice;
+        }
+
         /// <summary>
         /// Begin listening for new confirmations
         /// </summary>
@@ -266,7 +301,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             for (int i = 1; i <= data.Length - 1; i++) {
                 if (data[i].Contains("END###") == false) {
                     ConfirmationDetail theDeets = new ConfirmationDetail();
-                    theDeets.Parse(data[i], _catRepo, confirmation.Header.Branch);
+                    theDeets.Parse(data[i]);
 
                     confirmation.Detail.Add(theDeets);
                 }
@@ -409,14 +444,27 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (linePosition)).FirstOrDefault();
 
                 if (orderFormLineItem != null) {
-					SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem), (bool)orderFormLineItem["Each"] ? detail.SplitPriceNet : detail.PriceNet);
+                    double placedPrice = GetItemPrice(confirmation.Header.Branch,
+                                                      detail.ItemNumber,
+                                                      (bool)orderFormLineItem["Each"],
+                                                      detail);
+
+					SetCsLineItemInfo(orderFormLineItem, 
+                                      detail.QuantityOrdered, 
+                                      detail.QuantityShipped, 
+                                      detail.DisplayStatus(), 
+                                      detail.ItemNumber, 
+                                      detail.SubstitutedItemNumber(orderFormLineItem), 
+                                      placedPrice);
                     _log.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"] + ", confirmation status: _" + detail.DisplayStatus() + "_");
                 } else
                     _log.WriteWarningLog("No CS line found for MainFrame line " + linePosition + " on order: " + confirmation.Header.InvoiceNumber);
             }
         }
 
-        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber, double placedPrice ) {
+        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, 
+                                       string displayStatus, string currentItemNumber, string substitutedItemNumber, 
+                                       double placedPrice ) {
             orderFormLineItem["QuantityOrdered"] = quantityOrdered;
             orderFormLineItem["QuantityShipped"] = quantityShipped;
             orderFormLineItem["MainFrameStatus"] = displayStatus;

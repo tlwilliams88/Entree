@@ -29,6 +29,9 @@ namespace KeithLink.Svc.Core.Models.Orders.Confirmations
         [DataMember(Name = "Catchweight")]
         public string Catchweight { get; set; }
 
+        [DataMember(Name = "Pack")]
+        public int Pack { get; set; }
+
         [DataMember(Name = "QuantityShipped")]
         public int QuantityShipped { get; set; }
 
