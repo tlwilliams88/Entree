@@ -24,14 +24,14 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
             get { return _requestedShipDate; }
             set 
             {
-                    if (value == null)
-                    {
-                        _requestedShipDate = null;
-                    }
-                    else
-                    {
-                        _requestedShipDate = DateTime.Parse(value.Value.Date.ToString()); //always set returned time to T00:00:00Z, we don't care about timezone
-                    }
+                if (value == null)
+                {
+                    _requestedShipDate = null;
+                }
+                else
+                {
+                    _requestedShipDate = DateTime.Parse(value.Value.Date.ToString()); //always set returned time to T00:00:00Z, we don't care about timezone
+                }
                 
             }
         }
