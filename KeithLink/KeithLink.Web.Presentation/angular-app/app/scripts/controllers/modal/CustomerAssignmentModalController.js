@@ -23,9 +23,10 @@ angular.module('bekApp')
   }
 
   function setCustomers(data) {
-    $scope.customers = findSelectedCustomers(data.results);
+    $scope.customers = findSelectedCustomers(data.results);    
     $scope.totalCustomers = data.totalResults;
     setSelected();  
+
   }
 
   function setSelected(){
@@ -63,6 +64,7 @@ angular.module('bekApp')
   }
   function stopLoading() {
     $scope.loadingCustomers = false;
+    if($scope.customers.length <30){$scope.infiniteScrollLoadMore();}
   }
 
   $scope.selectedCount = 0;
