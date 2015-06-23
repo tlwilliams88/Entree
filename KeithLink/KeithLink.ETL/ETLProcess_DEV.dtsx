@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="354"
-  DTS:VersionGUID="{FCEA2846-C587-4786-AFBA-30C3D3CB0CED}">
+  DTS:VersionBuild="360"
+  DTS:VersionGUID="{3873561C-A343-47AF-8A7A-6563A7FEB5CE}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -1790,11 +1790,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAnCrw71VfdEarI9aAKY1epQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACnH/5wQZHHd+wQwaRMfO+5AAAAAASAAACgAAAAEAAAAILLZ226bNXHygxihdxrvCsIAAAAfAh/Oj+xIjEUAAAATNvuWIvzM27hibeoZoMTc9qpA+I</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh51e0R/4LE+xZnV5d6/lUgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADgM46ay2Ex8+ik6LXERLicAAAAAASAAACgAAAAEAAAAOf3RRadsMv+/Wc/7KWOoX0IAAAAp7vrw4V0nwMUAAAASvhmichW+XxGWRtrk4pFzkx7Y+M</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAnCrw71VfdEarI9aAKY1epQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABG0V+lQLLL5PlZVvNloNXmAAAAAASAAACgAAAAEAAAAKFW4y6HWJ3qbKs0jcRKn4EIAAAAZTO5Cmnklm8UAAAAY13UVIPsVgzFyraQRjhWEcjS7cs</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAh51e0R/4LE+xZnV5d6/lUgAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACvgqXYQfTdZUn0BY7iafS/AAAAAASAAACgAAAAEAAAAGnAlDMWocxX9GcpeWl9XYYIAAAAxMkdCp8xTx8UAAAAbWux9eJqh33GAoL9Gf7yOBmgDcc</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -2095,7 +2095,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process All ETL Tasks (Serial)"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="6">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2398,7 +2398,7 @@
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Archive Mainframe Files"
-      DTS:ThreadHint="0">
+      DTS:ThreadHint="6">
       <DTS:Variables />
       <DTS:ObjectData>
         <ScriptProject
@@ -14149,7 +14149,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Brand Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="1">
+              DTS:ThreadHint="0">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -14168,7 +14168,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Catalog Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="2">
+              DTS:ThreadHint="1">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -14187,7 +14187,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate GS1 Stage Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="3">
+              DTS:ThreadHint="2">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -18869,7 +18869,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Contract Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="5">
+              DTS:ThreadHint="4">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -18886,7 +18886,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Worksheet Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="6">
+              DTS:ThreadHint="5">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -19692,6 +19692,23 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                 </pipeline>
               </DTS:ObjectData>
             </DTS:Executable>
+            <DTS:Executable
+              DTS:refId="Package\Process_EmployeeData\Import DSR Info\Populate Default DSRs"
+              DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:Description="Inserts the default DSRs into the BranchSupport.Dsrs table"
+              DTS:DTSID="{D487B5F0-A452-466D-9174-EEAF3B7CFD0B}"
+              DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+              DTS:LocaleID="-1"
+              DTS:ObjectName="Populate Default DSRs"
+              DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+              DTS:ThreadHint="6">
+              <DTS:Variables />
+              <DTS:ObjectData>
+                <SQLTask:SqlTaskData
+                  SQLTask:Connection="{84951720-C6D3-4D2D-A75A-66D64367B533}"
+                  SQLTask:SqlStatementSource="INSERT INTO BranchSupport.Dsrs&#xA;(BranchId, DsrNumber, EmailAddress, Phone, Name, ImageUrl)&#xA;VALUES&#xA; ('FAM', '000', '', '8006589790', 'Ben E. Keith', '{baseUrl}userimages/fam@benekeith.com'),&#xA; ('FDF', '000', '', '8773186100', 'Ben E. Keith', '{baseUrl}userimages/fdf@benekeith.com'),&#xA; ('FHS', '000', '', '8553275500', 'Ben E. Keith', '{baseUrl}userimages/fhs@benekeith.com'),&#xA; ('FLR', '000', '', '8006882356', 'Ben E. Keith', '{baseUrl}userimages/flr@benekeith.com'),&#xA; ('FAR', '000', '', '8006882356', 'Ben E. Keith', '{baseUrl}userimages/far@benekeith.com'),&#xA; ('FAQ', '000', '', '8006752949', 'Ben E. Keith', '{baseUrl}userimages/faq@benekeith.com'),&#xA; ('FOK', '000', '', '4057537911', 'Ben E. Keith', '{baseUrl}userimages/fok@benekeith.com'),&#xA; ('FSA', '000', '', '2105076151', 'Ben E. Keith', '{baseUrl}userimages/fsa@benekeith.com')" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+              </DTS:ObjectData>
+            </DTS:Executable>
           </DTS:Executables>
           <DTS:PrecedenceConstraints>
             <DTS:PrecedenceConstraint
@@ -19702,6 +19719,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LogicalAnd="True"
               DTS:ObjectName="Constraint"
               DTS:To="Package\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData" />
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Process_EmployeeData\Import DSR Info.PrecedenceConstraints[Constraint 1]"
+              DTS:CreationName=""
+              DTS:DTSID="{F7272886-85AF-46F8-92B6-4FBB9662385C}"
+              DTS:From="Package\Process_EmployeeData\Import DSR Info\Populate Default DSRs"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint 1"
+              DTS:To="Package\Process_EmployeeData\Import DSR Info\Get Raw DSR Data" />
           </DTS:PrecedenceConstraints>
         </DTS:Executable>
         <DTS:Executable
@@ -19723,7 +19748,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate DSR Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="0">
+              DTS:ThreadHint="6">
               <DTS:Variables />
               <DTS:ObjectData>
                 <SQLTask:SqlTaskData
@@ -24415,7 +24440,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               DTS:LocaleID="-1"
               DTS:ObjectName="Truncate Invoice Tables"
               DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-              DTS:ThreadHint="4">
+              DTS:ThreadHint="3">
               <DTS:Variables />
               <DTS:LoggingOptions
                 DTS:FilterKind="0" />
@@ -24447,7 +24472,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ScriptTask.ScriptTask, Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
       DTS:LocaleID="-1"
       DTS:ObjectName="Rename Mainframe Files"
-      DTS:ThreadHint="1">
+      DTS:ThreadHint="0">
       <DTS:Variables />
       <DTS:ObjectData>
         <ScriptProject
@@ -24456,15 +24481,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           VSTAMinorVersion="0"
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
-          <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -24584,6 +24600,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -24908,35 +24953,6 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
-          <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -24966,6 +24982,15 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -25193,10 +25218,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       <DTS:ObjectData>
         <SendMailTask:SendMailTaskData
           SendMailTask:SMTPServer="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
-          SendMailTask:From="CORPMISDEV2C@noreply.com"
+          SendMailTask:From="CORPMISDEV2A@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2A"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2A.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>
@@ -25576,37 +25601,51 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <NodeLayout
           Size="169,42"
           Id="Package\Process_EmployeeData\Import DSR Info\Get Raw DSR Data"
-          TopLeft="28.8333333333333,14.4761904761906" />
+          TopLeft="13.8333333333333,156.476190476191" />
         <NodeLayout
           Size="192,42"
           Id="Package\Process_EmployeeData\Import DSR Info\Get Raw EmployeeData"
-          TopLeft="5.5,87.8095238095241" />
+          TopLeft="6.5,239.809523809524" />
+        <NodeLayout
+          Size="165,42"
+          Id="Package\Process_EmployeeData\Import DSR Info\Populate Default DSRs"
+          TopLeft="18,51" />
         <EdgeLayout
           Id="Package\Process_EmployeeData\Import DSR Info.PrecedenceConstraints[Constraint]"
-          TopLeft="113.333333333333,56.4761904761906">
+          TopLeft="100.416666666667,198.476190476191">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-11.8333333333331,31.3333333333335"
+              EndConnector="0,41.3333333333335"
               Start="0,0"
-              End="-11.8333333333331,23.8333333333335">
+              End="0,33.8333333333335">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,11.6666666666669" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,11.6666666666669"
-                    Point2="0,15.6666666666669"
-                    Point3="-4,15.6666666666669" />
+                    End="0,33.8333333333335" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Process_EmployeeData\Import DSR Info.PrecedenceConstraints[Constraint 1]"
+          TopLeft="99.4166666666666,93">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,63.4761904761906"
+              Start="0,0"
+              End="0,55.9761904761906">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
                   <mssgle:LineSegment
-                    End="-7.83333333333314,15.6666666666669" />
-                  <mssgle:CubicBezierSegment
-                    Point1="-7.83333333333314,15.6666666666669"
-                    Point2="-11.8333333333331,15.6666666666669"
-                    Point3="-11.8333333333331,19.6666666666669" />
-                  <mssgle:LineSegment
-                    End="-11.8333333333331,23.8333333333335" />
+                    End="0,55.9761904761906" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25618,8 +25657,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="205,186"
-          Size="205,229"
+          PanelSize="229,337"
+          Size="229,380"
           Id="Package\Process_EmployeeData\Import DSR Info"
           TopLeft="34.4285714285713,204.714285714286" />
         <NodeLayout
@@ -25639,9 +25678,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="15.7142857142855,34.0000000000003"
+              EndConnector="27.7142857142855,34.0000000000003"
               Start="0,0"
-              End="15.7142857142855,26.5000000000003">
+              End="27.7142857142855,26.5000000000003">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -25652,13 +25691,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                     Point2="0,17.0000000000002"
                     Point3="4,17.0000000000002" />
                   <mssgle:LineSegment
-                    End="11.7142857142855,17.0000000000002" />
+                    End="23.7142857142855,17.0000000000002" />
                   <mssgle:CubicBezierSegment
-                    Point1="11.7142857142855,17.0000000000002"
-                    Point2="15.7142857142855,17.0000000000002"
-                    Point3="15.7142857142855,21.0000000000002" />
+                    Point1="23.7142857142855,17.0000000000002"
+                    Point2="27.7142857142855,17.0000000000002"
+                    Point3="27.7142857142855,21.0000000000002" />
                   <mssgle:LineSegment
-                    End="15.7142857142855,26.5000000000003" />
+                    End="27.7142857142855,26.5000000000003" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25670,8 +25709,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="267,580"
-          Size="267,623"
+          PanelSize="267,640"
+          Size="267,683"
           Id="Package\Process_EmployeeData"
           TopLeft="1457.14285714286,989.690476190476" />
         <NodeLayout
@@ -25933,13 +25972,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 13]"
-          TopLeft="1724.14285714286,1301.19047619048">
+          TopLeft="1724.14285714286,1331.19047619048">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="86.2142857142799,-281.033333333333"
+              EndConnector="86.2142857142799,-311.033333333333"
               Start="0,0"
-              End="78.7142857142799,-281.033333333333">
+              End="78.7142857142799,-311.033333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -25950,13 +25989,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                     Point2="61.1909482270266,0"
                     Point3="61.1909482270266,-4" />
                   <mssgle:LineSegment
-                    End="61.1909482270266,-277.033333333333" />
+                    End="61.1909482270266,-307.033333333333" />
                   <mssgle:CubicBezierSegment
-                    Point1="61.1909482270266,-277.033333333333"
-                    Point2="61.1909482270266,-281.033333333333"
-                    Point3="65.1909482270266,-281.033333333333" />
+                    Point1="61.1909482270266,-307.033333333333"
+                    Point2="61.1909482270266,-311.033333333333"
+                    Point3="65.1909482270266,-311.033333333333" />
                   <mssgle:LineSegment
-                    End="78.7142857142799,-281.033333333333" />
+                    End="78.7142857142799,-311.033333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -26458,7 +26497,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers">
     <LayoutInfo>
       <GraphLayout
-        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
           Size="176,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
@@ -26502,7 +26541,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
         <EdgeLayout
@@ -26536,7 +26577,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
-            <EdgeLabelCollection />
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
       </GraphLayout>
