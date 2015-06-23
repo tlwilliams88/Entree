@@ -101,7 +101,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.TempSubTotal = cart.SubTotal;
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
-
+            
 			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
 		}
 
@@ -226,7 +226,7 @@ namespace KeithLink.Svc.Impl.Logic
 					SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0, 
 					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0,
 					RequestedShipDate = l.RequestedShipDate,
-					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
+                    CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
 				}).ToList();
 			else
 			{
@@ -285,8 +285,8 @@ namespace KeithLink.Svc.Impl.Logic
 				CartId = basket.Id.ToGuid(),
 				Name = basket.DisplayName,
 				BranchId = basket.BranchId,
-				RequestedShipDate = basket.RequestedShipDate.HasValue ? basket.RequestedShipDate.Value.ToLocalTime() : basket.RequestedShipDate,
-				Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
+				RequestedShipDate = basket.RequestedShipDate, 
+                Active = activeCart != null && activeCart.CartId == basket.Id.ToGuid(),
 				PONumber = basket.PONumber,
 				CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
 				Items = basket.LineItems.Select(l => new ShoppingCartItem()
@@ -311,8 +311,8 @@ namespace KeithLink.Svc.Impl.Logic
 
 			updateCart.DisplayName = cart.Name;
 			updateCart.Name = CartName(cart.Name, catalogInfo);
-			updateCart.TempSubTotal = cart.SubTotal;		
-			updateCart.RequestedShipDate = cart.RequestedShipDate;
+			updateCart.TempSubTotal = cart.SubTotal;
+            updateCart.RequestedShipDate = cart.RequestedShipDate;
 			updateCart.PONumber = cart.PONumber;
 
 			var itemsToRemove = new List<Guid>();
