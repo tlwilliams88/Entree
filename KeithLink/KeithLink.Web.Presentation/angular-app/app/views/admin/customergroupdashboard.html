@@ -127,7 +127,10 @@
           <td><a class="btn-link" ui-sref="{{userDetailState}}({email: customerUser.emailaddress, groupId: customerGroup.id})">{{customerUser.emailaddress}}</a></td>
           <td>{{customerUser.firstname}}</td>
           <td>{{customerUser.lastname}}</td>
-          <td class="text-capitalize">{{customerUser.rolename}}</td>
+          <td ng-if="customerUser.rolename !=='approver' && customerUser.rolename !== 'buyer'" class="text-capitalize">{{customerUser.rolename}}</td>
+          <td ng-if="customerUser.rolename === 'approver'">Buyer</td>
+          <td ng-if="customerUser.rolename === 'buyer'">Shopper</td>
+
           <td>
             <a ng-click="addUserToRecipients(customerUser)" ng-if="customerUser.canmessage" class="glyphicon glyphicon-plus"></a>
           </td>

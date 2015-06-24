@@ -44,7 +44,7 @@ angular.module('bekApp')
 
 
   // TODO: get available roles <----NEEDS ENDPOINT
-  $scope.roles = ['owner', 'accounting', 'approver', 'buyer', 'guest'];
+  $scope.roles =  [{ "value": 'owner', "text": "owner" }, { "value": 'accounting', "text": "accounting" },{ "value": 'approver', "text": "buyer" }, { "value": 'buyer', "text": "shopper" }, { "value": 'guest', "text": "guest" }];
 
   processProfile(userProfile);
   checkIfUserExistsOnAnotherGroup();
