@@ -229,7 +229,7 @@
                   ng-model="item.onhand"
                   ng-init="item.onhand=item.onhand + 0"                        
                   name="onhand" 
-                  ng-change="onItemOnHandAmountChanged(item)">
+                  ng-change="onItemOnHandAmountChanged(item)"/>
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  
               </ng-form>  
             </td>
@@ -246,7 +246,7 @@
                   ng-init="item.quantity = item.quantity + 0"                
                   class="input-number text-right mousetrap" 
                   allow-one-positive-decimal
-                  ng-model="item.quantity">                
+                  ng-model="item.quantity"/>                
               </ng-form>
             </td>
             <td class="input-col hidden-mobile-visible-print">
