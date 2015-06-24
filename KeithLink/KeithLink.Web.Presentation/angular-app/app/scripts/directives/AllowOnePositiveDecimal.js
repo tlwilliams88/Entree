@@ -57,8 +57,7 @@ angular.module('bekApp')
            if(typeof viewVal === 'string'){
           for (var i = 0, length = viewVal.length; i < length; i++) {
             if(['1','2','3','4','5','6','7','8','9','0','.'].indexOf(viewVal[i]) === -1){
-              viewVal = viewVal.replace(viewVal[i], '');
-              ctrl.$setValidity('allowOnePositiveDecimal', true);          
+              viewVal = viewVal.replace(viewVal[i], '');         
               ctrl.$setViewValue(viewVal);   
               ctrl.$render();    
             }
