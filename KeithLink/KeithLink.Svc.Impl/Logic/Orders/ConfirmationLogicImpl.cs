@@ -8,6 +8,7 @@ using KeithLink.Svc.Core.Events.EventArgs;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -229,7 +230,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                         pack = 1;
                     }
                     
-                    placedPrice = ((detail.ShipWeight / pack) * detail.QuantityShipped) * detail.SplitPriceNet;
+                    placedPrice = PricingHelper.GetCatchweightPriceForPackage(detail.QuantityShipped, pack, detail.ShipWeight, detail.SplitPriceNet);
                 } else {
                     placedPrice = detail.SplitPriceNet;
                 }
@@ -237,7 +238,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 // case price
                 if (myItem.CatchWeight) {
                     // catch weight price
-                    placedPrice = (detail.ShipWeight * detail.QuantityShipped) * detail.PriceNet;
+                    placedPrice = PricingHelper.GetCatchweightPriceForCase(detail.QuantityShipped, detail.ShipWeight, detail.PriceNet);
                 } else {
                     placedPrice = detail.PriceNet;
                 }
