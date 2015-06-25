@@ -8,14 +8,6 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl;
-//using KeithLink.Svc.Impl.Logic.Orders;
-//using KeithLink.Svc.Impl.Repository.Cache;
-//using KeithLink.Svc.Impl.Repository.EF.Operational;
-//using KeithLink.Svc.Impl.Repository.Network;
-//using KeithLink.Svc.Impl.Repository.Orders;
-//using KeithLink.Svc.Impl.Repository.Orders.History;
-//using KeithLink.Svc.Impl.Repository.Orders.History.EF;
-//using KeithLink.Svc.Impl.Repository.Queue;
 
 using Autofac;
 using Newtonsoft.Json;
@@ -37,7 +29,7 @@ namespace KeithLink.Svc.Windows.OrderService {
 
         private ILifetimeScope _confirmationScope;
         private ILifetimeScope _historyRequestScope;
-        private ILifetimeScope _historryResponseScope;
+        private ILifetimeScope _historyResponseScope;
         private ILifetimeScope _orderScope;
         private ILifetimeScope _queueScope;
 
@@ -245,14 +237,6 @@ namespace KeithLink.Svc.Windows.OrderService {
         private void ProcessConfirmations() {
             try {
 
-                //UnitOfWork uow = new UnitOfWork(_log);
-                //OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
-
-                //ConfirmationLogicImpl confirmationLogic = new ConfirmationLogicImpl(_log,
-                //                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl(),
-                //                                                       new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl(),
-                //                                                       conversionLogic,
-                //                                                       uow);
                 using (_confirmationScope = _diContainer.BeginLifetimeScope()) {
                     IConfirmationLogic confirmationLogic = _confirmationScope.Resolve<IConfirmationLogic>();
 
@@ -270,28 +254,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 
         private void ProcessOrderHistoryListener() {
             try {
-                //UnitOfWork uow = new UnitOfWork(_log);
-                //OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, _log);
-
-                //KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl divRepo = new KeithLink.Svc.Impl.Repository.SiteCatalog.DivisionRepositoryImpl();
-
-                //KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl catLogic =
-                //new KeithLink.Svc.Impl.Logic.SiteCatalog.SiteCatalogLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.ElasticSearchCatalogRepositoryImpl(),
-                //                                                              new KeithLink.Svc.Impl.Logic.PriceLogicImpl(new KeithLink.Svc.Impl.Repository.SiteCatalog.PriceRepositoryImpl(),
-                //                                                                                                          new NoCacheRepositoryImpl()),
-                //                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.ProductImageRepositoryImpl(),
-                //                                                              new KeithLink.Svc.Impl.Repository.Lists.NoListServiceRepositoryImpl(),
-                //                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.CategoryImageRepository(_log),
-                //                                                              new NoCacheRepositoryImpl(),
-                //                                                              new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo,
-                //                                                                                                             new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
-                //                                                              new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
-
-                //OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
-                //                                                       new GenericQueueRepositoryImpl(),
-                //                                                        new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
-                using (_historryResponseScope = _diContainer.BeginLifetimeScope()) {
-                    IOrderHistoryLogic logic = _historryResponseScope.Resolve<IOrderHistoryLogic>();
+                using (_historyResponseScope = _diContainer.BeginLifetimeScope()) {
+                    IOrderHistoryLogic logic = _historyResponseScope.Resolve<IOrderHistoryLogic>();
 
                     logic.ListenForMainFrameCalls();
                 }
@@ -315,7 +279,6 @@ namespace KeithLink.Svc.Windows.OrderService {
                         }
                     }
 
-					//OrderHistoryRequestLogicImpl requestLogic = new OrderHistoryRequestLogicImpl(_log, new GenericQueueRepositoryImpl(), new OrderUpdateRequestSocketRepositoryImpl());
                     using (_historyRequestScope = _diContainer.BeginLifetimeScope()) {
                         IOrderHistoryRequestLogic requestLogic = _historyRequestScope.Resolve<IOrderHistoryRequestLogic>();
 
@@ -366,15 +329,9 @@ namespace KeithLink.Svc.Windows.OrderService {
                         _orderScope = _diContainer.BeginLifetimeScope();
                         
                         IGenericQueueRepository repo = _orderScope.Resolve<IGenericQueueRepository>();
-						//GenericQueueRepositoryImpl repo = new GenericQueueRepositoryImpl();
-
 						
 						System.Threading.Tasks.Parallel.ForEach(files, filePath =>
 						{
-                            //OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
-                            //                                                       new GenericQueueRepositoryImpl(),
-                            //                                                       new KeithLink.Svc.Impl.Repository.Network.SocketListenerRepositoryImpl());
-
                             IOrderHistoryLogic logic = _orderScope.Resolve<IOrderHistoryLogic>();
 
 							if (CanOpenFile(filePath))
@@ -450,9 +407,6 @@ namespace KeithLink.Svc.Windows.OrderService {
                 }
 
                 try {
-                    //OrderQueueLogicImpl orderQueue = new OrderQueueLogicImpl(_log,
-                    //                                               new GenericQueueRepositoryImpl(),
-                    //                                               new KeithLink.Svc.Impl.Repository.Orders.OrderSocketConnectionRepositoryImpl());
                     using (_queueScope = _diContainer.BeginLifetimeScope()) {
                         IOrderQueueLogic orderQueue = _queueScope.Resolve<IOrderQueueLogic>();
 
