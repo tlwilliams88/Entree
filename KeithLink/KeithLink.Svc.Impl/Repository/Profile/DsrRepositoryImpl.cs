@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
 
 
         public void SendImageToMultiDocs( string emailAddress, Byte[] fileBytes ) {
-            string endpoint = String.Concat( Configuration.MultiDocsProxyUrl, "userimages/" );
+            string endpoint = String.Concat( Configuration.MultiDocsUrl, "userimages/" );
 
             Dictionary<string, string> values = new Dictionary<string, string>();
             values.Add( "EmailAddress", emailAddress );
