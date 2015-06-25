@@ -216,6 +216,8 @@
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderSocketConnectionRepository.cs" />
+    <Compile Include="Interface\Orders\IOrderUpdateSocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />

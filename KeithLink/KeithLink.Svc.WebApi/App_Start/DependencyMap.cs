@@ -102,7 +102,8 @@ namespace KeithLink.Svc.WebApi
 			#endif
 			
             builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
-            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
+            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
+            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
             
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
