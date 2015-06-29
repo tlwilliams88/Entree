@@ -28,8 +28,8 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
             return query.ToList();
         }
 
-        public IEnumerable<OrderHistoryHeader> ReadByConfirmationNumber(string confirmationNumber) {
-			return Entities.Include(d => d.OrderDetails).Where(l => l.ControlNumber == confirmationNumber);
+        public IEnumerable<OrderHistoryHeader> ReadByConfirmationNumber(string confirmationNumber, string orderSystem) {
+			return Entities.Include(d => d.OrderDetails).Where(l => l.ControlNumber == confirmationNumber && l.OrderSystem == orderSystem);
         }
 
         public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
