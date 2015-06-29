@@ -50,6 +50,11 @@
           </th>
           <th 
             class="sort-col-header hidden-xs hidden-sm" 
+            ng-click="sort('class', sortDescending)">            
+            <span>Category<span sort-icons field="'class'" sortorder="sortDescending" sortby="sortField"></span></span>
+          </th>
+          <th 
+            class="sort-col-header hidden-xs hidden-sm" 
             ng-click="sort('packsize', sortDescending)">
             <span>Pack/Size <span sort-icons field="'packsize'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
@@ -93,6 +98,9 @@
           </td>
           <td class="hidden-xs hidden-sm">
             {{::item.brand_extended_description}}
+          </td>
+          <td class="hidden-xs hidden-sm">
+            {{::item.class}}
           </td>
           <td class="hidden-xs hidden-sm">
             {{::item.packsize}}
