@@ -5,16 +5,18 @@ angular.module('bekApp')
   function ($scope, $modalInstance, PrintService, ListService, list, pagingModelOptions) {
 
   $scope.list = list;
+
+  if($scope.list.isfavorite || $scope.list.name ==='History' || $scope.list.ismandatory || $scope.list.isreminder || $scope.list.is_contract_list){
+    $scope.defaultList = true;
+  }
+
   $scope.labelOptions = [{
     type: '5160',
     numberOnPage: 30,
     columns: 3
   }];
   $scope.selectedLabelOption = $scope.labelOptions[0]; // pre-select first option
-  $scope.landscape = false;
-  $scope.showparvalues = false;
-  $scope.groupLabels = false;
-
+  $scope.groupLabels = $scope.showparvalues = $scope.landscape = false;
 
   // $scope.printLabels = function(items, labelOption) {
   //   var data = {

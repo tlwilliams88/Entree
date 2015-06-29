@@ -20,8 +20,8 @@
     <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
     <p>
       <span style="margin-right:10px;"><input type="checkbox" value="Landscape" class="hidden-print bek-no-drag hand" ng-model="landscape" no-dirty-check> Print Landscape</span>
-      <span style="margin-right:10px;"><input type="checkbox" value = "showparvalues" class="hidden-print bek-no-drag hand" ng-model="showparvalues" no-dirty-check> Print Par Values</span>
-      <span style="margin-right:10px;"><input type="checkbox" value = "grouplabels" class="hidden-print bek-no-drag hand" ng-model="groupLabels" no-dirty-check> Group By Label</span>
+      <span ng-class="{'hidden-icon' : defaultList }" style="margin-right:10px;"><input type="checkbox" value = "showparvalues" class="hidden-print bek-no-drag hand" ng-model="showparvalues" no-dirty-check> Print Par Values</span>
+      <span ng-class="{'hidden-icon' : defaultList }" style="margin-right:10px;"><input type="checkbox" value = "grouplabels" class="hidden-print bek-no-drag hand" ng-model="groupLabels" no-dirty-check> Group By Label</span>
       <button class="btn-lg btn btn-primary" type="submit" ng-click="printList(list, landscape, showparvalues, groupLabels)">Print Page</button>
       <button class="btn-lg btn btn-default" type="button" ng-click="cancel()">Cancel</button>
   </p>
