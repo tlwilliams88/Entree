@@ -14,7 +14,7 @@ angular.module('bekApp')
       $scope.subtotal = 0;
       $scope.sortField = 'position';
       $scope.sortDescending = false;
-
+      $scope.confirmQuantity = ListService.confirmQuantity;
       $scope.listsLoading = true;
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;

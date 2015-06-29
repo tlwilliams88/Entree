@@ -19,7 +19,7 @@ angular.module('bekApp')
     if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {
       $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
-
+    $scope.confirmQuantity = ListService.confirmQuantity;
     $scope.basketId = basketId;
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -198,24 +198,6 @@ angular.module('bekApp')
       Mousetrap.bind(['alt+z', 'option+z'], function(e) {      
        angular.element(orderSearchForm.searchBar).focus();
       });
-
-    
-    $scope.confirmQuantity = function(type, item, value) {
-          var pattern = /^([0-9])\1+$/; // repeating digits pattern
-
-          if (value > 50 || pattern.test(value)) {
-            var isConfirmed = window.confirm('Do you want to continue with entered quatity of ' + value + '?');
-            if (!isConfirmed) {
-              // clear input
-            if(type==='quantity'){
-              item.quantity = null;
-            }
-            else{
-              item.onhand=null;
-            }
-            }
-          } 
-        };
 
   $scope.checkOrientation = function(){    
       $scope.isMobile = UtilityService.isMobileDevice(); 
