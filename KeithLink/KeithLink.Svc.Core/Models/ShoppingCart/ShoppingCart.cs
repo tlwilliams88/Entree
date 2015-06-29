@@ -12,23 +12,29 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 	public class ShoppingCart
 	{
 		private DateTime? _requestedShipDate { get; set; }
-
+        
 		[DataMember(Name="id")]
 		public Guid CartId { get; set; }
 		[DataMember(Name="name")]
 		public string Name { get; set; }
 		public string BranchId { get; set; }
-		[DataMember(Name="requestedshipdate")]
-		public DateTime? RequestedShipDate
-		{
-			get { return _requestedShipDate; }
-			set {
-				if (value == null)
-					_requestedShipDate = null;
-				else
-					_requestedShipDate = DateTime.SpecifyKind(value.Value, DateTimeKind.Local); 
-			}
-		}
+        [DataMember(Name = "requestedshipdate")]
+        public DateTime? RequestedShipDate //{ get; set; }
+        {
+            get { return _requestedShipDate; }
+            set 
+            {
+                if (value == null)
+                {
+                    _requestedShipDate = null;
+                }
+                else
+                {
+                    _requestedShipDate = DateTime.Parse(value.Value.Date.ToString()); //always set returned time to T00:00:00Z, we don't care about timezone
+                }
+                
+            }
+        }
 		[DataMember(Name="ponumber")]
 		public string PONumber { get; set; }
 		[DataMember(Name="active")]
