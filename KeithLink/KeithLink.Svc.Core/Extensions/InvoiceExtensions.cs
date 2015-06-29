@@ -13,24 +13,24 @@ namespace KeithLink.Svc.Core.Extensions
 {
 	public static class InvoiceExtensions
 	{
-		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, KeithLink.Svc.Core.Models.Profile.Customer customer = null)
-		{
-			return new InvoiceModel()
-			{
-				BranchId = value.Division.Substring(0, 3),
-				InvoiceNumber = value.InvoiceNumber.Trim(),
-				Type = DetermineType(value.InvoiceType.Trim()),
-				TypeDescription = EnumUtils<InvoiceType>.GetDescription(DetermineType(value.InvoiceType.Trim())),
-				Status = value.DetermineStatus(),
-				StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(value.DetermineStatus()),
-				CustomerNumber = value.CustomerNumber,
-				CustomerName = customer == null ? "N/A" : customer.CustomerName,
-				Amount = value.AmountDue,
-				DueDate = value.DueDate,
-				InvoiceDate = value.InvoiceDate,
-				OrderDate = value.InvoiceDate,
-                IsPayable = (value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase) && customer == null ? false : customer.KPayCustomer)
-			};
+		public static InvoiceModel ToInvoiceModel(this EFInvoice.Invoice value, KeithLink.Svc.Core.Models.Profile.Customer customer = null) {
+            InvoiceModel retVal = new InvoiceModel();
+
+            retVal.BranchId = value.Division.Substring(0, 3);
+			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
+			retVal.Type = DetermineType(value.InvoiceType.Trim());
+			retVal.TypeDescription = EnumUtils<InvoiceType>.GetDescription(DetermineType(value.InvoiceType.Trim()));
+			retVal.Status = value.DetermineStatus();
+			retVal.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(value.DetermineStatus());
+			retVal.CustomerNumber = value.CustomerNumber;
+			retVal.CustomerName = customer == null ? "N/A" : customer.CustomerName;
+			retVal.Amount = value.AmountDue;
+			retVal.DueDate = value.DueDate;
+			retVal.InvoiceDate = value.InvoiceDate;
+			retVal.OrderDate = value.InvoiceDate;
+            retVal.IsPayable = value.InvoiceStatus.Equals("O", StringComparison.InvariantCultureIgnoreCase)  && customer != null && customer.KPayCustomer;
+
+            return retVal;
 		}
 
 		public static InvoiceStatus DetermineStatus(this EFInvoice.Invoice value)
