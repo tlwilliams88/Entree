@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', 'UserProfileService', 'CustomerGroupService', 'BroadcastService',
+  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', 'toaster', 'UserProfileService', 'CustomerGroupService', 'BroadcastService',
     function (
       $scope, $q, $log, // angular
-      $stateParams, $state, $modal, // ui router
+      $stateParams, $state, $modal, toaster,// ui router
       UserProfileService, CustomerGroupService, BroadcastService // custom bek services
     ) {
 
@@ -103,7 +103,15 @@ angular.module('bekApp')
     modalInstance.result.then(function(selectedCustomers) {
       // save new customers
       var group = angular.copy($scope.customerGroup);
-      group.customers = $scope.customerGroup.customers.concat(selectedCustomers);
+      group.customers = $scope.customerGroup.customers;
+      selectedCustomers.forEach(function(customer){
+       if(customer.accountId){
+          toaster.pop('error', null, 'Could not complete the request. Customer '+customer.displayname+' is already a member of a Customer Group.');
+        }
+        else{
+          group.customers.push(customer);
+        }
+      });
       saveCustomerGroup(group).then(function() {
         $scope.customerGroup = group;
       });
