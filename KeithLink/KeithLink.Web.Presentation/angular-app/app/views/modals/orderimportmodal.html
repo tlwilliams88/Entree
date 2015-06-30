@@ -43,25 +43,25 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="ignoreZeroes" style="bottom:7px;" class="col-sm-4 control-label">Ignore zero quantities: </label>
+      <label for="ignoreZeroes" class="col-sm-4 control-label checkbox-line">Ignore zero quantities: </label>
       <div class="col-sm-8">
         <input type="checkbox" name="ignoreZeroes" ng-model="options.ignorezero">
       </div>
     </div>
     <div class="form-group">
-      <label for="ignoreFirstLine" style="bottom:7px;" class="col-sm-4 control-label">Ignore first line: </label>
+      <label for="ignoreFirstLine" class="col-sm-4 control-label checkbox-line">Ignore first line: </label>
       <div class="col-sm-8">
         <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirst">
       </div>
     </div>
     <div class="form-group">
-      <label for="importByInventory" style="bottom:7px;" class="col-sm-4 control-label">Import by PAR Level: </label>
+      <label for="importByInventory" class="col-sm-4 control-label checkbox-line">Import by PAR Level: </label>
       <div class="col-sm-8">
         <input type="checkbox" name="importByInventory" ng-model="options.importbyinventory">
       </div>
     </div>
     <div class="form-group" ng-show="options.importbyinventory">
-      <label for="selectedList" style="bottom:7px;" class="col-sm-4 control-label">List with PARs: </label>
+      <label for="selectedList" class="col-sm-4 control-label checkbox-line">List with PARs: </label>
       <div class="col-sm-8">
         <select class="style-select" ng-options="list.listid as list.name for list in customListHeaders" ng-model="options.listid" id="selectedList" name="selectedList"></select>
       </div>
