@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', '$analytics',
-    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, $analytics) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', '$analytics',
+    function ($scope, $state, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, $analytics) {
     
     // redirect to url with correct parameters
        var basketId;
@@ -202,7 +202,6 @@ angular.module('bekApp')
     
     $scope.confirmQuantity = function(type, item, value) {
           var pattern = /^([0-9])\1+$/; // repeating digits pattern
-
           if (value > 50 || pattern.test(value)) {
             var isConfirmed = window.confirm('Do you want to continue with entered quatity of ' + value + '?');
             if (!isConfirmed) {
@@ -216,6 +215,14 @@ angular.module('bekApp')
             }
           } 
         };
+
+
+  $scope.loadEntireList = function() {
+        blockUI.start();
+        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
+        blockUI.stop();       
+  };
+
 
   $scope.checkOrientation = function(){    
       $scope.isMobile = UtilityService.isMobileDevice(); 

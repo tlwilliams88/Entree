@@ -27,7 +27,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
 
   ListPagingModel.prototype = {
 
-    loadList: function(appendData) {
+    loadList: function(appendData, usemessage) {
       var setData = this.setListItems;
       if (appendData) {
         setData = this.appendListItems;
@@ -43,16 +43,17 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
         from: this.pageIndex,
         terms: this.searchTerm,
         sort: sortArray,
-        filter: this.filter
+        filter: this.filter        
       };
+      if(usemessage){
+        params.message = 'Loading List...'
+      }
 
       this.startLoading();
       return ListService.getList(
         this.listId,
         params
-      )
-        .then(setData)
-        .finally(this.stopLoading);
+      ).then(setData).finally(this.stopLoading);
     },
 
     getFilterObject: function(filterFields) {
@@ -111,7 +112,15 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
         this.pageIndex += this.pageSize;
         this.loadList(true);
       }
-    }
+    },
+
+    loadAllData: function(results, total, loading) {
+      if ( (!results || (results.length < total)) && !loading ) {
+        this.pageIndex = results.length;
+        this.pageSize = total - results.length;
+        this.loadList(true,true);
+      }
+    },
 
   };
   return( ListPagingModel );
