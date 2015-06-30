@@ -56,8 +56,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 					users = (userProfileLogic.GetUserProfile(dsr.EmailAddress));
 				}
 
-				//TODO: Load DSM once DSMs are being loaded into the system
-
+                //Load DSM
+                List<Core.Models.Profile.UserProfile> customerUsers = userProfileLogic.GetInternalUsersWithAccessToCustomer( customer.CustomerNumber, customer.CustomerBranch );
+                Core.Models.Profile.UserProfile dsm = customerUsers.Where( x => x.DSMNumber == customer.DsmNumber ).FirstOrDefault();
+                if (dsm != null) {
+                    users.UserProfiles.Add( dsm );
+                }
 
 			}
 			else
@@ -83,7 +87,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             
 			foreach (var u in ump)
                 prefs += u.Channel + u.UserId.ToString("B") + u.NotificationType;
-            log.WriteInformationLog("notification prefs: " + prefs + ", numProfiles: " + users.UserProfiles.Count + ", userDefaultMessagingPreferences: " + userDefaultMessagingPreferences + ", customerMessagingPreferences: " + customerMessagingPreferences);
+
+            log.WriteInformationLog( String.Format( "notification prefs: {0}, profiles count: {1}, userDefaultMessagingPreferences: {2}, customerMessagingPreferences: {3}",
+                                                   prefs, users.UserProfiles.Count, userDefaultMessagingPreferences, customerMessagingPreferences ) );
                 
             List<Recipient> recipients = new List<Recipient>();
 
