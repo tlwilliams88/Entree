@@ -482,6 +482,7 @@
                     type="text" 
                     allow-one-positive-decimal 
                     ng-model="item.parlevel" 
+                    ng-blur="initParLvl(item)"
                     class="text-right input-number bek-no-drag" />
                 </ng-form>
               </td>
@@ -586,6 +587,7 @@
                             required 
                             allow-one-positive-decimal 
                             ng-model="item.parlevel" 
+                            ng-blur="initParLvl(item)"
                             class="input-number input-number-mobile text-right bek-no-drag form-control" 
                             />
                         </ng-form>
