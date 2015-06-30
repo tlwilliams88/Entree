@@ -199,8 +199,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         private void Create(OrderHistoryFile currentFile) {
             // first attempt to find the order, look by confirmation number
-            EF.OrderHistoryHeader header = header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber, currentFile.Header.OrderSystem.ToShortString()).FirstOrDefault();
+            EF.OrderHistoryHeader header = null;
 
+            if (!String.IsNullOrEmpty(currentFile.Header.ControlNumber) && !String.IsNullOrEmpty(currentFile.Header.OrderSystem.ToShortString()))
+            {
+                header =  _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber, currentFile.Header.OrderSystem.ToShortString()).FirstOrDefault();
+            }
+            
             // second attempt to find the order, look by invioce number
             if (header == null && !currentFile.Header.InvoiceNumber.Equals("Processing")) { header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault(); }
 
