@@ -8,12 +8,12 @@
             <label for="file" class="col-sm-4 control-label">File:</label>
             <div class="col-sm-8">
                 <label class="btn btn-default" for="importFile">Choose File</label>
-                {{files[0].name}}
+                {{files[0].name}}  
                 <input style="display:none;" type="file" id="importFile" name="importFile" ng-file-select="onFileSelect($files)">
             </div>
         </div>
         <div class="form-group">
-            <label for="ignoreFirstLine" class="col-sm-4 control-label">Ignore First Line:</label>
+            <label for="ignoreFirstLine" style="bottom:7px;" class="col-sm-4 control-label">Ignore First Line:</label>
             <div class="col-sm-8">
                 <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirstline">
             </div>
@@ -21,7 +21,7 @@
         <div class="form-group">
             <label for="fileFormat" class="col-sm-4 control-label">File Type:</label>
             <div class="col-sm-8">
-                <select class="style-select" name="fileFormat" id="" required ng-model="options.fileformat">
+                <select class="style-select" name="fileFormat" required ng-model="options.fileformat">
                     <option value="0">CSV</option>
                     <option value="1">Tab</option>
                     <option value="2">Excel</option>
@@ -31,8 +31,11 @@
     </form>
 
 </div>
-<div class="modal-footer">
+ <p class="text-red text-left" style="padding-left:15px;" ng-show="invalidType">This is an incompatible file type. Please choose a file with one of the following extensions: .xls .xlsx .csv .txt</p>
+ <p class="text-left" style="padding-left:15px;" ng-show="!invalidType">Please choose a file with one of the following extensions: .xls .xlsx .csv .txt</p>
+<div class="modal-footer" style="white-space:nowrap; ">
     <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
-    <button class="btn-lg btn btn-primary" ng-click="startListUpload(options)">Import</button>
+    <button class="btn-lg btn btn-primary" ng-disabled = "invalidType" ng-click="startListUpload(options)">Import</button>
     <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
+
 </div>
