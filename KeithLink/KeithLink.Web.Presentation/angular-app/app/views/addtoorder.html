@@ -159,10 +159,10 @@
             <th  class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}" ng-show="useParlevel">
+            <th class="hiddenmobile" ng-show="useParlevel">
               PAR
             </th>
-            <th ng-class="{'hidden-mobile-visible-print' : !landscapeOrient, 'text-center' : landscapeOrient}" ng-show="useParlevel">
+            <th ng-class="{'text-center' : landscapeOrient}" class="hiddenmobile" ng-show="useParlevel">
               On Hand
             </th>
             <th>
@@ -212,23 +212,25 @@
             <td class="hidden-mobile-visible-print">
               {{::item.label}}
             </td>
-            <td ng-show="useParlevel"ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">
+            <td ng-show="useParlevel" class="hiddenmobile">
               {{::item.parlevel}}
             </td>
-            <td ng-show="useParlevel" class="input-col text-center"  ng-class="{'hidden-mobile-visible-print' : !landscapeOrient}">            
-              <ng-form name="parlevelForm" ng-if="item.canOrder">
+            <td ng-show="useParlevel" class="input-col text-center hiddenmobile" style="max-width:120px;" >            
+              <ng-form name="parlevelForm" class="counter-container" ng-if="item.canOrder">
               <!--  ON HAND AMOUNT -->
-                <div style="display:inline-block; white-space:nowrap;" ng-if="isMobile" type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.onhand" name="onhand" ng-change="onItemOnHandAmountChanged(item)"></div>
-                  <input 
+              <button type="button" class="btn btn-warning icon-minus3 hidden-lg"  ng-click="item.onhand = item.onhand -1; onItemOnHandAmountChanged(item)"></button>
+              <input 
                   type="text" 
                   id="onHand"
-                  ng-if="!isMobile"
+                  onfocus="this.select();"                 
                   ng-blur="confirmQuantity('onhand', item, item.onhand)"
-                  class="input-number text-right mousetrap" 
+                  class="dropdown-toggle input-number text-right mousetrap" 
                   allow-one-positive-decimal
-                  ng-model="item.onhand"                        
+                  ng-model="item.onhand"
+                  ng-init="item.onhand=item.onhand + 0"                        
                   name="onhand" 
-                  ng-change="onItemOnHandAmountChanged(item)">
+                  ng-change="onItemOnHandAmountChanged(item)"/>
+              <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  
               </ng-form>  
             </td>
             <td class="input-col nowrap">
@@ -240,10 +242,11 @@
                   focus-me="($first)"
                   ng-if="(landscapeOrient && useParlevel && item.canOrder) || !isMobile"
                   ng-blur="confirmQuantity('quantity', item, item.quantity)"
-                  ng-show="item.canOrder"                
+                  ng-show="item.canOrder"
+                  ng-init="item.quantity = item.quantity + 0"                
                   class="input-number text-right mousetrap" 
                   allow-one-positive-decimal
-                  ng-model="item.quantity">                
+                  ng-model="item.quantity"/>                
               </ng-form>
             </td>
             <td class="input-col hidden-mobile-visible-print">
