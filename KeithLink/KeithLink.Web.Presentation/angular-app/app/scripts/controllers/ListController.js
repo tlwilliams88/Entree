@@ -82,12 +82,18 @@ angular.module('bekApp')
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
-      LocalStorage.setLastOrderList(newList.listid);
+      LocalStorage.setLastList(newList.listid);
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
 
     $scope.undoChanges = function() {
       resetPage(angular.copy(originalList));
+    };
+
+    $scope.loadEntireList = function() {    
+      blockUI.start();    
+      listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults);    
+      blockUI.stop();   
     };
 
     /**********
@@ -571,6 +577,12 @@ angular.module('bekApp')
       $scope.listSearchTerm = '';
       $scope.hideDragToReorder = false;
       $scope.filterItems( $scope.listSearchTerm );     
+    };
+
+    $scope.initParLvl = function(item) {   
+      if(!item.parlevel){   
+        item.parlevel=0;
+      }   
     };
 
     $scope.openPrintOptionsModal = function(list) {
