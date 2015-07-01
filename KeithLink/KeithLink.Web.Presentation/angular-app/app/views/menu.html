@@ -20,9 +20,8 @@
           <span class="text-white user-info__name">{{userProfile.displayname}}</span>
         </div>
         <div>
-          <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
-          <span ng-if="userProfile.displayRole === 'approver'" class="user-info__job-title">Buyer</span>
-          <span ng-if="userProfile.displayRole === 'buyer'" class="user-info__job-title">Shopper</span>
+          <span class="user-info__job-title text-capitalize">{{userProfile.displayRole | roleName}}</span>
+
         </div>
       </div>
       <div class="person-info__section text-white">
