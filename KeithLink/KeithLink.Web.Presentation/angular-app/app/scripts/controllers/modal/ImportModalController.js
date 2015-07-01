@@ -23,12 +23,7 @@ angular.module('bekApp')
     $scope.files = [];
     var filetype = $files[0].name.slice($files[0].name.length -5,$files[0].name.length);
     filetype = filetype.slice(filetype.indexOf('.'), filetype.length);
-   $scope.invalidType = (filetype !== '.xlsx' && (filetype !== '.xls' && filetype !== '.csv' && filetype !== '.txt'))
-             
-    // }
-    // else{
-    //   $scope.invalid
-    // }
+   $scope.invalidType = (filetype !== '.xlsx' && filetype !== '.xls' && filetype !== '.csv' && filetype !== '.txt');             
 
     for (var i = 0; i < $files.length; i++) {     
       $scope.files.push($files[i]);      
