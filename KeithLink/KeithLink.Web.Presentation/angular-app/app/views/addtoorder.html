@@ -216,7 +216,7 @@
               {{::item.parlevel}}
             </td>
             <td ng-show="useParlevel" class="input-col text-center hiddenmobile" style="max-width:120px;" >            
-              <ng-form name="parlevelForm" class="counter-container" ng-if="item.canOrder">
+              <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder">
               <!--  ON HAND AMOUNT -->
               <button type="button" class="btn btn-warning icon-minus3 hidden-lg"  ng-click="item.onhand = item.onhand -1; onItemOnHandAmountChanged(item)"></button>
               <input 
