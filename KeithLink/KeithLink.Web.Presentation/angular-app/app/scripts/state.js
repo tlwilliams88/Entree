@@ -158,7 +158,17 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId);
         }],
-        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', function($stateParams, validListId, lists, ListService) {
+        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', function($stateParams, validListId, lists, ListService, UtilityService, LocalStorage) {
+          var last = LocalStorage.getLastList();
+          var stillExists = false;
+          ListService.lists.forEach(function(list){
+            if(list.listid.toString() === last){
+               stillExists = true;
+            }
+          });
+          if( last && stillExists ){
+           return ListService.getList(last);
+          }
           return ListService.getList(validListId);
         }]
       }
@@ -282,7 +292,17 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
-        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', function($stateParams, lists, validListId, ListService) {
+        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', function($stateParams, lists, validListId, ListService, UtilityService, LocalStorage) {
+          var last = LocalStorage.getLastOrderList();
+          var stillExists = false;
+           ListService.lists.forEach(function(list){
+            if(list.listid.toString() === last){
+               stillExists = true;
+            }
+          });
+          if( last && stillExists ){
+           return ListService.getList(last);
+          }
           return ListService.getList(validListId);
         }]
       }

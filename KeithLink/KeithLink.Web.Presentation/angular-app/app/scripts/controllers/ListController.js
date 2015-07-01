@@ -8,9 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, PricingService, ListPagingModel) {
-
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel', 'LocalStorage',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService, ListPagingModel, LocalStorage) {
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
@@ -75,25 +74,21 @@ angular.module('bekApp')
     );
 
     // LIST INTERACTIONS
-    $scope.goToList = function(list) {
+    $scope.goToList = function(list) {      
+      LocalStorage.setLastList(list.listid);
       return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
+      LocalStorage.setLastOrderList(newList.listid);
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
 
     $scope.undoChanges = function() {
       resetPage(angular.copy(originalList));
     };
-
-    $scope.loadEntireList = function() {
-      blockUI.start();
-      listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults);     
-      blockUI.stop();       
-  };
 
     /**********
     PAGING
@@ -576,12 +571,6 @@ angular.module('bekApp')
       $scope.listSearchTerm = '';
       $scope.hideDragToReorder = false;
       $scope.filterItems( $scope.listSearchTerm );     
-    };
-
-    $scope.initParLvl = function(item) {
-      if(!item.parlevel){
-        item.parlevel=0;
-      }
     };
 
     $scope.openPrintOptionsModal = function(list) {

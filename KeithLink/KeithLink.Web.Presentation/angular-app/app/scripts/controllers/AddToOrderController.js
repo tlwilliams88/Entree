@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', '$analytics',
-    function ($scope, $state, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, $analytics) {
+  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics',
+    function ($scope, $state, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics) {
     
     // redirect to url with correct parameters
        var basketId;
@@ -258,6 +258,7 @@ angular.module('bekApp')
     };
     $scope.redirect = function(listId, cart, useParlevel) {
       var cartId;
+      LocalStorage.setLastOrderList(listId);
       if ($scope.isChangeOrder) {
         cartId = cart.ordernumber;
       } else {
