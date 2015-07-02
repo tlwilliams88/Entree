@@ -12,7 +12,6 @@ angular.module('bekApp')
     function($scope, $filter, $timeout, list, ListService) {
 
   var orderBy = $filter('orderBy');
-  $scope.dummy ={};
 
   function setList(list) {
     $scope.list = list;
@@ -101,9 +100,9 @@ angular.module('bekApp')
 
     $scope.list.items = orderBy($scope.list.items, field, sortDescending);  
     if($scope.list.items.length && !$scope.list.items[($scope.list.items.length -1)].listitemid){
-      $scope.dummy = $scope.list.items.slice($scope.list.items.length -1, $scope.list.items.length );
+      var dummy = $scope.list.items.slice($scope.list.items.length -1, $scope.list.items.length );
        $scope.list.items = $scope.list.items.slice(0, $scope.list.items.length -1);
-       $scope.list.items.splice(0,0,$scope.dummy[0]);  
+       $scope.list.items.splice(0,0,dummy[0]);  
    }
 
     $scope.list.items.forEach(function(item, index) {
@@ -135,7 +134,6 @@ angular.module('bekApp')
 
       // remove empty item that is used for ui sortable 
       if (list.items.length && !list.items[0].listitemid) {
-        $scope.dummy = list.items.slice(0,1);
         list.items.splice(0, 1);
       }
  
@@ -150,8 +148,6 @@ angular.module('bekApp')
         $scope.organizeListForm.$setPristine();
         setList(updatedList);
       }).finally(function() {
-        //list.items.splice(0,0,$scope.dummy[0]); 
-        //list.items[0].editPosition = 0;
         processingSaveList = false;
       });
     }
