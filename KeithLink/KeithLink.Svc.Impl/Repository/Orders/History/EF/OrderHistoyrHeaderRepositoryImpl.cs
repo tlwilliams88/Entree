@@ -28,8 +28,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
             return query.ToList();
         }
 
-        public IEnumerable<OrderHistoryHeader> ReadByConfirmationNumber(string confirmationNumber) {
-			return Entities.Include(d => d.OrderDetails).Where(l => l.ControlNumber == confirmationNumber);
+        public IEnumerable<OrderHistoryHeader> ReadByConfirmationNumber(string confirmationNumber, string orderSystem) {
+			return Entities.Include(d => d.OrderDetails).Where(l => l.OrderSystem == orderSystem && (
+                                                                        l.ControlNumber == confirmationNumber ||
+                                                                        l.OriginalControlNumber == confirmationNumber)
+                                                              );
         }
 
         public IEnumerable<OrderHistoryHeader> ReadForInvoice(string branchId, string invoiceNumber) {
@@ -41,9 +44,5 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
                 o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModifiedUtc).DefaultIfEmpty().Max();
         }
         #endregion
-
-
-
-
 	}
 }

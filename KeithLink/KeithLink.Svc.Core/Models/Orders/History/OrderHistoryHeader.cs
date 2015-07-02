@@ -30,7 +30,10 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         [DataMember(Name="controlnumber")]
         public string ControlNumber { get; set; }
 
-        [DataMember(Name="orderstatus")]
+        [DataMember(Name = "originalcontrolnumber")]
+        public string OriginalControlNumber { get; set; }
+
+        [DataMember(Name = "orderstatus")]
         public string OrderStatus { get; set; }
 
         [DataMember(Name="futureitems")]

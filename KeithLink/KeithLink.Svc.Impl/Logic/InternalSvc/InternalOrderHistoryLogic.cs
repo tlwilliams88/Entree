@@ -198,11 +198,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         private void Create(OrderHistoryFile currentFile) {
-            // first attempt to find the order, look by branch and invoice number
-            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+            // first attempt to find the order, look by confirmation number
+            EF.OrderHistoryHeader header = null;
 
-            // second attempt to find the order, look by confirmation number
-            if (header == null && !string.IsNullOrEmpty(currentFile.Header.ControlNumber)) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
+            // first attempt is to load the order by current confirmation number or original confirmation number
+            if (!string.IsNullOrEmpty(currentFile.Header.ControlNumber) && !string.IsNullOrEmpty(currentFile.Header.OrderSystem.ToShortString())) {
+                header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber,
+                                                         currentFile.Header.OrderSystem.ToShortString()
+                                                        ).FirstOrDefault();
+            }
+
+            // second attempt to find the order, look by invioce number
+            if (header == null && !currentFile.Header.InvoiceNumber.Equals("Processing")) { 
+                header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault(); 
+            }
 
             // last ditch effort is to create a new header
             if (header == null) {
@@ -211,6 +220,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             currentFile.Header.MergeWithEntity(ref header);
+
+            if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
 
             foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList()) {
 

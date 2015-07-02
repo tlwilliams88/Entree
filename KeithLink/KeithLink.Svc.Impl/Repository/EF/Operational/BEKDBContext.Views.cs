@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets672cd598d5fea30a4e290e0aea209cf3a48369bd55ba5f3201ad8a2bfc9337ad))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetscaac32fc6306363f9e1145a32678662948b40135ed474a4faacf00e2e685d3d8))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets672cd598d5fea30a4e290e0aea209cf3a48369bd55ba5f3201ad8a2bfc9337ad : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySetscaac32fc6306363f9e1145a32678662948b40135ed474a4faacf00e2e685d3d8 : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "672cd598d5fea30a4e290e0aea209cf3a48369bd55ba5f3201ad8a2bfc9337ad"; }
+            get { return "caac32fc6306363f9e1145a32678662948b40135ed474a4faacf00e2e685d3d8"; }
         }
 
         /// <summary>
@@ -1222,7 +1222,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeader
-        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -1233,6 +1233,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.DeliveryDate AS OrderHistoryHeader_DeliveryDate, 
             T.PONumber AS OrderHistoryHeader_PONumber, 
             T.ControlNumber AS OrderHistoryHeader_ControlNumber, 
+            T.OriginalControlNumber AS OrderHistoryHeader_OriginalControlNumber, 
             T.OrderStatus AS OrderHistoryHeader_OrderStatus, 
             T.FutureItems AS OrderHistoryHeader_FutureItems, 
             T.ErrorStatus AS OrderHistoryHeader_ErrorStatus, 
@@ -1321,7 +1322,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeaders
-        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -1332,6 +1333,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.DeliveryDate AS OrderHistoryHeader_DeliveryDate, 
             T.PONumber AS OrderHistoryHeader_PONumber, 
             T.ControlNumber AS OrderHistoryHeader_ControlNumber, 
+            T.OriginalControlNumber AS OrderHistoryHeader_OriginalControlNumber, 
             T.OrderStatus AS OrderHistoryHeader_OrderStatus, 
             T.FutureItems AS OrderHistoryHeader_FutureItems, 
             T.ErrorStatus AS OrderHistoryHeader_ErrorStatus, 
