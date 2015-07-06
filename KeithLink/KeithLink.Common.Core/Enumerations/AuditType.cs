@@ -36,6 +36,8 @@ namespace KeithLink.Common.Core.Enumerations
 		[Description("Customer Removed From Customer Group")]
 		CustomerRemovedFromCustomerGroup,
 		[Description("Order Submitted")]
-		OrderSubmited
+		OrderSubmited,
+        [Description("Payment submitted")]
+        PaymentSubmitted
 	}
 }
