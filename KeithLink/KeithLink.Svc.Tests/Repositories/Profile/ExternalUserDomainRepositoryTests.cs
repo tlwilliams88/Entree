@@ -112,6 +112,15 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         //{
         //    _custUserRepo.UpdateUserGroups(new List<string>(), "owner", "sabroussard@somecompany.com") ;
         //}
+
+        [TestMethod]
+        public void DeleteUser() {
+            const string USER_EMAIL = "deletableuser@somecompany.com";
+
+            _custUserRepo.CreateUser("Jimmys Chicken Shack", USER_EMAIL , "Ab12345", "First", "Last", Configuration.RoleNameOwner);
+
+            _custUserRepo.DeleteUser(USER_EMAIL);
+        }
         #endregion
     }
 }

@@ -1,11 +1,14 @@
 ﻿using CommerceServer.Foundation;
+
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Extensions.PowerMenu;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
@@ -15,27 +18,25 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.SingleSignOn;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.PowerMenu;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.PowerMenu;
-using KeithLink.Svc.Core.Extensions.PowerMenu;
-using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Models.SingleSignOn;
 
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -104,33 +105,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 			GenerateUserAddedNotification(customerId, userId);
         }
-
-		private void GenerateUserAddedNotification(Guid customerId, Guid userId)
-		{
-			try
-			{
-				//Lookup customer
-				var customer = _customerRepo.GetCustomerById(customerId);
-				//Lookup User
-				var user = _csProfile.GetCSProfile(userId);
-
-				var notifcation = new HasNewsNotification()
-				{
-					CustomerNumber = customer.CustomerNumber,
-					BranchId = customer.CustomerBranch,
-					Subject = string.Format("New user added to {0}-{1}", customer.CustomerNumber, customer.CustomerName),
-					Notification = string.Format("User {0} has been added to {1}-{2}", user.Email, customer.CustomerNumber, customer.CustomerName),
-					DSRDSMOnly = true
-				};
-				_queue.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
-							Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
-							Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
-			}
-			catch (Exception ex)
-			{
-				_eventLog.WriteErrorLog("Error generating DSR/DSM new user notification", ex);
-			}
-		}
 
         /// <summary>
         /// check that the customer name is longer the 0 characters
@@ -474,27 +448,38 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>a completed user profile</returns>
         /// <remarks>
         /// jwames - 10/3/2014 - documented
+        /// jmwaes - 7/6/2015 - delete the user from Ad if CS user profile creation fails
         /// </remarks>
-		public UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId)
-		{
+		public UserProfileReturn CreateUserAndProfile(UserProfile actingUser, string customerName, string emailAddress, 
+                                                      string password, string firstName, string lastName, 
+                                                      string phone, string roleName, string branchId) {
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
             _extAd.CreateUser(customerName,
-                              emailAddress,
-                              password,
-                              firstName,
-                              lastName,
-                              ConvertRoleName(roleName)
-                              );
+                                emailAddress,
+                                password,
+                                firstName,
+                                lastName,
+                                ConvertRoleName(roleName)
+                                );
 
-            _csProfile.CreateUserProfile(actiingUser.EmailAddress,
-										 emailAddress,
-                                         firstName,
-                                         lastName,
-                                         phone,
-                                         branchId
-                                         );
+            try {
+                _csProfile.CreateUserProfile(actingUser.EmailAddress,
+                                             emailAddress,
+                                             firstName,
+                                             lastName,
+                                             phone,
+                                             branchId
+                                             );
+
+            } catch (Exception) {
+                // if CS profile creation fails, delete the user from AD
+                // to keep from orphaning a user
+                _extAd.DeleteUser(emailAddress);
+
+                throw;
+            }
 
             return GetUserProfile(emailAddress);
         }
@@ -736,6 +721,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 generatedPassword = NewPassword();
 
             return generatedPassword;
+        }
+
+        private void GenerateUserAddedNotification(Guid customerId, Guid userId) {
+            try {
+                //Lookup customer
+                var customer = _customerRepo.GetCustomerById(customerId);
+                //Lookup User
+                var user = _csProfile.GetCSProfile(userId);
+
+                var notifcation = new HasNewsNotification() {
+                    CustomerNumber = customer.CustomerNumber,
+                    BranchId = customer.CustomerBranch,
+                    Subject = string.Format("New user added to {0}-{1}", customer.CustomerNumber, customer.CustomerName),
+                    Notification = string.Format("User {0} has been added to {1}-{2}", user.Email, customer.CustomerNumber, customer.CustomerName),
+                    DSRDSMOnly = true
+                };
+                _queue.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
+                            Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+                            Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog("Error generating DSR/DSM new user notification", ex);
+            }
         }
 
         public AccountReturn GetAccounts(AccountFilterModel accountFilters) {
@@ -1710,7 +1717,5 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         //}
 
         #endregion
-
-
 	}
 }

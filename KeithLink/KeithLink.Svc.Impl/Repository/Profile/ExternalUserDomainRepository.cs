@@ -403,6 +403,20 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return userName;
         }
 
+        public void DeleteUser(string emailAddress) {
+            using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
+                                                            Configuration.ActiveDirectoryExternalServerName,
+                                                            Configuration.ActiveDirectoryExternalRootNode,
+                                                            ContextOptions.Negotiate,
+                                                            Configuration.ActiveDirectoryExternalDomainUserName,
+                                                            Configuration.ActiveDirectoryExternalPassword)) {
+                // if user exists
+                UserPrincipal user = UserPrincipal.FindByIdentity(boundServer, emailAddress);
+
+                user.Delete();
+            }
+        }
+
         public void ExpirePassword(string emailAddress) {
             using (PrincipalContext boundServer = new PrincipalContext(ContextType.Domain,
                                                             Configuration.ActiveDirectoryExternalServerName,
