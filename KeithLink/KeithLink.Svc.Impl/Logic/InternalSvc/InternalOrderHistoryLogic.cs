@@ -217,6 +217,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             currentFile.Header.MergeWithEntity(ref header);
 
+            if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
+
             foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList()) {
 
                 EF.OrderHistoryDetail detail = null;
