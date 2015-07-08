@@ -20,7 +20,8 @@
           <span class="text-white user-info__name">{{userProfile.displayname}}</span>
         </div>
         <div>
-          <span class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
+          <span class="user-info__job-title text-capitalize">{{userProfile.displayRole | roleName}}</span>
+
         </div>
       </div>
       <div class="person-info__section text-white">
@@ -305,7 +306,9 @@
             <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
               <div class="person-info__section person-info__details">
                 <span class="user-info__name">{{userProfile.displayname}}</span>
-                <span class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
+                <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
+                <span ng-if="userProfile.displayRole === 'approver'" class="user-info__job-title">Buyer</span>
+                <span ng-if="userProfile.displayRole === 'buyer'" class="user-info__job-title">Shopper</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                   <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>

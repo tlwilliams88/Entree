@@ -8,6 +8,8 @@ angular.module('bekApp')
   
   $scope.upload = [];
   $scope.files = [];
+  $scope.invalidType = false;      
+
 
   function goToImportedPage(routeName, routeParams) {
     $state.go(routeName, routeParams);
@@ -15,9 +17,16 @@ angular.module('bekApp')
   }
 
   $scope.onFileSelect = function($files) {
+     if(!$files.length){
+      return;
+     }
     $scope.files = [];
-    for (var i = 0; i < $files.length; i++) {
-      $scope.files.push($files[i]);
+    var filetype = $files[0].name.slice($files[0].name.length -5,$files[0].name.length);
+    filetype = filetype.slice(filetype.indexOf('.'), filetype.length);
+   $scope.invalidType = (filetype !== '.xlsx' && filetype !== '.xls' && filetype !== '.csv' && filetype !== '.txt');             
+
+    for (var i = 0; i < $files.length; i++) {     
+      $scope.files.push($files[i]);      
     }
   };
 

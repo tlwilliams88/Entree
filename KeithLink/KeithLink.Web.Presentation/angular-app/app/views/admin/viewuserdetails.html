@@ -40,10 +40,9 @@
         
       <div class="row">
         <label for="userRole" class="col-md-2 control-label">User Role</label>
-        <div class="col-md-4">
-          {{::displayRole}}
+        <div ng-if="::displayRole !== 'approver' && ::displayRole !== 'buyer'" class="col-md-4">
+          {{::displayRole | roleName}}
         </div>
-      
       </div>
 
     </div>

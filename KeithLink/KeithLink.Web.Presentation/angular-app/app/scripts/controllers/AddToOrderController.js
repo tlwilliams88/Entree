@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', '$analytics',
-    function ($scope, $state, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, $analytics) {
+  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$stateParams', '$filter', '$timeout', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', '$analytics',
+    function ($scope, $state, $modal, $stateParams, $filter, $timeout, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, $analytics) {
     
     // redirect to url with correct parameters
        var basketId;
@@ -199,6 +199,20 @@ angular.module('bekApp')
             }
           } 
         };
+  
+   $scope.openItemUsageSummaryModal = function(item, type) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/itemusagesummarymodal.html',
+        controller: 'ItemUsageSummaryModalController',
+        windowClass: 'color-background-modal',
+        scope: $scope,
+        resolve: {
+          item: function() {
+            return item;
+          }
+        }
+      });
+    };
 
   $scope.checkOrientation = function(){    
       $scope.isMobile = UtilityService.isMobileDevice(); 
