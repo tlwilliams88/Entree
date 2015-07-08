@@ -160,10 +160,10 @@
             <th  class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="hiddenmobile" ng-show="useParlevel">
+            <th class="hidden-mobile" ng-show="useParlevel">
               PAR
             </th>
-            <th  class="hiddenmobile text-center" ng-show="useParlevel">
+            <th  class="hidden-mobile text-center" ng-show="useParlevel">
               On Hand
             </th>
             <th>
@@ -213,10 +213,10 @@
             <td class="hidden-mobile-visible-print">
               {{::item.label}}
             </td>
-            <td ng-show="useParlevel" class="hiddenmobile">
+            <td ng-show="useParlevel" class="hidden-mobile">
               {{::item.parlevel}}
             </td>
-            <td ng-show="useParlevel" class="input-col text-center hiddenmobile" style="max-width:120px;" >            
+            <td ng-show="useParlevel" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
               <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder">
               <!--  ON HAND AMOUNT -->
               <button type="button" class="btn btn-warning icon-minus3 hidden-lg"  ng-click="item.onhand = item.onhand -1; onItemOnHandAmountChanged(item)"></button>
