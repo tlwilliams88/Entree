@@ -34,7 +34,7 @@
         "mobile": "UA-58495462-4"
       }
     },
-      "dev": {
+  "dev": {
       "name": "dev",
       "apiKey": "web_dev_v1",
       "apiEndpoint": "https://shopapidev.benekeith.com",
