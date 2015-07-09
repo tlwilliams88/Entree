@@ -8,6 +8,8 @@ angular.module('bekApp')
        var basketId;
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
+      $scope.origItemCount = selectedCart.items.length;
+
 
       if($stateParams.continueToCart){
       //continueToCart indicates the Proceed to Checkout button was pressed.
@@ -355,7 +357,18 @@ angular.module('bekApp')
           setSelectedCart(updatedCart);
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           $scope.addToOrderForm.$setPristine();
-          $scope.displayMessage('success', 'Successfully added ' + updatedCart.items.length + ' Items to Cart ' + updatedCart.name + '.');
+
+          var newItemCount = updatedCart.items.length - $scope.origItemCount;
+          $scope.origItemCount = updatedCart.items.length;
+          
+          if(newItemCount > 0){
+            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Cart ' + updatedCart.name + '.');
+          }else if(newItemCount < 0){
+              $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Cart ' + updatedCart.name + '.');
+          }
+          else{
+            $scope.displayMessage('success', 'Successfully Saved ' + updatedCart.name + '.');
+           }
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function() {
