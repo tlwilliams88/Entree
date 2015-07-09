@@ -543,7 +543,7 @@ module.exports = function (grunt) {
                       googleAnalytics: '<%= config.environment.stage.cognosUrl %>',
                       loggingEnabled: false,
                       cognosUrl: 'UA-58495303-1',
-                    lastListStorageTimeout: 48
+                      lastListStorageTimeout: 48
                   }
               }
           }
