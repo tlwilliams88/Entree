@@ -448,7 +448,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <returns>a completed user profile</returns>
         /// <remarks>
         /// jwames - 10/3/2014 - documented
-        /// jmwaes - 7/6/2015 - delete the user from Ad if CS user profile creation fails
         /// </remarks>
 		public UserProfileReturn CreateUserAndProfile(UserProfile actingUser, string customerName, string emailAddress, 
                                                       string password, string firstName, string lastName, 
@@ -475,7 +474,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             } catch (Exception) {
                 // if CS profile creation fails, delete the user from AD
-                // to keep from orphaning a user
+                // too
                 _extAd.DeleteUser(emailAddress);
 
                 throw;

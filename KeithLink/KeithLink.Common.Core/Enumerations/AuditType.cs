@@ -30,12 +30,18 @@ namespace KeithLink.Common.Core.Enumerations
 		[Description("Revoke User Access")]
 		RevokeUserAccess,
 		[Description("Change Password")]
-		ChagnePassword,
+		ChangePassword,
 		[Description("Customer Added To Customer Group")]
 		CustomerAddedToCustomerGroup,
 		[Description("Customer Removed From Customer Group")]
 		CustomerRemovedFromCustomerGroup,
 		[Description("Order Submitted")]
-		OrderSubmited
-	}
+		OrderSubmited,
+        [Description("Authentication Succeeded")]
+        AuthenticationSucceeded,
+        [Description("Authentication Failed")]
+        AuthenticationFailed,
+        [Description("User Deleted")]
+        UserDeleted
+    }
 }

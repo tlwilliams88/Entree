@@ -77,17 +77,6 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         }
 
         [TestMethod]
-        public void CreateUser() {
-            try {
-                //_custUserRepo.CreateUser("Jimmys Chicken Shack", "lockeduser@somecompany.com", "L0ckedUs3r", "Locked", "User", Configuration.RoleNameOwner);
-
-                Assert.IsTrue(true);
-            } catch {
-                Assert.IsTrue(false);
-            }
-        }
-
-        [TestMethod]
         public void GoodUserWithKbitAccess() {
             Assert.IsTrue(_custUserRepo.HasAccess("sabroussard@somecompany.com", "Dev Kbit Customer"));
         }
@@ -114,12 +103,16 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         //}
 
         [TestMethod]
-        public void DeleteUser() {
+        public void CreateAndDeleteUser() {
             const string USER_EMAIL = "deletableuser@somecompany.com";
 
             _custUserRepo.CreateUser("Jimmys Chicken Shack", USER_EMAIL , "Ab12345", "First", "Last", Configuration.RoleNameOwner);
+            
+            Assert.IsNotNull(_custUserRepo.GetUser(USER_EMAIL));
 
             _custUserRepo.DeleteUser(USER_EMAIL);
+
+            Assert.IsNull(_custUserRepo.GetUser(USER_EMAIL));
         }
         #endregion
     }

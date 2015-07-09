@@ -1,18 +1,21 @@
-﻿using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.Profile;
+﻿using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Core.Enumerations;
+using KeithLink.Common.Core.Logging;
+
+using KeithLink.Svc.Core.Enumerations.Authentication;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Authentication;
+using KeithLink.Svc.Core.Models.Profile;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
-using System.Text;
 using System.Linq;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core.Models.Authentication;
-using KeithLink.Svc.Core.Enumerations.Authentication;
+using System.Text;
 using System.Text.RegularExpressions;
-using KeithLink.Common.Core.AuditLog;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -70,28 +73,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         /// <summary>
-        /// authenticates the user to the benekeith.com domain and throws an exception for any problems encountered
-        /// </summary>
-        /// <returns>true if successful</returns>
-        /// <remarks>
-        /// jwames - 8/18/2014 - change to call new authenticateuser method with a string output
-        /// </remarks>
-        //public bool AuthenticateUser(string userName, string password)
-        //{
-        //    AuthenticationModel success = AuthenticateUser(userName, password);
-
-        //    if (AuthenticationStatus.)
-        //    {
-        //        return true;
-        //    }
-        //    else
-        //    {
-        //        throw new ApplicationException(msg);
-        //        //return false;
-        //    }
-        //}
-
-        /// <summary>
         /// test user credentials
         /// </summary>
         /// <param name="userName">the person trying to login</param>
@@ -128,6 +109,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                     if (authenticatingUser == null)
                     {
+                        _auditLog.WriteToAuditLog(AuditType.AuthenticationFailed, userName, string.Concat("User name or password is invalid: ", userName));
                         returnValue.Message = "User name or password is invalid";
                         returnValue.Status = AuthenticationStatus.FailedAuthentication;
                         return returnValue;
@@ -136,6 +118,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     // if account is enabled 
                     if (authenticatingUser.Enabled == false)
                     {
+                        _auditLog.WriteToAuditLog(AuditType.AuthenticationFailed, userName, string.Concat("User account is disabled: ", userName));
                         returnValue.Message = "User account is disabled";
                         returnValue.Status = AuthenticationStatus.Disabled;
                         return returnValue;
@@ -150,6 +133,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                             if (DateTime.Now < endOfLockout)
                             {
+                                _auditLog.WriteToAuditLog(AuditType.AuthenticationFailed, userName, string.Concat("User account is locked out: ", userName));
                                 returnValue.Message = "User account is locked and cannot sign in now";
                                 returnValue.Status = AuthenticationStatus.Locked;
                                 return returnValue;
@@ -171,9 +155,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                         if (returnValue.Status.Equals( AuthenticationStatus.PasswordExpired )) {
                             // Turn the password expired flag back on
                             SetExpiredPassword( (DirectoryEntry)authenticatingUser.GetUnderlyingObject(), PassworedExpiredFlag.Enabled );
+                            _auditLog.WriteToAuditLog(AuditType.AuthenticationSucceeded, userName, string.Concat("Authentication successfull but password is expired: ", userName));
                             returnValue.Message = "Password is expired";
                             return returnValue;
                         } else {
+                            _auditLog.WriteToAuditLog(AuditType.AuthenticationSucceeded, userName, string.Concat("Authentication successfull: ", userName));
                             returnValue.Status = AuthenticationStatus.Successful;
                             return returnValue;
                         }
@@ -187,16 +173,16 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                         if (authenticatingUser.BadLogonCount >= Configuration.ActiveDirectoryInvalidAttempts)
                         {
+                            _auditLog.WriteToAuditLog(AuditType.AuthenticationFailed, userName, string.Concat("User account is locked out: ", userName));
                             returnValue.Message = "User account is locked and cannot sign in now";
                             returnValue.Status = AuthenticationStatus.Locked;
                         }
                         else
                         {
+                            _auditLog.WriteToAuditLog(AuditType.AuthenticationFailed, userName, string.Concat("User name or password is invalid: ", userName));
                             returnValue.Message = "User name or password is invalid";
                             returnValue.Status = AuthenticationStatus.FailedAuthentication;
                         }
-
-
 
                         return returnValue;
                     }
@@ -204,28 +190,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             }
             catch
             {
+                _auditLog.WriteToAuditLog(AuditType.AuthenticationFailed, userName, string.Concat("Coult not connect to authentication server for benekeith.com: ", userName));
                 returnValue.Message = "Coult not connect to authentication server for benekeith.com";
                 returnValue.Status = AuthenticationStatus.FailedConnectingToAuthenticationServer;
                 return returnValue;
             }
         }
-
-        //private string CleanseOfInvalidChars(string input) {
-        //    return Regex.Replace(input, @"[""#&\[\]:\<\>+=\*/;,?@\\]", "", RegexOptions.None, TimeSpan.FromSeconds(1.5));
-        //}
-
-        //private DirectoryEntry CreateChildOrganizationalUnit(string customerName, DirectoryEntry parent) {
-        //    DirectoryEntry newOU = parent.Children.Add("OU=" + CleanseOfInvalidChars(customerName), "OrganizationalUnit");
-        //    newOU.CommitChanges();
-        //    parent.RefreshCache();
-        //    return newOU;
-        //}
-
-        //private void CreateCustomerSecurityGroup(string customerName, string roleName, DirectoryEntry customerContainer, DirectoryEntry groupContainer) {
-        //    DirectoryEntry newGroup = groupContainer.Children.Add("CN=" + CleanseOfInvalidChars(customerName) + " " + roleName, "group");
-        //    newGroup.CommitChanges();
-        //    customerContainer.RefreshCache();
-        //}
 
         /// <summary>
         /// create a user in the benekeith.com domain
@@ -301,105 +271,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             principal.Dispose();
 
             _logger.WriteInformationLog(string.Format("New user({0}) was created within the container ({1}) in Active Directory.", userName, customerName));
-
-            return userName;
-        }
-
-        /// <summary>
-        /// create a user in the benekeith.com domain
-        /// </summary>
-        /// <remarks>
-        /// jwames - 8/18/2014 - documented
-        /// </remarks>
-        public string CreateUser_Org(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName)
-        {
-            //CustomerContainerReturn custExists = _containerRepo.SearchCustomerContainers(customerName);
-
-            //// create the customer container if it does not exist
-            //if (custExists.CustomerContainers.Count != 1) { 
-            //    _containerRepo.CreateCustomerContainer(customerName);
-            //    _logger.WriteInformationLog(string.Format("New customer container created in Active Directory({0}).", customerName));
-            //}
-
-            const int NORMAL_ACCT = 0x200;
-            const int PWD_NOTREQD = 0x20;
-
-            string adPath = string.Format("LDAP://{0}:636/OU=users,OU={1},{2}", Configuration.ActiveDirectoryExternalServerName, customerName, Configuration.ActiveDirectoryExternalRootNode);
-
-            DirectoryEntry boundServer = null;
-            // connect to the external AD server
-            try
-            {
-                boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
-                boundServer.AuthenticationType = AuthenticationTypes.SecureSocketsLayer;
-                boundServer.RefreshCache();
-            } catch (Exception ex){
-                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
-
-                throw;
-            }
-
-            //string userName = emailAddress.Substring(0, emailAddress.IndexOf('@'));
-            string userName = GetNewUserName(emailAddress);
-
-            DirectoryEntry newUser = null;
-            // create the user
-            try
-            {
-                string userCN = string.Format("CN={0}", userName);
-
-                newUser = boundServer.Children.Add(userCN, "user");
-                newUser.Properties["company"].Value = customerName;
-                newUser.Properties["displayName"].Value = string.Format("{0} {1}", firstName, lastName);
-                newUser.Properties["givenName"].Value = firstName;
-                newUser.Properties["name"].Value = userName;
-                newUser.Properties["sAmAccountName"].Value = userName;
-                newUser.Properties["sn"].Value = lastName;
-                newUser.Properties["userPrincipalName"].Value = emailAddress;
-                newUser.Properties["userAccountControl"].Value = NORMAL_ACCT | PWD_NOTREQD;
-                newUser.CommitChanges();
-            }
-            catch(Exception ex)
-            {
-                _logger.WriteErrorLog("Could not create user on external AD server.", ex);
-
-                throw;
-            }
-
-            // set the user's password
-            try
-            {
-                newUser.Invoke("SetPassword", new object[] { password });
-                newUser.Properties["userAccountControl"].Value = NORMAL_ACCT;
-                newUser.CommitChanges();
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteErrorLog("Could not set password for user on external AD server.", ex);
-
-                throw;
-            }
-
-            // assign user to the specified role
-            try
-            {
-                string groupName = string.Format("{0} {1}", customerName, roleName);
-                string groupDN = string.Format("CN={0},OU=groups,OU={1},{2}", groupName, customerName, Configuration.ActiveDirectoryExternalRootNode);
-                string groupPath = string.Format("LDAP://{0}:389/{1}", Configuration.ActiveDirectoryExternalServerName, groupDN);
-
-                DirectoryEntry group = new DirectoryEntry(groupPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
-                group.Properties["member"].Add(newUser.Properties["distinguishedName"].Value);
-                group.CommitChanges();
-            }
-            catch (Exception ex)
-            {
-                _logger.WriteErrorLog("Could not assign user to a role on external AD server.", ex);
-                
-                throw;
-            }
-
-            _logger.WriteInformationLog(string.Format("New user({0}) was created within the container ({1}) in Active Directory.", userName, customerName));
-
+            _auditLog.WriteToAuditLog(AuditType.UserCreated, null, string.Concat("User Created: ", emailAddress));
             return userName;
         }
 
@@ -414,6 +286,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 UserPrincipal user = UserPrincipal.FindByIdentity(boundServer, emailAddress);
 
                 user.Delete();
+
+                _auditLog.WriteToAuditLog(AuditType.UserDeleted, null, string.Concat("User deleted: ", emailAddress));
             }
         }
 
@@ -428,16 +302,10 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 UserPrincipal user = UserPrincipal.FindByIdentity(boundServer, emailAddress);
 
                 SetExpiredPassword((DirectoryEntry)user.GetUnderlyingObject(), PassworedExpiredFlag.Enabled);
+
+                _auditLog.WriteToAuditLog(AuditType.UserUpdate, null, string.Concat("Password set to expired: ", emailAddress));
             }
         }
-
-        //private DirectoryEntry FindChildOu(DirectoryEntry parent, string childOuName) {
-        //    try {
-        //        return parent.Children.Find("OU=" + CleanseOfInvalidChars(childOuName));
-        //    } catch {
-        //        return null;
-        //    }
-        //}
 
         /// <summary>
         /// get a unique user name for AD based on the user name in the email address
@@ -625,7 +493,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                         groupDE.CommitChanges();
 
-						_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.GrantUserAccess, grantedBy, String.Format("User: {0} Granted: {1}", userName, roleName));
+						_auditLog.WriteToAuditLog(AuditType.GrantUserAccess, grantedBy, String.Format("User: {0} Granted: {1}", userName, roleName));
                     }
                 }
             } catch (Exception ex) {
@@ -684,7 +552,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         }
 
         public void JoinGroup(string customerName, string roleName, UserPrincipal user) {
-            //string groupOU = string.Format("ou=Groups,ou={0},{1}", CleanseOfInvalidChars(customerName), Configuration.ActiveDirectoryExternalRootNode);
             string groupOU = string.Format("ou=Groups,{0}", Configuration.ActiveDirectoryExternalRootNode);
             string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
 
@@ -694,39 +561,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                                                  ContextOptions.Negotiate,
                                                  Configuration.ActiveDirectoryExternalDomainUserName,
                                                  Configuration.ActiveDirectoryExternalPassword)) {
-                //string groupName = string.Join(" ", new string[] { customerName, roleName });
-
-				//groupName = CleanseOfInvalidChars(groupName);
-
-                //GroupPrincipal group = GetSecurityGroup(principal, groupName);
                 GroupPrincipal group = GetSecurityGroup(principal, roleName);
 
-                //// check for root, create if absent; have to use directory entries because the computer making the call is not necessarily on the domain
-                //DirectoryEntry root = new DirectoryEntry(
-                //    adPath,
-                //    Configuration.ActiveDirectoryExternalDomainUserName,
-                //    Configuration.ActiveDirectoryExternalPassword);
-                //DirectoryEntry customerContainer = FindChildOu(root, customerName);
-
-                //if (customerContainer == null)
-                //    customerContainer = CreateChildOrganizationalUnit(customerName, root);
-                //DirectoryEntry groupContainer = FindChildOu(customerContainer, "groups");
-                //if (groupContainer == null)
-                //    groupContainer = CreateChildOrganizationalUnit("groups", customerContainer);
-                //DirectoryEntry userContainer = FindChildOu(customerContainer, "users");
-                //if (userContainer == null)
-                //    userContainer = CreateChildOrganizationalUnit("users", customerContainer);
-
-                //// didn't find group at the beginning, so must need to create it
-                //if (group == null)
-                //{
-                //    CreateCustomerSecurityGroup(customerName, roleName, customerContainer, groupContainer);
-
-                //    group = GroupPrincipal.FindByIdentity(principal, groupName);
-                //}
-                //AddUserToGroup(user, groupName, (DirectoryEntry)group.GetUnderlyingObject());
                 AddUserToGroup(user, roleName, (DirectoryEntry)group.GetUnderlyingObject());
-                //AddUserToOu(user, "users", userContainer);
             }
         }
 
@@ -755,7 +592,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                         groupDE.CommitChanges();
 
-						_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.RevokeUserAccess, revokedBy, string.Format("User: {0} Revoked: {0}", userName, roleName));
+						_auditLog.WriteToAuditLog(AuditType.RevokeUserAccess, revokedBy, string.Format("User: {0} Revoked: {0}", userName, roleName));
                     }
                 }
             } catch (Exception ex) {
@@ -807,7 +644,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
                     if (principal.ValidateCredentials(emailAddress, oldPassword)) {
 						user.ChangePassword(oldPassword, newPassword);
-						_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.ChagnePassword, updatedBy, string.Format("User {0} Password Updated", emailAddress));
+						_auditLog.WriteToAuditLog(AuditType.ChangePassword, updatedBy, string.Format("User {0} Password Updated", emailAddress));
                         return true;
                     } else {
                         if (user.IsAccountLockedOut()) {
@@ -849,66 +686,13 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     }
 
                     user.SetPassword( newPassword );
+
+                    _auditLog.WriteToAuditLog(AuditType.ChangePassword, null, string.Format("User {0} Password Updated", emailAddress));
                 }
             } catch (Exception ex) {
                 _logger.WriteErrorLog("Could not change user's password", ex);
                 throw;
             }
-        }
-
-        /// <summary>
-        /// the original update password method that is still used to aid in network testing
-        /// </summary>
-        /// <remarks>
-        /// jwames - 10/3/2014 - documented
-        /// </remarks>
-        public bool UpdatePassword_Org(string emailAddress, string oldPassword, string newPassword) {
-            string adPath = string.Format("LDAP://{0}:636/{1}", Configuration.ActiveDirectoryExternalServerName, Configuration.ActiveDirectoryExternalRootNode);
-
-            AuthenticationModel authentication = AuthenticateUser( emailAddress, oldPassword );
-            if (authentication.Status.Equals(AuthenticationStatus.Successful) == false) {
-                if (authentication.Status.Equals(AuthenticationStatus.FailedAuthentication)) {
-                    return false;
-                } else {
-                    throw new ApplicationException(authentication.Message);
-                }
-            }
-
-            DirectoryEntry boundServer = null;
-            // connect to the external AD server
-            try {
-                boundServer = new DirectoryEntry(adPath, Configuration.ActiveDirectoryExternalUserName, Configuration.ActiveDirectoryExternalPassword);
-                boundServer.AuthenticationType = AuthenticationTypes.SecureSocketsLayer;
-                boundServer.RefreshCache();
-            } catch (Exception ex) {
-                _logger.WriteErrorLog("Could not bind to external AD server.", ex);
-
-                throw;
-            }
-
-            DirectoryEntry currentUser = null;
-
-            try {
-                DirectorySearcher adSearch = new DirectorySearcher(boundServer, string.Concat("userPrincipalName=", emailAddress));
-                currentUser = adSearch.FindOne().GetDirectoryEntry();
-            } catch (Exception ex) {
-                _logger.WriteErrorLog("Could not find user on external Ad server.", ex);
-
-                throw;
-            }
-
-            // set the user's password
-            try {
-                //currentUser.AuthenticationType = AuthenticationTypes.Secure;
-                currentUser.Invoke("SetPassword", new object[] { newPassword });
-                currentUser.CommitChanges();
-            } catch (Exception ex) {
-                _logger.WriteErrorLog("Could not change password for user on external AD server.", ex);
-
-                throw;
-            }
-
-            return true;
         }
 
         /// <summary>
@@ -949,65 +733,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 throw;
             }
         }
-
-        //public void UpdateUserGroups(List<string> customerNames, string roleName, string userEmail) {
-        //    // clear & recreate roles?  or, call isingroup and only add if necessary?  not sure...  what to do about account users?
-        //    // talked to jeremy, guess we are stuck doing per-customer role stuff...  
-        //    // will be a little messy when updating accounts or adding customers to accounts; at one point, Jeremy said we could
-        //    // just put them in the first customer, but since changed his story and we will be double record keeping, so need to synch
-        //    // CS and AD... :(  Could be slow for users with a lot of customers assigned; hopefully that isn't the common case.
-        //    // may fall back to what Jeremy said and just put a user in the first OU....
-        //    // 
-
-        //    // 1st, check all groups user is in, and clear all but authenticated domain users...
-        //    using (PrincipalContext principal = new PrincipalContext(ContextType.Domain,
-        //                                                                Configuration.ActiveDirectoryExternalServerName,
-        //                                                                Configuration.ActiveDirectoryExternalRootNode,
-        //                                                                ContextOptions.Negotiate,
-        //                                                                Configuration.ActiveDirectoryExternalDomainUserName,
-        //                                                                Configuration.ActiveDirectoryExternalPassword)) {
-        //        UserPrincipal user = UserPrincipal.FindByIdentity(principal, userEmail);
-
-        //        if (user == null)
-        //            throw new ApplicationException("Unable to read user for role assignment");
-        //        else {
-        //            // remove user from all but authenticated user roles
-        //            DirectoryEntry de = (DirectoryEntry)user.GetUnderlyingObject();
-        //            object groups = de.Invoke("Groups");
-        //            string tmp = string.Empty;
-
-        //            List<DirectoryEntry> groupsUserIsMemberOf = new List<DirectoryEntry>();
-        //            foreach (object g in (IEnumerable)groups)
-        //                groupsUserIsMemberOf.Add(new DirectoryEntry(g));
-
-        //            groupsUserIsMemberOf.Select(g => tmp += "\r\n" + g);
-        //            foreach (DirectoryEntry g in groupsUserIsMemberOf) {
-        //                if (g.Name.EndsWith(Configuration.AccessGroupKbitCustomer, StringComparison.InvariantCultureIgnoreCase) ||
-        //                    g.Name.EndsWith(Configuration.AccessGroupKbitAdmin, StringComparison.InvariantCultureIgnoreCase)) {
-        //                    // do not mess with access groups
-        //                } else {
-        //                    g.Properties["member"].Remove(user.DistinguishedName);
-        //                    g.CommitChanges();
-        //                }
-        //            }
-        //            // then add them back to all of the new customer by role, then done
-        //            if (customerNames.Count > 0) {
-        //                try {
-        //                    de.Properties["company"].Value = customerNames.FirstOrDefault();
-        //                    de.CommitChanges();
-        //                } catch (Exception ex) {
-        //                    _logger.WriteErrorLog("Updating Roles, Could not set company name.", ex);
-        //                    throw;
-        //                }
-        //            }
-        //            foreach (string customerName in customerNames) {
-
-        //                JoinGroup(customerName, roleName, user);
-
-        //            }
-        //        }
-        //    }
-        //}
 
         /// <summary>
         /// check the benekeith.com domain for the username
