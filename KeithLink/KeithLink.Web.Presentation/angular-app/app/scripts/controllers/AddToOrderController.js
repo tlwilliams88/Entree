@@ -360,14 +360,14 @@ angular.module('bekApp')
 
           var newItemCount = updatedCart.items.length - $scope.origItemCount;
           $scope.origItemCount = updatedCart.items.length;
-          
+
           if(newItemCount > 0){
             $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Cart ' + updatedCart.name + '.');
           }else if(newItemCount < 0){
               $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Cart ' + updatedCart.name + '.');
           }
           else{
-            $scope.displayMessage('success', 'Successfully Saved ' + updatedCart.name + '.');
+            $scope.displayMessage('success', 'Successfully Saved Cart ' + updatedCart.name + '.');
            }
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
