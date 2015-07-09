@@ -20,7 +20,7 @@ angular.module('bekApp')
       $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
     }
     $scope.confirmQuantity = ListService.confirmQuantity;
-    $scope.basketId = basketId;
+    $scope.basketId = basketId;   
 
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
@@ -257,13 +257,42 @@ angular.module('bekApp')
       listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, []);
     };
     $scope.redirect = function(listId, cart, useParlevel) {
-      var cartId;
-      LocalStorage.setLastOrderList(listId);
+      var cartId;    
       if ($scope.isChangeOrder) {
         cartId = cart.ordernumber;
       } else {
         cartId = cart.id;
       }
+      var timeset = moment().format('YYYYMMDDHHmm');
+      var orderList ={
+          listId: listId,
+          cartId: cartId,
+          timeset: timeset
+          }
+      var allSets = [];
+          allSets = LocalStorage.getLastOrderList();
+
+        if(!allSets.length || !allSets[0].timeset){
+          allSets = [];
+        }
+
+        var matchFound = false;
+        if(orderList.cartId !== 'New'){
+          allSets.forEach(function(set){
+            if(set.cartId === orderList.cartId){
+              set.listId = orderList.listId;
+              set.timeset =  moment().format('YYYYMMDDHHmm');
+              matchFound = true;
+            }
+          });
+
+          if(!matchFound){
+            allSets.push(orderList);
+          }
+        }
+
+        LocalStorage.setLastOrderList(allSets);
+
       var sameListItems= [];
       if(listId === $scope.selectedList.listid){
         sameListItems = $scope.selectedList.items;

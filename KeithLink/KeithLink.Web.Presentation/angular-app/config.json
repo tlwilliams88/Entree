@@ -16,6 +16,7 @@
       "username": "sabroussard@somecompany.com",
       "password": "L1ttleStev1e",
       "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
+      "lastListStorageTimeout": "48",
       "googleAnalytics": {
         "web": "UA-58495462-2",
         "mobile": "UA-58495462-4"
@@ -27,12 +28,13 @@
       "apiEndpoint": "https://shopapistaging.benekeith.com",
       "loggingEnabled": false,
       "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
+      "lastListStorageTimeout": "48",
       "googleAnalytics": {
         "web": "UA-58495462-2",
         "mobile": "UA-58495462-4"
       }
     },
-    "dev": {
+      "dev": {
       "name": "dev",
       "apiKey": "web_dev_v1",
       "apiEndpoint": "https://shopapidev.benekeith.com",
@@ -40,6 +42,7 @@
       "username": "sabroussard@somecompany.com",
       "password": "L1ttleStev1e",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "lastListStorageTimeout": "48",
       "googleAnalytics": {
         "web": "UA-58495462-2",
         "mobile": "UA-58495462-4"
@@ -51,6 +54,7 @@
       "apiEndpoint": "https://shopqa.benekeith.com/api",
       "loggingEnabled": true,
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "lastListStorageTimeout": "48",
       "phonegapAppId": "com.benekeith.entree",
       "googleAnalytics": {
         "web": "UA-58495462-2",
@@ -62,6 +66,7 @@
       "apiKey": "web_prod_v1",
 	    "apiEndpoint": "https://shop.benekeith.com/api",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "lastListStorageTimeout": "48",
       "loggingEnabled": false,
       "phonegapAppId": "com.benekeith.entreeprod",
       "googleAnalytics": {
@@ -73,6 +78,7 @@
       "name": "stage",
       "apiKey": "web_stage_v1",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "lastListStorageTimeout": "48",
       "loggingEnabled": false,
       "googleAnalytics": {
         "web": "UA-58495303-1",
