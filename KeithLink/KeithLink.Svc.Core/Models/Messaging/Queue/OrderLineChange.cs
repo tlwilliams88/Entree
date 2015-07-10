@@ -26,5 +26,7 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
         public string NewStatus { get; set; }
         [DataMember(Name = "itemprice")]
         public decimal ItemPrice { get; set; }
+        [DataMember(Name = "each")]
+        public bool Each { get; set; }
     }
 }
