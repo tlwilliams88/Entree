@@ -49,8 +49,14 @@
   } 
 }
 @media (max-width: 525px) {
- .hiddenmobile{
+ .hidden-mobile{
 display:none;
 
  }
 }
+@media (min-width: 525px) {
+  .show-mobile{
+ display:none;
+ }
+}
+

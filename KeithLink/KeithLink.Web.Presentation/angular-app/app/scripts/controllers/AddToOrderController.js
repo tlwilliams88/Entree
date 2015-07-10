@@ -179,12 +179,6 @@ angular.module('bekApp')
     angular.element(orderSearchForm.searchBar).focus();
     };
   
-      //Used for Par Level colums in landscape view for mobile
-       $(window).resize(function(){ 
-        $scope.$apply(function(){ 
-          $scope.checkOrientation(); 
-        }); 
-      });
 
       Mousetrap.bind(['alt+x', 'option+x'], function(e) {  
         $scope.clearFilter();
@@ -220,25 +214,6 @@ angular.module('bekApp')
         listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
         blockUI.stop();       
   };
-
-  $scope.checkOrientation = function(){    
-      $scope.isMobile = UtilityService.isMobileDevice(); 
-       if($scope.isMobile && window.innerHeight < window.innerWidth){ 
-       $timeout(function(){ 
-         $scope.landscapeOrient = true;
-        }, 0)
-     }
-      else{
-          $timeout(function(){
-          $scope.landscapeOrient = false;
-         }, 0)  
-       }
-     };  
-      
-     $scope.checkOrientation();
-     $(window).on("orientationchange",function(){
-     $scope.checkOrientation();
-     });
 
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
