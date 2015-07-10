@@ -94,6 +94,7 @@ angular.module('bekApp')
       /*************
         Last List
       *************/
+
       getLastList: function() {
         return localStorageService.get(Constants.localStorage.lastList);
       },
@@ -102,12 +103,12 @@ angular.module('bekApp')
         return localStorageService.get(Constants.localStorage.lastOrderList);
       },
 
-      setLastList: function(listId) { // for guest users
-      localStorageService.set(Constants.localStorage.lastList, listId);
+      setLastList: function(list) { // for guest users
+      localStorageService.set(Constants.localStorage.lastList, list);
       },
 
-      setLastOrderList: function(listId) { // for order entry users
-      localStorageService.set(Constants.localStorage.lastOrderList, listId);
+      setLastOrderList: function(allSets) { // for order entry users       
+      localStorageService.set(Constants.localStorage.lastOrderList, allSets);
       }
 
     };

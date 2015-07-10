@@ -74,15 +74,28 @@ angular.module('bekApp')
     );
 
     // LIST INTERACTIONS
-    $scope.goToList = function(list) {      
-      LocalStorage.setLastList(list.listid);
+    $scope.goToList = function(list) {
+      var timeset =  moment().format('YYYYMMDDHHmm');
+    
+      var lastlist ={
+          listId: list.listid,          
+          timeset: timeset
+      }
+     
+      LocalStorage.setLastList(lastlist);
       return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
-      LocalStorage.setLastList(newList.listid);
+     var timeset =  moment().format('YYYYMMDDHHmm');
+     var lastlist ={
+          listId: newList.listid,          
+          timeset: timeset
+         }  
+    
+      LocalStorage.setLastList(lastlist);
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
 

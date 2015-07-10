@@ -471,7 +471,8 @@ module.exports = function (grunt) {
                     cognosUrl: '<%= config.environment.debug.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
-                    mobileApp: false
+                    mobileApp: false,
+                    lastListStorageTimeout: 48
                   }
               }
           },
@@ -484,7 +485,8 @@ module.exports = function (grunt) {
                     loggingEnabled: config.environment.demo.loggingEnabled,
                     googleAnalytics: '<%= config.environment.demo.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.demo.cognosUrl %>',
-                    mobileApp: false
+                    mobileApp: false,
+                    lastListStorageTimeout: 48
                   }
               }
           },
@@ -499,7 +501,8 @@ module.exports = function (grunt) {
                     cognosUrl: '<%= config.environment.dev.cognosUrl %>',
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
-                    mobileApp: false
+                    mobileApp: false,
+                    lastListStorageTimeout: 48
                   }
               }
           },
@@ -512,7 +515,8 @@ module.exports = function (grunt) {
                     loggingEnabled: config.environment.test.loggingEnabled,
                     googleAnalytics: '<%= config.environment.test.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.test.cognosUrl %>',
-                    mobileApp: false
+                    mobileApp: false,
+                    lastListStorageTimeout: 48
                   }
               }
           },
@@ -525,7 +529,8 @@ module.exports = function (grunt) {
                     loggingEnabled: config.environment.prod.loggingEnabled,
                     googleAnalytics: '<%= config.environment.prod.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.prod.cognosUrl %>',
-                    mobileApp: false
+                    mobileApp: false,
+                    lastListStorageTimeout: 48
                   }
               }
           },
@@ -537,7 +542,8 @@ module.exports = function (grunt) {
                       apiEndpoint: 'https://shopstaging.benekeith.com/api',
                       googleAnalytics: '<%= config.environment.stage.cognosUrl %>',
                       loggingEnabled: false,
-                      cognosUrl: 'UA-58495303-1'
+                      cognosUrl: 'UA-58495303-1',
+                      lastListStorageTimeout: 48
                   }
               }
           }

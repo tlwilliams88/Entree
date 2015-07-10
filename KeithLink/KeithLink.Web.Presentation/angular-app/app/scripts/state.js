@@ -158,18 +158,28 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId);
         }],
-        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', function($stateParams, validListId, lists, ListService, UtilityService, LocalStorage) {
+        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, validListId, lists, ListService, UtilityService, LocalStorage, ENV) {
           var last = LocalStorage.getLastList();
           var stillExists = false;
+
           ListService.lists.forEach(function(list){
-            if(list.listid.toString() === last){
+            if(last && list.listid === last.listId){
                stillExists = true;
+               var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+               if(last.timeset < timeoutDate){         
+                  stillExists = false;
+                 }
             }
-          });
-          if( last && stillExists ){
-           return ListService.getList(last);
-          }
-          return ListService.getList(validListId);
+          });    
+
+         if(last && stillExists){
+            last.timeset =  moment().format('YYYYMMDDHHmm');
+             LocalStorage.setLastList(last); 
+            return ListService.getList(last.listId);
+          }else{
+             LocalStorage.setLastList({});
+            return ListService.getList(validListId);
+        }
         }]
       }
     })
@@ -292,17 +302,32 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
-        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', function($stateParams, lists, validListId, ListService, UtilityService, LocalStorage) {
-          var last = LocalStorage.getLastOrderList();
-          var stillExists = false;
-           ListService.lists.forEach(function(list){
-            if(list.listid.toString() === last){
-               stillExists = true;
-            }
-          });
-          if( last && stillExists ){
-           return ListService.getList(last);
-          }
+        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
+
+          if($stateParams.cartId !== 'New'){
+            var allSets = LocalStorage.getLastOrderList();
+            var allValidSets = [];           
+            var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+            allSets.forEach(function(set){          
+              if(set.timeset > timeoutDate){
+                allValidSets.push(set);
+              }
+            });
+
+            if(allValidSets.length){
+              allValidSets.forEach(function(set){
+                if(set.cartId === $stateParams.cartId){
+                    ListService.lists.forEach(function(list){
+                      if(list.listid === set.listId){
+                        validListId = set.listId;
+                         set.timeset =  moment().format('YYYYMMDDHHmm');
+                      }
+                    });
+                  }
+              });  
+            } 
+            LocalStorage.setLastOrderList(allValidSets);  
+          }          
           return ListService.getList(validListId);
         }]
       }
