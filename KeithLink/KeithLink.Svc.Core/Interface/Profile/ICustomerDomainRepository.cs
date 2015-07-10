@@ -9,6 +9,8 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         string CreateUser(string customerName, string emailAddress, string password, string firstName, string lastName, string roleName);
 
+        void DeleteUser(string emailAddress);
+
         void ExpirePassword( string emailAddress );
         
         string GetNewUserName(string emailAddress);
