@@ -69,6 +69,7 @@ namespace KeithLink.Svc.InternalSvc
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
+
         }
 
         /// <summary>
