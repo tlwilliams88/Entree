@@ -127,7 +127,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                                         SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
                                                         QuantityOrdered = (int)newItem["QuantityOrdered"], 
                                                         QuantityShipped = (int)newItem["QuantityShipped"] ,
-                                                        ItemPrice = origItem.PlacedPrice
+                                                        ItemPrice = origItem.PlacedPrice,
+                                                        Each = (bool)newItem["Each"]
                                                     });
                 } else {
                     orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
@@ -136,8 +137,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                                     ItemNumber = origItem.ProductId, 
                                                     SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
                                                     QuantityOrdered = (int)origItem["QuantityOrdered"], 
-                                                    QuantityShipped = (int)origItem["QuantityShipped"] , 
-                                                    ItemPrice = origItem.PlacedPrice
+                                                    QuantityShipped = (int)origItem["QuantityShipped"] ,
+                                                    ItemPrice = origItem.PlacedPrice,
+                                                    Each = (bool)origItem["Each"]
                                                 }); // would we ever hit this?
                 }
             }
@@ -151,7 +153,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                                                     SubstitutedItemNumber = (string)newItem["SubstitutedItemNumber"], 
                                                     QuantityOrdered = (int)newItem["QuantityOrdered"], 
                                                     QuantityShipped = (int)newItem["QuantityShipped"] ,
-                                                    ItemPrice = newItem.PlacedPrice
+                                                    ItemPrice = newItem.PlacedPrice,
+                                                    Each = (bool)newItem["Each"]
                                                 }); // would we ever hit this?
 
                 orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() {
@@ -160,7 +163,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     SubstitutedItemNumber = newItem["SubstitutedItemNumber"] == null ? string.Empty : (string)newItem["SubstitutedItemNumber"],
                     QuantityOrdered = newItem["QuantityOrdered"] == null ? (int)newItem.Quantity : (int)newItem["QuantityOrdered"],
                     QuantityShipped = newItem["QuantityShipped"] == null ? 0 : (int)newItem["QuantityShipped"],
-                    ItemPrice = newItem.PlacedPrice
+                    ItemPrice = newItem.PlacedPrice,
+                    Each = (bool)newItem["Each"]
                 });
             }
             return orderChange;

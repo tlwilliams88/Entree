@@ -69,8 +69,17 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                                                         ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
 
             string originalOrderInfo = "Original Order Information:" + System.Environment.NewLine;
-            foreach (var line in notification.OrderChange.Items)
-                originalOrderInfo += line.ItemNumber + " - " + line.ItemDescription + " (" + line.QuantityOrdered + " @ " + line.ItemPrice.ToString("f2") + ")" + System.Environment.NewLine;
+            foreach (var line in notification.OrderChange.Items) {
+                string[] args = new string[]{
+                                                line.ItemNumber,
+                                                line.ItemDescription,
+                                                line.QuantityOrdered.ToString(),
+                                                line.ItemPrice.ToString("f2"),
+                                                (line.Each ? "package" : "case"),
+                                                System.Environment.NewLine
+                                            };
+                originalOrderInfo += string.Format("{0} - {1} (qty {2} at ${3} per {4}){5}", args);
+            }
 
             Message message = new Message();
 
