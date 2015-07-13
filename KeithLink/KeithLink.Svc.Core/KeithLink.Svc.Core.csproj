@@ -230,6 +230,7 @@
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
+    <Compile Include="Interface\Profile\ISettingsRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
@@ -273,8 +274,10 @@
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\EF\MarketingPreference.cs" />
+    <Compile Include="Models\Profile\EF\Settings.cs" />
     <Compile Include="Models\Profile\MarketingPreferenceModel.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
+    <Compile Include="Models\Profile\SettingsModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
