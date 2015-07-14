@@ -249,7 +249,7 @@ angular.module('bekApp')
       var allSets = [];
           allSets = LocalStorage.getLastOrderList();
 
-        if(!allSets.length || !allSets[0].timeset){
+        if(!allSets || (allSets[0] && !allSets[0].timeset)){
           allSets = [];
         }
 
