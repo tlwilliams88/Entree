@@ -11,7 +11,7 @@
   <span tooltip="Item is replacing item # {{item.replaceditem}}" class="text-green icon-cycle"></span>
 </a>
 <!-- Substituted Item (orders only) -->
-<a ng-if="::item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item subtituted for Item # {{item.substituteditemnumber}}"></span></a>
+<a ng-if="::item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item substituted for Item # {{item.substituteditemnumber}}"></span></a>
 <!-- Deviated Cost -->
 <a ng-if="::item.deviatedcost === 'Y'">
   <span tooltip="Deviated Price" class="text-regular icon-dollar"></span>
