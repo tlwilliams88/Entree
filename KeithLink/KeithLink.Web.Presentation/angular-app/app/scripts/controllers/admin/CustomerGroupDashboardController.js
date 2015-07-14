@@ -54,7 +54,7 @@ angular.module('bekApp')
    */
   
   var processingSaveCustomerGroup = false;
-  function saveCustomerGroup(group) {
+  function saveCustomerGroup(group , showMessage) {
     var deferred = $q.defer();
     if (!processingSaveCustomerGroup) {
       processingSaveCustomerGroup = true;
@@ -62,7 +62,9 @@ angular.module('bekApp')
       delete group.customerusers;
       CustomerGroupService.updateGroup(group).then(function() {
         group.customerusers = custUsers;
-        $scope.displayMessage('success', 'Successfully saved customer group.');
+        if(showMessage){
+          $scope.displayMessage('success', 'Successfully saved customer group.');
+        }
         deferred.resolve();
       }, function(error) {
         group.customerusers = custUsers;
@@ -127,7 +129,7 @@ angular.module('bekApp')
           group.customers.push(customer);
         }
       });
-      saveCustomerGroup(group).then(function() {
+      saveCustomerGroup(group , false).then(function() {
         $scope.customerGroup = group;
       });
     });
@@ -149,7 +151,7 @@ angular.module('bekApp')
 
     $scope.customerGroup.customers = assignedCustomers;
 
-    saveCustomerGroup($scope.customerGroup);
+    saveCustomerGroup($scope.customerGroup , true);
   };
 
   /**
@@ -242,7 +244,7 @@ angular.module('bekApp')
 
    $scope.addExistingUserWithNoGroup = function (profile) {
     $scope.customerGroup.adminusers.push(profile)
-    saveCustomerGroup($scope.customerGroup).then(function(promise){
+    saveCustomerGroup($scope.customerGroup , true).then(function(promise){
       $state.go('menu.admin.user.edit',{email: $scope.checkEmail, groupId: $scope.customerGroup.id});
     })
 
