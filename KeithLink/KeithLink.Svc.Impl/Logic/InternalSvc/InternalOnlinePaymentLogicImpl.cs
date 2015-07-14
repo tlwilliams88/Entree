@@ -168,7 +168,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             invoiceModel.InvoiceLink =new Uri(Configuration.WebNowUrl.Inject(new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
 
-            if (invoiceModel.DueDate < DateTime.Now) {
+            if (invoiceModel.DueDate.Value.Date < DateTime.Now.Date && invoiceModel.Amount != 0) {
                 invoiceModel.Status = InvoiceStatus.PastDue;
                 invoiceModel.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue);
             }
