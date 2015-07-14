@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', '$filter', 'blockUI', 'toaster', 'UserProfileService', 'CustomerGroupService', 'BroadcastService',
+  .controller('CustomerGroupDashboardController', ['$scope', '$q', '$log', '$stateParams', '$state', '$modal', '$filter', 'toaster', 'UserProfileService', 'CustomerGroupService', 'BroadcastService',
     function (
       $scope, $q, $log, // angular
-      $stateParams, $state, $modal, $filter, blockUI, toaster,// ui router
+      $stateParams, $state, $modal, $filter, toaster,// ui router
       UserProfileService, CustomerGroupService, BroadcastService // custom bek services
     ) {
 
