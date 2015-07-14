@@ -12,6 +12,18 @@ angular.module('bekApp')
     CustomerGroupService.getGroupDetails(customerGroupId).then(function(customerGroup) {
       $scope.loadingResults = false;
       $scope.customerGroup = customerGroup;
+      $scope.nonAdminCustUsers = [];
+      customerGroup.customerusers.forEach(function(customerUser){
+        var matchFound = false;
+        customerGroup.adminusers.forEach(function(adminUser){
+          if(adminUser.emailaddress === customerUser.emailaddress){
+            matchFound = true;
+          }
+        })
+        if(!matchFound){
+          $scope.nonAdminCustUsers.push(customerUser)
+        }
+      })
     }, function() {
       $scope.displayMessage('error', 'An error occured loading the customer group dashboard page (ID: ' + customerGroupId + ').');
       $scope.goToAdminLandingPage();
@@ -46,11 +58,14 @@ angular.module('bekApp')
     var deferred = $q.defer();
     if (!processingSaveCustomerGroup) {
       processingSaveCustomerGroup = true;
+      var custUsers = group.customerusers
       delete group.customerusers;
       CustomerGroupService.updateGroup(group).then(function() {
+        group.customerusers = custUsers;
         $scope.displayMessage('success', 'Successfully saved customer group.');
         deferred.resolve();
       }, function(error) {
+        group.customerusers = custUsers;
         var message = error ? error : 'Error updating customer group.';
         $scope.displayMessage('error', message);
         deferred.reject();
@@ -225,28 +240,13 @@ angular.module('bekApp')
     });
   };
 
-    $scope.moveExistingCustToAdmin = function (email){
-      var filteredCustomerUsers = [];
-      $scope.customerGroup.customerusers.forEach(function(customeruser){
-        if(customeruser.emailaddress !== email){
-          filteredCustomerUsers.push(customeruser);
-        }
-        else{
-          $scope.customerGroup.adminusers.push(customeruser);            
-        }
-      })
-      $scope.customerGroup.customerusers = filteredCustomerUsers;
-         saveCustomerGroup($scope.customerGroup); 
-    };
-
    $scope.addExistingUserWithNoGroup = function (profile) {
     $scope.customerGroup.adminusers.push(profile)
     saveCustomerGroup($scope.customerGroup).then(function(promise){
-      //$state.go('menu.admin.user.edit',{email: $scope.checkEmail, groupId: $scope.customerGroup.id});
+      $state.go('menu.admin.user.edit',{email: $scope.checkEmail, groupId: $scope.customerGroup.id});
     })
 
    };
-
 
     $scope.createNewAdminUser = function(){
       createUser($scope.checkEmail).then(function(profile) {
@@ -254,125 +254,74 @@ angular.module('bekApp')
       });
     };
 
-     var processingSaveProfile = false;
-  $scope.updateProfile = function (profile) {
-    var deferred = $q.defer();
-    if (!processingSaveProfile) {
-      processingSaveProfile = true;
-      UserProfileService.updateUserProfile(profile).then(function(newProfile){
-        // update currently logged in user profile
-        if ($scope.$parent.$parent.userProfile.userid === newProfile.userid) {
-          $scope.$parent.$parent.userProfile = newProfile;
-        }
-        $scope.editUserForm.$setPristine();
-        $scope.displayMessage('success', 'The user was successfully updated.');
-        deferred.resolve();
+    $scope.deleteOldProfile = function (profile,groupid) {
+      UserProfileService.removeUserFromCustomerGroup(profile.userid, groupid).then(function(newProfile){
+         var data = {
+        email: $scope.checkEmail
+      };    
+      UserProfileService.getAllUsers(data).then(function(profiles) {
+         $scope.addExistingUserWithNoGroup(profiles[0])
+       })
       }, function(error){
         $scope.displayMessage('error', 'An error occurred: ' + error);
-        deferred.reject();
-      }).finally(function() {
-        processingSaveProfile = false;
       });
-    } else {
-      deferred.reject();
-    }
-    return deferred.promise;
-  };
+     };
 
-      $scope.deleteOldProfile = function (profile,groupid) {
-    UserProfileService.removeUserFromCustomerGroup(profile.userid, groupid).then(function(newProfile){
-       var data = {
-      email: $scope.checkEmail
-    };    
-    UserProfileService.getAllUsers(data).then(function(profiles) {
-       $scope.addExistingUserWithNoGroup(profiles[0])
-     })
-    }, function(error){
-      $scope.displayMessage('error', 'An error occurred: ' + error);
-    });
-  };
+     $scope.addAdminUser = function(emailAddress) {
+      // check if user exists in the database
+        $scope.adminUserOnCurrentCustomerGroup = null;
+        $scope.canAddAdminUser = null;
+        $scope.checkAdminUserExists = null;
+        $scope.cannotMoveAdminUser =null;
+        $scope.canMoveAdminUser = null;
+        var data = {
+          email: emailAddress
+        };
+        $scope.checkEmail = emailAddress;
+        UserProfileService.getAllUsers(data).then(function(profiles) {
+                //if the user does exist update userExists flag to true, else keep it as false
+          if (profiles.length) {
+            $scope.existingProfile = profiles[0];
+            $scope.checkAdminUserExists = true; // displays error message
 
-
-
-  //   $scope.deleteOldProfile = function (profile,groupid) {
-  //   UserProfileService.removeUserFromCustomerGroup(profile.userid, groupid).then(function(newProfile){
-  //       var data = {
-  //      email: $scope.checkEmail
-  //    };    
-  //    UserProfileService.getUserProfile($scope.checkEmail).then(function(profile){
-  //     profile.customers = [];
-  //         UserProfileService.updateUserProfile(profile);
-  //          $scope.addExistingUserWithNoGroup(profiles);
-  //      });
-
-  //   // UserProfileService.getAllUsers(data).then(function(profiles) {
-     
-
-  //   //      });
-      
-  
-  //   }, function(error){
-  //     $scope.displayMessage('error', 'An error occurred: ' + error);
-  //   });
-  // };
-
-  
-
-  $scope.addAdminUser = function(emailAddress) {
-    // check if user exists in the database
-    $scope.adminUserOnCurrentCustomerGroup = null;
-    $scope.canAddAdminUser = null;
-     $scope.checkAdminUserExists = null;
-     $scope.cannotMoveAdminUser =null;
-      $scope.canMoveAdminUser = null;
-    var data = {
-      email: emailAddress
-    };
-    $scope.checkEmail = emailAddress;
-    UserProfileService.getAllUsers(data).then(function(profiles) {
-            //if the user does exist update userExists flag to true, else keep it as false
-      if (profiles.length) {
-        $scope.existingProfile = profiles[0];
-        $scope.checkAdminUserExists = true; // displays error message
-
-        // check if user is on a customer group
-        CustomerGroupService.getGroups({
-          from: 0,
-          size: 50,
-          type: 'user',
-          terms: emailAddress
-        }).then(function(customerGroups) {
-          
-          // check if user is already associated with a customer group
-          if (customerGroups.totalResults) {
-            // check if user already exists on the current customer group
-            $scope.adminUserOnCurrentCustomerGroup = false;
-            customerGroups.results.forEach(function(customerGroup) {
-              if (customerGroup.id === $scope.customerGroup.id) {
-                $scope.adminUserOnCurrentCustomerGroup = true;
+            // check if user is on a customer group
+            CustomerGroupService.getGroups({
+              from: 0,
+              size: 50,
+              type: 'user',
+              terms: emailAddress
+            }).then(function(customerGroups) {
+              
+              // check if user is already associated with a customer group
+              if (customerGroups.totalResults) {
+                // check if user already exists on the current customer group
+                $scope.adminUserOnCurrentCustomerGroup = false;
+                customerGroups.results.forEach(function(customerGroup) {
+                  if (customerGroup.id === $scope.customerGroup.id) {
+                    $scope.adminUserOnCurrentCustomerGroup = true;
+                  }
+                });
+                if ($scope.adminUserOnCurrentCustomerGroup === false) {
+                  // sys admin can move the user from one group to another
+                  if ($scope.canMoveUserToAnotherGroup) {
+                    $scope.origCustGroup = customerGroups.results[0];
+                    $scope.canMoveAdminUser = true;
+                  } else {
+                    $scope.cannotMoveAdminUser = true;
+                  }
+                }
+              } else {
+                // allow owner to add user
+                $scope.canAddAdminUser = true; 
               }
             });
-            if ($scope.adminUserOnCurrentCustomerGroup === false) {
-              // sys admin can move the user from one group to another
-              if ($scope.canMoveUserToAnotherGroup) {
-                $scope.origCustGroup = customerGroups.results[0];
-                $scope.canMoveAdminUser = true;
-              } else {
-                $scope.cannotMoveAdminUser = true;
-              }
-            }
-          } else {
-            // allow owner to add user
-            $scope.canAddAdminUser = true; 
+          } else {      
+              $scope.createNewAdminUser();
           }
+          }, function (errorMessage) {
+          $scope.displayMessage('error', 'An error occurred checking if the user exists: ' + errorMessage);
         });
-      } else {      
-          $scope.createNewAdminUser();
-      }
-      }, function (errorMessage) {
-      $scope.displayMessage('error', 'An error occurred checking if the user exists: ' + errorMessage);
-    });
-};
+      };
 
   /**
    * MESSAGING

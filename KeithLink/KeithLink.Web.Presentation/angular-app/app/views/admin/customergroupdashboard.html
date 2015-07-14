@@ -140,7 +140,7 @@
             <a ng-click="filterFields2 = {}" class="large-icon text-light icon-cross3"></a>
           </td>
         </tr>
-        <tr ng-repeat="customerUser in customerGroup.customerusers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
+        <tr ng-repeat="customerUser in nonAdminCustUsers | filter:filterFields2 | orderBy:sortBy2:sortOrder2"
             ng-class="{ odd : $odd, even: $even }">
           <td><a class="btn-link" ui-sref="{{userDetailState}}({email: customerUser.emailaddress, groupId: customerGroup.id})">{{customerUser.emailaddress}}</a></td>
           <td>{{customerUser.firstname}}</td>
@@ -151,7 +151,7 @@
           </td>
         </tr>
         </tbody>
-        <tfoot ng-show="customerGroup.customerusers.length === 0">
+        <tfoot ng-show="nonAdminCustUsers.length === 0">
         <tr>
           <td colspan="5">There are no users to display.</td>
         </tr>
