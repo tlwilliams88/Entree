@@ -1,5 +1,5 @@
 ﻿// KeithLink
-using KeithLink.Svc.Core.Models.Profile.EF;
+using KeithLink.Svc.Core.Models.Profile;
 
 // Core
 using System;
@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface ISettingsLogic {
-        List<Settings> GetAllUserSettings( string userId );
-        Settings GetUserSetting( string userId, string key );
-        void CreateOrUpdateSettings( Settings settings );
+        List<SettingsModel> GetAllUserSettings( Guid userId );
+        void CreateOrUpdateSettings( SettingsModel settings );
     }
 }

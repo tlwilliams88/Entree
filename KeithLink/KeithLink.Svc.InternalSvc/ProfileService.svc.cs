@@ -20,14 +20,16 @@ namespace KeithLink.Svc.InternalSvc
         private readonly IInternalPasswordResetLogic _passwordResetLogic;
         private readonly IDsrAliasLogic _aliasLogic;
 		private readonly IInternalMarketingPreferenceLogic _marketingPrefLogic;
+        private readonly ISettingsLogic _settingsLogic;
         #endregion
 
         #region ctor
-        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic, IInternalMarketingPreferenceLogic marketingPrefLogic)
+        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic, IInternalMarketingPreferenceLogic marketingPrefLogic, ISettingsLogic settingsLogic)
 		{
 			_passwordResetLogic = passwordResetLogic;
             _aliasLogic = dsrAliasLogic;
 			_marketingPrefLogic = marketingPrefLogic;
+            _settingsLogic = settingsLogic;
 		}
         #endregion
 
@@ -71,6 +73,14 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return _marketingPrefLogic.ReadMarketingPreferences(from, to);
 		}
+
+        public List<SettingsModel> ReadProfileSettings( Guid userId ) {
+            return _settingsLogic.GetAllUserSettings( userId );
+        }
+
+        public void SaveProfileSettings( SettingsModel settings ) {
+            _settingsLogic.CreateOrUpdateSettings( settings );
+        }
 
         #endregion
 	}

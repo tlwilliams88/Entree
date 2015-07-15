@@ -40,6 +40,12 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
 		[OperationContract]
 		List<MarketingPreferenceModel> ReadMarketingPreferences(DateTime from, DateTime to);
+
+        [OperationContract]
+        List<SettingsModel> ReadProfileSettings( Guid userId );
+
+        [OperationContract]
+        void SaveProfileSettings( SettingsModel settings );
 		
 	}
 }
