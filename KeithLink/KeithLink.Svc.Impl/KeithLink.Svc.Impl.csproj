@@ -270,6 +270,7 @@
     <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
+    <Compile Include="Logic\Profile\SettingsLogicImpl.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\Reports\InventoryValuationReportLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
@@ -571,6 +572,10 @@
     <Compile Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.Designer.cs">
       <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201507091952569_Add_Profile_Settings_Table.cs" />
+    <Compile Include="Repository\EF\Migrations\201507091952569_Add_Profile_Settings_Table.Designer.cs">
+      <DependentUpon>201507091952569_Add_Profile_Settings_Table.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -657,6 +662,7 @@
     <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
     <Compile Include="Repository\Profile\PasswordReset\NoPasswordResetServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\SettingsRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
@@ -1131,6 +1137,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.resx">
       <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201507091952569_Add_Profile_Settings_Table.resx">
+      <DependentUpon>201507091952569_Add_Profile_Settings_Table.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

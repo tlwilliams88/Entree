@@ -146,6 +146,7 @@
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
+    <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
@@ -230,6 +231,8 @@
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
+    <Compile Include="Interface\Profile\ISettingsLogic.cs" />
+    <Compile Include="Interface\Profile\ISettingsRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
@@ -273,8 +276,10 @@
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\EF\MarketingPreference.cs" />
+    <Compile Include="Models\Profile\EF\Settings.cs" />
     <Compile Include="Models\Profile\MarketingPreferenceModel.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
+    <Compile Include="Models\Profile\SettingsModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />

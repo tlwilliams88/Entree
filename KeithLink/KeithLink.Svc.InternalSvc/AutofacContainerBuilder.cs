@@ -278,6 +278,10 @@ namespace KeithLink.Svc.InternalSvc
             // Item History
             builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
 
+            // Profile Settings
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
+
             return builder.Build();
         }
 	}

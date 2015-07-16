@@ -130,6 +130,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
+
 		/// <summary>
 		/// Create guest and assign a temporary password
 		/// </summary>
@@ -1008,7 +1009,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -1022,7 +1022,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
 		}
-
 
 		// <summary>
 		/// Export marketing info to CSV, TAB, or Excel
@@ -1052,6 +1051,41 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
 		}
 
+
+        /// <summary>
+        /// Get a list of settings for a user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute( "profile/settings/{userId}" )]
+        public OperationReturnModel<List<SettingsModel>> GetProfileSettings( Guid userId ) {
+            OperationReturnModel<List<SettingsModel>> returnValue = new OperationReturnModel<List<SettingsModel>>() { SuccessResponse = null };
+
+            try {
+                returnValue.SuccessResponse = _profileLogic.GetProfileSettings( userId ); 
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = string.Format( "Could not retrieve profile settings for specific user: {0}", userId );
+                _log.WriteErrorLog( returnValue.ErrorMessage, ex);
+            }
+
+            return returnValue;
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute( "profile/settings" )]
+        public OperationReturnModel<bool> SaveProfileSettings( SettingsModel settings ) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            try {
+                _profileLogic.SaveProfileSettings( settings );
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = string.Format( "Error saving profile settings for user: {0}", ex );
+                _log.WriteErrorLog( returnValue.ErrorMessage, ex );
+            }
+
+            return returnValue;
+        }
         #endregion
 	}
 }

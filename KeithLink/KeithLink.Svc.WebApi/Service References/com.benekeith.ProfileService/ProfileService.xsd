@@ -52,4 +52,18 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfMarketingPreferenceModel" nillable="true" type="tns:ArrayOfMarketingPreferenceModel" />
+  <xs:complexType name="ArrayOfusersettings">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="usersettings" nillable="true" type="tns:usersettings" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfusersettings" nillable="true" type="tns:ArrayOfusersettings" />
+  <xs:complexType name="usersettings">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="userid" type="ser:guid" />
+      <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="usersettings" nillable="true" type="tns:usersettings" />
 </xs:schema>
