@@ -84,9 +84,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             Message message = new Message();
 
 			if (!string.IsNullOrEmpty(notification.OrderChange.CurrentStatus) && notification.OrderChange.CurrentStatus.Equals("rejected", StringComparison.CurrentCultureIgnoreCase))
-				message.MessageSubject = "BEK: Order Rejected for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
+				message.MessageSubject = "Ben E. Keith: Order Rejected for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
 			else
-				message.MessageSubject = "BEK: Order Confirmation for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
+				message.MessageSubject = "Ben E. Keith: Order Confirmation for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
 
             message.MessageBody = (!string.IsNullOrEmpty(notification.OrderChange.SpecialInstructions) ? "Instructions: " + notification.OrderChange.SpecialInstructions + System.Environment.NewLine : "") +
                 (notification.OrderChange.ShipDate > DateTime.MinValue ? "Ship Date: " + notification.OrderChange.ShipDate.ToShortDateString() + System.Environment.NewLine + System.Environment.NewLine : "") +
