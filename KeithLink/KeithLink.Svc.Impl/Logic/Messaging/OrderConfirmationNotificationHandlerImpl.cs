@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                                                 (line.Each ? "package" : "case"),
                                                 System.Environment.NewLine
                                             };
-                originalOrderInfo += string.Format("{0} - {1} (qty {2} at ${3} per {4}){5}", args);
+                originalOrderInfo += string.Format("{0} - {1} (Quantity Ordered: {2} ; Price: ${3} per {4}){5}", args);
             }
 
             Message message = new Message();
