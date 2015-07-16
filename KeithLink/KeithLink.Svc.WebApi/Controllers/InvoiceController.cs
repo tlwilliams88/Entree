@@ -151,6 +151,19 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new OperationReturnModel<bool>() { SuccessResponse = true };
 		}
 
+        /// <summary>
+        /// Validate the transactions
+        /// </summary>
+        /// <param name="payments"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute( "invoice/payment/validate" )]
+        public OperationReturnModel<bool> ValidatePayment( List<PaymentTransactionModel> payments ) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            return returnValue;
+        }
+
 		/// <summary>
 		/// Retrieve paged list of pending transactions
 		/// </summary>
