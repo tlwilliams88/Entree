@@ -18,13 +18,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #region attributes 
 
         ISettingsRepository _repo;
-        UnitOfWork _uow; 
+        IUnitOfWork _uow; 
 
         #endregion
 
         #region constructor
 
-        public SettingsLogicImpl( UnitOfWork uow, ISettingsRepository repo ) {
+        public SettingsLogicImpl( IUnitOfWork uow, ISettingsRepository repo ) {
             _repo = repo;
             _uow = uow;
         }

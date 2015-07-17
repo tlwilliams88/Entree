@@ -172,8 +172,6 @@ GO
 
 ALTER TABLE ETL.Staging_Terms
 DROP COLUMN [Action],
-			Company,
-			[Description],
 			Prox;
 GO
 
