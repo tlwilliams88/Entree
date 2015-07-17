@@ -375,7 +375,7 @@
         <th class="hidden-mobile-visible-print">Notes</th>
         <th class="hidden-mobile-visible-print"></th>
         <th>Qty</th>
-        <th class="hidden-mobile-visible-print">{{item.each}}</th>
+        <th class="hidden-mobile-visible-print">Each</th>
         <th class="hidden-mobile-visible-print">Price</th>
         <th class="hidden-mobile-visible-print">Ext Price</th>
         <th></th>
@@ -444,7 +444,7 @@
               <td>{{::item.brand}}</td>
             </tr>
             <tr ng-if="::item.hasPackagePrice">
-              <td>{{item.each}}</td>
+              <td>Each</td>
               <td>
                 <input type="checkbox" value="" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" class="mousetrap" name="each" id="each" ng-model="item.each">
               </td>
