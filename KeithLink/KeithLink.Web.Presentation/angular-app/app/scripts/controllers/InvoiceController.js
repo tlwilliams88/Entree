@@ -16,7 +16,6 @@ angular.module('bekApp')
   $scope.selectedInvoiceContext = $scope.invoiceCustomerContexts[1];
 
   $scope.accounts = accounts;
-  $scope.selectedAccount = accounts[0];
  $scope.currDate = new Date();
   $scope.datepickerOptions = {
     minDate: new Date(),
@@ -97,7 +96,15 @@ angular.module('bekApp')
   }
 
   function setInvoices(data) {
-    $scope.invoices = data.pagedresults.results;
+    $scope.invoices = data.pagedresults.results
+    if($scope.invoices.length){
+      $scope.invoices.forEach(function(invoice){
+        if(!invoice.account){
+          invoice.account = accounts[0].accountNumber;
+          invoice.accountName = accounts[0].name
+        }
+      });
+    }
     $scope.totalInvoices = data.pagedresults.totalResults;
     $scope.hasPayableInvoices = data.haspayableinvoices;
     $scope.totalAmountDue = data.totaldue;
@@ -162,7 +169,7 @@ angular.module('bekApp')
     InvoiceService.setFilters(filterView, $scope.filterRowFields);
     $scope.selectedFilterView = filterView;
     getInvoicesFilterObject($scope.filterRowFields, filterView);
-    invoicePagingModel.loadData();
+    invoicePagingModel.loadData();    
   };
   $scope.infiniteScrollLoadMore = function() {
     invoicePagingModel.loadMoreData($scope.invoices, $scope.totalInvoices, $scope.loadingResults);
@@ -254,8 +261,9 @@ angular.module('bekApp')
     }
   };
 
-  $scope.selectAccount = function (account) {
-    $scope.selectedAccount = account;
+  $scope.selectAccount = function (invoice, account) {
+    invoice.account = account.accountNumber;
+    invoice.accountName = account.name;
   };
 
   $scope.toggleSelect = function (invoice) {
@@ -297,11 +305,13 @@ angular.module('bekApp')
 
   $scope.totalPaymentAmount = function () {
     var total = 0;
+    if($scope.invoices){
     $scope.invoices.forEach(function (invoice) {
       if (invoice.isSelected) {
         total += parseFloat(invoice.paymentAmount || 0);
       }
     });
+  }
     $scope.total = total;
     return total;
   };
@@ -313,14 +323,28 @@ angular.module('bekApp')
   var processingPayInvoices = false;
   $scope.payInvoices = function () {
     if (!processingPayInvoices) {
+      $scope.errorMessage = '';
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
-      InvoiceService.payInvoices(payments, $scope.selectedAccount).then(function() {
-        $scope.invoiceForm.$setPristine();
-        $state.go('menu.transaction');
-      }).finally(function () {
-        processingPayInvoices = false;
-      });
+      InvoiceService.checkTotals(payments).then(function(resp) {
+        if(resp.successResponse){  
+          InvoiceService.payInvoices(payments).then(function() {
+            $scope.invoiceForm.$setPristine();
+            $state.go('menu.transaction');
+          }).finally(function () {
+             processingPayInvoices = false;
+            });
+        }
+        else{
+          if(resp.errorMessage){
+            $scope.errorMessage = resp.errorMessage;
+          }
+          else{
+            $scope.errorMessage = "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative."
+          }
+          processingPayInvoices = false;
+        }    
+    });
     }
   };
 
