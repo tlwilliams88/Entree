@@ -256,7 +256,7 @@
             </td>
             <td class="input-col hidden-mobile-visible-print">
               <ng-form name="eachForm" ng-if="item.hasPackagePrice">
-                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
+                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
             </td>
@@ -446,7 +446,7 @@
             <tr ng-if="::item.hasPackagePrice">
               <td>Each</td>
               <td>
-                <input type="checkbox" value="" ng-checked = "!item.hasCasePrice" ng-disabled = "!item.hasCasePrice" class="mousetrap" name="each" id="each" ng-model="item.each">
+                <input type="checkbox" value="" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" class="mousetrap" name="each" id="each" ng-model="item.each">
               </td>
             </tr>
             
