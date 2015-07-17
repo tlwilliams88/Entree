@@ -161,6 +161,15 @@ namespace KeithLink.Svc.WebApi.Controllers
         public OperationReturnModel<bool> ValidatePayment( List<PaymentTransactionModel> payments ) {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
 
+            List<string> errorMessages = new List<string>() {
+                "Moving a payment would leave the source transaction negative",
+                "Moving a payment would make the destination negative",
+            };
+
+            Random r = new Random();
+
+            returnValue.ErrorMessage = errorMessages[r.Next(2)];
+
             return returnValue;
         }
 
