@@ -91,8 +91,11 @@ angular.module('bekApp')
       }
 
       // calculate max payment date
-      var date = moment(invoice.duedate).add(2, 'd');
-      invoice.maxPaymentDate = date.format('YYYY-MM-DD');
+      var date = moment(invoice.duedate).add(2, 'd');     
+      if(invoice.amount < 0){
+        date = moment( date ).add(1, 'year');
+      }
+       invoice.maxPaymentDate = date.format('YYYY-MM-DD');
     });
   }
 

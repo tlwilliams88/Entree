@@ -226,6 +226,7 @@
               <a
               ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
                 ng-click="openDatepicker = true"              
+                style="margin-right:20px;"
                 ng-if="invoice.userCanPayInvoice"
                 class="icon-calendar text-right"                
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
@@ -291,18 +292,19 @@
                     Schedule Date
                   </td>
                   <td  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'" class="datepicker">
-                   <!--  <a
-                      ng-click="openDatepicker = true"
-                      class="icon-calendar"
-                      ng-if="invoice.userCanPayInvoice && invoice.isSelected"
-                      datepicker-popup="{{datepickerOptions.options.dateFormat}}"
-                      ng-model="invoice.date"
-                      is-open="openDatepicker"
-                      min-date="datepickerOptions.minDate"
-                      max-date="datepickerOptions.maxDate"
-                      datepicker-options="datepickerOptions.options"
-                      date-disabled="disabled(date, mode)"
-                      close-text="Close"></a> -->
+                  <a
+                    ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
+                    ng-click="openDatepicker = true"              
+                    ng-if="invoice.userCanPayInvoice"
+                    class="icon-calendar text-right"                
+                    datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+                    ng-model="invoice.date"
+                    is-open="openDatepicker"
+                    min-date="datepickerOptions.minDate"
+                    max-date="invoice.maxPaymentDate"
+                    datepicker-options="datepickerOptions.options"
+                    date-disabled="disabled(date, mode)"
+                    close-text="Close"></a>
                       {{invoice.date | formatDate}}
                   </td>
                   <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</td>
