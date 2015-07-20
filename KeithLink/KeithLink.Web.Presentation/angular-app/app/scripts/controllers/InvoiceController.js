@@ -5,6 +5,7 @@ angular.module('bekApp')
     function ($scope, $filter, $modal, accounts, InvoiceService, $rootScope, LocalStorage, CustomerService, $state, PagingModel) {
 
   var currentUserSelectedContext = {};
+  $scope.errorMessage = '';
 
   $scope.invoiceCustomerContexts = [{
     text: 'All Customers',
@@ -166,6 +167,7 @@ angular.module('bekApp')
     $scope.showFilter = false;
   };
   $scope.selectFilterView = function (filterView) {
+    $scope.errorMessage = '';
     InvoiceService.setFilters(filterView, $scope.filterRowFields);
     $scope.selectedFilterView = filterView;
     getInvoicesFilterObject($scope.filterRowFields, filterView);
@@ -180,6 +182,17 @@ angular.module('bekApp')
       sortDescending: sortDescending
     };
     invoicePagingModel.sortData($scope.sort);
+  };
+  $scope.checkDate = function(invoice) {
+   if(invoice.amount > 0){
+    if(invoice.date > invoice.duedate){
+      invoice.date = '';
+      $scope.errorMessage = "Invoices must be scheduled prior to due date. Please select an earlier date."
+    }
+    else{
+      $scope.errorMessage = '';
+    }
+   }
   };
 
   /************
@@ -200,6 +213,7 @@ angular.module('bekApp')
   $scope.setViewingAllCustomers = function (invoiceContext) {
     $scope.viewingAllCustomers = invoiceContext.isViewingAllCustomers;
     $scope.selectedInvoiceContext = invoiceContext;
+     $scope.errorMessage = '';
     
     // clear values to reset page
     $scope.invoices = [];
