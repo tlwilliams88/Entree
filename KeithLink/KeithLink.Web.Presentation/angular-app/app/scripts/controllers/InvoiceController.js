@@ -183,17 +183,6 @@ angular.module('bekApp')
     };
     invoicePagingModel.sortData($scope.sort);
   };
-  $scope.checkDate = function(invoice) {
-   if(invoice.amount > 0){
-    if(invoice.date > invoice.duedate){
-      invoice.date = '';
-      $scope.errorMessage = "Invoices must be scheduled prior to due date. Please select an earlier date."
-    }
-    else{
-      $scope.errorMessage = '';
-    }
-   }
-  };
 
   /************
   VIEWING INVOICES FOR ALL CUSTOMERS

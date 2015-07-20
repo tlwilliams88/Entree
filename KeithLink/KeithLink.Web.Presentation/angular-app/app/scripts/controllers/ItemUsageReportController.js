@@ -45,12 +45,6 @@ angular.module('bekApp')
     loadItemUsage();
   };
 
-    $scope.checkDate = function(itemusagequery){
-        if(itemusagequery.fromDate){
-          itemusagequery.fromDate = '';
-        }
-      }
-
   // $scope.goToItemDetails = function (item) {
   //     ProductService.selectedProduct = item;
   //     $state.go('menu.catalog.products.details', {
