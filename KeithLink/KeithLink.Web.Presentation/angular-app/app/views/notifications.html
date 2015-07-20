@@ -23,9 +23,6 @@
             <th class="sort-col-header" ng-click="sortNotifications('label', !sort.sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortNotifications('customernumber', !sort.sortDescending)">
-              <span>Customer <span sort-icons field="'customernumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
-            </th>
             <th class="sort-col-header" ng-click="sortNotifications('subject', !sort.sortDescending)">
               <span>Subject <span sort-icons field="'subject'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
@@ -48,9 +45,6 @@
             <td class="input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.label">
             </td>
-            <td class="hidden-mobile-visible-print input-col">
-              <input type="text" placeholder="Filter..." ng-model="filterFields.customernumber">
-            </td>
             <td class="input-col">
               <input type="text" placeholder="Filter..." ng-model="filterFields.subject">
             </td>
@@ -70,7 +64,6 @@
             ng-class="{ odd : $odd, even: $even, 'new-message': !notification.messagereadutc, 'mandatory': notification.mandatory }">
             
             <td>{{notification.label}}</td>
-            <td class="hidden-mobile-visible-print">{{notification.customernumber}}</td>
             <td>{{notification.subject}}</td>
             <td class="hidden-mobile-visible-print">{{notification.notificationtypedescription}}</td>
             <td>{{notification.messagecreatedutc | formatDateWithTimezone:'MMM D, YYYY h:mm:ssa z' }}</td>
@@ -82,7 +75,7 @@
         </tbody>
         <tfoot ng-show="notifications.length === 0 && !loadingResults">
           <tr>
-            <td colspan="15">
+            <td colspan="14">
               There are no notifications to display.
             </td>
           </tr>
