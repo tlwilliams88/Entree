@@ -112,7 +112,10 @@ angular.module('bekApp')
         deferred.resolve(newList);
         return deferred.promise;
       } else {
-        return originalListService.createList(items, params);
+        return originalListService.createList(items, params).then(function(newList){
+            PhonegapDbService.setItem(db_table_name_lists, newList.listid, newList);
+            return newList;
+        })
       }
     };
 
@@ -149,7 +152,10 @@ angular.module('bekApp')
         deferred.resolve(list);
         return deferred.promise;
       } else {
-        return originalListService.updateList(list);
+        return originalListService.updateList(list).then(function(list){
+          PhonegapDbService.setItem(db_table_name_lists, list.listid, list);
+          return list;
+        })
 
       }
     };
@@ -173,6 +179,7 @@ angular.module('bekApp')
               PhonegapLocalStorageService.setDeletedListGuids(deletedListGuids);
             }
           }
+
         });
 
         var deferred = $q.defer();
@@ -180,6 +187,7 @@ angular.module('bekApp')
         return deferred.promise;
 
       } else {
+        PhonegapDbService.removeItem(db_table_name_lists, listId);
         return originalListService.deleteList(listId);
       }
     };
@@ -334,7 +342,12 @@ angular.module('bekApp')
         deferred.resolve(updatedList);
         return deferred.promise;
       } else {
-        originalListService.addMultipleItems(listId, items);
+       return originalListService.addMultipleItems(listId, items).then(function(updatedList){  
+          PhonegapDbService.setItem(db_table_name_lists, listId, updatedList);
+          return updatedList;  
+        });
+   
+
       }
     };
 
@@ -384,10 +397,10 @@ angular.module('bekApp')
 
     Service.updateListsFromLocal = function() {
       $log.debug('updating lists after back online');
-      
+      var promises = [];
       PhonegapDbService.getAllItems(db_table_name_lists).then(function(storedLists) {
        
-        var promises = [];
+        
         angular.forEach(storedLists, function(list, index) {
           
           if (list.isNew) { // create lists
@@ -408,6 +421,7 @@ angular.module('bekApp')
               items: newItems
             };
             promises.push(Service.createListFromLocal(newList));
+
           }
           else if (list.isChanged) { // update lists
             delete list.isChanged;
@@ -424,22 +438,21 @@ angular.module('bekApp')
         // delete lists
         var deletedListGuids = PhonegapLocalStorageService.getDeletedListGuids();
         if (deletedListGuids) {
-          promises.push(Service.deleteMultipleLists(deletedListGuids));
-        }
+          promises.push(originalListService.deleteMultipleLists(deletedListGuids));
+          console.log(promises);
+        }       
 
-        
-        $q.all(promises).then(function() {
-          $log.debug('lists updated!');
-          
-          //update from server and remove deleted array
-          Service.getAllListsForOffline();
-          
-          PhonegapLocalStorageService.removeDeletedListGuids();
-        }, function() {
-          $log.debug('error updating lists');
+        }).finally(function(){
+           $q.all(promises).then(function() {
+            //update from server and remove deleted array
+              Service.getAllListsForOffline();          
+              PhonegapLocalStorageService.removeDeletedListGuids();          
+              $log.debug('lists updated!'); 
+            }, function() {
+              $log.debug('error updating lists');
         });
       });
-    };
+   };
 
     Service.createListFromLocal = function(newList) {
       return List.save({}, newList).$promise;
