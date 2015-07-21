@@ -410,13 +410,29 @@ angular.module('bekApp')
           setSelectedCart(cart);
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-
           $scope.addToOrderForm.$setPristine();
-          $scope.displayMessage('success', 'Successfully added ' + order.items.length + ' Items to Order # ' + order.invoicenumber + '.');
+
+          if($scope.continueToCart){ 
+          $state.go('menu.cart.items', {cartId: order.ordernumber});
+          }
+          var newItemCount = cart.items.length - $scope.origItemCount;
+          $scope.origItemCount = cart.items.length;
+
+          if(newItemCount > 0){
+            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Order # ' + order.invoicenumber + '.');
+          }else if(newItemCount < 0){
+            $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Order # ' + order.invoicenumber + '.');
+          }
+          else{
+            $scope.displayMessage('success', 'Successfully Saved Order ' + order.invoicenumber + '.');
+          }
         }, function() {
           $scope.displayMessage('error', 'Error adding items to change order.');
         }).finally(function() {
           processingSaveChangeOrder = false;
+          if($scope.continueToCart){ 
+            $state.go('menu.cart.items', {cartId: order.ordernumber});
+          }
         });
       }
     }
