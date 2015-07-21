@@ -1,15 +1,17 @@
-﻿using System;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Models.Messaging.Provider;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.Messaging;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
-using KeithLink.Svc.Core.Models.Messaging.EF;
-using KeithLink.Svc.Core.Models.Messaging.Provider;
-using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core.Interface.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging
 {
@@ -48,11 +50,25 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             // load up recipients, customer and message
             eventLogRepository.WriteInformationLog("order confirmation, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
             Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
-            List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer);
-            Message message = GetEmailMessageForNotification(orderConfirmation, customer);
 
-            // send messages to providers...
-            base.SendMessage(recipients, message);
+            if (customer == null) {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Order Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                eventLogRepository.WriteWarningLog(warningMessage.ToString());
+            } else {
+                List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer);
+                Message message = GetEmailMessageForNotification(orderConfirmation, customer);
+
+                // send messages to providers...
+                if (recipients != null && recipients.Count > 0) {
+                    base.SendMessage(recipients, message);
+                }
+            }
         }
 
         private Message GetEmailMessageForNotification(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
