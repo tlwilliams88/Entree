@@ -17,7 +17,8 @@ angular.module('bekApp')
   $scope.selectedInvoiceContext = $scope.invoiceCustomerContexts[1];
 
   $scope.accounts = accounts;
- $scope.currDate = new Date();
+  $scope.ascendingDate = true;
+  $scope.currDate = new Date();
   $scope.datepickerOptions = {
     minDate: new Date(),
     options: {
@@ -103,6 +104,7 @@ angular.module('bekApp')
     $scope.invoices = data.pagedresults.results
     if($scope.invoices.length){
       $scope.invoices.forEach(function(invoice){
+        invoice.failedBatchValidation = false;
         if(!invoice.account){
           invoice.account = accounts[0].accountNumber;
           invoice.accountName = accounts[0].name
@@ -187,6 +189,27 @@ angular.module('bekApp')
     invoicePagingModel.sortData($scope.sort);
   };
 
+  $scope.sortByScheduleDate = function(ascendingDate) {
+   $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
+        var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.currDate;
+        var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.currDate;
+        $scope.ascendingDate = !ascendingDate;    
+        if(!sorterval1){
+          sorterval1 = 0
+        }
+        if(!sorterval2){
+          sorterval2 = 0;
+        }
+        if(ascendingDate){      
+          return sorterval1 - sorterval2;
+        }
+        else{
+          return sorterval2 - sorterval1;
+        }   
+   });
+  };
+
+
   /************
   VIEWING INVOICES FOR ALL CUSTOMERS
   ************/
@@ -268,6 +291,9 @@ angular.module('bekApp')
   };
 
   $scope.selectAccount = function (invoice, account) {
+    if(invoice.account !== account.accountNumber){
+      $scope.validateBatch();
+    }
     invoice.account = account.accountNumber;
     invoice.accountName = account.name;
   };
@@ -281,6 +307,7 @@ angular.module('bekApp')
     if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) { // jshint ignore:line
       invoice.isSelected = false;
     }
+  // $scope.validateBatch()
   };
 
   $scope.selectInvoice = function (invoice, isSelected) {
@@ -294,8 +321,7 @@ angular.module('bekApp')
       } else {
         invoice.paymentAmount = '0';  
       }
-    }
-
+    }   
     $scope.invoiceForm.$setDirty();
   };
 
@@ -309,7 +335,7 @@ angular.module('bekApp')
     });
   };
 
-  $scope.totalPaymentAmount = function () {
+  $scope.totalPaymentAmount = function () {    
     var total = 0;
     if($scope.invoices){
     $scope.invoices.forEach(function (invoice) {
@@ -317,6 +343,10 @@ angular.module('bekApp')
         total += parseFloat(invoice.paymentAmount || 0);
       }
     });
+  }
+
+  if($scope.total !== total && (total !==0 || $scope.total)){
+    $scope.validateBatch();
   }
     $scope.total = total;
     return total;
@@ -342,17 +372,41 @@ angular.module('bekApp')
             });
         }
         else{
-          if(resp.errorMessage){
-            $scope.errorMessage = resp.errorMessage;
-          }
-          else{
-            $scope.errorMessage = "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative."
-          }
+          $scope.displayValidationError(resp);          
           processingPayInvoices = false;
         }    
     });
     }
   };
+
+  $scope.validateBatch = function(){
+    if(!$scope.validating){
+      $scope.validating = true;
+      var payments = $scope.getSelectedInvoices();
+      if(payments){
+      InvoiceService.checkTotals(payments).then(function(resp) {
+        if(resp.successResponse){
+          $scope.errorMessage = '';
+        }
+        else{  
+          $scope.displayValidationError(resp);
+        }
+        $scope.validating = false;
+     });
+    }
+   }
+  }
+  
+  $scope.displayValidationError = function(resp){
+    $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";        
+    $scope.invoices.forEach(function(invoice){
+      if(resp.bank === invoice.account && resp.customer === invoice.customernumber && resp.division === invoice.branchid && resp.date === invoice.account && invoice.isSelected){
+        invoice.failedBatchValidation = true;
+      }else{
+        invoice.failedBatchValidation = false;
+      }
+    }); 
+  }
 
   $scope.openExportModal = function () {
     var modalInstance = $modal.open({

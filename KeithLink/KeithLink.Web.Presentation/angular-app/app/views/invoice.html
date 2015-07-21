@@ -47,7 +47,7 @@
             {{selectedUserContext.customer.address.city}}, {{selectedUserContext.customer.address.regioncode}} {{selectedUserContext.customer.address.postalcode}}<br>
           </address>
         </div>
-        <div ng-if="hasPayableInvoices" class="total-line"> Total: <span ng-class="{'text-red' : total < 0}"  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || total < 0" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
+        <div ng-if="hasPayableInvoices" class="total-line"> Total: <span ng-class="{'text-red' : total < 0}" class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || total < 0  || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
       </div>
     </div>
     <div class="row page-content" style="margin-top:5px;">  
@@ -62,7 +62,7 @@
         <div class="text-right">
           Showing {{invoices.length}} of {{totalInvoices}} Invoices
         </div>
-        <div class="table-invoices">
+        <div class="table-invoices" style="padding-left:15px; padding-right:15px;">
         <table class="table table-border table-striped-rows invoice-table" navigate-table="mobile" infinite-scroll="infiniteScrollLoadMore()">
           <thead>
             <tr fsm-sticky-header scroll-body="'.table-invoices'" scroll-stop="0" scroll-offset="74 + 64 + 17 + 30">
@@ -101,7 +101,7 @@
               <th class="text-center hidden-mobile-visible-print">Invoice Image</th>
               <th ng-show="!viewingAllCustomers">Payment Amt</th>
               <th ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print">Bank Account</th>
-              <th ng-show="!viewingAllCustomers" class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('scheduledate', !sort.sortDescending)">
+              <th ng-show="!viewingAllCustomers" class="sort-col-header hidden-mobile-visible-print" ng-click="sortByScheduleDate(ascendingDate)">
                 Schedule 
                 <span>Date<span sort-icons field="'scheduledate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
@@ -138,8 +138,7 @@
             <td class="hidden-mobile-visible-print"></td>
             <td ng-show="!viewingAllCustomers"></td>
             <td ng-show="!viewingAllCustomers"></td>
-            <td ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print input-col">
-              <input type="text" placeholder="Filter..." ng-model="filterRowFields.scheduledate" no-dirty-check>
+            <td ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print">       
             </td>
             <td class="input-col nowrap">
               <button type="button" class="btn btn-primary btn-sm" ng-click="filterInvoices(filterRowFields)">Filter</button>
@@ -147,7 +146,7 @@
             </td>
           </tr> <!-- end Filter Row -->
 
-          <tr ng-repeat-start="invoice in invoices" ng-class="{ odd : $odd, even: $even, 'item-selected': invoice.isSelected, 'invoice__late':  invoice.status === 2}">
+          <tr ng-repeat-start="invoice in invoices" ng-class="{ odd : $odd, even: $even, 'item-selected': (invoice.isSelected && !errorMessage.length), 'invalid-item': invoice.failedBatchValidation, 'invoice__late':  invoice.status === 2}">
             <td ng-if="!viewingAllCustomers">
               <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
@@ -189,7 +188,7 @@
                 class="text-right"
                 type="text"
                 style="width:75px;"
-                ng-model="invoice.paymentAmount"
+                ng-model="invoice.paymentAmount"                
                 fcsa-number="{
                   'maxDecimals': 2,
                   'addMissingDecimals': true,
@@ -232,6 +231,7 @@
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                 ng-model="invoice.date"
                 is-open="openDatepicker"
+                ng-change="validateBatch()"
                 min-date="datepickerOptions.minDate"
                 max-date="invoice.maxPaymentDate"
                 datepicker-options="datepickerOptions.options"
@@ -296,6 +296,7 @@
                     ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
                     ng-click="openDatepicker = true"              
                     ng-if="invoice.userCanPayInvoice"
+                   
                     class="icon-calendar text-right"                
                     datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                     ng-model="invoice.date"
