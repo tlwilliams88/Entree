@@ -216,6 +216,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 , RegionalId = org.RegionalId
                 , RegionalNumber = org.RegionalNumber
                 , IsKeithNetCustomer = org.IsKeithnetCustomer !=null && org.IsKeithnetCustomer.ToLower() == "y" ? true : false
+                , NationalIdDesc = org.NationalIdDesc
+                , NationalNumberSubDesc = org.NationalNumberSubDesc
+                , RegionalIdDesc = org.RegionalIdDesc
+                , RegionalNumberDesc = org.RegionalNumberDesc
+
                 
             };
 
