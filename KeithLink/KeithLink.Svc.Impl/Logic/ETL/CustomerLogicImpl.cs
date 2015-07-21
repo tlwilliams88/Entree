@@ -226,6 +226,10 @@ namespace KeithLink.Svc.Impl.ETL
                     prof.Properties["GeneralInfo.regional_id"].Value = org.RegionalId;
                     prof.Properties["GeneralInfo.regional_number"].Value = org.RegionalNumber;
                     prof.Properties["GeneralInfo.is_keithnet_customer"].Value = org.IsKeithnetCustomer;
+                    prof.Properties["GeneralInfo.national_id_desc"].Value = org.NationalIdDesc;
+                    prof.Properties["GeneralInfo.national_numbersub_desc"].Value = org.NationalNumberSubDesc;
+                    prof.Properties["GeneralInfo.regional_id_desc"].Value = org.RegionalIdDesc;
+                    prof.Properties["GeneralInfo.regional_number_desc"].Value = org.RegionalNumberDesc;
 
                     Profile addressProfile = null;
                     if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))
