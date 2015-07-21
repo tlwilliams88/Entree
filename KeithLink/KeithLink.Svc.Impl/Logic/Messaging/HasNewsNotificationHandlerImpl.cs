@@ -1,9 +1,11 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,19 +46,31 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 			var hasNewsNotification = (HasNewsNotification)notification;
 
 			Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, hasNewsNotification.BranchId);
-            
-			List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer, notification.DSRDSMOnly);
 
-			// send messages to providers...
-			base.SendMessage(recipients, new Message()
-			{
-				CustomerName = customer.CustomerName,
-				CustomerNumber = customer.CustomerNumber,
-				BranchId = customer.CustomerBranch,
-				MessageSubject = hasNewsNotification.Subject,
-				MessageBody = hasNewsNotification.Notification,
-				NotificationType = NotificationType.HasNews
-			});
+            if (customer == null) {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, hasNewsNotification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                eventLogRepository.WriteWarningLog(warningMessage.ToString());
+            } else {
+                List<Recipient> recipients = base.LoadRecipients(notification.NotificationType, customer, notification.DSRDSMOnly);
+
+                if (recipients != null && recipients.Count > 0) {
+                    // send messages to providers...
+                    base.SendMessage(recipients, new Message() {
+                        CustomerName = customer.CustomerName,
+                        CustomerNumber = customer.CustomerNumber,
+                        BranchId = customer.CustomerBranch,
+                        MessageSubject = hasNewsNotification.Subject,
+                        MessageBody = hasNewsNotification.Notification,
+                        NotificationType = NotificationType.HasNews
+                    });
+                }
+            }
 		}
 	}
 }

@@ -204,7 +204,7 @@ namespace KeithLink.Svc.Impl.Migrations
                 new MessageTemplate
                 {
                     TemplateKey = "OrderEtaMain",
-                    Subject = "Estimated Delivery Information for {CustomerName}",
+                    Subject = "Estimated Delivery Information for {CustomerNumber}-{CustomerName}",
                     IsBodyHtml = false,
                     Type = MessageTemplateType.Email,
                     Body = etaNotificationBody.ToString()
@@ -258,7 +258,7 @@ namespace KeithLink.Svc.Impl.Migrations
                 t => t.TemplateKey,
                 new MessageTemplate {
                     TemplateKey = "PaymentConfirmation",
-                    Subject = "Payment Confirmation for {CustomerName}",
+                    Subject = "Payment Confirmation for {CustomerNumber}-{CustomerName}",
                     IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
                     Body = paymentConfirmation.ToString()
