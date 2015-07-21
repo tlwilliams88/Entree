@@ -106,7 +106,12 @@ namespace KeithLink.Svc.Impl.ETL
                 NationalSubNumber = row.GetString("NationalSubNumber"),
                 RegionalId = row.GetString("RegionalId"),
                 RegionalNumber = row.GetString("RegionalNumber"),
-                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer")
+                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer"),
+                NationalIdDesc = row.GetString("NationalIdDesc"),
+                NationalNumberSubDesc = row.GetString("NationalNumberAndSubDesc"),
+                RegionalIdDesc = row.GetString("RegionalIdDesc"),
+                RegionalNumberDesc = row.GetString("RegionalNumberDesc")
+
                 
                 // NationalAccountId = row.Get // this will come from a separate file
                 // TODO, add address info
