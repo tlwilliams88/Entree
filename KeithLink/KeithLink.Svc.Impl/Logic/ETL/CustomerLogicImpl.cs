@@ -107,10 +107,10 @@ namespace KeithLink.Svc.Impl.ETL
                 RegionalId = row.GetString("RegionalId"),
                 RegionalNumber = row.GetString("RegionalNumber"),
                 IsKeithnetCustomer = row.GetString("IsKeithnetCustomer"),
-                NationalIdDesc = row.GetString("NationalIdDesc"),
-                NationalNumberSubDesc = row.GetString("NationalNumberAndSubDesc"),
-                RegionalIdDesc = row.GetString("RegionalIdDesc"),
-                RegionalNumberDesc = row.GetString("RegionalNumberDesc")
+                NationalIdDesc = row.GetString("NationalIdDesc").Trim(),
+                NationalNumberSubDesc = row.GetString("NationalNumberAndSubDesc").Trim(),
+                RegionalIdDesc = row.GetString("RegionalIdDesc").Trim(),
+                RegionalNumberDesc = row.GetString("RegionalNumberDesc").Trim()
 
                 
                 // NationalAccountId = row.Get // this will come from a separate file

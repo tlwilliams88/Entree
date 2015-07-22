@@ -104,6 +104,10 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                                 org.SetPropertyValue("RegionalId", dataReader.GetString("u_regional_id"));
                                 org.SetPropertyValue("RegionalNumber", dataReader.GetString("u_regional_number"));
                                 org.SetPropertyValue("IsKeithnetCustomer", dataReader.GetString("u_is_keithnet_customer"));
+                                org.SetPropertyValue("NationalIdDesc", dataReader.GetString("u_national_id_desc"));
+                                org.SetPropertyValue("NationalNumberSubDesc", dataReader.GetString("u_national_numbersub_desc"));
+                                org.SetPropertyValue("RegionalIdDesc", dataReader.GetString("u_regional_id_desc"));
+                                org.SetPropertyValue("RegionalNumberDesc", dataReader.GetString("u_regional_number_desc"));
 
 
 								org.SetPropertyValue("GeneralInfo.preferred_address", dataReader.GetString("u_preferred_address"));
