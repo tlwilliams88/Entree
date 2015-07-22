@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel', 'LocalStorage',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, PricingService, ListPagingModel, LocalStorage) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, PricingService, ListPagingModel, LocalStorage, UtilityService) {
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
@@ -24,6 +24,7 @@ angular.module('bekApp')
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
     $scope.numberListNamesToShow = 10;
+    $scope.isMobileDevice = UtilityService.isMobileDevice();
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -407,7 +408,7 @@ angular.module('bekApp')
 
     // disable drag on mobile
     $scope.isDragEnabled = function() {
-      return window.innerWidth > 991;
+      return window.innerWidth > 991 && !$scope.isMobileDevice;
     };
 
     // Check if element is being dragged, used to enable DOM elements
