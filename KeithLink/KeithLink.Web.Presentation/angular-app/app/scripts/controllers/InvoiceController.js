@@ -303,7 +303,6 @@ angular.module('bekApp')
       invoice.isSelected = true;
     } else {
       invoice.isSelected = false;
-      $scope.pleasework = "invoice;"
     }
     if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) { // jshint ignore:line
       invoice.isSelected = false;
