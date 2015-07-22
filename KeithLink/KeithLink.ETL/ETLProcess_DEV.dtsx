@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_DEV"
   DTS:PackageType="5"
-  DTS:VersionBuild="384"
-  DTS:VersionGUID="{837F5321-61BB-4CA3-8725-8A15777DA703}">
+  DTS:VersionBuild="392"
+  DTS:VersionGUID="{1DC0C01F-2186-4064-952B-F9097A1DE25D}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -223,7 +223,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{B2426E48-3789-467F-90B4-427857E23BA8}"
+              DTS:DTSID="{3FA176F5-9B50-4263-8D46-D314473C51EC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -231,7 +231,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CO"
-              DTS:DTSID="{C5DEDBDA-0EB4-4E0E-9E76-36F07ED6E201}"
+              DTS:DTSID="{41538A92-D603-474E-9365-6947FE8EE85B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -239,7 +239,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DIV"
-              DTS:DTSID="{763AEF09-DB9A-40CB-9AF2-C01A60695207}"
+              DTS:DTSID="{07CA4BC2-4260-464A-A6FC-1381658C6C72}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -247,7 +247,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DEPT"
-              DTS:DTSID="{CC2CBF31-CA14-4FB9-937E-FD182DAB9DFD}"
+              DTS:DTSID="{2C558243-9935-44EA-9072-87D4329E20BA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -255,7 +255,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{5C1F6434-68ED-4363-AD74-CBE09B3EF44C}"
+              DTS:DTSID="{B241667C-F189-4FCA-A5E0-FB10B7F95040}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -263,7 +263,7 @@
               DTS:MaximumWidth="40"
               DTS:DataType="129"
               DTS:ObjectName="CustomerName"
-              DTS:DTSID="{477E0CBD-9EFB-4E3B-BB64-0DED037006EF}"
+              DTS:DTSID="{5A3B6E91-36F6-4A95-AD80-6EDBA2CB10B7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -271,7 +271,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address1"
-              DTS:DTSID="{EA84AC3A-0C19-4C7D-A1A4-4A3111F5C4DC}"
+              DTS:DTSID="{F7A09E4D-8442-437F-8383-18EAE3EE16D2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -279,7 +279,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address2"
-              DTS:DTSID="{2C4EAF87-E522-4565-B249-5D7BEE56EC37}"
+              DTS:DTSID="{462FCD98-2CD6-4ED0-B5E6-659708D34A10}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -287,7 +287,7 @@
               DTS:MaximumWidth="30"
               DTS:DataType="129"
               DTS:ObjectName="City"
-              DTS:DTSID="{9072853B-6465-4570-BBDE-05AD0948560C}"
+              DTS:DTSID="{9D50A16D-51D5-4467-87EE-7AB31B49D591}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -295,7 +295,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="State"
-              DTS:DTSID="{E3008530-1046-4ADA-9BCF-D506AE04B911}"
+              DTS:DTSID="{6DA271E6-1AE0-4B5A-AA07-82E3B12120C0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -303,7 +303,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ZipCode"
-              DTS:DTSID="{42C2300F-070D-4710-A1D7-27A68BC23F9C}"
+              DTS:DTSID="{E94A112B-E117-4D73-959D-A3C0FFC39656}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -311,7 +311,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WhsnNumber"
-              DTS:DTSID="{2AA72D90-71A8-4A43-B1B4-6D63F1959DF6}"
+              DTS:DTSID="{795D4774-17C5-41C5-A39F-CF7F181EA6F5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -319,7 +319,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Telephone"
-              DTS:DTSID="{708D95B4-FD18-4AD0-AB35-9541A55AED70}"
+              DTS:DTSID="{4BE7CE6E-F701-4EFD-9E89-1632971F3B57}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -327,7 +327,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{697532C2-84B0-424D-A5DE-B50C12D29C87}"
+              DTS:DTSID="{35CB8611-BB8C-4136-B765-829FDA69AB8D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -335,7 +335,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{568E1E68-BDDC-4F97-8E32-3AD5DFBEB681}"
+              DTS:DTSID="{FC98893B-150F-4F5A-AB8E-E805ED30B2CE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -343,7 +343,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TermCode"
-              DTS:DTSID="{5B5AD218-EE86-458E-845F-3A940634AB37}"
+              DTS:DTSID="{E56AC9E6-2804-47C9-A4C5-BD0FCE64BBAC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -351,7 +351,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="CreditLimit"
-              DTS:DTSID="{D6ED6A73-C432-450E-B122-4ADDA9902E3D}"
+              DTS:DTSID="{26D9876C-10D8-4CAF-8BBE-2BF9000952CC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -359,7 +359,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditHoldFlag"
-              DTS:DTSID="{C4479299-C435-4CEF-86CD-FEA29AA0D929}"
+              DTS:DTSID="{BEA268D4-C3A9-4AFA-96C2-0B6733FD228D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -367,7 +367,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DONOTUSE"
-              DTS:DTSID="{891AC8CD-CDDE-494F-949C-E145DA3DF2A0}"
+              DTS:DTSID="{CEEEB4FC-A232-4E2C-B3D6-FC06A4A25E8B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -375,7 +375,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="StoreNumber"
-              DTS:DTSID="{05927F0B-0A04-492A-BF48-80E2540B8BA8}"
+              DTS:DTSID="{614BA1AE-53E8-4816-AAFB-AD76DFC637D7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -383,7 +383,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ContractOnly"
-              DTS:DTSID="{412C42C4-84DD-4288-AE5D-29446A580F8E}"
+              DTS:DTSID="{D0A9F4DF-29E9-447F-9A7B-B36DDDE716CD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -391,7 +391,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="LocationAuth"
-              DTS:DTSID="{F9E0B4F4-D004-4840-9688-61CA83254D28}"
+              DTS:DTSID="{F17881F8-F71C-4439-B343-1D0ADC9C0038}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -399,7 +399,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateLastPay"
-              DTS:DTSID="{AB9C89C0-951E-489C-98F2-B50911393617}"
+              DTS:DTSID="{E9A26100-5DEF-4D6D-A70D-066154D5C3E1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -407,7 +407,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CustAmountDue"
-              DTS:DTSID="{A3A06955-7022-4211-B16D-C9516A66F3BA}"
+              DTS:DTSID="{3EBE74CB-747C-4456-9402-CFC7B0229844}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -415,7 +415,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CurrentBalance"
-              DTS:DTSID="{D84D87BB-D727-4C77-9B43-04F7F5B62EAF}"
+              DTS:DTSID="{889747A4-A5EC-4A7E-88C0-61DDDF7ABF7E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -423,7 +423,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge1"
-              DTS:DTSID="{1D5B03D3-A39B-4CE0-A4CE-6C5A5D2C0F3D}"
+              DTS:DTSID="{5FFF1F34-F1C6-4AD3-AC25-084B8600C3DF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -431,7 +431,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge2"
-              DTS:DTSID="{FCA704F9-7524-48FE-8D6F-FC84D8B36072}"
+              DTS:DTSID="{6592DF4D-3EC4-48FF-A382-00461DD1A6DE}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -439,7 +439,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge3"
-              DTS:DTSID="{C30BAF5D-2147-4BA0-8F98-FC7AEE46BA0D}"
+              DTS:DTSID="{B558A333-18CB-48BC-A6A4-808A739CCBD4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -447,7 +447,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge4"
-              DTS:DTSID="{40FBB84E-2CDF-42AC-99E6-B448EAF2150F}"
+              DTS:DTSID="{5D1B8A77-8905-4289-B028-11502A3BA19F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -455,7 +455,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ActiveFlag"
-              DTS:DTSID="{959CE277-A602-4668-9BBC-C4B9213CD09C}"
+              DTS:DTSID="{F12EC14E-6BEF-4741-9019-EF8B77E0F456}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -463,7 +463,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="MondayRoutNum"
-              DTS:DTSID="{F3F43ED7-0C65-4D55-AF21-26DED3898C41}"
+              DTS:DTSID="{BB13EB83-8610-4F94-B084-94C4A32E7AC1}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -471,7 +471,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MondayStopNum"
-              DTS:DTSID="{1731CC8A-A1B1-46EC-9C92-088A86C966BA}"
+              DTS:DTSID="{A4AA6660-D547-4FA4-9CDF-B0F85CBC1C86}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -479,7 +479,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayRoutNum"
-              DTS:DTSID="{25A03583-D952-47EA-84D9-51C65EB00818}"
+              DTS:DTSID="{8DC82FEB-AF41-4F52-9EE7-BC9F8689C533}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -487,7 +487,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayStopNum"
-              DTS:DTSID="{C290D25F-48C9-4378-80C8-D5691314C64D}"
+              DTS:DTSID="{C02F3855-BBAF-438F-B650-7DC1A601BB37}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -495,7 +495,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="WedRoutNum"
-              DTS:DTSID="{973791E4-6E2B-4757-BCA7-7D7DD618A6B8}"
+              DTS:DTSID="{E991AD46-03CA-4BAB-AF01-7C53008E3D96}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -503,7 +503,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WedStopNum"
-              DTS:DTSID="{11A2D1A4-3403-4EA1-809D-D03B08288BB8}"
+              DTS:DTSID="{8990A7AD-4B8E-4191-B711-81A9E12EA025}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -511,7 +511,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayRoutNum"
-              DTS:DTSID="{94E448BE-B818-421A-8EC4-A581CEC73FC5}"
+              DTS:DTSID="{909B99E5-A8F7-45E2-9BEC-6EC72202F9B4}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -519,7 +519,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayStopNum"
-              DTS:DTSID="{29EF58C8-4BF3-4196-A714-E02B68911C95}"
+              DTS:DTSID="{126662B6-0475-45EC-BE7B-19C291494F32}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -527,7 +527,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="FridayRoutNum"
-              DTS:DTSID="{4C20207A-9008-41F0-973F-CA3050B8CA2D}"
+              DTS:DTSID="{D6D7C090-2241-474C-9C4F-D8053A09BA9E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -535,7 +535,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="FridayStopNum"
-              DTS:DTSID="{D17AF37D-8DE4-4BFD-98CE-58A38560A52D}"
+              DTS:DTSID="{0872008B-BA01-4619-80D8-03D1890845C6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -543,7 +543,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayRoutNum"
-              DTS:DTSID="{9C05E587-F75E-4701-8735-25446573C0EB}"
+              DTS:DTSID="{0BE54B51-4D4A-40AF-A6C1-3B1B81CC282B}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -551,7 +551,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayStopNum"
-              DTS:DTSID="{279F9515-FE76-4237-9A83-A5CAF8114AB7}"
+              DTS:DTSID="{3B624E9A-89E8-48F4-9201-2CCE444D8892}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -559,7 +559,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SundayRoutNum"
-              DTS:DTSID="{248FEE5D-DD21-46B0-8C7B-2E5ADEDF2789}"
+              DTS:DTSID="{85C80389-B77D-486E-BBC8-02FD52190500}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -567,7 +567,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SundayStopNum"
-              DTS:DTSID="{0CA54AA4-643A-406D-9C9C-F3DDB9CCA5C2}"
+              DTS:DTSID="{1DD4F86D-9795-425B-B8C1-0BFB4478D14A}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -575,7 +575,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CSR"
-              DTS:DTSID="{72EED53D-CDB9-4C89-A98B-CC282DF5F862}"
+              DTS:DTSID="{26B3F25E-832B-47B6-8E5E-47E4D01461AB}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -583,7 +583,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Contract"
-              DTS:DTSID="{68810F11-47A1-4128-BCC8-DA3EE65B1A36}"
+              DTS:DTSID="{9CF18F48-9875-4BE6-A8B4-E9D3EF8623B7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -591,7 +591,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PORequiredFlag"
-              DTS:DTSID="{A2144029-F317-49E1-AD34-4CBB2E77B0C5}"
+              DTS:DTSID="{D55D8B57-802D-46B8-9F6D-559830A5A02D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -599,7 +599,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNU"
-              DTS:DTSID="{E405DFBC-CD93-46BC-8810-887C980AB6B5}"
+              DTS:DTSID="{F69C0CEA-C46A-4B39-AA77-2859C359AD9F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -607,7 +607,7 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNUB"
-              DTS:DTSID="{BA6DA39F-B5D5-4E8C-8DBB-13F30936A12D}"
+              DTS:DTSID="{5D1AF61D-FCCF-41B3-9386-40F33E27E956}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -615,7 +615,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty1"
-              DTS:DTSID="{757B6553-8439-4E26-B70D-8FAC15C894E9}"
+              DTS:DTSID="{AB7004AD-DFCB-4A37-98EB-BB8ADECF71F3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -623,7 +623,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty2"
-              DTS:DTSID="{09D81722-E870-424D-9A99-7237CAE12D19}"
+              DTS:DTSID="{17FF9374-1178-4F7A-82C4-C530935D67CD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -631,7 +631,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PowerMenu"
-              DTS:DTSID="{5CDDA657-67EB-4582-87AD-972939AF0F28}"
+              DTS:DTSID="{EE5AFE45-973C-4457-A662-571C73E72601}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -639,7 +639,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="AchType"
-              DTS:DTSID="{00649152-02CC-4FDD-B507-6F497DC83399}"
+              DTS:DTSID="{6B963844-F2B1-45EF-B35D-74496D56100C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -647,7 +647,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="DsmNumber"
-              DTS:DTSID="{9375E6C0-2FF1-4873-A7F6-CB66F2EABC80}"
+              DTS:DTSID="{22F2E76B-3731-4203-8A31-9A33EC0F1388}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -655,7 +655,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="NaId"
-              DTS:DTSID="{2D0F26EF-AD79-4D67-A248-ED1265C3EB03}"
+              DTS:DTSID="{AD555B30-1511-4C14-9CA7-DC65656F6008}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -663,7 +663,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="NaNumber"
-              DTS:DTSID="{327BFA9E-C9E9-44B8-A70C-3C8B330D92EF}"
+              DTS:DTSID="{3F55982C-450C-4BF9-B839-E6E555163606}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -671,7 +671,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="NaSub"
-              DTS:DTSID="{4B6CDE3F-9096-48A9-B1B4-534CF511DB9C}"
+              DTS:DTSID="{457FD880-501F-494B-8FC4-0ACBEDF37C96}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -679,15 +679,15 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="RaId"
-              DTS:DTSID="{D8D2B8DD-D5CC-4DA5-A86E-5334811CD324}"
+              DTS:DTSID="{1FF1EAEC-40F4-4D32-AD86-902F6282CA17}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
-              DTS:ColumnWidth="2"
-              DTS:MaximumWidth="2"
+              DTS:ColumnWidth="4"
+              DTS:MaximumWidth="4"
               DTS:DataType="129"
               DTS:ObjectName="RaNumber"
-              DTS:DTSID="{C9933910-83E2-4512-BBB6-69513CB0AB69}"
+              DTS:DTSID="{4858ABB0-29F1-4B46-8D98-A4728B688CA7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -695,15 +695,15 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="KeithnetIndicator"
-              DTS:DTSID="{86D2E76F-9B26-46C6-9A9E-9B1D7F84CB13}"
+              DTS:DTSID="{091C5D80-DD0E-4F62-B1A6-560AD41AF404}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
-              DTS:ColumnWidth="11"
-              DTS:MaximumWidth="11"
+              DTS:ColumnWidth="9"
+              DTS:MaximumWidth="9"
               DTS:DataType="129"
               DTS:ObjectName="PlaceholderSpace"
-              DTS:DTSID="{29BDEDA4-A5F6-4D44-BA51-C22F785BEDE4}"
+              DTS:DTSID="{89A91AF8-9254-44D7-B44C-A12F9A132724}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -711,7 +711,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="CRLF"
-              DTS:DTSID="{5C3FEA89-F44D-4452-980A-FCE9C1715546}"
+              DTS:DTSID="{47419FE9-DABF-47A2-A5C9-ABE27A7986EA}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -1970,11 +1970,11 @@
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAB4tLoIqATOrpRwW9ACOAN0AAAAAASAAACgAAAAEAAAANVzXeEn2TYT5sqNmg0jZrcIAAAADJf6x9blR3UUAAAAR/GXe/sCHRTJTJBftiejZluF694</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAC1Kd8oYLnJlL7AfN301d2aAAAAAASAAACgAAAAEAAAACkApqNkdsPvTiz1IoUPWakIAAAADTQV30RCpvgUAAAAHRsHg2gX5i+cO5Tk9sAWuc+Gscs</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABPVAQO18m2hfyihNsQz/AUAAAAAASAAACgAAAAEAAAAAKFpiy9cmZ68DmPRID/12sIAAAAijlxqHpfky8UAAAA84Q8KaB3SOuWtjwBWIWjCFP+k3o</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADmx9a6POHvzw1l3uoyA3MMAAAAAASAAACgAAAAEAAAABH/viVWuEUq/SwL91S9Z1EIAAAAlb55ly5Rjr4UAAAADjj1pw8SIcilc2VAvLgNQ9Tb4jA</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -2275,7 +2275,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process All ETL Tasks (Serial)"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="12">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2318,7 +2318,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Catalog Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="7">
+          DTS:ThreadHint="0">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2361,7 +2361,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Contract And Worksheet Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="8">
+          DTS:ThreadHint="7">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2404,7 +2404,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="9">
+          DTS:ThreadHint="8">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2447,7 +2447,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="10">
+          DTS:ThreadHint="9">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2491,7 +2491,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process invoice Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="11">
+          DTS:ThreadHint="10">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2534,7 +2534,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Item History"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="12">
+          DTS:ThreadHint="11">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2588,35 +2588,14 @@
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\AssemblyInfo.cs"
-            Encoding="UTF8"><![CDATA[using System.Reflection;
-using System.Runtime.CompilerServices;
-
-//
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
-//
-[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
-[assembly: AssemblyCopyright("Copyright @  2014")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
-//
-// Version information for an assembly consists of the following four values:
-//
-//      Major Version
-//      Minor Version 
-//      Build Number
-//      Revision
-//
-// You can specify all the values or you can default the Revision and Build Numbers 
-// by using the '*' as shown below:
-
-[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -2737,34 +2716,105 @@ using System.Runtime.CompilerServices;
   </resheader>
 </root>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
+            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
+            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
+    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
+  </PropertyGroup>
 
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
-    "ings")]
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
 
-namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AppDesigner Include="Properties\" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+         <Generator>ResXFileCodeGenerator</Generator>
+         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+             <AutoGen>True</AutoGen>
+         <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+         <Generator>SettingsSingleFileGenerator</Generator>
+         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+         <AutoGen>True</AutoGen>
+         <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptMain.cs">
+         <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <!-- Include the build rules for a C# project.-->
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
+        <ProjectProperties HostName="ScriptTask"
+                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
+                           ApplicationType="usd"
+                           Language="cs"
+                           TemplatesPath=""
+                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
+                           DebugInfoCommandLine=""
+                           DebugInfoWorkingDir=""
+                           IconImageList=""/>
+        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
+        </Host>
+        <ProjectClient>
+            <HostIdentifier>SSIS_ST110</HostIdentifier>
+        </ProjectClient>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>]]></ProjectItem>
           <ProjectItem
             Name="ScriptMain.cs"
             Encoding="UTF8"><![CDATA[using System.IO;
@@ -3017,114 +3067,64 @@ namespace ST_08a8af43a9a44857ba3cbc2562595c9a
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="ST_08a8af43a9a44857ba3cbc2562595c9a.csproj"
-            Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <ProjectTypeGuids>{30D016F9-3734-4E33-A861-5E7D899E18F3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{74648e47-d77b-4247-a453-e5967c01c1a2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ST_08a8af43a9a44857ba3cbc2562595c9a</RootNamespace>
-    <AssemblyName>ST_08a8af43a9a44857ba3cbc2562595c9a</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>true</ResolveAssemblyReferenceIgnoreTargetFrameworkAttributeVersionMismatch>
-  </PropertyGroup>
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>.\bin\Debug\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Settings.get_Default():ST_08a8af43a9a44857ba3cbc2562595c9a.Properties.Sett" +
+    "ings")]
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <DebugSymbols>false</DebugSymbols>
-    <Optimize>true</Optimize>
-    <OutputPath>.\bin\Release\</OutputPath>
-    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-    <Reference Include="Microsoft.SqlServer.ScriptTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <AppDesigner Include="Properties\" />
-    <Compile Include="Properties\AssemblyInfo.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <EmbeddedResource Include="Properties\Resources.resx">
-         <Generator>ResXFileCodeGenerator</Generator>
-         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-             <AutoGen>True</AutoGen>
-         <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <None Include="Properties\Settings.settings">
-         <Generator>SettingsSingleFileGenerator</Generator>
-         <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-    <Compile Include="Properties\Settings.Designer.cs">
-         <AutoGen>True</AutoGen>
-         <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="ScriptMain.cs">
-         <SubType>Code</SubType>
-    </Compile>
-  </ItemGroup>
-
-  <!-- Include the build rules for a C# project.-->
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-
-  <ProjectExtensions>
-    <VisualStudio>
-      <FlavorProperties GUID="{30D016F9-3734-4E33-A861-5E7D899E18F3}">
-        <ProjectProperties HostName="ScriptTask"
-                           HostPackage="{B3A685AA-7EAF-4BC6-9940-57959FA5AC07}"
-                           ApplicationType="usd"
-                           Language="cs"
-                           TemplatesPath=""
-                           DebugInfoExeName="#HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\InstallDir#\devenv.exe"
-                           DebugInfoCommandLine=""
-                           DebugInfoWorkingDir=""
-                           IconImageList=""/>
-        <Host Name="ScriptTask" GeneratedNamespace="$safeprojectname" IconIndex="">
-        </Host>
-        <ProjectClient>
-            <HostIdentifier>SSIS_ST110</HostIdentifier>
-        </ProjectClient>
-      </FlavorProperties>
-    </VisualStudio>
-  </ProjectExtensions>
-</Project>]]></ProjectItem>
+namespace ST_08a8af43a9a44857ba3cbc2562595c9a.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
+            Name="Properties\AssemblyInfo.cs"
+            Encoding="UTF8"><![CDATA[using System.Reflection;
+using System.Runtime.CompilerServices;
+
+//
+// General Information about an assembly is controlled through the following 
+// set of attributes. Change these attribute values to modify the information
+// associated with an assembly.
+//
+[assembly: AssemblyTitle("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyDescription("")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("ST_08a8af43a9a44857ba3cbc2562595c9a")]
+[assembly: AssemblyCopyright("Copyright @  2014")]
+[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCulture("")]
+//
+// Version information for an assembly consists of the following four values:
+//
+//      Major Version
+//      Minor Version 
+//      Build Number
+//      Revision
+//
+// You can specify all the values or you can default the Revision and Build Numbers 
+// by using the '*' as shown below:
+
+[assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -5043,7 +5043,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               errorOrTruncationOperation="Conversion"
                               errorRowDisposition="FailComponent"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[RaNumber]"
-                              length="2"
+                              length="4"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[RaNumber]"
                               name="RaNumber"
                               truncationRowDisposition="FailComponent">
@@ -5457,7 +5457,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[RaNumber]"
                               codePage="1252"
                               dataType="str"
-                              length="2"
+                              length="4"
                               name="RaNumber" />
                             <externalMetadataColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[KeithnetIndicator]"
@@ -5469,7 +5469,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[PlaceholderSpace]"
                               codePage="1252"
                               dataType="str"
-                              length="11"
+                              length="9"
                               name="PlaceholderSpace" />
                             <externalMetadataColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[NaId]"
@@ -5833,7 +5833,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[RaNumber]"
                               cachedCodepage="1252"
                               cachedDataType="str"
-                              cachedLength="2"
+                              cachedLength="4"
                               cachedName="RaNumber"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[RaNumber]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaNumber]" />
@@ -6052,7 +6052,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[RaNumber]"
                               codePage="1252"
                               dataType="str"
-                              length="2"
+                              length="4"
                               name="RaNumber" />
                             <externalMetadataColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[IsKeithnetCustomer]"
@@ -6060,6 +6060,144 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               dataType="str"
                               length="1"
                               name="IsKeithnetCustomer" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Action]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="Action" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[StoreNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="10"
+                              name="StoreNumber" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[LocationAuth]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="LocationAuth" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ActiveFlag]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="ActiveFlag" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MondayRoutNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="MondayRoutNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MondayStopNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="MondayStopNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TuesdayRoutNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="TuesdayRoutNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TuesdayStopNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="TuesdayStopNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[WednesdayRoutNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="WednesdayRoutNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[WednesdayStopNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="WednesdayStopNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ThursdayRoutNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="ThursdayRoutNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ThursdayStopNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="ThursdayStopNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FridayRoutNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="FridayRoutNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FridayStopNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="FridayStopNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[SaturdayRoutNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="SaturdayRoutNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[SaturdayStopNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="SaturdayStopNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[SundayRoutNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="SundayRoutNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[SundayStopNum]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="SundayStopNum" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[CSR]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="CSR" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PORequiredFlag]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="PORequiredFlag" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[JDCNTY1]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="JDCNTY1" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[JDCNTY2]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="JDCNTY2" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PowerMenu]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="PowerMenu" />
                           </externalMetadataColumns>
                         </input>
                       </inputs>
@@ -6673,7 +6811,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[RaNumber]"
                               cachedCodepage="1252"
                               cachedDataType="str"
-                              cachedLength="2"
+                              cachedLength="4"
                               cachedName="RaNumber"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[RaNumber]">
                               <properties>
@@ -7203,7 +7341,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaNumber]"
                               codePage="1252"
                               dataType="str"
-                              length="2"
+                              length="4"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaNumber]"
                               name="RaNumber">
                               <properties>
@@ -7840,6 +7978,118 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               dataType="str"
                               length="1"
                               name="NonStock" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PVTLbl]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="PVTLbl" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[OrderTiHi]"
+                              dataType="i4"
+                              name="OrderTiHi" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TiHi]"
+                              dataType="i4"
+                              name="TiHi" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DateDiscontinued]"
+                              dataType="i4"
+                              name="DateDiscontinued" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Dtelstal]"
+                              dataType="i4"
+                              name="Dtelstal" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DTELstPO]"
+                              dataType="i4"
+                              name="DTELstPO" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
+                              dataType="i4"
+                              name="NetWeight" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ShelfLife]"
+                              dataType="i4"
+                              name="ShelfLife" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DateSensitiveType]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="DateSensitiveType" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Country]"
+                              codePage="1252"
+                              dataType="str"
+                              length="10"
+                              name="Country" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Length]"
+                              dataType="i4"
+                              name="Length" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Width]"
+                              dataType="i4"
+                              name="Width" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Height]"
+                              dataType="i4"
+                              name="Height" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MinTemp]"
+                              dataType="i4"
+                              name="MinTemp" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MaxTemp]"
+                              dataType="i4"
+                              name="MaxTemp" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GDSNSync]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="GDSNSync" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[GuaranteedDays]"
+                              dataType="i4"
+                              name="GuaranteedDays" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[MasterPack]"
+                              dataType="i4"
+                              name="MasterPack" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[HACCP]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="HACCP" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[HACCPDoce]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="HACCPDoce" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPLength]"
+                              dataType="i4"
+                              name="FPLength" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPWidth]"
+                              dataType="i4"
+                              name="FPWidth" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPHeight]"
+                              dataType="i4"
+                              name="FPHeight" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPGrossWt]"
+                              dataType="i4"
+                              name="FPGrossWt" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[FPCube]"
+                              dataType="i4"
+                              name="FPCube" />
                           </externalMetadataColumns>
                         </input>
                       </inputs>
@@ -12551,6 +12801,80 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               dataType="str"
                               length="100"
                               name="CountryOfOrigin" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PackageGtin]"
+                              codePage="1252"
+                              dataType="str"
+                              length="14"
+                              name="PackageGtin" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[BekItemNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="6"
+                              name="BekItemNumber" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Active]"
+                              dataType="bool"
+                              name="Active" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductType]"
+                              codePage="1252"
+                              dataType="str"
+                              length="20"
+                              name="ProductType" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductShortDesc]"
+                              codePage="1252"
+                              dataType="str"
+                              length="70"
+                              name="ProductShortDesc" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ProductAdditionalDesc]"
+                              codePage="1252"
+                              dataType="text"
+                              name="ProductAdditionalDesc" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ManufacturerItemNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="30"
+                              name="ManufacturerItemNumber" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[UnitMeasureUOM]"
+                              codePage="1252"
+                              dataType="str"
+                              length="3"
+                              name="UnitMeasureUOM" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NetWeight]"
+                              dataType="numeric"
+                              name="NetWeight"
+                              precision="20"
+                              scale="3" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[TiHi]"
+                              codePage="1252"
+                              dataType="str"
+                              length="250"
+                              name="TiHi" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[Brand]"
+                              codePage="1252"
+                              dataType="str"
+                              length="35"
+                              name="Brand" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[ContryOfOriginName]"
+                              codePage="1252"
+                              dataType="str"
+                              length="100"
+                              name="ContryOfOriginName" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks\Product Spec\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[PreparationInstructions]"
+                              codePage="1252"
+                              dataType="text"
+                              name="PreparationInstructions" />
                           </externalMetadataColumns>
                         </input>
                       </inputs>
@@ -22826,10 +23150,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items"
           TopLeft="56.5,241.916666666667" />
         <NodeLayout
-          Size="152,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
-          TopLeft="50,137.083333333333" />
-        <NodeLayout
           Size="163,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id"
           TopLeft="46,363" />
@@ -22838,13 +23158,17 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub"
           TopLeft="41,415.5" />
         <NodeLayout
+          Size="165,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id"
+          TopLeft="28.5,472.5" />
+        <NodeLayout
           Size="192,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number"
           TopLeft="21,544.5" />
         <NodeLayout
-          Size="165,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id"
-          TopLeft="28.5,472.5" />
+          Size="152,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
+          TopLeft="50,137.083333333333" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -23935,13 +24259,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="143,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer"
-          TopLeft="131.5,65.5" />
-        <NodeLayout
           Size="176,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
           TopLeft="322,249" />
+        <NodeLayout
+          Size="143,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer"
+          TopLeft="131.5,65.5" />
         <NodeLayout
           Size="159,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
@@ -24040,13 +24364,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
         <NodeLayout
-          Size="161,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData"
-          TopLeft="430,353" />
-        <NodeLayout
           Size="127,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT"
           TopLeft="364,69" />
+        <NodeLayout
+          Size="161,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\KeithlinkAppData"
+          TopLeft="430,353" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items.Paths[OLE DB Source Output]"
           TopLeft="427.5,111">
@@ -24101,6 +24425,266 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
   </PipelineComponentMetadata>
   <PipelineComponentMetadata
     design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Items\PRODCAT">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="193,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id\Staging_NationalIdDesc"
+          TopLeft="368,234" />
+        <NodeLayout
+          Size="146,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id\FF_NationalId"
+          TopLeft="339,100" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id.Paths[Flat File Source Output]"
+          TopLeft="412,142">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="52.5,92"
+              Start="0,0"
+              End="52.5,84.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,42"
+                    Point2="0,46"
+                    Point3="4,46" />
+                  <mssgle:LineSegment
+                    End="48.5,46" />
+                  <mssgle:CubicBezierSegment
+                    Point1="48.5,46"
+                    Point2="52.5,46"
+                    Point3="52.5,50" />
+                  <mssgle:LineSegment
+                    End="52.5,84.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id\Staging_NationalIdDesc">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="221,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub\Staging_NationalNumberDesc"
+          TopLeft="351,234" />
+        <NodeLayout
+          Size="210,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub\FF_NationalNumberAndSub"
+          TopLeft="330,100" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub.Paths[Flat File Source Output]"
+          TopLeft="435,142">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="26.5,92"
+              Start="0,0"
+              End="26.5,84.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,42" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,42"
+                    Point2="0,46"
+                    Point3="4,46" />
+                  <mssgle:LineSegment
+                    End="22.5,46" />
+                  <mssgle:CubicBezierSegment
+                    Point1="22.5,46"
+                    Point2="26.5,46"
+                    Point3="26.5,50" />
+                  <mssgle:LineSegment
+                    End="26.5,84.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub\Staging_NationalNumberDesc">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="195,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id\Staging_RegionalIdDesc"
+          TopLeft="380,193" />
+        <NodeLayout
+          Size="148,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id\FF_RegionalId"
+          TopLeft="352,62" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id.Paths[Flat File Source Output]"
+          TopLeft="426,104">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="51.5,89"
+              Start="0,0"
+              End="51.5,81.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,40.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,40.5"
+                    Point2="0,44.5"
+                    Point3="4,44.5" />
+                  <mssgle:LineSegment
+                    End="47.5,44.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="47.5,44.5"
+                    Point2="51.5,44.5"
+                    Point3="51.5,48.5" />
+                  <mssgle:LineSegment
+                    End="51.5,81.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id\Staging_RegionalIdDesc">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <TaskHost
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="222,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number\Staging_RegionalNumberDesc"
+          TopLeft="364.444444444444,157.777777777778" />
+        <NodeLayout
+          Size="176,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number\FF_RegionalNumber"
+          TopLeft="347.333333333333,32.2222222222222" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number.Paths[Flat File Source Output]"
+          TopLeft="435.333333333333,74.2222222222222">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="40.1111111111111,83.5555555555555"
+              Start="0,0"
+              End="40.1111111111111,76.0555555555555">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,37.7777777777778" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,37.7777777777778"
+                    Point2="0,41.7777777777778"
+                    Point3="4,41.7777777777778" />
+                  <mssgle:LineSegment
+                    End="36.1111111111111,41.7777777777778" />
+                  <mssgle:CubicBezierSegment
+                    Point1="36.1111111111111,41.7777777777778"
+                    Point2="40.1111111111111,41.7777777777778"
+                    Point3="40.1111111111111,45.7777777777778" />
+                  <mssgle:LineSegment
+                    End="40.1111111111111,76.0555555555555" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="0,0,0,0"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number\Staging_RegionalNumberDesc">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
@@ -25470,258 +26054,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
   </TaskHost>
   <PipelineComponentMetadata
     design-time-name="Package\Process_Invoices\Customer Invoice Import Tasks\Paid Detail\OLE DB Destination">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="146,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id\FF_NationalId"
-          TopLeft="339,100" />
-        <NodeLayout
-          Size="193,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id\Staging_NationalIdDesc"
-          TopLeft="368,234" />
-        <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id.Paths[Flat File Source Output]"
-          TopLeft="412,142">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="52.5,92"
-              Start="0,0"
-              End="52.5,84.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,42" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,42"
-                    Point2="0,46"
-                    Point3="4,46" />
-                  <mssgle:LineSegment
-                    End="48.5,46" />
-                  <mssgle:CubicBezierSegment
-                    Point1="48.5,46"
-                    Point2="52.5,46"
-                    Point3="52.5,50" />
-                  <mssgle:LineSegment
-                    End="52.5,84.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="210,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub\FF_NationalNumberAndSub"
-          TopLeft="330,100" />
-        <NodeLayout
-          Size="221,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub\Staging_NationalNumberDesc"
-          TopLeft="351,234" />
-        <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub.Paths[Flat File Source Output]"
-          TopLeft="435,142">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="26.5,92"
-              Start="0,0"
-              End="26.5,84.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,42" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,42"
-                    Point2="0,46"
-                    Point3="4,46" />
-                  <mssgle:LineSegment
-                    End="22.5,46" />
-                  <mssgle:CubicBezierSegment
-                    Point1="22.5,46"
-                    Point2="26.5,46"
-                    Point3="26.5,50" />
-                  <mssgle:LineSegment
-                    End="26.5,84.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="148,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id\FF_RegionalId"
-          TopLeft="352,62" />
-        <NodeLayout
-          Size="195,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id\Staging_RegionalIdDesc"
-          TopLeft="380,193" />
-        <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id.Paths[Flat File Source Output]"
-          TopLeft="426,104">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="51.5,89"
-              Start="0,0"
-              End="51.5,81.5">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,40.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,40.5"
-                    Point2="0,44.5"
-                    Point3="4,44.5" />
-                  <mssgle:LineSegment
-                    End="47.5,44.5" />
-                  <mssgle:CubicBezierSegment
-                    Point1="47.5,44.5"
-                    Point2="51.5,44.5"
-                    Point3="51.5,48.5" />
-                  <mssgle:LineSegment
-                    End="51.5,81.5" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number">
-    <LayoutInfo>
-      <GraphLayout
-        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
-        <NodeLayout
-          Size="176,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number\FF_RegionalNumber"
-          TopLeft="347.333333333333,32.2222222222222" />
-        <NodeLayout
-          Size="222,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number\Staging_RegionalNumberDesc"
-          TopLeft="364.444444444444,157.777777777778" />
-        <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number.Paths[Flat File Source Output]"
-          TopLeft="435.333333333333,74.2222222222222">
-          <EdgeLayout.Curve>
-            <mssgle:Curve
-              StartConnector="{assembly:Null}"
-              EndConnector="40.1111111111111,83.5555555555555"
-              Start="0,0"
-              End="40.1111111111111,76.0555555555555">
-              <mssgle:Curve.Segments>
-                <mssgle:SegmentCollection
-                  Capacity="5">
-                  <mssgle:LineSegment
-                    End="0,37.7777777777778" />
-                  <mssgle:CubicBezierSegment
-                    Point1="0,37.7777777777778"
-                    Point2="0,41.7777777777778"
-                    Point3="4,41.7777777777778" />
-                  <mssgle:LineSegment
-                    End="36.1111111111111,41.7777777777778" />
-                  <mssgle:CubicBezierSegment
-                    Point1="36.1111111111111,41.7777777777778"
-                    Point2="40.1111111111111,41.7777777777778"
-                    Point3="40.1111111111111,45.7777777777778" />
-                  <mssgle:LineSegment
-                    End="40.1111111111111,76.0555555555555" />
-                </mssgle:SegmentCollection>
-              </mssgle:Curve.Segments>
-            </mssgle:Curve>
-          </EdgeLayout.Curve>
-          <EdgeLayout.Labels>
-            <EdgeLabelCollection />
-          </EdgeLayout.Labels>
-        </EdgeLayout>
-      </GraphLayout>
-    </LayoutInfo>
-  </TaskHost>
-  <PipelineComponentMetadata
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id\Staging_NationalIdDesc">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number And Sub\Staging_NationalNumberDesc">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id\Staging_RegionalIdDesc">
-    <Properties>
-      <Property>
-        <Name>DataSourceViewID</Name>
-      </Property>
-      <Property>
-        <Name>TableInfoObjectType</Name>
-        <Value
-          type="q2:string">Table</Value>
-      </Property>
-    </Properties>
-  </PipelineComponentMetadata>
-  <PipelineComponentMetadata
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Number\Staging_RegionalNumberDesc">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
