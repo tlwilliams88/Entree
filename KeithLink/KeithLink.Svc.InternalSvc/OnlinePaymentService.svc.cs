@@ -100,6 +100,10 @@ namespace KeithLink.Svc.InternalSvc {
 		{
 			_onlinePaymentsLogic.MakeInvoicePayment(userContext, emailAddress, payments);
 		}
+
+        public List<PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments ) {
+            return _onlinePaymentsLogic.ValidatePayment( userContext, payments );
+        }
 		
 		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
 		{

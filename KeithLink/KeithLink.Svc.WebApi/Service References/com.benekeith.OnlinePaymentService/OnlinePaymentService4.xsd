@@ -8,6 +8,8 @@
       <xs:element minOccurs="0" name="from" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="size" nillable="true" type="xs:int" />
       <xs:element minOccurs="0" name="sort" nillable="true" type="tns:ArrayOfSortInfo" />
+      <xs:element minOccurs="0" name="terms" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="type" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PagingModel" nillable="true" type="tns:PagingModel" />

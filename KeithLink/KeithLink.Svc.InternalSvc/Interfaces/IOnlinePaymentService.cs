@@ -29,6 +29,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
 		[OperationContract]
 		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);
 
+        [OperationContract]
+        List<PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<PaymentTransactionModel> payments );
+
 		[OperationContract]
 		InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
 

@@ -22,5 +22,9 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Payment
 		{
 			return this._dbContext.PaymentTransactions;
 		}
+
+        public IEnumerable<Core.Models.OnlinePayments.Payment.EF.PaymentTransaction> ReadAllByCustomer( string customerNumber, string division ) {
+            return this._dbContext.PaymentTransactions.Where( x => x.CustomerNumber.Equals( customerNumber ) && x.Division.Equals( division ) );
+        }
 	}
 }

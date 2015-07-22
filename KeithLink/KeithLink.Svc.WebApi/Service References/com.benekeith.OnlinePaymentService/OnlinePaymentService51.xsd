@@ -34,6 +34,7 @@
       <xs:element minOccurs="0" name="itemsequence" type="xs:int" />
       <xs:element minOccurs="0" name="orderdate" nillable="true" type="xs:dateTime" />
       <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.OnlinePayments.Payment" minOccurs="0" name="pendingtransaction" nillable="true" type="q2:PaymentTransactionModel" />
+      <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
       <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations" minOccurs="0" name="status" type="q3:InvoiceStatus" />
       <xs:element minOccurs="0" name="statusdescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="transactions" nillable="true" type="tns:ArrayOfInvoiceTransactionModel" />

@@ -46,7 +46,11 @@ namespace KeithLink.Svc.WebApi.Repository.OnlinePayments {
 		public void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments)
 		{
 			_client.MakeInvoicePayment(userContext, emailAddress, payments.ToArray());
-		} 
+		}
+
+        public List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments ) {
+            return _client.ValidatePayment(userContext, payments.ToArray()).ToList<Core.Models.OnlinePayments.Payment.PaymentTransactionModel>();
+        }
 
 
 		public PagedResults<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)

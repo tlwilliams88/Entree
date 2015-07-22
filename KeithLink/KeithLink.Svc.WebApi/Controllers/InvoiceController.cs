@@ -158,18 +158,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute( "invoice/payment/validate" )]
-        public OperationReturnModel<bool> ValidatePayment( List<PaymentTransactionModel> payments ) {
-            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+        public OperationReturnModel<PaymentValidationResponseModel> ValidatePayment( List<PaymentTransactionModel> payments ) {
+            OperationReturnModel<PaymentValidationResponseModel> returnValue = new OperationReturnModel<PaymentValidationResponseModel>();
 
-            List<string> errorMessages = new List<string>() {
-                "Moving a payment would leave the source transaction negative",
-                "Moving a payment would make the destination negative",
-            };
+            List<PaymentTransactionModel> transactionErrors = _repo.ValidatePayment( this.SelectedUserContext, payments );
 
-            Random r = new Random();
-
-            returnValue.ErrorMessage = errorMessages[r.Next(2)];
-
+            // If the payment validation list comes back with a count > 0 then there were errors
+            // validating a transaction. It will return the transactions that did not validate correctly.
+            if (transactionErrors.Count > 0) {
+                returnValue.ErrorMessage = string.Format( "Cannot process transaction. The total for {0} must be positive.", transactionErrors.First().PaymentDate.Value.ToShortDateString() );
+                returnValue.SuccessResponse = new PaymentValidationResponseModel() {
+                    IsValid = false,
+                    PaymentTransactions = transactionErrors,
+                };
+            }
+            
             return returnValue;
         }
 

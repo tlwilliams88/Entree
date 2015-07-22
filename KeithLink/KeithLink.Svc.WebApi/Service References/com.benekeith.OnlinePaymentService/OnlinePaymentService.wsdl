@@ -44,6 +44,12 @@
   <wsdl:message name="IOnlinePaymentService_MakeInvoicePayment_OutputMessage">
     <wsdl:part name="parameters" element="tns:MakeInvoicePaymentResponse" />
   </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_ValidatePayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidatePayment" />
+  </wsdl:message>
+  <wsdl:message name="IOnlinePaymentService_ValidatePayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidatePaymentResponse" />
+  </wsdl:message>
   <wsdl:message name="IOnlinePaymentService_GetInvoiceDetails_InputMessage">
     <wsdl:part name="parameters" element="tns:GetInvoiceDetails" />
   </wsdl:message>
@@ -82,6 +88,10 @@
     <wsdl:operation name="MakeInvoicePayment">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment" message="tns:IOnlinePaymentService_MakeInvoicePayment_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/MakeInvoicePaymentResponse" message="tns:IOnlinePaymentService_MakeInvoicePayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidatePayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/ValidatePayment" message="tns:IOnlinePaymentService_ValidatePayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOnlinePaymentService/ValidatePaymentResponse" message="tns:IOnlinePaymentService_ValidatePayment_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetInvoiceDetails">
       <wsdl:input wsaw:Action="http://tempuri.org/IOnlinePaymentService/GetInvoiceDetails" message="tns:IOnlinePaymentService_GetInvoiceDetails_InputMessage" />
@@ -136,6 +146,15 @@
     </wsdl:operation>
     <wsdl:operation name="MakeInvoicePayment">
       <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/MakeInvoicePayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidatePayment">
+      <soap:operation soapAction="http://tempuri.org/IOnlinePaymentService/ValidatePayment" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

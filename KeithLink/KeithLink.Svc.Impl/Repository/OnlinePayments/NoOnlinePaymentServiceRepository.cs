@@ -50,6 +50,10 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
 			throw new NotImplementedException();
 		}
 
+        public List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments ) {
+            throw new NotImplementedException();
+        }
+
 
 		public Core.Models.Invoices.InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber)
 		{

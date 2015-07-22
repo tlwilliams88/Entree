@@ -345,6 +345,35 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 			return transactionResults;
 		}
+
+        public List<PaymentTransactionModel> ValidatePayment( UserSelectedContext context, List<PaymentTransactionModel> payments ) {
+            List<PaymentTransactionModel> returnValue = new List<PaymentTransactionModel>();
+
+            // Set default payment date for null payments to today.
+            payments.ForEach( x => { if (!x.PaymentDate.HasValue) { x.PaymentDate = DateTime.Now; } } );
+
+            // Select all transactions grouped by accountnumber, paymentdate
+            var transactions =
+                from t in payments
+                group t by new {
+                   t.AccountNumber,
+                   t.PaymentDate,
+                } into tg
+                select new {
+                    AccountNumber = tg.Key.AccountNumber,
+                    PaymentDate = tg.Key.PaymentDate.Value.ToShortDateString(),
+                    payments = tg.ToList()
+                };
+
+            // Go through all daily transactions and validate the sum payment amount is greater than 0 (not negative)
+            foreach (var t in transactions) {
+                if (t.payments.Sum( x => x.PaymentAmount ) < 0) {
+                    returnValue.AddRange( t.payments );
+                }
+            }
+
+            return returnValue;
+        }
 		
 		#endregion
 	}

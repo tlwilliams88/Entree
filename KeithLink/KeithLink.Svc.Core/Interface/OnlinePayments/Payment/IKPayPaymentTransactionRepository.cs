@@ -9,5 +9,6 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Payment
 	public interface IKPayPaymentTransactionRepository
 	{
 		IEnumerable<Core.Models.OnlinePayments.Payment.EF.PaymentTransaction> ReadAll();
+        IEnumerable<Core.Models.OnlinePayments.Payment.EF.PaymentTransaction> ReadAllByCustomer( string customerNumber, string division );
 	}
 }
