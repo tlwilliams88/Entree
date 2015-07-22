@@ -171,6 +171,11 @@ namespace KeithLink.Svc.WebApi.Controllers
                     IsValid = false,
                     PaymentTransactions = transactionErrors,
                 };
+            } else {
+                returnValue.SuccessResponse = new PaymentValidationResponseModel() {
+                    IsValid = true,
+                    PaymentTransactions = null,
+                };
             }
             
             return returnValue;
