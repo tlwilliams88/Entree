@@ -158,11 +158,18 @@ namespace KeithLink.Svc.WebApi
 
 			builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
 
+
+            // Profile Settings
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
+
             // Build the container.
             var container = builder.Build();
 
             // Create the depenedency resolver.
             var resolver = new AutofacWebApiDependencyResolver(container);
+
+
             return resolver;
         }
     }
