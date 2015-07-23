@@ -166,7 +166,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             // If the payment validation list comes back with a count > 0 then there were errors
             // validating a transaction. It will return the transactions that did not validate correctly.
             if (transactionErrors.Count > 0) {
-                returnValue.ErrorMessage = string.Format( "Cannot process transaction. The total for {0} must be positive.", transactionErrors.First().PaymentDate.Value.ToShortDateString() );
+                returnValue.ErrorMessage = string.Format( "The total for Bank Account {0} on {1} must be positive.", transactionErrors.First().AccountNumber,  transactionErrors.First().PaymentDate.Value.ToShortDateString() );
                 returnValue.SuccessResponse = new PaymentValidationResponseModel() {
                     IsValid = false,
                     PaymentTransactions = transactionErrors,
