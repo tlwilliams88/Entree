@@ -83,12 +83,10 @@ angular.module('bekApp')
   function calculateInvoiceFields(invoices) {
     invoices.forEach(function(invoice) {
       // determine which invoices are payable
-      if (invoice.pendingtransaction) {
-        if(invoice.pendingtransaction.editable){
+      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {      
           invoice.userCanPayInvoice = true;
           invoice.paymentAmount = invoice.pendingtransaction.amount;
           invoice.date = invoice.pendingtransaction.date.substr(0,10); // get format '2014-01-31'
-        }
       } else if (invoice.ispayable) {
         invoice.userCanPayInvoice = true;
       }
