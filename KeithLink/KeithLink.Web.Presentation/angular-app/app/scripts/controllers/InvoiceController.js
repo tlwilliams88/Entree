@@ -364,6 +364,9 @@ angular.module('bekApp')
       InvoiceService.checkTotals(payments).then(function(resp) {
         if(resp.successResponse.isvalid){  
           $scope.errorMessage = '';
+          $scope.invoices.forEach(function(invoice){
+            invoice.failedBatchValidation = false;
+          });
           InvoiceService.payInvoices(payments).then(function() {
             $scope.invoiceForm.$setPristine();
             $state.go('menu.transaction');
@@ -387,6 +390,9 @@ angular.module('bekApp')
       InvoiceService.checkTotals(payments).then(function(resp) {
         if(resp.successResponse.isvalid){
           $scope.errorMessage = '';
+          $scope.invoices.forEach(function(invoice){
+            invoice.failedBatchValidation = false;
+          });
         }
         else{  
           $scope.displayValidationError(resp);
