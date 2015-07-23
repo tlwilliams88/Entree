@@ -1,26 +1,33 @@
 ﻿using KeithLink.Common.Core.Extensions;
+
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
+
+using KeithLink.Svc.Core.Interface.OnlinePayments;
+
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
-using KeithLink.Svc.Core.Models.OnlinePayments.Invoice;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 using EFCustomer = KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Invoice;
 using EFInvoice = KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
+using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
+
+using KeithLink.Svc.Impl;
+
 using KeithLink.Svc.InternalSvc.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Core.Interface.OnlinePayments;
-using KeithLink.Svc.Core.Models.Paging;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 
 namespace KeithLink.Svc.InternalSvc {
 	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
@@ -101,14 +108,18 @@ namespace KeithLink.Svc.InternalSvc {
 			_onlinePaymentsLogic.MakeInvoicePayment(userContext, emailAddress, payments);
 		}
 
-        public List<PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments ) {
-            return _onlinePaymentsLogic.ValidatePayment( userContext, payments );
+        public PagedResults<PaymentTransactionModel> PendingTransactions(UserSelectedContext customer, PagingModel paging) {
+            return _onlinePaymentsLogic.PendingTransactions(customer, GetDivision(customer.BranchId), paging);
         }
-		
+
 		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
 		{
 			return _onlinePaymentsLogic.PendingTransactionsAllCustomers(user, paging);
 		}
+
+        public List<PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> payments ) {
+            return _onlinePaymentsLogic.ValidatePayment( userContext, payments );
+        }
 		#endregion
 	}
 }

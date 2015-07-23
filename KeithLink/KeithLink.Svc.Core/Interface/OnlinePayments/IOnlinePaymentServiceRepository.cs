@@ -17,16 +17,19 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments {
 		      
         CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber);
 
-		InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers);
+		CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId);
+		
+        InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers);
 
 		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);
 
-        List<PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<PaymentTransactionModel> payments );
-
 		InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
 
-		PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging);
+        PagedResults<PaymentTransactionModel> PendingTransactions(UserSelectedContext customer, PagingModel paging);
+		
+        PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging);
 
-		CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId);
+        List<PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<PaymentTransactionModel> payments );
+
     }
 }

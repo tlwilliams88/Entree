@@ -181,14 +181,25 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        /// <summary>
+        /// Retrieve paged list of pending transactions for a single customer
+        /// </summary>
+        /// <param name="paging">Paging options</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("invoice/transactions/pending")]
+        public PagedResults<PaymentTransactionModel> PendingTransactions(PagingModel paging) {
+            return _repo.PendingTransactions(this.SelectedUserContext, paging);
+        }
+
 		/// <summary>
 		/// Retrieve paged list of pending transactions
 		/// </summary>
 		/// <param name="paging">Paging options</param>
 		/// <returns></returns>
 		[HttpPost]
-		[ApiKeyedRoute("invoice/transactions/pending")]
-		public PagedResults<PaymentTransactionModel> PendingTransaction(PagingModel paging)
+		[ApiKeyedRoute("invoice/transactions/pending/all")]
+		public PagedResults<PaymentTransactionModel> PendingTransactionsForAllCustomers(PagingModel paging)
 		{
 			return _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
 		}

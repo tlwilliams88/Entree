@@ -23,22 +23,25 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
         [OperationContract]
         CustomerBank GetBankAccount(UserSelectedContext userContext, string accountNumber);
 
-		[OperationContract]
+        [OperationContract]
+        CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId);
+
+        [OperationContract]
+        InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
+        
+        [OperationContract]
 		InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers);
 
 		[OperationContract]
 		void MakeInvoicePayment(UserSelectedContext userContext, string emailAddress, List<PaymentTransactionModel> payments);
 
         [OperationContract]
-        List<PaymentTransactionModel> ValidatePayment( UserSelectedContext userContext, List<PaymentTransactionModel> payments );
-
-		[OperationContract]
-		InvoiceModel GetInvoiceDetails(UserSelectedContext userContext, string invoiceNumber);
+        PagedResults<PaymentTransactionModel> PendingTransactions(UserSelectedContext customer, PagingModel paging);
 
 		[OperationContract]
 		PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging);
 
 		[OperationContract]
-		CustomerAccountBalanceModel GetCustomerAccountBalance(string customerId, string branchId);
+        List<PaymentTransactionModel> ValidatePayment(UserSelectedContext userContext, List<PaymentTransactionModel> payments);
     }
 }

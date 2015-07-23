@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/OnlinePaymentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="CustomerAccountBalanceModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="currentbalance" type="xs:decimal" />
+      <xs:element minOccurs="0" name="pastdue" type="xs:decimal" />
+      <xs:element minOccurs="0" name="totalbalance" type="xs:decimal" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerAccountBalanceModel" nillable="true" type="tns:CustomerAccountBalanceModel" />
   <xs:complexType name="userprofile">
     <xs:sequence>
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
@@ -100,12 +108,4 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="DsrAliasModel" nillable="true" type="tns:DsrAliasModel" />
-  <xs:complexType name="CustomerAccountBalanceModel">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="currentbalance" type="xs:decimal" />
-      <xs:element minOccurs="0" name="pastdue" type="xs:decimal" />
-      <xs:element minOccurs="0" name="totalbalance" type="xs:decimal" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="CustomerAccountBalanceModel" nillable="true" type="tns:CustomerAccountBalanceModel" />
 </xs:schema>
