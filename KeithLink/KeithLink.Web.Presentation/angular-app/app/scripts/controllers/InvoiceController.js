@@ -307,7 +307,6 @@ angular.module('bekApp')
     if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) { // jshint ignore:line
       invoice.isSelected = false;
     }
-  // $scope.validateBatch()
   };
 
   $scope.selectInvoice = function (invoice, isSelected) {
@@ -363,7 +362,11 @@ angular.module('bekApp')
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
       InvoiceService.checkTotals(payments).then(function(resp) {
-        if(resp.successResponse){  
+        if(resp.successResponse.isvalid){  
+          $scope.errorMessage = '';
+          $scope.invoices.forEach(function(invoice){
+            invoice.failedBatchValidation = false;
+          });
           InvoiceService.payInvoices(payments).then(function() {
             $scope.invoiceForm.$setPristine();
             $state.go('menu.transaction');
@@ -385,8 +388,11 @@ angular.module('bekApp')
       var payments = $scope.getSelectedInvoices();
       if(payments){
       InvoiceService.checkTotals(payments).then(function(resp) {
-        if(resp.successResponse){
+        if(resp.successResponse.isvalid){
           $scope.errorMessage = '';
+          $scope.invoices.forEach(function(invoice){
+            invoice.failedBatchValidation = false;
+          });
         }
         else{  
           $scope.displayValidationError(resp);
@@ -398,14 +404,20 @@ angular.module('bekApp')
   }
   
   $scope.displayValidationError = function(resp){
-    $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";        
+    $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";    
+    resp.successResponse.transactions.forEach(function(transaction){
+      $scope.invoices.forEach(function(invoice){
+        var invoiceDate = invoice.date || $scope.currDate;
+        if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(transaction.date).format('YYYYMMDD') === moment(invoiceDate).format('YYYYMMDD') && invoice.isSelected){
+          invoice.failedBatchValidation = true;
+        }
+      }); 
+    })
     $scope.invoices.forEach(function(invoice){
-      if(resp.bank === invoice.account && resp.customer === invoice.customernumber && resp.division === invoice.branchid && resp.date === invoice.account && invoice.isSelected){
-        invoice.failedBatchValidation = true;
-      }else{
+      if(!invoice.failedBatchValidation){
         invoice.failedBatchValidation = false;
       }
-    }); 
+    })
   }
 
   $scope.openExportModal = function () {
