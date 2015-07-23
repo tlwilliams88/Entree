@@ -166,7 +166,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             // If the payment validation list comes back with a count > 0 then there were errors
             // validating a transaction. It will return the transactions that did not validate correctly.
             if (transactionErrors.Count > 0) {
-                returnValue.ErrorMessage = string.Format( "Cannot process transaction. The total for {0} must be positive.", transactionErrors.First().PaymentDate.Value.ToShortDateString() );
+                returnValue.ErrorMessage = string.Format( "The total for Bank Account {0} on {1} must be positive.", transactionErrors.First().AccountNumber,  transactionErrors.First().PaymentDate.Value.ToShortDateString() );
                 returnValue.SuccessResponse = new PaymentValidationResponseModel() {
                     IsValid = false,
                     PaymentTransactions = transactionErrors,
@@ -181,14 +181,25 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        /// <summary>
+        /// Retrieve paged list of pending transactions for a single customer
+        /// </summary>
+        /// <param name="paging">Paging options</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("invoice/transactions/pending")]
+        public PagedResults<PaymentTransactionModel> PendingTransactions(PagingModel paging) {
+            return _repo.PendingTransactions(this.SelectedUserContext, paging);
+        }
+
 		/// <summary>
 		/// Retrieve paged list of pending transactions
 		/// </summary>
 		/// <param name="paging">Paging options</param>
 		/// <returns></returns>
 		[HttpPost]
-		[ApiKeyedRoute("invoice/transactions/pending")]
-		public PagedResults<PaymentTransactionModel> PendingTransaction(PagingModel paging)
+		[ApiKeyedRoute("invoice/transactions/pending/all")]
+		public PagedResults<PaymentTransactionModel> PendingTransactionsForAllCustomers(PagingModel paging)
 		{
 			return _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
 		}

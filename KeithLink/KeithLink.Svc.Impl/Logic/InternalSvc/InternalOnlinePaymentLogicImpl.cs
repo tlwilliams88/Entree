@@ -1,12 +1,14 @@
 ﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
+
 using KeithLink.Svc.Core.Enumerations;
+
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.OnlinePayments;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Extensions.Orders.History;
-using KeithLink.Svc.Core.Enumerations;
-using KeithLink.Common.Core.Helpers;
+
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
@@ -14,28 +16,30 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
+using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using EFCustomer = KeithLink.Svc.Core.Models.OnlinePayments.Customer.EF;
 using EFInvoice = KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF;
-using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
 using KeithLink.Svc.Impl.Component;
+using KeithLink.Svc.Impl.Helpers;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Impl.Helpers;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
-
         #region attributes
 		private readonly ICustomerBankRepository _bankRepo;
 		private readonly ICatalogLogic _catalogLogic;
@@ -332,6 +336,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             _queue.PublishToQueue(notification.ToJson(), Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNamePublisher,
                                   Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
 		}
+
+        public PagedResults<PaymentTransactionModel> PendingTransactions(UserSelectedContext customer, string divisionId, PagingModel paging) {
+            var currentCustomer = _customerRepository.GetCustomerByCustomerNumber(customer.CustomerId, customer.BranchId);
+
+            var transaction = _paymentTransactionRepository.ReadAllByCustomer(customer.CustomerId, divisionId);
+
+            var transactionModels = transaction.Select(t => t.ToPaymentTransactionModel(currentCustomer));
+
+            var retVal = transactionModels.AsQueryable().GetPage(paging);
+
+            return retVal;
+        }
 
 		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
 		{

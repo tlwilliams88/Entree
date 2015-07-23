@@ -86,5 +86,14 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments {
 		{
 			return new Core.Models.Profile.CustomerAccountBalanceModel();
 		}
-	}
+
+        #region IOnlinePaymentServiceRepository Members
+
+
+        public Core.Models.Paging.PagedResults<Core.Models.OnlinePayments.Payment.PaymentTransactionModel> PendingTransactions(UserSelectedContext customer, Core.Models.Paging.PagingModel paging) {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }

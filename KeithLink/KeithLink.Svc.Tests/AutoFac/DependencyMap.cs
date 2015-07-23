@@ -11,7 +11,12 @@ using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -31,7 +36,13 @@ using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.OnlinePayments;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Log;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Payment;
 using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Orders.History;
+using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
@@ -69,6 +80,8 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+
+            builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 					
 			//*******************************************
 			//Repositories
@@ -79,6 +92,12 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
+
+            // Bill Pay
+            builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
+            builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
+            builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
+            builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
 
 			//Catalog
 			builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
@@ -96,6 +115,10 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
             
+
+            //Orders
+            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            
             //Profile
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
@@ -110,7 +133,6 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
-            builder.RegisterType<NoOnlinePaymentServiceRepository>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
             
 
