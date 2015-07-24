@@ -224,7 +224,7 @@
             </td>
             <td ng-if="!viewingAllCustomers" class="input-col hidden-mobile-visible-print" >
               <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="accounts.length >= 1 && invoice.statusdescription !== 'Paid'">
-               <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1">
+               <button ng-init="defaultAccount(invoice);" type="button" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1">
                   <div class = "account-info">                  
                     {{invoice.account}}
                   </div>
@@ -296,8 +296,7 @@
                   <a
                     ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
                     ng-click="openDatepicker = true"              
-                    ng-if="invoice.userCanPayInvoice"
-                   
+                    ng-if="invoice.userCanPayInvoice"                   
                     class="icon-calendar text-right"                
                     datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                     ng-model="invoice.date"
@@ -313,12 +312,12 @@
                   <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'">{{invoice.pendingtransaction.date | formatDate}}</td>
                 </tr>
                 <tr ng-if="!viewingAllCustomers && accounts.length">
-                  <td>
+                  <td ng-if="accounts.length >= 1 && invoice.statusdescription !== 'Paid'">
                     Bank Account
                   </td>            
                   <td>
-                    <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="accounts.length >= 1">
-                      <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1">
+                    <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="accounts.length >= 1 && invoice.statusdescription !== 'Paid'">
+                      <button type="button" ng-init="defaultAccount(invoice);" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1">
                         <div class = "account-info">                  
                           {{invoice.account}}
                         </div>

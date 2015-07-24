@@ -105,16 +105,7 @@ angular.module('bekApp')
     $scope.invoices = data.pagedresults.results
     if($scope.invoices.length){
       $scope.invoices.forEach(function(invoice){
-        invoice.failedBatchValidation = false;
-        if(!invoice.account && accounts.length){ 
-          if(invoice.pendingtransaction){
-            invoice.account = invoice.pendingtransaction.account;
-          }
-          else{
-          invoice.account = accounts[0].accountNumber;
-          invoice.accountName = accounts[0].name;
-        }
-        }
+        invoice.failedBatchValidation = false;       
       });
     }
     $scope.totalInvoices = data.pagedresults.totalResults;
@@ -184,9 +175,11 @@ angular.module('bekApp')
     getInvoicesFilterObject($scope.filterRowFields, filterView);
     invoicePagingModel.loadData();    
   };
+
   $scope.infiniteScrollLoadMore = function() {
     invoicePagingModel.loadMoreData($scope.invoices, $scope.totalInvoices, $scope.loadingResults);
   };
+
   $scope.sortInvoices = function(field, sortDescending) {
     $scope.sort = {
       field: field,
@@ -372,6 +365,20 @@ angular.module('bekApp')
     }
        return payments
   };
+
+  $scope.defaultAccount=function(invoice){
+    if(invoice.statusdescription !== 'Paid'){
+       if(!invoice.account && accounts.length){ 
+          if(invoice.pendingtransaction){
+            invoice.account = invoice.pendingtransaction.account;
+          }
+          else{
+          invoice.account = accounts[0].accountNumber;
+          invoice.accountName = accounts[0].name;
+        }
+        }
+    }
+  }
 
   var processingPayInvoices = false;
   $scope.payInvoices = function () {
