@@ -367,6 +367,11 @@ angular.module('bekApp')
       $scope.errorMessage = '';
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
+        payments.forEach(function(payment){
+        if(!payment.date || payment.statusdescription === 'Past Due'){
+          payment.date = $scope.tomorrow;
+        }
+      });
       InvoiceService.checkTotals(payments).then(function(resp) {
         if(resp.successResponse.isvalid){  
           $scope.errorMessage = '';
