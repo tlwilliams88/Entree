@@ -19,8 +19,9 @@ angular.module('bekApp')
   $scope.accounts = accounts;
   $scope.ascendingDate = true;
   $scope.currDate = new Date();
+  $scope.tomorrow = moment($scope.currdate).add(1,'day');
   $scope.datepickerOptions = {
-    minDate: new Date(),
+    minDate: $scope.tomorrow,
     options: {
       dateFormat: 'yyyy-MM-dd',
       showWeeks: false
