@@ -222,7 +222,7 @@
                 >
             </td>
             <td ng-if="!viewingAllCustomers" class="input-col hidden-mobile-visible-print" >
-              <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="accounts.length >= 1">
+              <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="accounts.length >= 1 && invoice.statusdescription !== 'Paid'">
                <button type="button" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1">
                   <div class = "account-info">                  
                     {{invoice.account}}
