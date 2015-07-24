@@ -83,10 +83,10 @@ angular.module('bekApp')
   function calculateInvoiceFields(invoices) {
     invoices.forEach(function(invoice) {
       // determine which invoices are payable
-      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {
-        invoice.userCanPayInvoice = true;
-        invoice.paymentAmount = invoice.pendingtransaction.amount;
-        invoice.date = invoice.pendingtransaction.date.substr(0,10); // get format '2014-01-31'
+      if (invoice.pendingtransaction && invoice.pendingtransaction.editable) {      
+          invoice.userCanPayInvoice = true;
+          invoice.paymentAmount = invoice.pendingtransaction.amount;
+          invoice.date = invoice.pendingtransaction.date.substr(0,10); // get format '2014-01-31'
       } else if (invoice.ispayable) {
         invoice.userCanPayInvoice = true;
       }
@@ -105,9 +105,14 @@ angular.module('bekApp')
     if($scope.invoices.length){
       $scope.invoices.forEach(function(invoice){
         invoice.failedBatchValidation = false;
-        if(!invoice.account){
+        if(!invoice.account && accounts.length){ 
+          if(invoice.pendingtransaction){
+            invoice.account = invoice.pendingtransaction.account;
+          }
+          else{
           invoice.account = accounts[0].accountNumber;
-          invoice.accountName = accounts[0].name
+          invoice.accountName = accounts[0].name;
+        }
         }
       });
     }
