@@ -19,9 +19,9 @@ angular.module('bekApp')
   $scope.accounts = accounts;
   $scope.ascendingDate = true;
   $scope.currDate = new Date();
-  $scope.tomorrow = moment($scope.currdate).add(1,'day');
+  $scope.tomorrow = moment($scope.currDate).add(1,'day');
   $scope.datepickerOptions = {
-    minDate: $scope.tomorrow,
+    minDate: $scope.tomorrow._d,
     options: {
       dateFormat: 'yyyy-MM-dd',
       showWeeks: false
@@ -197,8 +197,8 @@ angular.module('bekApp')
 
   $scope.sortByScheduleDate = function(ascendingDate) {
    $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
-        var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.currDate;
-        var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.currDate;
+        var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.tomorrow;
+        var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.tomorrow;
         $scope.ascendingDate = !ascendingDate;    
         if(!sorterval1){
           sorterval1 = 0
@@ -321,6 +321,7 @@ angular.module('bekApp')
         invoice.paymentAmount = invoice.amount.toString();
       }
     } else {
+      invoice.failedBatchValidation = false;
       if (invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.pendingtransaction.amount; 
       } else {
@@ -365,7 +366,7 @@ angular.module('bekApp')
     if(payments.length){
       payments.forEach(function(payment){
         if(!payment.date || payment.statusdescription === 'Past Due'){
-          payment.date = $scope.tomorrow._d;
+          payment.date = $scope.tomorrow._d;          
         }
       });
     }
@@ -407,6 +408,13 @@ angular.module('bekApp')
       payments = $scope.defaultDates(payments);
       if(payments){
       InvoiceService.checkTotals(payments).then(function(resp) {
+
+           payments.forEach(function(payment){
+             if(payment.statusdescription === 'Past Due'){
+               delete payment.date       
+             }
+           });
+
         if(resp.successResponse.isvalid){
           $scope.errorMessage = '';
           $scope.invoices.forEach(function(invoice){
@@ -426,7 +434,7 @@ angular.module('bekApp')
     $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";    
     resp.successResponse.transactions.forEach(function(transaction){
       $scope.invoices.forEach(function(invoice){
-        var invoiceDate = invoice.date || $scope.currDate;
+        var invoiceDate = invoice.date || $scope.tomorrow;
         if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(transaction.date).format('YYYYMMDD') === moment(invoiceDate).format('YYYYMMDD') && invoice.isSelected){
           invoice.failedBatchValidation = true;
         }

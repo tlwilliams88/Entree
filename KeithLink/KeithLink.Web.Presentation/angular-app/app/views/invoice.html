@@ -309,7 +309,7 @@
                     close-text="Close"></a>
                       {{invoice.date | formatDate}}
                   </td>
-                  <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</td>
+                  <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{tomorrow | formatDate}}</td>
                   <td ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'">{{invoice.pendingtransaction.date | formatDate}}</td>
                 </tr>
                 <tr ng-if="!viewingAllCustomers && accounts.length">
