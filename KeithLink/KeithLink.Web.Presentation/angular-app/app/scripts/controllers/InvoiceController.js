@@ -361,17 +361,24 @@ angular.module('bekApp')
     return $filter('filter')($scope.invoices, {isSelected: true});
   };
 
+  $scope.defaultDates = function(payments){
+    if(payments.length){
+      payments.forEach(function(payment){
+        if(!payment.date || payment.statusdescription === 'Past Due'){
+          payment.date = $scope.tomorrow._d;
+        }
+      });
+    }
+       return payments
+  };
+
   var processingPayInvoices = false;
   $scope.payInvoices = function () {
     if (!processingPayInvoices) {
       $scope.errorMessage = '';
       processingPayInvoices = true;
       var payments = $scope.getSelectedInvoices();
-        payments.forEach(function(payment){
-        if(!payment.date || payment.statusdescription === 'Past Due'){
-          payment.date = $scope.tomorrow;
-        }
-      });
+      payments = $scope.defaultDates(payments);
       InvoiceService.checkTotals(payments).then(function(resp) {
         if(resp.successResponse.isvalid){  
           $scope.errorMessage = '';
@@ -397,6 +404,7 @@ angular.module('bekApp')
     if(!$scope.validating){
       $scope.validating = true;
       var payments = $scope.getSelectedInvoices();
+      payments = $scope.defaultDates(payments);
       if(payments){
       InvoiceService.checkTotals(payments).then(function(resp) {
         if(resp.successResponse.isvalid){
