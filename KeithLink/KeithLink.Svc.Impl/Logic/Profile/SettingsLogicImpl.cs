@@ -42,8 +42,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public void CreateOrUpdateSettings( SettingsModel settings ) {
             KeithLink.Svc.Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
 
-            _repo.Create( mySettings );
-            _uow.SaveChanges();
+            _repo.CreateOrUpdate( mySettings );
+            //_uow.SaveChanges();
         }
 
         #endregion

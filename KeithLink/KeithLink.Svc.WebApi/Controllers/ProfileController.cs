@@ -1060,7 +1060,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
         [ApiKeyedRoute( "profile/settings/{userId}" )]
         public OperationReturnModel<List<SettingsModel>> GetProfileSettings( Guid userId ) {
-            OperationReturnModel<List<SettingsModel>> returnValue = new OperationReturnModel<List<SettingsModel>>() { SuccessResponse = null };
+            OperationReturnModel<List<SettingsModel> > returnValue = new OperationReturnModel<List<SettingsModel>>() { SuccessResponse = null };
 
             try {
                 returnValue.SuccessResponse = _profileLogic.GetProfileSettings( userId ); 
@@ -1079,6 +1079,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 _profileLogic.SaveProfileSettings( settings );
+                returnValue.SuccessResponse = true;
             } catch (Exception ex) {
                 returnValue.ErrorMessage = string.Format( "Error saving profile settings for user: {0}", ex );
                 _log.WriteErrorLog( returnValue.ErrorMessage, ex );
