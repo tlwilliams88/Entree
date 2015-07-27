@@ -270,6 +270,7 @@
     <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
+    <Compile Include="Logic\Profile\NoSettingsLogicImpl.cs" />
     <Compile Include="Logic\Profile\SettingsLogicImpl.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\Reports\InventoryValuationReportLogicImpl.cs" />
@@ -660,6 +661,7 @@
     <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
+    <Compile Include="Repository\Profile\NoSettingsRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\NoPasswordResetServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\SettingsRepositoryImpl.cs" />

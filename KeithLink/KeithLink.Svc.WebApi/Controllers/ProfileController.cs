@@ -35,19 +35,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IDsrAliasService _dsrAliasService;
 		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
+        private readonly com.benekeith.ProfileService.IProfileService _profileService;
 		
 		#endregion
 
 		#region ctor
 		public ProfileController(ICustomerContainerRepository customerRepo,
-								 IEventLogRepository logRepo,
-								 IUserProfileLogic profileLogic,
-								 IAvatarRepository avatarRepository,
-								 ICustomerDomainRepository customerADRepo,
-			                     IPasswordResetService passwordResetService,
-                                 IDsrAliasService dsrAliasService,
-								IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
-			IExportSettingServiceRepository exportSettingRepository)
+                                IEventLogRepository logRepo,
+                                IUserProfileLogic profileLogic,
+                                IAvatarRepository avatarRepository,
+                                ICustomerDomainRepository customerADRepo,
+                                IPasswordResetService passwordResetService,
+                                IDsrAliasService dsrAliasService,
+                                IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
+                                IExportSettingServiceRepository exportSettingRepository, com.benekeith.ProfileService.IProfileService profileService )
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -59,6 +60,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             _dsrAliasService = dsrAliasService;
 			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
 			_exportSettingRepository = exportSettingRepository;
+            _profileService = profileService;
 		}
 		#endregion
 
@@ -1063,7 +1065,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<List<SettingsModel> > returnValue = new OperationReturnModel<List<SettingsModel>>() { SuccessResponse = null };
 
             try {
-                returnValue.SuccessResponse = _profileLogic.GetProfileSettings( userId ); 
+                returnValue.SuccessResponse = _profileService.ReadProfileSettings( userId ).ToList<SettingsModel>();
             } catch (Exception ex) {
                 returnValue.ErrorMessage = string.Format( "Could not retrieve profile settings for specific user: {0}", userId );
                 _log.WriteErrorLog( returnValue.ErrorMessage, ex);
@@ -1078,7 +1080,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
 
             try {
-                _profileLogic.SaveProfileSettings( settings );
+                _profileService.SaveProfileSettings( settings );
                 returnValue.SuccessResponse = true;
             } catch (Exception ex) {
                 returnValue.ErrorMessage = string.Format( "Error saving profile settings for user: {0}", ex );

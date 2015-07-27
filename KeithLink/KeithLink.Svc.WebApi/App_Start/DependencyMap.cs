@@ -160,8 +160,8 @@ namespace KeithLink.Svc.WebApi
 
 
             // Profile Settings
-            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
+            builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogic>();
 
             // Build the container.
             var container = builder.Build();

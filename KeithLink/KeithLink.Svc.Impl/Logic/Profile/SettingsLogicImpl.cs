@@ -31,19 +31,25 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         #endregion
 
-
         #region methods / functions
 
         public List<SettingsModel> GetAllUserSettings( Guid userId ) {
-            IQueryable<KeithLink.Svc.Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser( userId );
-            return settings.Select( s => s.ToModel() ).ToList();
+            List<SettingsModel> returnValue = new List<SettingsModel>();
+
+            IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser( userId );
+
+            foreach (Core.Models.Profile.EF.Settings s in settings) {
+                returnValue.Add( s.ToModel() );
+            }
+
+            return returnValue;
         }
 
         public void CreateOrUpdateSettings( SettingsModel settings ) {
             KeithLink.Svc.Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
 
             _repo.CreateOrUpdate( mySettings );
-            //_uow.SaveChanges();
+            _uow.SaveChanges();
         }
 
         #endregion
