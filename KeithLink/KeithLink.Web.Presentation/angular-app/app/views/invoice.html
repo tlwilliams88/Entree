@@ -47,7 +47,7 @@
             {{selectedUserContext.customer.address.city}}, {{selectedUserContext.customer.address.regioncode}} {{selectedUserContext.customer.address.postalcode}}<br>
           </address>
         </div>
-        <div ng-if="hasPayableInvoices" class="total-line"> Total: <span ng-class="{'text-red' : total < 0}" class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || total < 0  || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
+        <div ng-if="hasPayableInvoices" class="total-line"> Total: <span  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
       </div>
     </div>
     <div class="row page-content" style="margin-top:5px;">  
@@ -152,10 +152,10 @@
               <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
-              <a ng-click="changeCustomerOnClick(invoice.customernumber, invoice.branchid)">{{::invoice.customername}}</a>
+              {{::invoice.customername}}
             </td>
             <td ng-show="viewingAllCustomers">
-              <a ng-click="changeCustomerOnClick(invoice.customernumber, invoice.branchid)">{{::invoice.customernumber}}</a>
+              {{::invoice.customernumber}}
             </td>
             <td>
               <a format="telephone=no" ng-show="invoice.typedescription === 'Invoice'" ng-click="linkToReferenceNumber(invoice.customernumber, invoice.branchid, invoice.invoicenumber)">{{::invoice.invoicenumber}}</a>
@@ -188,7 +188,7 @@
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                 ng-model="invoice.date"
                 is-open="openDatepicker"
-                ng-change="validateBatch()"
+                ng-change="toggleSelect(invoice, 'date'); validateBatch()"
                 min-date="datepickerOptions.minDate"
                 max-date="invoice.maxPaymentDate"
                 datepicker-options="datepickerOptions.options"
@@ -196,10 +196,11 @@
                 close-text="Close"></a>
               <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'">{{invoice.date | formatDate}}</span>
               <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{tomorrow | formatDate}}</span>
-              <span class = "date-picker-field" ng-if="invoice.statusdescription =='Payment Pending'">{{invoice.date || invoice.pendingtransaction.date | formatDate}}</span>
+              <span class = "date-picker-field" ng-if="invoice.statusdescription =='Payment Pending' && !invoice.selectedDate">{{invoice.date  || invoice.pendingtransaction.date | formatDate}}</span>
+              <span class = "date-picker-field" ng-if="invoice.statusdescription =='Payment Pending' && invoice.selectedDate">{{invoice.selectedDate | formatDate}}</span>
             </td>
             <td ng-if="!viewingAllCustomers" class="input-col">             
-              <div ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</div>
+              <div style="width:75px; padding-right:6px; padding-top:8px;" class = "text-right" ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</div>
               <input
                 remove-positive-numbers
                 name="paymentAmount"
@@ -218,7 +219,7 @@
                   'min': {{invoice.amount > 0 ? 0 : invoice.amount}}                  
                 }"
                 ng-required="invoice.isSelected"
-                ng-change="toggleSelect(invoice)"
+                ng-change="toggleSelect(invoice, 'amount')"
                 ng-init="invoice.paymentAmount = (invoice.pendingtransaction.amount)"
                 >
             </td>
@@ -300,6 +301,7 @@
                     class="icon-calendar text-right"                
                     datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                     ng-model="invoice.date"
+                    ng-change="toggleSelect(invoice, 'date'); validateBatch()"
                     is-open="openDatepicker"
                     min-date="datepickerOptions.minDate"
                     max-date="invoice.maxPaymentDate"
