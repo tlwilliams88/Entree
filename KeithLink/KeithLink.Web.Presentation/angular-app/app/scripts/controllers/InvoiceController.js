@@ -18,13 +18,16 @@ angular.module('bekApp')
 
   $scope.accounts = accounts;
   $scope.ascendingDate = true;
-  $scope.currDate = new Date();
-  $scope.tomorrow = moment($scope.currDate).add(1,'day');
+  $scope.currDate = new Date();  
+  $scope.currDate = moment($scope.currDate).format('YYYY-MM-DD');
+  $scope.mindate = moment($scope.currDate).add(1,'d');
+  $scope.tomorrow = moment($scope.mindate).format('YYYY-MM-DD');
+
   $scope.datepickerOptions = {
-    minDate: $scope.tomorrow._d,
-    options: {
-      dateFormat: 'yyyy-MM-dd',
-      showWeeks: false
+    minDate: $scope.mindate,
+    options: {    
+      showWeeks: false,
+      defaultDate: false
     }
   };
 
@@ -291,24 +294,37 @@ angular.module('bekApp')
 
   $scope.selectAccount = function (invoice, account) {
     if(invoice.account !== account.accountNumber){
+      invoice.account = account.accountNumber;
+      invoice.accountName = account.name;
+      if(!invoice.isSelected){
+        invoice.isSelected = true;
+        $scope.selectInvoice(invoice, true);
+      }
       $scope.validateBatch();
-    }
-    invoice.account = account.accountNumber;
-    invoice.accountName = account.name;
+    } 
   };
 
-  $scope.toggleSelect = function (invoice) {
-    if (invoice.paymentAmount && invoice.paymentAmount != 0) { // jshint ignore:line
-      invoice.isSelected = true;
-    } else {
-      invoice.isSelected = false;
-    }
-    if (invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount) { // jshint ignore:line
-      invoice.isSelected = false;
+ $scope.toggleSelect = function(invoice,type){
+    switch(type) {
+      case 'amount':
+        if (invoice.paymentAmount && invoice.paymentAmount != 0){ // jshint ignore:line
+          invoice.isSelected = true;
+        } else {
+          invoice.isSelected = false;
+        }
+        if(invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount){ // jshint ignore:line
+          invoice.isSelected = false;
+        }
+        break
+      case 'account':   
+      case 'date':
+        invoice.isSelected = true;
+        $scope.selectInvoice(invoice , true);
+        break
     }
   };
 
-  $scope.selectInvoice = function (invoice, isSelected) {
+  $scope.selectInvoice = function(invoice, isSelected){
     if (isSelected) {
       if (!invoice.pendingtransaction) {
         invoice.paymentAmount = invoice.amount.toString();
@@ -358,8 +374,22 @@ angular.module('bekApp')
   $scope.defaultDates = function(payments){
     if(payments.length){
       payments.forEach(function(payment){
+        if(payment.statusdescription === 'Payment Pending'){
+          if(payment.date){
+            payment.date = payment.date;
+          }
+          else if(payment.selectedDate){
+            payment.date = payment.selectedDate;
+          }
+          else{           
+            payment.date = moment(payment.pendingtransaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD");
+            }
+          if(payment.date.length !== 10){
+            payment.date = moment(payment.date).format("YYYY-MM-DD");
+          }          
+        }
         if(!payment.date || payment.statusdescription === 'Past Due'){
-          payment.date = $scope.tomorrow._d;          
+          payment.date = $scope.tomorrow;          
         }
       });
     }
@@ -393,6 +423,14 @@ angular.module('bekApp')
           $scope.invoices.forEach(function(invoice){
             invoice.failedBatchValidation = false;
           });
+          payments.forEach(function(payment){
+            if(payment.selectedDate){
+              delete payment.selectedDate;
+            }
+            if(payment.date.length !== 10){
+            payment.date = moment(payment.date).format("YYYY-MM-DD");
+          }
+          })
           InvoiceService.payInvoices(payments).then(function() {
             $scope.invoiceForm.$setPristine();
             $state.go('menu.transaction');
@@ -411,13 +449,22 @@ angular.module('bekApp')
   $scope.validateBatch = function(){
     if(!$scope.validating){
       $scope.validating = true;
-      var payments = $scope.getSelectedInvoices();
+      if($scope.selectedFilterView.name === 'Invoices Pending Payment'){
+        var payments = $scope.invoices;
+      }
+      else{
+         var payments = $scope.getSelectedInvoices();
+       }     
       payments = $scope.defaultDates(payments);
-      if(payments){
+      if(payments.length){
       InvoiceService.checkTotals(payments).then(function(resp) {
 
            payments.forEach(function(payment){
-             if(payment.statusdescription === 'Past Due'){
+             if(payment.statusdescription === 'Past Due' || payment.statusdescription === 'Payment Pending'){
+              if(payment.statusdescription === 'Payment Pending'){
+                payment.selectedDate = payment.date;
+                payment
+              }          
                delete payment.date       
              }
            });
@@ -435,15 +482,21 @@ angular.module('bekApp')
      });
     }
    }
-  }
+  };
   
   $scope.displayValidationError = function(resp){
     $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";    
     resp.successResponse.transactions.forEach(function(transaction){
       $scope.invoices.forEach(function(invoice){
+        invoice.failedBatchValidation = false;
         var invoiceDate = invoice.date || $scope.tomorrow;
-        if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(transaction.date).format('YYYYMMDD') === moment(invoiceDate).format('YYYYMMDD') && invoice.isSelected){
+        if(invoice.pendingtransaction){
+          invoiceDate = invoice.selectedDate || invoice.pendingtransaction.date;
+        }
+
+        if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(transaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === moment(invoiceDate).format('YYYYMMDD') && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
           invoice.failedBatchValidation = true;
+          invoice.isSelected = true;
         }
       }); 
     })
@@ -452,7 +505,7 @@ angular.module('bekApp')
         invoice.failedBatchValidation = false;
       }
     })
-  }
+  };
 
   $scope.openExportModal = function () {
     var modalInstance = $modal.open({
