@@ -271,12 +271,12 @@ angular.module('bekApp')
       var itemSpec = {};
       switch (name) {
         case 'itembeingreplaced':
-          itemSpec.displayname = 'Item Being Replaced';
-          itemSpec.iconclass = 'text-red icon-cycle';
-          break;
-        case 'replacementitem':
           itemSpec.displayname = 'Replacement Item';
           itemSpec.iconclass = 'text-green icon-cycle';
+          break;
+        case 'replacementitem':
+          itemSpec.displayname = 'Item Being Replaced';
+          itemSpec.iconclass = 'text-red icon-cycle';
           break;
         case 'childnutrition':
           itemSpec.displayname = 'Child Nutrition Sheet';

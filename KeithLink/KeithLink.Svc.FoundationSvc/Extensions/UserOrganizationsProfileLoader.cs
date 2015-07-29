@@ -1,33 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using KeithLink.Common.Core.Extensions;
+﻿using KeithLink.Common.Core.Extensions;
+
+using CommerceServer.Core.Runtime.Configuration;
+using CommerceServer.Core.Runtime.Profiles;
 using CommerceServer.Foundation;
 using CommerceServer.Foundation.SequenceComponents;
-using CommerceServer.Core.Runtime.Profiles;
 using CommerceServer.Foundation.SequenceComponents.Utility;
 using CommerceServer.Foundation.SequenceComponents.ContextProviders;
 using CommerceServer.Foundation.SequenceComponents.CSHelpers;
 
-namespace KeithLink.Svc.FoundationSvc.Extensions
-{
-    public class UserOrganizationsProfileLoader : ProfileLoaderBase
-    {
-       protected override string ProfileModelName
-        {
-            get
-            {
-                return "UserOrganizations";
-            }
-        }
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.Linq;
+using System.Web;
 
-        public UserOrganizationsProfileLoader()
-        {
-        }
+namespace KeithLink.Svc.FoundationSvc.Extensions {
+    public class UserOrganizationsProfileLoader : ProfileLoaderBase {
+        #region attributes
+        #endregion
 
-        public override void ExecuteCreate(CommerceCreateOperation createOperation, OperationCacheDictionary operationCache, CommerceCreateOperationResponse response)
-        {
+        #region ctor
+        public UserOrganizationsProfileLoader() {
+        }
+        #endregion
+
+        #region methods
+        public override void ExecuteCreate(CommerceCreateOperation createOperation, OperationCacheDictionary operationCache, CommerceCreateOperationResponse response) {
             ParameterChecker.CheckForNull(createOperation, "createOperation");
             ParameterChecker.CheckForNull(operationCache, "operationCache");
             ParameterChecker.CheckForNull(response, "response");
@@ -35,42 +34,44 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
             base.ExecuteCreate(createOperation, operationCache, response);
         }
 
-        public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response)
-        {
+        public override void ExecuteQuery(CommerceQueryOperation queryOperation, OperationCacheDictionary operationCache, CommerceQueryOperationResponse response) {
             CommerceModelSearch searchCriteria = queryOperation.GetSearchCriteria<CommerceModelSearch>();
             ParameterChecker.CheckForNull(searchCriteria, "searchCriteria");
 
-            if (searchCriteria.Model.Properties.Count == 1)
-            {
+            if (searchCriteria.Model.Properties.Count == 1) {
                 string sproc = string.Empty;
-                CommercePropertyItem item = searchCriteria.Model.Properties[0];
-                if (searchCriteria.Model.Properties[0].Key == "OrganizationId") // looking for users associated to org
+                
+                if (searchCriteria.Model.Properties[0].Key == "OrganizationId") { // looking for users associated to org
                     sproc = "[dbo].[sp_BEK_ReadUsersForOrg]";
-                else if (searchCriteria.Model.Properties[0].Key == "UserId") // looking for orgs associated to user
+                } else if (searchCriteria.Model.Properties[0].Key == "UserId") {// looking for orgs associated to user
                     sproc = "[dbo].[sp_BEK_ReadOrgsForUser]";
+                }
 
-                CommerceServer.Core.Runtime.Configuration.CommerceResourceCollection csResources = SiteHelper.GetCsConfig();
+                CommerceResourceCollection csResources = SiteHelper.GetCsConfig();
                 String connStr = csResources["Biz Data Service"]["s_BizDataStoreConnectionString"].ToString();
                 //ProfileContext pContext = CommerceSiteContexts.Profile[GetSiteName()];
-                using (System.Data.OleDb.OleDbConnection conn = new System.Data.OleDb.OleDbConnection(connStr))
-                {
+
+                using (OleDbConnection conn = new OleDbConnection(connStr)) {
                     conn.Open();
-                    System.Data.OleDb.OleDbCommand cmd = new System.Data.OleDb.OleDbCommand(sproc, conn);
-                    cmd.Parameters.Add(new System.Data.OleDb.OleDbParameter("@id", System.Data.OleDb.OleDbType.VarChar, 50));
+
+                    CommercePropertyItem item = searchCriteria.Model.Properties[0];
+                    
+                    OleDbCommand cmd = new OleDbCommand(sproc, conn);
+
+                    cmd.Parameters.Add(new OleDbParameter("@id", OleDbType.VarChar, 50));
                     cmd.Parameters[0].Value = item.Value;
-                    cmd.Parameters[0].Direction = System.Data.ParameterDirection.Input;
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    using (System.Data.OleDb.OleDbDataAdapter adapter = new System.Data.OleDb.OleDbDataAdapter(cmd))
-                    {
-                        System.Data.DataTable dt = new System.Data.DataTable();
+                    cmd.Parameters[0].Direction = ParameterDirection.Input;
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    using (OleDbDataAdapter adapter = new OleDbDataAdapter(cmd)) {
+                        DataTable dt = new DataTable();
                         adapter.Fill(dt);
 
-                        foreach (System.Data.DataRow r in dt.Rows)
-                        {
-                            if (searchCriteria.Model.Properties[0].Key == "UserId")
-                            { // todo: use profile entity mapping to fill this in
+                        foreach (DataRow r in dt.Rows) {
+                            if (searchCriteria.Model.Properties[0].Key == "UserId") { // todo: use profile entity mapping to fill this in
                                 //this.Metadata.ProfileMapping;
                                 CommerceEntity org = new CommerceEntity("Organization");
+
                                 org.Id = r.GetString("u_org_id");
                                 org.SetPropertyValue("Name", r.GetString("u_name"));
                                 org.SetPropertyValue("CustomerNumber", r.GetString("u_customer_number"));
@@ -89,27 +90,37 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                                 org.SetPropertyValue("BalanceAge3", r.GetNullableDecimal("u_balance_age_3"));
                                 org.SetPropertyValue("BalanceAge4", r.GetNullableDecimal("u_balance_age_4"));
                                 org.SetPropertyValue("AmountDue", r.GetNullableDecimal("u_amount_due"));
-								org.SetPropertyValue("AchType", r.GetString("u_customer_ach_type"));
-								org.SetPropertyValue("GeneralInfo.preferred_address", r.GetString("u_preferred_address"));
+                                org.SetPropertyValue("AchType", r.GetString("u_customer_ach_type"));
+                                org.SetPropertyValue("GeneralInfo.preferred_address", r.GetString("u_preferred_address"));
+
                                 response.CommerceEntities.Add(org);
-                            }
-                            else if (searchCriteria.Model.Properties[0].Key == "OrganizationId")
-                            {
+                            } else if (searchCriteria.Model.Properties[0].Key == "OrganizationId") {
                                 CommerceEntity org = new CommerceEntity("UserProfile");
+
                                 org.Id = r.GetString("u_user_id");
                                 org.SetPropertyValue("FirstName", r.GetString("u_first_name"));
                                 org.SetPropertyValue("LastName", r.GetString("u_last_name"));
                                 org.SetPropertyValue("Email", r.GetString("u_email_address"));
+
                                 response.CommerceEntities.Add(org);
                             }
                         }
                     }
+
+                    if (conn.State == ConnectionState.Open) { conn.Close(); }
                 }
-            }
-            else
-            {
+            } else {
                 base.ExecuteQuery(queryOperation, operationCache, response);
             }
         }
+        #endregion
+
+        #region properties
+        protected override string ProfileModelName {
+            get {
+                return "UserOrganizations";
+            }
+        }
+        #endregion
     }
 }
