@@ -462,8 +462,7 @@ angular.module('bekApp')
            payments.forEach(function(payment){
              if(payment.statusdescription === 'Past Due' || payment.statusdescription === 'Payment Pending'){
               if(payment.statusdescription === 'Payment Pending'){
-                payment.selectedDate = payment.date;
-                payment
+                payment.selectedDate = payment.date;               
               }          
                delete payment.date       
              }
