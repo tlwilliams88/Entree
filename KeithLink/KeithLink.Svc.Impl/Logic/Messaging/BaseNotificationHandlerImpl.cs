@@ -43,6 +43,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer, bool dsrDSMOnly = false)
         {
+            if (customer == null) { return new List<Recipient>(); }
+
 			Svc.Core.Models.Profile.UserProfileReturn users = new Core.Models.Profile.UserProfileReturn();
 
 			if (dsrDSMOnly)

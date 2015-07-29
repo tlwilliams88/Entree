@@ -1,21 +1,23 @@
-﻿using System;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
+using KeithLink.Svc.Core.Models.Messaging.EF;
+using KeithLink.Svc.Core.Models.Messaging.Provider;
+using KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Configuration;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.Messaging;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
-using KeithLink.Svc.Core.Models.Messaging.EF;
-using KeithLink.Svc.Core.Models.Messaging.Provider;
-using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Svc.Core.Models.Orders.History.EF;
-using KeithLink.Svc.Core.Models.Configuration;
-using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.Email;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging
 {
@@ -89,7 +91,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             MessageTemplateModel orderEtaMainTemplate = messageTemplateLogic.ReadForKey("OrderEtaMain");
 
             Message message = new Message();
-            message.MessageSubject = orderEtaMainTemplate.Subject.Inject(new { CustomerName = string.Format("{0-{1}", customer.CustomerNumber, customer.CustomerName) });
+            //message.MessageSubject = orderEtaMainTemplate.Subject.Inject(new { CustomerName = string.Format("{0-{1}", customer.CustomerNumber, customer.CustomerName) });
+            message.MessageSubject = orderEtaMainTemplate.Subject.Inject(customer);
             message.MessageBody = orderEtaMainTemplate.Body.Inject(new { TimeZoneName = timeZoneName, EtaOrderLines = orderInfoDetails.ToString() });
             message.CustomerNumber = customer.CustomerNumber;
 			message.CustomerName = customer.CustomerName;
@@ -142,14 +145,26 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             //    .ToList(); // get list of customer numbers
 
             // for now, just update the order history entry with the currently estimated/scheduled/arrived times
-            //foreach (string customerNumber in customerNumbers)
-            //{
-            //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber);
-            //    List<Recipient> recipients = base.LoadRecipients(NotificationType.OrderConfirmation, customer);
-            //    Message message = GetEmailMessageForNotification(eta.Orders, orders.Where(o => o.CustomerNumber == customerNumber), customer);
+            //foreach (string customerNumber in customerNumbers) {
+            //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
+            //    if (customer == null) {
+            //        System.Text.StringBuilder warningMessage = new StringBuilder();
+            //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, notification.CustomerNumber);
+            //        warningMessage.AppendLine();
+            //        warningMessage.AppendLine();
+            //        warningMessage.AppendLine("Notification:");
+            //        warningMessage.AppendLine(notification.ToJson());
 
-                // send messages to providers...
-                //base.SendMessage(recipients, message);
+            //        eventLogRepository.WriteWarningLog(warningMessage.ToString());
+            //    } else {
+            //        List<Recipient> recipients = base.LoadRecipients(NotificationType.OrderConfirmation, customer);
+            //        Message message = GetEmailMessageForNotification(eta.Orders, orders.Where(o => o.CustomerNumber == customerNumber), customer);
+
+            //        // send messages to providers...
+            //        if (recipients != null && recipients.Count > 0) {
+            //            base.SendMessage(recipients, message);
+            //        }
+            //    }
             //}
         }
         #endregion

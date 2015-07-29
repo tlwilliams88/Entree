@@ -1,6 +1,7 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
@@ -13,6 +14,7 @@ using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Impl.Helpers;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,11 +109,25 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             
             // load up recipients, customer and message
             Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
-            List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer);
-            Message message = GetEmailMessageForNotification(confirmation, customer);
 
-            // send messages to providers...
-            base.SendMessage(recipients, message);
+            if (customer == null) {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                _log.WriteWarningLog(warningMessage.ToString());
+            } else {
+                List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer);
+                Message message = GetEmailMessageForNotification(confirmation, customer);
+
+                // send messages to providers...
+                if (recipients != null && recipients.Count > 0) {
+                    base.SendMessage(recipients, message);
+                }
+            }
         }
         #endregion
     }
