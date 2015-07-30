@@ -20,5 +20,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             throw new NotImplementedException();
         }
 
+        public void DeleteSettings(SettingsModel settings)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

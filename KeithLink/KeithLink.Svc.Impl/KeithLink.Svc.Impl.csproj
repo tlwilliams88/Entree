@@ -726,6 +726,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Caching.config" />
+    <None Include="Logic\Profile\UserProfileLogicImpl.cs.vsspell">
+      <DependentUpon>UserProfileLogicImpl.cs</DependentUpon>
+    </None>
     <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsc">
       <DependentUpon>PricingResponse.xsd</DependentUpon>
     </None>

@@ -6,20 +6,19 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.Profile.EF;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 using KeithLink.Svc.WebApi.Models;
-using KeithLink.Svc.WebApi.Attribute;
+// using KeithLink.Svc.WebApi.Attribute;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Web.Http;
-using KeithLink.Svc.Core.Models.ModelExport;
-using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -1076,7 +1075,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
         [HttpPost]
         [ApiKeyedRoute( "profile/settings" )]
-        public OperationReturnModel<bool> SaveProfileSettings( SettingsModel settings ) {
+        public OperationReturnModel<bool> CreateOrUpdateProfileSettings( SettingsModel settings ) {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
 
             try {
@@ -1089,6 +1088,27 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return returnValue;
         }
-        #endregion
+
+	    [HttpPost]
+	    [ApiKeyedRoute("profile/settings/delete")]
+	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings)
+	    {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+	        try
+	        {
+	            _profileService.DeleteProfileSettings(settings);
+                returnValue.SuccessResponse = true;
+	    
+	        }
+	        catch (Exception ex)
+	        {
+	            returnValue .ErrorMessage = String.Format("Error deleting profile settings {0} for userId {1}", settings.Key,settings.UserId);
+	        }
+
+	        return returnValue;
+	    }
+
+	    #endregion
 	}
 }

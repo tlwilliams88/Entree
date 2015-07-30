@@ -17,8 +17,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         #region attributes 
 
-        ISettingsRepository _repo;
-        IUnitOfWork _uow; 
+        readonly ISettingsRepository _repo;
+        readonly IUnitOfWork _uow; 
 
         #endregion
 
@@ -49,6 +49,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             KeithLink.Svc.Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
 
             _repo.CreateOrUpdate( mySettings );
+            _uow.SaveChanges();
+        }
+
+        public void DeleteSettings(SettingsModel settings)
+        {
+            KeithLink.Svc.Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
+
+            _repo.Delete(mySettings);
             _uow.SaveChanges();
         }
 

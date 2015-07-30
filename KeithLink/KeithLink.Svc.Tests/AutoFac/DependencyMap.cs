@@ -43,6 +43,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using KeithLink.Svc.Impl.Logic.Profile;
+
 #endregion
 
 namespace KeithLink.Svc.Test
@@ -57,7 +59,8 @@ namespace KeithLink.Svc.Test
 			//*******************************************
 			//Mock Items
 			//*******************************************
-			builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
+			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
 			//*******************************************
             //Logic Classes
@@ -69,7 +72,8 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-            //builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
+            builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
 		
 			//*******************************************
 			//Repositories
@@ -100,12 +104,11 @@ namespace KeithLink.Svc.Test
             //Profile
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
-            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
             
-			
             //Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 			builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();

@@ -80,6 +80,13 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SaveProfileSettings", ReplyAction="http://tempuri.org/IProfileService/SaveProfileSettingsResponse")]
         System.Threading.Tasks.Task SaveProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
+
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteProfileSettings", ReplyAction="http://tempuri.org/IProfileService/DeleteProfileSettingsResponse")]
+        void DeleteProfileSettings(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
+
+        [System.ServiceModel.OperationContractAttribute(Action = "http://tempuri.org/IProfileService/DeleteProfileSettings",ReplyAction = "http://tempuri.org/IProfileService/DeleteProfileSettingsResponse")] 
+        System.Threading.Tasks.Task DeleteProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
+
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -192,9 +199,20 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         public void SaveProfileSettings(KeithLink.Svc.Core.Models.Profile.SettingsModel settings) {
             base.Channel.SaveProfileSettings(settings);
         }
-        
+
         public System.Threading.Tasks.Task SaveProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings) {
             return base.Channel.SaveProfileSettingsAsync(settings);
         }
+
+        public void DeleteProfileSettings(KeithLink.Svc.Core.Models.Profile.SettingsModel settings)
+        {
+            base.Channel.DeleteProfileSettings(settings);
+        }
+
+        public System.Threading.Tasks.Task DeleteProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings)
+        {
+            return base.Channel.DeleteProfileSettingsAsync(settings);
+        }
+
     }
 }

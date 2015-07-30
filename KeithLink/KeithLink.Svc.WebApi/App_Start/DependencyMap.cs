@@ -160,13 +160,15 @@ namespace KeithLink.Svc.WebApi
 
 
             // Profile Settings
+            builder.RegisterType<SettingsLogicImpl>().As <ISettingsLogic>();
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogic>();
 
             // Build the container.
             var container = builder.Build();
 
-            // Create the depenedency resolver.
+            // Create the dependency resolver.
             var resolver = new AutofacWebApiDependencyResolver(container);
 
 

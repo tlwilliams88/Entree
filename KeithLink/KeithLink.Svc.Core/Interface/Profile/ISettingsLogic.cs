@@ -12,5 +12,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
     public interface ISettingsLogic {
         List<SettingsModel> GetAllUserSettings( Guid userId );
         void CreateOrUpdateSettings( SettingsModel settings );
+        void DeleteSettings(SettingsModel settings);
     }
 }

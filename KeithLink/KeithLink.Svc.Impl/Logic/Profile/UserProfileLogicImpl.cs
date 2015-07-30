@@ -1720,6 +1720,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _settingsLogic.CreateOrUpdateSettings( model );
         }
 
+        public void DeleteProfileSettings(SettingsModel model)
+        {
+            _settingsLogic.DeleteSettings( model );
+        }
+
         #endregion
 
 

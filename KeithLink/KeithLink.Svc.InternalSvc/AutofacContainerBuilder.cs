@@ -281,7 +281,7 @@ namespace KeithLink.Svc.InternalSvc
             // Profile Settings
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
-
+            
             return builder.Build();
         }
 	}
