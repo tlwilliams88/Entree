@@ -67,6 +67,11 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
          				},
+                       ""name_edge_ngram_analyzed"" : {
+           					""type"" : ""string"",
+							""index_analyzer"" : ""default"",
+                            ""search_analyzer"": ""my_edge_ngram_analyzer""
+         				},
 						""mfrname_not_analyzed"" : {
 							""type"" : ""string"",
 							""index"" : ""not_analyzed""

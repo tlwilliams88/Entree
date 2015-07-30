@@ -41,10 +41,12 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 
             dynamic filters = new {
                 my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" },
-                autcomplete_filter = new { type = "edge_ngram", min_gram = 2, max_gram = 20 }
+                autcomplete_filter = new { type = "ngram", min_gram = 2, max_gram = 20 }
             };
 
-			System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
+            dynamic edge_ngram_tokenizer = new { my_edge_ngram_tokenizer = new { type = "edgeNGram", min_gram = 2, max_gram = 20, token_chars = new[] { "letter", "digit" } } };
+
+            System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
 			(dynamicAnalyzer as IDictionary<string, object>).Add("default", new { 
                                                                                     type = "custom", 
                                                                                     filter = new List<string>() {
@@ -56,7 +58,15 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
                                                                                     tokenizer = "whitespace" 
                                                                                 }
                                                                             );
-
+			(dynamicAnalyzer as IDictionary<string, object>).Add("my_edge_ngram_analyzer", new { 
+                                                                                    type = "custom",
+                                                                                    filter = new List<string>() {
+                                                                                        "autcomplete_filter",
+                                                                                        "lowercase"
+                                                                                    }, 
+                                                                                    tokenizer = "my_edge_ngram_tokenizer" 
+                                                                                }
+                                                                            );
 			dynamic indexSettings =
 				new
 				{
@@ -72,7 +82,8 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 								{
                                     filter = filters,
 									analyzer = dynamicAnalyzer
-								}
+								},
+                                tokenizer = edge_ngram_tokenizer
 							}
 						}
 				};
