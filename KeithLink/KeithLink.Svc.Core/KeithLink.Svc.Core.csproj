@@ -220,6 +220,7 @@
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />
+    <Compile Include="Interface\Profile\IAccountRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Interface\Profile\IDsrAliasLogic.cs" />
     <Compile Include="Interface\Profile\IDsrAliasRepository.cs" />
@@ -384,7 +385,6 @@
     <Compile Include="Interface\Orders\IPurchaseOrderRepository.cs" />
     <Compile Include="Interface\Orders\IBasketLogic.cs" />
     <Compile Include="Interface\Profile\ICustomerRepository.cs" />
-    <Compile Include="Interface\PowerMenu\IAccountRepository.cs" />
     <Compile Include="Interface\Orders\IShipDateRepository.cs" />
     <Compile Include="Interface\Profile\ICustomerDomainRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileLogic.cs" />
