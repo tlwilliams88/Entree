@@ -39,7 +39,7 @@
         <p>Contact your DSR to pay invoices online.</p>
       </div>
       <div class="info-box pull-left billing-info" ng-if="hasPayableInvoices">
-        <div  class = "bill-box">
+        <div  class = "bill-box" style="padding-right:15px;">
           <b class = "bill-title">Billing Information:</b>
           <address class="text-light">
             {{selectedUserContext.customer.customerName}}<br>
@@ -47,8 +47,10 @@
             {{selectedUserContext.customer.address.city}}, {{selectedUserContext.customer.address.regioncode}} {{selectedUserContext.customer.address.postalcode}}<br>
           </address>
         </div>
-        <div ng-if="hasPayableInvoices" class="total-line"> Total: <span  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
-      </div>
+        <div ng-if="hasPayableInvoices && selectedFilterView.name !== 'Invoices Pending Payment'" class="total-line"> Total: <span  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
+        <div class="pull-left update-btn" ng-if="hasPayableInvoices && selectedFilterView.name === 'Invoices Pending Payment'" class="total-line"> <br><button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Update Invoice(s)</button></div>
+       </div>
+
     </div>
     <div class="row page-content" style="margin-top:5px;">  
       <div class="col-xs-12"  style="margin-top:16px;">
@@ -185,7 +187,7 @@
                 ng-click="openDatepicker = true"
                 ng-if="invoice.userCanPayInvoice"
                 class="icon-calendar text-right"                
-                datepicker-popup="{{datepickerOptions.options.dateFormat}}"
+                
                 ng-model="invoice.date"
                 is-open="openDatepicker"
                 ng-change="toggleSelect(invoice, 'date'); validateBatch()"
