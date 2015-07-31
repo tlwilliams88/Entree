@@ -195,9 +195,9 @@
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
               <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'">{{invoice.date | formatDate}}</span>
-              <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{tomorrow | formatDate}}</span>
+              <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due' && !invoice.selectedDate">{{tomorrow | formatDate}}</span>
               <span class = "date-picker-field" ng-if="invoice.statusdescription =='Payment Pending' && !invoice.selectedDate">{{invoice.date  || invoice.pendingtransaction.date | formatDate}}</span>
-              <span class = "date-picker-field" ng-if="invoice.statusdescription =='Payment Pending' && invoice.selectedDate">{{invoice.selectedDate | formatDate}}</span>
+              <span class = "date-picker-field" ng-if="(invoice.statusdescription =='Payment Pending' || invoice.statusdescription === 'Past Due') && invoice.selectedDate">{{invoice.selectedDate | formatDate}}</span>
             </td>
             <td ng-if="!viewingAllCustomers" class="input-col">             
               <div style="width:75px; padding-right:6px; padding-top:8px;" class = "text-right" ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</div>

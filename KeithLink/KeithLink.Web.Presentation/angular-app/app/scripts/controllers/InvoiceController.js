@@ -15,7 +15,7 @@ angular.module('bekApp')
     isViewingAllCustomers: false
   }];
   $scope.selectedInvoiceContext = $scope.invoiceCustomerContexts[1];
-
+  $scope.loadDatepickers = false;
   $scope.accounts = accounts;
   $scope.ascendingDate = true;
   $scope.currDate = new Date();  
@@ -278,6 +278,9 @@ angular.module('bekApp')
     });
   }
 
+$scope.loadDatepickers= function(){
+  $scope.loadDatepickers = true;
+}
   //change the selected user context to the one the user clicked and refresh the page
   $scope.changeCustomerOnClick = function (customerNumber, branch) {
     changeUserContext('menu.invoice', $state.params, customerNumber, branch);
@@ -347,6 +350,9 @@ angular.module('bekApp')
   };
 
   $scope.selectAll = function (areAllSelected) {
+    if(!areAllSelected && $scope.errorMessage){
+      $scope.errorMessage = '';
+    }
     $scope.selectAllPayable = areAllSelected;
     angular.forEach($scope.invoices, function (item, index) {
       if (item.userCanPayInvoice) {
@@ -380,23 +386,26 @@ angular.module('bekApp')
   $scope.defaultDates = function(payments){
     if(payments.length){
       payments.forEach(function(payment){
-        if(payment.statusdescription === 'Payment Pending'){
+        if((payment.statusdescription === 'Payment Pending') || (payment.statusdescription === 'Past Due' && payment.amount < 0)){
           if(payment.date){
             payment.date = payment.date;
           }
           else if(payment.selectedDate){
             payment.date = payment.selectedDate;
           }
-          else{           
-            payment.date = moment(payment.pendingtransaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD");
-            }
-          if(payment.date.length !== 10){
-            payment.date = moment(payment.date).format("YYYY-MM-DD");
-          }          
+          else{
+            if(payment.statusdescription === 'Payment Pending'){
+             payment.date = moment(payment.pendingtransaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD");
+            }          
+          }             
         }
-        if(!payment.date || payment.statusdescription === 'Past Due'){
+        
+        if(!payment.date){
           payment.date = $scope.tomorrow;          
         }
+        if(payment.date.length !== 10){
+          payment.date = moment(payment.date).format("YYYY-MM-DD");
+        }  
       });
     }
        return payments
@@ -466,10 +475,8 @@ angular.module('bekApp')
       InvoiceService.checkTotals(payments).then(function(resp) {
 
            payments.forEach(function(payment){
-             if(payment.statusdescription === 'Past Due' || payment.statusdescription === 'Payment Pending'){
-              if(payment.statusdescription === 'Payment Pending'){
-                payment.selectedDate = payment.date;               
-              }          
+             if((payment.statusdescription === 'Past Due' || payment.statusdescription === 'Payment Pending') && payment.date){            
+                payment.selectedDate = payment.date
                delete payment.date       
              }
            });
@@ -490,16 +497,18 @@ angular.module('bekApp')
   };
   
   $scope.displayValidationError = function(resp){
-    $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";    
+    $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";
+    $scope.invoices.forEach(function(invoice){
+       invoice.failedBatchValidation = false;
+     });
     resp.successResponse.transactions.forEach(function(transaction){
-      $scope.invoices.forEach(function(invoice){
-        invoice.failedBatchValidation = false;
+      $scope.invoices.forEach(function(invoice){       
         var invoiceDate = invoice.date || $scope.tomorrow;
-        if(invoice.pendingtransaction){
+        if(invoice.pendingtransaction || invoice.selectedDate){
           invoiceDate = invoice.selectedDate || invoice.pendingtransaction.date;
         }
 
-        if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(transaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === moment(invoiceDate).format('YYYYMMDD') && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
+        if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(resp.successResponse.transactions[0].date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === moment(invoiceDate).format('YYYYMMDD') && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
           invoice.failedBatchValidation = true;
         }
       }); 
