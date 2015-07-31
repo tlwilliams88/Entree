@@ -205,6 +205,7 @@
                 remove-positive-numbers
                 name="paymentAmount"
                 id="paymentAmount"
+                status = '{{invoice.statusdescription}}'
                 invoice-amount = "invoice.amount"
                 ng-if="invoice.userCanPayInvoice"
                 class="text-right"
@@ -216,7 +217,8 @@
                   'addMissingDecimals': true,
                   'preventInvalidInput': true,
                   'prepend': '$',
-                  'min': {{invoice.amount > 0 ? 0 : invoice.amount}}                  
+                  'min': {{invoice.amount > 0 ? 0 : invoice.amount}},
+                  'max': {{invoice.amount > 0 ? invoice.amount : 0}}                
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice, 'amount')"

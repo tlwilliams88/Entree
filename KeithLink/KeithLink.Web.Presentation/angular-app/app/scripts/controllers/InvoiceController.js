@@ -310,7 +310,13 @@ angular.module('bekApp')
         if (invoice.paymentAmount && invoice.paymentAmount != 0){ // jshint ignore:line
           invoice.isSelected = true;
         } else {
-          invoice.isSelected = false;
+          if(invoice.statusdescription === 'Payment Pending' && invoice.paymentAmount == 0){
+          invoice.paymentAmount = '0.00';
+          invoice.isSelected = true;
+          }
+          else{
+            invoice.isSelected = false;
+          }          
         }
         if(invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount){ // jshint ignore:line
           invoice.isSelected = false;
@@ -476,10 +482,10 @@ angular.module('bekApp')
         }
         else{  
           $scope.displayValidationError(resp);
-        }
-        $scope.validating = false;
+        }        
      });
     }
+    $scope.validating = false;
    }
   };
   
@@ -495,7 +501,6 @@ angular.module('bekApp')
 
         if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(transaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === moment(invoiceDate).format('YYYYMMDD') && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
           invoice.failedBatchValidation = true;
-          invoice.isSelected = true;
         }
       }); 
     })
