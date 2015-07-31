@@ -217,8 +217,7 @@
                   'addMissingDecimals': true,
                   'preventInvalidInput': true,
                   'prepend': '$',
-                  'min': {{invoice.amount > 0 ? 0 : invoice.amount}},
-                  'max': {{invoice.amount > 0 ? invoice.amount : 0}}                
+                  'min': {{invoice.amount > 0 ? 0 : invoice.amount}}               
                 }"
                 ng-required="invoice.isSelected"
                 ng-change="toggleSelect(invoice, 'amount')"
