@@ -15,7 +15,6 @@ angular.module('bekApp')
     isViewingAllCustomers: false
   }];
   $scope.selectedInvoiceContext = $scope.invoiceCustomerContexts[1];
-  $scope.loadDatepickers = false;
   $scope.accounts = accounts;
   $scope.ascendingDate = true;
   $scope.currDate = new Date();  
@@ -278,9 +277,6 @@ angular.module('bekApp')
     });
   }
 
-$scope.loadDatepickers= function(){
-  $scope.loadDatepickers = true;
-}
   //change the selected user context to the one the user clicked and refresh the page
   $scope.changeCustomerOnClick = function (customerNumber, branch) {
     changeUserContext('menu.invoice', $state.params, customerNumber, branch);
