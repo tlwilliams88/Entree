@@ -192,23 +192,23 @@ angular.module('bekApp')
   };
 
   $scope.sortByScheduleDate = function(ascendingDate) {
-   // $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
-   //      var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.tomorrow;
-   //      var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.tomorrow;
-   //      $scope.ascendingDate = !ascendingDate;    
-   //      if(!sorterval1){
-   //        sorterval1 = 0
-   //      }
-   //      if(!sorterval2){
-   //        sorterval2 = 0;
-   //      }
-   //      if(ascendingDate){      
-   //        return sorterval1 - sorterval2;
-   //      }
-   //      else{
-   //        return sorterval2 - sorterval1;
-   //      }   
-   // });
+   $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
+        var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.tomorrow;
+        var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.tomorrow;
+        $scope.ascendingDate = !ascendingDate;    
+        if(!sorterval1){
+          sorterval1 = 0
+        }
+        if(!sorterval2){
+          sorterval2 = 0;
+        }
+        if(ascendingDate){      
+          return sorterval1 - sorterval2;
+        }
+        else{
+          return sorterval2 - sorterval1;
+        }   
+   });
   };
 
 
