@@ -181,7 +181,7 @@
             </td>
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
               <a
-              ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
+              ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && invoice.amount > 0) || viewingAllCustomers)}"
                 ng-click="openDatepicker = true"
                 ng-if="invoice.userCanPayInvoice"
                 class="icon-calendar text-right"                
