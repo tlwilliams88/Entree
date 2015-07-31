@@ -161,9 +161,9 @@ angular.module('bekApp')
   }
 
   $scope.filterInvoices = function(filterFields) {
-    InvoiceService.setFilters($scope.selectedFilterView , filterFields);
-    getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
-    invoicePagingModel.loadData();
+    // InvoiceService.setFilters($scope.selectedFilterView , filterFields);
+    // getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
+    // invoicePagingModel.loadData();
   };
   $scope.clearFilters = function() {
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
@@ -184,31 +184,31 @@ angular.module('bekApp')
   };
 
   $scope.sortInvoices = function(field, sortDescending) {
-    $scope.sort = {
-      field: field,
-      sortDescending: sortDescending
-    };
-    invoicePagingModel.sortData($scope.sort);
+    // $scope.sort = {
+    //   field: field,
+    //   sortDescending: sortDescending
+    // };
+    // invoicePagingModel.sortData($scope.sort);
   };
 
   $scope.sortByScheduleDate = function(ascendingDate) {
-   $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
-        var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.tomorrow;
-        var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.tomorrow;
-        $scope.ascendingDate = !ascendingDate;    
-        if(!sorterval1){
-          sorterval1 = 0
-        }
-        if(!sorterval2){
-          sorterval2 = 0;
-        }
-        if(ascendingDate){      
-          return sorterval1 - sorterval2;
-        }
-        else{
-          return sorterval2 - sorterval1;
-        }   
-   });
+   // $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
+   //      var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.tomorrow;
+   //      var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.tomorrow;
+   //      $scope.ascendingDate = !ascendingDate;    
+   //      if(!sorterval1){
+   //        sorterval1 = 0
+   //      }
+   //      if(!sorterval2){
+   //        sorterval2 = 0;
+   //      }
+   //      if(ascendingDate){      
+   //        return sorterval1 - sorterval2;
+   //      }
+   //      else{
+   //        return sorterval2 - sorterval1;
+   //      }   
+   // });
   };
 
 
