@@ -31,7 +31,11 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                     CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
                         (operationCache.FirstOrDefault().Value as Dictionary<string, CommerceServer.Core.Runtime.Orders.OrderGroup>)[e.Id] as CommerceServer.Core.Runtime.Orders.PurchaseOrder;
                     CommerceServer.Core.Runtime.Orders.LineItem[] lineItems = new CommerceServer.Core.Runtime.Orders.LineItem[po.OrderForms[0].LineItems.Count];
-                    po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+
+                    if (po.OrderForms[0].LineItems.Count > 0)
+                    {
+                        po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
+                    }
 
                     bool skip = true;
                     foreach (var prop in e.Properties)
