@@ -69,7 +69,7 @@ DROP COLUMN PackageGtin,
 			NetWeight,
 			TiHi,
 			Brand,
-			CountryOfOriginName,
+			ContryOfOriginName,
 			PreparationInstructions;
 GO
 
