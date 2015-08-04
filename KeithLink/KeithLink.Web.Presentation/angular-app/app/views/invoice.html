@@ -227,13 +227,11 @@
                 ng-change="toggleSelect(invoice)"
                 ng-init="invoice.paymentAmount = (invoice.pendingtransaction.amount)"
                 >
-            </td>
-    
+            </td>    
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
-              <a
-              ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
+              <a               
                 ng-click="openDatepicker = true"
-                ng-if="invoice.userCanPayInvoice"
+                ng-if="invoice.userCanPayInvoice && invoice.statusdescription !=='Past Due' && !viewingAllCustomers"
                 class="icon-calendar"
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                 ng-model="invoice.date"
@@ -243,9 +241,9 @@
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
                 close-text="Close"></a>
-              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'">{{invoice.date | formatDate}}</span>
-              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</span>
-              <span ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'">{{invoice.pendingtransaction.date | formatDate}}</span>
+              <span  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'" ng-class="{'hiding-icon' : (!invoice.userCanPayInvoice || viewingAllCustomers)}">{{invoice.date | formatDate}}</span>
+              <span class="hiding-icon" ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due'">{{currDate | formatDate}}</span>
+              <span  ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Payment Pending'" ng-class="{'hiding-icon' : (!invoice.userCanPayInvoice || viewingAllCustomers)}">{{invoice.pendingtransaction.date | formatDate}}</span>
             </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
