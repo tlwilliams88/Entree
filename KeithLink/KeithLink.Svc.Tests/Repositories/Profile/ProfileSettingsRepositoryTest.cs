@@ -3,16 +3,16 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Autofac;
+using Autofac.Core;
 using IContainer = Autofac.IContainer;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using System;
 using System.Linq;
-using Autofac.Core;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
