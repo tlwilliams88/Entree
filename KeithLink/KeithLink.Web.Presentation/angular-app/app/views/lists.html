@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    <div ng-hide="selectedList.isRenaming">
+    <div ng-if="!selectedList.isRenaming">
       <div class="list-name">{{selectedList.name}}</div>
 
       <div style="display:inline-block;">
@@ -524,7 +524,7 @@
               </td>
 
             </tr>
-            <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
+            <tr ng-if="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
               <td colspan="10">
                 <table>
                   <colgroup>
