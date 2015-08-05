@@ -304,7 +304,11 @@ angular.module('bekApp')
       }
 
       deletedItems = deletedItems.concat($scope.selectedList.items.splice(deletedIndex, 1));
+
       updateItemPositions();
+
+      // Remove an item from the count
+      $scope.selectedList.itemCount = ($scope.selectedList.itemCount - 1);
 
       // load more items if number of items fell below page size
       if ($scope.selectedList.items.length < 30) {
@@ -315,12 +319,17 @@ angular.module('bekApp')
     };
 
     $scope.deleteMultipleItems = function() {
-      deletedItems = deletedItems.concat($filter('filter')($scope.selectedList.items, {isSelected: 'true'}));
+      var selectedItemsForDelete = $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
+
+      deletedItems = deletedItems.concat(selectedItemsForDelete);
 
       $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
       $scope.selectedList.allSelected = false;
 
       updateItemPositions();
+
+      // Remove an item from the count
+      $scope.selectedList.itemCount = ($scope.selectedList.itemCount - selectedItemsForDelete.length);
 
       // load more items if number of items fell below page size
       if ($scope.selectedList.items.length < 30) {
