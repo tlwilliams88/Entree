@@ -9,6 +9,7 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -27,6 +28,7 @@ using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.ContentManagement;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
@@ -90,6 +92,7 @@ namespace KeithLink.Svc.Test
 			builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
 			builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
 			builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
+            builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
 
 			//Etc
 			builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
