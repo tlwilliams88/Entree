@@ -74,6 +74,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
+            builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 		
 			//*******************************************
 			//Repositories
@@ -108,6 +109,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             
             //Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();

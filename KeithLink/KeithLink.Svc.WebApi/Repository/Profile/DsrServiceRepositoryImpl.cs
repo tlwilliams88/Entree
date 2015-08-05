@@ -18,10 +18,10 @@ namespace KeithLink.Svc.WebApi.Repository.Profile {
         #endregion
 
         #region methods
+        
         public Dsr GetDsr( string branchId, string dsrNumber ) {
             return _client.GetDsr( branchId, dsrNumber );
         }     
-
 
 		public List<Dsr> GetAllDsrInfo()
 		{
@@ -33,6 +33,7 @@ namespace KeithLink.Svc.WebApi.Repository.Profile {
 				return dsrs.ToList();
 
 		} 
-		#endregion
+
+        #endregion
 	}
 }
