@@ -43,63 +43,6 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
         private IStagingRepository _stagingRepository;
         private IElasticSearchRepository _elasticSearchRepository;
         private IEventLogRepository _eventLog;
-
-        private readonly string ProductMapping = @"{
-			  ""product"" : {
-				   ""properties"" : {
-					   ""categoryname_not_analyzed"" : {
-							  ""type"" : ""string"",
-							  ""index"" : ""not_analyzed""
-						},
-					   ""parentcategoryname_not_analyzed"" : {
-							  ""type"" : ""string"",
-							  ""index"" : ""not_analyzed""
-						},
-						""brand_not_analyzed"" : {
-							""type"" : ""string"",
-							""index"" : ""not_analyzed""
-						},
-                        ""brand_description_not_analyzed"" : {
-                            ""type"" : ""string"",
-                            ""index"" : ""not_analyzed""
-                        },
-         				""name_not_analyzed"" : {
-           					""type"" : ""string"",
-							""index"" : ""not_analyzed""
-         				},
-                       ""name_edge_ngram_analyzed"" : {
-           					""type"" : ""string"",
-							""index_analyzer"" : ""default"",
-                            ""search_analyzer"": ""my_edge_ngram_analyzer""
-         				},
-						""mfrname_not_analyzed"" : {
-							""type"" : ""string"",
-							""index"" : ""not_analyzed""
-						},
-         				""preferreditemcode"" : {
-           					""type"" : ""string"",
-							""index"" : ""not_analyzed""
-         				},
-                        ""status1_not_analyzed"" : {
-           					""type"" : ""string"",
-							""index"" : ""not_analyzed""
-         				},
-                        ""nutritional"" : {
-                            ""properties"" : {
-                                ""diet"" : {
-                                    ""properties"" : {
-                                        ""diettype"" : {
-                                            ""type"" : ""string"",
-                                            ""index"" : ""not_analyzed""
-                                        }
-                                    }
-                                }
-                            }
-                        }
-				   }
-				}
-			}";
-
         #endregion
 
         #region constructor
@@ -227,6 +170,35 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			return proprietaryItems;
 		}
 
+        private string GetProductMapping(){
+            dynamic mapping = new {
+                product = new {
+                    Properties = new {
+                        categoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        parentcategoryname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        brand_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        brand_description_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        name_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        name_ngram_analyzed = new { type = "string", index_analyzer = "ngram_analyzer", search_analyzer = "whitespace_analyzer" },
+                        mfrname_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        preferreditemcode = new { type = "string", index = "not_analyzed" },
+                        status1_not_analyzed = new { type = "string", index = "not_analyzed" },
+                        nutritional = new {
+                            @properties = new {
+                                diet = new {
+                                    @properties = new {
+                                        diettype = new { type="string", index="not_analyzed"}
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            return Newtonsoft.Json.JsonConvert.SerializeObject(mapping);
+        }
+
         /// <summary>
         /// Imports current staging item data to Elastic Search
         /// </summary>
@@ -240,7 +212,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             foreach (DataRow row in branches.Rows) {
                 if (!_elasticSearchRepository.CheckIfIndexExist( row.GetString( "BranchId" ).ToLower() )) {
                     _elasticSearchRepository.CreateEmptyIndex( row.GetString( "BranchId" ).ToLower() );
-                    _elasticSearchRepository.MapProductProperties( row.GetString( "BranchId" ).ToLower(), ProductMapping );
+                    _elasticSearchRepository.MapProductProperties(row.GetString("BranchId").ToLower(), GetProductMapping());
                 } else
                     _elasticSearchRepository.RefreshSynonyms( row.GetString( "BranchId" ).ToLower() );
             }
@@ -378,7 +350,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.MfrNameNotAnalyzed = row.GetString("MfrName");
             data.MfrNumber = row.GetString("MfrNumber");
             data.Name = row.GetString("Name");
-			data.NameNotAnalyzed = row.GetString("Name").ToLower();
+            data.NameNotAnalyzed = row.GetString("Name").ToLower();
+            data.NameNGramAnalyzed = row.GetString("Name").ToLower();
             data.Pack = row.GetString("Pack");
             data.Package = row.GetString("Package");
             data.ParentCategoryId = row.GetString("ParentCategoryId");

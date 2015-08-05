@@ -34,6 +34,9 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty("name_not_analyzed")]
         public string NameNotAnalyzed { get; set; }
 
+        [JsonProperty("name_ngram_analyzed")]
+        public string NameNGramAnalyzed { get; set; }
+
         [JsonProperty("description")]
         public string Description { get; set; }
 

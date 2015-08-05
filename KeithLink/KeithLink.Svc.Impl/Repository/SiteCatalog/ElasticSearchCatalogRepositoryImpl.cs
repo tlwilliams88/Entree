@@ -130,6 +130,24 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
 			if(!string.IsNullOrEmpty(searchTerms))
 			{
+                boosts.Add(new {
+                    filter = new {
+                        query = new {
+                            @bool = new {
+                                must = new List<dynamic>() { 
+                                    new { 
+                                        match = new { 
+                                            name_ngram_analyzed = new { 
+                                                query = searchTerms.ToLower(), @operator = "and", minimum_should_match = "75%" 
+                                            } 
+                                        } 
+                                    } 
+                                }
+                            }
+                        }
+                    },
+                    boost_factor = 1600
+                });
 				boosts.Add(new
 				{
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase_prefix = new { name_not_analyzed = searchTerms.ToLower() } } } } } },
@@ -506,6 +524,5 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             }
         }
         #endregion
-
     } // end class
 } // end namespace

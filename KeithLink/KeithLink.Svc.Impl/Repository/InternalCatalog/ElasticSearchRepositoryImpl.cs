@@ -34,95 +34,40 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
             client.Execute(request);
         }
 
-        //public void CreateEmptyIndex(string branchId) {
-        //    //dynamic synonymFilter = new { my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" } };
-        //    //dynamic autoCompleteFilter = new { autcomplete_filter = new {type = "edge_ngram", min_gram = 2, max_gram = 20 }};
-
-        //    dynamic filters = new {
-        //        my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" },
-        //        autcomplete_filter = new { type = "ngram", min_gram = 2, max_gram = 20 },
-        //        nGram_filter = new { type = "ngram", min_gram = 2, max_gram = 20, token_chars = new[] { "letter", "digit", "punctuation", "symbol" } }
-        //    };
-
-        //    //dynamic edge_ngram_tokenizer = new { my_edge_ngram_tokenizer = new { type = "ngram", min_gram = 2, max_gram = 20, token_chars = new[] { "letter", "digit" } } };
-
-        //    dynamic analyzers = new {
-        //        my_default = new { type = "custom", filter = new[] { "my_synonym_filter", "standard", "lowercase" }, tokenizer = "whitespace" },
-        //        my_edge_ngram_analyzer = new { type = "custom", filter = new[] { "autocomplete_filter", "lowercase" }, tokenizer = "whitespace" },
-        //        nGram_analyzer = new { type = "custom", tokenizer = "whitespace", filter = new[] { "lowercase", "nGram_filter" } },
-        //        whitepsace_analyzer = new { type = "custom", tokenizer = "whitespace", filter = "lowercase"}
-        //    };
-
-        //    //System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
-        //    //(dynamicAnalyzer as IDictionary<string, object>).Add("default", new { 
-        //    //                                                                        type = "custom", 
-        //    //                                                                        filter = new List<string>() {
-        //    //                                                                            "my_synonym_filter", 
-        //    //                                                                            //"autcomplete_filter",
-        //    //                                                                            "standard", 
-        //    //                                                                            "lowercase"
-        //    //                                                                        }, 
-        //    //                                                                        tokenizer = "whitespace" 
-        //    //                                                                    }
-        //    //                                                                );
-        //    //(dynamicAnalyzer as IDictionary<string, object>).Add("my_edge_ngram_analyzer", new { 
-        //    //                                                                        type = "custom",
-        //    //                                                                        filter = new List<string>() {
-        //    //                                                                            "autcomplete_filter",
-        //    //                                                                            "lowercase"
-        //    //                                                                        }, 
-        //    //                                                                        tokenizer = "standard" 
-        //    //                                                                    }
-        //    //                                                                );
-        //    dynamic indexSettings =
-        //        new
-        //        {
-        //            settings =
-        //                new
-        //                {
-        //                    index =
-        //                    new
-        //                    {
-        //                        number_of_replicas = 1,
-        //                        number_of_shards = 1,
-        //                        analysis = new
-        //                        {
-        //                            filter = filters,
-        //                            analyzer = analyzers
-        //                        }
-        //                    }
-        //                }
-        //        };
-
-        //    var test = Newtonsoft.Json.JsonConvert.SerializeObject(indexSettings);
-
-        //    var request = new RestRequest(branchId, Method.PUT);
-        //    request.RequestFormat = DataFormat.Json;
-        //    request.AddBody(indexSettings);
-        //    IRestResponse res = client.Execute(request);
-        //}
-
         public void CreateEmptyIndex(string branchId) {
-            var request = new RestRequest(branchId, Method.PUT);
-            //System.Dynamic.ExpandoObject snowballAnalyzer = new System.Dynamic.ExpandoObject();
-            //(snowballAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>(){ "standard", "lowercase", "snowball", "my_synonym_filter" }, tokenizer = "standar", language = "English" } );
-            //dynamic indexSettings = 
-            //    new { settings = 
-            //        new { 
-            //            index = 
-            //            new { number_of_replicas = 1, number_of_shards = 1, analysis =
-            //                new { analyzer = 
-            //                    snowballAnalyzer
-            //                }
-            //            }
-            //        }
-            //    };
+            dynamic filters = new {
+                my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" },
+                ngram_filter = new { type = "ngram", min_gram = 2, max_gram = 20, token_chars = new[] { "letter", "digit" } }
+            };
 
-            dynamic filterDynamic = new { my_synonym_filter = new { type = "synonym", synonyms_path = "synonyms.txt" } };
+            // trying to convert this to a dynamic object fails. It causes the name_ngram_analyzed column
+            // to lose its index_analyzer and search_analyzer settings.
             System.Dynamic.ExpandoObject dynamicAnalyzer = new System.Dynamic.ExpandoObject();
-            (dynamicAnalyzer as IDictionary<string, object>).Add("default", new { type = "custom", filter = new List<string>() { "my_synonym_filter", "standard", "lowercase" }, tokenizer = "whitespace" });
-
-
+            (dynamicAnalyzer as IDictionary<string, object>).Add("default", new {
+                                                                                type = "custom",
+                                                                                filter = new List<string>() {
+                                                                                        "my_synonym_filter", 
+                                                                                        "standard", 
+                                                                                        "lowercase"
+                                                                                    },
+                                                                                    tokenizer = "whitespace"
+                                                                                }
+                                                                            );
+            (dynamicAnalyzer as IDictionary<string, object>).Add("whitespace_analyzer", new {
+                                                                                    type = "custom",
+                                                                                    filter = "lowercase",
+                                                                                    tokenizer = "whitespace"
+                                                                                }
+                                                                            );
+            (dynamicAnalyzer as IDictionary<string, object>).Add("ngram_analyzer", new {
+                                                                                    type = "custom",
+                                                                                    filter = new List<string>() {
+                                                                                        "lowercase",
+                                                                                        "ngram_filter"
+                                                                                    },
+                                                                                    tokenizer = "whitespace"
+                                                                                }
+                                                                            );
             dynamic indexSettings =
                 new {
                     settings =
@@ -132,7 +77,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
                                 number_of_replicas = 1,
                                 number_of_shards = 1,
                                 analysis = new {
-                                    filter = filterDynamic,
+                                    filter = filters,
                                     analyzer = dynamicAnalyzer
                                 }
                             }
@@ -141,6 +86,7 @@ namespace KeithLink.Svc.Impl.Repository.InternalCatalog {
 
             var test = Newtonsoft.Json.JsonConvert.SerializeObject(indexSettings);
 
+            var request = new RestRequest(branchId, Method.PUT);
             request.RequestFormat = DataFormat.Json;
             request.AddBody(indexSettings);
             IRestResponse res = client.Execute(request);

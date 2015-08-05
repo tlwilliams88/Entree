@@ -130,6 +130,7 @@
     <Compile Include="Repositories\Catalog\SiteCatalogTests.cs" />
     <Compile Include="Repositories\Catalog\CategoryImageRepositoryTests.cs" />
     <Compile Include="Repositories\ContentManagement\ContentManagementExternalRepositoryImplTests.cs" />
+    <Compile Include="Repositories\InternalCatalog\ElasticSearchRepoTests.cs" />
     <Compile Include="Repositories\Invoices\ImagingRepoTests.cs" />
     <Compile Include="Repositories\OnlinePayments\CustomerBankRepositoryTests.cs" />
     <Compile Include="Repositories\OnlinePayments\KPayInvoiceRepositoryTests.cs" />
