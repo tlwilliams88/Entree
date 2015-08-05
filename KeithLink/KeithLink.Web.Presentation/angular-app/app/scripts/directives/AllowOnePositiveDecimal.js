@@ -16,7 +16,7 @@ angular.module('bekApp')
       function checkValidity(viewValue) {
         if(!viewValue){
         ctrl.$setValidity('allowOnePositiveDecimal', true);
-        return;
+        return true;
         }
         // add a leading zero if value starts with a decimal
         if (typeof viewValue === 'string') {
