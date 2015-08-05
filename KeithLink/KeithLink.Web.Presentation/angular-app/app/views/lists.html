@@ -112,13 +112,13 @@
     Cancel
   </button>
 
-  <button     
+<!--   <button     
   class="btn-no-style page-subheader-bar__button button-left" 
   type="button"
   ng-click="loadEntireList()" 
   ng-if="(selectedList.items|filter:{isdeleted:'false'}).length < selectedList.itemCount">
   Load All
-  </button>    
+  </button>  -->   
    
 <!-- 
   <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__button button-right">
@@ -328,8 +328,8 @@
           </button>
         </div>
       </div><!-- end Multi-select menu -->
-
- <button class="btn-lg btn btn-primary hidden-print pull-right hidden-sm hidden-xs" style="margin-top:5px;"  ng-click="loadEntireList()" ng-disabled="(selectedList.items|filter:{isdeleted:'false'}).length === selectedList.itemCount">Load All</button>
+<!-- 
+ <button class="btn-lg btn btn-primary hidden-print pull-right hidden-sm hidden-xs" style="margin-top:5px;"  ng-click="loadEntireList()" ng-disabled="(selectedList.items|filter:{isdeleted:'false'}).length === selectedList.itemCount">Load All</button> -->
   <div class="row sub-content">
     <div class="col-xs-5 " >         
       <span>{{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected</span>

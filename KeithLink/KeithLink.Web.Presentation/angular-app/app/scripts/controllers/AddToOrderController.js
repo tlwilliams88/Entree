@@ -211,11 +211,11 @@ angular.module('bekApp')
           } 
         };
 
-	$scope.loadEntireList = function() {
-        blockUI.start();
-        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
-        blockUI.stop();       
-  };
+  	// $scope.loadEntireList = function() {
+   //        blockUI.start();
+   //        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
+   //        blockUI.stop();       
+   //  };
 
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
