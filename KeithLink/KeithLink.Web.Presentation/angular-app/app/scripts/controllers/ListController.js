@@ -48,15 +48,24 @@ angular.module('bekApp')
         item.editPosition = item.position;
       });
     }
+    
+    function updateItemPositionWithEditPosition() {
+        $scope.selectedList.items.forEach(function(item) {
+            item.position = item.editPosition;
+        });
+    }
+
     function appendListItems(list) {
       list.items.forEach(function(item) {
         item.editPosition = item.position;
       });
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
     }
+
     function startLoading() {
       $scope.loadingResults = true;
     }
+
     function stopLoading() {
       $scope.loadingResults = false;
     }
@@ -311,6 +320,8 @@ angular.module('bekApp')
       $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
       $scope.selectedList.allSelected = false;
 
+      updateItemPositions();
+
       // load more items if number of items fell below page size
       if ($scope.selectedList.items.length < 30) {
         $scope.infiniteScrollLoadMore();
@@ -459,9 +470,12 @@ angular.module('bekApp')
           newPostion += 1;
         }
       });
+
       if ($scope.listForm && $scope.selectedList.permissions.canReorderItems) {
         $scope.listForm.$setDirty();
       }
+
+      updateItemPositionWithEditPosition();
     }
 
     // reorder list by drag and drop
