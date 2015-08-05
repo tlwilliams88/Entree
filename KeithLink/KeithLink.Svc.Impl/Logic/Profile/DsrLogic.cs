@@ -18,11 +18,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         #endregion
 
+        #region ctor
         public DsrLogic(IDsrRepository dsrRepository, IUnitOfWork unitOfWork)
         {
             _dsrRepository = dsrRepository;
             this.unitOfWork = unitOfWork;
         }
+        #endregion
+        
+        #region methods
 
         public Dsr GetDsr( string branchId, string dsrNumber ) {
             Dsr returnValue = new Dsr();
@@ -86,6 +90,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public void SendImageToMultiDocs( string emailAddress, Byte[] fileBytes ) {
             _dsrRepository.SendImageToMultiDocs( emailAddress, fileBytes );
         }
+
+        #endregion
+
 
         #region Helper Methods
         private string returnDefaultDsrPhone(string branchId)

@@ -122,6 +122,7 @@
     <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicTests.cs" />
     <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
+    <Compile Include="Logic\Dsr\DsrLogicTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
     <Compile Include="Repositories\Mock\BasketRepositoryMock.cs" />
     <Compile Include="Repositories\Mock\UnitOfWorkMock.cs" />
@@ -143,6 +144,8 @@
     <Compile Include="Repositories\Profile\InternalUserDomainRepositoryTests.cs" />
     <Compile Include="Repositories\Profile\CustomerContainerRepositoryTests.cs" />
     <Compile Include="Repositories\Profile\ProfileSettingsRepositoryTest.cs" />
+    <Compile Include="Repositories\Profile\DsrRepositoryTests.cs" />
+    <Compile Include="Repositories\Profile\CustomerRepositoryTest.cs" />
     <Compile Include="Repositories\Profile\UserProfileRepositoryTests.cs" />
     <Compile Include="Repositories\Catalog\ProductImageRepositoryTests.cs" />
     <Compile Include="Repositories\Order\OrderSocketConnectionRepositoryTests.cs" />
