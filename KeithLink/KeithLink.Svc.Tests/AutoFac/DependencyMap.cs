@@ -57,18 +57,19 @@ namespace KeithLink.Svc.Test
 			//*******************************************
 			//Mock Items
 			//*******************************************
-			builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
+			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
 
 			//*******************************************
             //Logic Classes
 			//*******************************************
-			builder.RegisterType<InternalListLogic>().As<IInternalListLogic>();
-			builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
-			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
-            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+			builder.RegisterType<InternalListLogic>().As<IInternalListLogic>();
+            builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
+			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+			builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
 					
 			//*******************************************
 			//Repositories
@@ -102,6 +103,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<AccountRepository>().As<IAccountRepository>();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            builder.RegisterType<MarketingPreferencesRepositoryImpl>().As<IMarketingPreferencesRepository>();
 
 			//Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();

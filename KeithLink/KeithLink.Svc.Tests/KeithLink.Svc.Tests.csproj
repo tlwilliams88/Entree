@@ -117,6 +117,7 @@
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalDivisionLogicTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />
+    <Compile Include="Logic\InternalSrv\InternalMarketingPreferenceLogicImplTests.cs" />
     <Compile Include="Logic\NoCacheRepositoryImpl.cs" />
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />

@@ -118,6 +118,16 @@ namespace KeithLink.Svc.WebApi.Controllers
                 } else {
                     retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
                 }
+
+                MarketingPreferenceModel model = new MarketingPreferenceModel(){
+                    Email = guestInfo.Email,
+                    BranchId = guestInfo.BranchId,
+                    CurrentCustomer = guestInfo.ExistingCustomer,
+                    LearnMore = guestInfo.MarketingFlag,
+                    RegisteredOn = DateTime.Now
+                };
+
+                _marketingPreferencesServicesRepository.CreateMarketingPref(model);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -130,11 +140,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
-		/// <summary>
+
+        /// <summary>
 		/// Create guest and assign a temporary password
 		/// </summary>
 		/// <param name="guestInfo">Guest</param>
 		/// <returns></returns>
+        /// 
 		[Authorize]
 		[HttpPost]
 		[ApiKeyedRoute("profile/admin/user")]
