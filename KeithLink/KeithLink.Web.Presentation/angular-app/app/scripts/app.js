@@ -177,11 +177,11 @@ angular
     size: 50,
     from: 0,
         filter: {
-        field: "mandatory",
-        value: "true",
+        field: 'mandatory',
+        value: 'true',
         filter:[
         {
-        field: "messagereadutc",
+        field: 'messagereadutc',
         value: 'null'
         }
         ]

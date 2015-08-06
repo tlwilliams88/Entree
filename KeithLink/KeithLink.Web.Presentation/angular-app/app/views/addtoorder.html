@@ -185,6 +185,7 @@
         <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
           <tr 
             ng-repeat-start="item in  selectedList.items track by item.listitemid" 
+            post-page-load
             ng-class="{ odd : $odd, even: $even }">
             <td>
               {{::item.position}}
@@ -358,7 +359,7 @@
         </tfoot>
       </table>
     </div>
-  </form>
+  
   <div class="text-center" loading-spinner="loadingResults"></div>
 
   <h3>Other Cart Items</h3>
@@ -477,4 +478,5 @@
         </tr>
       </tfoot>
   </table>
+  </form>
 </div>
