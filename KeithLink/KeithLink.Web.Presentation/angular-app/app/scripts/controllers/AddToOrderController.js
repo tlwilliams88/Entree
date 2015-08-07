@@ -65,14 +65,8 @@ angular.module('bekApp')
 
         // combine cart and list items and total their quantities
     function getCombinedCartAndListItems(cartItems, listItems) {
-      listItems.forEach(function(listItem){
-        if(listItem.isHidden){
-          listItem.isHidden = false;
-        }
-      })
-      
+     
       var items = angular.copy(cartItems.concat(listItems));
-
       // combine quantities if itemnumber is a duplicate
       var newCartItems = [];
       
@@ -80,7 +74,9 @@ angular.module('bekApp')
         var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber);
         item.quantity = parseInt(item.quantity, 10);
         if (duplicateItem) {
-          duplicateItem.quantity += item.quantity;
+          if(item.quantity){
+            duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
+          }
         } else {
           // do not double-count items in both the list and cart
           if (item.isHidden === true) {
@@ -89,18 +85,15 @@ angular.module('bekApp')
           newCartItems.push(item);
         }
       });
-
       // remove items with 0 quantity
       newCartItems = $filter('filter')(newCartItems, function(item) {
         return item.quantity > 0;
       });
-
       return newCartItems;
     }
 
 
      function flagDuplicateCartItems(cartItems, listItems) {
-      console.log('STARTING FLAGDUPLICATECARTITEMS')
       angular.forEach(cartItems, function(cartItem) {
         var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
         if (existingItem) {
@@ -117,37 +110,21 @@ angular.module('bekApp')
             }
           })
 
-          // if(testDuplicates===0 && !$stateParams.listItems){
-           
-          //   if($scope.appendedItems && $scope.appendedItems.length > 0){
-          //     $scope.appendedItems.forEach(function(appendedItem){
-          //       if(appendedItem.listitemid === existingItem.listitemid){
-          //         existingItem.quantity = cartItem.quantity; // set new list item quantity
-          //       }
-          //     });         
-          //   }
-          //   else{
-          //       existingItem.quantity = cartItem.quantity; // set list item quantity
-          //   }
-          // }
-         
           if($scope.appendedItems && $scope.appendedItems.length > 0){
-            var lastDupeInAppendedItems = {};
+            var lastInstanceInAppendedItems = {};
             $scope.appendedItems.forEach(function(appendedItem){
               if(appendedItem.itemnumber === cartItem.itemnumber){
-                lastDupeInAppendedItems = appendedItem;
+                lastInstanceInAppendedItems = appendedItem;
               }
             })
-            if(lastDupeInAppendedItems){
-              lastDupeInAppendedItems.quantity = cartItem.quantity;
+            if(lastInstanceInAppendedItems && lastInstanceInAppendedItems.name){
+              var alreadyAccountedFor = false;
               listItems.forEach(function(listItem){
-                if(listItem.itemnumber === lastDupeInAppendedItems.itemnumber && listItem.listitemid !== lastDupeInAppendedItems.listitemid){
-                if(listItem.quantity && listItem.quantity !== cartItem.quantity){
-                  lastDupeInAppendedItems.quantity = listItem.quantity;
-                }
-                  listItem.quantity = null;
+                if(listItem.itemnumber === lastInstanceInAppendedItems.itemnumber && listItem.listitemid !== lastInstanceInAppendedItems.listitemid){
+                  alreadyAccountedFor = true;
                 }
               })
+              lastInstanceInAppendedItems.quantity = alreadyAccountedFor ? 0 : cartItem.quantity;
             }
           }
           else{
@@ -155,45 +132,19 @@ angular.module('bekApp')
             existingItem.quantity = cartItem.quantity; // set list item quantity
           }
           else{
-            lastDupeInDisplayedList.quantity = cartItem.quantity;
+            $scope.selectedList.items.forEach(function(listItem, index){
+              if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
+                $scope.selectedList.items[index].quantity = cartItem.quantity;
+              }
+            })
           }
         }
-          console.log(cartItem.name+'   '+'hidden')
         } else {
-          console.log(cartItem.name+'   '+'not hidden')
           cartItem.isHidden = false;
         }
       });    
         $scope.appendedItems = [];           
     }
-
-    // function flagDuplicateCartItems(cartItems, listItems) {
-    //   // flag cart items that are in the list
-    //   // hide those cart items from ui
-
-    //   angular.forEach(cartItems, function(cartItem) {
-    //     var duplicateItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
-    //     if (duplicateItem) {          
-    //       var testDuplicates = 0;  
-    //       listItems.forEach(function(item){
-    //         if(item.itemnumber === duplicateItem.itemnumber && item.quantity !== duplicateItem.quantity){
-    //             testDuplicates += item.quantity;
-    //         }
-    //       })
-
-
-    //       if(testDuplicates===0 && !$stateParams.listItems && !$scope.appendingList){
-    //         duplicateItem.quantity = cartItem.quantity; // set list item quantity
-    //       }
-
-    //       cartItem.isHidden = true;
-    //     } else {
-    //       cartItem.isHidden = false;
-    //     }
-    //   });
-    //    $scope.appendedItems = [];  
-    // }
-
 
     function setSelectedCart(cart) {
       $scope.selectedCart = cart;
@@ -489,7 +440,6 @@ angular.module('bekApp')
         processingUpdateCart = true;
         return CartService.updateCart(cart).then(function(updatedCart) {
           setSelectedCart(updatedCart);
-          getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           $scope.addToOrderForm.$setPristine();
 
