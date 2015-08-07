@@ -55,29 +55,102 @@ angular.module('bekApp')
       }
     }
 
-    function flagDuplicateCartItems(cartItems, listItems) {
-      // flag cart items that are in the list
-      // hide those cart items from ui
+    $scope.$watch(function () { 
+      return ListService.loadPage;
+    }, function () {
+     if($stateParams.searchTerm){
+      $scope.filterItems($stateParams.searchTerm);
+     }
+    });
 
-      angular.forEach(cartItems, function(cartItem) {
-        var duplicateItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
+        // combine cart and list items and total their quantities
+    function getCombinedCartAndListItems(cartItems, listItems) {
+      var items = angular.copy(cartItems.concat(listItems));
+      // combine quantities if itemnumber is a duplicate
+      var newCartItems = [];
+      
+      angular.forEach(items, function(item, index) {
+        var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber);
+        item.quantity = parseInt(item.quantity, 10);
         if (duplicateItem) {
-          //testDuplicates will indicate whether or not the ATO page is being displayed after saving or after returning to the page from a state change.
+          if(item.quantity){
+            duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
+          }
+        } else {
+          // do not double-count items in both the list and cart
+          if (item.isHidden === true) {
+            item.quantity = 0;
+          }
+          newCartItems.push(item);
+        }
+      });
+      // remove items with 0 quantity
+      newCartItems = $filter('filter')(newCartItems, function(item) {
+        return item.quantity > 0;
+      });
+      return newCartItems;
+    }
+
+
+     function flagDuplicateCartItems(cartItems, listItems) {
+      angular.forEach(cartItems, function(cartItem) {
+        var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
+        if (existingItem) {
+          cartItem.isHidden = true;
+          // flag cart items that are in the list multiple times
+          // hide those duplicate cart items from ui
+          //$stateParams.listItems and testDuplicates will indicate whether or not the ATO page is being displayed after saving or after returning to the page from a state change.
+          //testDuplicates will tell you if the totals for duplicate items have been combined or not
           var testDuplicates = 0;
-          // 
+          var lastDupeInDisplayedList = {};
           listItems.forEach(function(item){
-            if(item.itemnumber === duplicateItem.itemnumber && item.quantity !== duplicateItem.quantity){
-                testDuplicates += item.quantity;
+            if(item.itemnumber === existingItem.itemnumber){
+                testDuplicates = testDuplicates + 1;
+                lastDupeInDisplayedList = item;
             }
           })
-          if(testDuplicates===0 && !$stateParams.listItems){
-            duplicateItem.quantity = cartItem.quantity; // set list item quantity
+
+          if($scope.appendedItems && $scope.appendedItems.length > 0){
+            var lastInstanceInAppendedItems = {};
+            $scope.appendedItems.forEach(function(appendedItem){
+              if(appendedItem.itemnumber === cartItem.itemnumber){
+                lastInstanceInAppendedItems = appendedItem;
+              }
+            })
+            if(lastInstanceInAppendedItems && lastInstanceInAppendedItems.name){
+              var alreadyAccountedFor = false;
+              listItems.forEach(function(listItem){
+                if(listItem.itemnumber === lastInstanceInAppendedItems.itemnumber && listItem.listitemid !== lastInstanceInAppendedItems.listitemid){
+                  alreadyAccountedFor = true;
+                }
+              })
+              lastInstanceInAppendedItems.quantity = alreadyAccountedFor ? '' : cartItem.quantity;
+            }
           }
-          cartItem.isHidden = true;
+          else{
+          if(testDuplicates===0 && !$stateParams.listItems){
+            existingItem.quantity = cartItem.quantity; // set list item quantity
+          }
+          else{   
+            if(!$stateParams.listItems){
+              $scope.selectedList.items.forEach(function(listItem, index){
+              if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
+                $scope.selectedList.items[index].quantity = '';
+              }
+                if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
+                  $scope.selectedList.items[index].quantity = cartItem.quantity;
+                  $scope.selectedList.items[index].each = cartItem.each;
+                }
+              })
+            }
+          }
+        }
         } else {
           cartItem.isHidden = false;
         }
       });
+        $scope.appendedItems = [];           
+        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     }
 
     function setSelectedCart(cart) {
@@ -86,20 +159,28 @@ angular.module('bekApp')
     }
     function setSelectedList(list) {
       $scope.selectedList = list;
-      flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+      flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);    
+
       if($stateParams.listItems){
-        $scope.selectedList.items.forEach(function(item, index){
-          if($stateParams.listItems[index]){
-            item.quantity = $stateParams.listItems[index].quantity; 
-          }         
-        })
+       $stateParams.listItems.forEach(function(item){
+         $scope.selectedList.items.forEach(function(selectedlistitem){
+          if(item.listitemid === selectedlistitem.listitemid){
+            selectedlistitem.quantity = item.quantity; 
+          }
+         })
+        })       
+       $stateParams.listItems = undefined;
       }
+      getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
       addItemWatches(0);
     }
     function appendListItems(list) {
       var originalItemCount = $scope.selectedList.items.length;
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
+      $scope.appendingList = true;
+      $scope.appendedItems = list.items;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+      getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items); 
       addItemWatches(originalItemCount);
     }
     function startLoading() {
@@ -121,7 +202,11 @@ angular.module('bekApp')
         // create new cart if no cart was selected
         $scope.generateNewCartForDisplay();
       }
-      setSelectedList(selectedList);
+       setSelectedList(selectedList);
+
+      if($stateParams.cartId !== 'New' && $stateParams.searchTerm){
+        $scope.filterItems($stateParams.searchTerm);
+      }
     }
 
     $scope.sort = {
@@ -140,54 +225,79 @@ angular.module('bekApp')
     /**********
     PAGING
     **********/
-    $scope.filterItems = function(searchTerm) {
-      if($scope.addToOrderForm.$pristine){
-        listPagingModel.filterListItems(searchTerm);
-        clearItemWatches(watches);
+    $scope.checkForSearchTerm = function(){
+      if($stateParams.searchTerm){     
+          $scope.filterItems($stateParams.searchTerm);
       }
-      else{
-          var continueSearch = $scope.validateForSave();
-        if(continueSearch){ 
+    }
+    $scope.filterItems = function(searchTerm) {  
+     
+      if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
+        if($stateParams.searchTerm ){
+          $scope.orderSearchTerm = $stateParams.searchTerm;
+        }
+        listPagingModel.filterListItems(searchTerm);
+        $stateParams.searchTerm = '';
+        clearItemWatches(watches);
+        flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+        getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
+      }
+      else{      
+          $scope.validateAndSave().then(function(resp){
+           var continueSearch = resp;
+     
+        if(continueSearch){           
           $scope.addToOrderForm.$setPristine();    
           listPagingModel.filterListItems(searchTerm);
           clearItemWatches(watches);
-        }          
+          flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+          getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
+        }  
+        })      
       }   
     };
 
-    $scope.validateForSave = function(){
+    $scope.validateAndSave = function(){
       if($scope.addToOrderForm.$invalid){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
       }
-      else{             
-           $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);           
-           return true;            
+      else{  
+          if($scope.selectedCart.id === 'New'){
+             $scope.createFromSearch = true;
+          }           
+          return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
       }      
     };
 
     $scope.clearFilter = function(){  
       if($scope.addToOrderForm.$pristine){
          $scope.orderSearchTerm = '';
-      $scope.filterItems( $scope.orderSearchTerm);  
+         $stateParams.searchTerm = '';
+        $scope.filterItems( $scope.orderSearchTerm);
     }
     else{
-      var clearSearchTerm = $scope.validateForSave();
-      if(clearSearchTerm){       
+       $scope.validateAndSave().then(function(resp){
+        var clearSearchTerm = resp;
+       
+      if(clearSearchTerm){
+        flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+        getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)      
         $scope.orderSearchTerm = '';
-        $scope.filterItems( $scope.orderSearchTerm);   
-      }           
+        $stateParams.searchTerm = '';
+        $scope.filterItems($scope.orderSearchTerm);
+      } 
+      })
     }
     angular.element(orderSearchForm.searchBar).focus();
     };
   
 
-      Mousetrap.bind(['alt+x', 'option+x'], function(e) {  
-        $scope.clearFilter();
+      Mousetrap.bind(['alt+x', 'option+x'], function(e) { 
+        $scope.clearFilter();        
       });
 
       Mousetrap.bind(['alt+s', 'option+s'], function(e) {
-
         $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
       });
 
@@ -211,11 +321,11 @@ angular.module('bekApp')
           } 
         };
 
-  	// $scope.loadEntireList = function() {
-   //        blockUI.start();
-   //        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
-   //        blockUI.stop();       
-   //  };
+	// $scope.loadEntireList = function() {
+ //        blockUI.start();
+ //        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
+ //        blockUI.stop();       
+ //  };
 
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
@@ -267,6 +377,10 @@ angular.module('bekApp')
             allSets.push(orderList);
           }
         }
+       var searchTerm = '';
+        if($scope.orderSearchTerm && $scope.createFromSearch){
+         var searchTerm = $scope.orderSearchTerm;
+        }
 
         LocalStorage.setLastOrderList(allSets);
 
@@ -277,8 +391,8 @@ angular.module('bekApp')
       else{
         sameListItems = undefined;
       }
-        var  continueToCart = $scope.continueToCart
-      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel, continueToCart: continueToCart, listItems: sameListItems});
+        var continueToCart = $scope.continueToCart
+      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel, continueToCart: continueToCart, listItems: sameListItems, searchTerm: searchTerm})
     };
 
     /**********
@@ -323,41 +437,13 @@ angular.module('bekApp')
     FORM EVENTS
     **********/
 
-    // combine cart and list items and total their quantities
-    function getCombinedCartAndListItems(cartItems, listItems) {
-      
-      var items = angular.copy(cartItems.concat(listItems));
 
-      // combine quantities if itemnumber is a duplicate
-      var newCartItems = [];
-      
-      angular.forEach(items, function(item, index) {
-        var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber);
-        item.quantity = parseInt(item.quantity, 10);
-        if (duplicateItem) {
-          duplicateItem.quantity += item.quantity;
-        } else {
-          // do not double-count items in both the list and cart
-          if (item.isHidden === true) {
-            item.quantity = 0;
-          }
-          newCartItems.push(item);
-        }
-      });
-
-      // remove items with 0 quantity
-      newCartItems = $filter('filter')(newCartItems, function(item) {
-        return item.quantity > 0;
-      });
-
-      return newCartItems;
-    }
 
     var processingUpdateCart = false; 
     function updateCart(cart) {
       if (!processingUpdateCart) {
         processingUpdateCart = true;
-        CartService.updateCart(cart).then(function(updatedCart) {          
+        return CartService.updateCart(cart).then(function(updatedCart) {
           setSelectedCart(updatedCart);
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           $scope.addToOrderForm.$setPristine();
@@ -373,6 +459,8 @@ angular.module('bekApp')
           else{
             $scope.displayMessage('success', 'Successfully Saved Cart ' + updatedCart.name + '.');
            }
+           processingUpdateCart = false
+           return updatedCart; 
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function() {
@@ -384,19 +472,21 @@ angular.module('bekApp')
       }
     }
 
-    var processingSaveCart = false;
+    
     function createNewCart(items, shipDate, name) {
       $analytics.eventTrack('Create Order', {  category: 'Orders', label: 'From List' });
       if (!processingSaveCart) {
-        processingSaveCart = true;
-        CartService.createCart(items, shipDate, name).then(function(cart) {
-          $scope.addToOrderForm.$setPristine();
+        var processingSaveCart = true;
+        return CartService.createCart(items, shipDate, name).then(function(cart) {
+          $scope.addToOrderForm.$setPristine();          
           $scope.redirect($scope.selectedList.listid, cart);
-          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
+          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');          
+          return cart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function(){
           processingSaveCart = false;
+          $scope.createFromSearch = false;         
         });
       }
     }
@@ -406,7 +496,7 @@ angular.module('bekApp')
       if (!processingSaveChangeOrder) {
         processingSaveChangeOrder = true;
 
-        OrderService.updateOrder(order).then(function(cart) {
+        return OrderService.updateOrder(order).then(function(cart) {
           setSelectedCart(cart);
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
@@ -416,16 +506,19 @@ angular.module('bekApp')
           $state.go('menu.cart.items', {cartId: order.ordernumber});
           }
           var newItemCount = cart.items.length - $scope.origItemCount;
-          $scope.origItemCount = cart.items.length;
+          $scope.origItemCount = cart.items.length;
 
-          if(newItemCount > 0){
-            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Order # ' + order.invoicenumber + '.');
-          }else if(newItemCount < 0){
-            $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Order # ' + order.invoicenumber + '.');
-          }
-          else{
-            $scope.displayMessage('success', 'Successfully Saved Order ' + order.invoicenumber + '.');
-          }
+          if(newItemCount > 0){
+            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Order # ' + order.invoicenumber + '.');
+          }else if(newItemCount < 0){
+            $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Order # ' + order.invoicenumber + '.');
+          }
+          else{
+            $scope.displayMessage('success', 'Successfully Saved Order ' + order.invoicenumber + '.');
+          }
+
+          processingSaveChangeOrder = false;
+          return cart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to change order.');
         }).finally(function() {
@@ -442,6 +535,11 @@ angular.module('bekApp')
       $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
     }
 
+    $scope.saveAndRetainQuantity = function(){
+      $stateParams.listItems = $scope.selectedList.items;
+      $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+    }
+
     $scope.updateOrderClick = function(list, cart) {
       clearItemWatches(cartWatches);
       var cartItems = getCombinedCartAndListItems(cart.items, list.items);
@@ -450,14 +548,15 @@ angular.module('bekApp')
       var updatedCart = angular.copy(cart);
       updatedCart.items = cartItems;
 
-      if (cartItems && cartItems.length > 0) {
+      if ((cartItems && cartItems.length > 0) || $scope.addToOrderForm.$dirty){
         if ($scope.isChangeOrder) {
-          updateChangeOrder(updatedCart);
+         return updateChangeOrder(updatedCart);         
         } else {
           if (updatedCart && updatedCart.id && updatedCart.id !== 'New') {
-            updateCart(updatedCart);
+            return updateCart(updatedCart);            
+      
           } else {
-            createNewCart(cartItems, updatedCart.requestedshipdate, updatedCart.name);
+            return createNewCart(cartItems, updatedCart.requestedshipdate, updatedCart.name);
           }
         }
       }
