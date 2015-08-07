@@ -400,7 +400,7 @@ namespace KeithLink.Svc.Impl.Logic
                         if (product.CaseOnly) {
 						    results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
                         } else if (product.PackagePriceNumeric > 0) {
-                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
                         } else {
                             results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
                         }
