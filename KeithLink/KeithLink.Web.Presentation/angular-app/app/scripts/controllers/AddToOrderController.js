@@ -65,7 +65,6 @@ angular.module('bekApp')
 
         // combine cart and list items and total their quantities
     function getCombinedCartAndListItems(cartItems, listItems) {
-     
       var items = angular.copy(cartItems.concat(listItems));
       // combine quantities if itemnumber is a duplicate
       var newCartItems = [];
@@ -124,7 +123,7 @@ angular.module('bekApp')
                   alreadyAccountedFor = true;
                 }
               })
-              lastInstanceInAppendedItems.quantity = alreadyAccountedFor ? 0 : cartItem.quantity;
+              lastInstanceInAppendedItems.quantity = alreadyAccountedFor ? '' : cartItem.quantity;
             }
           }
           else{
@@ -133,9 +132,13 @@ angular.module('bekApp')
           }
           else{
             $scope.selectedList.items.forEach(function(listItem, index){
+            if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
+              $scope.selectedList.items[index].quantity = '';
+            }
               if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
                 $scope.selectedList.items[index].quantity = cartItem.quantity;
               }
+
             })
           }
         }
@@ -143,7 +146,7 @@ angular.module('bekApp')
           cartItem.isHidden = false;
         }
       });    
-        $scope.appendedItems = [];           
+        $scope.appendedItems = [];
     }
 
     function setSelectedCart(cart) {
@@ -287,12 +290,10 @@ angular.module('bekApp')
   
 
       Mousetrap.bind(['alt+x', 'option+x'], function(e) { 
-        $scope.clearFilter();
-        return
+        $scope.clearFilter();        
       });
 
       Mousetrap.bind(['alt+s', 'option+s'], function(e) {
-
         $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
       });
 
@@ -316,11 +317,11 @@ angular.module('bekApp')
           } 
         };
 
-	$scope.loadEntireList = function() {
-        blockUI.start();
-        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
-        blockUI.stop();       
-  };
+	// $scope.loadEntireList = function() {
+ //        blockUI.start();
+ //        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
+ //        blockUI.stop();       
+ //  };
 
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
@@ -491,7 +492,7 @@ angular.module('bekApp')
       if (!processingSaveChangeOrder) {
         processingSaveChangeOrder = true;
 
-        OrderService.updateOrder(order).then(function(cart) {
+        return OrderService.updateOrder(order).then(function(cart) {
           setSelectedCart(cart);
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
@@ -512,6 +513,7 @@ angular.module('bekApp')
             $scope.displayMessage('success', 'Successfully Saved Order ' + order.invoicenumber + '.');
           }
 
+          processingSaveChangeOrder = false;
           return cart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to change order.');
