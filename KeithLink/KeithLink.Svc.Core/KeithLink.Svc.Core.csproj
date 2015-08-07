@@ -232,7 +232,7 @@
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
-    <Compile Include="Interface\Profile\ISettingsLogic.cs" />
+    <Compile Include="Interface\Profile\ISettingsLogicImpl.cs" />
     <Compile Include="Interface\Profile\ISettingsRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
@@ -559,6 +559,9 @@
     <Folder Include="Helpers\" />
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

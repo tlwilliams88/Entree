@@ -129,7 +129,6 @@ namespace KeithLink.Svc.Test.Repositories.Profile
             {
                 Assert.Fail("UpdateProfileSetting failed: Deleted setting still exists");
             }
-
         }
 
         [TestMethod]

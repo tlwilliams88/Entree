@@ -9,11 +9,9 @@ using KeithLink.Svc.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
-    public class SettingsLogicImpl : ISettingsLogic {
+    public class SettingsLogicImpl : ISettingsLogicImpl {
 
         #region attributes 
 
@@ -32,7 +30,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #endregion
 
         #region methods / functions
-
+        /// <summary>
+        /// Finds all the settings for the customer.
+        /// </summary>
+        /// <param name="userId">Guid - userId</param>
+        /// <returns>A collection (list) of SettingModel objects.</returns>
         public List<SettingsModel> GetAllUserSettings( Guid userId ) {
             List<SettingsModel> returnValue = new List<SettingsModel>();
 
@@ -45,8 +47,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return returnValue;
         }
 
+        /// <summary>
+        /// Creates or Updates the passed in Settings Model
+        /// </summary>
+        /// <param name="settings"></param>
         public void CreateOrUpdateSettings( SettingsModel settings ) {
-            KeithLink.Svc.Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
+            Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
 
             _repo.CreateOrUpdate( mySettings );
             _uow.SaveChanges();
@@ -54,13 +60,30 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public void DeleteSettings(SettingsModel settings)
         {
-            KeithLink.Svc.Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
+            Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
 
             _repo.Delete(mySettings);
             _uow.SaveChanges();
         }
 
-        #endregion
+        /// <summary>
+        /// This creates a default setting when a user is created.
+        /// </summary>
+        public void CreateDefaultSettings(Guid userId)
+        {
+            Core.Models.Profile.EF.Settings settings = new Core.Models.Profile.EF.Settings();
+            
+            // Create ItemsPerPage setting
+            settings.Key = "ItemsPerPage";
+            settings.Value = "50";
+            _repo.CreateOrUpdate(settings);
 
+            // TODO: Create other defaults as they become available.
+
+            // Save the repository
+            _uow.SaveChanges();
+
+        }
+        #endregion
     }
 }

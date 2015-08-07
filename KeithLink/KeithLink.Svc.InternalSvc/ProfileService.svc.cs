@@ -20,11 +20,11 @@ namespace KeithLink.Svc.InternalSvc
         private readonly IInternalPasswordResetLogic _passwordResetLogic;
         private readonly IDsrAliasLogic _aliasLogic;
 		private readonly IInternalMarketingPreferenceLogic _marketingPrefLogic;
-        private readonly ISettingsLogic _settingsLogic;
+        private readonly ISettingsLogicImpl _settingsLogic;
         #endregion
 
         #region ctor
-        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic, IInternalMarketingPreferenceLogic marketingPrefLogic, ISettingsLogic settingsLogic)
+        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic, IInternalMarketingPreferenceLogic marketingPrefLogic, ISettingsLogicImpl settingsLogic)
 		{
 			_passwordResetLogic = passwordResetLogic;
             _aliasLogic = dsrAliasLogic;

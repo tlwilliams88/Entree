@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
-    public interface ISettingsLogic {
+    public interface ISettingsLogicImpl {
         List<SettingsModel> GetAllUserSettings( Guid userId );
         void CreateOrUpdateSettings( SettingsModel settings );
         void DeleteSettings(SettingsModel settings);
