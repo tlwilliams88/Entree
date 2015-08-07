@@ -13,7 +13,7 @@ angular.module('bekApp').factory('PagingModel', ['Constants', function (Constant
   //   size: Constants.infiniteScrollPageSize,
   //   from: 0,
   //   sort: [{
-  //     field: 'messagecreatedutc',
+  //     field: 'messagecreated',
   //     order: 'desc'
   //   }],
   //   filter: {

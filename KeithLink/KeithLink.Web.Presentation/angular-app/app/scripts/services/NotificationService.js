@@ -44,7 +44,7 @@ angular.module('bekApp')
               notification.displayType = 'Mail';
               break;
             }
-            if(notification.mandatory && $filter('filter')(Service.mandatoryMessages, {id: notification.id}).length === 0 && !notification.messagereadutc){
+            if(notification.mandatory && $filter('filter')(Service.mandatoryMessages, {id: notification.id}).length === 0 && !notification.messageread){
              Service.mandatoryMessages.push(notification);
             }
           });
@@ -56,8 +56,8 @@ angular.module('bekApp')
         var unreadMessages = [];
 
         angular.forEach(messages, function(message) {
-          if (!message.messagereadutc) {
-            message.messagereadutc = new Date();
+          if (!message.messageread) {
+            message.messageread = new Date();
             unreadMessages.push(message);
           }
         });
