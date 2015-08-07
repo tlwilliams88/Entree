@@ -118,13 +118,11 @@
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />
     <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />
-    <Compile Include="Logic\Profile\ProfileSettingsLogicImplTests.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicTests.cs" />
     <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
     <Compile Include="Logic\Dsr\DsrLogicTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
     <Compile Include="Repositories\Mock\BasketRepositoryMock.cs" />
-    <Compile Include="Repositories\Mock\ProfileSettingsMock.cs" />
     <Compile Include="Repositories\Mock\UnitOfWorkMock.cs" />
     <Compile Include="PowerMenu\PowerMenuRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -187,7 +185,9 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Logic\Profile\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\confirmation_file.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
