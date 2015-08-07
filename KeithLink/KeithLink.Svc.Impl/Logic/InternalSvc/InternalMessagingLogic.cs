@@ -170,7 +170,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var userMessages = userMessageRepository.ReadUserMessages(user).ToList();
 
-			return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreatedUtc");
+			return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
 
 			//var returnValue = new PagedResults<UserMessageModel>();
 
