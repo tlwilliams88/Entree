@@ -132,18 +132,17 @@ angular.module('bekApp')
             existingItem.quantity = cartItem.quantity; // set list item quantity
           }
           else{   
-          if(!$stateParams.listItems){
-            $scope.selectedList.items.forEach(function(listItem, index){
-            if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
-              $scope.selectedList.items[index].quantity = '';
-            }
-              if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
-                $scope.selectedList.items[index].quantity = cartItem.quantity;
-                $scope.selectedList.items[index].each = cartItem.each;
+            if(!$stateParams.listItems){
+              $scope.selectedList.items.forEach(function(listItem, index){
+              if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
+                $scope.selectedList.items[index].quantity = '';
               }
-            })
-          }       
-       
+                if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
+                  $scope.selectedList.items[index].quantity = cartItem.quantity;
+                  $scope.selectedList.items[index].each = cartItem.each;
+                }
+              })
+            }
           }
         }
         } else {
@@ -549,7 +548,7 @@ angular.module('bekApp')
       var updatedCart = angular.copy(cart);
       updatedCart.items = cartItems;
 
-      if (cartItems && cartItems.length > 0) {
+      if ((cartItems && cartItems.length > 0) || $scope.addToOrderForm.$dirty){
         if ($scope.isChangeOrder) {
          return updateChangeOrder(updatedCart);         
         } else {
