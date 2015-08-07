@@ -139,6 +139,7 @@ angular.module('bekApp')
             }
               if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
                 $scope.selectedList.items[index].quantity = cartItem.quantity;
+                $scope.selectedList.items[index].each = cartItem.each;
               }
             })
           }       
