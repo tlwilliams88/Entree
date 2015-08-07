@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
-    public class NoSettingsLogicImpl : ISettingsLogic {
+    public class NoSettingsLogicImpl : ISettingsLogicImpl {
 
         public List<SettingsModel> GetAllUserSettings( Guid userId ) {
             throw new NotImplementedException();

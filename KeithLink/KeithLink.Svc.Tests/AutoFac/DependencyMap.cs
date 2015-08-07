@@ -75,8 +75,9 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+            
 		
 			//*******************************************
 			//Repositories

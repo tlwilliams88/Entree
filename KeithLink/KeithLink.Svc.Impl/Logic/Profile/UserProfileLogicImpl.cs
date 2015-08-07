@@ -1,11 +1,12 @@
 ﻿using CommerceServer.Foundation;
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
@@ -15,15 +16,15 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.SingleSignOn;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.PowerMenu;
-using KeithLink.Svc.Core.Extensions.PowerMenu;
-using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.SingleSignOn;
 
 using System;
 using System.Collections.Generic;
@@ -34,8 +35,6 @@ using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -65,7 +64,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IGenericQueueRepository _queue;
         private IDsrAliasService _dsrAliasService;
 		private IPasswordResetService _passwordService;
-        private ISettingsLogic _settingsLogic;
+        private ISettingsLogicImpl _settingsLogic;
         #endregion
 
         #region ctor
@@ -74,7 +73,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                     IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, 
                                     IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog,
 									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService, 
-                                    ISettingsLogic settingsLogic)
+                                    ISettingsLogicImpl settingsLogic)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;

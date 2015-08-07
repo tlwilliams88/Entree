@@ -232,7 +232,7 @@
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
-    <Compile Include="Interface\Profile\ISettingsLogic.cs" />
+    <Compile Include="Interface\Profile\ISettingsLogicImpl.cs" />
     <Compile Include="Interface\Profile\ISettingsRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />

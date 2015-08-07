@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.Profile;
+﻿using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class DsrLogic : IDsrLogic {
