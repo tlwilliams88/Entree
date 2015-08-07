@@ -71,7 +71,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             {
                 var currentUserMessage = userMessageRepository.Read(a => a.Id.Equals(userMessage.Id)).FirstOrDefault();
                 //update message read date
-                currentUserMessage.MessageReadUtc = userMessage.MessageReadUtc;
+                currentUserMessage.MessageReadUtc = userMessage.MessageRead.HasValue ? userMessage.MessageRead.Value.ToUniversalTime() : userMessage.MessageRead;
             }
             unitOfWork.SaveChanges();
         }
