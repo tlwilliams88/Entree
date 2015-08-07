@@ -233,7 +233,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 								NotificationType = NotificationType.Mail
 							});
 					}
-
 				}
 			}
 
