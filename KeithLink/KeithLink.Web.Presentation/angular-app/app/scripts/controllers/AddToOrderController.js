@@ -146,7 +146,9 @@ angular.module('bekApp')
           cartItem.isHidden = false;
         }
       });    
-        $scope.appendedItems = [];
+
+        $scope.appendedItems = [];           
+        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     }
 
     function setSelectedCart(cart) {
