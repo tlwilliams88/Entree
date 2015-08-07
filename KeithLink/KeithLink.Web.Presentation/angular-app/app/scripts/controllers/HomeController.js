@@ -90,7 +90,7 @@ angular.module('bekApp')
       size: 6,
       from:0,
       sort: [{
-        field: 'messagecreatedutc',
+        field: 'messagecreated',
         order: 'desc'
       }]
     };
@@ -101,7 +101,7 @@ angular.module('bekApp')
         notificationDates ={},
         dates = [];
         notifications.forEach(function(notification){
-         var date = moment(notification.messagecreatedutc).format('YYYY-MM-DD');
+         var date = moment(notification.messagecreated).format('YYYY-MM-DD');
          if(notificationDates[date]){
           notificationDates[date].push(notification);
           }
