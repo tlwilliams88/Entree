@@ -99,7 +99,8 @@ angular.module('bekApp')
           cartItem.isHidden = true;
           // flag cart items that are in the list multiple times
           // hide those duplicate cart items from ui
-          //$stateParams.listItems will indicate whether or not the ATO page is being displayed after saving or after returning to the page from a state change.
+          //$stateParams.listItems and testDuplicates will indicate whether or not the ATO page is being displayed after saving or after returning to the page from a state change.
+          //testDuplicates will tell you if the totals for duplicate items have been combined or not
           var testDuplicates = 0;
           var lastDupeInDisplayedList = {};
           listItems.forEach(function(item){
@@ -130,7 +131,8 @@ angular.module('bekApp')
           if(testDuplicates===0 && !$stateParams.listItems){
             existingItem.quantity = cartItem.quantity; // set list item quantity
           }
-          else{
+          else{   
+          if(!$stateParams.listItems){
             $scope.selectedList.items.forEach(function(listItem, index){
             if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
               $scope.selectedList.items[index].quantity = '';
@@ -138,15 +140,15 @@ angular.module('bekApp')
               if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
                 $scope.selectedList.items[index].quantity = cartItem.quantity;
               }
-
             })
+          }       
+       
           }
         }
         } else {
           cartItem.isHidden = false;
         }
-      });    
-
+      });
         $scope.appendedItems = [];           
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     }
@@ -157,7 +159,8 @@ angular.module('bekApp')
     }
     function setSelectedList(list) {
       $scope.selectedList = list;
-      flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+      flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);    
+
       if($stateParams.listItems){
        $stateParams.listItems.forEach(function(item){
          $scope.selectedList.items.forEach(function(selectedlistitem){
@@ -165,11 +168,10 @@ angular.module('bekApp')
             selectedlistitem.quantity = item.quantity; 
           }
          })
-        })
+        })       
        $stateParams.listItems = undefined;
       }
-
-      getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);      
+      getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
       addItemWatches(0);
     }
     function appendListItems(list) {
@@ -530,6 +532,11 @@ angular.module('bekApp')
 
     $scope.saveAndContinue = function(){
       $scope.continueToCart = true;
+      $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+    }
+
+    $scope.saveAndRetainQuantity = function(){
+      $stateParams.listItems = $scope.selectedList.items;
       $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
     }
 

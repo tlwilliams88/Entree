@@ -7,7 +7,7 @@
   </div>
   <div header-buttons ng-hide="invalidParams">
     <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ui-sref="menu.home">Cancel Order</button>
-    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Save</button>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity()" ng-disabled="addToOrderForm.$invalid">Save</button>
     <a class="btn-lg btn btn-default pull-right-sm hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
     <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
   </div>
