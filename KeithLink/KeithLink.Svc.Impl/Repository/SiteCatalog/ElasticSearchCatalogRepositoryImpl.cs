@@ -63,7 +63,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         new List<string>() { "categoryname_not_analyzed", "parentcategoryname_not_analyzed", "categoryid", "parentcategoryid" } } };
         }
 
-        private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category="") {
+        private dynamic BuildFilterTerms(string facetFilters, UserSelectedContext catalogInfo, string category = "", string department = "") {
             List<dynamic> mustClause = new List<dynamic>();
             string facetSeparator = "___";
             string[] facets = facetFilters.Split(new string[] { facetSeparator }, StringSplitOptions.RemoveEmptyEntries);
@@ -83,7 +83,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 				mustClause.Add(new { query_string = new { query = string.Format("isproprietary:false OR (isproprietary:true AND proprietarycustomers: {0})", catalogInfo.CustomerId) } });
 			else
 				mustClause.Add(new { match = new { isproprietary = false } }); //No CustomerId (Guest), filter out all proprietary items
-            
+
+            if (!string.IsNullOrEmpty(department)) {
+                mustClause.Add(new { match = new { @department = department } });
+            }
+
             if (!String.IsNullOrEmpty(category))
                 mustClause.Add(BuildCategoryFilter(category));
 
@@ -96,10 +100,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         }
         
-        private dynamic BuildFunctionScoreQuery(int from, int size, string sortField, string sortDir, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
+        private dynamic BuildFunctionScoreQuery(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
             return new {
-                from = from,
-                size = size,
+                from = searchModel.From,
+                size = searchModel.Size,
                 query = new {
                     function_score = new {
                         query = new {
@@ -119,7 +123,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         boost_mode = "replace"
                     }
                 },
-                sort = BuildSort(sortField, sortDir),
+                sort = BuildSort(searchModel.SField, searchModel.SDir),
                 aggregations = ElasticSearchAggregations
             };
         }
@@ -259,7 +263,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
 
-            dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
+            dynamic categorySearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, new List<string>() { "brand_control_label" }, brandControlLabel);
 
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", categorySearchExpression);
         }
@@ -287,7 +291,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             //List<string> childCategories = 
             //    GetCategories(0, Configuration.DefaultCategoryReturnSize).Categories.Where(c => c.Id.Equals(category, StringComparison.CurrentCultureIgnoreCase)).SelectMany(s => s.SubCategories.Select(i => i.Id)).ToList();
 
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, category);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, category: category);
 
             //string categorySearch = (childCategories.Count == 0 ? category : String.Join(" OR ", childCategories.ToArray()));
 
@@ -314,7 +318,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
-            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
 
             string termSearch = search;
             List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
@@ -327,7 +331,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 termSearch = String.Join(" OR ", digitSearchTerms);
             }
 
-            dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, fieldsToSearch, termSearch);
+            dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
             return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", termSearchExpression);
         }

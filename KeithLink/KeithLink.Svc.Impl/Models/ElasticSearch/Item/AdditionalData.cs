@@ -109,6 +109,9 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         [JsonProperty("itemclass")]
         public string ItemClass { get; set; }
 
+        [JsonProperty("department")]
+        public string Department { get; set; }
+
         [JsonProperty("catmgr")]
         public string CatMgr { get; set; }
 

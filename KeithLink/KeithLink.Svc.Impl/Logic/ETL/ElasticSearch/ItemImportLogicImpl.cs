@@ -342,6 +342,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
             data.CategoryName = row.GetString("CategoryName");
             data.CategoryNameNotAnalyzed = row.GetString("CategoryName");
             data.CatMgr = row.GetString("CatMgr");
+            data.Department = row.GetString("Class").Length == 0 ? string.Empty : row.GetString("Class").Substring(0, 1);
             data.Description = Regex.Replace(row.GetString("Description"), @"[^0-9a-zA-Z /\~!@#$%^&*()_]+?", string.Empty);
             data.CaseOnly = row.GetString("ICSEOnly");
             data.ItemClass = row.GetString("Class");

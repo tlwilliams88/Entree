@@ -312,7 +312,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                                                              new SearchInputModel() { 
                                                                 Facets = searchModel.Facets, 
                                                                 From = searchModel.From, 
-                                                                Size = Configuration.MaxSortByPriceItemCount 
+                                                                Size = Configuration.MaxSortByPriceItemCount,
+                                                                Dept = searchModel.Dept
                                                                 }
                                                             );
             else
