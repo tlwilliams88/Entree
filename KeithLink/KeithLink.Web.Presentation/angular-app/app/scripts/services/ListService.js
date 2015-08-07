@@ -332,9 +332,9 @@ angular.module('bekApp')
 
           newList.items = newItems.map(Service.remapItems);
 
-          if (params.isMandatory === true) {
+          if (params.type === 9) {
             newList.name = 'Mandatory';
-          } else if (params.isRecommended === true) {
+          } else if (params.type === 10) {
             newList.name = 'Recommended';
           } else if (params.name != null) {
             newList.name = params.name;
@@ -607,7 +607,8 @@ angular.module('bekApp')
         *****************************/
 
         createMandatoryList: function(items) {
-          var params = { isMandatory: true };
+          // Type 9 == Mandatory 
+          var params = { type: 9 };
           return Service.createList(items, params);
         },
 
@@ -629,7 +630,8 @@ angular.module('bekApp')
         ***********************/
 
         createRecommendedList: function(items) {
-          var params = { isRecommended: true };
+          // Type = 10 - Recommended list type that needs to be passed in
+          var params = { type: 10 };
           return Service.createList(items, params);
         },
 
