@@ -19,13 +19,15 @@ namespace KeithLink.Svc.InternalSvc
         #region attribuites
         private readonly IInternalPasswordResetLogic _passwordResetLogic;
         private readonly IDsrAliasLogic _aliasLogic;
+		private readonly IInternalMarketingPreferenceLogic _marketingPrefLogic;
         #endregion
 
         #region ctor
-        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic)
+        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic, IInternalMarketingPreferenceLogic marketingPrefLogic)
 		{
 			_passwordResetLogic = passwordResetLogic;
             _aliasLogic = dsrAliasLogic;
+			_marketingPrefLogic = marketingPrefLogic;
 		}
         #endregion
 
@@ -34,27 +36,37 @@ namespace KeithLink.Svc.InternalSvc
             return _aliasLogic.CreateDsrAlias(userId, email, dsr);
         }
 
+        public void CreateMarketingPref(MarketingPreferenceModel preference)
+		{
+			_marketingPrefLogic.CreateMarketingPreference(preference);
+		}
+
         public void DeleteDsrAlias(long dsrAliasId, string email) {
             _aliasLogic.DeleteDsrAlias(dsrAliasId, email);
         }
-
-        public void GeneratePasswordResetRequest(string email) {
-			_passwordResetLogic.GeneratePasswordResetLink(email);
-		}
 
 		public void GeneratePasswordForNewUser(string email)
 		{
 			_passwordResetLogic.GenerateNewUserPasswordLink(email);
 		}
 		
-		public bool IsTokenValid(string token) {
-			return _passwordResetLogic.IsTokenValid(token);
+        public void GeneratePasswordResetRequest(string email) {
+			_passwordResetLogic.GeneratePasswordResetLink(email);
 		}
 
 		public List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId)
 		{
             return _aliasLogic.GetAllDsrAliasesByUserId(userId);
         }
+
+        public bool IsTokenValid(string token) {
+			return _passwordResetLogic.IsTokenValid(token);
+		}
+
+		public List<MarketingPreferenceModel> ReadMarketingPreferences(DateTime from, DateTime to)
+		{
+			return _marketingPrefLogic.ReadMarketingPreferences(from, to);
+		}
 
 		public bool ResetPassword(Core.Models.Profile.ResetPasswordModel resetPassword) {
 			return _passwordResetLogic.ResetPassword(resetPassword);

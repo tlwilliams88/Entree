@@ -12,8 +12,8 @@
   DTS:LocaleID="1033"
   DTS:ObjectName="ETLProcess_QA"
   DTS:PackageType="5"
-  DTS:VersionBuild="344"
-  DTS:VersionGUID="{EED9D09F-F72A-40ED-80F6-51D2798E4F15}">
+  DTS:VersionBuild="346"
+  DTS:VersionGUID="{AFBC347D-9B64-4264-AE5B-643CB4DC6F58}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\bidContractDetail.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\bidContractDetail.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -139,7 +139,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\bidContractHeader.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\bidContractHeader.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\customerFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -223,7 +223,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="Action"
-              DTS:DTSID="{ED611831-3CB9-4474-AA05-F1FF8C055F72}"
+              DTS:DTSID="{1F9D95A2-5B47-45C3-BCC1-5ACE68450524}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -231,7 +231,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CO"
-              DTS:DTSID="{37E2BCB7-4B70-4B8D-B5FF-A480AC17C5F4}"
+              DTS:DTSID="{46F9D5D3-E784-4EA4-AC75-301340977A2D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -239,7 +239,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DIV"
-              DTS:DTSID="{ABC8F2FF-9553-4162-BC92-38C6648DBB97}"
+              DTS:DTSID="{703E60B1-98EC-4178-8B2E-C523E3EB35D0}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -247,7 +247,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="DEPT"
-              DTS:DTSID="{24E7FA9E-47E7-4D96-A929-1A0964224DB5}"
+              DTS:DTSID="{E2B76BB1-3B00-469E-9DFB-F4D8D3C29237}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -255,7 +255,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="CustomerNumber"
-              DTS:DTSID="{ED83AE0B-A47F-48D2-942C-0669B2A7EC57}"
+              DTS:DTSID="{D8FE8C47-0FA7-420B-857E-3679AD8BFA28}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -263,7 +263,7 @@
               DTS:MaximumWidth="40"
               DTS:DataType="129"
               DTS:ObjectName="CustomerName"
-              DTS:DTSID="{5B1DE5BC-F5E0-446E-A588-BB3AD70F2B42}"
+              DTS:DTSID="{1A0DDFBF-A6A2-40DC-81B6-15189652EA76}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -271,7 +271,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address1"
-              DTS:DTSID="{2B65C5A2-57F6-453E-8B12-72512038D8D8}"
+              DTS:DTSID="{04723B98-0687-4D27-A6EC-6C4B1D98C55C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -279,7 +279,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Address2"
-              DTS:DTSID="{4991653B-559E-4697-9E27-D97C0F508E44}"
+              DTS:DTSID="{943FB13A-F3BE-4C3B-8D8D-E9325625AB9D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -287,7 +287,7 @@
               DTS:MaximumWidth="30"
               DTS:DataType="129"
               DTS:ObjectName="City"
-              DTS:DTSID="{89C4E09F-5477-4718-AC69-DDE243D5077F}"
+              DTS:DTSID="{0D6F2B9F-5DDB-480F-97E7-B42CB618FE93}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -295,7 +295,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="State"
-              DTS:DTSID="{DBC600E3-A556-4F2C-B24D-25C3F9F3BF51}"
+              DTS:DTSID="{FD71D336-8232-4EB5-90D3-78674C91C835}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -303,7 +303,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ZipCode"
-              DTS:DTSID="{17EED35C-8AF7-4038-BEF0-76E974D34768}"
+              DTS:DTSID="{25502C22-5894-4385-B99F-A843D0B63C65}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -311,7 +311,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WhsnNumber"
-              DTS:DTSID="{47B8CCCE-BB40-4738-B48B-D2C374C346D8}"
+              DTS:DTSID="{7CF2EA08-6220-40D1-BA1E-5E68889AF3A8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -319,7 +319,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Telephone"
-              DTS:DTSID="{20F00C42-5D2C-4C64-88D2-A367C486BE53}"
+              DTS:DTSID="{BFD5AB76-6A92-4F0C-B696-AB53B224E07F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -327,7 +327,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SalesRep"
-              DTS:DTSID="{5D844E6D-3CAF-4128-9E34-281EACEC4117}"
+              DTS:DTSID="{BA1A76E7-49F8-4798-B358-DE5EFDA7FA04}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -335,7 +335,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="ChainStoreCode"
-              DTS:DTSID="{71A7D482-8F3D-416D-B0C2-F54BE927FF93}"
+              DTS:DTSID="{C29449B4-38D8-4797-BEDB-805759E36855}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -343,7 +343,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TermCode"
-              DTS:DTSID="{3BF34381-FA0A-4DDF-BD10-74F53DF923D7}"
+              DTS:DTSID="{CC856454-25EC-4B34-AC19-0C9D518082C8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -351,7 +351,7 @@
               DTS:MaximumWidth="7"
               DTS:DataType="129"
               DTS:ObjectName="CreditLimit"
-              DTS:DTSID="{DC03209C-BD8A-4AF0-A5D4-B03BDB5EA267}"
+              DTS:DTSID="{0C9BB5F5-B7B1-4C76-A684-4B0C34071DE5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -359,7 +359,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="CreditHoldFlag"
-              DTS:DTSID="{7BE7F476-5DD4-4A0E-AE60-7B78AC957F65}"
+              DTS:DTSID="{79DE3D4B-F2A2-45C7-9633-40F6D3811C03}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -367,7 +367,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DONOTUSE"
-              DTS:DTSID="{F9180689-6740-4AEC-8549-FEF0D2145934}"
+              DTS:DTSID="{0D527DB8-E527-4B19-A31E-290AB6925A77}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -375,7 +375,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="StoreNumber"
-              DTS:DTSID="{E44B95D4-D1EE-41E4-9571-BB22F080213E}"
+              DTS:DTSID="{D693882B-E2B8-474E-95BE-638C311E3FB9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -383,7 +383,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ContractOnly"
-              DTS:DTSID="{96E994ED-1DD8-456D-921C-C2890E029C57}"
+              DTS:DTSID="{D2B11E9A-A450-4DD1-B9A1-45BD11A07432}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -391,7 +391,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="LocationAuth"
-              DTS:DTSID="{F58CE6C3-4972-4242-A7CA-ADC39564C7C0}"
+              DTS:DTSID="{86847086-C54E-4A42-9C49-9594F01D11C8}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -399,7 +399,7 @@
               DTS:MaximumWidth="8"
               DTS:DataType="129"
               DTS:ObjectName="DateLastPay"
-              DTS:DTSID="{C48DB679-ECBF-4532-84AF-2E81368BB9E7}"
+              DTS:DTSID="{88A93180-0EDD-4034-B4F9-7A6FCF305D45}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -407,7 +407,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CustAmountDue"
-              DTS:DTSID="{939492FD-FDBF-44E5-866F-ED68F4C25B52}"
+              DTS:DTSID="{AEB26373-5B2F-4FA2-A27C-5B022729A44F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -415,7 +415,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="CurrentBalance"
-              DTS:DTSID="{3899ED90-9652-49C0-881A-9507D825740E}"
+              DTS:DTSID="{C616B20E-06F6-4EE0-ADEB-12AF55612F2F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -423,7 +423,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge1"
-              DTS:DTSID="{3A7AD86B-B8F5-483D-B74D-DD8C9F1AF22C}"
+              DTS:DTSID="{84BB8419-FE03-4A9C-91C9-E066CB93BFD6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -431,7 +431,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge2"
-              DTS:DTSID="{5B06B2D2-4728-431B-894E-637F994C8D57}"
+              DTS:DTSID="{2CA967C1-6257-40FC-B4C4-D1DF855853D6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -439,7 +439,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge3"
-              DTS:DTSID="{CFB4FDCA-9BAD-4EDF-A1BC-126A16535395}"
+              DTS:DTSID="{3A9D7A1A-C40D-42A7-AF63-888917725C5D}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -447,7 +447,7 @@
               DTS:MaximumWidth="16"
               DTS:DataType="129"
               DTS:ObjectName="PDACXAge4"
-              DTS:DTSID="{46E284C6-E28A-44C7-8481-E2225CAB5226}"
+              DTS:DTSID="{B0DCC0D6-7D27-4E12-A014-BF7AEF9C75C3}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -455,7 +455,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="ActiveFlag"
-              DTS:DTSID="{1284ECF5-8FAA-49E4-B22B-B909D9D5143F}"
+              DTS:DTSID="{F30163E7-1834-4616-8301-394B18E75896}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -463,7 +463,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="MondayRoutNum"
-              DTS:DTSID="{54AAC3CA-8BBB-47AA-B170-EFC39B31A9AD}"
+              DTS:DTSID="{44B86778-CB62-4C74-A474-7A9FD7BDB58E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -471,7 +471,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="MondayStopNum"
-              DTS:DTSID="{E318379C-56EA-46D4-817F-4357F779E520}"
+              DTS:DTSID="{C9228FAD-6E3D-49FA-AABF-30BC691A16B9}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -479,7 +479,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayRoutNum"
-              DTS:DTSID="{BB403B8C-369D-47B5-B347-608414E007B0}"
+              DTS:DTSID="{73FAB83C-0F63-4308-9BA3-74468852E6DC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -487,7 +487,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="TuesdayStopNum"
-              DTS:DTSID="{B054B333-BF43-4B3C-AE3E-93FD3D7FC786}"
+              DTS:DTSID="{E038016B-99E7-465C-BD6D-397376DCE34E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -495,7 +495,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="WedRoutNum"
-              DTS:DTSID="{526E3698-F188-424A-8C66-78C078FFAFDC}"
+              DTS:DTSID="{FA31BB8F-A920-48A1-834A-0F67D69ADAE5}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -503,7 +503,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="WedStopNum"
-              DTS:DTSID="{54E07B41-6716-4825-A933-638E8403B1E7}"
+              DTS:DTSID="{03934800-BF15-4DE9-AD9E-568F6F836D6F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -511,7 +511,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayRoutNum"
-              DTS:DTSID="{5691BDC8-19D1-46E9-968A-1C76E68E986B}"
+              DTS:DTSID="{99F0F950-5637-45F4-B4B2-6144F59D16AC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -519,7 +519,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="ThursdayStopNum"
-              DTS:DTSID="{C390FF76-8FAD-4812-8AC6-B73C64F3212B}"
+              DTS:DTSID="{0E5B1A71-C2AB-472B-A575-F4A7036A020F}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -527,7 +527,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="FridayRoutNum"
-              DTS:DTSID="{625A7741-5E7A-4A14-9097-5C5D44196E9C}"
+              DTS:DTSID="{2A1810F9-D477-4F8A-91E6-945E852DB823}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -535,7 +535,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="FridayStopNum"
-              DTS:DTSID="{7FF38119-7AB3-4092-B90E-FE35281A7A68}"
+              DTS:DTSID="{861869FB-126D-4653-BABF-23612E8B6ED6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -543,7 +543,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayRoutNum"
-              DTS:DTSID="{1A0C92BD-D5E7-4666-9831-9FD34268750A}"
+              DTS:DTSID="{227E75A0-C55F-4B16-ADB3-C87DFF6DBD4C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -551,7 +551,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SaturdayStopNum"
-              DTS:DTSID="{A0181C37-F7AE-4C9E-8E81-602BBA01B13A}"
+              DTS:DTSID="{54E4F365-E4DA-45D5-873D-12659E4815DF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -559,7 +559,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="SundayRoutNum"
-              DTS:DTSID="{A8465D77-741B-48FF-BFD7-6C72834EC6F5}"
+              DTS:DTSID="{3BA8068D-0D03-441A-94D8-629D90378D76}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -567,7 +567,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="SundayStopNum"
-              DTS:DTSID="{0C53B026-DD22-48EF-B102-FF489F6E2440}"
+              DTS:DTSID="{5A207E4A-33D0-4DB1-BA5A-69C905AB5129}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -575,7 +575,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="CSR"
-              DTS:DTSID="{295BDE7B-414A-43FC-ABDF-A3E103D0EC2E}"
+              DTS:DTSID="{BE8C7839-4D4E-4E16-820A-FD1C444228AA}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -583,7 +583,7 @@
               DTS:MaximumWidth="10"
               DTS:DataType="129"
               DTS:ObjectName="Contract"
-              DTS:DTSID="{A110E753-AADF-486F-80E9-DFCBED69240F}"
+              DTS:DTSID="{79F81178-245A-4399-B46F-BC25D15A6D82}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -591,7 +591,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PORequiredFlag"
-              DTS:DTSID="{DE173A00-153A-4AB5-9AD1-3AB2E4BC0DAB}"
+              DTS:DTSID="{8DD54808-D22B-4860-BE3C-CC4422E8D5DD}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -599,7 +599,7 @@
               DTS:MaximumWidth="25"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNU"
-              DTS:DTSID="{CBA1D328-0608-45DC-B50E-56048D7DA8F7}"
+              DTS:DTSID="{00CA7590-AB83-4951-B0D7-C7333F7DB998}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -607,7 +607,7 @@
               DTS:MaximumWidth="50"
               DTS:DataType="129"
               DTS:ObjectName="Nothing_DNUB"
-              DTS:DTSID="{0891EB76-6EC7-4827-A5F1-482070FA18BC}"
+              DTS:DTSID="{CC900395-9355-46E5-9A76-4CC4C12EAEB6}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -615,7 +615,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty1"
-              DTS:DTSID="{1A20E004-F410-4776-A25D-2598B3F0BDE2}"
+              DTS:DTSID="{72A107A5-CC0D-47DF-86AF-CA117F375A26}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -623,7 +623,7 @@
               DTS:MaximumWidth="3"
               DTS:DataType="129"
               DTS:ObjectName="JDCNty2"
-              DTS:DTSID="{74FB587C-261E-441E-9EE0-A50225B7A0E0}"
+              DTS:DTSID="{CE0638D6-8835-486E-B059-0B0946044DD7}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -631,7 +631,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="PowerMenu"
-              DTS:DTSID="{18EB70FC-C303-4FC8-BEE9-D5464E5C1418}"
+              DTS:DTSID="{E3D30731-AFF9-4E19-B1B9-C20C40C44BF2}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -639,7 +639,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="AchType"
-              DTS:DTSID="{68A62177-1535-4B77-AC9A-4D23A45A6167}"
+              DTS:DTSID="{6631D4DA-DFE1-4487-961C-45043D73C931}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -647,7 +647,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="DsmNumber"
-              DTS:DTSID="{3F9C3ACB-9587-4344-9A76-890400C93DD7}"
+              DTS:DTSID="{D9ED62BB-5B42-4EFE-A7B2-FA56F3B3880C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -655,7 +655,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="NaIndicator"
-              DTS:DTSID="{0E765F87-DEC6-465C-BDA4-5261B5A6080E}"
+              DTS:DTSID="{A455E678-8411-41B7-8C6B-D98E7CE8E413}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -663,7 +663,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="NaNumber"
-              DTS:DTSID="{78003E2B-4D97-4E53-BFE9-607309C36293}"
+              DTS:DTSID="{BE1675F1-8A1B-4784-B91C-5E9177CF468C}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -671,7 +671,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="NaSub"
-              DTS:DTSID="{6EE8BA67-8297-41B0-8477-A8EFD7F3E081}"
+              DTS:DTSID="{41F6F208-0CDA-4EDB-A7D1-3B2206D851BF}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -679,7 +679,7 @@
               DTS:MaximumWidth="5"
               DTS:DataType="129"
               DTS:ObjectName="RaId"
-              DTS:DTSID="{B77ABEF8-DC36-40A4-ACAA-A98358CB6EB5}"
+              DTS:DTSID="{0D4391E0-D18A-460A-8C6E-2371409011BC}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -687,7 +687,7 @@
               DTS:MaximumWidth="4"
               DTS:DataType="129"
               DTS:ObjectName="RaNumber"
-              DTS:DTSID="{471C799D-CD89-48F5-BD8B-273F4F693F71}"
+              DTS:DTSID="{F50303B2-2768-4CF2-BE15-98E78758814E}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -695,7 +695,7 @@
               DTS:MaximumWidth="1"
               DTS:DataType="129"
               DTS:ObjectName="KeithnetIndicator"
-              DTS:DTSID="{6BFBDDA9-DF11-484A-B5ED-6899F24C2F27}"
+              DTS:DTSID="{FD94C7E5-D91F-40D9-A9EC-8DDE53441C57}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -703,7 +703,7 @@
               DTS:MaximumWidth="9"
               DTS:DataType="129"
               DTS:ObjectName="PlaceholderSpace"
-              DTS:DTSID="{26FD5608-C2D3-41DA-96B3-EA5DBFEB6B0C}"
+              DTS:DTSID="{36EA2157-1E1D-4E4D-A6F2-18B21020B074}"
               DTS:CreationName="" />
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -711,7 +711,7 @@
               DTS:MaximumWidth="2"
               DTS:DataType="129"
               DTS:ObjectName="CRLF"
-              DTS:DTSID="{A0ED3592-685A-43B4-A9B8-0CA6BC7772C3}"
+              DTS:DTSID="{2A8BD457-6D36-49C5-956D-48D5945C1E3F}"
               DTS:CreationName="" />
           </DTS:FlatFileColumns>
         </DTS:ConnectionManager>
@@ -731,7 +731,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\customerBid.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerBid.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -815,7 +815,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\customerWorksheet.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerWorksheet.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -922,7 +922,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\keithNetInvoice.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\keithNetInvoice.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1246,7 +1246,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\openDetailAR.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\openDetailAR.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1394,7 +1394,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\paidDetailFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\paidDetailFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1541,7 +1541,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\propCustomer.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\propCustomer.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1616,7 +1616,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\propItem.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\propItem.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1692,7 +1692,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\customerTerms.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerTerms.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1784,17 +1784,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://prodkeithlinkinternalservices.benekeith.com:9876/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://corpkecqas1:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://prodkeithlinkinternalservices.benekeith.com:9876/ETLService.svc?wsdl">
+            DTS:ServerURL="http://corpkecqas1:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA2qXshJBX9SJXRih4Fk9C0AAAAAASAAACgAAAAEAAAANuR5gYaZAl+FYFbqddSw7YIAAAAyAtPbQ61tgkUAAAAKqcULOUrZEL0b2rBCchDMIsPmOA</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA2lvL+2HP3B+L0U42yl0YXAAAAAASAAACgAAAAEAAAAOrZ2dkUYtw2N158P7wmvVwIAAAA8GfEXXw+nBkUAAAAs2SvNbioZ6Y47O13Dl5AWbFbJVI</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAACxMHsmuFyasPa/TnoaFrDzAAAAAASAAACgAAAAEAAAACRl36aoVc5cVnde5Bf94jwIAAAAhp5bVJt3sCYUAAAADNNd7ygKjVcef71cUKsuwSY7i6Q</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABLCN3hkTzHoPBEtF7QXkLrAAAAAASAAACgAAAAEAAAAFFf661trHo5//x3MWs4NT4IAAAAX0ILFV/SPWgUAAAAjnKTIe55vBvGtEOUpYH3mZ5/CVk</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1806,7 +1806,12 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=bekscsql,5000;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpkecqdb1;User Id=ecom;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA9hNAZ2qp0flNtYAGSLhhNAAAAAASAAACgAAAAEAAAALuhJhao7sBWpKLuCJtaAu0YAAAAqxc6o6UHWHZ2NZZqNtSEDRgKe8aPDMiJFAAAACxojpT2my7yGPBbrNl++eRboZDA</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1816,7 +1821,7 @@
       DTS:ObjectName="OLE_BEK_SAM">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=bekbisql;Initial Catalog=SAM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12\bi;Initial Catalog=SAM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1826,7 +1831,12 @@
       DTS:ObjectName="OLE_FSE">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=bekcpsql;Initial Catalog=FSE;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;User Id=ecom;Initial Catalog=FSE;Provider=SQLNCLI11.1;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADb0N/VbJnJzRAN0fSMRqYZAAAAAASAAACgAAAAEAAAAEEul54f2tmIENgCEj8wiawQAAAA7e5dQVdJRMznslkkeBxvVxQAAACILnCVZSNwBF6g7n6Div78r6RlwA</DTS:Password>
+        </DTS:ConnectionManager>
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1836,7 +1846,7 @@
       DTS:ObjectName="OLE_KPay">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=bekscsql,5000;Initial Catalog=kpay;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=kpay;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1846,7 +1856,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=beksqlisp12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1856,7 +1866,7 @@
       DTS:ObjectName="OLE_PRODCAT">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=bekscsql,5000;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=bekscsql;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -1866,7 +1876,7 @@
       DTS:ObjectName="SMTP">
       <DTS:ObjectData>
         <SmtpConnectionManager
-          ConnectionString="SmtpServer=beksqlisp12;UseWindowsAuthentication=True;EnableSsl=False;" />
+          ConnectionString="SmtpServer=corpsqlirst12;UseWindowsAuthentication=True;EnableSsl=False;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
   </DTS:ConnectionManagers>
@@ -1898,7 +1908,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
       <DTS:VariableValue
-        DTS:DataType="8">\\bekkecocp1\s$\InetOE\ftpdata\Prod\Entree\</DTS:VariableValue>
+        DTS:DataType="8">\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -2095,7 +2105,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process All ETL Tasks (Serial)"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="0">
+          DTS:ThreadHint="7">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2138,7 +2148,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Catalog Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="7">
+          DTS:ThreadHint="8">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2181,7 +2191,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Contract And Worksheet Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="8">
+          DTS:ThreadHint="9">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2224,7 +2234,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Customer Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="9">
+          DTS:ThreadHint="10">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2259,6 +2269,49 @@
           </DTS:ObjectData>
         </DTS:Executable>
         <DTS:Executable
+          DTS:refId="Package\Application Data Processing\Process Customer Item History"
+          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:Description="Web Service Task"
+          DTS:DTSID="{4ee4813f-ddde-49be-873c-46c1ff546db8}"
+          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Process Customer Item History"
+          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <WSTask:WebServiceTaskData
+              WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
+              WSTask:Service="ETLService"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
+              WSTask:OverwriteWSDLFile="True"
+              WSTask:OutputType="Variable"
+              WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
+              <WSTask:MethodInfo
+                WSTask:MethodName="ProcessCustomerItemHistory"
+                WSTask:MessageName="">
+                <WSTask:Documentation></WSTask:Documentation>
+                <WSTask:ParamInfo
+                  WSTask:Name="ProcessCustomerItemHistoryResult"
+                  WSTask:Datatype="Boolean&amp;"
+                  WSTask:ParamType="Variable"
+                  WSTask:SeqNumber="0">
+                  <WSTask:VariableValue></WSTask:VariableValue>
+                </WSTask:ParamInfo>
+                <WSTask:ParamInfo
+                  WSTask:Name="ProcessCustomerItemHistoryResultSpecified"
+                  WSTask:Datatype="Boolean&amp;"
+                  WSTask:ParamType="Variable"
+                  WSTask:SeqNumber="1">
+                  <WSTask:VariableValue></WSTask:VariableValue>
+                </WSTask:ParamInfo>
+              </WSTask:MethodInfo>
+            </WSTask:WebServiceTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
           DTS:refId="Package\Application Data Processing\Process Elastic Search Data"
           DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
           DTS:Description="Web Service Task"
@@ -2267,7 +2320,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process Elastic Search Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="10">
+          DTS:ThreadHint="11">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -2311,7 +2364,7 @@
           DTS:LocaleID="-1"
           DTS:ObjectName="Process invoice Data"
           DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-          DTS:ThreadHint="11">
+          DTS:ThreadHint="12">
           <DTS:Variables />
           <DTS:LoggingOptions
             DTS:FilterKind="0" />
@@ -5454,7 +5507,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               errorOrTruncationOperation="Conversion"
                               errorRowDisposition="FailComponent"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[RaNumber]"
-                              length="2"
+                              length="4"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[RaNumber]"
                               name="RaNumber"
                               truncationRowDisposition="FailComponent">
@@ -5498,7 +5551,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               errorOrTruncationOperation="Conversion"
                               errorRowDisposition="FailComponent"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[PlaceholderSpace]"
-                              length="11"
+                              length="9"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[PlaceholderSpace]"
                               name="PlaceholderSpace"
                               truncationRowDisposition="FailComponent">
@@ -5874,7 +5927,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[RaNumber]"
                               codePage="1252"
                               dataType="str"
-                              length="2"
+                              length="4"
                               name="RaNumber" />
                             <externalMetadataColumn
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[KeithnetIndicator]"
@@ -5886,7 +5939,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].ExternalColumns[PlaceholderSpace]"
                               codePage="1252"
                               dataType="str"
-                              length="11"
+                              length="9"
                               name="PlaceholderSpace" />
                           </externalMetadataColumns>
                         </output>
@@ -6400,6 +6453,54 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               cachedName="DsmNumber"
                               externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[DsmNumber]"
                               lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[DsmNumber]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[NaNumber]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="NaNumber"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NaNumber]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaNumber]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[NaSub]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="NaSub"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NaSub]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaSub]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[RaId]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="5"
+                              cachedName="RaId"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[RaId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaId]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[RaNumber]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="4"
+                              cachedName="RaNumber"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[RaNumber]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaNumber]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[KeithnetIndicator]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="1"
+                              cachedName="KeithnetIndicator"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[IsKeithnetCustomer]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[KeithnetIndicator]" />
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].Columns[NaIndicator]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="5"
+                              cachedName="NaIndicator"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NaId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaIndicator]" />
                           </inputColumns>
                           <externalMetadataColumns
                             isUsed="True">
@@ -6709,6 +6810,42 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               dataType="str"
                               length="2"
                               name="DsmNumber" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NaId]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="NaId" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NaNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              name="NaNumber" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[NaSub]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              name="NaSub" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[RaId]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              name="RaId" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[RaNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="4"
+                              name="RaNumber" />
+                            <externalMetadataColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData.Inputs[OLE DB Destination Input].ExternalColumns[IsKeithnetCustomer]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              name="IsKeithnetCustomer" />
                           </externalMetadataColumns>
                         </input>
                       </inputs>
@@ -7732,6 +7869,114 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                                   name="NewSortKeyPosition">0</property>
                               </properties>
                             </inputColumn>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[NaIndicator]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="5"
+                              cachedName="NaIndicator"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[NaIndicator]">
+                              <properties>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the comparison options for character data."
+                                  name="NewComparisonFlags">0</property>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the sort order of the column."
+                                  name="NewSortKeyPosition">0</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[NaNumber]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="NaNumber"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[NaNumber]">
+                              <properties>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the comparison options for character data."
+                                  name="NewComparisonFlags">0</property>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the sort order of the column."
+                                  name="NewSortKeyPosition">0</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[NaSub]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="2"
+                              cachedName="NaSub"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[NaSub]">
+                              <properties>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the comparison options for character data."
+                                  name="NewComparisonFlags">0</property>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the sort order of the column."
+                                  name="NewSortKeyPosition">0</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[RaId]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="5"
+                              cachedName="RaId"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[RaId]">
+                              <properties>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the comparison options for character data."
+                                  name="NewComparisonFlags">0</property>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the sort order of the column."
+                                  name="NewSortKeyPosition">0</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[RaNumber]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="4"
+                              cachedName="RaNumber"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[RaNumber]">
+                              <properties>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the comparison options for character data."
+                                  name="NewComparisonFlags">0</property>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the sort order of the column."
+                                  name="NewSortKeyPosition">0</property>
+                              </properties>
+                            </inputColumn>
+                            <inputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Inputs[Sort Input].Columns[KeithnetIndicator]"
+                              cachedCodepage="1252"
+                              cachedDataType="str"
+                              cachedLength="1"
+                              cachedName="KeithnetIndicator"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[KeithnetIndicator]">
+                              <properties>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the comparison options for character data."
+                                  name="NewComparisonFlags">0</property>
+                                <property
+                                  dataType="System.Int32"
+                                  description="Specifies the sort order of the column."
+                                  name="NewSortKeyPosition">0</property>
+                              </properties>
+                            </inputColumn>
                           </inputColumns>
                           <externalMetadataColumns />
                         </input>
@@ -8551,6 +8796,96 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                                   dataType="System.Int32"
                                   description="Specifies the lineage identifier of the input column that is associated with this output column."
                                   name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[DsmNumber]}</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaIndicator]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaIndicator]"
+                              name="NaIndicator">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                  name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[NaIndicator]}</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaNumber]"
+                              name="NaNumber">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                  name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[NaNumber]}</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaSub]"
+                              codePage="1252"
+                              dataType="str"
+                              length="2"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[NaSub]"
+                              name="NaSub">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                  name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[NaSub]}</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaId]"
+                              codePage="1252"
+                              dataType="str"
+                              length="5"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaId]"
+                              name="RaId">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                  name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[RaId]}</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaNumber]"
+                              codePage="1252"
+                              dataType="str"
+                              length="4"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[RaNumber]"
+                              name="RaNumber">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                  name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[RaNumber]}</property>
+                              </properties>
+                            </outputColumn>
+                            <outputColumn
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[KeithnetIndicator]"
+                              codePage="1252"
+                              dataType="str"
+                              length="1"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC.Outputs[Sort Output].Columns[KeithnetIndicator]"
+                              name="KeithnetIndicator">
+                              <properties>
+                                <property
+                                  containsID="true"
+                                  dataType="System.Int32"
+                                  description="Specifies the lineage identifier of the input column that is associated with this output column."
+                                  name="SortColumnId">#{Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer.Outputs[Flat File Source Output].Columns[KeithnetIndicator]}</property>
                               </properties>
                             </outputColumn>
                           </outputColumns>
@@ -24132,15 +24467,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Language="CSharp"
           ReadOnlyVariables="User::ETLProcess_KeithComDir">
           <ProjectItem
-            Name="Properties\Settings.settings"
-            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
-<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
-</SettingsFile>]]></ProjectItem>
-          <ProjectItem
             Name="Properties\Resources.resx"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
 <root>
@@ -24259,6 +24585,35 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
 </root>]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.Designer.cs"
+            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
+    "ings")]
+
+namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
+    
+    
+    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
+        
+        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+        private static Settings defaultInstance = new Settings();
+        
+        public static Settings Default {
+            get {
+                return defaultInstance;
+            }
+        }
+    }
+}]]></ProjectItem>
           <ProjectItem
             Name="ST_8b38e1c04cd142498eb6973136894e60.csproj"
             Encoding="UTF8"><![CDATA[<?xml version="1.0" encoding="utf-8"?>
@@ -24583,35 +24938,6 @@ namespace ST_8b38e1c04cd142498eb6973136894e60
 	</msb:ItemGroup>
 </c:Project>]]></ProjectItem>
           <ProjectItem
-            Name="Properties\Settings.Designer.cs"
-            Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
-// <auto-generated>
-//     This code was generated by a tool.
-//
-//     Changes to this file may cause incorrect behavior and will be lost if
-//     the code is regenerated.
-// </auto-generated>
-//------------------------------------------------------------------------------
-
-[assembly: global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode", Scope="member", Target="ST_8b38e1c04cd142498eb6973136894e60.Properties.Settings.get_Default():ST_8b38e1c04cd142498eb6973136894e60.Properties.Sett" +
-    "ings")]
-
-namespace ST_8b38e1c04cd142498eb6973136894e60.Properties {
-    
-    
-    internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
-        
-        [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-        private static Settings defaultInstance = new Settings();
-        
-        public static Settings Default {
-            get {
-                return defaultInstance;
-            }
-        }
-    }
-}]]></ProjectItem>
-          <ProjectItem
             Name="Properties\AssemblyInfo.cs"
             Encoding="UTF8"><![CDATA[using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -24641,6 +24967,15 @@ using System.Runtime.CompilerServices;
 // by using the '*' as shown below:
 
 [assembly: AssemblyVersion("1.0.*")]]]></ProjectItem>
+          <ProjectItem
+            Name="Properties\Settings.settings"
+            Encoding="UTF8"><![CDATA[<?xml version='1.0' encoding='iso-8859-1'?>
+<SettingsFile xmlns="uri:settings" CurrentProfile="(Default)">
+  <Profiles>
+    <Profile Name="(Default)" />
+  </Profiles>
+  <Settings />
+</SettingsFile>]]></ProjectItem>
           <ProjectItem
             Name="Properties\Resources.Designer.cs"
             Encoding="UTF8"><![CDATA[//------------------------------------------------------------------------------
@@ -24857,7 +25192,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       DTS:LocaleID="-1"
       DTS:ObjectName="Send Fail Message"
       DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
-      DTS:ThreadHint="12">
+      DTS:ThreadHint="13">
       <DTS:Variables />
       <DTS:PropertyExpression
         DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
@@ -25009,7 +25344,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <NodeLayout
           Size="178,42"
           Id="Package\Application Data Processing\Process All ETL Tasks (Serial)"
-          TopLeft="40,335" />
+          TopLeft="37.1428571428569,407.857142857143" />
         <NodeLayout
           Size="181,42"
           Id="Package\Application Data Processing\Process Catalog Data"
@@ -25029,12 +25364,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         <NodeLayout
           Size="178,42"
           Id="Package\Application Data Processing\Process invoice Data"
-          TopLeft="27,268.999999999999" />
+          TopLeft="24.1428571428569,341.857142857142" />
+        <NodeLayout
+          Size="227,42"
+          Id="Package\Application Data Processing\Process Customer Item History"
+          TopLeft="22.8571428571427,279.857142857143" />
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
-          PanelSize="254,434"
-          Size="254,477"
+          PanelSize="271,505"
+          Size="271,548"
           Id="Package\Application Data Processing"
           TopLeft="1810.35714285714,910.357142857143" />
         <NodeLayout
@@ -25498,37 +25837,37 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 10]"
-          TopLeft="1937.35714285714,1387.35714285714">
+          TopLeft="1945.85714285714,1458.35714285714">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="-796.78571428571,757.833333333337"
+              EndConnector="-805.28571428571,686.833333333337"
               Start="0,0"
-              End="-796.78571428571,750.333333333337">
+              End="-805.28571428571,679.333333333337">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="0,526.483333333336" />
+                    End="0,476.783333333336" />
                   <mssgle:CubicBezierSegment
-                    Point1="0,526.483333333336"
-                    Point2="0,530.483333333336"
-                    Point3="-4,530.483333333336" />
+                    Point1="0,476.783333333336"
+                    Point2="0,480.783333333336"
+                    Point3="-4,480.783333333336" />
                   <mssgle:LineSegment
-                    End="-792.78571428571,530.483333333336" />
+                    End="-801.28571428571,480.783333333336" />
                   <mssgle:CubicBezierSegment
-                    Point1="-792.78571428571,530.483333333336"
-                    Point2="-796.78571428571,530.483333333336"
-                    Point3="-796.78571428571,534.483333333336" />
+                    Point1="-801.28571428571,480.783333333336"
+                    Point2="-805.28571428571,480.783333333336"
+                    Point3="-805.28571428571,484.783333333336" />
                   <mssgle:LineSegment
-                    End="-796.78571428571,750.333333333337" />
+                    End="-805.28571428571,679.333333333337" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
           </EdgeLayout.Curve>
           <EdgeLayout.Labels>
             <mssgm:EdgeLabel
-              BoundingBox="-413.634204799105,535.483333333336,30.4826953125,9.7490234375"
+              BoundingBox="-417.884204799105,485.783333333336,30.4826953125,9.7490234375"
               RelativePosition="Any" />
           </EdgeLayout.Labels>
         </EdgeLayout>
@@ -25570,30 +25909,30 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
         </EdgeLayout>
         <EdgeLayout
           Id="Package.PrecedenceConstraints[Constraint 12]"
-          TopLeft="2064.35714285714,1148.85714285714">
+          TopLeft="2081.35714285714,1184.35714285714">
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="57.9523809523803,-44.1071428571431"
+              EndConnector="40.9523809523803,-79.6071428571431"
               Start="0,0"
-              End="50.4523809523803,-44.1071428571431">
+              End="33.4523809523803,-79.6071428571431">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="24.9761904761901,0" />
+                    End="16.4761904761901,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="24.9761904761901,0"
-                    Point2="28.9761904761901,0"
-                    Point3="28.9761904761901,-4" />
+                    Point1="16.4761904761901,0"
+                    Point2="20.4761904761901,0"
+                    Point3="20.4761904761901,-4" />
                   <mssgle:LineSegment
-                    End="28.9761904761901,-40.1071428571431" />
+                    End="20.4761904761901,-75.6071428571431" />
                   <mssgle:CubicBezierSegment
-                    Point1="28.9761904761901,-40.1071428571431"
-                    Point2="28.9761904761901,-44.1071428571431"
-                    Point3="32.9761904761901,-44.1071428571431" />
+                    Point1="20.4761904761901,-75.6071428571431"
+                    Point2="20.4761904761901,-79.6071428571431"
+                    Point3="24.4761904761901,-79.6071428571431" />
                   <mssgle:LineSegment
-                    End="50.4523809523803,-44.1071428571431" />
+                    End="33.4523809523803,-79.6071428571431" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25608,26 +25947,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="86.2142857142799,-197.033333333333"
+              EndConnector="86.2142857142799,-182.833333333333"
               Start="0,0"
-              End="78.7142857142799,-197.033333333333">
+              End="78.7142857142799,-182.833333333333">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="57.1421562380486,0" />
+                    End="57.1987416728308,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="57.1421562380486,0"
-                    Point2="61.1421562380486,0"
-                    Point3="61.1421562380486,-4" />
+                    Point1="57.1987416728308,0"
+                    Point2="61.1987416728308,0"
+                    Point3="61.1987416728308,-4" />
                   <mssgle:LineSegment
-                    End="61.1421562380486,-193.033333333333" />
+                    End="61.1987416728308,-178.833333333333" />
                   <mssgle:CubicBezierSegment
-                    Point1="61.1421562380486,-193.033333333333"
-                    Point2="61.1421562380486,-197.033333333333"
-                    Point3="65.1421562380486,-197.033333333333" />
+                    Point1="61.1987416728308,-178.833333333333"
+                    Point2="61.1987416728308,-182.833333333333"
+                    Point3="65.1987416728308,-182.833333333333" />
                   <mssgle:LineSegment
-                    End="78.7142857142799,-197.033333333333" />
+                    End="78.7142857142799,-182.833333333333" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25676,9 +26015,9 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="832.952380952377,266.083333333334"
+              EndConnector="841.452380952377,266.083333333334"
               Start="0,0"
-              End="832.952380952377,258.583333333334">
+              End="841.452380952377,258.583333333334">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
@@ -25689,13 +26028,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                     Point2="0,70.5120833333334"
                     Point3="4,70.5120833333334" />
                   <mssgle:LineSegment
-                    End="828.952380952377,70.5120833333334" />
+                    End="837.452380952377,70.5120833333334" />
                   <mssgle:CubicBezierSegment
-                    Point1="828.952380952377,70.5120833333334"
-                    Point2="832.952380952377,70.5120833333334"
-                    Point3="832.952380952377,74.5120833333334" />
+                    Point1="837.452380952377,70.5120833333334"
+                    Point2="841.452380952377,70.5120833333334"
+                    Point3="841.452380952377,74.5120833333334" />
                   <mssgle:LineSegment
-                    End="832.952380952377,258.583333333334" />
+                    End="841.452380952377,258.583333333334" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25710,26 +26049,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="1338.02380952381,-17.0619047619055"
+              EndConnector="1338.02380952381,39.7380952380945"
               Start="0,0"
-              End="1330.52380952381,-17.0619047619055">
+              End="1330.52380952381,39.7380952380945">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="825.448176570393,0" />
+                    End="826.451766505353,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="825.448176570393,0"
-                    Point2="829.448176570393,0"
-                    Point3="829.448176570393,-4" />
+                    Point1="826.451766505353,0"
+                    Point2="830.451766505353,0"
+                    Point3="830.451766505353,4" />
                   <mssgle:LineSegment
-                    End="829.448176570393,-13.0619047619055" />
+                    End="830.451766505353,35.7380952380945" />
                   <mssgle:CubicBezierSegment
-                    Point1="829.448176570393,-13.0619047619055"
-                    Point2="829.448176570393,-17.0619047619055"
-                    Point3="833.448176570393,-17.0619047619055" />
+                    Point1="830.451766505353,35.7380952380945"
+                    Point2="830.451766505353,39.7380952380945"
+                    Point3="834.451766505353,39.7380952380945" />
                   <mssgle:LineSegment
-                    End="1330.52380952381,-17.0619047619055" />
+                    End="1330.52380952381,39.7380952380945" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25744,26 +26083,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="922.785714285711,-164.9"
+              EndConnector="922.785714285711,-136.5"
               Start="0,0"
-              End="915.285714285711,-164.9">
+              End="915.285714285711,-136.5">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="507.7051682333,0" />
+                    End="507.82851359167,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="507.7051682333,0"
-                    Point2="511.7051682333,0"
-                    Point3="511.7051682333,-4" />
+                    Point1="507.82851359167,0"
+                    Point2="511.82851359167,0"
+                    Point3="511.82851359167,-4" />
                   <mssgle:LineSegment
-                    End="511.7051682333,-160.9" />
+                    End="511.82851359167,-132.5" />
                   <mssgle:CubicBezierSegment
-                    Point1="511.7051682333,-160.9"
-                    Point2="511.7051682333,-164.9"
-                    Point3="515.705168233299,-164.9" />
+                    Point1="511.82851359167,-132.5"
+                    Point2="511.82851359167,-136.5"
+                    Point3="515.82851359167,-136.5" />
                   <mssgle:LineSegment
-                    End="915.285714285711,-164.9" />
+                    End="915.285714285711,-136.5" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -25778,26 +26117,26 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           <EdgeLayout.Curve>
             <mssgle:Curve
               StartConnector="{assembly:Null}"
-              EndConnector="460.11904761905,-112.6"
+              EndConnector="460.11904761905,-70"
               Start="0,0"
-              End="452.61904761905,-112.6">
+              End="452.61904761905,-70">
               <mssgle:Curve.Segments>
                 <mssgle:SegmentCollection
                   Capacity="5">
                   <mssgle:LineSegment
-                    End="251.146228451856,0" />
+                    End="251.207730865627,0" />
                   <mssgle:CubicBezierSegment
-                    Point1="251.146228451856,0"
-                    Point2="255.146228451856,0"
-                    Point3="255.146228451856,-4" />
+                    Point1="251.207730865627,0"
+                    Point2="255.207730865627,0"
+                    Point3="255.207730865627,-4" />
                   <mssgle:LineSegment
-                    End="255.146228451856,-108.6" />
+                    End="255.207730865627,-66" />
                   <mssgle:CubicBezierSegment
-                    Point1="255.146228451856,-108.6"
-                    Point2="255.146228451856,-112.6"
-                    Point3="259.146228451856,-112.6" />
+                    Point1="255.207730865627,-66"
+                    Point2="255.207730865627,-70"
+                    Point3="259.207730865627,-70" />
                   <mssgle:LineSegment
-                    End="452.61904761905,-112.6" />
+                    End="452.61904761905,-70" />
                 </mssgle:SegmentCollection>
               </mssgle:Curve.Segments>
             </mssgle:Curve>
@@ -26131,10 +26470,6 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
       <GraphLayout
         Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
-          Size="159,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
-          TopLeft="499,404" />
-        <NodeLayout
           Size="143,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\FF_Customer"
           TopLeft="131.5,65.5" />
@@ -26142,6 +26477,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           Size="176,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\Sort by Division ASC"
           TopLeft="322,249" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers\KeithlinkAppData"
+          TopLeft="499,404" />
         <EdgeLayout
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Customers.Paths[Sort Output]"
           TopLeft="410,291">

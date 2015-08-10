@@ -15,7 +15,13 @@ angular.module('bekApp')
     }
 
     var Service = {
-      // accepts nameText as string (List/Cart) and collection of objects to check if the name is used
+      
+      /**
+       * generates a unique name for new lists and carts
+       * @param  {String} nameText   string to be used when generating the name, "New <nameText> 1"
+       * @param  {Array} collection  array of objects that must have a "name" property. Used to determine what will be a unique name
+       * @return {String}            generated name string, "New List 1" for example
+       */
       generateName: function(nameText, collection) {
         var name = 'New ' + nameText,
           number = 0;
@@ -31,7 +37,31 @@ angular.module('bekApp')
         return name + ' ' + number;
       },
 
-       isMobileDevice: function() {
+      /**
+       * format a JavaScript date object, used for Item Usage and Registered Users exports
+       * @param  {Date} date
+       * @return {String}      format of YYYY-MM-DD
+       */
+      formatJavascriptDate: function(date) {
+        var day = date.getDate().toString(),
+          month = (date.getMonth() + 1).toString(),
+          year = date.getFullYear();
+
+        if (day.length < 2) {
+          day = '0' + day;
+        }
+        if (month.length < 2) {
+          month = '0' + month;
+        }
+
+        return year + '-' + month + '-' + day;
+      },
+
+      /**
+       * determines if current device is mobile device by userAgent and screen size
+       * @return {Boolean} if current device is a mobile device
+       */
+      isMobileDevice: function() {
         var check = false;
         
         // Check for mobile browsers using http://detectmobilebrowsers.com/ script
@@ -47,8 +77,14 @@ angular.module('bekApp')
         }
         return check;
       },
-      // accepts a collection to search, fieldName (string) and matcher
-      // loops through items in collection looking for an object where property fieldName equals matcher
+
+      /**
+       * finds one object in collection array where the given fieldName matches the matcher (findListById for example)
+       * @param  {Array}  collection  array of objects to search through (Array of Lists for example)
+       * @param  {String} fieldName  property name to do a comparison on ('id' for example)
+       * @param  {String/Number/Boolean} matcher    String/Number/Boolean that the given field must match to (12345 for example)
+       * @return {Object}            Object found that matches or null if no match was found
+       */
       findObjectByField: function(collection, fieldName, matcher) {
         var obj;
         angular.forEach(collection, function(item, index) {
@@ -60,6 +96,13 @@ angular.module('bekApp')
       },
 
       // accepts collection of objects and the fieldName (array of strings) to be deleted
+      
+      /**
+       * Deletes the given properties from the objects in the given array
+       * @param  {Array} collection Array of Objects to remove the property from
+       * @param  {Array} fieldNames Array of Strings of property names to remove
+       * @return {null}
+       */
       deleteFieldFromObjects: function(collection, fieldNames) {
         angular.forEach(collection, function(item, index) {
           angular.forEach(fieldNames, function(name, index) {
@@ -68,6 +111,16 @@ angular.module('bekApp')
         });
       },
 
+      /**
+       * general way to resolve most of our endpoints that return an object of the following format
+       * where the request was sucessful if successResponse is not null
+       * {
+       *   successResponse: ({}, [], true), 
+       *   errorMessage: "Error message"
+       * }
+       * @param  {Promise} promise Promise that, when resolved, contains successResponse and errorMessage properties
+       * @return {Promise}         the promise to chain off of
+       */
       resolvePromise: function(promise) {
         var deferred = $q.defer();
 

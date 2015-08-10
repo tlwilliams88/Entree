@@ -1,49 +1,40 @@
 <div class="row register-wrapper view sub-content">
   <div class="col-md-10 col-md-offset-1 col-xs-12">
 
-    <div class="row register-header">
-      <div class="col-md-6"  ng-class="{'text-center':isMobileApp}">
-        <img src="images/bek-logo.png" alt="logo" />
-      </div>
-
-      <div class="col-md-6">
-        <form novalidate name="loginForm" class="login-form style-validation-errors">
-            <div class="row">
-              <div class="col-md-5 form-group">
-                <label for="username">Email Address</label>
-                <span ng-show="loginForm.username.$error.required && loginForm.username.$dirty" class="text-red">Email is required</span>
-                <input id="username" ng-trim focus-me="!isMobileApp" required name="username" type="text" class="form-control" ng-model="loginInfo.username">
-              </div>
-              <div class="col-md-5 form-group">
-                <label for="password">Password</label>
-                <span ng-show="loginForm.password.$error.required && loginForm.password.$dirty" class="text-red">Password is required</span>
-                <input id="password" required name="password" type="password" class="form-control" ng-model="loginInfo.password">
-              </div>
-              <div class="col-md-2 form-group">
-                <button ng-disabled="loginForm.$invalid" class="btn-primary btn " ng-class="{'col-xs-12 col-sm-12 btn-lg':isMobileApp}" type="submit" ng-click="login(loginInfo)">Login</button>
-              </div>
+    <div  ng-if="!signUpBool" class="row register-header">    
+    <form novalidate name="loginForm" class="login-form style-validation-errors text-center">
+         <div class="col-md-12" style="margin-bottom:30px;">
+            <img src="images/bek-logo.png" alt="logo"/>
+         </div>     
+            <div style="text-align:center; margin-top:30px;" class="form-group">           
+                <label for="username">Email Address</label>                
+                <input  id="username" ng-trim focus-me required name="username" type="text" class="register-input form-control" ng-model="loginInfo.username">
+                 <span ng-show="loginForm.username.$error.required && loginForm.username.$dirty" class="text-red">Email is required</span></br>               
+                <label for="password">Password</label>               
+                <input  id="password" required name="password" type="password" class="register-input form-control " ng-model="loginInfo.password">
+                 <span  ng-show="loginForm.password.$error.required && loginForm.password.$dirty"class="text-red">Password is required</span>          
+                 <div class="col-xs-12 col-sm-12" style="margin-bottom:10px;">
+                   <button ng-disabled="loginForm.$invalid" class="btn-primary btn login-btn"  type="submit" ng-click="login(loginInfo)">Login</button>
+                 </div>        
+            <div style="text-align:center; word-wrap:break-word;" class="col-sm-12 col-xs-12 text-red">
+               <div ng-show="loginErrorMessage.length">
+                {{loginErrorMessage}}        
+               </div>
+               <a ng-confirm-click="{{'Request a password reset for the following email: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" >
+                <strong>Forgot your password?</strong></a>
             </div>
-            <div class="row">
-              <div class="col-md-5 text-red">
-                <div ng-show="loginErrorMessage.length">
-                {{loginErrorMessage}}
-              </div>
-              </div>
-              <div class="col-md-5" >
-                <a ng-confirm-click="{{'Request a password reset for the following email: ' + loginInfo.username + '?'}}" confirmed-click="forgotPassword(loginInfo.username)" ><strong>Forgot your password?</strong></a>
-              </div>
-            </div>
-          </form>
-
-      </div>
-    </div>
+        </div>
+    </form>
+  </div>
 
     <div class="register-body sub-content">
 
       <div class="row">
-        <div class="col-xs-12">          
-          <h1 ng-if="!isMobileApp" class="text-thin">Sign Up Now - It's Free and Easy!</h1>
-          <h1 ng-if="isMobileApp" class="text-center" ng-click="setSignUpBool(signUpBool)"><a class="text-thin">Sign Up Now <br> It's Free and Easy!</a></h1>
+        <div class="col-xs-12">
+          <div ng-if="signUpBool" class="col-md-12 register-header">
+         <img src="images/bek-logo.png" alt="logo" align="middle" />
+         </div>
+          <h1 class="text-center" ng-click="setSignUpBool(signUpBool)"><a ng-if="!signUpBool"class="text-thin">Sign Up Now <br> It's Free and Easy!</a><a ng-if="signUpBool" class="text-thin">Hide<br>Registration</a></h1>
           <p ng-show="signUpBool">
             Please register by completing the form below. Your information is confidential to Ben E. Keith and will not be shared with any outside sources.
           </p>
@@ -75,8 +66,8 @@
           <div class="col-md-6 form-group">
             <label for="password">Password</label>
             <span ng-show="registrationForm.password.$error.required && registrationForm.password.$dirty" class="text-red">Password is required</span>
-            <span ng-show="registrationForm.password.$error.validatePassword && registrationForm.password.$dirty && !registrationForm.password.$error.required" class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Cannot contain any part of your name or email address</span>
-            <input validate-password required class="form-control" id="password" type="password" name="password" ng-model="registerUser.password">
+            <span ng-show="registrationForm.password.$error.passwordRequirements && registrationForm.password.$dirty && !registrationForm.password.$error.required" class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Minimum length is 8 characters. Cannot contain any part of your name or email address.</span>
+            <input password-requirements required class="form-control" id="password" type="password" name="password" ng-model="registerUser.password">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmPassword">Confirm Password</label>
@@ -90,7 +81,7 @@
             <label for="customerStatus">Customer Status</label>
             <div class="radio">
               <label>
-                <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus1" ng-value="false" ng-checked="true">
+                <input ng-model="registerUser.existingcustomer" type="radio" name="customerStatus" id="customerStatus1" ng-value="false" ng-init="registerUser.existingcustomer = false">
                 I am NOT a current customer
               </label>
             </div>
@@ -119,7 +110,7 @@
           <div class="col-xs-12">
             <div class="checkbox">
               <label for="discounts">
-                <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-checked="true">
+                <input type="checkbox" ng-model="registerUser.marketingflag" name="discounts" id="discounts" ng-init="registerUser.marketingflag = true">
                 Select checkbox to learn more about Ben E. Keith
               </label>
             </div>

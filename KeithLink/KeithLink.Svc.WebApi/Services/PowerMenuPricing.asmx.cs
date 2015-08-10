@@ -82,6 +82,7 @@ namespace KeithLink.Svc.WebApi.Services {
                 currentItem.IsAuthorized = (price.CasePrice > 0 || price.PackagePrice > 0);
                 currentItem.IsActive = true;
                 currentItem.AvailableQty = 0;
+                currentItem.IsCatchWeight = false;
 
                 ProductLine myProduct = (from ProductLine p in products
                                          where p.ProductNumber == currentItem.ProductNumber

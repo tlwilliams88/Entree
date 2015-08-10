@@ -96,12 +96,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 }
             }
 
-            
-
             try
             {
                 var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
-                
                 if (invoice != null)
                 {
                     returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
@@ -109,12 +106,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
             catch (Exception ex)
             {
-                _log.WriteErrorLog(ex.Message + ex.StackTrace);
+                _log.WriteErrorLog("Error looking up invoice when trying to get order:  " + ex.Message + ex.StackTrace);
             }
 
-            
-
-            LookupProductDetails(branchId, returnOrder);
+			LookupProductDetails(branchId, returnOrder);
 
             if (po != null) {
                 returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
@@ -221,6 +216,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             currentFile.Header.MergeWithEntity(ref header);
+
+            if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
 
             foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList()) {
 

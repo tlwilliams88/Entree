@@ -158,8 +158,28 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId);
         }],
-        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', function($stateParams, validListId, lists, ListService) {
-          return ListService.getList(validListId);
+        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, validListId, lists, ListService, UtilityService, LocalStorage, ENV) {
+          var last = LocalStorage.getLastList();
+          var stillExists = false;
+
+          ListService.lists.forEach(function(list){
+            if(last && list.listid === last.listId){
+               stillExists = true;
+               var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+               if(last.timeset < timeoutDate){         
+                  stillExists = false;
+                 }
+            }
+          });    
+
+         if(last && stillExists){
+            last.timeset =  moment().format('YYYYMMDDHHmm');
+             LocalStorage.setLastList(last); 
+            return ListService.getList(last.listId);
+          }else{
+             LocalStorage.setLastList({});
+            return ListService.getList(validListId);
+        }
         }]
       }
     })
@@ -251,7 +271,8 @@ angular.module('bekApp')
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':cartId/list/:listId/?useParlevel',
+      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm',
+      params: {listItems: null},
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
@@ -281,7 +302,32 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
-        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', function($stateParams, lists, validListId, ListService) {
+        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
+
+          if($stateParams.cartId !== 'New'){
+            var allSets = LocalStorage.getLastOrderList();
+            var allValidSets = [];           
+            var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+            allSets.forEach(function(set){          
+              if(set.timeset > timeoutDate){
+                allValidSets.push(set);
+              }
+            });
+
+            if(allValidSets.length){
+              allValidSets.forEach(function(set){
+                if(set.cartId === $stateParams.cartId){
+                    ListService.lists.forEach(function(list){
+                      if(list.listid === set.listId){
+                        validListId = set.listId;
+                         set.timeset =  moment().format('YYYYMMDDHHmm');
+                      }
+                    });
+                  }
+              });  
+            } 
+            LocalStorage.setLastOrderList(allValidSets);  
+          }          
           return ListService.getList(validListId);
         }]
       }
@@ -382,7 +428,7 @@ angular.module('bekApp')
       templateUrl: 'views/marketing.html',
       controller: 'MarketingController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canViewMarketing'
       }
     })
 
@@ -409,11 +455,15 @@ angular.module('bekApp')
       url: '/reports/inventory',
       templateUrl: 'views/inventoryreport.html',
       controller: 'InventoryReportController',
+      resolve: {
+        reports: ['ListService', function(ListService) {
+          return ListService.getListsByType('inventoryValuation');
+        }]
+      },
       data: {
         authorize: 'canManageLists'
       }
     })
-
 
     /**********
     ADMIN
@@ -512,20 +562,11 @@ angular.module('bekApp')
       }
     })
     .state('menu.admin.customergroupdetails', {
-      url: 'customergroup/:groupId/',
+      url: 'customergroup/new/',
       templateUrl: 'views/admin/customergroupdetails.html',
       controller: 'CustomerGroupDetailsController',
       data: {
         authorize: 'canManageCustomerGroups'
-      },
-      resolve: {
-        originalCustomerGroup: ['$stateParams', 'CustomerGroupService', function($stateParams, CustomerGroupService) {
-          if ($stateParams.groupId === 'new') {
-            return {};
-          } else {
-            return CustomerGroupService.getGroupDetails($stateParams.groupId);
-          }
-        }]
       }
     })
 

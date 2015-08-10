@@ -1,22 +1,28 @@
 ﻿using CommerceServer.Core;
 using CommerceServer.Core.Runtime.Orders;
+
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Events.EventArgs;
+using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Events.EventArgs;
-using KeithLink.Svc.Core.Extensions.Messaging;
-using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +30,13 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
     public class ConfirmationLogicImpl : IConfirmationLogic
     {
         #region attributes
+        private ICatalogRepository _catRepo;
         private IGenericQueueRepository genericeQueueRepository;
         private IOrderConversionLogic _conversionLogic;
         private IEventLogRepository _log;
@@ -42,8 +48,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region constructor
-        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository,
-                                     IGenericQueueRepository internalMessagingLogic, IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork) {
+        public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IGenericQueueRepository internalMessagingLogic, 
+                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, ICatalogRepository catalogRepo) {
+            _catRepo = catalogRepo;
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             this.genericeQueueRepository = internalMessagingLogic;
@@ -98,7 +105,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         #endregion
 
         #region methods/functions
-        private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, string originalStatus, string specialInstructions) {
+        private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, 
+                                                                          string originalStatus, string specialInstructions, DateTime? shipDate) {
             Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
             orderChange.OrderName = (string)po["DisplayName"];
             orderChange.OriginalStatus = originalStatus;
@@ -106,27 +114,57 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
             orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
 			orderChange.SpecialInstructions = specialInstructions;
+            orderChange.ShipDate = shipDate.HasValue ? shipDate.Value : DateTime.MinValue;
 			
             foreach (LineItem origItem in origLineItems) {
                 LineItem newItem = currLineItems.Where(i => i.ProductId == origItem.ProductId).FirstOrDefault();
                 if (newItem != null) {
                     if (origItem["MainFrameStatus"] != newItem["MainFrameStatus"])
-                        orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = (string)newItem["MainFrameStatus"], OriginalStatus = (string)origItem["MainFrameStatus"], ItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] });
+                        orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
+                                                        NewStatus = (string)newItem["MainFrameStatus"], 
+                                                        OriginalStatus = (string)origItem["MainFrameStatus"], 
+                                                        ItemNumber = origItem.ProductId, 
+                                                        SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
+                                                        QuantityOrdered = (int)newItem["QuantityOrdered"], 
+                                                        QuantityShipped = (int)newItem["QuantityShipped"] ,
+                                                        ItemPrice = origItem.PlacedPrice,
+                                                        Each = (bool)newItem["Each"]
+                                                    });
                 } else {
-                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Removed", OriginalStatus = "", ItemNumber = origItem.ProductId, SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], QuantityOrdered = (int)origItem["QuantityOrdered"], QuantityShipped = (int)origItem["QuantityShipped"] }); // would we ever hit this?
+                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
+                                                    NewStatus = "Removed", 
+                                                    OriginalStatus = "", 
+                                                    ItemNumber = origItem.ProductId, 
+                                                    SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
+                                                    QuantityOrdered = (int)origItem["QuantityOrdered"], 
+                                                    QuantityShipped = (int)origItem["QuantityShipped"] ,
+                                                    ItemPrice = origItem.PlacedPrice,
+                                                    Each = (bool)origItem["Each"]
+                                                }); // would we ever hit this?
                 }
             }
             foreach (LineItem newItem in currLineItems) {
                 LineItem origItem = origLineItems.Where(o => o.ProductId == newItem.ProductId).FirstOrDefault();
                 if (origItem == null)
-                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { NewStatus = "Added", OriginalStatus = "", ItemNumber = newItem.ProductId, SubstitutedItemNumber = (string)newItem["SubstitutedItemNumber"], QuantityOrdered = (int)newItem["QuantityOrdered"], QuantityShipped = (int)newItem["QuantityShipped"] }); // would we ever hit this?
+                    orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
+                                                    NewStatus = "Added", 
+                                                    OriginalStatus = "", 
+                                                    ItemNumber = newItem.ProductId, 
+                                                    SubstitutedItemNumber = (string)newItem["SubstitutedItemNumber"], 
+                                                    QuantityOrdered = (int)newItem["QuantityOrdered"], 
+                                                    QuantityShipped = (int)newItem["QuantityShipped"] ,
+                                                    ItemPrice = newItem.PlacedPrice,
+                                                    Each = (bool)newItem["Each"]
+                                                }); // would we ever hit this?
 
                 orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() {
                     ItemNumber = (string)newItem.ProductId,
                     ItemDescription = newItem.DisplayName,
                     SubstitutedItemNumber = newItem["SubstitutedItemNumber"] == null ? string.Empty : (string)newItem["SubstitutedItemNumber"],
                     QuantityOrdered = newItem["QuantityOrdered"] == null ? (int)newItem.Quantity : (int)newItem["QuantityOrdered"],
-                    QuantityShipped = newItem["QuantityShipped"] == null ? 0 : (int)newItem["QuantityShipped"]
+                    QuantityShipped = newItem["QuantityShipped"] == null ? 0 : (int)newItem["QuantityShipped"],
+                    ItemPrice = newItem.PlacedPrice,
+                    Each = (bool)newItem["Each"]
                 });
             }
             return orderChange;
@@ -177,6 +215,40 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 throw new ApplicationException("Empty file from Confirmation Queue");
 
             return JsonConvert.DeserializeObject<ConfirmationFile>(fileFromQueue);
+        }
+
+        private double GetItemPrice(string branchId, string itemNumber, bool splitCase, ConfirmationDetail detail) {
+            Product myItem = _catRepo.GetProductById(branchId, itemNumber);
+            
+            double placedPrice = 0;
+
+            if (splitCase) {
+                // package price
+                if (myItem.CatchWeight) {
+                    // catch weight price
+                    int pack;
+
+                    try {
+                        pack = int.Parse(myItem.Pack);
+                    } catch {
+                        pack = 1;
+                    }
+                    
+                    placedPrice = PricingHelper.GetCatchweightPriceForPackage(detail.QuantityShipped, pack, detail.ShipWeight, detail.SplitPriceNet);
+                } else {
+                    placedPrice = detail.SplitPriceNet;
+                }
+            } else {
+                // case price
+                if (myItem.CatchWeight) {
+                    // catch weight price
+                    placedPrice = PricingHelper.GetCatchweightPriceForCase(detail.QuantityShipped, detail.ShipWeight, detail.PriceNet);
+                } else {
+                    placedPrice = detail.PriceNet;
+                }
+            }
+
+            return placedPrice;
         }
 
         /// <summary>
@@ -295,7 +367,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 po.Save();
 
                 // use internal messaging logic to put order up message on the queue
-                Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions);
+                Core.Models.Messaging.Queue.OrderChange orderChange = BuildOrderChanges(po, currLineItems, origLineItems, originalStatus, confirmation.Header.SpecialInstructions, confirmation.Header.ShipDate);
                 if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0) {
                     Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
                     orderConfNotification.OrderChange = orderChange;
@@ -377,14 +449,27 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (linePosition)).FirstOrDefault();
 
                 if (orderFormLineItem != null) {
-					SetCsLineItemInfo(orderFormLineItem, detail.QuantityOrdered, detail.QuantityShipped, detail.DisplayStatus(), detail.ItemNumber, detail.SubstitutedItemNumber(orderFormLineItem), (bool)orderFormLineItem["Each"] ? detail.SplitPriceNet : detail.PriceNet);
+                    double placedPrice = GetItemPrice(confirmation.Header.Branch,
+                                                      detail.ItemNumber,
+                                                      (bool)orderFormLineItem["Each"],
+                                                      detail);
+
+					SetCsLineItemInfo(orderFormLineItem, 
+                                      detail.QuantityOrdered, 
+                                      detail.QuantityShipped, 
+                                      detail.DisplayStatus(), 
+                                      detail.ItemNumber, 
+                                      detail.SubstitutedItemNumber(orderFormLineItem), 
+                                      placedPrice);
                     _log.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"] + ", confirmation status: _" + detail.DisplayStatus() + "_");
                 } else
                     _log.WriteWarningLog("No CS line found for MainFrame line " + linePosition + " on order: " + confirmation.Header.InvoiceNumber);
             }
         }
 
-        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, string displayStatus, string currentItemNumber, string substitutedItemNumber, double placedPrice ) {
+        private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, 
+                                       string displayStatus, string currentItemNumber, string substitutedItemNumber, 
+                                       double placedPrice ) {
             orderFormLineItem["QuantityOrdered"] = quantityOrdered;
             orderFormLineItem["QuantityShipped"] = quantityShipped;
             orderFormLineItem["MainFrameStatus"] = displayStatus;

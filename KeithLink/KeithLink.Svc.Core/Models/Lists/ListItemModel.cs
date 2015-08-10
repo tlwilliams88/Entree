@@ -1,7 +1,11 @@
-﻿using KeithLink.Svc.Core.Enumerations.List;
+﻿// KeithLink
+using KeithLink.Svc.Core.Models.Customers;
+using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
+// Core
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,23 +17,32 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Models.Lists
 {
     [DataContract(Name = "ListItem")]
-    public class ListItemModel:BaseProductInfo, IComparable, IExportableModel
-    {
+    public class ListItemModel:BaseProductInfo, IComparable, IExportableModel {
+
+        #region properties
+
         [DataMember(Name = "listitemid")]
         public long ListItemId { get; set; }
+
         [DataMember(Name = "each")]
         public bool? Each { get; set; }
+
         [DataMember(Name = "label")]
         public string Label { get; set; }
+
         [DataMember(Name = "parlevel")]
         public decimal ParLevel { get; set; }
+
         [DataMember(Name = "position")]
         public int Position { get; set; }
+
 		[DataMember(Name = "packsize")]
 		[Description("Pack/Size")]
 		public string PackSize { get; set; }
+
 		[DataMember(Name = "storagetemp", EmitDefaultValue = false)]
 		public string StorageTemp { get; set; }
+
 		[DataMember(Name = "category")]
 		[Description("Category")]
 		public string Category { get; set; }
@@ -37,17 +50,30 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[DataMember(Name = "fromdate")]
 		[Description("From Date")]
 		public DateTime? FromDate { get; set; }
+
 		[DataMember(Name = "todate")]
 		[Description("To Date")]
 		public DateTime? ToDate { get; set; }
 
+		[DataMember(Name = "quantity")]
+		public decimal Quantity { get; set; }
+
         public DateTime CreatedUtc { get; set; }
+
         public DateTime ModifiedUtc { get; set; }
 
 		[DataMember(Name = "isdeleted")]
 		public bool IsDelete { get; set; }
+
 		[DataMember]
 		public ListType Type { get; set; }
+
+        [DataMember( Name = "itemstatistics" )]
+        public ItemHistoryModel ItemStatistics { get; set; }
+
+        #endregion
+
+        #region functions
 
         public int CompareTo(object obj)
 		{
@@ -88,8 +114,10 @@ namespace KeithLink.Svc.Core.Models.Lists
 
 			return defaultConfig;
 
-		}
+        }
 
-		
-	}
+        #endregion
+
+
+    }
 }

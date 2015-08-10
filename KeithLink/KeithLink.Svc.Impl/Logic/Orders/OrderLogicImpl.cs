@@ -18,27 +18,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Impl.Logic.Orders {
-    public class OrderLogicImpl : IOrderLogic {
+
+namespace KeithLink.Svc.Impl.Logic.Orders
+{
+	public class OrderLogicImpl: IOrderLogic {
         #region attributes
+
         private readonly IPurchaseOrderRepository purchaseOrderRepository;
-        private readonly ICatalogLogic catalogLogic;
-        private IListServiceRepository listServiceRepository;
+		private readonly ICatalogLogic catalogLogic;
+		private IListServiceRepository listServiceRepository;
         private IOrderServiceRepository orderServiceRepository;
         private readonly IOrderQueueLogic orderQueueLogic;
         private IPriceLogic priceLogic;
         private IEventLogRepository eventLogRepository;
         private IUserProfileLogic userProfileLogic;
-        private ICustomerRepository customerRepository;
+		private ICustomerRepository customerRepository;
+
         #endregion
 
         #region ctor
         public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, IOrderServiceRepository orderServiceRepository,
-                              IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic,
+                              IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, 
                               IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, ICustomerRepository customerRepository) {
-            this.purchaseOrderRepository = purchaseOrderRepository;
-            this.catalogLogic = catalogLogic;
-            this.listServiceRepository = listServiceRepository;
+			this.purchaseOrderRepository = purchaseOrderRepository;
+			this.catalogLogic = catalogLogic;
+			this.listServiceRepository = listServiceRepository;
             this.orderServiceRepository = orderServiceRepository;
             this.orderQueueLogic = orderQueueLogic;
             this.priceLogic = priceLogic;
@@ -120,7 +124,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber, bool omitDeletedItems = true) {
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-
             var order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
             var returnOrder = ToOrder(order, false);
             var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
@@ -136,9 +139,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false) {
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-
             var orders = purchaseOrderRepository.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
-
             var returnOrders = orders.Select(p => ToOrder(p, header)).ToList();
             var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
 
@@ -163,7 +164,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
         public bool ResendUnconfirmedOrder(UserProfile userProfile, int controlNumber, UserSelectedContext catalogInfo) {
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-
             string controlNumberMainFrameFormat = controlNumber.ToString("0000000.##");
             Guid userId = orderServiceRepository.GetUserIdForControlNumber(controlNumber);
             CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, controlNumberMainFrameFormat);
@@ -279,7 +279,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         public Core.Models.Orders.Order UpdateOrder(UserSelectedContext catalogInfo, UserProfile user, Order order, bool deleteOmmitedItems) {
-
             /*if (order.Items == null || order.ItemCount == 0)
             {
                 throw new ApplicationException("Cannot submit an order with zero line items");

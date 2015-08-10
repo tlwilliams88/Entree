@@ -19,16 +19,20 @@ namespace KeithLink.Svc.Core.Models.Messaging
         public Guid UserId { get; set; }
         [DataMember(Name = "customernumber")]
         public string CustomerNumber { get; set; }
-        [DataMember(Name = "label")]
+		[DataMember(Name = "customername")]
+		public string CustomerName { get; set; }
+		[DataMember(Name = "branch")]
+		public string BranchId { get; set; }
+		[DataMember(Name = "label")]
         public string Label { get; set; }
         [DataMember(Name = "notificationtype")]
         public NotificationType NotificationType { get; set; }
 		[DataMember(Name = "notificationtypedescription")]
 		public string NotificationTypeDescription { get; set; }
-        [DataMember(Name = "messagereadutc")]
-        public DateTime? MessageReadUtc { get; set; }
-        [DataMember(Name = "messagecreatedutc")]
-        public DateTime? MessageCreatedUtc { get; set; }
+        [DataMember(Name = "messageread")]
+        public DateTime? MessageRead { get; set; }
+        [DataMember(Name = "messagecreated")]
+        public DateTime? MessageCreated { get; set; }
         [DataMember(Name = "subject")]
         public string Subject { get; set; }
         [DataMember(Name = "body")]

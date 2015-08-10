@@ -8,9 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, originalList, Constants, ListService, PricingService, ListPagingModel) {
-
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, PricingService, ListPagingModel, LocalStorage, UtilityService) {
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
@@ -25,6 +24,7 @@ angular.module('bekApp')
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
     $scope.numberListNamesToShow = 10;
+    $scope.isMobileDevice = UtilityService.isMobileDevice();
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -48,15 +48,24 @@ angular.module('bekApp')
         item.editPosition = item.position;
       });
     }
+    
+    function updateItemPositionWithEditPosition() {
+        $scope.selectedList.items.forEach(function(item) {
+            item.position = item.editPosition;
+        });
+    }
+
     function appendListItems(list) {
       list.items.forEach(function(item) {
         item.editPosition = item.position;
       });
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
     }
+
     function startLoading() {
       $scope.loadingResults = true;
     }
+
     function stopLoading() {
       $scope.loadingResults = false;
     }
@@ -76,18 +85,39 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
+      var timeset =  moment().format('YYYYMMDDHHmm');
+    
+      var lastlist ={
+          listId: list.listid,          
+          timeset: timeset
+      }
+     
+      LocalStorage.setLastList(lastlist);
       return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
     };
     
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
+     var timeset =  moment().format('YYYYMMDDHHmm');
+     var lastlist ={
+          listId: newList.listid,          
+          timeset: timeset
+         }  
+    
+      LocalStorage.setLastList(lastlist);
       $state.go('menu.lists.items', {listId: newList.listid, renameList: true});
     }
 
     $scope.undoChanges = function() {
       resetPage(angular.copy(originalList));
     };
+
+    // $scope.loadEntireList = function() {    
+    //   blockUI.start();    
+    //   listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults);    
+    //   blockUI.stop();   
+    // };
 
     /**********
     PAGING
@@ -274,7 +304,11 @@ angular.module('bekApp')
       }
 
       deletedItems = deletedItems.concat($scope.selectedList.items.splice(deletedIndex, 1));
+
       updateItemPositions();
+
+      // Remove an item from the count
+      $scope.selectedList.itemCount = ($scope.selectedList.itemCount - 1);
 
       // load more items if number of items fell below page size
       if ($scope.selectedList.items.length < 30) {
@@ -285,10 +319,17 @@ angular.module('bekApp')
     };
 
     $scope.deleteMultipleItems = function() {
-      deletedItems = deletedItems.concat($filter('filter')($scope.selectedList.items, {isSelected: 'true'}));
+      var selectedItemsForDelete = $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
+
+      deletedItems = deletedItems.concat(selectedItemsForDelete);
 
       $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
       $scope.selectedList.allSelected = false;
+
+      updateItemPositions();
+
+      // Remove an item from the count
+      $scope.selectedList.itemCount = ($scope.selectedList.itemCount - selectedItemsForDelete.length);
 
       // load more items if number of items fell below page size
       if ($scope.selectedList.items.length < 30) {
@@ -387,7 +428,7 @@ angular.module('bekApp')
 
     // disable drag on mobile
     $scope.isDragEnabled = function() {
-      return window.innerWidth > 991;
+      return window.innerWidth > 991 && !$scope.isMobileDevice;
     };
 
     // Check if element is being dragged, used to enable DOM elements
@@ -438,9 +479,12 @@ angular.module('bekApp')
           newPostion += 1;
         }
       });
+
       if ($scope.listForm && $scope.selectedList.permissions.canReorderItems) {
         $scope.listForm.$setDirty();
       }
+
+      updateItemPositionWithEditPosition();
     }
 
     // reorder list by drag and drop
@@ -570,6 +614,12 @@ angular.module('bekApp')
       $scope.listSearchTerm = '';
       $scope.hideDragToReorder = false;
       $scope.filterItems( $scope.listSearchTerm );     
+    };
+
+    $scope.initParLvl = function(item) {   
+      if(!item.parlevel){   
+        item.parlevel=0;
+      }   
     };
 
     $scope.openPrintOptionsModal = function(list) {

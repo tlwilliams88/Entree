@@ -1,5 +1,6 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.SiteCatalog;
@@ -15,11 +16,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #region attributes
         private readonly IEventLogRepository _log;
         private readonly IGenericQueueRepository _queue;
-        private readonly ISocketConnectionRepository _socket;
+        private readonly IOrderUpdateSocketConnectionRepository _socket;
         #endregion
 
         #region ctor
-		public OrderHistoryRequestLogicImpl(IEventLogRepository logRepo, IGenericQueueRepository queueRepo, ISocketConnectionRepository socket)
+		public OrderHistoryRequestLogicImpl(IEventLogRepository logRepo, IGenericQueueRepository queueRepo, IOrderUpdateSocketConnectionRepository socket)
 		{
             _log = logRepo;
             _queue = queueRepo;

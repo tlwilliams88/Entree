@@ -4,10 +4,10 @@
 </div>
 <div class="modal-body">
 
-  <h3>{{notification.messagecreatedutc | formatDate:'MMM D, YYYY' }}</h3>
+  <h3>{{notification.messagecreated | formatDate:'MMM D, YYYY' }}</h3>
 
   <h4 style="margin-top:20px;">Subject: {{notification.subject}}</h4>
-  <p style="margin-bottom:20px;" ng-class="{ 'text-red': notification.mandatory }" ng-bind-html="notification.body"></p>
+  <pre style="margin-bottom:20px; overflow-y:scroll; height: 200px;" ng-class="{ 'text-red': notification.mandatory }" ng-bind-html="notification.body"></pre>
 
   <div class="row">
     <label class="col-xs-4" for="">Label</label>
@@ -17,6 +17,10 @@
   <div class="row">
     <label class="col-xs-4" for="">Customer #</label>
     <div class="col-xs-8">{{notification.customernumber}}</div>
+  </div>
+  <div class="row">
+    <label class="col-xs-4" for="">Customer Name</label>
+    <div class="col-xs-8">{{notification.customername}}</div>
   </div>
 
   <div class="row">

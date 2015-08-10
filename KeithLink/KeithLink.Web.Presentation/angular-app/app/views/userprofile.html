@@ -120,10 +120,10 @@
           <span ng-show="changePasswordForm.newPassword.$error.required && changePasswordForm.newPassword.$dirty"
                 class="text-red">Password is required</span>
           <span
-            ng-show="changePasswordForm.newPassword.$error.validatePassword && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.required"
-            class="text-red">Must contain one uppercase letter, one lowercase letter, and a number.  Cannot contain any part of your name or email address</span>
+            ng-show="changePasswordForm.newPassword.$error.passwordRequirements && changePasswordForm.newPassword.$dirty && !changePasswordForm.newPassword.$error.required"
+            class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Minimum length is 8 characters. Cannot contain any part of your name or email address.</span>
           <input type="password" class="form-control form-control-lg" name="newPassword" id="newPassword" required
-                 validate-password ng-model="changePasswordData.newpassword">
+                 password-requirements ng-model="changePasswordData.newpassword">
         </div>
       </div>
       <div class="form-group ">
@@ -170,10 +170,10 @@
         </thead>
         <tbody>
           <tr ng-repeat="preference in defaultPreferences">
-            <td ng-repeat="channel in preference.channels track by $index" class="checkboxCenter">
+            <td ng-repeat="channel in preference.channels track by $index" ng-hide="preference.description === 'Mail'" class="checkboxCenter">
               <input type="checkbox" ng-model="preference.channels[$index]" ng-disabled="!canEditNotifications"/>
             </td>
-            <td>{{preference.description}}</td>
+            <td ng-hide="preference.description === 'Mail'">{{preference.description}}</td>
           </tr>
         </tbody>
       </table>

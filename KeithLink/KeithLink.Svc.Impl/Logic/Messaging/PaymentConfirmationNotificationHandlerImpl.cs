@@ -1,6 +1,7 @@
 ﻿using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
@@ -13,6 +14,7 @@ using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Impl.Helpers;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,15 +35,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private readonly IMessageTemplateLogic _messageTemplateLogic;
         private readonly IKPayInvoiceRepository _invoiceRepo;
         private readonly ICustomerBankRepository _bankRepo;
+		private readonly IDsrServiceRepository dsrServiceRepository;
         #endregion
 
         #region ctor
         public PaymentConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, 
                                                           IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository, 
                                                           IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory,
-                                                          IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo)
+														  IMessageTemplateLogic messageTemplateLogic, IKPayInvoiceRepository kpayInvoiceRepo, ICustomerBankRepository customerBankRepo, IDsrServiceRepository dsrServiceRepository)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, 
-                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository)
+                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
         {
             _log = eventLogRepository;
             _userLogic = userProfileLogic;
@@ -80,7 +83,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
             Message message = new Message();
             message.BodyIsHtml = template.IsBodyHtml;
-            message.MessageSubject = template.Subject.Inject(customer);
+			message.MessageSubject = template.Subject.Inject(customer);
             message.MessageBody = template.Body.Inject(new { 
                                                                 ConfirmationId = confirmationId,
                                                                 CustomerNumber = customer.CustomerNumber,
@@ -91,6 +94,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                                                                 TotalPayments = notification.Payments.Sum(p => p.PaymentAmount)
                                                            });
             message.CustomerNumber = customer.CustomerNumber;
+			message.CustomerName = customer.CustomerName;
+			message.BranchId = customer.CustomerBranch;
             message.NotificationType = NotificationType.PaymentConfirmation;
             return message;
         }
@@ -104,11 +109,25 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
             
             // load up recipients, customer and message
             Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
-            List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer);
-            Message message = GetEmailMessageForNotification(confirmation, customer);
 
-            // send messages to providers...
-            base.SendMessage(recipients, message);
+            if (customer == null) {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                _log.WriteWarningLog(warningMessage.ToString());
+            } else {
+                List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer);
+                Message message = GetEmailMessageForNotification(confirmation, customer);
+
+                // send messages to providers...
+                if (recipients != null && recipients.Count > 0) {
+                    base.SendMessage(recipients, message);
+                }
+            }
         }
         #endregion
     }

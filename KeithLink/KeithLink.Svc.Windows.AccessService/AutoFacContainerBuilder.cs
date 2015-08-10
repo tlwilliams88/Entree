@@ -12,7 +12,7 @@ using Autofac.Features.Indexed;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core;
-using KeithLink.Svc.Core.ETL;
+using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Component;
 using KeithLink.Svc.Impl.ETL;
@@ -80,7 +80,6 @@ namespace KeithLink.Svc.Windows.AccessService {
         public static IContainer BuildContainer() {
             var builder = new ContainerBuilder();
 
-
             builder.Register( c => new EventLogRepositoryImpl( Configuration.ApplicationName ) ).As<IEventLogRepository>();
 
 #if DEMO
@@ -90,7 +89,6 @@ namespace KeithLink.Svc.Windows.AccessService {
             builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 #endif
-
 
             // PowerMenu
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();

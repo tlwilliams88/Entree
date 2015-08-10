@@ -35,4 +35,21 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ResetPasswordModel" nillable="true" type="tns:ResetPasswordModel" />
+  <xs:complexType name="MarketingPreferenceModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="id" type="xs:long" />
+      <xs:element minOccurs="0" name="iscustomer" type="xs:boolean" />
+      <xs:element minOccurs="0" name="learnmore" type="xs:boolean" />
+      <xs:element minOccurs="0" name="registeredon" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="MarketingPreferenceModel" nillable="true" type="tns:MarketingPreferenceModel" />
+  <xs:complexType name="ArrayOfMarketingPreferenceModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="MarketingPreferenceModel" nillable="true" type="tns:MarketingPreferenceModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfMarketingPreferenceModel" nillable="true" type="tns:ArrayOfMarketingPreferenceModel" />
 </xs:schema>

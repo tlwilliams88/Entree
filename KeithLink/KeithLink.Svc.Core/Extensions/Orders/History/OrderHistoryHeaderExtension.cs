@@ -86,6 +86,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.DeliveryDate = value.DeliveryDate;
             entity.PONumber = value.PONumber;
             entity.ControlNumber = value.ControlNumber.Trim();
+            // the original control number is actually set from the entity already
+            // and because the order history header is actually a converted confirmation
+            // it does not know the original control number so it is seeing it as null
+            // and screwing up the original control number
+            //entity.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
             entity.OrderStatus = value.OrderStatus;
             entity.FutureItems = value.FutureItems;
             entity.ErrorStatus = value.ErrorStatus;
@@ -103,6 +108,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.DeliveryDate = value.DeliveryDate;
             retVal.PONumber = value.PONumber;
             retVal.ControlNumber = value.ControlNumber;
+            retVal.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
             retVal.OrderStatus = value.OrderStatus;
             retVal.FutureItems = value.FutureItems;
             retVal.ErrorStatus = value.ErrorStatus;
@@ -140,7 +146,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceNumber = value.InvoiceNumber.Trim();
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
-            retVal.CreatedDate = value.CreatedUtc;
+            retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
 			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
@@ -195,7 +201,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
             retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.ShippedQuantity * d.SellPrice); 
-			retVal.CreatedDate = value.CreatedUtc;
+			retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
             retVal.RequestedShipDate = (DateTime)(value.DeliveryDate.HasValue ? value.DeliveryDate : DateTime.Now);
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
@@ -215,6 +221,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.DeliveryDate = value.DeliveryDate;
             retVal.PONumber = value.PONumber;
             retVal.ControlNumber = value.ControlNumber;
+            retVal.OriginalControlNumber = string.IsNullOrEmpty(value.OriginalControlNumber) ? value.ControlNumber.Trim() : value.OriginalControlNumber.Trim();
             retVal.OrderStatus = value.OrderStatus;
             retVal.FutureItems = value.FutureItems;
             retVal.ErrorStatus = value.ErrorStatus;
@@ -234,6 +241,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.DeliveryDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"];
             retVal.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();
             retVal.ControlNumber = value.Properties["OrderNumber"].ToString();
+            retVal.OriginalControlNumber = value.Properties["OrderNumber"].ToString();
 
             // OrderStatus for Order History is either a blank space (normal), I (invoiced), D (deleted), or P (processing)
             //retVal.OrderStatus = System.Text.RegularExpressions.Regex.Replace(value.Status, "([a-z])([A-Z])", "$1 $2");

@@ -19,7 +19,16 @@ namespace KeithLink.Svc.Core.Extensions
 				DisplayName = list.Name,
 				Type = ListType.Custom,
 				ReadOnly = list.ReadOnly,
-				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { Category = i.Category, ItemNumber = i.ItemNumber, Label = i.Label, Par = i.ParLevel, Position = i.Position, Note = i.Notes, Each = i.Each.Equals(null) ? false : (bool)i.Each}).ToArray()
+				Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() { 
+					Category = i.Category,
+					ItemNumber = i.ItemNumber, 
+					Label = i.Label, 
+					Par = i.ParLevel, 
+					Position = i.Position, 
+					Note = i.Notes, 
+					Each = i.Each.Equals(null) ? false : (bool)i.Each,
+					Quantity = i.Quantity
+				}).ToArray()
 			};
 		}
 
@@ -42,7 +51,21 @@ namespace KeithLink.Svc.Core.Extensions
                 IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase)) : false,
 				IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
-                    list.Items.Select(i => new ListItemModel() { Category = i.Category, Type = list.Type, ItemNumber = i.ItemNumber, Label = i.Label, ParLevel = i.Par, ListItemId = i.Id, Position = i.Position, ModifiedUtc = i.ModifiedUtc, CreatedUtc = i.CreatedUtc, FromDate = i.FromDate, ToDate = i.ToDate, Each = i.Each.Equals(null) ? false : (bool)i.Each }).ToList()
+                    list.Items.Select(i => new ListItemModel() { 
+						Category = i.Category, 
+						Type = list.Type, 
+						ItemNumber = i.ItemNumber, 
+						Label = i.Label, 
+						ParLevel = i.Par, 
+						ListItemId = i.Id, 
+						Position = i.Position, 
+						ModifiedUtc = i.ModifiedUtc, 
+						CreatedUtc = i.CreatedUtc, 
+						FromDate = i.FromDate, 
+						ToDate = i.ToDate, 
+						Each = i.Each.Equals(null) ? false : (bool)i.Each ,
+						Quantity = i.Quantity
+					}).ToList()
 			};
 		}
 
@@ -53,7 +76,7 @@ namespace KeithLink.Svc.Core.Extensions
 			{
 				Name = list.Name,
 				Items = list.Items == null || list.Items.Results == null ? null :
-					list.Items.Results.Select(i => new ListItemReportModel() { Brand = i.BrandExtendedDescription, ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList()
+					list.Items.Results.Select(i => new ListItemReportModel() { Brand = i.BrandExtendedDescription, ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize, ParLevel = i.ParLevel }).ToList()
 			};
 		}
 	}

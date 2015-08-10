@@ -7,6 +7,7 @@ using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Orders.EF;
 using KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.Profile.EF;
+using KeithLink.Svc.Core.Models.Customers.EF;
 
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,8 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         public DbSet<ExportSetting> ExportSettings { get; set; }
         public DbSet<UserActiveCart> UserActiveCarts { get; set; }
 		public DbSet<PasswordResetRequest> PasswordResetRequests { get; set; }
+		public DbSet<MarketingPreference> MarketingPreferences {get;set;}
+        public DbSet<ItemHistory> ItemHistory { get; set; }
 
         protected override void OnModelCreating( DbModelBuilder modelBuilder ) {
             modelBuilder.Entity<List>().ToTable( "Lists", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
@@ -83,7 +86,9 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             modelBuilder.Entity<ContentItem>().ToTable( "ContentItems", schemaName: "ContentManagement" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 			
 			modelBuilder.Entity<PasswordResetRequest>().ToTable("PasswordResetRequests", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+			modelBuilder.Entity<MarketingPreference>().ToTable("MarketingPreferences", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
+            modelBuilder.Entity<ItemHistory>().ToTable("ItemHistory", schemaName: "Customers").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
         public override int SaveChanges() {

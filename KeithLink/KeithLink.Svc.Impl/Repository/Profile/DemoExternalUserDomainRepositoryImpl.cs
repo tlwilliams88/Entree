@@ -19,7 +19,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			throw new NotImplementedException();
 		}
 
-		public string GetNewUserName(string emailAddress)
+        public void DeleteUser(string emailAddress) {
+            throw new NotImplementedException();
+        }
+        
+        public string GetNewUserName(string emailAddress)
 		{
 			throw new NotImplementedException();
 		}
@@ -91,5 +95,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		{
             
         }
+
     }
 }

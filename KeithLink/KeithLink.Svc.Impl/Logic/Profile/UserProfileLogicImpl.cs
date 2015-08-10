@@ -1,11 +1,14 @@
 ﻿using CommerceServer.Foundation;
+
 using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Enumerations.Messaging;
-using KeithLink.Common.Core.Helpers;
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Messaging;
+using KeithLink.Svc.Core.Extensions.PowerMenu;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
@@ -15,25 +18,25 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Models.SingleSignOn;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Messaging;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.PowerMenu;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.PowerMenu;
-using KeithLink.Svc.Core.Extensions.PowerMenu;
+using KeithLink.Svc.Core.Models.SingleSignOn;
 
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices.AccountManagement;
 using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -97,7 +100,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
 		public void AddUserToCustomer(UserProfile addedBy, Guid customerId, Guid userId) {
+
             _customerRepo.AddUserToCustomer(addedBy.EmailAddress ,customerId, userId);
+
+			GenerateUserAddedNotification(customerId, userId);
         }
 
         /// <summary>
@@ -443,26 +449,36 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 10/3/2014 - documented
         /// </remarks>
-		public UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId)
-		{
+		public UserProfileReturn CreateUserAndProfile(UserProfile actingUser, string customerName, string emailAddress, 
+                                                      string password, string firstName, string lastName, 
+                                                      string phone, string roleName, string branchId) {
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
             _extAd.CreateUser(customerName,
-                              emailAddress,
-                              password,
-                              firstName,
-                              lastName,
-                              ConvertRoleName(roleName)
-                              );
+                                emailAddress,
+                                password,
+                                firstName,
+                                lastName,
+                                ConvertRoleName(roleName)
+                                );
 
-            _csProfile.CreateUserProfile(actiingUser.EmailAddress,
-										 emailAddress,
-                                         firstName,
-                                         lastName,
-                                         phone,
-                                         branchId
-                                         );
+            try {
+                _csProfile.CreateUserProfile(actingUser.EmailAddress,
+                                             emailAddress,
+                                             firstName,
+                                             lastName,
+                                             phone,
+                                             branchId
+                                             );
+
+            } catch (Exception) {
+                // if CS profile creation fails, delete the user from AD
+                // too
+                _extAd.DeleteUser(emailAddress);
+
+                throw;
+            }
 
             return GetUserProfile(emailAddress);
         }
@@ -486,8 +502,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 searchTerms = "";
 
             if (!string.IsNullOrEmpty(account))
-                return _customerRepo.GetPagedCustomersForAccount(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms, account.ToGuid().ToCommerceServerFormat());
-
+                return _customerRepo.GetPagedCustomersForAccount(paging, searchTerms, account.ToGuid().ToCommerceServerFormat());
 
             if (IsInternalAddress(user.EmailAddress))
             {
@@ -500,16 +515,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     {
                         // lookup customers by their assigned dsr number
                         //return _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSRNumber, user.BranchId, searchTerms);
-                        returnValue = _customerRepo.GetPagedCustomersForDSR(paging.Size.HasValue ? paging.Size.Value : int.MaxValue,
-                                                                     paging.From.HasValue ? paging.From.Value : 0,
-                                                                     searchTerms,
-                                                                     (from DsrAliasModel d in user.DsrAliases
-                                                                      select new Dsr()
-                                                                      {
-                                                                          Branch = d.BranchId,
-                                                                          DsrNumber = d.DsrNumber
-                                                                      })
-                                                                     .ToList());
+                        returnValue = _customerRepo.GetPagedCustomersForDSR(paging, 
+                                                                 searchTerms,
+                                                                 (from DsrAliasModel d in user.DsrAliases
+                                                                  select new Dsr() {
+                                                                      Branch = d.BranchId,
+                                                                      DsrNumber = d.DsrNumber
+                                                                  })
+                                                                 .ToList());
                     }
                 }
                 if (user.IsDSM)
@@ -517,17 +530,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     if (!String.IsNullOrEmpty(user.DSMNumber))
                     {
                         // lookup customers by their assigned dsr number
-                        returnValue = _customerRepo.GetPagedCustomersForDSM(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.DSMNumber, user.BranchId, searchTerms);
+                        returnValue = _customerRepo.GetPagedCustomersForDSM(paging, user.DSMNumber, user.BranchId, searchTerms);
                     }
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF))
                 {
-                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms);
 
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId == Constants.BRANCH_GOF))
                 {
-                    returnValue = _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomers(paging, searchTerms);
                 }
 
                 if (returnValue.Results != null)
@@ -542,13 +555,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
                 return returnValue;
 
-            }
-            else
-            { // external user
-                if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
-                    return _customerRepo.GetPagedCustomers(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, searchTerms);
-                else
-                    return _customerRepo.GetPagedCustomersForUser(paging.Size.HasValue ? paging.Size.Value : int.MaxValue, paging.From.HasValue ? paging.From.Value : 0, user.UserId, searchTerms);
+            } else { // external user
+				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
+					return _customerRepo.GetPagedCustomers(paging, searchTerms);
+				else
+					return _customerRepo.GetPagedCustomersForUser(paging, user.UserId, searchTerms);
             }
         }
         
@@ -600,6 +611,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 					else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0)
 					{
 						userRole = Constants.ROLE_NAME_POWERUSER;
+						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+					}
+					else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0)
+					{
+						userRole = Constants.ROLE_NAME_MARKETING;
 						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
 					}
 					else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0)
@@ -706,6 +722,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return generatedPassword;
         }
 
+        private void GenerateUserAddedNotification(Guid customerId, Guid userId) {
+            try {
+                //Lookup customer
+                var customer = _customerRepo.GetCustomerById(customerId);
+                //Lookup User
+                var user = _csProfile.GetCSProfile(userId);
+
+                var notifcation = new HasNewsNotification() {
+                    CustomerNumber = customer.CustomerNumber,
+                    BranchId = customer.CustomerBranch,
+                    Subject = string.Format("New user added to {0}-{1}", customer.CustomerNumber, customer.CustomerName),
+                    Notification = string.Format("User {0} has been added to {1}-{2}", user.Email, customer.CustomerNumber, customer.CustomerName),
+                    DSRDSMOnly = true
+                };
+                _queue.PublishToQueue(notifcation.ToJson(), Configuration.RabbitMQNotificationServer,
+                            Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+                            Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog("Error generating DSR/DSM new user notification", ex);
+            }
+        }
+
         public AccountReturn GetAccounts(AccountFilterModel accountFilters) {
             List<Account> retAccounts = new List<Account>();
 
@@ -741,24 +779,49 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             return new AccountReturn() { Accounts = retAccounts.Distinct(new AccountComparer()).ToList() };
         }
 
-        public Account GetAccount(Guid accountId) {
+		public Account GetAccount(UserProfile user, Guid accountId)
+		{
             Account acct = _accountRepo.GetAccounts().Where(x => x.Id == accountId).FirstOrDefault();
             acct.Customers = _customerRepo.GetCustomersForAccount(accountId.ToCommerceServerFormat());
+
+			foreach (var cust in acct.Customers)
+			{
+				cust.CanMessage = true;
+				if (user.IsDSR && user.DSRNumber != cust.DsmNumber)
+					cust.CanMessage = false;
+				else if (user.IsDSM && user.DSMNumber != cust.DsmNumber)
+					cust.CanMessage = false;
+			}
+
+
             acct.AdminUsers = _csProfile.GetUsersForCustomerOrAccount(accountId);
             acct.CustomerUsers = new List<UserProfile>();
             foreach (Customer c in acct.Customers) {
-                acct.CustomerUsers.AddRange(_csProfile.GetUsersForCustomerOrAccount(c.CustomerId));
+				var users = _csProfile.GetUsersForCustomerOrAccount(c.CustomerId);
+				foreach (var custUser in users)
+				{
+					custUser.CanMessage = true;
+					if (user.IsDSR && user.DSRNumber != c.DsmNumber)
+						custUser.CanMessage = false;
+					else if (user.IsDSM && user.DSMNumber != c.DsmNumber)
+						custUser.CanMessage = false;
+				}
+                acct.CustomerUsers.AddRange(users);
             }
             acct.CustomerUsers = acct.CustomerUsers
+				.OrderByDescending(o => o.CanMessage)
                                     .GroupBy(x => x.UserId)
                                     .Select(grp => grp.First())
-                                    .ToList();
+									.ToList();
 
 			foreach (var up in acct.AdminUsers)
 				up.RoleName = GetUserRole(up.EmailAddress);
 
             foreach (var up in acct.CustomerUsers)
                 up.RoleName = GetUserRole(up.EmailAddress);
+
+			
+
 
             return acct;
         }
@@ -1136,15 +1199,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 			//TODO: This is a Foundation Service Query. It should be moved to the profile repository
             var profileQuery = new CommerceServer.Foundation.CommerceQuery<CommerceServer.Foundation.CommerceEntity>("UserProfile");
-            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToString();
+            profileQuery.SearchCriteria.Model.Properties["Id"] = UserId.ToCommerceServerFormat();
             profileQuery.SearchCriteria.Model.DateModified = DateTime.Now;
 
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
-            profileQuery.Model.Properties.Add("SelectedBranch");
-            profileQuery.Model.Properties.Add("SelectedCustomer");
             profileQuery.Model.Properties.Add("PhoneNumber");
 
             CommerceServer.Foundation.CommerceResponse response = Svc.Impl.Helpers.FoundationService.ExecuteRequest(profileQuery.ToRequest());
@@ -1193,6 +1254,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             return roleName;
         }
+
+		
 
         public UserProfileReturn GetUsers(UserFilterModel userFilters) {
             if (userFilters != null) {
@@ -1653,7 +1716,5 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         //}
 
         #endregion
-
-
 	}
 }

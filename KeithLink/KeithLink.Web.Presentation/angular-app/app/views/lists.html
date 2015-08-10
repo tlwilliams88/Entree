@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    <div ng-hide="selectedList.isRenaming">
+    <div ng-if="!selectedList.isRenaming">
       <div class="list-name">{{selectedList.name}}</div>
 
       <div style="display:inline-block;">
@@ -32,7 +32,7 @@
 
     <form name="renameListForm" class="style-validation-errors inline-header-form nowrap" ng-show="selectedList.isRenaming">
       <input 
-        check-duplicate-field="name" 
+        no-duplicates="name" 
         collection="lists" 
         type="text" 
         focus-me="selectedList.isRenaming" 
@@ -53,7 +53,7 @@
       <a ng-click="cancelRenameList()"><span class="large-icon text-red icon-cross"></span></a>
       
       <span class="form-error-message" ng-show="renameListForm.listName.$error.required">List name is required</span>
-      <span class="form-error-message" ng-show="renameListForm.listName.$error.checkDuplicateField">Duplicate list name</span>
+      <span class="form-error-message" ng-show="renameListForm.listName.$error.noDuplicates">Duplicate list name</span>
     </form>
 
   </div>
@@ -74,7 +74,7 @@
       ng-disabled="listForm.$pristine">
       Cancel
     </button>
-   
+  
     <div class="btn-group" dropdown is-open="status.listactions">
       <a class="btn btn-lg btn-default dropdown-toggle">
         List Actions <span class="icon-arrow-down6"></span>
@@ -111,6 +111,15 @@
     ng-disabled="listForm.$pristine">
     Cancel
   </button>
+
+<!--   <button     
+  class="btn-no-style page-subheader-bar__button button-left" 
+  type="button"
+  ng-click="loadEntireList()" 
+  ng-if="(selectedList.items|filter:{isdeleted:'false'}).length < selectedList.itemCount">
+  Load All
+  </button>  -->   
+   
 <!-- 
   <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__button button-right">
     Lists <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
@@ -319,15 +328,16 @@
           </button>
         </div>
       </div><!-- end Multi-select menu -->
-
-      <div class="row sub-content">
-        <div class="col-xs-5">
-          {{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected
-        </div>
-        <div class="text-right col-xs-7">
-          Showing {{(selectedList.items|filter:{isdeleted:'false'}).length}} of {{selectedList.itemCount}} Items    
-        </div>
-      </div>
+<!-- 
+ <button class="btn-lg btn btn-primary hidden-print pull-right hidden-sm hidden-xs" style="margin-top:5px;"  ng-click="loadEntireList()" ng-disabled="(selectedList.items|filter:{isdeleted:'false'}).length === selectedList.itemCount">Load All</button> -->
+  <div class="row sub-content">
+    <div class="col-xs-5 " >         
+      <span>{{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected</span>
+    </div>
+    <div class="col-xs-7 col-md-5 col-lg-5 text-right" style="float:right; " >      
+     Showing {{(selectedList.items|filter:{isdeleted:'false'}).length}} of {{selectedList.itemCount}} Items
+    </div>
+  </div>
 
      <form 
       unsaved-warning-form 
@@ -475,13 +485,13 @@
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel">
                 <ng-form name="parlevelForm">
-                  <input 
-                    required 
+                  <input                     
                     id="parlevel" 
                     name="parlevel" 
                     type="text" 
                     allow-one-positive-decimal 
                     ng-model="item.parlevel" 
+                    ng-blur="initParLvl(item)"
                     class="text-right input-number bek-no-drag" />
                 </ng-form>
               </td>
@@ -514,7 +524,7 @@
               </td>
 
             </tr>
-            <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
+            <tr ng-if="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
               <td colspan="10">
                 <table>
                   <colgroup>
@@ -582,10 +592,10 @@
                           <input 
                             id="parlevel" 
                             name="parlevel" 
-                            type="text" 
-                            required 
+                            type="text"                              
                             allow-one-positive-decimal 
                             ng-model="item.parlevel" 
+                            ng-blur="initParLvl(item)"
                             class="input-number input-number-mobile text-right bek-no-drag form-control" 
                             />
                         </ng-form>

@@ -182,10 +182,18 @@ angular.module('bekApp')
           return Service.getAllLists({ header: true });
         },
 
+        setLoadPage: function(value){
+          Service.loadPage = value;
+        },
+
         getCustomListHeaders: function() {
           return $http.get('/list/type/custom', { params: { headerOnly: true } }).then(function(response) {
             return response.data;
           });
+        },
+
+        getListsByType: function(type, params) {
+          return List.getByType({ type: type }, { params: params }).$promise;
         },
 
         // accepts listId (guid)
@@ -270,8 +278,16 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(listId, options) {
-          var promise = $http.post('/list/print/' + listId, options, {
+        printList: function(listId, landscape, showparvalues, options) {
+
+            var printparams = {
+              landscape: landscape,
+              showparvalues: showparvalues,
+              paging: options
+            };
+
+
+          var promise = $http.post('/list/print/' + listId, printparams, {
             responseType: 'arraybuffer'
           });
           return ExportService.print(promise);
@@ -280,6 +296,23 @@ angular.module('bekApp')
         /********************
         EDIT LIST
         ********************/
+
+        confirmQuantity: function(type, item, value) {
+          var pattern = /^([0-9])\1+$/; // repeating digits pattern
+
+          if (value > 50 || pattern.test(value)) {
+            var isConfirmed = window.confirm('Do you want to continue with entered quatity of ' + value + '?');
+            if (!isConfirmed) {
+              // clear input
+            if(type==='quantity'){
+              item.quantity = null;
+            }
+            else{
+              item.onhand=null;
+            }
+            }
+          } 
+        },
         
         remapItems: function(item) {
           return {
@@ -303,11 +336,11 @@ angular.module('bekApp')
 
           newList.items = newItems.map(Service.remapItems);
 
-          if (params.isMandatory === true) {
+          if (params.type === 9) {
             newList.name = 'Mandatory';
-          } else if (params.isRecommended === true) {
+          } else if (params.type === 10) {
             newList.name = 'Recommended';
-          } else if (params.name != null) {
+          } else if (params.name !== null) {
             newList.name = params.name;
           }
           else{
@@ -319,7 +352,7 @@ angular.module('bekApp')
         },
 
         // items: accepts null, item object, or array of item objects
-        // params: isMandatory param for creating mandatory list
+        // params: type (recommendedItems, Mandatory, InventoryValuation)
         // returns promise and new list object
         createList: function(items, params) {
           var newList = Service.beforeCreateList(items, params);
@@ -327,7 +360,7 @@ angular.module('bekApp')
             params = {};
           }
 
-          newList.message = 'Creating list...';          
+          newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');
@@ -578,7 +611,8 @@ angular.module('bekApp')
         *****************************/
 
         createMandatoryList: function(items) {
-          var params = { isMandatory: true };
+          // Type 9 == Mandatory 
+          var params = { type: 9 };
           return Service.createList(items, params);
         },
 
@@ -600,7 +634,8 @@ angular.module('bekApp')
         ***********************/
 
         createRecommendedList: function(items) {
-          var params = { isRecommended: true };
+          // Type = 10 - Recommended list type that needs to be passed in
+          var params = { type: 10 };
           return Service.createList(items, params);
         },
 

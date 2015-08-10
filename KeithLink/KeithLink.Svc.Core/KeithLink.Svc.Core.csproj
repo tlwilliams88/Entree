@@ -146,7 +146,8 @@
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
-    <Compile Include="ETL\ICustomerLogic.cs" />
+    <Compile Include="Helpers\PricingHelper.cs" />
+    <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
     <Compile Include="Exceptions\Orders\EarlySocketException.cs" />
@@ -188,6 +189,10 @@
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
+    <Compile Include="Interface\ETL\IElasticSearchCategoriesImport.cs" />
+    <Compile Include="Interface\ETL\IElasticSearchHouseBrandsImport.cs" />
+    <Compile Include="Interface\ETL\IElasticSearchItemImport.cs" />
+    <Compile Include="Interface\ETL\IListsImportLogic.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
@@ -212,6 +217,8 @@
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
+    <Compile Include="Interface\Orders\IOrderSocketConnectionRepository.cs" />
+    <Compile Include="Interface\Orders\IOrderUpdateSocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />
@@ -222,6 +229,10 @@
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
     <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
+    <Compile Include="Interface\Profile\IInternalMarketingPreferenceLogic.cs" />
+    <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
+    <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
+    <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
@@ -242,6 +253,8 @@
     <Compile Include="Models\ContentManagement\ExpressEngine\AdditionalData.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\ContentItem.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\Product.cs" />
+    <Compile Include="Models\Customers\EF\ItemHistory.cs" />
+    <Compile Include="Models\Customers\ItemHistoryModel.cs" />
     <Compile Include="Models\EF\Dsr.cs" />
     <Compile Include="Models\EF\ListShare.cs" />
     <Compile Include="Models\EF\Term.cs" />
@@ -258,9 +271,12 @@
     <Compile Include="Models\Lists\ListItemReportModel.cs" />
     <Compile Include="Models\Lists\ListReportModel.cs" />
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
+    <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
+    <Compile Include="Models\Profile\EF\MarketingPreference.cs" />
+    <Compile Include="Models\Profile\MarketingPreferenceModel.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
@@ -478,16 +494,21 @@
     <Compile Include="Models\SiteCatalog\ItemNote.cs" />
     <Compile Include="Models\SiteCatalog\ItemValidationResultModel.cs" />
     <Compile Include="Models\SiteCatalog\PriceReturn.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\AuthHeader.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\PricingRequest.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\PricingResponse.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\Product.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductLine.cs" />
     <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\ProductReturn.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\SoapBody.cs" />
+    <Compile Include="Models\SiteCatalog\Pricing\PowerMenu\SoapEnvelope.cs" />
     <Compile Include="Models\SiteCatalog\ProductImage.cs" />
     <Compile Include="Models\SiteCatalog\ProductImageReturn.cs" />
     <Compile Include="Models\SiteCatalog\ProductsReturn.cs" />
-    <Compile Include="ETL\ICatalogLogic.cs" />
+    <Compile Include="Interface\ETL\ICatalogLogic.cs" />
     <Compile Include="Models\SiteCatalog\Category.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="ETL\IStagingRepository.cs" />
+    <Compile Include="Interface\ETL\IStagingRepository.cs" />
     <Compile Include="Interface\InternalCatalog\ICatalogInternalRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IPriceRepository.cs" />
@@ -532,7 +553,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
+    <Folder Include="ETL\" />
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
   </ItemGroup>

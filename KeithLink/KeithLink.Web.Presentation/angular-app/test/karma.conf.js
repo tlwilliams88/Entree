@@ -36,6 +36,8 @@ module.exports = function(config) {
       'app/lib/ng-sticky/sticky.min.js',
       'app/lib/angulartics/angulartics.min.js',
       'app/lib/angulartics/angulartics-ga.min.js',
+      'app/lib/mousetrap/mousetrap.min.js',
+
       
       'app/scripts/*.js',
       'app/scripts/**/*.js',

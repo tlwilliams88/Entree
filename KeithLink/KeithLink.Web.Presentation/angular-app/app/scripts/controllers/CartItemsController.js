@@ -128,6 +128,13 @@ angular.module('bekApp')
  
       if($scope.currentCart && !$scope.currentCart.requestedshipdate){      
           $scope.selectShipDate($scope.shipDates[0]);   
+      }else{
+          var requestedDate = $scope.currentCart.requestedshipdate;
+          var firstAvailableDate = $scope.shipDates[0].shipdate;
+
+          if (requestedDate < firstAvailableDate) {
+           $scope.selectShipDate($scope.shipDates[0]);  
+          }
       }
  
     $scope.sortByPrice = function(item) {
@@ -215,6 +222,7 @@ angular.module('bekApp')
       CartService.deleteCart(cart.id).then(function() {
         $scope.goToCart();
         $scope.displayMessage('success', 'Successfully deleted cart.');
+        $state.go('menu.order');
       }, function() {
         $scope.displayMessage('error', 'Error deleting cart.');
       });
@@ -297,6 +305,7 @@ angular.module('bekApp')
           $scope.changeOrders.splice(idx, 1);
           $scope.goToCart();
           $scope.displayMessage('success', 'Successfully cancelled order ' + changeOrder.ordernumber + '.');
+          $state.go('menu.order');
         }, function(error) {
           $scope.displayMessage('error', 'Error cancelling order ' + changeOrder.ordernumber + '.');
         }).finally(function() {

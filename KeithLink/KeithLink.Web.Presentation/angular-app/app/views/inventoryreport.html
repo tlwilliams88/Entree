@@ -1,8 +1,12 @@
 <div page-header-bar>
   <div header-message>
     Inventory Valuation Report
+    <button class="btn hidden-md hidden-lg btn-lg btn-primary" ng-click="saveReport(report)" type="button">Save</button>
+    <button class="btn hidden-md hidden-lg btn-lg btn-default" ng-click="clearReport(report.listid)" type="button">Clear</button>
   </div>
   <div header-buttons>
+    <button class="btn btn-lg btn-primary" ng-click="saveReport(report)" type="button">Save</button>
+    <button class="btn btn-lg btn-default" ng-click="clearReport(report.listid)" type="button">Clear</button>
     <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
     <a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>
   </div>
@@ -14,9 +18,9 @@
     <a class="col-xs-12 hidden-print text-large btn-link" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
   </div>
 
-  <div class="row">
+<!--   <div class="row">
     <p class="col-md-12 col-lg-8 hidden-print text-red">This report is still under development.  Right now you can’t save your work, but you can print or export to Excel or PDF.  Please try it out if you have a chance and let us know what you think.</p>
-  </div>
+  </div> -->
 
   <div class="row sub-content">
     <form class="hidden-print col-md-12 col-lg-8 form-inline" name="addItemByNumberForm">
@@ -48,7 +52,7 @@
     <form name="inventoryForm" class="style-validation-errors col-md-12 col-lg-8" unsaved-warning-form>
       <div class="row sub-content">
         <div class="col-xs-7" style="margin-top: 10px;">
-          Showing {{items.length}} Item<span ng-if="items.length !== 1">s</span>
+          Showing {{report.items.length}} Item<span ng-if="report.items.length !== 1">s</span>
         </div>
         <div class="text-green currency-value col-xs-5 text-right">
           {{subtotal | currency}}
@@ -75,7 +79,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr ng-repeat-start="item in items | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even }">
+          <tr ng-repeat-start="item in report.items | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even }">
             <td>
               <a ui-sref="menu.catalog.products.details({itemNumber: item.itemid})">{{::item.itemid}}</a>
             </td>
@@ -84,7 +88,7 @@
             <td class="hidden-mobile-visible-print">{{::item.label}}</td>
             <td class="input-col nowrap">
               <!-- <div type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.quantity"></div> -->
-              <input type="text" allow-one-positive-decimal class="input-number" id="inventoryRep" ng-model="item.quantity">
+              <input type="text" allow-one-positive-decimal class="input-number" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity">
             </td>
             <td class="input-col hidden-xs hidden-sm">
               <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">
@@ -146,7 +150,7 @@
             </td>
           </tr>
         </tbody>
-        <tfoot ng-show="items && items.length === 0">
+        <tfoot ng-show="report.items && report.items.length === 0">
           <tr>
             <td colspan="9">There are no items to display.</td>
           </tr>

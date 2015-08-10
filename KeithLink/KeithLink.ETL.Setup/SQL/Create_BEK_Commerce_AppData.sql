@@ -1261,4 +1261,86 @@ CREATE TABLE [ETL].[Staging_WorksheetItems](
 GO
 SET ANSI_PADDING OFF
 GO
+--CREATE PROCEDURE ETL.ReadAverageItemUsage       
+--       @NumDays int
+--AS
+
+----NEED TO ADD SUMMARY COMMENTS HERE
+
+--SET NOCOUNT ON;
+
+--SELECT
+--       oh.BranchId
+--       , oh.CustomerNumber
+--       , od.ItemNumber
+--       , od.unitOfMeasure
+--       , AVG(od.ShippedQuantity) 'AverageUse'
+--FROM 
+--       Orders.OrderHistoryHeader oh
+--              INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
+--WHERE 
+--       oh.CreatedUtc > DATEADD(DD, (@NumDays * -1), GETDATE())
+--GROUP BY 
+--       oh.BranchId
+--       , oh.CustomerNumber
+--       , od.ItemNumber
+--       , od.unitOfMeasure
+
+
+USE [BEK_Commerce_AppData]
+GO
+/****** Object:  StoredProcedure [ETL].[ProcessItemHistoryData]    Script Date: 6/17/2015 9:03:26 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER PROCEDURE [ETL].[ProcessItemHistoryData]       
+       @NumWeeks int
+AS
+
+SET NOCOUNT ON;
+
+TRUNCATE TABLE [Customers].[ItemHistory];
+
+INSERT INTO
+	[Customers].[ItemHistory]
+	(
+		BranchId
+		, CustomerNumber
+		, ItemNumber
+		, CreatedUtc
+		, ModifiedUtc
+		, UnitOfMeasure
+		, AverageUse
+	)
+SELECT
+	oh.BranchId
+	, oh.CustomerNumber
+	, od.ItemNumber
+	, GETUTCDATE()
+	, GETUTCDATE()
+	, od.unitOfMeasure
+	, AVG(od.ShippedQuantity)
+FROM 
+	Orders.OrderHistoryHeader oh
+	INNER JOIN Orders.OrderHistoryDetail od ON od.OrderHistoryHeader_Id = oh.Id
+WHERE 
+	CONVERT(DATE, oh.CreatedUtc) > DATEADD(ww, (@NumWeeks * -1), CONVERT(DATE, GETDATE()))
+GROUP BY 
+	oh.BranchId
+	, oh.CustomerNumber
+	, od.ItemNumber
+	, od.unitOfMeasure
+
+IF @@ERROR = 0 
+	COMMIT TRANSACTION
+ELSE	
+	ROLLBACK TRANSACTION
+
+
+
+
+	
+
 

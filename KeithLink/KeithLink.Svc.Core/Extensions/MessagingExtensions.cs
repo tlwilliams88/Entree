@@ -21,11 +21,14 @@ namespace KeithLink.Svc.Core.Extensions
             return new KeithLink.Svc.Core.Models.Messaging.EF.UserMessage()
             {
                  Body = userMessage.Body,
-                 MessageReadUtc = userMessage.MessageReadUtc,
+                 MessageReadUtc = userMessage.MessageRead.HasValue ? userMessage.MessageRead.Value.ToUniversalTime() : userMessage.MessageRead,
                  NotificationType = userMessage.NotificationType,
                  Subject = userMessage.Subject,
                  Mandatory = userMessage.Mandatory,
-                 Label = userMessage.Label
+                 Label = userMessage.Label,
+				 CustomerName = userMessage.CustomerName,
+				 CustomerNumber = userMessage.CustomerNumber,
+				 BranchId = userMessage.BranchId
             };
         }
 
@@ -34,16 +37,18 @@ namespace KeithLink.Svc.Core.Extensions
             return new UserMessageModel()
             {
                 Body = userMessage.Body,
-                MessageReadUtc = userMessage.MessageReadUtc,
+                MessageRead = userMessage.MessageReadUtc.HasValue ? DateTime.SpecifyKind(userMessage.MessageReadUtc.Value.ToLocalTime(), DateTimeKind.Unspecified) : userMessage.MessageReadUtc,
                 NotificationType = userMessage.NotificationType,
                 CustomerNumber = userMessage.CustomerNumber,
                 Subject = userMessage.Subject,
                 Mandatory = userMessage.Mandatory,
-                MessageCreatedUtc = userMessage.CreatedUtc,
+                MessageCreated = DateTime.SpecifyKind(userMessage.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified),
                 UserId = userMessage.UserId,
                 Id = userMessage.Id,
                 Label = userMessage.Label,
-				NotificationTypeDescription = EnumUtils<NotificationType>.GetDescription(userMessage.NotificationType)
+				NotificationTypeDescription = EnumUtils<NotificationType>.GetDescription(userMessage.NotificationType),
+                CustomerName = userMessage.CustomerName,
+                BranchId = userMessage.BranchId
             };
         }
 

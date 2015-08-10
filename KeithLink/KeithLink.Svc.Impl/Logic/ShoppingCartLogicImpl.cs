@@ -378,7 +378,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				var batch = productsToValidate.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
 
-				var tempProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
+				var tempProducts = catalogLogic.GetProductsByIdsWithPricing(catalogInfo, batch);
 
 				products.Products.AddRange(tempProducts.Products);
 				totalProcessed += 50;
@@ -396,10 +396,22 @@ namespace KeithLink.Svc.Impl.Logic
 					results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.InvalidItemNumber });
 				else
 				{
-					if(item.Each && product.CaseOnly)
-						results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
-					else
-						results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
+                    if (item.Each) {
+                        if (product.CaseOnly) {
+						    results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                        } else if (product.PackagePriceNumeric > 0) {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
+                        } else {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                        }
+                    } else {
+                        if (product.CasePriceNumeric > 0) {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
+                        } else {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                        }
+
+                    }
 				}				
 			}
 

@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * sortLists filter
+ * Sorts list types for when listsare displayed in a list
+ */
 angular.module('bekApp')
 .filter('sortLists', [ '$filter', 'ListService', function($filter, ListService) {
   return function(items) {

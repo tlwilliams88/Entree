@@ -34,14 +34,16 @@
         <Directory Id="CompanyFolder" Name="$(var.MfgName)">
           <Directory Id="INSTALLFOLDER" Name="$(var.AppName)">
             <Component Id="ServiceFile" Guid="A61B19C7-F371-4765-A02A-0F9BA6D132F1">
-              <!--<File Id="CS_Core_Internal_ContentListHelper_Resources" Name="CommerceServer.Core.Internal.ContentListHelper.resources.dll" DiskId="1" Source="$(var.SourcePath)\EN\CommerceServer.Core.Internal.ContentListHelper.resources.dll" KeyPath="no" Vital="yes"/> -->
-              <!--<File Id="CS_Core_Internal_ContentListHelper" Name="CommerceServer.Core.Internal.ContentListHelper.dll" DiskId="1" Source="$(var.SourcePath)\CommerceServer.Core.Internal.ContentListHelper.dll" KeyPath="no" Vital="yes"/>-->
+              <File Id="AutoFac" Name="Autofac.dll" DiskId="1" Source="$(var.SourcePath)\Autofac.dll" KeyPath="no" Vital="yes"/>
+              <File Id="Awssdk" Name="AWSSDK.dll" DiskId="1" Source="$(var.SourcePath)\AWSSDK.dll" KeyPath="no" Vital="yes"/>
+              <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
+              <File Id="Config" Name="KeithLink.Svc.Windows.OrderService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe.config" KeyPath="no" Vital="yes"/>
               <File Id="ElasticSearch_dot_net" Name="ElasticSearch.Net.dll" DiskId="1" Source="$(var.SourcePath)\ElasticSearch.Net.dll" KeyPath="no" Vital="yes"/>
-              <File Id="EF_BulkInsert" Name="EntityFramework.BulkInsert.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.BulkInsert.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF" Name="EntityFramework.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.dll" KeyPath="no" Vital="yes"/>
+              <File Id="EF_BulkInsert" Name="EntityFramework.BulkInsert.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.BulkInsert.dll" KeyPath="no" Vital="yes"/>
+              <File Id="KeithLink_Common_Core_DLL" Name="KeithLink.Common.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF_MappingAPI" Name="EntityFramework.MappingAPI.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.MappingAPI.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF_SqlServer" Name="EntityFramework.SqlServer.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.SqlServer.dll" KeyPath="no" Vital="yes"/>
-              <File Id="KeithLink_Common_Core_DLL" Name="KeithLink.Common.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_PDB" Name="KeithLink.Common.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Impl_DLL" Name="KeithLink.Common.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Impl_PDB" Name="KeithLink.Common.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.pdb" KeyPath="no" Vital="yes"/>
@@ -49,9 +51,7 @@
               <File Id="KeithLink_Svc_Core_PDB" Name="KeithLink.Svc.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_DLL" Name="KeithLink.Svc.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Svc_Impl_PDB" Name="KeithLink.Svc.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Impl.pdb" KeyPath="no" Vital="yes"/>
-              <File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe" KeyPath="yes" Vital="yes"/>
-              <File Id="Service_PDB" Name="KeithLink.Svc.Windows.OrderService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.pdb" KeyPath="no" Vital="yes"/>
-              <File Id="Config" Name="KeithLink.Svc.Windows.OrderService.exe.config" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe.config" KeyPath="no" Vital="yes"/>
+              <File Id="Linq" Name="System.Linq.Dynamic.dll" DiskId="1" Source="$(var.SourcePath)\System.Linq.Dynamic.dll" KeyPath="no" Vital="yes"/>
               <File Id="MS_Practices_EnterpriseLibrary_Caching" Name="Microsoft.Practices.EnterpriseLibrary.Caching.dll" DiskId="1" Source="$(var.SourcePath)\Microsoft.Practices.EnterpriseLibrary.Caching.dll" KeyPath="no" Vital="yes"/>
               <File Id="MS_Practices_EnterpriseLibrary_Common" Name="Microsoft.Practices.EnterpriseLibrary.Common.dll" DiskId="1" Source="$(var.SourcePath)\Microsoft.Practices.EnterpriseLibrary.Common.dll" KeyPath="no" Vital="yes"/>
               <File Id="MS_Practices_ServiceLocation" Name="Microsoft.Practices.ServiceLocation.dll" DiskId="1" Source="$(var.SourcePath)\Microsoft.Practices.ServiceLocation.dll" KeyPath="no" Vital="yes"/>
@@ -61,7 +61,8 @@
               <File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
               <File Id="RabbitMQ_Client" Name="RabbitMQ.Client.dll" DiskId="1" Source="$(var.SourcePath)\RabbitMQ.Client.dll" KeyPath="no" Vital="yes"/>
               <File Id="RestSharp" Name="RestSharp.dll" DiskId="1" Source="$(var.SourcePath)\RestSharp.dll" KeyPath="no" Vital="yes"/>
-              <File Id="BekLibraryDLL" Name="BEKlibrary.dll" DiskId="1" Source="$(var.SourcePath)\Lib\BEKlibrary.dll" KeyPath="no" Vital="yes"/>
+              <File Id="Service_EXE" Name="KeithLink.Svc.Windows.OrderService.exe" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.exe" KeyPath="yes" Vital="yes"/>
+              <File Id="Service_PDB" Name="KeithLink.Svc.Windows.OrderService.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Svc.Windows.OrderService.pdb" KeyPath="no" Vital="yes"/>
 
               <ServiceInstall Id="InstallService" Name="$(var.AppName)" Type="ownProcess" ErrorControl="normal" Start="auto"
                               DisplayName="$(var.AppName)" Description="$(var.AppDescription)">

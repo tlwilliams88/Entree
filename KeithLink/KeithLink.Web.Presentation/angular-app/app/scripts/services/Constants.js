@@ -11,7 +11,9 @@ angular.module('bekApp')
       leadGenInfo: 'leadGenInfo',
       currentCustomer: 'currentCustomer',
       tempContext: 'tempContext',
-      tempBranch: 'tempBranch'
+      tempBranch: 'tempBranch',
+      lastList: 'lastList',
+      lastOrderList: 'lastOrderList'
     },
 
     offlineLocalStorage: {
@@ -37,7 +39,8 @@ angular.module('bekApp')
       SYS_ADMIN: 'beksysadmin',
       POWER_USER: 'poweruser',
       BRANCH_MANAGER: 'branchismanager',
-      KBIT_ADMIN: 'kbitadmin'
+      KBIT_ADMIN: 'kbitadmin',
+      MARKETING: 'marketing'
     },
 
     infiniteScrollPageSize: 50,

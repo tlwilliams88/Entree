@@ -219,9 +219,10 @@
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
-    <Compile Include="ETL\DemoStagingRepositoryImpl.cs" />
-    <Compile Include="ETL\CustomerLogicImpl.cs" />
-    <Compile Include="ETL\StagingRepositoryImpl.cs" />
+    <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
+    <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ListImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\StagingRepositoryImpl.cs" />
     <Compile Include="Helpers\CommerceServerCore.cs" />
     <Compile Include="Helpers\DivisionHelper.cs" />
     <Compile Include="Helpers\ElasticSearch.cs" />
@@ -230,12 +231,16 @@
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearchCategoriesImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearchHouseBrandsImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearchItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalExportSettingsLogicImpl.cs" />
+    <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
@@ -257,6 +262,7 @@
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
+    <Compile Include="Logic\Orders\NoOrderConverionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
@@ -542,6 +548,34 @@
     <Compile Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.Designer.cs">
       <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.cs" />
+    <Compile Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.Designer.cs">
+      <DependentUpon>201505111534370_Add quantity to list item.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201505131809528_Added_CustomerName_Branch_To_UserMessage.cs" />
+    <Compile Include="Repository\EF\Migrations\201505131809528_Added_CustomerName_Branch_To_UserMessage.Designer.cs">
+      <DependentUpon>201505131809528_Added_CustomerName_Branch_To_UserMessage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.cs" />
+    <Compile Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.Designer.cs">
+      <DependentUpon>201505151602520_Add_Mkting_Pref_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.cs" />
+    <Compile Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.Designer.cs">
+      <DependentUpon>201505261936245_Add_ItemHistory_Table.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.cs" />
+    <Compile Include="Repository\EF\Migrations\201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.Designer.cs">
+      <DependentUpon>201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs" />
+    <Compile Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.Designer.cs">
+      <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.cs" />
+    <Compile Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.Designer.cs">
+      <DependentUpon>201506261544525_Add Original Confirmation Number.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -557,7 +591,7 @@
     <Compile Include="Models\ETL\CatalogExport.cs" />
     <Compile Include="Models\ETL\CSProduct.cs" />
     <Compile Include="Configuration.cs" />
-    <Compile Include="ETL\CatalogLogicImpl.cs" />
+    <Compile Include="Logic\ETL\CatalogLogicImpl.cs" />
     <Compile Include="Models\SiteCatalog\Schemas\PricingResponse.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -620,6 +654,8 @@
     <Compile Include="Repository\Profile\DsrRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\ExternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
+    <Compile Include="Repository\Profile\ItemHistoryRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\MarketingPreferencesRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasLogicImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
@@ -707,6 +743,7 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.ListReportModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
@@ -861,6 +898,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ETL\" />
     <Folder Include="Repository\InternalSvc\" />
     <Folder Include="Schemas\" />
   </ItemGroup>
@@ -883,6 +921,7 @@
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Reports\ListReport.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport_Landscape.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>
@@ -1080,6 +1119,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201504301942324_20150430_add index to DSR Aliases.resx">
       <DependentUpon>201504301942324_20150430_add index to DSR Aliases.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505111534370_Add quantity to list item.resx">
+      <DependentUpon>201505111534370_Add quantity to list item.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505131809528_Added_CustomerName_Branch_To_UserMessage.resx">
+      <DependentUpon>201505131809528_Added_CustomerName_Branch_To_UserMessage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505151602520_Add_Mkting_Pref_Table.resx">
+      <DependentUpon>201505151602520_Add_Mkting_Pref_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201505261936245_Add_ItemHistory_Table.resx">
+      <DependentUpon>201505261936245_Add_ItemHistory_Table.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.resx">
+      <DependentUpon>201506081437143_Modifications_to_ItemHistory_add_unitofmeasure.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.resx">
+      <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.resx">
+      <DependentUpon>201506261544525_Add Original Confirmation Number.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

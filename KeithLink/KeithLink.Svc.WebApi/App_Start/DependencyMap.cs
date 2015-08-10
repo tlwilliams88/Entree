@@ -102,7 +102,8 @@ namespace KeithLink.Svc.WebApi
 			#endif
 			
             builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
-            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
+            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
+            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
             
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
@@ -155,6 +156,8 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
 			builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
+
+			builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
 
             // Build the container.
             var container = builder.Build();

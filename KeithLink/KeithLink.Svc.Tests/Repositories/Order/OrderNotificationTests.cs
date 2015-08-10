@@ -62,65 +62,65 @@ namespace KeithLink.Svc.Test.Repositories.Order
             //    new Impl.Repository.Queue.GenericQueueRepositoryImpl();
             //queueRepo.PublishToQueue("gstestitem", "corpkecdev1", "notifypub", "notifypasspub", "notifications_notify", "bek_commerce_notifications");
             /////////////////////////////////////
-            string notificationMsg = GetSampleOrderMessage();
+			//string notificationMsg = GetSampleOrderMessage();
 
-            KeithLink.Svc.Core.Models.Messaging.Queue.BaseNotification
-                notification = KeithLink.Svc.Core.Extensions.Messaging.NotificationExtension.Deserialize(notificationMsg);
+			//KeithLink.Svc.Core.Models.Messaging.Queue.BaseNotification
+			//	notification = KeithLink.Svc.Core.Extensions.Messaging.NotificationExtension.Deserialize(notificationMsg);
 
-            Assert.IsTrue(notification.NotificationType == Core.Enumerations.Messaging.NotificationType.Eta);
+			//Assert.IsTrue(notification.NotificationType == Core.Enumerations.Messaging.NotificationType.Eta);
 
-            KeithLink.Svc.Core.Models.Messaging.Queue.EtaNotification etaNotification =
-                (KeithLink.Svc.Core.Models.Messaging.Queue.EtaNotification)notification;
+			//KeithLink.Svc.Core.Models.Messaging.Queue.EtaNotification etaNotification =
+			//	(KeithLink.Svc.Core.Models.Messaging.Queue.EtaNotification)notification;
 
-            Assert.IsTrue(etaNotification.Orders.Count > 0);
+			//Assert.IsTrue(etaNotification.Orders.Count > 0);
 
-            DateTime dt = etaNotification.Orders[0].EstimatedTime.ToDateTime().Value;
-            dt = dt.ToCentralTime();
-            string date = dt.ToShortDateString();
-            string time = dt.ToShortTimeString();
-            string timeZoneName = dt.CentralTimeZoneName();
-            string all = date + ", " + time;
-            EtaNotificationHandlerImpl etaHandler = new EtaNotificationHandlerImpl(
-                _log,
-                _userProfileLogic,
-                null,
-                _cust,
-                null,
-                null,
-                null,
-                new Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl(
-					new Svc.Impl.Repository.Email.MessageTemplateRepositoryImpl(new UnitOfWork(new EventLogRepositoryImpl("Entree Tests")))),
-                    null
-                );
+			//DateTime dt = etaNotification.Orders[0].EstimatedTime.ToDateTime().Value;
+			//dt = dt.ToCentralTime();
+			//string date = dt.ToShortDateString();
+			//string time = dt.ToShortTimeString();
+			//string timeZoneName = dt.CentralTimeZoneName();
+			//string all = date + ", " + time;
+			//EtaNotificationHandlerImpl etaHandler = new EtaNotificationHandlerImpl(
+			//	_log,
+			//	_userProfileLogic,
+			//	null,
+			//	_cust,
+			//	null,
+			//	null,
+			//	null,
+			//	new Svc.Impl.Logic.Messaging.MessageTemplateLogicImpl(
+			//		new Svc.Impl.Repository.Email.MessageTemplateRepositoryImpl(new UnitOfWork(new EventLogRepositoryImpl("Entree Tests")))),
+			//		null
+			//	);
 
-            // create  a list of fake order histories
-            List<Core.Models.Orders.History.EF.OrderHistoryHeader> orderHistoryHeaders = new List<Core.Models.Orders.History.EF.OrderHistoryHeader>();
-            Random r = new Random();
-            foreach (OrderEta oe in etaNotification.Orders)
-            {
-                Core.Models.Orders.History.EF.OrderHistoryHeader h = new Core.Models.Orders.History.EF.OrderHistoryHeader() { InvoiceNumber = oe.OrderId, BranchId = "FDF" };
-                h.OrderDetails = new List<Core.Models.Orders.History.EF.OrderHistoryDetail>();
-                for (int i = 0; i < (r.Next(1, 10)); i++)
-                {
-                    h.OrderDetails.Add(new Core.Models.Orders.History.EF.OrderHistoryDetail() { LineNumber = i, ShippedQuantity = i + 2, OrderQuantity = i + 2 });
-                }
-                orderHistoryHeaders.Add(h);
-            }
+			//// create  a list of fake order histories
+			//List<Core.Models.Orders.History.EF.OrderHistoryHeader> orderHistoryHeaders = new List<Core.Models.Orders.History.EF.OrderHistoryHeader>();
+			//Random r = new Random();
+			//foreach (OrderEta oe in etaNotification.Orders)
+			//{
+			//	Core.Models.Orders.History.EF.OrderHistoryHeader h = new Core.Models.Orders.History.EF.OrderHistoryHeader() { InvoiceNumber = oe.OrderId, BranchId = "FDF" };
+			//	h.OrderDetails = new List<Core.Models.Orders.History.EF.OrderHistoryDetail>();
+			//	for (int i = 0; i < (r.Next(1, 10)); i++)
+			//	{
+			//		h.OrderDetails.Add(new Core.Models.Orders.History.EF.OrderHistoryDetail() { LineNumber = i, ShippedQuantity = i + 2, OrderQuantity = i + 2 });
+			//	}
+			//	orderHistoryHeaders.Add(h);
+			//}
 
-            PrivateObject o = new PrivateObject(etaHandler, new PrivateType(typeof(EtaNotificationHandlerImpl)));
-            List<object> callParams = new List<object>();
-            callParams.Add(etaNotification.Orders);
-            callParams.Add(orderHistoryHeaders);
-            callParams.Add(new Core.Models.Profile.Customer() { CustomerNumber = "12345", CustomerName = "ABC Foods" });
-            List<Type> callParamTypes = new List<Type>();
-            callParamTypes.Add(typeof(IEnumerable<OrderEta>));
-            callParamTypes.Add(typeof(IEnumerable<Core.Models.Orders.History.EF.OrderHistoryHeader>));
-            callParamTypes.Add(typeof(Svc.Core.Models.Profile.Customer));
+			//PrivateObject o = new PrivateObject(etaHandler, new PrivateType(typeof(EtaNotificationHandlerImpl)));
+			//List<object> callParams = new List<object>();
+			//callParams.Add(etaNotification.Orders);
+			//callParams.Add(orderHistoryHeaders);
+			//callParams.Add(new Core.Models.Profile.Customer() { CustomerNumber = "12345", CustomerName = "ABC Foods" });
+			//List<Type> callParamTypes = new List<Type>();
+			//callParamTypes.Add(typeof(IEnumerable<OrderEta>));
+			//callParamTypes.Add(typeof(IEnumerable<Core.Models.Orders.History.EF.OrderHistoryHeader>));
+			//callParamTypes.Add(typeof(Svc.Core.Models.Profile.Customer));
 
-            o.Invoke("GetEmailMessageForNotification",
-                System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod,
-                callParamTypes.ToArray(),
-                callParams.ToArray());
+			//o.Invoke("GetEmailMessageForNotification",
+			//	System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.InvokeMethod,
+			//	callParamTypes.ToArray(),
+			//	callParams.ToArray());
         }
         #endregion
     }

@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySets84a660a5817ab1e41293a6144b1ebd9ef1f2a748a152e8a301831c5dcf41d575))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetscaac32fc6306363f9e1145a32678662948b40135ed474a4faacf00e2e685d3d8))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySets84a660a5817ab1e41293a6144b1ebd9ef1f2a748a152e8a301831c5dcf41d575 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySetscaac32fc6306363f9e1145a32678662948b40135ed474a4faacf00e2e685d3d8 : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "84a660a5817ab1e41293a6144b1ebd9ef1f2a748a152e8a301831c5dcf41d575"; }
+            get { return "caac32fc6306363f9e1145a32678662948b40135ed474a4faacf00e2e685d3d8"; }
         }
 
         /// <summary>
@@ -142,139 +142,159 @@ namespace Edm_EntityMappingGeneratedViews
                 return GetView18();
             }
 
-            if (extentName == "CodeFirstDatabase.ListItem")
+            if (extentName == "CodeFirstDatabase.ItemHistory")
             {
                 return GetView19();
             }
 
-            if (extentName == "CodeFirstDatabase.List")
+            if (extentName == "BEKDBContext.ItemHistory")
             {
                 return GetView20();
             }
 
-            if (extentName == "CodeFirstDatabase.ListShare")
+            if (extentName == "CodeFirstDatabase.ListItem")
             {
                 return GetView21();
             }
 
-            if (extentName == "BEKDBContext.ListItems")
+            if (extentName == "CodeFirstDatabase.List")
             {
                 return GetView22();
             }
 
-            if (extentName == "BEKDBContext.List_Items")
+            if (extentName == "CodeFirstDatabase.ListShare")
             {
                 return GetView23();
             }
 
-            if (extentName == "BEKDBContext.Lists")
+            if (extentName == "BEKDBContext.ListItems")
             {
                 return GetView24();
             }
 
-            if (extentName == "BEKDBContext.ListShares")
+            if (extentName == "BEKDBContext.List_Items")
             {
                 return GetView25();
             }
 
-            if (extentName == "BEKDBContext.ListShare_SharedList")
+            if (extentName == "BEKDBContext.Lists")
             {
                 return GetView26();
             }
 
-            if (extentName == "CodeFirstDatabase.MessageTemplate")
+            if (extentName == "BEKDBContext.ListShares")
             {
                 return GetView27();
             }
 
-            if (extentName == "BEKDBContext.MessageTemplates")
+            if (extentName == "BEKDBContext.ListShare_SharedList")
             {
                 return GetView28();
             }
 
-            if (extentName == "CodeFirstDatabase.OrderHistoryDetail")
+            if (extentName == "CodeFirstDatabase.MarketingPreference")
             {
                 return GetView29();
             }
 
-            if (extentName == "CodeFirstDatabase.OrderHistoryHeader")
+            if (extentName == "BEKDBContext.MarketingPreferences")
             {
                 return GetView30();
             }
 
-            if (extentName == "BEKDBContext.OrderHistoryDetails")
+            if (extentName == "CodeFirstDatabase.MessageTemplate")
             {
                 return GetView31();
             }
 
-            if (extentName == "BEKDBContext.OrderHistoryHeader_OrderDetails")
+            if (extentName == "BEKDBContext.MessageTemplates")
             {
                 return GetView32();
             }
 
-            if (extentName == "BEKDBContext.OrderHistoryHeaders")
+            if (extentName == "CodeFirstDatabase.OrderHistoryDetail")
             {
                 return GetView33();
             }
 
-            if (extentName == "CodeFirstDatabase.PasswordResetRequest")
+            if (extentName == "CodeFirstDatabase.OrderHistoryHeader")
             {
                 return GetView34();
             }
 
-            if (extentName == "BEKDBContext.PasswordResetRequests")
+            if (extentName == "BEKDBContext.OrderHistoryDetails")
             {
                 return GetView35();
             }
 
-            if (extentName == "CodeFirstDatabase.Term")
+            if (extentName == "BEKDBContext.OrderHistoryHeader_OrderDetails")
             {
                 return GetView36();
             }
 
-            if (extentName == "BEKDBContext.Terms")
+            if (extentName == "BEKDBContext.OrderHistoryHeaders")
             {
                 return GetView37();
             }
 
-            if (extentName == "CodeFirstDatabase.UserActiveCart")
+            if (extentName == "CodeFirstDatabase.PasswordResetRequest")
             {
                 return GetView38();
             }
 
-            if (extentName == "BEKDBContext.UserActiveCarts")
+            if (extentName == "BEKDBContext.PasswordResetRequests")
             {
                 return GetView39();
             }
 
-            if (extentName == "CodeFirstDatabase.UserMessage")
+            if (extentName == "CodeFirstDatabase.Term")
             {
                 return GetView40();
             }
 
-            if (extentName == "BEKDBContext.UserMessages")
+            if (extentName == "BEKDBContext.Terms")
             {
                 return GetView41();
             }
 
-            if (extentName == "CodeFirstDatabase.UserMessagingPreference")
+            if (extentName == "CodeFirstDatabase.UserActiveCart")
             {
                 return GetView42();
             }
 
-            if (extentName == "BEKDBContext.UserMessagingPreferences")
+            if (extentName == "BEKDBContext.UserActiveCarts")
             {
                 return GetView43();
             }
 
-            if (extentName == "CodeFirstDatabase.UserPushNotificationDevice")
+            if (extentName == "CodeFirstDatabase.UserMessage")
             {
                 return GetView44();
             }
 
-            if (extentName == "BEKDBContext.UserPushNotificationDevices")
+            if (extentName == "BEKDBContext.UserMessages")
             {
                 return GetView45();
+            }
+
+            if (extentName == "CodeFirstDatabase.UserMessagingPreference")
+            {
+                return GetView46();
+            }
+
+            if (extentName == "BEKDBContext.UserMessagingPreferences")
+            {
+                return GetView47();
+            }
+
+            if (extentName == "CodeFirstDatabase.UserPushNotificationDevice")
+            {
+                return GetView48();
+            }
+
+            if (extentName == "BEKDBContext.UserPushNotificationDevices")
+            {
+                return GetView49();
             }
 
             return null;
@@ -777,16 +797,64 @@ namespace Edm_EntityMappingGeneratedViews
         }
 
         /// <summary>
-        /// Gets the view for CodeFirstDatabase.ListItem.
+        /// Gets the view for CodeFirstDatabase.ItemHistory.
         /// </summary>
         /// <returns>The mapping view.</returns>
         private static DbMappingView GetView19()
         {
             return new DbMappingView(@"
-    SELECT VALUE -- Constructing ListItem
-        [CodeFirstDatabaseSchema.ListItem](T3.ListItem_Id, T3.ListItem_ItemNumber, T3.ListItem_Label, T3.ListItem_Par, T3.ListItem_Note, T3.ListItem_Category, T3.ListItem_Position, T3.ListItem_FromDate, T3.ListItem_ToDate, T3.ListItem_Each, T3.ListItem_CreatedUtc, T3.ListItem_ModifiedUtc, T3.[ListItem.ParentList_Id])
+    SELECT VALUE -- Constructing ItemHistory
+        [CodeFirstDatabaseSchema.ItemHistory](T1.ItemHistory_Id, T1.ItemHistory_BranchId, T1.ItemHistory_CustomerNumber, T1.ItemHistory_ItemNumber, T1.ItemHistory_UnitOfMeasure, T1.ItemHistory_AverageUse, T1.ItemHistory_CreatedUtc, T1.ItemHistory_ModifiedUtc)
     FROM (
-        SELECT T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_Each, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc, T2.[ListItem.ParentList_Id], T1._from0, (T2._from1 AND T2._from1 IS NOT NULL) AS _from1
+        SELECT 
+            T.Id AS ItemHistory_Id, 
+            T.BranchId AS ItemHistory_BranchId, 
+            T.CustomerNumber AS ItemHistory_CustomerNumber, 
+            T.ItemNumber AS ItemHistory_ItemNumber, 
+            T.UnitOfMeasure AS ItemHistory_UnitOfMeasure, 
+            T.AverageUse AS ItemHistory_AverageUse, 
+            T.CreatedUtc AS ItemHistory_CreatedUtc, 
+            T.ModifiedUtc AS ItemHistory_ModifiedUtc, 
+            True AS _from0
+        FROM BEKDBContext.ItemHistory AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for BEKDBContext.ItemHistory.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView20()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing ItemHistory
+        [KeithLink.Svc.Impl.Repository.EF.Operational.ItemHistory](T1.ItemHistory_Id, T1.ItemHistory_BranchId, T1.ItemHistory_CustomerNumber, T1.ItemHistory_ItemNumber, T1.ItemHistory_UnitOfMeasure, T1.ItemHistory_AverageUse, T1.ItemHistory_CreatedUtc, T1.ItemHistory_ModifiedUtc)
+    FROM (
+        SELECT 
+            T.Id AS ItemHistory_Id, 
+            T.BranchId AS ItemHistory_BranchId, 
+            T.CustomerNumber AS ItemHistory_CustomerNumber, 
+            T.ItemNumber AS ItemHistory_ItemNumber, 
+            T.UnitOfMeasure AS ItemHistory_UnitOfMeasure, 
+            T.AverageUse AS ItemHistory_AverageUse, 
+            T.CreatedUtc AS ItemHistory_CreatedUtc, 
+            T.ModifiedUtc AS ItemHistory_ModifiedUtc, 
+            True AS _from0
+        FROM CodeFirstDatabase.ItemHistory AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for CodeFirstDatabase.ListItem.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView21()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing ListItem
+        [CodeFirstDatabaseSchema.ListItem](T3.ListItem_Id, T3.ListItem_ItemNumber, T3.ListItem_Label, T3.ListItem_Par, T3.ListItem_Note, T3.ListItem_Category, T3.ListItem_Position, T3.ListItem_FromDate, T3.ListItem_ToDate, T3.ListItem_Each, T3.ListItem_Quantity, T3.ListItem_CreatedUtc, T3.ListItem_ModifiedUtc, T3.[ListItem.ParentList_Id])
+    FROM (
+        SELECT T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_Each, T1.ListItem_Quantity, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc, T2.[ListItem.ParentList_Id], T1._from0, (T2._from1 AND T2._from1 IS NOT NULL) AS _from1
         FROM  (
             SELECT 
                 T.Id AS ListItem_Id, 
@@ -799,6 +867,7 @@ namespace Edm_EntityMappingGeneratedViews
                 T.FromDate AS ListItem_FromDate, 
                 T.ToDate AS ListItem_ToDate, 
                 T.Each AS ListItem_Each, 
+                T.Quantity AS ListItem_Quantity, 
                 T.CreatedUtc AS ListItem_CreatedUtc, 
                 T.ModifiedUtc AS ListItem_ModifiedUtc, 
                 True AS _from0
@@ -817,7 +886,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.List.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView20()
+        private static DbMappingView GetView22()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing List
@@ -843,7 +912,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.ListShare.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView21()
+        private static DbMappingView GetView23()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ListShare
@@ -873,11 +942,11 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.ListItems.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView22()
+        private static DbMappingView GetView24()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ListItems
-        [KeithLink.Svc.Impl.Repository.EF.Operational.ListItem](T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_Each, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc) WITH 
+        [KeithLink.Svc.Impl.Repository.EF.Operational.ListItem](T1.ListItem_Id, T1.ListItem_ItemNumber, T1.ListItem_Label, T1.ListItem_Par, T1.ListItem_Note, T1.ListItem_Category, T1.ListItem_Position, T1.ListItem_FromDate, T1.ListItem_ToDate, T1.ListItem_Each, T1.ListItem_Quantity, T1.ListItem_CreatedUtc, T1.ListItem_ModifiedUtc) WITH 
         RELATIONSHIP(CREATEREF(BEKDBContext.Lists, ROW(T1.[List_Items.List_Items_Source.Id]),[KeithLink.Svc.Impl.Repository.EF.Operational.List]),[KeithLink.Svc.Impl.Repository.EF.Operational.List_Items],List_Items_Target,List_Items_Source) 
     FROM (
         SELECT 
@@ -891,6 +960,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.FromDate AS ListItem_FromDate, 
             T.ToDate AS ListItem_ToDate, 
             T.Each AS ListItem_Each, 
+            T.Quantity AS ListItem_Quantity, 
             T.CreatedUtc AS ListItem_CreatedUtc, 
             T.ModifiedUtc AS ListItem_ModifiedUtc, 
             True AS _from0, 
@@ -903,7 +973,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.List_Items.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView23()
+        private static DbMappingView GetView25()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing List_Items
@@ -932,7 +1002,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.Lists.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView24()
+        private static DbMappingView GetView26()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Lists
@@ -958,7 +1028,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.ListShares.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView25()
+        private static DbMappingView GetView27()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ListShares
@@ -981,7 +1051,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.ListShare_SharedList.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView26()
+        private static DbMappingView GetView28()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing ListShare_SharedList
@@ -1007,10 +1077,58 @@ namespace Edm_EntityMappingGeneratedViews
         }
 
         /// <summary>
+        /// Gets the view for CodeFirstDatabase.MarketingPreference.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView29()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing MarketingPreference
+        [CodeFirstDatabaseSchema.MarketingPreference](T1.MarketingPreference_Id, T1.MarketingPreference_Email, T1.MarketingPreference_BranchId, T1.MarketingPreference_CurrentCustomer, T1.MarketingPreference_LearnMore, T1.MarketingPreference_RegisteredOn, T1.MarketingPreference_CreatedUtc, T1.MarketingPreference_ModifiedUtc)
+    FROM (
+        SELECT 
+            T.Id AS MarketingPreference_Id, 
+            T.Email AS MarketingPreference_Email, 
+            T.BranchId AS MarketingPreference_BranchId, 
+            T.CurrentCustomer AS MarketingPreference_CurrentCustomer, 
+            T.LearnMore AS MarketingPreference_LearnMore, 
+            T.RegisteredOn AS MarketingPreference_RegisteredOn, 
+            T.CreatedUtc AS MarketingPreference_CreatedUtc, 
+            T.ModifiedUtc AS MarketingPreference_ModifiedUtc, 
+            True AS _from0
+        FROM BEKDBContext.MarketingPreferences AS T
+    ) AS T1");
+        }
+
+        /// <summary>
+        /// Gets the view for BEKDBContext.MarketingPreferences.
+        /// </summary>
+        /// <returns>The mapping view.</returns>
+        private static DbMappingView GetView30()
+        {
+            return new DbMappingView(@"
+    SELECT VALUE -- Constructing MarketingPreferences
+        [KeithLink.Svc.Impl.Repository.EF.Operational.MarketingPreference](T1.MarketingPreference_Id, T1.MarketingPreference_Email, T1.MarketingPreference_BranchId, T1.MarketingPreference_CurrentCustomer, T1.MarketingPreference_LearnMore, T1.MarketingPreference_RegisteredOn, T1.MarketingPreference_CreatedUtc, T1.MarketingPreference_ModifiedUtc)
+    FROM (
+        SELECT 
+            T.Id AS MarketingPreference_Id, 
+            T.Email AS MarketingPreference_Email, 
+            T.BranchId AS MarketingPreference_BranchId, 
+            T.CurrentCustomer AS MarketingPreference_CurrentCustomer, 
+            T.LearnMore AS MarketingPreference_LearnMore, 
+            T.RegisteredOn AS MarketingPreference_RegisteredOn, 
+            T.CreatedUtc AS MarketingPreference_CreatedUtc, 
+            T.ModifiedUtc AS MarketingPreference_ModifiedUtc, 
+            True AS _from0
+        FROM CodeFirstDatabase.MarketingPreference AS T
+    ) AS T1");
+        }
+
+        /// <summary>
         /// Gets the view for CodeFirstDatabase.MessageTemplate.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView27()
+        private static DbMappingView GetView31()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing MessageTemplate
@@ -1034,7 +1152,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.MessageTemplates.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView28()
+        private static DbMappingView GetView32()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing MessageTemplates
@@ -1058,7 +1176,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.OrderHistoryDetail.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView29()
+        private static DbMappingView GetView33()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryDetail
@@ -1100,11 +1218,11 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.OrderHistoryHeader.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView30()
+        private static DbMappingView GetView34()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeader
-        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [CodeFirstDatabaseSchema.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -1115,6 +1233,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.DeliveryDate AS OrderHistoryHeader_DeliveryDate, 
             T.PONumber AS OrderHistoryHeader_PONumber, 
             T.ControlNumber AS OrderHistoryHeader_ControlNumber, 
+            T.OriginalControlNumber AS OrderHistoryHeader_OriginalControlNumber, 
             T.OrderStatus AS OrderHistoryHeader_OrderStatus, 
             T.FutureItems AS OrderHistoryHeader_FutureItems, 
             T.ErrorStatus AS OrderHistoryHeader_ErrorStatus, 
@@ -1135,7 +1254,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.OrderHistoryDetails.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView31()
+        private static DbMappingView GetView35()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryDetails
@@ -1170,7 +1289,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.OrderHistoryHeader_OrderDetails.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView32()
+        private static DbMappingView GetView36()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeader_OrderDetails
@@ -1199,11 +1318,11 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.OrderHistoryHeaders.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView33()
+        private static DbMappingView GetView37()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryHeaders
-        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader](T1.OrderHistoryHeader_Id, T1.OrderHistoryHeader_OrderSystem, T1.OrderHistoryHeader_BranchId, T1.OrderHistoryHeader_CustomerNumber, T1.OrderHistoryHeader_InvoiceNumber, T1.OrderHistoryHeader_DeliveryDate, T1.OrderHistoryHeader_PONumber, T1.OrderHistoryHeader_ControlNumber, T1.OrderHistoryHeader_OriginalControlNumber, T1.OrderHistoryHeader_OrderStatus, T1.OrderHistoryHeader_FutureItems, T1.OrderHistoryHeader_ErrorStatus, T1.OrderHistoryHeader_RouteNumber, T1.OrderHistoryHeader_StopNumber, T1.OrderHistoryHeader_ScheduledDeliveryTime, T1.OrderHistoryHeader_EstimatedDeliveryTime, T1.OrderHistoryHeader_ActualDeliveryTime, T1.OrderHistoryHeader_DeliveryOutOfSequence, T1.OrderHistoryHeader_CreatedUtc, T1.OrderHistoryHeader_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS OrderHistoryHeader_Id, 
@@ -1214,6 +1333,7 @@ namespace Edm_EntityMappingGeneratedViews
             T.DeliveryDate AS OrderHistoryHeader_DeliveryDate, 
             T.PONumber AS OrderHistoryHeader_PONumber, 
             T.ControlNumber AS OrderHistoryHeader_ControlNumber, 
+            T.OriginalControlNumber AS OrderHistoryHeader_OriginalControlNumber, 
             T.OrderStatus AS OrderHistoryHeader_OrderStatus, 
             T.FutureItems AS OrderHistoryHeader_FutureItems, 
             T.ErrorStatus AS OrderHistoryHeader_ErrorStatus, 
@@ -1234,7 +1354,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.PasswordResetRequest.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView34()
+        private static DbMappingView GetView38()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing PasswordResetRequest
@@ -1257,7 +1377,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.PasswordResetRequests.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView35()
+        private static DbMappingView GetView39()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing PasswordResetRequests
@@ -1280,7 +1400,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.Term.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView36()
+        private static DbMappingView GetView40()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Term
@@ -1306,7 +1426,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.Terms.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView37()
+        private static DbMappingView GetView41()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing Terms
@@ -1332,7 +1452,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.UserActiveCart.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView38()
+        private static DbMappingView GetView42()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserActiveCart
@@ -1355,7 +1475,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.UserActiveCarts.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView39()
+        private static DbMappingView GetView43()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserActiveCarts
@@ -1378,11 +1498,11 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.UserMessage.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView40()
+        private static DbMappingView GetView44()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessage
-        [CodeFirstDatabaseSchema.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
+        [CodeFirstDatabaseSchema.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CustomerName, T1.UserMessage_BranchId, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserMessage_Id, 
@@ -1394,6 +1514,8 @@ namespace Edm_EntityMappingGeneratedViews
             T.Subject AS UserMessage_Subject, 
             T.Body AS UserMessage_Body, 
             T.Mandatory AS UserMessage_Mandatory, 
+            T.CustomerName AS UserMessage_CustomerName, 
+            T.BranchId AS UserMessage_BranchId, 
             T.CreatedUtc AS UserMessage_CreatedUtc, 
             T.ModifiedUtc AS UserMessage_ModifiedUtc, 
             True AS _from0
@@ -1405,11 +1527,11 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.UserMessages.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView41()
+        private static DbMappingView GetView45()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessages
-        [KeithLink.Svc.Impl.Repository.EF.Operational.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
+        [KeithLink.Svc.Impl.Repository.EF.Operational.UserMessage](T1.UserMessage_Id, T1.UserMessage_CustomerNumber, T1.UserMessage_UserId, T1.UserMessage_Label, T1.UserMessage_NotificationType, T1.UserMessage_MessageReadUtc, T1.UserMessage_Subject, T1.UserMessage_Body, T1.UserMessage_Mandatory, T1.UserMessage_CustomerName, T1.UserMessage_BranchId, T1.UserMessage_CreatedUtc, T1.UserMessage_ModifiedUtc)
     FROM (
         SELECT 
             T.Id AS UserMessage_Id, 
@@ -1421,6 +1543,8 @@ namespace Edm_EntityMappingGeneratedViews
             T.Subject AS UserMessage_Subject, 
             T.Body AS UserMessage_Body, 
             T.Mandatory AS UserMessage_Mandatory, 
+            T.CustomerName AS UserMessage_CustomerName, 
+            T.BranchId AS UserMessage_BranchId, 
             T.CreatedUtc AS UserMessage_CreatedUtc, 
             T.ModifiedUtc AS UserMessage_ModifiedUtc, 
             True AS _from0
@@ -1432,7 +1556,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.UserMessagingPreference.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView42()
+        private static DbMappingView GetView46()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessagingPreference
@@ -1456,7 +1580,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.UserMessagingPreferences.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView43()
+        private static DbMappingView GetView47()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserMessagingPreferences
@@ -1480,7 +1604,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for CodeFirstDatabase.UserPushNotificationDevice.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView44()
+        private static DbMappingView GetView48()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserPushNotificationDevice
@@ -1504,7 +1628,7 @@ namespace Edm_EntityMappingGeneratedViews
         /// Gets the view for BEKDBContext.UserPushNotificationDevices.
         /// </summary>
         /// <returns>The mapping view.</returns>
-        private static DbMappingView GetView45()
+        private static DbMappingView GetView49()
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing UserPushNotificationDevices

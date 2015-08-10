@@ -16,6 +16,7 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Core.Interface.Reports;
 #endregion
+
 #region using__repository
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
@@ -48,7 +49,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Autofac;
 using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Core.ETL;
+using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl;
@@ -85,7 +86,7 @@ namespace KeithLink.Svc.Windows.QueueService
 
 
 			builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
-			builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.ETL.ICatalogLogic>();
+			builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.ETL.ICatalogLogic>();
 
 			builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
 			builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
@@ -220,8 +221,10 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
 			builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
+			builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.DsrService.DsrServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.DsrService.IDsrService>();
 			builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
+			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
 
 			return builder.Build();
 		}

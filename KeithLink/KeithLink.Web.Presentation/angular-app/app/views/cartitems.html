@@ -50,7 +50,7 @@
 
     <form name="renameCartForm" class="style-validation-errors inline-header-form nowrap" ng-show="currentCart.isRenaming" autocomplete="off">
       <input 
-        check-duplicate-field="name" 
+        no-duplicates="name" 
         collection="carts" 
         type="text" 
         max-length="15" 
@@ -69,10 +69,10 @@
         ng-click="renameCart(currentCart.id, editCart.name); renameCartForm.$setPristine();">
         <span class="large-icon text-green icon-checkmark"></span>
       </button>
-       <br class='visible-xs' ng-show="renameCartForm.cartName.$error.checkDuplicateField || renameCartForm.cartName.$error.required">
+       <br class='visible-xs' ng-show="renameCartForm.cartName.$error.noDuplicates || renameCartForm.cartName.$error.required">
       <a ng-click="currentCart.isRenaming = false"><span class="large-icon text-red icon-cross"></span></a>
       <span class="form-error-message" ng-show="renameCartForm.cartName.$error.required">Cart name is required</span>     
-      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.checkDuplicateField">Duplicate cart name</span>
+      <span class="form-error-message" ng-show="renameCartForm.cartName.$error.noDuplicates">Duplicate cart name</span>
     </form>
 
   </div>
@@ -154,7 +154,8 @@
           <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
           <div class="col-sm-6">
             <p class="form-control-static text-light">{{selectedShipDate.cutoffdatetime | formatDateWithTimezone}}</p>
-            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>
+            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date ng-if="!isInternalUser">
+            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" ng-if="isInternalUser">
           </div>
         </div>
 
@@ -405,7 +406,7 @@
             </td>
             <td class="hidden-mobile-visible-print input-col">
               <ng-form name="eachForm" ng-if="item.hasPackagePrice">
-                <input type="checkbox" ng-model="item.each" id="each" name="each" />
+                <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
             </td>
@@ -460,7 +461,7 @@
                 <tr ng-if="::item.hasPackagePrice">
                   <td>Each</td>
                   <td>
-                    <input type="checkbox" value="" name="each" id="each" ng-model="item.each">
+                    <input type="checkbox" value="" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" name="each" id="each" ng-model="item.each">
                   </td>
                 </tr>
                 

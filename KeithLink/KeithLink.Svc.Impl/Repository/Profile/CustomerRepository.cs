@@ -471,15 +471,14 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 		#region Paged Results
 
-		public PagedResults<Customer> GetPagedCustomers(int size, int from, string searchTerm)
+		public PagedResults<Customer> GetPagedCustomers(PagingModel paging, string searchTerm)
 		{
 			var whereClause = "WHERE u_organization_type = '0'";
-			
-			return RetrievePagedResults(size, from, searchTerm, whereClause);
+
+			return RetrievePagedResults(paging, searchTerm, whereClause);
 		}
 
-		//public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string dsrNumber, string branchId, string searchTerm)
-        public PagedResults<Customer> GetPagedCustomersForDSR(int size, int from, string searchTerm, List<Dsr> dsrList)
+		public PagedResults<Customer> GetPagedCustomersForDSR(PagingModel paging, string searchTerm, List<Dsr> dsrList)
 		{
 			PagedResults<Customer> returnValue = new PagedResults<Customer>();
 
@@ -491,68 +490,88 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     whereText.AppendFormat("(u_branch_number = '{0}' AND u_dsr_number = '{1}')", dsrList[i].Branch, dsrList[i].DsrNumber);
                 }
             }
-            
+
             if (!String.IsNullOrEmpty(whereText.ToString()))
             {
-                returnValue = RetrievePagedResults(size, from, searchTerm, whereText.ToString());
+                returnValue = RetrievePagedResults(paging, searchTerm, whereText.ToString());
             }
                         
             return returnValue;
+
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForDSM(int size, int from, string dsrNumber, string branchId, string searchTerm)
+		public PagedResults<Customer> GetPagedCustomersForDSM(PagingModel paging, string dsrNumber, string branchId, string searchTerm)
 		{
 			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsm_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
 
-			return RetrievePagedResults(size, from, searchTerm, whereClause);
+			return RetrievePagedResults(paging, searchTerm, whereClause);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForBranch(int size, int from, string branchId, string searchTerm)
+		public PagedResults<Customer> GetPagedCustomersForBranch(PagingModel paging, string branchId, string searchTerm)
 		{
 			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_branch_number = '{0}'", branchId);
 
-			return RetrievePagedResults(size, from, searchTerm, whereClause);
+			return RetrievePagedResults(paging, searchTerm, whereClause);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForUser(int size, int from, Guid userId, string searchTerm)
+		public PagedResults<Customer> GetPagedCustomersForUser(PagingModel paging, Guid userId, string searchTerm)
 		{
 			var whereClause = string.Format("inner join [BEK_Commerce_profiles].[dbo].[UserOrganizationObject] uoo on oo.u_org_id = uoo.u_org_id WHERE uoo.u_user_id = '{0}' and u_organization_type = '0'", userId.ToCommerceServerFormat());
 
-			return RetrievePagedResults(size, from, searchTerm, whereClause);
+			return RetrievePagedResults(paging, searchTerm, whereClause);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForAccount(int size, int from, string searchTerm, string accountId)
+		public PagedResults<Customer> GetPagedCustomersForAccount(PagingModel paging, string searchTerm, string accountId)
 		{
 			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_parent_organization = '{0}'", accountId);
 
-			return RetrievePagedResults(size, from, searchTerm, whereClause);
+			return RetrievePagedResults(paging, searchTerm, whereClause);
 		}
 
-		private PagedResults<Customer> RetrievePagedResults(int size, int from, string searchTerm, string whereClause)
-		{
-			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
+        private PagedResults<Customer> RetrievePagedResults(PagingModel paging, string searchTerm, string whereClause)
+        {
+            var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 
-			if (!string.IsNullOrEmpty(searchTerm))
-				whereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
+            if (!string.IsNullOrEmpty(searchTerm))
+                whereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
 
 
-			queryOrg.SearchCriteria.WhereClause = whereClause;
-			queryOrg.SearchCriteria.FirstItemIndex = from;
-			queryOrg.SearchCriteria.NumberOfItemsToReturn = size;
-			queryOrg.SearchCriteria.ReturnTotalItemCount = true;
+            queryOrg.SearchCriteria.WhereClause = whereClause;
+            queryOrg.SearchCriteria.FirstItemIndex = paging.From.HasValue ? paging.From.Value : 0;
+            queryOrg.SearchCriteria.NumberOfItemsToReturn = paging.Size.HasValue ? paging.Size.Value : int.MaxValue;
+            queryOrg.SearchCriteria.ReturnTotalItemCount = true;
 
-			CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+            if (paging.Sort != null && paging.Sort.Count > 0)
+            {
+                queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>();
+                foreach (var sortOption in paging.Sort)
+                {
+                    switch (sortOption.Field.ToLower())
+                    {
+                        case "customername":
+                            queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_name", SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending });
+                            break;
+                        case "customernumber":
+                            queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_customer_number", SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending });
+                            break;
+                    }
+                }
+            }
 
-			var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
-			var dsrs = RetrieveDsrList();
-			System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
-			{
-				Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
-				customers.Add(OrgToCustomer(org, dsrs));
-			});
+            //queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>() { new CommerceSortProperty() { SortDirection = SortDirection.Descending, CommerceEntityModelName = "u_customer_number" } };
 
-			return new PagedResults<Customer>() { Results = customers.ToList(), TotalResults = res.TotalItemCount.HasValue ? res.TotalItemCount.Value : 0 };
-		}
+            CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
+
+            var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
+            var dsrs = RetrieveDsrList();
+            System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
+            {
+                Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
+                customers.Add(OrgToCustomer(org, dsrs));
+            });
+
+            return new PagedResults<Customer>() { Results = customers.ToList(), TotalResults = res.TotalItemCount.HasValue ? res.TotalItemCount.Value : 0 };
+        }
 		
 		#endregion
 				

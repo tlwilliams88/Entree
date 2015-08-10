@@ -29,3 +29,17 @@
   margin-bottom: $gutter-size;
   display: block;
 }
+
+.internal-user-search-form h3{
+  margin-top:11px;
+}
+
+.searchbar-btn{
+  height:31px;
+}
+
+@media (min-width: 769px) {
+ .editDetailsCheckbox {
+  margin-top:10px !important;
+ }
+}

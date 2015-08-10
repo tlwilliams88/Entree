@@ -36,7 +36,6 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
                     {
                         po.OrderForms[0].LineItems.CopyTo(lineItems, 0);
                     }
-                    
 
                     bool skip = true;
                     foreach (var prop in e.Properties)
