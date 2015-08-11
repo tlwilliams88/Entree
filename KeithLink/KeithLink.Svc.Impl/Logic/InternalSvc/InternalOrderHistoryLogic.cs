@@ -89,14 +89,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (po != null) {
                         returnOrder.Status = po.Status;
                     }
-
-                    if (myOrder.ActualDeliveryTime != null) {
-                        returnOrder.Status = "Delivered";
-                    }
                 }
             }
 
-            
+            // Set the status to delivered if the Actual Delivery Time is populated
+            if (myOrder.ActualDeliveryTime != null) {
+                    returnOrder.Status = "Delivered";
+            }
 
             try
             {
