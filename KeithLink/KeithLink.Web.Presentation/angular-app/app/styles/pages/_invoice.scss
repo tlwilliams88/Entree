@@ -17,8 +17,75 @@
 
     
   }
+
 }
 
 .hiding-icon{
   padding-left:14px;
 }
+
+    .invalid-item > tr > td, 
+  .invalid-item > td {
+    background-color: $color-yellow !important;
+  }
+}
+
+.date-picker-field{
+  white-space:nowrap;
+}
+
+.account-info{
+  display:inline-block; 
+  vertical-align:middle;
+}
+
+.billing{
+margin-top:20px;
+
+  .no-open-invoices{
+    display:inline-block;
+  }
+
+  .billing-info{
+
+    display:inline-block; 
+    white-space:nowrap;
+
+  .bill-box{
+    float:left; 
+    margin-top:10px;
+
+    .bill-title{
+    font-size:1.17em; 
+    font-weight:bold;
+    }
+  }  
+
+    .total-line{
+    margin-left:16px; 
+    float:right; 
+    bottom:16px; 
+    display:inline-block; 
+    padding-top:4px;
+
+      .total-amt{
+      font-size: 18px; 
+      font-weight: 600;
+      }
+
+      .pay-btn{
+      margin-top:16px;
+      }
+    }
+  }
+}
+
+.accounts-btn{
+  max-width:90px; 
+  margin-right:30px;
+}
+
+  .update-btn {
+    margin-top:10px;
+  } 
+

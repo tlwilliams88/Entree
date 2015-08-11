@@ -151,6 +151,47 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return new OperationReturnModel<bool>() { SuccessResponse = true };
 		}
 
+        /// <summary>
+        /// Validate the transactions
+        /// </summary>
+        /// <param name="payments"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute( "invoice/payment/validate" )]
+        public OperationReturnModel<PaymentValidationResponseModel> ValidatePayment( List<PaymentTransactionModel> payments ) {
+            OperationReturnModel<PaymentValidationResponseModel> returnValue = new OperationReturnModel<PaymentValidationResponseModel>();
+
+            List<PaymentTransactionModel> transactionErrors = _repo.ValidatePayment( this.SelectedUserContext, payments );
+
+            // If the payment validation list comes back with a count > 0 then there were errors
+            // validating a transaction. It will return the transactions that did not validate correctly.
+            if (transactionErrors.Count > 0) {
+                returnValue.ErrorMessage = string.Format( "The total for Bank Account {0} on {1} must be positive.", transactionErrors.First().AccountNumber,  transactionErrors.First().PaymentDate.Value.ToShortDateString() );
+                returnValue.SuccessResponse = new PaymentValidationResponseModel() {
+                    IsValid = false,
+                    PaymentTransactions = transactionErrors,
+                };
+            } else {
+                returnValue.SuccessResponse = new PaymentValidationResponseModel() {
+                    IsValid = true,
+                    PaymentTransactions = null,
+                };
+            }
+            
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Retrieve paged list of pending transactions for a single customer
+        /// </summary>
+        /// <param name="paging">Paging options</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute("invoice/transactions/pending/single")]
+        public PagedResults<PaymentTransactionModel> PendingTransactions(PagingModel paging) {
+            return _repo.PendingTransactions(this.SelectedUserContext, paging);
+        }
+
 		/// <summary>
 		/// Retrieve paged list of pending transactions
 		/// </summary>
@@ -158,7 +199,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("invoice/transactions/pending")]
-		public PagedResults<PaymentTransactionModel> PendingTransaction(PagingModel paging)
+		public PagedResults<PaymentTransactionModel> PendingTransactionsForAllCustomers(PagingModel paging)
 		{
 			return _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
 		}
