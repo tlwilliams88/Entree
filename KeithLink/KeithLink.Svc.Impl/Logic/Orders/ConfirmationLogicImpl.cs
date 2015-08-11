@@ -219,33 +219,33 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private double GetItemPrice(string branchId, string itemNumber, bool splitCase, ConfirmationDetail detail) {
             Product myItem = _catRepo.GetProductById(branchId, itemNumber);
-            
+
             double placedPrice = 0;
 
             if (splitCase) {
-                // package price
-                if (myItem.CatchWeight) {
-                    // catch weight price
-                    int pack;
+                //// package price
+                //if (myItem.CatchWeight) {
+                //    // catch weight price
+                //    int pack;
 
-                    try {
-                        pack = int.Parse(myItem.Pack);
-                    } catch {
-                        pack = 1;
-                    }
-                    
-                    placedPrice = PricingHelper.GetCatchweightPriceForPackage(detail.QuantityShipped, pack, detail.ShipWeight, detail.SplitPriceNet);
-                } else {
+                //    try {
+                //        pack = int.Parse(myItem.Pack);
+                //    } catch {
+                //        pack = 1;
+                //    }
+
+                //    placedPrice = PricingHelper.GetCatchweightPriceForPackage(1, pack, detail.ShipWeight, detail.SplitPriceNet);
+                //} else {
                     placedPrice = detail.SplitPriceNet;
-                }
+                //}
             } else {
-                // case price
-                if (myItem.CatchWeight) {
-                    // catch weight price
-                    placedPrice = PricingHelper.GetCatchweightPriceForCase(detail.QuantityShipped, detail.ShipWeight, detail.PriceNet);
-                } else {
+                //// case price
+                //if (myItem.CatchWeight) {
+                //    // catch weight price
+                //    placedPrice = PricingHelper.GetCatchweightPriceForCase(1, detail.ShipWeight, detail.PriceNet);
+                //} else {
                     placedPrice = detail.PriceNet;
-                }
+                //}
             }
 
             return placedPrice;
