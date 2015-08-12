@@ -6,7 +6,7 @@ using System.ServiceModel;
 using System.Text;
 using KeithLink.Svc.Core.Models.Profile;
 
-namespace KeithLink.Svc.InternalSvc {
+namespace KeithLink.Svc.InternalSvc.Interfaces {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IDsrService" in both code and config file together.
     [ServiceContract]
     public interface IDsrService {
