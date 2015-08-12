@@ -4,6 +4,7 @@
   <xs:complexType name="userprofile">
     <xs:sequence>
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="canmessage" type="xs:boolean" />
       <xs:element minOccurs="0" name="customernumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="defaultcustomer" nillable="true" type="tns:customer" />
       <xs:element minOccurs="0" name="dsraliases" nillable="true" type="tns:ArrayOfDsrAliasModel" />
@@ -37,6 +38,7 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="accountId" nillable="true" type="ser:guid" />
       <xs:element minOccurs="0" name="address" nillable="true" type="tns:address" />
+      <xs:element minOccurs="0" name="canmessage" type="xs:boolean" />
       <xs:element minOccurs="0" name="contractId" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customerBranch" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="customerId" type="ser:guid" />

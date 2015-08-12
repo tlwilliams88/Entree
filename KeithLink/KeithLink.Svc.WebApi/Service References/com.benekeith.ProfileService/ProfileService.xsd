@@ -22,19 +22,6 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="DsrAliasModel" nillable="true" type="tns:DsrAliasModel" />
-  <xs:complexType name="ArrayOfDsrAliasModel">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="DsrAliasModel" nillable="true" type="tns:DsrAliasModel" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfDsrAliasModel" nillable="true" type="tns:ArrayOfDsrAliasModel" />
-  <xs:complexType name="ResetPasswordModel">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="token" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ResetPasswordModel" nillable="true" type="tns:ResetPasswordModel" />
   <xs:complexType name="MarketingPreferenceModel">
     <xs:sequence>
       <xs:element minOccurs="0" name="branchid" nillable="true" type="xs:string" />
@@ -46,10 +33,23 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="MarketingPreferenceModel" nillable="true" type="tns:MarketingPreferenceModel" />
+  <xs:complexType name="ArrayOfDsrAliasModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DsrAliasModel" nillable="true" type="tns:DsrAliasModel" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDsrAliasModel" nillable="true" type="tns:ArrayOfDsrAliasModel" />
   <xs:complexType name="ArrayOfMarketingPreferenceModel">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="MarketingPreferenceModel" nillable="true" type="tns:MarketingPreferenceModel" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ArrayOfMarketingPreferenceModel" nillable="true" type="tns:ArrayOfMarketingPreferenceModel" />
+  <xs:complexType name="ResetPasswordModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="token" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ResetPasswordModel" nillable="true" type="tns:ResetPasswordModel" />
 </xs:schema>
