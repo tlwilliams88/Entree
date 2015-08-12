@@ -147,7 +147,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.lists.items', {
-      url: ':listId/',
+      url: ':listId/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
@@ -172,7 +172,7 @@ angular.module('bekApp')
             }
           });    
 
-         if(last && stillExists){
+         if(last && stillExists && !$stateParams.renameList){
             last.timeset =  moment().format('YYYYMMDDHHmm');
              LocalStorage.setLastList(last); 
             return ListService.getList(last.listId);
