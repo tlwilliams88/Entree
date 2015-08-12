@@ -3,9 +3,11 @@ using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using System;
 using System.Collections.Generic;
@@ -18,6 +20,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
     public class OrderConfirmationNotificationHandlerImpl : BaseNotificationHandlerImpl, INotificationHandler
     {
         #region attributes
+        ICatalogRepository _catRepo;
         IEventLogRepository eventLogRepository;
         IUserProfileLogic userProfileLogic;
         IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
@@ -26,12 +29,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         Func<Channel, IMessageProvider> messageProviderFactory;
 		private readonly IDsrServiceRepository dsrServiceRepository;
         #endregion
-        public OrderConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
-            , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
-			, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, IDsrServiceRepository dsrServiceRepository)
-            : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
+
+        #region ctor
+        public OrderConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
+                                                                                ICustomerRepository customerRepository , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, 
+                                                                                IDsrServiceRepository dsrServiceRepository, ICatalogRepository catalogRepository )
+            : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository,
+                     userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, 
+                     dsrServiceRepository)
         {
+            _catRepo = catalogRepository;
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
@@ -39,7 +46,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.messageProviderFactory = messageProviderFactory;
         }
+        #endregion
 
+        #region methods
         public void ProcessNotification(Core.Models.Messaging.Queue.BaseNotification notification)
         {
             if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.OrderConfirmation)
@@ -84,14 +93,18 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     "  Status: " + line.NewStatus + (line.NewStatus == line.OriginalStatus || string.IsNullOrEmpty(line.OriginalStatus)
                                                         ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
 
+            ProductsReturn products = _catRepo.GetProductsByIds(customer.CustomerBranch, notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
+
             string originalOrderInfo = "Original Order Information:" + System.Environment.NewLine;
             foreach (var line in notification.OrderChange.Items) {
+                Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
+
                 string[] args = new string[]{
                                                 line.ItemNumber,
                                                 line.ItemDescription,
                                                 line.QuantityOrdered.ToString(),
                                                 line.ItemPrice.ToString("f2"),
-                                                (line.Each ? "package" : "case"),
+                                                currentProduct.CatchWeight ? (line.Each ? "lb per package" : "lb per case") : (line.Each ? "package" : "case"),
                                                 System.Environment.NewLine
                                             };
                 originalOrderInfo += string.Format("{0} - {1} (Quantity Ordered: {2} ; Price: ${3} per {4}){5}", args);
@@ -115,5 +128,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 			message.NotificationType = NotificationType.OrderConfirmation;
             return message;
         }
+        #endregion
     }
 }
