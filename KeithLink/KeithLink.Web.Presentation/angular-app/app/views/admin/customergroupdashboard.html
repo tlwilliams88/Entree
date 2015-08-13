@@ -12,7 +12,7 @@
 
 <div class="row">
   <div class="col-md-6">
-    <h3>Assigned Admin Users</h3>
+    <h3>Admin. Users</h3>
 
     <form ng-if="canManageCustomerGroups" name="addNewAdminUserForm" class="form-inline search-form" novalidate>
       <p class="text-red" ng-show="addNewAdminUserForm.newAdminUserEmail.$error.noDuplicates">This user is already an admin for this customer group.</p>
@@ -73,7 +73,7 @@
     </div>
     <div class="text-center" loading-spinner="loadingResults"></div>
 
-    <h3>Assigned Customer Users</h3>
+    <h3>Customer Users</h3>
 
     <form name="addNewCustomerUserForm" class="search-form" ng-show="canEditUsers">
       <div class="form-inline">
@@ -163,8 +163,8 @@
   </div>
   <div class="col-md-6">
     <h3>
-      Assigned Customers
-      <button ng-if="canManageCustomerGroups" style="margin-left: 5px;" class="btn btn-lg btn-default" type="button" ng-click="openCustomerAssignmentModal()">Assign Additional Customers</button>
+      Customers
+      <button ng-if="canManageCustomerGroups" style="margin-left: 5px;" class="btn btn-lg btn-default" type="button" ng-click="openCustomerAssignmentModal()">Add Customers</button>
     </h3>
     
     <form name="customerSearchForm" class="search-form">

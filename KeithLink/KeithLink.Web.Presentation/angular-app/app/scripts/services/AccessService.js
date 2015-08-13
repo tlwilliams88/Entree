@@ -187,7 +187,7 @@ angular.module('bekApp')
     },
 
     canViewMarketing: function() {
-      return ( isSysAdmin() || isBranchManager() || isMarketing() );
+      return ( isSysAdmin() || isMarketing() );
     },
 
     isDemo: function() {
