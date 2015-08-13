@@ -1,6 +1,7 @@
 ﻿using CommerceServer.Core;
 using CommerceServer.Core.Runtime.Orders;
 
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
@@ -25,6 +26,7 @@ using KeithLink.Svc.Impl.Repository.EF.Operational;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
 using System.IO;
 using System.Text;
@@ -36,7 +38,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
     public class ConfirmationLogicImpl : IConfirmationLogic
     {
         #region attributes
-        private ICatalogRepository _catRepo;
         private IGenericQueueRepository genericeQueueRepository;
         private IOrderConversionLogic _conversionLogic;
         private IEventLogRepository _log;
@@ -49,8 +50,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region constructor
         public ConfirmationLogicImpl(IEventLogRepository eventLogRepository, ISocketListenerRepository socketListenerRepository, IGenericQueueRepository internalMessagingLogic, 
-                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork, ICatalogRepository catalogRepo) {
-            _catRepo = catalogRepo;
+                                     IOrderConversionLogic conversionLogic, IUnitOfWork unitOfWork) {
             _log = eventLogRepository;
             _socket = socketListenerRepository;
             this.genericeQueueRepository = internalMessagingLogic;
@@ -217,38 +217,15 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return JsonConvert.DeserializeObject<ConfirmationFile>(fileFromQueue);
         }
 
-        private double GetItemPrice(string branchId, string itemNumber, bool splitCase, ConfirmationDetail detail) {
-            Product myItem = _catRepo.GetProductById(branchId, itemNumber);
-            
-            double placedPrice = 0;
-
-            if (splitCase) {
-                // package price
-                if (myItem.CatchWeight) {
-                    // catch weight price
-                    int pack;
-
-                    try {
-                        pack = int.Parse(myItem.Pack);
-                    } catch {
-                        pack = 1;
-                    }
-                    
-                    placedPrice = PricingHelper.GetCatchweightPriceForPackage(detail.QuantityShipped, pack, detail.ShipWeight, detail.SplitPriceNet);
-                } else {
-                    placedPrice = detail.SplitPriceNet;
-                }
+        private double GetItemPrice(bool splitCase, ConfirmationDetail detail) {
+            if (detail == null) {
+                return 0;
             } else {
-                // case price
-                if (myItem.CatchWeight) {
-                    // catch weight price
-                    placedPrice = PricingHelper.GetCatchweightPriceForCase(detail.QuantityShipped, detail.ShipWeight, detail.PriceNet);
-                } else {
-                    placedPrice = detail.PriceNet;
-                }
-            }
+                if (detail.SplitPriceNet == null) { detail.SplitPriceNet = 0; }
+                if (detail.PriceNet == null) { detail.PriceNet = 0; }
 
-            return placedPrice;
+                return splitCase ? detail.SplitPriceNet : detail.PriceNet;
+            }
         }
 
         /// <summary>
@@ -342,7 +319,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             var poNum = confirmation.Header.ConfirmationNumber;
             PurchaseOrder po = GetCsPurchaseOrderByNumber(poNum);
-            _log.WriteInformationLog("Processing confirmation for control number: " + confirmation.Header.ConfirmationNumber + ", did " + (po == null ? " not " : "") + "get purchase order");
+
+            string logMessage = "Processing confirmation for control number: {ConfirmationNumber}, {Status} get purchase order";
+            object logInfo = new {
+                ConfirmationNumber = confirmation.Header.ConfirmationNumber,
+                Status = (po == null ? "did not " : "did")
+            };
+
+            _log.WriteInformationLog(logMessage.Inject(logInfo));
 
             if (po == null) {
                 // if no PO, silently ignore?  could be the case if multiple control numbers out at once...
@@ -381,6 +365,34 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// move the missing items to bottom of the purchase order
+        /// </summary>
+        /// <param name="missingLineItems">collection of line items that were not on the confirmation</param>
+        /// <param name="lineItemCount">the total number of line items on the confirmation</param>
+        private void ProcessMisingItems(List<LineItem> missingLineItems, int lineItemCount) {
+            for (int itemIndex = 0; itemIndex < missingLineItems.Count; itemIndex++) {
+                LineItem missingLineItem = missingLineItems[itemIndex];
+                int newLineNumber = lineItemCount + itemIndex;
+
+                SetCsLineItemInfo(missingLineItem,
+                                          0, // ordered
+                                          0, // shipped
+                                          Constants.ITEM_DELETED_STATUS, // status
+                                          missingLineItem.ProductId, // item number
+                                          string.Empty, // substitute item number
+                                          (double)missingLineItem.ListPrice, // price
+                                          newLineNumber); // line number
+
+                string logMessage = "Changing status for a line item not found to deleted for item {ItemNumber} and moving to line {LineNumber}";
+                object logInfo = new {
+                    ItemNumber = missingLineItem.ProductId,
+                    LineNumber = newLineNumber
+                };
+                _log.WriteInformationLog(logMessage.Inject(logInfo));
+            }
         }
 
         /// <summary>
@@ -442,40 +454,51 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         private void SetCsLineInfo(LineItem[] lineItems, ConfirmationFile confirmation) {
-            foreach (var detail in confirmation.Detail) {
-                // match incoming line items to CS line items
-                int linePosition = Convert.ToInt32(detail.RecordNumber);
+            List<LineItem> missingLineItems = new List<LineItem>();
+            
+            foreach(LineItem orderFormLineItem in lineItems){
+                bool brokenCase = (bool)orderFormLineItem["Each"];
 
-                LineItem orderFormLineItem = lineItems.Where(x => (int)x["LinePosition"] == (linePosition)).FirstOrDefault();
+                ConfirmationDetail detail = confirmation.Detail.Where(x => x.ItemNumber == orderFormLineItem.ProductId &&
+                                                                                                     x.BrokenCase.Equals("y", StringComparison.InvariantCultureIgnoreCase) == brokenCase).FirstOrDefault();
+                if (detail == null) {
+                    // this adds the orderFormLineItem by reference and the ProcessMissingItems method updates the item and ultimately updates the original entry in the array
+                    missingLineItems.Add(orderFormLineItem);
 
-                if (orderFormLineItem != null) {
-                    double placedPrice = GetItemPrice(confirmation.Header.Branch,
-                                                      detail.ItemNumber,
-                                                      (bool)orderFormLineItem["Each"],
-                                                      detail);
+                    _log.WriteWarningLog(string.Format("Confirmation line not found for item {0}", orderFormLineItem.ProductId));
+                } else {
+                    SetCsLineItemInfo(orderFormLineItem,
+                                      detail.QuantityOrdered,
+                                      detail.QuantityShipped,
+                                      detail.DisplayStatus(),
+                                      detail.ItemNumber,
+                                      detail.SubstitutedItemNumber(orderFormLineItem),
+                                      GetItemPrice(brokenCase, detail),
+                                      int.Parse(detail.RecordNumber));
 
-					SetCsLineItemInfo(orderFormLineItem, 
-                                      detail.QuantityOrdered, 
-                                      detail.QuantityShipped, 
-                                      detail.DisplayStatus(), 
-                                      detail.ItemNumber, 
-                                      detail.SubstitutedItemNumber(orderFormLineItem), 
-                                      placedPrice);
-                    _log.WriteInformationLog("Set main frame status: " + (string)orderFormLineItem["MainFrameStatus"] + ", confirmation status: _" + detail.DisplayStatus() + "_");
-                } else
-                    _log.WriteWarningLog("No CS line found for MainFrame line " + linePosition + " on order: " + confirmation.Header.InvoiceNumber);
+                    string logMessage = "Confirmation line item processed for Item: {ItemNumber}, main frame status: {MainframeStatus}, confirmation status: _{ConfirmationStatus}_";
+                    object logInfo = new {
+                        ItemNumber = orderFormLineItem.ProductId,
+                        MainframeStatus = (string)orderFormLineItem["MainFrameStatus"],
+                        ConfirmationStatus = detail.DisplayStatus()
+                    };
+                    _log.WriteInformationLog(logMessage.Inject(logInfo));
+                }
             }
+
+            if (missingLineItems.Count > 0) { ProcessMisingItems(missingLineItems, lineItems.Length); }
         }
 
         private void SetCsLineItemInfo(LineItem orderFormLineItem, int quantityOrdered, int quantityShipped, 
                                        string displayStatus, string currentItemNumber, string substitutedItemNumber, 
-                                       double placedPrice ) {
+                                       double placedPrice, int lineNumber ) {
             orderFormLineItem["QuantityOrdered"] = quantityOrdered;
             orderFormLineItem["QuantityShipped"] = quantityShipped;
             orderFormLineItem["MainFrameStatus"] = displayStatus;
             orderFormLineItem["SubstitutedItemNumber"] = substitutedItemNumber;
 			orderFormLineItem.PlacedPrice = (decimal)placedPrice;
             orderFormLineItem.ProductId = currentItemNumber;
+            orderFormLineItem["LinePosition"] = lineNumber;
         }
 
         private static void SetCsPoStatusFromLineItems(PurchaseOrder po, LineItem[] lineItems, bool isChangeOrder) {
