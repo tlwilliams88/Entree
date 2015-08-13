@@ -347,6 +347,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             if (po == null) {
                 // if no PO, silently ignore?  could be the case if multiple control numbers out at once...
             } else {
+                // make sure that there are items to process
+                if (po.LineItemCount == 0 || po.OrderForms[0].LineItems.Count == 0) 
+                    throw new ApplicationException("Purchase order has no line items");
+
                 // need to save away pre and post status info, then if different, add something to the messaging
                 LineItem[] currLineItems = new LineItem[po.LineItemCount];
                 LineItem[] origLineItems = new LineItem[po.LineItemCount];
