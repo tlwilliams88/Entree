@@ -182,10 +182,7 @@ angular.module('bekApp')
           return Service.getAllLists({ header: true });
         },
 
-        setLoadPage: function(value){
-          Service.loadPage = value;
-        },
-
+      
         getCustomListHeaders: function() {
           return $http.get('/list/type/custom', { params: { headerOnly: true } }).then(function(response) {
             return response.data;

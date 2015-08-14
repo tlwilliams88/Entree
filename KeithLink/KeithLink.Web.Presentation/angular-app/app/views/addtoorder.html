@@ -184,11 +184,11 @@
         </thead>
         <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
           <tr 
-            ng-repeat-start="item in  selectedList.items track by item.listitemid" 
-            post-page-load
+            ng-repeat-start="item in  selectedList.items track by item.listitemid"          
             ng-class="{ odd : $odd, even: $even }">
             <td>
               {{::item.position}}
+              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities()"></a>
             </td>
             <td>
               <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
@@ -389,6 +389,7 @@
 
         <td>
           <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+          <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities()"></a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>
