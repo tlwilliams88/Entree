@@ -111,7 +111,7 @@ angular.module('bekApp')
       });
     }
     $scope.totalInvoices = data.pagedresults.totalResults;
-    $scope.hasPayableInvoices = data.haspayableinvoices;
+    $scope.hasPayableInvoices = true;
     $scope.totalAmountDue = data.totaldue;
 
     calculateInvoiceFields(data.pagedresults.results);
@@ -312,6 +312,7 @@ angular.module('bekApp')
           if(invoice.statusdescription === 'Payment Pending' && invoice.paymentAmount == 0){
           invoice.paymentAmount = '0.00';
           invoice.isSelected = true;
+          $scope.validateBatch();
           }
           else{
             invoice.isSelected = false;
