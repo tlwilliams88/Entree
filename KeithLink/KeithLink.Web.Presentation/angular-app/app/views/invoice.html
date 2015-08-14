@@ -47,7 +47,7 @@
             {{selectedUserContext.customer.address.city}}, {{selectedUserContext.customer.address.regioncode}} {{selectedUserContext.customer.address.postalcode}}<br>
           </address>
         </div>
-        <div ng-if="hasPayableInvoices && selectedFilterView.name !== 'Invoices Pending Payment'" class="total-line"> Total: <span  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
+        <div ng-show="hasPayableInvoices && selectedFilterView.name !== 'Invoices Pending Payment'" class="total-line"> Total: <span  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
         <div class="pull-left update-btn" ng-if="hasPayableInvoices && selectedFilterView.name === 'Invoices Pending Payment'" class="total-line"> <br><button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Update Payment(s)</button></div>
        </div>
 
