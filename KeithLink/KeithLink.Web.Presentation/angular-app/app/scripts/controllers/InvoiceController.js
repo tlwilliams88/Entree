@@ -111,7 +111,7 @@ angular.module('bekApp')
       });
     }
     $scope.totalInvoices = data.pagedresults.totalResults;
-    $scope.hasPayableInvoices = true;
+    $scope.hasPayableInvoices = data.haspayableinvoices;
     $scope.totalAmountDue = data.totaldue;
 
     calculateInvoiceFields(data.pagedresults.results);
