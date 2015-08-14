@@ -238,7 +238,7 @@
             <td class="input-col nowrap">
               <!--  QUANTITY -->
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" min="0" length="5" class = "mousetrap" ng-hide="!item.canOrder" ng-if="!useParlevel && item.canOrder"></div>
+                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="!useParlevel && item.canOrder"></div>
                 <span  class="counter-container"  >
                  <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile" ng-disabled = "item.quantity === 0" ng-if="useParlevel && item.canOrder"  ng-click="item.quantity = item.quantity -1;"></button>
                   <input                             
