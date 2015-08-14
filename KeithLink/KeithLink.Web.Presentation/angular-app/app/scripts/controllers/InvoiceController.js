@@ -312,6 +312,7 @@ angular.module('bekApp')
           if(invoice.statusdescription === 'Payment Pending' && invoice.paymentAmount == 0){
           invoice.paymentAmount = '0.00';
           invoice.isSelected = true;
+          $scope.validateBatch();
           }
           else{
             invoice.isSelected = false;
