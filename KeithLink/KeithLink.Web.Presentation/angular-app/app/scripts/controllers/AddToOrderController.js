@@ -55,14 +55,6 @@ angular.module('bekApp')
       }
     }
 
-    $scope.$watch(function () { 
-      return ListService.loadPage;
-    }, function () {
-     if($stateParams.searchTerm){
-      $scope.filterItems($stateParams.searchTerm);
-     }
-    });
-
         // combine cart and list items and total their quantities
     function getCombinedCartAndListItems(cartItems, listItems) {
       var items = angular.copy(cartItems.concat(listItems));
@@ -78,7 +70,13 @@ angular.module('bekApp')
           }
         } else {
           // do not double-count items in both the list and cart
-          if (item.isHidden === true) {
+          var repeatItemsQuantity = 0;
+          listItems.forEach(function(listitem){
+            if(item.itemnumber === listitem.itemnumber && listitem.quantity && listitem.quantity > 0){
+              repeatItemsQuantity = repeatItemsQuantity + listitem.quantity;
+            }
+          })
+          if (item.isHidden === true && repeatItemsQuantity !== 0) { 
             item.quantity = 0;
           }
           newCartItems.push(item);
@@ -175,6 +173,7 @@ angular.module('bekApp')
       addItemWatches(0);
     }
     function appendListItems(list) {
+      $stateParams.listItems = $scope.selectedList.items;
       var originalItemCount = $scope.selectedList.items.length;
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
       $scope.appendingList = true;
@@ -225,10 +224,11 @@ angular.module('bekApp')
     /**********
     PAGING
     **********/
-    $scope.checkForSearchTerm = function(){
-      if($stateParams.searchTerm){     
-          $scope.filterItems($stateParams.searchTerm);
-      }
+
+    $scope.refreshQuantities = function(){
+      $scope.clearedWhilePristine = false;
+        flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+        getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
     }
     $scope.filterItems = function(searchTerm) {  
      
@@ -238,9 +238,7 @@ angular.module('bekApp')
         }
         listPagingModel.filterListItems(searchTerm);
         $stateParams.searchTerm = '';
-        clearItemWatches(watches);
-        flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-        getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
+        clearItemWatches(watches);       
       }
       else{      
           $scope.validateAndSave().then(function(resp){
@@ -249,10 +247,9 @@ angular.module('bekApp')
         if(continueSearch){           
           $scope.addToOrderForm.$setPristine();    
           listPagingModel.filterListItems(searchTerm);
-          clearItemWatches(watches);
-          flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-          getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
-        }  
+          clearItemWatches(watches);         
+        }
+        return resp;  
         })      
       }   
     };
@@ -270,21 +267,21 @@ angular.module('bekApp')
       }      
     };
 
-    $scope.clearFilter = function(){  
-      if($scope.addToOrderForm.$pristine){
-         $scope.orderSearchTerm = '';
+    $scope.clearFilter = function(){ 
+
+          $scope.orderSearchTerm = '';
          $stateParams.searchTerm = '';
-        $scope.filterItems( $scope.orderSearchTerm);
-    }
-    else{
+      if($scope.addToOrderForm.$pristine){
+
+        $scope.filterItems( $scope.orderSearchTerm)
+        $scope.clearedWhilePristine = true;
+      
+      }
+      else{
        $scope.validateAndSave().then(function(resp){
         var clearSearchTerm = resp;
        
       if(clearSearchTerm){
-        flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-        getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)      
-        $scope.orderSearchTerm = '';
-        $stateParams.searchTerm = '';
         $scope.filterItems($scope.orderSearchTerm);
       } 
       })
@@ -537,7 +534,11 @@ angular.module('bekApp')
 
     $scope.saveAndRetainQuantity = function(){
       $stateParams.listItems = $scope.selectedList.items;
-      $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+      if($scope.selectedCart.id === 'New'){
+           $scope.createFromSearch = true;
+        }
+       $scope.updateOrderClick($scope.selectedList, $scope.selectedCart)
+          $scope.addToOrderForm.$setPristine();
     }
 
     $scope.updateOrderClick = function(list, cart) {
