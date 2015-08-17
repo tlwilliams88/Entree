@@ -166,7 +166,8 @@
         <td class="hidden-mobile-visible-print">
           {{item.each ? 'Y' : 'N'}}
         </td>
-        <td class="hidden-mobile-visible-print text-right">{{item.price | currency}}</td>
+        <td class="hidden-mobile-visible-print text-right">{{item.price | currency}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span></td>
+         
         <td class="hidden-mobile-visible-print text-right">{{item.linetotal | currency}}</td>
         <td class="hidden-mobile-visible-print">{{item.status}}</td>
         <td class="large-icon icon-col">
@@ -220,7 +221,9 @@
             </tr>
             <tr>
               <td>Price</td>
-              <td>{{item.price | currency}}</td>
+              <td>{{item.price | currency}}
+                <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+              </td>
             </tr>
             <tr>
               <td>Ext Price</td>

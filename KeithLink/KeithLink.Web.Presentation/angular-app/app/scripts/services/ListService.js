@@ -182,10 +182,7 @@ angular.module('bekApp')
           return Service.getAllLists({ header: true });
         },
 
-        setLoadPage: function(value){
-          Service.loadPage = value;
-        },
-
+      
         getCustomListHeaders: function() {
           return $http.get('/list/type/custom', { params: { headerOnly: true } }).then(function(response) {
             return response.data;
@@ -340,7 +337,7 @@ angular.module('bekApp')
             newList.name = 'Mandatory';
           } else if (params.type === 10) {
             newList.name = 'Recommended';
-          } else if (params.name !== null) {
+          } else if (params.name && params.name !== null) {
             newList.name = params.name;
           }
           else{

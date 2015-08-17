@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Customers" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" />
-  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
   <xs:complexType name="ArrayOfListItem">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="ListItem" nillable="true" type="tns:ListItem" />
@@ -20,6 +21,7 @@
           <xs:element minOccurs="0" name="each" nillable="true" type="xs:boolean" />
           <xs:element minOccurs="0" name="fromdate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="isdeleted" type="xs:boolean" />
+          <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Customers" minOccurs="0" name="itemstatistics" nillable="true" type="q3:ItemHistoryModel" />
           <xs:element minOccurs="0" name="label" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="listitemid" type="xs:long" />
           <xs:element minOccurs="0" name="packsize" nillable="true" type="xs:string" />
@@ -41,7 +43,7 @@
   <xs:element name="ListItem" nillable="true" type="tns:ListItem" />
   <xs:complexType name="UserList">
     <xs:sequence>
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q3:ListType" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q4:ListType" />
       <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
       <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
       <xs:element minOccurs="0" name="ismandatory" type="xs:boolean" />
@@ -54,7 +56,7 @@
       <xs:element minOccurs="0" name="listid" type="xs:long" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="read_only" type="xs:boolean" />
-      <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="sharedwith" nillable="true" type="q4:ArrayOfstring" />
+      <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="sharedwith" nillable="true" type="q5:ArrayOfstring" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="UserList" nillable="true" type="tns:UserList" />
@@ -72,7 +74,7 @@
   <xs:element name="ArrayOfrecentitem" nillable="true" type="tns:ArrayOfrecentitem" />
   <xs:complexType name="recentitem">
     <xs:sequence>
-      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q5:ArrayOfProductImage" />
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q6:ArrayOfProductImage" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -80,7 +82,7 @@
   <xs:element name="recentitem" nillable="true" type="tns:recentitem" />
   <xs:complexType name="ListCopyShareModel">
     <xs:sequence>
-      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="customers" nillable="true" type="q6:ArrayOfcustomer" />
+      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="customers" nillable="true" type="q7:ArrayOfcustomer" />
       <xs:element minOccurs="0" name="listid" type="xs:long" />
     </xs:sequence>
   </xs:complexType>
@@ -107,7 +109,7 @@
   <xs:element name="ArrayOfrecommendeditem" nillable="true" type="tns:ArrayOfrecommendeditem" />
   <xs:complexType name="recommendeditem">
     <xs:sequence>
-      <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q7:ArrayOfProductImage" />
+      <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="images" nillable="true" type="q8:ArrayOfProductImage" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -115,7 +117,7 @@
   <xs:element name="recommendeditem" nillable="true" type="tns:recommendeditem" />
   <xs:complexType name="PagedUserList">
     <xs:sequence>
-      <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q8:ListType" />
+      <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.List" minOccurs="0" name="Type" type="q9:ListType" />
       <xs:element minOccurs="0" name="is_contract_list" type="xs:boolean" />
       <xs:element minOccurs="0" name="isfavorite" type="xs:boolean" />
       <xs:element minOccurs="0" name="ismandatory" type="xs:boolean" />
@@ -124,11 +126,11 @@
       <xs:element minOccurs="0" name="isshared" type="xs:boolean" />
       <xs:element minOccurs="0" name="issharing" type="xs:boolean" />
       <xs:element minOccurs="0" name="isworksheet" type="xs:boolean" />
-      <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="items" nillable="true" type="q9:PagedResultsOfListItemPSZIQC_PK" />
+      <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="items" nillable="true" type="q10:PagedResultsOfListItemPSZIQC_PK" />
       <xs:element minOccurs="0" name="listid" type="xs:long" />
       <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="read_only" type="xs:boolean" />
-      <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="sharedwith" nillable="true" type="q10:ArrayOfstring" />
+      <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="sharedwith" nillable="true" type="q11:ArrayOfstring" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="PagedUserList" nillable="true" type="tns:PagedUserList" />

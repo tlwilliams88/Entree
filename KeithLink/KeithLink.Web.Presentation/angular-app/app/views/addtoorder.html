@@ -184,11 +184,11 @@
         </thead>
         <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
           <tr 
-            ng-repeat-start="item in  selectedList.items track by item.listitemid" 
-            post-page-load
+            ng-repeat-start="item in  selectedList.items track by item.listitemid"          
             ng-class="{ odd : $odd, even: $even }">
             <td>
               {{::item.position}}
+              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities()"></a>
             </td>
             <td>
               <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
@@ -238,7 +238,7 @@
             <td class="input-col nowrap">
               <!--  QUANTITY -->
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" min="0" length="5" class = "mousetrap" ng-hide="!item.canOrder" ng-if="!useParlevel && item.canOrder"></div>
+                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="!useParlevel && item.canOrder"></div>
                 <span  class="counter-container"  >
                  <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile" ng-disabled = "item.quantity === 0" ng-if="useParlevel && item.canOrder"  ng-click="item.quantity = item.quantity -1;"></button>
                   <input                             
@@ -389,6 +389,7 @@
 
         <td>
           <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+          <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities()"></a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>

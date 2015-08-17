@@ -31,6 +31,7 @@
     <MetadataFile FileName="ReportService.disco" MetadataType="Disco" ID="2a0949e4-20f9-453a-a6a1-129cf9ddcba8" SourceId="1" SourceUrl="http://localhost:1317/ReportService.svc?disco" />
     <MetadataFile FileName="ReportService2.xsd" MetadataType="Schema" ID="c952328c-cc9e-49ff-b559-f721352d42ca" SourceId="1" SourceUrl="http://localhost:1317/ReportService.svc?xsd=xsd2" />
     <MetadataFile FileName="ReportService3.xsd" MetadataType="Schema" ID="0a867cd3-9fd1-4ddb-b6aa-ad04184d445b" SourceId="1" SourceUrl="http://localhost:1317/ReportService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ReportService41.xsd" MetadataType="Schema" ID="148cae4f-eb4f-4517-8066-c50fd16a820f" SourceId="1" SourceUrl="http://localhost:1317/ReportService.svc?xsd=xsd4" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="9nCZevPnE+M6cqKGIIhSdA9d1No=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="V8uubaZk9+ylO5YBy7AMpViULGA=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="basicHttpBinding" name="BasicHttpBinding_IContentManagementService1">
       <properties>
@@ -112,7 +112,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="BasicHttpBinding_IContentManagementService1" contract="com.benekeith.ContentManagementService.IContentManagementService" bindingType="basicHttpBinding" address="http://localhost:1317/ContentManagementService.svc" bindingConfiguration="BasicHttpBinding_IContentManagementService1">
+    <endpoint name="BasicHttpBinding_IContentManagementService" contract="com.benekeith.ContentManagementService.IContentManagementService" bindingType="basicHttpBinding" address="http://localhost:1317/ContentManagementService.svc" bindingConfiguration="BasicHttpBinding_IContentManagementService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://localhost:1317/ContentManagementService.svc</serializedValue>
@@ -187,7 +187,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>BasicHttpBinding_IContentManagementService1</serializedValue>
+          <serializedValue>BasicHttpBinding_IContentManagementService</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
