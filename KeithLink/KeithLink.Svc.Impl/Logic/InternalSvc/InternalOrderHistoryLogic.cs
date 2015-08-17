@@ -93,7 +93,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             // Set the status to delivered if the Actual Delivery Time is populated
-            if (myOrder.ActualDeliveryTime != null) {
+            if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
                     returnOrder.Status = "Delivered";
             }
 
