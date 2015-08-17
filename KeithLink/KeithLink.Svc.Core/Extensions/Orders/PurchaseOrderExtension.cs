@@ -25,22 +25,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
 				PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString(),
 				OrderSystem = new OrderSource().Parse("B").ToString()
             };
-            /*
-            try
-            {
-                DateTime? delDate = null;
-
-                if (value.Properties["ActualDeliveryDate"] != null)
-                {
-                    delDate = DateTime.Parse(value.Properties["ActualDeliveryDate"].ToString());
-                }
-
-                retVal.ActualDeliveryTime = delDate;
-            }
-            catch (Exception ex)
-            {
-            }
-            */
+            
             retVal.ItemCount = retVal.Items == null ? 0 : retVal.Items.Count;
 
             return retVal;
