@@ -69,26 +69,19 @@ angular.module('bekApp')
             duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
           }
         } else {
-          // do not double-count items in both the list and cart
-          var repeatItemsQuantity = 0;
-          listItems.forEach(function(listitem){
-            if(item.itemnumber === listitem.itemnumber && listitem.quantity && listitem.quantity > 0){
-              repeatItemsQuantity = repeatItemsQuantity + listitem.quantity;
-            }
-          })
-          if (item.isHidden === true && repeatItemsQuantity !== 0) { 
+          // do not double-count items in both the list and cart 
+          if (item.isHidden === true) {
             item.quantity = 0;
           }
           newCartItems.push(item);
         }
       });
-      // remove items with 0 quantity
-      newCartItems = $filter('filter')(newCartItems, function(item) {
+        // remove items with 0 quantity
+        newCartItems = $filter('filter')(newCartItems, function(item) {
         return item.quantity > 0;
       });
       return newCartItems;
     }
-
 
      function flagDuplicateCartItems(cartItems, listItems) {
       angular.forEach(cartItems, function(cartItem) {
