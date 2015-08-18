@@ -92,24 +92,24 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 }
             }
 
+
             // Set the status to delivered if the Actual Delivery Time is populated
             if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
                     returnOrder.Status = "Delivered";
             }
 
-            try
-            {
-                var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
-                if (invoice != null)
-                {
-                    returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+            if (myOrder != null) {
+                try {
+                    var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
+                    if (invoice != null) {
+                        returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+                    }
+                } catch (Exception ex) {
+                    _log.WriteErrorLog("Error looking up invoice when trying to get order:  " + ex.Message + ex.StackTrace);
+
                 }
             }
-            catch (Exception ex)
-            {
-                _log.WriteErrorLog("Error looking up invoice when trying to get order:  " + ex.Message + ex.StackTrace);
-            }
-
+            
 			LookupProductDetails(branchId, returnOrder);
 
             if (po != null) {
