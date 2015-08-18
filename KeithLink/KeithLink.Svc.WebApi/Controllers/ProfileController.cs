@@ -1100,6 +1100,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        /*not implemented anywhere -- breaking the build
 	    [HttpPost]
 	    [ApiKeyedRoute("profile/settings/delete")]
 	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings)
@@ -1119,7 +1120,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 	        return returnValue;
 	    }
-
+        */
 	    #endregion
 	}
 }
