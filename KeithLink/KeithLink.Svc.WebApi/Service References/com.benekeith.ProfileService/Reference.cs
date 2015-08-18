@@ -68,6 +68,18 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ResetPassword", ReplyAction="http://tempuri.org/IProfileService/ResetPasswordResponse")]
         System.Threading.Tasks.Task<bool> ResetPasswordAsync(KeithLink.Svc.Core.Models.Profile.ResetPasswordModel resetPassword);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadProfileSettings", ReplyAction="http://tempuri.org/IProfileService/ReadProfileSettingsResponse")]
+        KeithLink.Svc.Core.Models.Profile.SettingsModel[] ReadProfileSettings(System.Guid userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadProfileSettings", ReplyAction="http://tempuri.org/IProfileService/ReadProfileSettingsResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.SettingsModel[]> ReadProfileSettingsAsync(System.Guid userId);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SaveProfileSettings", ReplyAction="http://tempuri.org/IProfileService/SaveProfileSettingsResponse")]
+        void SaveProfileSettings(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SaveProfileSettings", ReplyAction="http://tempuri.org/IProfileService/SaveProfileSettingsResponse")]
+        System.Threading.Tasks.Task SaveProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -167,6 +179,22 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         
         public System.Threading.Tasks.Task<bool> ResetPasswordAsync(KeithLink.Svc.Core.Models.Profile.ResetPasswordModel resetPassword) {
             return base.Channel.ResetPasswordAsync(resetPassword);
+        }
+        
+        public KeithLink.Svc.Core.Models.Profile.SettingsModel[] ReadProfileSettings(System.Guid userId) {
+            return base.Channel.ReadProfileSettings(userId);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.SettingsModel[]> ReadProfileSettingsAsync(System.Guid userId) {
+            return base.Channel.ReadProfileSettingsAsync(userId);
+        }
+        
+        public void SaveProfileSettings(KeithLink.Svc.Core.Models.Profile.SettingsModel settings) {
+            base.Channel.SaveProfileSettings(settings);
+        }
+        
+        public System.Threading.Tasks.Task SaveProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings) {
+            return base.Channel.SaveProfileSettingsAsync(settings);
         }
     }
 }

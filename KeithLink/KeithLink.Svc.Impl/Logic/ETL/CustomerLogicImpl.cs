@@ -142,6 +142,10 @@ namespace KeithLink.Svc.Impl.ETL
                         prof.Properties["GeneralInfo.regional_id"].Value = org.RegionalId;
                         prof.Properties["GeneralInfo.regional_number"].Value = org.RegionalNumber;
                         prof.Properties["GeneralInfo.is_keithnet_customer"].Value = org.IsKeithnetCustomer;
+                        prof.Properties["GeneralInfo.national_id_desc"].Value = org.NationalIdDesc;
+                        prof.Properties["GeneralInfo.national_numbersub_desc"].Value = org.NationalNumberSubDesc;
+                        prof.Properties["GeneralInfo.regional_id_desc"].Value = org.RegionalIdDesc;
+                        prof.Properties["GeneralInfo.regional_number_desc"].Value = org.RegionalNumberDesc;
 
                         Profile addressProfile = null;
                         if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))
@@ -298,12 +302,38 @@ namespace KeithLink.Svc.Impl.ETL
                 NationalSubNumber = row.GetString("NationalSubNumber"),
                 RegionalId = row.GetString("RegionalId"),
                 RegionalNumber = row.GetString("RegionalNumber"),
-                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer")
+                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer"),
+                NationalIdDesc = row.GetString("NationalIdDesc"),
+                NationalNumberSubDesc = row.GetString("NationalNumberAndSubDesc"),
+                RegionalIdDesc = row.GetString("RegionalIdDesc"),
+                RegionalNumberDesc = row.GetString("RegionalNumberDesc")
+
                 
                 // NationalAccountId = row.Get // this will come from a separate file
                 // TODO, add address info
             };
             return org;
+        }
+
+        /// <summary>
+        /// Import customer tasks
+        /// </summary>
+        public void ImportCustomerTasks()
+        {
+            try
+            {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
+                var customerTask = Task.Factory.StartNew(() => ImportCustomersToOrganizationProfile());
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
+                var dsrTask = Task.Factory.StartNew(() => ImportDsrInfo());
+
+                Task.WaitAll(customerTask, dsrTask);
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Error with ETL Import -- Import Customer Tasks", ex);
+            }
         }
 
         /// <summary>

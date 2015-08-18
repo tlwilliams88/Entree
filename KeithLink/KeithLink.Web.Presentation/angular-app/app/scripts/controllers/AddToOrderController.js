@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics',
-    function ($scope, $state, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics) {
+  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics',
+    function ($scope, $state, $modal, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics) {
+    
     
     // redirect to url with correct parameters
        var basketId;
@@ -317,6 +318,20 @@ angular.module('bekApp')
             }
           } 
         };
+  
+   $scope.openItemUsageSummaryModal = function(item, type) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/itemusagesummarymodal.html',
+        controller: 'ItemUsageSummaryModalController',
+        windowClass: 'color-background-modal',
+        scope: $scope,
+        resolve: {
+          item: function() {
+            return item;
+          }
+        }
+      });
+    };
 
 	// $scope.loadEntireList = function() {
  //        blockUI.start();

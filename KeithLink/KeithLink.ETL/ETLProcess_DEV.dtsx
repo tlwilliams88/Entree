@@ -10,7 +10,7 @@
   DTS:ExecutableType="SSIS.Package.3"
   DTS:LastModifiedProductVersion="11.0.5058.0"
   DTS:LocaleID="1033"
-  DTS:ObjectName="ETLProcess_DEV"
+  DTS:ObjectName="ETLProcess_QA"
   DTS:PackageType="5"
   DTS:VersionBuild="346"
   DTS:VersionGUID="{AFBC347D-9B64-4264-AE5B-643CB4DC6F58}">
@@ -1882,7 +1882,7 @@
   </DTS:ConnectionManagers>
   <DTS:Configurations>
     <DTS:Configuration
-      DTS:ConfigurationString="C:\SSIS_XML\ECOM\ETLProcess_DEV.dtsConfig"
+      DTS:ConfigurationString="C:\SSIS_XML\ECOM\ETLProcess_QA.dtsConfig"
       DTS:ConfigurationType="1"
       DTS:CreationName=""
       DTS:DTSID="{F374CBAA-9369-4ACD-A51D-0BBA0B0BB85F}"
@@ -2113,7 +2113,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2156,7 +2156,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2199,7 +2199,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2242,7 +2242,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2285,7 +2285,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2328,7 +2328,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -2372,7 +2372,7 @@
             <WSTask:WebServiceTaskData
               WSTask:ConnectionName="{4BB88A81-8888-496B-A098-F127240AFCB1}"
               WSTask:Service="ETLService"
-              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_DEV.wsdl"
+              WSTask:WSDLFile="C:\SSIS_WEB\ecom\wsdl\ETLProcess_QA.wsdl"
               WSTask:OverwriteWSDLFile="True"
               WSTask:OutputType="Variable"
               WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
@@ -25205,8 +25205,8 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
           SendMailTask:SMTPServer="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
           SendMailTask:From="CORPMISDEV2C@noreply.com"
           SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
-          SendMailTask:Subject="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C"
-          SendMailTask:MessageSource="SSIS Package ETLProcess_DEV has failed on CORPMISDEV2C.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+          SendMailTask:Subject="SSIS Package ETLProcess_QA has failed on CORPMISDEV2C"
+          SendMailTask:MessageSource="SSIS Package ETLProcess_QA has failed on CORPMISDEV2C.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
       </DTS:ObjectData>
     </DTS:Executable>
   </DTS:Executables>

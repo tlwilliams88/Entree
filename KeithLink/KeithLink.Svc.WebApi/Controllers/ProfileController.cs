@@ -6,20 +6,19 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.Profile.EF;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 using KeithLink.Svc.WebApi.Models;
-using KeithLink.Svc.WebApi.Attribute;
+// using KeithLink.Svc.WebApi.Attribute;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Web.Http;
-using KeithLink.Svc.Core.Models.ModelExport;
-using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -35,19 +34,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IDsrAliasService _dsrAliasService;
 		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
+        private readonly com.benekeith.ProfileService.IProfileService _profileService;
 		
 		#endregion
 
 		#region ctor
 		public ProfileController(ICustomerContainerRepository customerRepo,
-								 IEventLogRepository logRepo,
-								 IUserProfileLogic profileLogic,
-								 IAvatarRepository avatarRepository,
-								 ICustomerDomainRepository customerADRepo,
-			                     IPasswordResetService passwordResetService,
-                                 IDsrAliasService dsrAliasService,
-								IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
-			IExportSettingServiceRepository exportSettingRepository)
+                                IEventLogRepository logRepo,
+                                IUserProfileLogic profileLogic,
+                                IAvatarRepository avatarRepository,
+                                ICustomerDomainRepository customerADRepo,
+                                IPasswordResetService passwordResetService,
+                                IDsrAliasService dsrAliasService,
+                                IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
+                                IExportSettingServiceRepository exportSettingRepository, com.benekeith.ProfileService.IProfileService profileService )
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -59,6 +59,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             _dsrAliasService = dsrAliasService;
 			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
 			_exportSettingRepository = exportSettingRepository;
+            _profileService = profileService;
 		}
 		#endregion
 
@@ -1020,7 +1021,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -1034,7 +1034,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
 		}
-
 
 		// <summary>
 		/// Export marketing info to CSV, TAB, or Excel
@@ -1064,6 +1063,63 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
 		}
 
-        #endregion
+
+        /// <summary>
+        /// Get a list of settings for a user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute( "profile/settings/{userId}" )]
+        public OperationReturnModel<List<SettingsModel>> GetProfileSettings( Guid userId ) {
+            OperationReturnModel<List<SettingsModel> > returnValue = new OperationReturnModel<List<SettingsModel>>() { SuccessResponse = null };
+
+            try {
+                returnValue.SuccessResponse = _profileService.ReadProfileSettings( userId ).ToList<SettingsModel>();
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = string.Format( "Could not retrieve profile settings for specific user: {0}", userId );
+                _log.WriteErrorLog( returnValue.ErrorMessage, ex);
+            }
+
+            return returnValue;
+        }
+
+        [HttpPost]
+        [ApiKeyedRoute( "profile/settings" )]
+        public OperationReturnModel<bool> CreateOrUpdateProfileSettings( SettingsModel settings ) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            try {
+                _profileService.SaveProfileSettings( settings );
+                returnValue.SuccessResponse = true;
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = string.Format( "Error saving profile settings for user: {0}", ex );
+                _log.WriteErrorLog( returnValue.ErrorMessage, ex );
+            }
+
+            return returnValue;
+        }
+
+	    [HttpPost]
+	    [ApiKeyedRoute("profile/settings/delete")]
+	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings)
+	    {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+	        try
+	        {
+	            _profileService.DeleteProfileSettings(settings);
+                returnValue.SuccessResponse = true;
+	    
+	        }
+	        catch (Exception ex)
+	        {
+	            returnValue .ErrorMessage = String.Format("Error deleting profile settings {0} for userId {1}", settings.Key,settings.UserId);
+	        }
+
+	        return returnValue;
+	    }
+
+	    #endregion
 	}
 }

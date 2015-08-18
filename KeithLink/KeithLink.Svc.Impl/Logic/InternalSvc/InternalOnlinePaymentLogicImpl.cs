@@ -1,14 +1,15 @@
-﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Core.Enumerations;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
-
 using KeithLink.Svc.Core.Enumerations;
-
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.OnlinePayments;
 using KeithLink.Svc.Core.Extensions.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Extensions.Orders.History;
-
+using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
@@ -41,6 +42,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
         #region attributes
+        private readonly IAuditLogRepository _auditLog;
 		private readonly ICustomerBankRepository _bankRepo;
 		private readonly ICatalogLogic _catalogLogic;
 		private readonly ICustomerRepository _customerRepository;
@@ -53,8 +55,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         #region ctor
         public InternalOnlinePaymentLogicImpl(IKPayInvoiceRepository invoiceRepo, ICustomerBankRepository bankRepo, IOrderHistoryHeaderRepsitory orderHistoryrepo,
-			ICatalogLogic catalogLogic, ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, IKPayPaymentTransactionRepository paymentTransactionRepository,
-            IKPayLogRepository kpayLogRepo) {
+			                                  ICatalogLogic catalogLogic, ICustomerRepository customerRepository, IGenericQueueRepository queueRepo, 
+                                              IKPayPaymentTransactionRepository paymentTransactionRepository, IKPayLogRepository kpayLogRepo, IAuditLogRepository auditLogRepo) {
 			this._invoiceRepo = invoiceRepo;
 			this._bankRepo = bankRepo;
 			this._orderHistoryRepo = orderHistoryrepo;
@@ -63,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             _queue = queueRepo;
 			this._paymentTransactionRepository = paymentTransactionRepository;
             _kpaylog = kpayLogRepo;
+            _auditLog = auditLogRepo;
 		}
         #endregion
 
@@ -321,7 +324,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 				_invoiceRepo.MarkInvoiceAsPaid(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
 
-                _kpaylog.Write(emailAddress, string.Format("Invoice paid({0} - {1} - {2})", payment.InvoiceNumber, payment.PaymentDate.Value, payment.PaymentAmount));
+                string paymentInfo = string.Format("Invoice paid({0} - {1} - {2})", payment.InvoiceNumber, payment.PaymentDate.Value, payment.PaymentAmount);
+                _kpaylog.Write(emailAddress, paymentInfo);
+                _auditLog.WriteToAuditLog(AuditType.PaymentSubmitted, emailAddress, paymentInfo);
             }
 
             _kpaylog.Write(emailAddress, string.Concat("Payments for confirmation id: ", confId));

@@ -25,6 +25,8 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.PowerMenu;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
+using KeithLink.Svc.Core.Models.PowerMenu;
+using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.SingleSignOn;
 
@@ -37,6 +39,9 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
+
+using System.Threading.Tasks;
+
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -66,6 +71,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IGenericQueueRepository _queue;
         private IDsrAliasService _dsrAliasService;
 		private IPasswordResetService _passwordService;
+        private ISettingsLogicImpl _settingsLogic;
         #endregion
 
         #region ctor
@@ -73,7 +79,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
                                     IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, 
                                     IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog,
-									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService)
+									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService, 
+                                    ISettingsLogicImpl settingsLogic)
 		{
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -91,6 +98,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _queue = queue;
             _dsrAliasService = dsrAliasService;
 			_passwordService = passwordService;
+            _settingsLogic = settingsLogic;
         }
         #endregion
 
@@ -1714,6 +1722,19 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         //{
         //    _extAd.UpdateUserGroups(customerNames, roleName, emailAddress);
         //}
+
+        public List<SettingsModel> GetProfileSettings( Guid userId ) {
+            return _settingsLogic.GetAllUserSettings( userId );
+        }
+
+        public void SaveProfileSettings( SettingsModel model ) {
+            _settingsLogic.CreateOrUpdateSettings( model );
+        }
+
+        public void DeleteProfileSettings(SettingsModel model)
+        {
+            _settingsLogic.DeleteSettings( model );
+        }
 
         #endregion
 	}

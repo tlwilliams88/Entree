@@ -238,6 +238,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Profile.EF.DsrAlias.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.DsrAliasModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModel.datasource" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
@@ -323,6 +324,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie71.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie8.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
@@ -678,6 +682,9 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="Services\PowerMenuPricingHandler.ashx" />
+    <None Include="Service References\com.benekeith.ReportService\ReportService41.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -42,6 +42,9 @@ namespace KeithLink.Common.Core.Enumerations
         [Description("Authentication Failed")]
         AuthenticationFailed,
         [Description("User Deleted")]
-        UserDeleted
-    }
+        UserDeleted,
+        [Description("Payment submitted")]
+        PaymentSubmitted
+	}
+
 }

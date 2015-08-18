@@ -19,6 +19,9 @@ namespace KeithLink.Svc.Impl
 		private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
         private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
 
+        // Item History
+        private const string KEY_ITEM_HISTORY_WEEKS = "ItemHistoryAverageWeeks";
+
         // Active Directory Constants
         private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN = "ADExtAccessGroupKbitAdmin";
         private const string KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER = "ADExtAccessGroupKbitCustomer";
@@ -527,6 +530,11 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static int ItemHistoryAverageWeeks {
+            get {
+                return ValueParsingUtil.ParseInt(GetValue( KEY_ITEM_HISTORY_WEEKS, String.Empty ), String.Empty);
+            }
+        }
         public static string KbitConnectionString {
             get {
                 return GetConnectionString(KEY_SSO_KBIT_CONNECTIONSTRING);

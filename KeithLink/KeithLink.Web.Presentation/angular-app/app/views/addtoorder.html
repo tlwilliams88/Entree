@@ -128,7 +128,7 @@
     class="style-validation-errors" 
     autocomplete="off">
     <div class="table-addtoorder">
-      <table 
+      <table      
         class="table table-striped-rows table-border" 
         navigate-table="mobile"
         infinite-scroll="infiniteScrollLoadMore()">
@@ -178,7 +178,10 @@
             <th class="hidden-mobile-visible-print">
               Ext Price
             </th>
-            <th>             
+            <th style="margin-left:5px;" class="hidden-mobile-visible-print">
+            Average Use </br> (8 wk)             
+            </th>
+            <th>
             </th>
           </tr>
         </thead>
@@ -272,6 +275,15 @@
                 {{item.extPrice | currency}}  
               </div>
             </td>
+            <td  class="hidden-mobile-visible-print" >
+            <div ng-if="item.itemstatistics.packageaverage || item.itemstatistics.caseaverage "> 
+            <a><div ng-if="item.each" tooltip="View order history for this item." class="pull-left" ng-click="openItemUsageSummaryModal(item)">{{item.itemstatistics.packageaverage}} Packs</div></a>
+            <a><div ng-if="!item.each" tooltip="View order history for this item." class="pull-left" ng-click="openItemUsageSummaryModal(item)">{{item.itemstatistics.caseaverage}} Cases</div></a>
+          </div>
+          <div ng-click="openItemUsageSummaryModal(item)" ng-if="!item.itemstatistics.packageaverage && !item.itemstatistics.caseaverage">
+            None
+          </div>
+           </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             </td>
@@ -345,6 +357,16 @@
                 <tr ng-show="item.canOrder">
                   <td>Ext Price</td>
                   <td>{{item.extPrice | currency}}</td>
+                </tr>
+                <tr ng-show="item.canOrder">
+                  <td>Average Use </br> (8 wk)</td>
+                <td  ng-click="openItemUsageSummaryModal(item)"> 
+                  <div ng-if="(item.itemstatistics.packageaverage !== 0 || item.itemstatistics.caseaverage !== 0)"> 
+                  <a><div ng-if="item.each" tooltip="View order history for this item." class="pull-left" >{{item.itemstatistics.packageaverage}} Packs</div></a>
+                  <a><div ng-if="!item.each" tooltip="View order history for this item." class="pull-left">{{item.itemstatistics.caseaverage}} Cases</div></a>
+                </div>
+                <div ng-if="item.itemstatistics.packageaverage === 0 && item.itemstatistics.caseaverage === 0">None</div>                 
+                </td>
                 </tr>
               </table>
             </td>

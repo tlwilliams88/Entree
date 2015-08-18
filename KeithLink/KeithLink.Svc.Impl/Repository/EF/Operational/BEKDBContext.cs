@@ -32,62 +32,89 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         public BEKDBContext( string nameOrConnectionString ) : base( nameOrConnectionString ) { }
         public BEKDBContext( DbConnection existingConnection ) : base( existingConnection, true ) { }
 
-        public DbSet<List> Lists { get; set; }
-        public DbSet<ListItem> ListItems { get; set; }
-        public DbSet<OrderHistoryDetail> OrderHistoryDetails { get; set; }
-        public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
-        public DbSet<Invoice> Invoices { get; set; }
-        public DbSet<InvoiceItem> InvoiceItems { get; set; }
+        // BranchSupport
         public DbSet<BranchSupport> BranchSupports { get; set; }
         public DbSet<Dsr> Dsrs { get; set; }
         public DbSet<DsrAlias> DsrAliases { get; set; }
+
+        // Configuration
+        public DbSet<ExportSetting> ExportSettings { get; set; }
         public DbSet<MessageTemplate> MessageTemplates { get; set; }
-        public DbSet<Term> Terms { get; set; }
-        public DbSet<ListShare> ListShares { get; set; }
+
+        // ContentManagement
         public DbSet<ContentItem> ContentItems { get; set; }
-        public DbSet<UserMessage> UserMessages { get; set; }
+
+        // Customers
+        public DbSet<ItemHistory> ItemHistory { get; set; }
+
+        // Invoices
+        public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceItem> InvoiceItems { get; set; }
+        public DbSet<Term> Terms { get; set; }
+
+        // Lists
+        public DbSet<List> Lists { get; set; }
+        public DbSet<ListItem> ListItems { get; set; }
+        public DbSet<ListShare> ListShares { get; set; }
+
+        // Messaging
         public DbSet<CustomerTopic> CustomerTopics { get; set; }
+        public DbSet<UserMessage> UserMessages { get; set; }
         public DbSet<UserMessagingPreference> UserMessagingPreferences { get; set; }
         public DbSet<UserPushNotificationDevice> UserPushNotificationDevices { get; set; }
         public DbSet<UserTopicSubscription> UserTopicSubscriptions { get; set; }
-        public DbSet<ExportSetting> ExportSettings { get; set; }
+
+        // Orders
+        public DbSet<OrderHistoryDetail> OrderHistoryDetails { get; set; }
+        public DbSet<OrderHistoryHeader> OrderHistoryHeaders { get; set; }
         public DbSet<UserActiveCart> UserActiveCarts { get; set; }
-		public DbSet<PasswordResetRequest> PasswordResetRequests { get; set; }
+
+        // Profile
 		public DbSet<MarketingPreference> MarketingPreferences {get;set;}
-        public DbSet<ItemHistory> ItemHistory { get; set; }
+        public DbSet<PasswordResetRequest> PasswordResetRequests { get; set; }
+        public DbSet<Settings> Settings { get; set; }
 
         protected override void OnModelCreating( DbModelBuilder modelBuilder ) {
+            // Lists
             modelBuilder.Entity<List>().ToTable( "Lists", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ListItem>().ToTable( "ListItems", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ListShare>().ToTable( "ListShares", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
+            // Orders
             modelBuilder.Entity<OrderHistoryHeader>().ToTable( "OrderHistoryHeader", schemaName: "Orders" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<OrderHistoryDetail>().ToTable( "OrderHistoryDetail", schemaName: "Orders" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<UserActiveCart>().ToTable( "UserActiveCarts", schemaName: "Orders" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
+            // Invoices
             modelBuilder.Entity<Invoice>().ToTable( "Invoices", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<InvoiceItem>().ToTable( "InvoiceItems", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<Term>().ToTable( "Terms", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
+            // BranchSupport
             modelBuilder.Entity<BranchSupport>().ToTable( "BranchSupports", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<Dsr>().ToTable( "Dsrs", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
-            modelBuilder.Entity<DsrAlias>().ToTable("DsrAliases", schemaName: "BranchSupport").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<DsrAlias>().ToTable( "DsrAliases", schemaName: "BranchSupport" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
+            // Messaging
             modelBuilder.Entity<UserMessage>().ToTable( "UserMessages", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<CustomerTopic>().ToTable( "CustomerTopics", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<UserTopicSubscription>().ToTable( "UserTopicSubscriptions", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<UserMessagingPreference>().ToTable( "UserMessagingPreferences", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<UserPushNotificationDevice>().ToTable( "UserPushNotificationDevices", schemaName: "Messaging" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
+            // Configuration
             modelBuilder.Entity<MessageTemplate>().ToTable( "MessageTemplates", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ExportSetting>().ToTable( "ExportSettings", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
-            modelBuilder.Entity<Term>().ToTable( "Terms", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
-
+            // ContentManagement
             modelBuilder.Entity<ContentItem>().ToTable( "ContentItems", schemaName: "ContentManagement" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
-			
-			modelBuilder.Entity<PasswordResetRequest>().ToTable("PasswordResetRequests", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-			modelBuilder.Entity<MarketingPreference>().ToTable("MarketingPreferences", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
+            // Profile
+            modelBuilder.Entity<MarketingPreference>().ToTable("MarketingPreferences", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Settings>().ToTable( "Settings", schemaName: "Profile" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+			modelBuilder.Entity<PasswordResetRequest>().ToTable("PasswordResetRequests", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            // Customers
             modelBuilder.Entity<ItemHistory>().ToTable("ItemHistory", schemaName: "Customers").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 

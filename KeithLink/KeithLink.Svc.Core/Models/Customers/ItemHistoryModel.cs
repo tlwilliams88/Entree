@@ -13,11 +13,14 @@ namespace KeithLink.Svc.Core.Models.Customers {
     public class ItemHistoryModel {
         #region properties
 
-        [DataMember(Name = "caseeightweekaverage")]
-        public int CaseEightWeekAverage { get; set; }
+        [DataMember( Name = "totalweeks" )]
+        public int TotalWeeks { get; set; }
 
-        [DataMember( Name = "packageeightweekaverage" )]
-        public int PackageEightWeekAverage { get; set; }
+        [DataMember(Name = "caseaverage")]
+        public int CaseAverage { get; set; }
+
+        [DataMember( Name = "packageaverage" )]
+        public int PackageAverage { get; set; }
 
         #endregion
     }

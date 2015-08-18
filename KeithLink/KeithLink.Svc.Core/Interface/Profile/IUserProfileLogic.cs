@@ -84,5 +84,9 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 		UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId);
 
 		List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId);
+
+        List<SettingsModel> GetProfileSettings( Guid userId );
+
+        void SaveProfileSettings( SettingsModel settings );
     }
 }

@@ -140,6 +140,12 @@ $sidebar-nav__text--selected: $color-white;
   z-index: 1000;
 }
 
+.tooltip-inner {
+    width: 500px;
+    white-space:pre-wrap;     
+    top:-30px;
+}
+
 @media (max-width: $screen-sm-max) {
   .sidebar {
     width: 250px;
