@@ -113,11 +113,11 @@ angular.module('bekApp')
       resetPage(angular.copy(originalList));
     };
 
-    // $scope.loadEntireList = function() {    
-    //   blockUI.start();    
-    //   listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults);    
-    //   blockUI.stop();   
-    // };
+    $scope.loadEntireList = function() {    
+      blockUI.start();    
+      listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults);    
+      blockUI.stop();   
+    };
 
     /**********
     PAGING

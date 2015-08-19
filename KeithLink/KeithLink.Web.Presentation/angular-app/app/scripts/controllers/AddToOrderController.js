@@ -319,7 +319,7 @@ angular.module('bekApp')
           } 
         };
   
-   $scope.openItemUsageSummaryModal = function(item, type) {
+    $scope.openItemUsageSummaryModal = function(item, type) {
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/itemusagesummarymodal.html',
         controller: 'ItemUsageSummaryModalController',
@@ -333,11 +333,11 @@ angular.module('bekApp')
       });
     };
 
-	// $scope.loadEntireList = function() {
- //        blockUI.start();
- //        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
- //        blockUI.stop();       
- //  };
+	 $scope.loadEntireList = function() {
+        blockUI.start();
+        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
+        blockUI.stop();       
+    };
 
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
