@@ -1,8 +1,8 @@
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Common.Core.AuditLog;
+﻿using KeithLink.Common.Core.AuditLog;
 using KeithLink.Common.Core.Enumerations;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
+
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
@@ -17,9 +17,8 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
-
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
@@ -41,6 +40,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
+
         #region attributes
         private readonly IAuditLogRepository _auditLog;
 		private readonly ICustomerBankRepository _bankRepo;
@@ -175,7 +175,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             invoiceModel.InvoiceLink =new Uri(Configuration.WebNowUrl.Inject(new { branch = userContext.BranchId, customer = userContext.CustomerId, invoice = invoiceNumber }));
 
-            if (invoiceModel.DueDate.Value.Date < DateTime.Now.Date && invoiceModel.Amount != 0) {
+            if (invoiceModel.DueDate < DateTime.Now) {
                 invoiceModel.Status = InvoiceStatus.PastDue;
                 invoiceModel.StatusDescription = EnumUtils<InvoiceStatus>.GetDescription(InvoiceStatus.PastDue);
             }
@@ -199,8 +199,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         public InvoiceHeaderReturnModel GetInvoiceHeaders(UserProfile user, UserSelectedContext userContext, PagingModel paging, bool forAllCustomers) {
-			var kpayInvoices = new List<EFInvoice.Invoice>();
-					
 			var customers = new List<Core.Models.Profile.Customer>();
 
 			if (forAllCustomers)
@@ -208,42 +206,29 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 			else
 				customers = new List<Core.Models.Profile.Customer>() { _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId) };
 
-			FilterInfo isfilter = new FilterInfo();
-			isfilter.Filters = new List<FilterInfo>();
-			isfilter.Filters.Add(new FilterInfo() { Field = "ItemSequence", Value = "0", FilterType = "eq" }); //Header information is is ItemSequence = 0
-			var statusFilter = BuildStatusFilter(paging.Filter);
-			if (statusFilter != null)
-				isfilter.Filters.Add(statusFilter);
+			FilterInfo statusFilter = BuildStatusFilter(paging.Filter);
+			FilterInfo customerFilter = BuildCustomerFilter(customers);
 
-
-			FilterInfo filter = BuildCustomerFilter(customers);
-			
-			kpayInvoices = _invoiceRepo.ReadAll().AsQueryable().Filter(isfilter, null).Filter(filter, null).ToList();
+            var kpayInvoices =  _invoiceRepo.ReadAllHeaders().AsQueryable().Filter(customerFilter, null).Filter(statusFilter, null).ToList();
 
 			var pagedInvoices = kpayInvoices.Select(i => i.ToInvoiceModel(customers.Where(c => c.CustomerNumber.Equals(i.CustomerNumber)).First())).AsQueryable<InvoiceModel>().GetPage(paging, defaultSortPropertyName: "InvoiceNumber");
 
-			foreach(var invoice in pagedInvoices.Results)
-			{
+			foreach(var invoice in pagedInvoices.Results){
 				invoice.InvoiceLink = new Uri(Configuration.WebNowUrl.Inject(new { branch = invoice.BranchId, customer = invoice.CustomerNumber, invoice = invoice.InvoiceNumber }));
 
-				if (invoice.Status == InvoiceStatus.Pending)
-				{
+				if (invoice.Status == InvoiceStatus.Pending) {
 					//Retrieve payment transaction record
 					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
 
-					if (payment != null)
-					{
+					if (payment != null) {
 						invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault());
-
 					}
 				}
 
 				var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
-				if (orderHistory != null)
-				{
+				if (orderHistory != null){
 					invoice.PONumber = orderHistory.PONumber;
 				}
-
 			}
 			
             return new InvoiceHeaderReturnModel() {
@@ -342,6 +327,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                                   Configuration.RabbitMQNotificationUserPasswordPublisher, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
 		}
 
+		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
+		{
+            var customers = _customerRepository.GetCustomersForUser(user.UserId);
+
+            var customerFilter = BuildCustomerFilter(customers);
+
+            var transactions = _paymentTransactionRepository.ReadAll().AsQueryable().Filter(customerFilter, null);
+
+            var transactionResults = transactions.ToList().Select(t => t.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(t.CustomerNumber)).First())).AsQueryable().GetPage(paging);
+
+            return transactionResults;
+        }
+
         public PagedResults<PaymentTransactionModel> PendingTransactions(UserSelectedContext customer, string divisionId, PagingModel paging) {
             var currentCustomer = _customerRepository.GetCustomerByCustomerNumber(customer.CustomerId, customer.BranchId);
 
@@ -354,31 +352,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return retVal;
         }
 
-		public PagedResults<PaymentTransactionModel> PendingTransactionsAllCustomers(UserProfile user, PagingModel paging)
-		{
-			var customers = _customerRepository.GetCustomersForUser(user.UserId);
-
-			var customerFilter = BuildCustomerFilter(customers);
-
-			var transactions = _paymentTransactionRepository.ReadAll().AsQueryable().Filter(customerFilter, null);
-
-			var transactionResults = transactions.ToList().Select(t => t.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(t.CustomerNumber)).First())).AsQueryable().GetPage(paging);
-
-			return transactionResults;
-		}
-
-        public List<PaymentTransactionModel> ValidatePayment( UserSelectedContext context, List<PaymentTransactionModel> payments ) {
+        public List<PaymentTransactionModel> ValidatePayment(UserSelectedContext context, List<PaymentTransactionModel> payments) {
             List<PaymentTransactionModel> returnValue = new List<PaymentTransactionModel>();
 
             // Set default payment date for null payments to today.
-            payments.ForEach( x => { if (!x.PaymentDate.HasValue) { x.PaymentDate = DateTime.Now; } } );
+            payments.ForEach(x => { if (!x.PaymentDate.HasValue) { x.PaymentDate = DateTime.Now; } });
 
             // Select all transactions grouped by accountnumber, paymentdate
             var transactions =
                 from t in payments
                 group t by new {
-                   t.AccountNumber,
-                   t.PaymentDate,
+                    t.AccountNumber,
+                    t.PaymentDate,
                 } into tg
                 select new {
                     AccountNumber = tg.Key.AccountNumber,
@@ -388,14 +373,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             // Go through all daily transactions and validate the sum payment amount is greater than 0 (not negative)
             foreach (var t in transactions) {
-                if (t.payments.Sum( x => x.PaymentAmount ) < 0) {
-                    returnValue.AddRange( t.payments );
+                if (t.payments.Sum(x => x.PaymentAmount) < 0) {
+                    returnValue.AddRange(t.payments);
                 }
             }
 
             return returnValue;
         }
-		
-		#endregion
-	}
+       
+        #endregion
+    }
 }
