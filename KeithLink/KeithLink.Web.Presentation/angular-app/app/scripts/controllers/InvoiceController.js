@@ -158,6 +158,22 @@ angular.module('bekApp')
 
     return filter;
   }
+  
+    $scope.openTransactionSummaryModal = function(invoice) {
+        var modalInstance = $modal.open({
+        templateUrl: 'views/modals/invoicetransactionsummarymodal.html',
+        controller: 'InvoiceTransactionSummaryModalController',
+        windowClass: 'color-background-modal',
+        scope: $scope,
+        resolve: {
+          invoice: function() {
+            return invoice;
+          }
+        }
+      });
+    
+      
+    };
 
   $scope.filterInvoices = function(filterFields) {
     // InvoiceService.setFilters($scope.selectedFilterView , filterFields);

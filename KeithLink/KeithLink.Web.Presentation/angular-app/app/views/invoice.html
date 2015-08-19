@@ -247,6 +247,7 @@
                 </div>
             </td>
             <td class="large-icon icon-col">
+              <a class="icon-plus2 hidden-xs hidden-sm invoice-summary-tooltip" style="margin-right:15px;" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a> 
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             </td>
           </tr>
@@ -344,6 +345,7 @@
                 <tr>
                   <td class="large-icon" colspan="2">
                     <a ng-if="invoice.invoicelink" ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" class="icon-camera"></a>
+                    <a class="icon-plus2 large-icon invoice-summary-tooltip" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a>                 
                   </td>
                 </tr>
               </table>
