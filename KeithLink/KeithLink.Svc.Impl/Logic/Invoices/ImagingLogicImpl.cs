@@ -34,9 +34,15 @@ namespace KeithLink.Svc.Impl.Logic.Invoices {
                 _log.WriteInformationLog(string.Format("Retrieving invoice images(BranchId: {0}, CustomerNumber: {1}, InvoiceNumber: {2}", 
                                                         customerInfo.BranchId, customerInfo.CustomerId, invoiceNumber));
                 string sessionToken = _repo.Connect();
-                string documentId = _repo.GetDocumentId(sessionToken, customerInfo, invoiceNumber);
+                List<string> documentIds = _repo.GetDocumentIds(sessionToken, customerInfo, invoiceNumber);
 
-                return _repo.GetImages(sessionToken, documentId);
+                List<string> imageStrings = new List<string>();
+
+                foreach (string documentId in documentIds) {
+                    imageStrings.AddRange(_repo.GetImages(sessionToken, documentId));
+                }
+
+                return imageStrings;
             } catch (Exception ex) {
                 _log.WriteErrorLog("Unhandled exception while retrieving invoice images.", ex);
                 throw;
