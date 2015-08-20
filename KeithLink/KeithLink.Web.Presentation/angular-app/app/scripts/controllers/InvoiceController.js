@@ -171,8 +171,6 @@ angular.module('bekApp')
           }
         }
       });
-    
-      
     };
 
   $scope.filterInvoices = function(filterFields) {
