@@ -192,6 +192,11 @@ angular.module('bekApp')
 
     isDemo: function() {
       return isDemo();
+    },
+
+    //used primarily for Inventory Valuation and Item Usage Reports.  KBIT access is handled differently.  
+    canRunReports: function() {
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     }
 
   };
