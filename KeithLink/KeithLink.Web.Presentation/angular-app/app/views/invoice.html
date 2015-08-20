@@ -176,8 +176,8 @@
               {{::invoice.duedate | formatDate}}
             </td>
             <td >
-              {{::invoice.amount | currency}}
-               <strong><a class="icon-plus3 hidden-xs hidden-sm transaction-summary large-icon pull-right"  ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></strong>
+              <span class="pull-left" >{{::invoice.amount | currency}}</span>
+               <strong><a class="icon-plus3 transaction-summary large-icon pull-right"  ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></strong>
             </td>
             <td class="text-center icon-col large-icon hidden-mobile-visible-print">
               <a ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" target="_blank" class="icon-camera"></a>
@@ -345,8 +345,7 @@
                 <tr>
                   <td class="large-icon" colspan="2">
                     <a ng-if="invoice.invoicelink" ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" class="icon-camera"></a>
-                    <a class="glyphicon-plus large-icon invoice-summary-tooltip" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a>                 
-                  </td>
+                   </td>
                 </tr>
               </table>
             </td>
