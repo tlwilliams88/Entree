@@ -329,7 +329,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _log.WriteInformationLog(logMessage.Inject(logInfo));
 
             if (po == null) {
-                // if no PO, silently ignore?  could be the case if multiple control numbers out at once...
+                _log.WriteWarningLog("Could not find PO for confirmation number: {ConfirmationNumber}".InjectSingleValue("ConfirmationNumber", poNum));
             } else {
                 // make sure that there are items to process
                 if (po.LineItemCount == 0 || po.OrderForms[0].LineItems.Count == 0) 
