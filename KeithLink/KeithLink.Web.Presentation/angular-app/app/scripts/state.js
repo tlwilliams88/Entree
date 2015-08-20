@@ -448,7 +448,7 @@ angular.module('bekApp')
       templateUrl: 'views/itemusagereport.html',
       controller: 'ItemUsageReportController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canRunReports'
       }
     })
     .state('menu.inventoryreport', {
@@ -461,7 +461,7 @@ angular.module('bekApp')
         }]
       },
       data: {
-        authorize: 'canManageLists'
+        authorize: 'canRunReports'
       }
     })
 
