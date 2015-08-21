@@ -157,6 +157,7 @@
               <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
             <th class="hidden-xs hidden-sm"></th>
+            <th class="hidden-xs hidden-sm"></th>
             <th  class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
@@ -211,6 +212,7 @@
             <td class="hidden-mobile-visible-print notes-col">
               {{::item.notes}}
             </td>
+            <td class="hidden-mobile-visible-print" item-icons></td>
             <td class="hidden-xs hidden-sm">
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
             </td>
@@ -374,7 +376,7 @@
         </tbody>
         <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
           <tr>
-            <td colspan="16">
+            <td colspan="17">
               There are no products to display.
             </td>
           </tr>
