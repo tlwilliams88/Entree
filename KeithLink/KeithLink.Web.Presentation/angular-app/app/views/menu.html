@@ -106,7 +106,7 @@
           <button
             class="btn-no-style"
             type="button"
-            ng-disabled="::!canCreateOrders"
+            ng-disabled="::!canRunReports"
             ui-sref="menu.reports"
             ng-class="{'is-selected': $state.includes('menu.reports')}" >
             <li>
@@ -117,7 +117,7 @@
           <button
             class="btn-no-style"
             type="button"
-            ng-disabled="::!canRunReports"
+            ng-disabled="::!canPayInvoices"
             ui-sref="menu.invoice"
             ui-sref-active="is-selected" >
             <li>
