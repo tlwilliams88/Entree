@@ -166,6 +166,8 @@ namespace KeithLink.Svc.Impl.ETL
                         addressProfile.Update();
 
                         prof.Update();
+
+                        CompareExistingToUpdatedOrganization(org);
                     }
                     catch (Exception ex)
                     {
@@ -361,6 +363,88 @@ namespace KeithLink.Svc.Impl.ETL
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(rs);
             }
             return existingOrgs;
+        }
+
+        /// <summary>
+        /// Get existing organizations
+        /// </summary>
+        /// <param name="organizationType"></param>
+        /// <returns></returns>
+        private Organization GetExistingOrganization(string customerNumber, string branchId)
+        {
+            ProfileContext ctxt = GetProfileContext();
+            StringBuilder cmdText = new StringBuilder();
+            cmdText.Append("SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type, GeneralInfo.branch_number, GeneralInfo.is_keithnet_customer, GeneralInfo.customer_ach_type FROM Organization");
+            cmdText.Append(String.Format(" WHERE GeneralInfo.customer_number = '{0}' AND GeneralInfo.branch_number = '{1}'", customerNumber, branchId));
+
+            // Create a new RecordsetClass object.
+            ADODB.Recordset rs = new ADODB.Recordset();
+            List<Organization> existingOrgs = new List<Organization>();
+
+            try
+            {
+                // Open a RecordsetClass instance by executing the SQL statement to the CSOLEDB provider.
+                rs.Open(
+                cmdText.ToString(),
+                ctxt.CommerceOleDbProvider,
+                ADODB.CursorTypeEnum.adOpenForwardOnly,
+                ADODB.LockTypeEnum.adLockReadOnly,
+                (int)ADODB.CommandTypeEnum.adCmdText);
+
+                // Iterate through the records.
+                while (!rs.EOF)
+                {
+                    // Write out the user_id value.
+                    existingOrgs.Add(new Organization()
+                    {
+                        CustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
+                        NationalOrRegionalAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
+                        OrganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
+                        Id = rs.Fields["GeneralInfo.org_id"].Value.ToString(),
+                        BranchNumber = rs.Fields["GeneralInfo.branch_number"].Value.ToString(),
+                        IsKeithnetCustomer = rs.Fields["GeneralInfo.is_keithnet_customer"].Value.ToString(),
+                        AchType = rs.Fields["GeneralInfo.customer_ach_type"].Value.ToString()
+                    });
+
+                    // Move to the next record.
+                    rs.MoveNext();
+                }
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(rs);
+            }
+            if (existingOrgs.Count != 1)
+            {
+                throw new Exception("More than one customer with a specific customer and branch combination");
+            }
+            else
+            {
+                return existingOrgs.FirstOrDefault();
+            }
+
+        }
+
+        /// <summary>
+        /// Compare data from incoming ETL file to updated profile to ensure important fields were updated
+        /// </summary>
+        /// <returns></returns>
+        private bool CompareExistingToUpdatedOrganization(Organization org)
+        {
+            bool confirmUpdate = false;
+
+            Organization updatedOrg = GetExistingOrganization(org.CustomerNumber, org.BranchNumber);
+
+            if (org.IsKeithnetCustomer == updatedOrg.IsKeithnetCustomer && org.AchType == updatedOrg.AchType)
+            {
+                confirmUpdate = true;
+            }
+            else
+            {
+                eventLog.WriteErrorLog(String.Format("ETL:  Profile did not update correctly for customer {0} - branch {1}", org.CustomerNumber, org.BranchNumber));
+            }
+
+            return confirmUpdate;
         }
 
         /// <summary>
