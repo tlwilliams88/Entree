@@ -88,6 +88,27 @@ margin-top:20px;
 
   .update-btn {
     margin-top:10px;
-  } 
+  }
 
+.tooltip-inner{
+  width:100px;
+  word-wrap:break-word;
+}
 
+@media (min-width: 1320px) {
+  .transaction-summary{
+ margin-right:50%; }
+}
+
+@media (max-width: 1320px) {
+ .transaction-summary{
+  margin-right:0px;
+
+ }
+}
+
+@media (max-width: 1080px) {
+ .transaction-summary{
+  float:left !important;
+ }
+}

@@ -187,7 +187,7 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
-			builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
+			//builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 			builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
@@ -225,6 +225,7 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
+            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
 
             //profile
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
