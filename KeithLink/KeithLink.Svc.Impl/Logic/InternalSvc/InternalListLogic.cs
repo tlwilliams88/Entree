@@ -343,6 +343,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				{
 					listItem.PackagePrice = price.PackagePrice.ToString();
 					listItem.CasePrice = price.CasePrice.ToString();
+                    listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
 				}
 			});
 
@@ -397,6 +398,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.ManufacturerName = prod.ManufacturerName;
 					listItem.ManufacturerNumber = prod.ManufacturerNumber;
 					listItem.AverageWeight = prod.AverageWeight;
+                    listItem.TempZone = prod.TempZone;
 					listItem.Nutritional = new Nutritional()
 					{
 						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
