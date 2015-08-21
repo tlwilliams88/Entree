@@ -387,6 +387,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
 					listItem.ChildNutrition = prod.ChildNutrition;
+                    listItem.SellSheet = prod.SellSheet;
 					listItem.CatchWeight = prod.CatchWeight;
 					listItem.ItemClass = prod.ItemClass;
 					listItem.CategoryId = prod.CategoryId;
