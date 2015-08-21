@@ -227,6 +227,10 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
             builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
 
+            //profile
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
+
 			return builder.Build();
 		}
 	}
