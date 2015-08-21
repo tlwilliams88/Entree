@@ -407,7 +407,7 @@
           <tbody ng-class="{ 'item-selected': item.isSelected }" 
               ng-repeat="item in selectedList.items | filter:{listitemid: '!!', isdeleted:false} track by item.listitemid" 
               data-product="{{item}}" 
-              data-drag="isDragEnabled()" 
+              data-drag="dragEnabled" 
               data-jqyoui-options="{
                 helper:generateDragHelper, 
                 cursorAt: { top: -5, left: -5 }, 
@@ -485,7 +485,15 @@
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel">
                 <ng-form name="parlevelForm">
-                  <input                     
+                  <input
+                    type="text" 
+                    ng-if="!item.showParLevelInput"
+                    ng-focus="item.showParLevelInput = true"                   
+                    ng-mouseenter="item.showParLevelInput = true"
+                    class="text-right input-number bek-no-drag"
+                   />
+                  <input
+                    ng-if="item.showParLevelInput"                 
                     id="parlevel" 
                     name="parlevel" 
                     type="text" 
@@ -504,14 +512,14 @@
               </td>
 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
-                <div               
+              <div
+                  ng-if="item.useContextMenu"               
                   ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
                   context-menu-template
-                  class="context-menu-template context-menu__in-list hidden-print"
-                >
+                  class="context-menu-template context-menu__in-list hidden-print">           
                   <a class="icon-plus2"></a>
-                </div>
-
+              </div>
+                <a class="icon-plus2" ng-if="!item.useContextMenu" ng-mouseenter="item.useContextMenu = true;"></a>
                 <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
                 
                 <span 

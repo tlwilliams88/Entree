@@ -113,7 +113,7 @@ angular.module('bekApp')
       resetPage(angular.copy(originalList));
     };
 
-    $scope.loadEntireList = function() {    
+    $scope.loadEntireList = function() { 
       blockUI.start();    
       listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults);    
       blockUI.stop();   
@@ -425,11 +425,18 @@ angular.module('bekApp')
       $scope.selectedList.allSelected = false;
       $scope.changeAllSelectedItems();
     }
-
     // disable drag on mobile
     $scope.isDragEnabled = function() {
-      return window.innerWidth > 991 && !$scope.isMobileDevice;
+      $scope.dragEnabled = window.innerWidth > 991 && !$scope.isMobileDevice;
     };
+
+    $scope.isDragEnabled();
+
+    $(window).resize(function(){ 
+      $scope.$apply(function(){ 
+      $scope.isDragEnabled();
+      });
+    });
 
     // Check if element is being dragged, used to enable DOM elements
     $scope.setIsDragging = function(event, helper, isDragging) {
@@ -610,13 +617,13 @@ angular.module('bekApp')
       });
     };
 
-    $scope.clearFilter = function(){   
+    $scope.clearFilter = function(){  
       $scope.listSearchTerm = '';
       $scope.hideDragToReorder = false;
       $scope.filterItems( $scope.listSearchTerm );     
     };
 
-    $scope.initParLvl = function(item) {   
+    $scope.initParLvl = function(item) {  
       if(!item.parlevel){   
         item.parlevel=0;
       }   
@@ -648,7 +655,6 @@ angular.module('bekApp')
     // $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
 
     if (ListService.renameList === true) {
-      console.log('rename list');
       ListService.renameList = false;
       if ($scope.selectedList.permissions.canRenameList) {
         $scope.selectedList.isRenaming = true;

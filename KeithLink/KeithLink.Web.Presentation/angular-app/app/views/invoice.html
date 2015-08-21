@@ -183,10 +183,17 @@
               <a ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" target="_blank" class="icon-camera"></a>
             </td>
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
-              <a
+            <a 
+              ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"               
+              ng-if="invoice.userCanPayInvoice && !invoice.showDatePicker"
+              ng-mouseenter="invoice.showDatePicker=true"
+              class="icon-calendar text-right">
+            </a>
+            <a
+                id="datePickerWithOptions"
                 ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"
                 ng-click="openDatepicker = true"
-                ng-if="invoice.userCanPayInvoice"
+                ng-if="invoice.userCanPayInvoice && invoice.showDatePicker"
                 class="icon-calendar text-right"                
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                 ng-model="invoice.date"
@@ -196,7 +203,8 @@
                 max-date="invoice.maxPaymentDate"
                 datepicker-options="datepickerOptions.options"
                 date-disabled="disabled(date, mode)"
-                close-text="Close"></a>
+                close-text="Close">
+            </a>
               <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'">{{invoice.date | formatDate}}</span>
               <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription =='Past Due' && !invoice.selectedDate">{{tomorrow | formatDate}}</span>
               <span class = "date-picker-field" ng-if="invoice.statusdescription =='Payment Pending' && !invoice.selectedDate">{{invoice.date  || invoice.pendingtransaction.date | formatDate}}</span>
