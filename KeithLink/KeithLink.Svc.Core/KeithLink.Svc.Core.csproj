@@ -142,6 +142,7 @@
     <Compile Include="Enumerations\Messaging.cs" />
     <Compile Include="Enumerations\ListItemStatus.cs" />
     <Compile Include="Enumerations\OrderHistory.cs" />
+    <Compile Include="Enumerations\Profile.cs" />
     <Compile Include="Events\EventArgs\ExceptionEventArgs.cs" />
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />

@@ -1,6 +1,7 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 
+using KeithLink.Svc.Core.Enumerations.Profile;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
@@ -187,8 +188,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 			{
 				UserProfileReturn retVal = new UserProfileReturn();
 				retVal.UserProfiles.Add(this.AuthenticatedUser);
-                retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results != null ? _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault() : null;
-				return retVal;
+
+                PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);
+
+                if (customers.Results == null ) {
+                    retVal.UserProfiles.First().DefaultCustomer = null;
+                } else {
+                    retVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
+                }
+
+                return retVal;
 			}
 			else
 			{
@@ -540,17 +549,24 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="paging">Paging information</param>
 		/// <param name="sort">Sort object</param>
 		/// <param name="account">Account</param>
-		/// <returns></returns>
+        /// <param name="terms">Search text</param>
+        /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
+		/// <returns>search results as a paged list of customers</returns>
 		[Authorize]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
-		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", [FromUri] string terms = "")
-		{
-			if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field))
-			{
+		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", 
+                                                                                    [FromUri] string terms = "", [FromUri] string type = "1") {
+			if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field)) {
 				paging.Sort = new List<SortInfo>() { sort };
 			}
-			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account);
+
+            int typeVal;
+            if (!int.TryParse(type, out typeVal)) {
+                typeVal = 1;
+            }
+
+			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType) typeVal);
 		}
 
 		/// <summary>

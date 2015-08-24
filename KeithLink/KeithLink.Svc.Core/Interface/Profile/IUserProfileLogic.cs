@@ -1,8 +1,10 @@
-﻿using KeithLink.Svc.Core.Enumerations.SingleSignOn;
+﻿using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
+
 using System;
 using System.Collections.Generic;
 
@@ -22,7 +24,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
 		UserProfileReturn CreateUserAndProfile(UserProfile actiingUser, string customerName, string emailAddress, string password, string firstName, string lastName, string phone, string roleName, string branchId);
 
-        PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account);
+        PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, PagingModel paging, string account, CustomerSearchType searchType);
 
         void DeleteDsrAlias(long dsrAliasId, string email);
 
