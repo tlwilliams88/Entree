@@ -171,7 +171,8 @@ namespace KeithLink.Svc.Impl.ETL
 
                         prof.Update();
 
-                        CompareExistingToUpdatedOrganization(org);
+                        //temporarily removed for performance
+                        //CompareExistingToUpdatedOrganization(org);
                     }
                     catch (Exception ex)
                     {
