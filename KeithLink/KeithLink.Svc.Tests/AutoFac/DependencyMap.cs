@@ -72,7 +72,7 @@ namespace KeithLink.Svc.Test
 			//*******************************************
 			//Mock Items
 			//*******************************************
-			builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
+			builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
 
 			//*******************************************
             //Logic Classes
