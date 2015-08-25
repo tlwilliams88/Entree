@@ -97,9 +97,26 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.RouteNumber = value.RouteNumber;
             entity.StopNumber = value.StopNumber;
 
-            // update the history file with EF data
-            value.ControlNumber = entity.ControlNumber;
-            value.OriginalControlNumber = entity.OriginalControlNumber;
+            if (string.IsNullOrEmpty(entity.ControlNumber)) {
+                entity.ControlNumber = value.ControlNumber.Trim();
+                if (string.IsNullOrEmpty(entity.OriginalControlNumber)) {
+                    entity.OriginalControlNumber = value.ControlNumber.Trim();
+                }
+            } else {
+                // update the history file with EF data
+                int valueControlNumber;
+                if (!int.TryParse(value.ControlNumber, out valueControlNumber)) {
+                    valueControlNumber = 0;
+                }
+
+                int entityControlNumber;
+                if (!int.TryParse(entity.ControlNumber, out entityControlNumber)) {
+                    entityControlNumber = 0;
+                }
+
+                value.ControlNumber = entityControlNumber >= valueControlNumber? entity.ControlNumber : value.ControlNumber;
+                value.OriginalControlNumber = entity.OriginalControlNumber?? entity.ControlNumber;
+            }
         }
 
         public static EF.OrderHistoryHeader ToEntityFrameworkModel(this OrderHistoryHeader value) {
