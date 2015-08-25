@@ -82,6 +82,10 @@ namespace KeithLink.Svc.InternalSvc
             _settingsLogic.CreateOrUpdateSettings( settings );
         }
 
+        public void DeleteProfileSetting( SettingsModel settings ) {
+            _settingsLogic.DeleteSettings( settings );
+        }
+
         #endregion
 	}
 }

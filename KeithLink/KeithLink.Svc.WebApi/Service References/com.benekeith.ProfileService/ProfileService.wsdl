@@ -73,6 +73,12 @@
   <wsdl:message name="IProfileService_SaveProfileSettings_OutputMessage">
     <wsdl:part name="parameters" element="tns:SaveProfileSettingsResponse" />
   </wsdl:message>
+  <wsdl:message name="IProfileService_DeleteProfileSetting_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteProfileSetting" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_DeleteProfileSetting_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteProfileSettingResponse" />
+  </wsdl:message>
   <wsdl:portType name="IProfileService">
     <wsdl:operation name="CreateDsrAlias">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/CreateDsrAlias" message="tns:IProfileService_CreateDsrAlias_InputMessage" />
@@ -117,6 +123,10 @@
     <wsdl:operation name="SaveProfileSettings">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/SaveProfileSettings" message="tns:IProfileService_SaveProfileSettings_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/SaveProfileSettingsResponse" message="tns:IProfileService_SaveProfileSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteProfileSetting">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/DeleteProfileSetting" message="tns:IProfileService_DeleteProfileSetting_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/DeleteProfileSettingResponse" message="tns:IProfileService_DeleteProfileSetting_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IProfileService" type="tns:IProfileService">
@@ -213,6 +223,15 @@
     </wsdl:operation>
     <wsdl:operation name="SaveProfileSettings">
       <soap:operation soapAction="http://tempuri.org/IProfileService/SaveProfileSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteProfileSetting">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/DeleteProfileSetting" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

@@ -1,6 +1,7 @@
 ﻿// KeithLink
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.Profile.EF;
 
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Core.Extensions;
@@ -52,7 +53,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </summary>
         /// <param name="settings"></param>
         public void CreateOrUpdateSettings( SettingsModel settings ) {
-            Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
+            Settings mySettings = _repo.Read( x => x.Key == settings.Key && x.UserId == settings.UserId ).FirstOrDefault();
+
+            if (mySettings != null) {
+                mySettings.Value = settings.Value;
+            } else {
+                mySettings = settings.ToEFSettings();
+            }
 
             _repo.CreateOrUpdate( mySettings );
             _uow.SaveChanges();
@@ -60,30 +67,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
         public void DeleteSettings(SettingsModel settings)
         {
-            Core.Models.Profile.EF.Settings mySettings = settings.ToEFSettings();
+            Settings mySettings = _repo.Read( x => x.Key == settings.Key && x.UserId == settings.UserId ).FirstOrDefault();
 
-            _repo.Delete(mySettings);
-            _uow.SaveChanges();
+            if (mySettings != null) {
+                _repo.Delete( mySettings );
+                _uow.SaveChanges();
+            }
         }
-
-        /// <summary>
-        /// This creates a default setting when a user is created.
-        /// </summary>
-        public void CreateDefaultSettings(Guid userId)
-        {
-            Core.Models.Profile.EF.Settings settings = new Core.Models.Profile.EF.Settings();
-            
-            // Create ItemsPerPage setting
-            settings.Key = "ItemsPerPage";
-            settings.Value = "50";
-            _repo.CreateOrUpdate(settings);
-
-            // TODO: Create other defaults as they become available.
-
-            // Save the repository
-            _uow.SaveChanges();
-
-        }
+        
         #endregion
     }
 }

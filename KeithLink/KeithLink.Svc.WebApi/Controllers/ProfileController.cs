@@ -1086,14 +1086,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute( "profile/settings/{userId}" )]
-        public OperationReturnModel<List<SettingsModel>> GetProfileSettings( Guid userId ) {
+        [ApiKeyedRoute( "profile/settings" )]
+        public OperationReturnModel<List<SettingsModel>> GetProfileSettings() {
             OperationReturnModel<List<SettingsModel> > returnValue = new OperationReturnModel<List<SettingsModel>>() { SuccessResponse = null };
 
             try {
-                returnValue.SuccessResponse = _profileService.ReadProfileSettings( userId ).ToList<SettingsModel>();
+                returnValue.SuccessResponse = _profileService.ReadProfileSettings( AuthenticatedUser.UserId ).ToList<SettingsModel>();
             } catch (Exception ex) {
-                returnValue.ErrorMessage = string.Format( "Could not retrieve profile settings for specific user: {0}", userId );
+                returnValue.ErrorMessage = string.Format( "Could not retrieve profile settings for specific user: {0}", AuthenticatedUser.UserId );
                 _log.WriteErrorLog( returnValue.ErrorMessage, ex);
             }
 
@@ -1104,6 +1104,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute( "profile/settings" )]
         public OperationReturnModel<bool> CreateOrUpdateProfileSettings( SettingsModel settings ) {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            // Set the userid
+            settings.UserId = AuthenticatedUser.UserId;
 
             try {
                 _profileService.SaveProfileSettings( settings );
@@ -1116,16 +1119,17 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
-        /*not implemented anywhere -- breaking the build
-	    [HttpPost]
-	    [ApiKeyedRoute("profile/settings/delete")]
+	    [HttpDelete]
+	    [ApiKeyedRoute("profile/settings")]
 	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings)
 	    {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
 
+            settings.UserId = AuthenticatedUser.UserId;
+
 	        try
 	        {
-	            _profileService.DeleteProfileSettings(settings);
+	            _profileService.DeleteProfileSetting(settings);
                 returnValue.SuccessResponse = true;
 	    
 	        }
@@ -1136,7 +1140,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 	        return returnValue;
 	    }
-        */
 	    #endregion
 	}
 }
