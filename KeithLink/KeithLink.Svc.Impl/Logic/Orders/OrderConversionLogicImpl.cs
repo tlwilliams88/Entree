@@ -130,7 +130,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         public void SaveOrderHistoryAsConfirmation(OrderHistoryFile histFile) {
             if (histFile.Header.OrderSystem == Core.Enumerations.Order.OrderSource.Entree) {
                 ConfirmationFile confirmation = histFile.ToConfirmationFile();
-                PurchaseOrder po = GetCsPurchaseOrderByNumber(confirmation.Header.ConfirmationNumber);
+                PurchaseOrder po = GetCsPurchaseOrderByNumber(histFile.Header.ControlNumber);
 
                 if (po != null) {
                     // need to save away pre and post status info, then if different, add something to the messaging
