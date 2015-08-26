@@ -80,12 +80,6 @@ angular.module('bekApp')
       data: {
         authorize: 'isLoggedIn'
       }
-      //,
-      //resolve: {
-        //branches: ['BranchService', function(BranchService) {
-          //return ApplicationSettingsService.get();
-        //}]
-      //}
     })
     .state('menu.notifications', {
       url: '/notifications/',
@@ -352,8 +346,7 @@ angular.module('bekApp')
                { 'field': 'brandextendeddescription', 'order': ''},
                { 'field': 'itemclass', 'order': ''},
                { 'field': 'notes', 'order': ''},
-               { 'field': 'label', 'order': ''},
-               { 'field': 'parlevel', 'order': ''}];
+               { 'field': 'label', 'order': ''}];
              var params = {size: pageSize, from: 0, sort: []};
 
              if(filterObject.length > 6){        

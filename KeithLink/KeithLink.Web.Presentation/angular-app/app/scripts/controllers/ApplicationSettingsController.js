@@ -125,32 +125,16 @@
 
             $scope.pageSizeForm.$setPristine();
 
-            // var listSortParams = [
-            //   {field:'' , order:'' },
-            //   {field: '', order:'' }
-            //  ];
-
-            // var atoSortParams = [
-            //   {field:'' , order:'' },
-            //   {field: '', order:'' }
-            //  ];
-
             var sortOrder = 'lis';
 
             var firstSort =  $filter('filter')($scope.listFields, {order: 1})[0];
             if(firstSort){
               sortOrder = sortOrder + firstSort.code + firstSort.sortDesc;
-              // listSortParams[0].field = angular.copy(firstSort.value);
-              // var descending = (firstSort.sortDesc === 'n') ? 'asc':'desc' ;
-              // listSortParams[0].order = angular.copy(descending);
             }
 
             var secondSort =  $filter('filter')($scope.listFields, {order: 2})[0];
             if(secondSort){
               sortOrder = sortOrder + secondSort.code + secondSort.sortDesc;
-              // listSortParams[1].field = angular.copy(secondSort.value);
-              // var descending = (secondSort.sortDesc === 'n') ? 'asc':'desc' ;
-              // listSortParams[1].order = angular.copy(descending);
             }    
 
              
@@ -159,17 +143,11 @@
             firstSort =  $filter('filter')($scope.addToOrderFields, {order: 1})[0];
             if(firstSort){
               sortOrder = sortOrder + firstSort.code + firstSort.sortDesc;
-              //  atoSortParams[0].field = angular.copy(firstSort.value);
-              // var descending = (firstSort.sortDesc === 'n') ? 'asc':'desc' ;
-              // atoSortParams[0].order = angular.copy(descending);
             }
 
             secondSort =  $filter('filter')($scope.addToOrderFields, {order: 2})[0];
             if(secondSort){
               sortOrder = sortOrder + secondSort.code + secondSort.sortDesc;
-              // atoSortParams[1].field = angular.copy(secondSort.value);
-              // var descending = (secondSort.sortDesc === 'n') ? 'asc':'desc' ;
-              // atoSortParams[1].order = angular.copy(descending);
             }
 
             var sortOrderSettings = {userid: '', key: 'sortPreferences', value: sortOrder};
