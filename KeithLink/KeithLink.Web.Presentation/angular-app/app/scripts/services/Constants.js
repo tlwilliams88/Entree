@@ -13,7 +13,9 @@ angular.module('bekApp')
       tempContext: 'tempContext',
       tempBranch: 'tempBranch',
       lastList: 'lastList',
-      lastOrderList: 'lastOrderList'
+      lastOrderList: 'lastOrderList',
+      pageSize: 'pageSize',
+      defaultSort: 'defaultSort'
     },
 
     offlineLocalStorage: {

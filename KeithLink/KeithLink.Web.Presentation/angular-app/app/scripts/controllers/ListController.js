@@ -115,7 +115,7 @@ angular.module('bekApp')
 
     $scope.loadEntireList = function() { 
       blockUI.start();    
-      listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults);    
+      listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults, 'lists');    
       blockUI.stop();   
     };
 
@@ -127,6 +127,7 @@ angular.module('bekApp')
       $scope.hideDragToReorder = !!searchTerm.length;
       listPagingModel.filterListItems(searchTerm);
     };
+    
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
         sortOrder = !sortOrder;
@@ -139,8 +140,9 @@ angular.module('bekApp')
       };
       listPagingModel.sortListItems($scope.sort);
     };
+
     $scope.infiniteScrollLoadMore = function() {
-      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems);
+      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems, 'lists');
     };
 
     /**********

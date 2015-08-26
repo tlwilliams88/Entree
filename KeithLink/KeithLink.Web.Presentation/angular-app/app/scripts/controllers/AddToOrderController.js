@@ -335,7 +335,7 @@ angular.module('bekApp')
 
 	 $scope.loadEntireList = function() {
         blockUI.start();
-        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
+        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, 'ato');     
         blockUI.stop();       
     };
 
@@ -353,7 +353,7 @@ angular.module('bekApp')
       listPagingModel.sortListItems($scope.sort);
     };
     $scope.infiniteScrollLoadMore = function() {
-      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, []);
+      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, [], 'ato');
     };
     $scope.redirect = function(listId, cart, useParlevel) {
       var cartId;    

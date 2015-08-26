@@ -9,13 +9,13 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
     function (
       $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile // bek custom services
+      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService // bek custom services
     ) {
 
   $scope.$state = $state;
@@ -25,7 +25,7 @@ angular.module('bekApp')
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
-  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
+  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf"; 
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -58,7 +58,22 @@ angular.module('bekApp')
       });
     }
   }
-
+   ApplicationSettingsService.getApplicationSettings('').then(function(settings){
+      if(settings.length > 0){
+        settings.forEach(function(setting){
+          if(setting.key === 'pageLoadSize'){
+            LocalStorage.setPageSize(setting.value);
+          }
+          if(setting.key === 'sortPreferences'){
+            LocalStorage.setDefaultSort(setting.value);
+          }
+        })
+      }
+      else{
+          LocalStorage.setPageSize('');
+          LocalStorage.setDefaultSort('');
+      }
+   });
   /**********
   PHONEGAP OFFLINE STORAGE
   **********/

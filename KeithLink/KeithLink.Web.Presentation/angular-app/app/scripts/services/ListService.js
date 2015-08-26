@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List',
-    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
+    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -220,31 +220,34 @@ angular.module('bekApp')
 
         // accepts listId (guid), paging params
         // returns paged list object
-        getList: function(listId, params) {
-          if (!params) {
-            params = {
-              size: 30,
-              from: 0
-            };
-          }
-          return $http.post('/list/' + listId, params).then(function(response) {
-            var list = response.data;
-            if (!list) {
-              return $q.reject('No list found.');
+        getList: function(listId, params) {         
+
+            if (!params) {
+              params = {
+                size: 30,
+                from: 0
+              };
             }
-            
-            // transform paged data
-            list.itemCount = list.items.totalResults;
-            list.items = list.items.results;
+            Service.sortObject = params.sort;
+            return $http.post('/list/' + listId, params).then(function(response) {
+              var list = response.data;
+              if (!list) {
+                return $q.reject('No list found.');
+              }
 
-            // get calculated fields
-            PricingService.updateCaculatedFields(list.items);
-            updateListPermissions(list);
+              // transform paged data
+              list.itemCount = list.items.totalResults;
+              list.items = list.items.results;
 
-            Service.updateCache(list);
+              // get calculated fields
+              PricingService.updateCaculatedFields(list.items);
+              updateListPermissions(list);
 
-            return list;
-          });
+              Service.updateCache(list);
+
+              return list;
+            });
+                              
         },
 
         findListById: function(listId) {
