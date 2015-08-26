@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.InvoiceNumber = value.InvoiceNumber;
             entity.DeliveryDate = value.DeliveryDate;
             entity.PONumber = value.PONumber;
-            entity.ControlNumber = value.ControlNumber.Trim();
+            //entity.ControlNumber = value.ControlNumber.Trim();
             // the original control number is actually set from the entity already
             // and because the order history header is actually a converted confirmation
             // it does not know the original control number so it is seeing it as null
@@ -96,6 +96,27 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.ErrorStatus = value.ErrorStatus;
             entity.RouteNumber = value.RouteNumber;
             entity.StopNumber = value.StopNumber;
+
+            if (string.IsNullOrEmpty(entity.ControlNumber)) {
+                entity.ControlNumber = value.ControlNumber.Trim();
+                if (string.IsNullOrEmpty(entity.OriginalControlNumber)) {
+                    entity.OriginalControlNumber = value.ControlNumber.Trim();
+                }
+            } else {
+                // update the history file with EF data
+                int valueControlNumber;
+                if (!int.TryParse(value.ControlNumber, out valueControlNumber)) {
+                    valueControlNumber = 0;
+                }
+
+                int entityControlNumber;
+                if (!int.TryParse(entity.ControlNumber, out entityControlNumber)) {
+                    entityControlNumber = 0;
+                }
+
+                value.ControlNumber = entityControlNumber >= valueControlNumber? entity.ControlNumber : value.ControlNumber;
+                value.OriginalControlNumber = entity.OriginalControlNumber?? entity.ControlNumber;
+            }
         }
 
         public static EF.OrderHistoryHeader ToEntityFrameworkModel(this OrderHistoryHeader value) {
