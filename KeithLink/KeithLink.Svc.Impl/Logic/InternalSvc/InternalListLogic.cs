@@ -90,46 +90,49 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         #endregion
 
         #region methods
-		public long? AddItem(long listId, ListItemModel newItem)
-		{
-			var list = listRepository.ReadById(listId);
+        /// <summary>
+        /// add a new list item to the list
+        /// </summary>
+        /// <param name="listId">the list's unique id</param>
+        /// <param name="newItem">the item being added</param>
+        /// <returns>the list item's unique id</returns>
+        public long? AddItem(long listId, ListItemModel newItem) {
+            var list = listRepository.ReadById(listId);
 
-			var position = 1;
+            var position = 1;
 
-			if (list.Items == null)
-				list.Items = new List<ListItem>();
-			else
-				if(list.Items.Any())
-					position = list.Items.Max(i => i.Position) + 1;
+            if (list.Items == null)
+                list.Items = new List<ListItem>();
+            else
+                if (list.Items.Any())
+                    position = list.Items.Max(i => i.Position) + 1;
 
+            //Don't allow duplicates
+            if (list.Type == ListType.Favorite || list.Type == ListType.Reminder) {
+                var dupItem = list.Items.Where(i => i.ItemNumber.Equals(newItem.ItemNumber)).FirstOrDefault();
+                if (dupItem != null)
+                    return dupItem.Id;
+            }
 
+            var item = new ListItem() {
+                ItemNumber = newItem.ItemNumber,
+                Label = newItem.Label,
+                Par = newItem.ParLevel,
+                Position = position,
+                Quantity = newItem.Quantity,
+                Each = newItem.Each ?? false
+            };
 
-			if (list.Type == ListType.Favorite || list.Type == ListType.Reminder) //Don't allow duplicates
-			{
-				var dupItem = list.Items.Where(i => i.ItemNumber.Equals(newItem.ItemNumber)).FirstOrDefault();
-				if (dupItem != null)
-					return dupItem.Id;
-			}
+            list.Items.Add(item);
+            listRepository.CreateOrUpdate(list);
+            unitOfWork.SaveChanges();
 
-			var item = new ListItem()
-			{
-				ItemNumber = newItem.ItemNumber,
-				Label = newItem.Label,
-				Par = newItem.ParLevel,
-				Position = position,
-				Quantity = newItem.Quantity
-			};
+            if (list.Type == ListType.RecommendedItems)
+                GenerateNewRecommendItemNotification(list.CustomerId, list.BranchId); //Send a notification that new recommended items have been added
 
-			list.Items.Add(item);
-			listRepository.CreateOrUpdate(list);
-			unitOfWork.SaveChanges();
-
-			if (list.Type == ListType.RecommendedItems)
-				GenerateNewRecommendItemNotification(list.CustomerId, list.BranchId); //Send a notification that new recommended items have been added
-
-			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
-			return item.Id;
-		}
+            listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", list.Id)); //Invalidate cache
+            return item.Id;
+        }
 
 		private void GenerateNewRecommendItemNotification(string customerId, string branchId)
 		{
@@ -265,6 +268,45 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			unitOfWork.SaveChanges();
 
 		}
+
+        /// <summary>
+        /// copies the list for sharing with other users
+        /// </summary>
+        /// <param name="copyListModel">ListCopyShareModel</param>
+        /// <returns>the copied list</returns>
+        public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel) {
+            var listToCopy = listRepository.ReadById(copyListModel.ListId);
+
+            var listToCreate = new List<List>();
+            foreach (var customer in copyListModel.Customers) {
+                var newList = new List() { 
+                    DisplayName = string.Format("Copied - {0}", listToCopy.DisplayName), 
+                    UserId = listToCopy.UserId, 
+                    CustomerId = customer.CustomerNumber, 
+                    BranchId = customer.CustomerBranch, 
+                    Type = ListType.Custom, 
+                    ReadOnly = false };
+
+                newList.Items = new List<ListItem>();
+                foreach (var item in listToCopy.Items) {
+                    newList.Items.Add(new ListItem() { 
+                        Category = item.Category, 
+                        ItemNumber = item.ItemNumber, 
+                        Label = item.Label, 
+                        Par = item.Par, 
+                        Position = item.Position,
+                        Each = item.Each
+                    });
+                }
+                listRepository.Create(newList);
+                listToCreate.Add(newList);
+
+            }
+
+            unitOfWork.SaveChanges();
+
+            return listToCreate.Select(l => new ListCopyResultModel() { CustomerId = l.CustomerId, BranchId = l.BranchId, NewListId = l.Id }).ToList();
+        }
         
         public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
 		{
@@ -299,6 +341,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listId)); //Invalidate cache
 		}
 
+        public void DeleteItemNumberFromList(long Id, string itemNumber) {
+            var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+
+            if (list == null)
+                return;
+
+            foreach (var item in list.Items.Where(i => i.ItemNumber.Equals(itemNumber)).ToList())
+                listItemRepository.Delete(item);
+
+            unitOfWork.SaveChanges();
+        }
+
 		public void DeleteList(long Id)
 		{
 			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
@@ -322,7 +376,60 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 		}
 
-		private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
+        public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+            var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
+            if (cachedList != null) {
+                return cachedList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
+            }
+
+            var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+
+            if (list == null)
+                return null;
+
+            var returnList = list.ToListModel(catalogInfo);
+            LookupNameAndPackSize(user, returnList, catalogInfo);
+
+            return returnList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
+
+        }
+
+        public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers) {
+            var returnModel = new BlockingCollection<InHistoryReturnModel>();
+
+            var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Worksheet, i => i.Items).FirstOrDefault();
+
+            if (list == null)
+                return itemNumbers.Select(i => new InHistoryReturnModel() { ItemNumber = i, InHistory = false }).ToList();
+            else {
+                Parallel.ForEach(itemNumbers, item => {
+                    returnModel.Add(new InHistoryReturnModel() { InHistory = list.Items.Where(i => i.ItemNumber.Equals(item)).Any(), ItemNumber = item });
+                });
+            }
+            return returnModel.ToList();
+        }
+
+        private void LookupNameAndPackSize(UserProfile user, ListModel list, UserSelectedContext catalogInfo) {
+            if (list.Items == null || list.Items.Count == 0)
+                return;
+
+            var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
+
+
+            var productHash = products.Products.ToDictionary(p => p.ItemNumber);
+
+            Parallel.ForEach(list.Items, listItem => {
+                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+                if (prod != null) {
+                    listItem.Name = prod.Name;
+                    listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
+                }
+
+            });
+
+        }
+
+        private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
 		{
 			if (listItems == null || listItems.Count == 0 || user == null)
 				return;
@@ -474,45 +581,52 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return list.SelectMany(i => i.Items.Select(x => x.ItemNumber)).ToList();
 		}
 
-		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
-		{
-			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
-			if (cachedList != null)
-			{
-				var clonedList = cachedList.Clone();
+        /// <summary>
+        /// read a list 
+        /// </summary>
+        /// <param name="user">the user that the list belongs to</param>
+        /// <param name="catalogInfo">the customer information that the list belongs to</param>
+        /// <param name="Id">the unique identifier of the list</param>
+        /// <param name="includePrice">return prices with the list</param>
+        /// <returns>ListModel with header and detail info</returns>
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true) {
+            var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
+            if (cachedList != null) {
+                var clonedList = cachedList.Clone();
 
-				MarkFavoritesAndAddNotes(user, clonedList, catalogInfo);
-				
-				var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+                MarkFavoritesAndAddNotes(user, clonedList, catalogInfo);
 
-				clonedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
-				clonedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
-				
-				if (includePrice)
-					LookupPrices(user, clonedList.Items, catalogInfo);
-				
-				return clonedList;
-			}
+                var sharedlist = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
+                clonedList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) &&
+                                       sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
+                clonedList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
 
-			if (list == null)
-				return null;
+                if (includePrice)
+                    LookupPrices(user, clonedList.Items, catalogInfo);
 
-			var returnList = list.ToListModel(catalogInfo);
-            
-			LookupProductDetails(user, returnList, catalogInfo);
-			listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), returnList);
+                return clonedList;
+            }
 
-			var listClone = returnList.Clone();
+            var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
-			MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
-			
-			if(includePrice)
-				LookupPrices(user, listClone.Items, catalogInfo);
-			
-			return listClone;
-		}
+            if (list == null)
+                return null;
+
+            var returnList = list.ToListModel(catalogInfo);
+
+            LookupProductDetails(user, returnList, catalogInfo);
+            listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), returnList);
+
+            var listClone = returnList.Clone();
+
+            MarkFavoritesAndAddNotes(user, listClone, catalogInfo);
+
+            if (includePrice)
+                LookupPrices(user, listClone.Items, catalogInfo);
+
+            return listClone;
+        }
 
 		//private Core.Models.Generated.Basket GetUserActiveCart(UserSelectedContext catalogInfo, UserProfile user)
 		//{
@@ -593,7 +707,49 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return notes.Items.Select(x => new ListItemModel() { ItemNumber = x.ItemNumber, Notes = x.Note }).ToList();
 		}
 
-		public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
+        public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging) {
+            var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
+            if (cachedList != null) {
+                var cachedReturnList = cachedList.ShallowCopy();
+
+                MarkFavoritesAndAddNotes(user, cachedReturnList, catalogInfo);
+
+                var sharedlist = listRepository.Read(l => l.Id.Equals(Id)).FirstOrDefault();
+
+                cachedReturnList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
+                cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
+
+                var cachedPagedList = ToPagedList(paging, cachedReturnList);
+                LookupPrices(user, cachedPagedList.Items.Results, catalogInfo);
+
+                return cachedPagedList;
+            }
+
+            var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault();
+
+
+            if (list == null)
+                return null;
+            var tempList = list.ToListModel(catalogInfo);
+
+            LookupProductDetails(user, tempList, catalogInfo);
+            listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
+
+            var returnList = tempList.ShallowCopy();
+
+            MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
+
+
+
+            var pagedList = ToPagedList(paging, returnList);
+
+            LookupPrices(user, pagedList.Items.Results, catalogInfo);
+
+
+            return pagedList;
+        }
+        
+        public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			var list = listRepository.Read(i => i.UserId == user.UserId  && i.Type == ListType.Recent && i.CustomerId.Equals(catalogInfo.CustomerId), l => l.Items);
 			var returnItems = list.SelectMany(i => i.Items.Select(l => new RecentItem() { ItemNumber = l.ItemNumber, ModifiedOn = l.ModifiedUtc })).ToList();
@@ -605,6 +761,30 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			return returnItems.OrderByDescending(l => l.ModifiedOn).ToList();
 
 		}
+
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+            var list = listRepository.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
+
+            if (list == null || list.Items == null)
+                return new List<RecommendedItemModel>();
+
+            var returnItems = list.Items.Where(i => (i.FromDate == null || i.FromDate <= DateTime.Now) && (i.ToDate == null || i.ToDate >= DateTime.Now)).Select(r => new RecommendedItemModel() { ItemNumber = r.ItemNumber }).ToList();
+
+            var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, returnItems.Select(i => i.ItemNumber).Distinct().ToList());
+
+            returnItems.ForEach(delegate(RecommendedItemModel item) {
+                var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
+                if (product != null) {
+                    item.Name = product.Name;
+                }
+            });
+
+            returnItems.ForEach(delegate(RecommendedItemModel item) {
+                item.Images = productImageRepository.GetImageList(item.ItemNumber).ProductImages;
+            });
+
+            return returnItems;
+        }
 
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
             var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId) && (l.Type == ListType.Reminder || l.Type == ListType.Mandatory), i => i.Items).ToList();
@@ -688,80 +868,140 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				|| l.Type == ListType.ContractItemsDeleted || l.Type == ListType.Reminder  || l.Type == ListType.RecommendedItems || (l.Type == ListType.Mandatory));
 			return list;
 		}
-		
-        public void UpdateItem(ListItemModel item)
-		{
-			listItemRepository.Update(new ListItem() { Id = item.ListItemId, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.ParLevel, Position = item.Position});
+
+        public void ShareList(ListCopyShareModel shareListModel) {
+            var listToShare = listRepository.ReadById(shareListModel.ListId);
+
+            if (listToShare == null)
+                return;
+
+            foreach (var customer in shareListModel.Customers) {
+                if (!listToShare.Shares.Any(s => s.CustomerId.Equals(customer.CustomerNumber) && s.BranchId.Equals(customer.CustomerBranch)))
+                    listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
+            }
+
+            var itemsToRemove = listToShare.Shares.Where(l => !shareListModel.Customers.Any(c => c.CustomerNumber.Equals(l.CustomerId) && c.CustomerBranch.Equals(l.BranchId))).Select(l => l).ToList();
+
+            foreach (var item in itemsToRemove)
+                listShareRepository.Delete(item);
+
+            listRepository.Update(listToShare);
+            unitOfWork.SaveChanges();
+
+            var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listToShare.Id));
+            if (cachedList != null) {
+                cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
+                listCacheRepository.AddItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listToShare.Id), TimeSpan.FromHours(2), cachedList);
+            }
+        }
+
+        private PagedListModel ToPagedList(PagingModel paging, ListModel returnList) {
+            var pagedList = new PagedListModel() {
+                BranchId = returnList.BranchId,
+                IsContractList = returnList.IsContractList,
+                IsFavorite = returnList.IsFavorite,
+                IsMandatory = returnList.IsMandatory,
+                IsRecommended = returnList.IsRecommended,
+                IsReminder = returnList.IsReminder,
+                IsShared = returnList.IsShared,
+                IsSharing = returnList.IsSharing,
+                IsWorksheet = returnList.IsWorksheet,
+                ListId = returnList.ListId,
+                Name = returnList.Name,
+                ReadOnly = returnList.ReadOnly,
+                SharedWith = returnList.SharedWith,
+                Type = returnList.Type
+            };
+
+            if (returnList.Items != null)
+                pagedList.Items = returnList.Items.AsQueryable<ListItemModel>().GetPage<ListItemModel>(paging, "Position");
+
+            return pagedList;
+        }
+
+        /// <summary>
+        /// update the list item in the database and update cache for the item
+        /// </summary>
+        /// <param name="item"></param>
+        public void UpdateItem(ListItemModel item) {
+			listItemRepository.Update(new ListItem() { 
+                Id = item.ListItemId, 
+                ItemNumber = item.ItemNumber, 
+                Label = item.Label, 
+                Par = item.ParLevel, 
+                Position = item.Position,
+                Each = item.Each
+            });
 			unitOfWork.SaveChanges();
 
 			var updatedItem = listItemRepository.Read(i => i.Id.Equals(item.ListItemId), l => l.ParentList).FirstOrDefault();
 
-			if (updatedItem != null && updatedItem.ParentList != null)
-				listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", updatedItem.ParentList.Id)); //Invalidate cache
-
+            if (updatedItem != null && updatedItem.ParentList != null) {
+                listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", updatedItem.ParentList.Id)); //Invalidate cache
+            }
 		}
 
-        public void UpdateList(ListModel userList)
-		{
-			bool itemsAdded = false;
-			var currentList = listRepository.Read(l => l.Id.Equals(userList.ListId), i => i.Items).FirstOrDefault();
+        /// <summary>
+        /// update an entire list
+        /// </summary>
+        /// <param name="userList"></param>
+        public void UpdateList(ListModel userList) {
+            bool itemsAdded = false;
+            var currentList = listRepository.Read(l => l.Id.Equals(userList.ListId), i => i.Items).FirstOrDefault();
 
-			if (currentList == null)
-				return;
+            if (currentList == null)
+                return;
 
-			currentList.DisplayName = userList.Name;
-            
-			if (userList.Items == null)
-				userList.Items = new List<ListItemModel>();
+            currentList.DisplayName = userList.Name;
 
-			if (currentList.Items == null && userList.Items != null)
-				currentList.Items = new List<ListItem>();
+            if (userList.Items == null)
+                userList.Items = new List<ListItemModel>();
+
+            if (currentList.Items == null && userList.Items != null)
+                currentList.Items = new List<ListItem>();
 
             //if contract of history, replace all items with new items
-            if (userList.Type == ListType.Worksheet || userList.Type == ListType.Contract)
-            {
-                foreach (var li in currentList.Items.ToList())
-                {
+            if (userList.Type == ListType.Worksheet || userList.Type == ListType.Contract) {
+                foreach (var li in currentList.Items.ToList()) {
                     listItemRepository.Delete(li);
                 }
-                
-                foreach (var li in userList.Items.ToList())
-                {
+
+                foreach (var li in userList.Items.ToList()) {
                     currentList.Items.Add(new ListItem() { ItemNumber = li.ItemNumber, Par = li.ParLevel, Label = li.Label, Each = li.Each });
                 }
-            }
-            else
-            {
-                foreach (var updateItem in userList.Items)
-                {
-                    if (updateItem.IsDelete)
-                    {
+            } else {
+                foreach (var updateItem in userList.Items) {
+                    if (updateItem.IsDelete) {
                         var itemToDelete = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
                         if (itemToDelete != null)
                             listItemRepository.Delete(itemToDelete);
-                    }
-                    else
-                    {
+                    } else {
                         if (string.IsNullOrEmpty(updateItem.ItemNumber))
                             continue;
 
-                        if (updateItem.ListItemId != 0)
-                        {
+                        if (updateItem.ListItemId != 0) {
                             var item = currentList.Items.Where(i => i.Id.Equals(updateItem.ListItemId)).FirstOrDefault();
                             item.ItemNumber = updateItem.ItemNumber;
                             item.Label = updateItem.Label;
                             item.Par = updateItem.ParLevel;
                             item.Position = updateItem.Position;
                             item.Each = updateItem.Each;
-							item.Quantity = updateItem.Quantity;
-                        }
-                        else
-                        {
-                            if ((currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) && currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)).Any())
+                            item.Quantity = updateItem.Quantity;
+                        } else {
+                            if (
+                                (currentList.Type == ListType.Favorite || currentList.Type == ListType.Reminder) &&
+                                currentList.Items.Where(i => i.ItemNumber.Equals(updateItem.ItemNumber)
+                                ).Any()) {
                                 continue;
-
-                            currentList.Items.Add(new ListItem() { ItemNumber = updateItem.ItemNumber, Par = updateItem.ParLevel, Label = updateItem.Label, Each = updateItem.Each, Quantity = updateItem.Quantity });
-							itemsAdded = true;
+                            }
+                            currentList.Items.Add(new ListItem() { 
+                                ItemNumber = updateItem.ItemNumber, 
+                                Par = updateItem.ParLevel, 
+                                Label = updateItem.Label, 
+                                Each = updateItem.Each, 
+                                Quantity = updateItem.Quantity 
+                            });
+                            itemsAdded = true;
                         }
                     }
                 }
@@ -769,235 +1009,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             unitOfWork.SaveChanges();
 
-			if (currentList.Type == ListType.RecommendedItems && itemsAdded)
-				GenerateNewRecommendItemNotification(currentList.CustomerId, currentList.BranchId); //Send a notification that new recommended items have been added
+            if (currentList.Type == ListType.RecommendedItems && itemsAdded)
+                GenerateNewRecommendItemNotification(currentList.CustomerId, currentList.BranchId); //Send a notification that new recommended items have been added
 
-			listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
-		}
-
-		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
-		{
-			var listToCopy = listRepository.ReadById(copyListModel.ListId);
-
-			var listToCreate = new List<List>();
-			foreach (var customer in copyListModel.Customers)
-			{
-				var newList = new List() { DisplayName = string.Format("Copied - {0}", listToCopy.DisplayName), UserId = listToCopy.UserId, CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch, Type = ListType.Custom, ReadOnly = false };
-				newList.Items = new List<ListItem>();
-				foreach (var item in listToCopy.Items)
-					newList.Items.Add(new ListItem() { Category = item.Category, ItemNumber = item.ItemNumber, Label = item.Label, Par = item.Par, Position = item.Position });
-				listRepository.Create(newList);
-				listToCreate.Add(newList);
-
-			}
-
-			unitOfWork.SaveChanges();
-
-			return listToCreate.Select(l => new ListCopyResultModel() { CustomerId = l.CustomerId, BranchId = l.BranchId, NewListId = l.Id }).ToList();
-		}
-		
-		public void ShareList(ListCopyShareModel shareListModel)
-		{
-			var listToShare = listRepository.ReadById(shareListModel.ListId);
-
-			if (listToShare == null)
-				return;
-
-			foreach (var customer in shareListModel.Customers)
-			{
-				if(!listToShare.Shares.Any(s => s.CustomerId.Equals(customer.CustomerNumber) && s.BranchId.Equals(customer.CustomerBranch)))
-					listToShare.Shares.Add(new ListShare() { CustomerId = customer.CustomerNumber, BranchId = customer.CustomerBranch });
-			}
-
-			var itemsToRemove = listToShare.Shares.Where(l => !shareListModel.Customers.Any(c => c.CustomerNumber.Equals(l.CustomerId) && c.CustomerBranch.Equals(l.BranchId))).Select(l => l).ToList();
-
-			foreach (var item in itemsToRemove)
-				listShareRepository.Delete(item);
-			
-			listRepository.Update(listToShare);
-			unitOfWork.SaveChanges();
-
-			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listToShare.Id));
-			if (cachedList != null)
-			{
-				cachedList.SharedWith = listToShare.Shares.Select(s => s.CustomerId).ToList();
-				listCacheRepository.AddItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", listToShare.Id), TimeSpan.FromHours(2), cachedList);
-			}
-		}
-        
-		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
-		{
-			var list = listRepository.Read(l => l.Type == ListType.RecommendedItems && l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId)).FirstOrDefault();
-
-			if (list == null || list.Items == null)
-				return new List<RecommendedItemModel>();
-
-			var returnItems = list.Items.Where(i => (i.FromDate == null || i.FromDate <= DateTime.Now) && (i.ToDate == null || i.ToDate >= DateTime.Now)).Select(r => new RecommendedItemModel() { ItemNumber = r.ItemNumber }).ToList();
-
-			var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, returnItems.Select(i => i.ItemNumber).Distinct().ToList());
-
-			returnItems.ForEach(delegate(RecommendedItemModel item)
-			{
-				var product = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-				if (product != null)
-				{
-					item.Name = product.Name;
-				}
-			});
-
-			returnItems.ForEach(delegate(RecommendedItemModel item)
-			{
-				item.Images = productImageRepository.GetImageList(item.ItemNumber).ProductImages;
-			});
-
-			return returnItems;
-		}
-
-		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
-		{
-			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
-			if (cachedList != null)
-			{
-				return cachedList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
-			}
-
-			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
-
-			if (list == null)
-				return null;
-
-			var returnList = list.ToListModel(catalogInfo);
-			LookupNameAndPackSize(user, returnList, catalogInfo);
-
-			return returnList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
-			
-		}
-
-		private void LookupNameAndPackSize(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
-		{
-			if (list.Items == null || list.Items.Count == 0)
-				return;
-
-			var products = catalogLogic.GetProductsByIds(list.BranchId, list.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			
-
-			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
-			
-			Parallel.ForEach(list.Items, listItem =>
-			{
-				var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
-				if (prod != null)
-				{
-					listItem.Name = prod.Name;
-					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);	
-				}
-				
-			});
-
-		}
-
-		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
-		{
-			var cachedList = listCacheRepository.GetItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id));
-			if (cachedList != null)
-			{
-				var cachedReturnList = cachedList.ShallowCopy();
-
-				MarkFavoritesAndAddNotes(user, cachedReturnList, catalogInfo);
-
-				var sharedlist = listRepository.Read(l => l.Id.Equals(Id)).FirstOrDefault();
-
-				cachedReturnList.IsSharing = sharedlist.Shares.Any() && sharedlist.CustomerId.Equals(catalogInfo.CustomerId) && sharedlist.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase);
-				cachedReturnList.IsShared = !sharedlist.CustomerId.Equals(catalogInfo.CustomerId);
-
-				var cachedPagedList = ToPagedList(paging, cachedReturnList);
-				LookupPrices(user, cachedPagedList.Items.Results, catalogInfo);
-
-				return cachedPagedList;
-			}
-			
-			var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault();
-			
-			
-			if (list == null)
-				return null;
-			var tempList = list.ToListModel(catalogInfo);
-
-			LookupProductDetails(user, tempList, catalogInfo);
-			listCacheRepository.AddItem<ListModel>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", Id), TimeSpan.FromHours(2), tempList);
-
-			var returnList = tempList.ShallowCopy();
-
-			MarkFavoritesAndAddNotes(user, returnList, catalogInfo);
-
-			
-
-			var pagedList = ToPagedList(paging, returnList);
-			
-			LookupPrices(user, pagedList.Items.Results, catalogInfo);
-			
-
-			return pagedList;
-		}
-
-		private PagedListModel ToPagedList(PagingModel paging, ListModel returnList)
-		{
-			var pagedList = new PagedListModel()
-			{
-				BranchId = returnList.BranchId,
-				IsContractList = returnList.IsContractList,
-				IsFavorite = returnList.IsFavorite,
-				IsMandatory = returnList.IsMandatory,
-				IsRecommended = returnList.IsRecommended,
-				IsReminder = returnList.IsReminder,
-				IsShared = returnList.IsShared,
-				IsSharing = returnList.IsSharing,
-				IsWorksheet = returnList.IsWorksheet,
-				ListId = returnList.ListId,
-				Name = returnList.Name,
-				ReadOnly = returnList.ReadOnly,
-				SharedWith = returnList.SharedWith,
-				Type = returnList.Type
-			};
-
-			if (returnList.Items != null)
-				pagedList.Items = returnList.Items.AsQueryable<ListItemModel>().GetPage<ListItemModel>(paging, "Position");
-
-			return pagedList;
-		}
-
-		public void DeleteItemNumberFromList(long Id, string itemNumber)
-		{
-			var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
-
-			if (list == null)
-				return;
-
-			foreach (var item in list.Items.Where(i => i.ItemNumber.Equals(itemNumber)).ToList())
-				listItemRepository.Delete(item);
-			
-			unitOfWork.SaveChanges();
-		}
-
-		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
-		{
-			var returnModel = new BlockingCollection<InHistoryReturnModel>();
-			
-			var list = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId) && l.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase) && l.Type == ListType.Worksheet, i => i.Items).FirstOrDefault();
-
-			if (list == null)
-				return itemNumbers.Select(i => new InHistoryReturnModel() { ItemNumber = i, InHistory = false }).ToList();
-			else
-			{
-				Parallel.ForEach(itemNumbers, item =>
-				{
-					returnModel.Add(new InHistoryReturnModel() { InHistory = list.Items.Where(i => i.ItemNumber.Equals(item)).Any(), ItemNumber = item });
-				});
-			}
-			return returnModel.ToList();
-		}
-
-		#endregion
+            listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
+        }
+        #endregion
 
 	}
 }

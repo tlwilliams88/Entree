@@ -57,7 +57,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
 			if (exportRequest.Fields != null)
-				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, exportRequest.Fields, exportRequest.SelectedType);
+				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, 
+                                                               exportRequest.Fields, exportRequest.SelectedType);
 			return ExportModel<ListItemModel>(list.Items, exportRequest);				
 		}
 
