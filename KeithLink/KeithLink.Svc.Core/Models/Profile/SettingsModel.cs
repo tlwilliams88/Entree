@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Models.Profile {
     [DataContract(Name = "usersettings")]
     [Serializable]
     public class SettingsModel {
-        [DataMember( Name = "userid" )]
+        [IgnoreDataMember]
         public Guid UserId { get; set; }
 
         [DataMember( Name = "key" )]
