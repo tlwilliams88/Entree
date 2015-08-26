@@ -312,5 +312,54 @@ namespace KeithLink.Svc.Impl.ETL
 				}
 			}
 		}
+
+        public bool ExecuteProfileObjectQuery(string query)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+                {
+                    conn.Open();
+
+                    using (var cmd = new SqlCommand(query.ToString(), conn))
+                    {
+
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //eventLog.WriteErrorLog(String.Format("Etl:  Error updating profile object. {0} {1}", ex.Message, ex.StackTrace));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Helper function to populate data tables
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public DataTable ExecuteProfileObjectQueryReturn(string query)
+        {
+            var dataTable = new DataTable();
+            using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+            {
+                conn.Open();
+
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }
+            }
+            return dataTable;
+        }
 	}
+
+
 }
