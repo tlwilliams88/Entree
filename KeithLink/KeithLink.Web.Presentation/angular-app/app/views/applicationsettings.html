@@ -3,8 +3,8 @@
     Application Settings
   </div>
   <div header-buttons></div>
-  <button type="submit" ng-disabled="notificationPreferencesForm.$invalid || pageSizeForm.$invalid || sortPreferencesForm.$invalid || (notificationPreferencesForm.$pristine && pageSizeForm.$pristine && sortPreferencesForm.$pristine)" class="btn btn-lg btn-primary" ng-click="savePreferences()">Save Preferences</button>
-  <button type="submit" class="btn btn-lg btn-danger" ng-click="restoreDefaults()">Restore Defaults</button>
+    <button type="submit" class="btn btn-lg btn-danger pull-right" ng-click="restoreDefaults()">Restore Defaults</button>
+<button type="submit" ng-disabled="notificationPreferencesForm.$invalid || pageSizeForm.$invalid || sortPreferencesForm.$invalid || (notificationPreferencesForm.$pristine && pageSizeForm.$pristine && sortPreferencesForm.$pristine)" class="btn btn-lg btn-primary pull-right" style="margin-right:6px;" ng-click="savePreferences()">Save Preferences</button>
 </div>
 
 
@@ -23,7 +23,7 @@
 
         <div style="text-align:left">
           <label class="col-md-6" style="white-space:nowrap; display:inline-block; margin-right:50px; padding-top:5px;">Page Load Size:</label>        
-          <input type="text" style="max-width:50px;" ng-model = "pageLoadSize" class="form-control text-right input-number"/>
+          <input type="text" style="width:45px !important;" ng-model = "pageLoadSize" class="form-control text-right input-number"/>
         </div>
 
       </div>
