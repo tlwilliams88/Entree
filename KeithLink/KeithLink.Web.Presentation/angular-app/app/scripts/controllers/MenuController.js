@@ -58,6 +58,8 @@ angular.module('bekApp')
       });
     }
   }
+
+  //Check stored settings. If they exist, update local storage, if not, clear out local storage values.
    ApplicationSettingsService.getApplicationSettings('').then(function(settings){
       if(settings.length > 0){
         settings.forEach(function(setting){

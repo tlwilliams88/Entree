@@ -41,9 +41,11 @@
     var userid = SessionService.userProfile.userid;
 
     if(sortSettings && sortSettings.length > 6){
+      //parsing out list and ato sections from stored sort preferences
       var atoSettings = sortSettings.slice(sortSettings.indexOf('a') + 3, sortSettings.length);
       var listSettings = sortSettings.slice(3, sortSettings.indexOf('a'));
-
+      //loop through each section to apply saved settings to view. Numeric characters represent the index of the field in the listFields/atoFields arrays
+      //y/n represent whether or not the field will be sorted descending. Each numeric character is followed by the y/n that corresponds to it
         for (var i = 0;  i < atoSettings.length; i++) {
           if(atoSettings[i] !== 'y' && atoSettings[i] !== 'n'){
             var orderAssigner = (i === 0) ? 1 : 2 ;                
@@ -124,7 +126,9 @@
           ApplicationSettingsService.saveApplicationSettings(pageSizeSettings).then(function(resp) {
 
             $scope.pageSizeForm.$setPristine();
-
+            //generate string that represents the sort order settings
+            //format is one string with two sections
+            //each section contains a three letter identifier, and four characters representing the field and desc/asc order
             var sortOrder = 'lis';
 
             var firstSort =  $filter('filter')($scope.listFields, {order: 1})[0];
