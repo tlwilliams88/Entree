@@ -99,8 +99,8 @@ namespace KeithLink.Svc.Impl.ETL
                 // Get Existing Organizations from CS
                 List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type, preferred_address and natl_or_regl_account_number
 
-                //foreach (Organization org in orgsForImport)
-                Parallel.ForEach(orgsForImport, new ParallelOptions { MaxDegreeOfParallelism = 25 }, org =>
+                foreach (Organization org in orgsForImport)
+                //Parallel.ForEach(orgsForImport, new ParallelOptions { MaxDegreeOfParallelism = 2 }, org =>
                 {
                     Hashtable orgValues = null;
                     Hashtable addressValues = null;
@@ -151,7 +151,8 @@ namespace KeithLink.Svc.Impl.ETL
                     {
                         eventLog.WriteErrorLog(String.Format("ETL: Error Importing customer to CS -- individual customer.  {0} -- {1}", ex.Message, ex.StackTrace));
                     }
-                });
+                }
+                //);
 
                 TimeSpan took = DateTime.Now - start;
                 eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import customers to CS.  Process took {0}", took.ToString()));
