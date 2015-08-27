@@ -396,6 +396,9 @@
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort.sortDescending)">
                 <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
+              <th class="hidden-mobile-visible-print" ng-if="selectedList.name !== 'History' && !selectedList.is_contract_list">
+                  Each
+              </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeParlevel" ng-click="sortList('parlevel',sort.sortDescending)">
                 <span>{{::selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
@@ -445,7 +448,7 @@
               <td class="hidden-mobile-visible-print notes-col hidden-drag">
                 {{::item.notes}}
               </td>
-              <td class="hidden-sm hidden-xs hidden-drag">
+              <td class="hidden-sm hidden-xs hidden-drag" >
                 <span tooltip="{{item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
               <td class="hidden-mobile-visible-print" item-icons></td>
               <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm hidden-drag">
@@ -453,7 +456,7 @@
               </td>
               <!-- Label -->
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels">
-                <div ng-hide="item.isEditing" class="bek-no-drag">
+                <div ng-hide="item.isEditing" class="bek-no-drag full-width-mobile">
                   <select name="" id="" ng-model="item.label" ng-options="label for label in labels">
                     <option value="">Select A Label...</option>
                   </select>
@@ -482,6 +485,12 @@
                 {{::item.label}}
               </td>
               </td>
+              <td class="input-col hidden-mobile-visible-print" ng-if="selectedList.name !== 'History' && !selectedList.is_contract_list">
+              <ng-form name="eachForm" ng-if="item.hasPackagePrice">
+                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
+                <label for="each"></label>
+              </ng-form>
+              </td>
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel">
                 <ng-form name="parlevelForm">
@@ -503,6 +512,7 @@
                     class="text-right input-number bek-no-drag" />
                 </ng-form>
               </td>
+
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel">
                 {{::item.parlevel}}
               </td>

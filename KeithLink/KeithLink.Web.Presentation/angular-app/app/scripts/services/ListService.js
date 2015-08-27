@@ -223,11 +223,13 @@ angular.module('bekApp')
         getList: function(listId, params) {         
 
             if (!params) {
+              var pageSize = LocalStorage.getPageSize() || 30;             
               params = {
-                size: 30,
+                size: pageSize,
                 from: 0
-              };
+              };             
             }
+
             Service.sortObject = params.sort;
             return $http.post('/list/' + listId, params).then(function(response) {
               var list = response.data;
