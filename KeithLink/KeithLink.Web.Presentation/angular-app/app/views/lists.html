@@ -529,9 +529,8 @@
                   class="context-menu-template context-menu__in-list hidden-print">           
                   <a class="icon-plus2"></a>
               </div>
-                <a class="icon-plus2" ng-if="!item.useContextMenu" ng-mouseenter="item.useContextMenu = true;"></a>
-                <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
-                
+                <a class="icon-plus2" ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" ng-if="!item.useContextMenu" ng-mouseenter="item.useContextMenu = true;"></a>
+                <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>                
                 <span 
                   ng-if="!hideDragToReorder && selectedList.permissions.canReorderItems" 
                   class="hidden-xs hidden-sm icon-list2 bek-sortable-handle bek-no-drag" 
