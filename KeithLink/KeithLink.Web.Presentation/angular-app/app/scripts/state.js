@@ -170,7 +170,7 @@ angular.module('bekApp')
           var last = LocalStorage.getLastList();
           var stillExists = false;
           //if no stored page size, use default 30
-          var pageSize = LocalStorage.getPageSize() || 30;
+          var pageSize = $stateParams.pageSize = LocalStorage.getPageSize() || 30;
           var filterObject = LocalStorage.getDefaultSort();
           var  fields =  [
           { 'field': 'position', 'order': ''},
@@ -204,7 +204,7 @@ angular.module('bekApp')
                  }
             }
           });    
-
+          $stateParams.sortingParams = params;
          if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
             last.timeset =  moment().format('YYYYMMDDHHmm');
              LocalStorage.setLastList(last); 
@@ -338,7 +338,7 @@ angular.module('bekApp')
         selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
              
              //if no stored page size, use default 30
-             var pageSize = LocalStorage.getPageSize() || 30;
+             var pageSize = $stateParams.pageSize = LocalStorage.getPageSize() || 30;
              var filterObject = LocalStorage.getDefaultSort();
              var  fields =  [
                { 'field': 'position', 'order': ''},
@@ -360,7 +360,7 @@ angular.module('bekApp')
                   }
                 } 
              }
-
+          $stateParams.sortingParams = params;
           if($stateParams.cartId !== 'New'){
             var allSets = LocalStorage.getLastOrderList();
             var allValidSets = [];           

@@ -19,7 +19,7 @@ angular.module('bekApp')
     var deletedItems = []; // keep track of deleted items
 
     $scope.lists = ListService.lists;
-    $scope.labels = ListService.labels;
+    $scope.labels = ListService.labels;  
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
@@ -232,6 +232,16 @@ angular.module('bekApp')
 
     var processingSaveList = false;
     $scope.saveList = function(list) {
+      var params = {
+          from: 0,
+          size: 30,
+          sort: [{}]    
+        }
+
+      if($stateParams.sortingParams){
+        params.size = $stateParams.pageSize;
+        params.sort = $stateParams.sortingParams;
+      }
 
       if (!processingSaveList) {
         processingSaveList = true;
@@ -261,7 +271,7 @@ angular.module('bekApp')
         // reset paging model 
         listPagingModel.resetPaging();
 
-        return ListService.updateList(updatedList)
+        return ListService.updateList(updatedList, false, params)
           .then(resetPage)
           .finally(function() {
             processingSaveList = false;

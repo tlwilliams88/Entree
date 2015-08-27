@@ -412,8 +412,9 @@ angular.module('bekApp')
 
         // accepts list object
         // returns promise and updated list object
-        updateList: function(list, getEntireList) {
+        updateList: function(list, getEntireList, params) {
           list.message = 'Saving list...';
+
           return List.update(null, list).$promise.then(function(response) {
             
             // update labels
@@ -427,7 +428,7 @@ angular.module('bekApp')
             if (getEntireList) {
               promise = Service.getListWithItems(response.listid, { includePrice: false });
             } else {
-              promise = Service.getList(response.listid);
+              promise = Service.getList(response.listid, params);
             }
 
             return promise.then(function(list) {
