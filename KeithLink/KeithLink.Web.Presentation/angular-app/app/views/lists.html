@@ -487,13 +487,13 @@
                 <ng-form name="parlevelForm">
                   <input
                     type="text" 
-                    ng-if="!item.showParLevelInput"
+                    ng-if="!item.showParLevelInput && !(item.parlevel > 0)"
                     ng-focus="item.showParLevelInput = true"                   
                     ng-mouseenter="item.showParLevelInput = true"
                     class="text-right input-number bek-no-drag"
                    />
                   <input
-                    ng-if="item.showParLevelInput"                 
+                    ng-if="item.showParLevelInput || item.parlevel > 0"                 
                     id="parlevel" 
                     name="parlevel" 
                     type="text" 
