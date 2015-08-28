@@ -421,7 +421,7 @@
                 onStart: 'setIsDragging(true)', 
                 onStop: 'setIsDragging(false)'}">
            
-            <tr ng-class="{ odd : $odd, even: $even}">
+            <tr ng-class="::{ odd : $odd, even: $even}">
               <td class="hidden-drag bek-drag-handle large-icon icon-col">
                 <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model="item.isSelected" no-dirty-check>
                 <span style="font-size:11px;">
@@ -430,7 +430,7 @@
                 <span favorite-icons class="bek-no-drag"></span>
               </td>
               <td class="bek-drag-handle">
-                <a class="bek-no-drag" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a>
+                <a class="bek-no-drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a>
               </td>
               <td class="bek-drag-handle">
                 {{::item.name}}
@@ -455,9 +455,9 @@
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels">
+              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
                 <div ng-hide="item.isEditing" class="bek-no-drag full-width-mobile">
-                  <select name="" id="" ng-model="item.label" ng-options="label for label in labels">
+                  <select name="" id="" ng-model="item.label" ng-options="label for label in labels track by label">
                     <option value="">Select A Label...</option>
                   </select>
                   <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
@@ -477,26 +477,26 @@
                   <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
-              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels">
+              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle" ng-show="::(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
                 {{::item.label}}
               </td>
               <!-- Label for Print -->
-              <td class="visible-print" ng-show="::selectedList.permissions.canSeeLabels">
+              <td class="visible-print" ng-show="::(selectedList.permissions.canSeeLabels)">
                 {{::item.label}}
               </td>
               </td>
-              <td class="input-col hidden-mobile-visible-print" ng-if="selectedList.name !== 'History' && !selectedList.is_contract_list">
-              <ng-form name="eachForm" ng-if="item.hasPackagePrice">
-                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
+              <td class="input-col hidden-mobile-visible-print" ng-if="::(selectedList.name !== 'History' && !selectedList.is_contract_list)">
+              <ng-form name="eachForm" ng-if="::(item.hasPackagePrice)">
+                <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model="item.each" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
               </td>
               <!-- Parlevel -->
-              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel">
+              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
                 <ng-form name="parlevelForm">
                   <input
                     type="text" 
-                    ng-if="!item.showParLevelInput && !(item.parlevel > 0)"
+                    ng-if="::(!item.showParLevelInput && !(item.parlevel > 0))"
                     ng-focus="item.showParLevelInput = true"                   
                     ng-mouseenter="item.showParLevelInput = true"
                     class="text-right input-number bek-no-drag"
