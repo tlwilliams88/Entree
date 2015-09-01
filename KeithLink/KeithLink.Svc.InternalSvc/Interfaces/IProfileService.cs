@@ -42,7 +42,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		bool ResetPassword(ResetPasswordModel resetPassword);
 
         [OperationContract]
-        List<SettingsModel> ReadProfileSettings( Guid userId );
+        List<SettingsModelReturn> ReadProfileSettings( Guid userId );
 
         [OperationContract]
         void SaveProfileSettings( SettingsModel settings );

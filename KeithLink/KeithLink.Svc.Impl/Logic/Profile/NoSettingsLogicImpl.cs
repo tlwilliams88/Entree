@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class NoSettingsLogicImpl : ISettingsLogicImpl {
 
-        public List<SettingsModel> GetAllUserSettings( Guid userId ) {
+        public List<SettingsModelReturn> GetAllUserSettings( Guid userId ) {
             throw new NotImplementedException();
         }
 

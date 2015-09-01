@@ -36,13 +36,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </summary>
         /// <param name="userId">Guid - userId</param>
         /// <returns>A collection (list) of SettingModel objects.</returns>
-        public List<SettingsModel> GetAllUserSettings( Guid userId ) {
-            List<SettingsModel> returnValue = new List<SettingsModel>();
+        public List<SettingsModelReturn> GetAllUserSettings( Guid userId ) {
+            List<SettingsModelReturn> returnValue = new List<SettingsModelReturn>();
 
             IQueryable<Core.Models.Profile.EF.Settings> settings = _repo.ReadByUser( userId );
 
             foreach (Core.Models.Profile.EF.Settings s in settings) {
-                returnValue.Add( s.ToModel() );
+                returnValue.Add( s.ToReturnModel() );
             }
 
             return returnValue;
