@@ -80,6 +80,92 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             }
         }
 
+
+        public void ProcessNotificationForExternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
+        {
+            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.OrderConfirmation)
+                throw new ApplicationException("notification/handler type mismatch");
+
+            OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
+
+            // load up recipients, customer and message
+            eventLogRepository.WriteInformationLog("order confirmation, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
+            Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
+
+            if (customer == null)
+            {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Order Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                eventLogRepository.WriteWarningLog(warningMessage.ToString());
+            }
+            else
+            {
+                List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer, false, false, true); 
+                Message message = GetEmailMessageForNotification(orderConfirmation, customer);
+
+                // send messages to providers...
+                if (recipients != null && recipients.Count > 0)
+                {
+                    try
+                    {
+                        base.SendMessage(recipients, message);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+                    } 
+                }
+            }
+        }
+
+        public void ProcessNotificationForInternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
+        {
+            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.OrderConfirmation)
+                throw new ApplicationException("notification/handler type mismatch");
+
+            OrderConfirmationNotification orderConfirmation = (OrderConfirmationNotification)notification;
+
+            // load up recipients, customer and message
+            eventLogRepository.WriteInformationLog("order confirmation, custNum: " + notification.CustomerNumber + ", branch: " + notification.BranchId);
+            Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
+
+            if (customer == null)
+            {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Order Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                eventLogRepository.WriteWarningLog(warningMessage.ToString());
+            }
+            else
+            {
+                List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer,false,true,false);
+                Message message = GetEmailMessageForNotification(orderConfirmation, customer);
+
+                // send messages to providers...
+                if (recipients != null && recipients.Count > 0)
+                {
+                    try
+                    {
+                        base.SendMessage(recipients, message);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+                    } 
+                }
+            }
+        }
+
+
         private Message GetEmailMessageForNotification(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
         { // TODO: plugin message templates so some of this text can come from the database
             string statusString = String.IsNullOrEmpty(notification.OrderChange.OriginalStatus)

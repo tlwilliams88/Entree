@@ -40,12 +40,23 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         #endregion
 
         #region methods
-        protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer, bool dsrDSMOnly = false) {
+        protected List<Recipient> LoadRecipients(NotificationType notificationType, Svc.Core.Models.Profile.Customer customer, bool dsrDSMOnly = false, bool getOnlyInternal = false, bool getOnlyExternal = false) {
             if (customer == null) { return new List<Recipient>(); }
 
             Svc.Core.Models.Profile.UserProfileReturn users = new Core.Models.Profile.UserProfileReturn();
 
-            if (dsrDSMOnly) {
+            if (getOnlyInternal && !dsrDSMOnly && !getOnlyExternal)
+            {
+                //get all internal users and no external users
+                users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
+            }
+            else if (getOnlyExternal && !dsrDSMOnly && !getOnlyInternal)
+            {
+                //get all external users and no internal users
+                users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
+            }
+            else if (dsrDSMOnly && !getOnlyExternal && !getOnlyInternal)
+            {
                 //Only load DSRs and DSMs for the customer
 
                 //Load DSRs

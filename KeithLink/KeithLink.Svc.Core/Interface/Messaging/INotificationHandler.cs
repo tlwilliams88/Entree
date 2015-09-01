@@ -10,5 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Messaging
     public interface INotificationHandler
     {
         void ProcessNotification(BaseNotification notification);
+        void ProcessNotificationForExternalUsers(BaseNotification notification);
+        void ProcessNotificationForInternalUsers(BaseNotification notification);
     }
 }
