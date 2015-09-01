@@ -1666,6 +1666,10 @@ This file contains the Metadata Repository
               <PropertyMapping property="RegionalId" csProperty="GeneralInfo.regional_id" />
               <PropertyMapping property="RegionalNumber" csProperty="GeneralInfo.regional_number" />
               <PropertyMapping property="IsKeithnetCustomer" csProperty="GeneralInfo.is_keithnet_customer" />
+              <PropertyMapping property="NationalIdDesc" csProperty="GeneralInfo.national_id_desc" />
+              <PropertyMapping property="NationalNumberSubDesc" csProperty="GeneralInfo.national_numbersub_desc" />
+              <PropertyMapping property="RegionalIdDesc" csProperty="GeneralInfo.regional_id_desc" />
+              <PropertyMapping property="RegionalNumberDesc" csProperty="GeneralInfo.regional_number_desc" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>

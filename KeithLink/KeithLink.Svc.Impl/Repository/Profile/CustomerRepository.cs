@@ -1,18 +1,24 @@
 ﻿using CommerceServer.Foundation;
+
+using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
+
+using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
+
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using KeithLink.Svc.Core.Models.Generated;
-using KeithLink.Common.Core.Extensions;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System.Data.Entity;
-using KeithLink.Svc.Core.Models.Paging;
-using KeithLink.Common.Core.AuditLog;
-using KeithLink.Svc.Core.Interface.Invoices;
+using System.Text;
 
 namespace KeithLink.Svc.Impl.Repository.Profile
 {
@@ -46,6 +52,52 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         #endregion
 
         #region methods
+        /// <summary>
+        /// build the where clause for the RetrievePagedList method
+        /// </summary>
+        /// <param name="existingWhereClause">the where clause that is being built up for querying customers</param>
+        /// <param name="searchTerm">the terms that we are using to search</param>
+        /// <param name="searchType">search on customer name/number, NA, or RA info</param>
+        /// <returns>the complete where clause to search for customers</returns>
+        private string BuildWhereClauseForCustomerSearch(string existingWhereClause, string searchTerm, CustomerSearchType searchType) {
+            StringBuilder whereClause = new StringBuilder();
+            
+            if(!string.IsNullOrEmpty(existingWhereClause)) { whereClause.Append(existingWhereClause); }
+
+            if (!string.IsNullOrEmpty(searchTerm)) {
+                if (whereClause.Length == 0) {
+                    whereClause.Append(" WHERE ");
+                } else {
+                    whereClause.Append(" AND ");
+                }
+
+                switch (searchType) {
+                    case CustomerSearchType.NationalAccount:
+                        whereClause.Append("(u_national_number = '{SearchTerm}' " +
+                                           "OR u_national_id_desc LIKE '%{SearchTerm}%' " +
+                                           "OR u_national_id LIKE '%{SearchTerm}%')");
+                        break;
+                    case CustomerSearchType.RegionalAccount:
+                        whereClause.Append("(u_regional_number = '{SearchTerm}' " +
+                                           "OR u_regional_id_desc LIKE '%{SearchTerm}%' " +
+                                           "OR u_regional_id LIKE '%{SearchTerm}%')");
+                        break;
+                    case CustomerSearchType.Customer:
+                    default:
+                        whereClause.Append("(u_customer_number LIKE '%{SearchTerm}%' OR u_name LIKE '%{SearchTerm}%')");
+                        break;
+                }
+            }
+
+            if (whereClause.Length == 0){
+                return string.Empty;
+            } else {
+                string terms = searchTerm.Replace("'", "''");
+
+                return whereClause.ToString().InjectSingleValue("SearchTerm", terms);
+            }
+        }
+
         /// <summary>
         /// create a profile for the user in commerce server
         /// </summary>
@@ -216,6 +268,11 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 , RegionalId = org.RegionalId
                 , RegionalNumber = org.RegionalNumber
                 , IsKeithNetCustomer = org.IsKeithnetCustomer !=null && org.IsKeithnetCustomer.ToLower() == "y" ? true : false
+                , NationalIdDesc = !String.IsNullOrEmpty(org.NationalIdDesc) ? org.NationalIdDesc.Trim() : String.Empty
+                , NationalNumberSubDesc = !String.IsNullOrEmpty(org.NationalNumberSubDesc) ? org.NationalNumberSubDesc.Trim() : String.Empty
+                , RegionalIdDesc = !String.IsNullOrEmpty(org.RegionalIdDesc) ? org.RegionalIdDesc.Trim() : String.Empty
+                , RegionalNumberDesc = !String.IsNullOrEmpty(org.RegionalNumberDesc) ? org.RegionalNumberDesc.Trim() : String.Empty
+
                 
             };
 
@@ -449,7 +506,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             return dsrInfo;
 		}
 
-
 		public Customer GetCustomerForUser(string customerNumber, string branchId, Guid userId)
 		{
 			var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
@@ -470,15 +526,29 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 		#endregion
 
 		#region Paged Results
-
-		public PagedResults<Customer> GetPagedCustomers(PagingModel paging, string searchTerm)
+        /// <summary>
+        /// Find customers and put the results into a paged list
+        /// </summary>
+        /// <param name="paging"></param>
+        /// <param name="searchTerm"></param>
+        /// <param name="searchType"></param>
+        /// <returns></returns>
+        public PagedResults<Customer> GetPagedCustomers(PagingModel paging, string searchTerm, CustomerSearchType searchType)
 		{
 			var whereClause = "WHERE u_organization_type = '0'";
 
-			return RetrievePagedResults(paging, searchTerm, whereClause);
+			return RetrievePagedResults(paging, searchTerm, whereClause, searchType);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForDSR(PagingModel paging, string searchTerm, List<Dsr> dsrList)
+        /// <summary>
+        /// Search for customers that belong to the list of DSRs
+        /// </summary>
+        /// <param name="paging">paging model</param>
+        /// <param name="searchTerm">the terms to use during the search</param>
+        /// <param name="dsrList">the DSRs that the search is limited to</param>
+        /// <param name="searchType">search on customer name/number, NA, or RA info</param>
+        /// <returns>paged list of customers</returns>
+        public PagedResults<Customer> GetPagedCustomersForDSR(PagingModel paging, string searchTerm, List<Dsr> dsrList, CustomerSearchType searchType)
 		{
 			PagedResults<Customer> returnValue = new PagedResults<Customer>();
 
@@ -493,79 +563,117 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             if (!String.IsNullOrEmpty(whereText.ToString()))
             {
-                returnValue = RetrievePagedResults(paging, searchTerm, whereText.ToString());
+                returnValue = RetrievePagedResults(paging, searchTerm, whereText.ToString(), searchType);
             }
                         
             return returnValue;
 
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForDSM(PagingModel paging, string dsrNumber, string branchId, string searchTerm)
+        /// <summary>
+        /// Search for customers that belong to the specified DSM
+        /// </summary>
+        /// <param name="paging">paging model</param>
+        /// <param name="dsmNumber">the DSM that the search is limited to</param>
+        /// <param name="branchId">the DSM's branch</param>
+        /// <param name="searchTerm">the terms to use during the search</param>
+        /// <param name="searchType">search on customer name/number, NA, or RA info</param>
+        /// <returns>paged list of customers</returns>
+        public PagedResults<Customer> GetPagedCustomersForDSM(PagingModel paging, string dsmNumber, string branchId, string searchTerm, CustomerSearchType searchType)
 		{
-			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsm_number = '{0}' AND u_branch_number = '{1}'", dsrNumber, branchId);
+			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_dsm_number = '{0}' AND u_branch_number = '{1}'", dsmNumber, branchId);
 
-			return RetrievePagedResults(paging, searchTerm, whereClause);
+            return RetrievePagedResults(paging, searchTerm, whereClause, searchType);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForBranch(PagingModel paging, string branchId, string searchTerm)
+        /// <summary>
+        /// Search for customers that belong to the specified branch
+        /// </summary>
+        /// <param name="paging">paging model</param>
+        /// <param name="branchId">the branch that the search is limited to</param>
+        /// <param name="searchTerm">the terms to use during the search</param>
+        /// <param name="searchType">search on customer name/number, NA, or RA info</param>
+        /// <returns>paged list of customers</returns>
+        public PagedResults<Customer> GetPagedCustomersForBranch(PagingModel paging, string branchId, string searchTerm, CustomerSearchType searchType)
 		{
 			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_branch_number = '{0}'", branchId);
 
-			return RetrievePagedResults(paging, searchTerm, whereClause);
+            return RetrievePagedResults(paging, searchTerm, whereClause, searchType);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForUser(PagingModel paging, Guid userId, string searchTerm)
+        /// <summary>
+        /// search for customers that belong to the specified user
+        /// </summary>
+        /// <param name="paging">paging model</param>
+        /// <param name="userId">the user that the search is limited to</param>
+        /// <param name="searchTerm">the terms to use during the search</param>
+        /// <param name="searchType">search on customer name/number, NA, or RA info</param>
+        /// <returns>paged list of customers</returns>
+        public PagedResults<Customer> GetPagedCustomersForUser(PagingModel paging, Guid userId, string searchTerm, CustomerSearchType searchType)
 		{
 			var whereClause = string.Format("inner join [BEK_Commerce_profiles].[dbo].[UserOrganizationObject] uoo on oo.u_org_id = uoo.u_org_id WHERE uoo.u_user_id = '{0}' and u_organization_type = '0'", userId.ToCommerceServerFormat());
 
-			return RetrievePagedResults(paging, searchTerm, whereClause);
+            return RetrievePagedResults(paging, searchTerm, whereClause, searchType);
 		}
 
-		public PagedResults<Customer> GetPagedCustomersForAccount(PagingModel paging, string searchTerm, string accountId)
+        /// <summary>
+        /// Search for customers that belong to the specified account
+        /// </summary>
+        /// <param name="paging">paging model</param>
+        /// <param name="searchTerm">the terms to use during the search</param>
+        /// <param name="accountId">the account that the search is limited to</param>
+        /// <param name="searchType">seach on customer name/number, NA, or RA info</param>
+        /// <returns>paged list of customers</returns>
+        public PagedResults<Customer> GetPagedCustomersForAccount(PagingModel paging, string searchTerm, string accountId, CustomerSearchType searchType)
 		{
 			var whereClause = string.Format("WHERE u_organization_type = '0' AND u_parent_organization = '{0}'", accountId);
 
-			return RetrievePagedResults(paging, searchTerm, whereClause);
+            return RetrievePagedResults(paging, searchTerm, whereClause, searchType);
 		}
 
-        private PagedResults<Customer> RetrievePagedResults(PagingModel paging, string searchTerm, string whereClause)
-        {
+        /// <summary>
+        /// perform the seach for all of the paged customer methods
+        /// </summary>
+        /// <param name="paging">paging model</param>
+        /// <param name="searchTerm">the terms to use during the search</param>
+        /// <param name="whereClause">the where clause that was built in each of the GetPageCustomer methods</param>
+        /// <param name="searchType">search on customer name/number, NA, or RA info</param>
+        /// <returns>paged list of customers</returns>
+        private PagedResults<Customer> RetrievePagedResults(PagingModel paging, string searchTerm, string whereClause, CustomerSearchType searchType) {
             var queryOrg = new CommerceServer.Foundation.CommerceQuery<KeithLink.Svc.Core.Models.Generated.Organization>("Organization");
 
-            if (!string.IsNullOrEmpty(searchTerm))
-                whereClause += " AND (u_customer_number LIKE '%" + searchTerm.Replace("'", "''") + "%' OR u_name LIKE '%" + searchTerm.Replace("'", "''") + "%')"; // org type of customer
-
-
-            queryOrg.SearchCriteria.WhereClause = whereClause;
+            queryOrg.SearchCriteria.WhereClause = BuildWhereClauseForCustomerSearch(whereClause, searchTerm, searchType);
             queryOrg.SearchCriteria.FirstItemIndex = paging.From.HasValue ? paging.From.Value : 0;
             queryOrg.SearchCriteria.NumberOfItemsToReturn = paging.Size.HasValue ? paging.Size.Value : int.MaxValue;
             queryOrg.SearchCriteria.ReturnTotalItemCount = true;
 
-            if (paging.Sort != null && paging.Sort.Count > 0)
-            {
+            if (paging.Sort != null && paging.Sort.Count > 0) {
                 queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>();
-                foreach (var sortOption in paging.Sort)
-                {
-                    switch (sortOption.Field.ToLower())
-                    {
+                foreach (var sortOption in paging.Sort) {
+                    switch (sortOption.Field.ToLower()) {
                         case "customername":
-                            queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_name", SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending });
+                            CommerceSortProperty sortName = new CommerceSortProperty() { 
+                                CommerceEntityModelName = "u_name", 
+                                SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending 
+                            };
+                            queryOrg.SearchCriteria.SortProperties.Add(sortName);
                             break;
                         case "customernumber":
-                            queryOrg.SearchCriteria.SortProperties.Add(new CommerceSortProperty() { CommerceEntityModelName = "u_customer_number", SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending });
+                            CommerceSortProperty sortNumber = new CommerceSortProperty() {
+                                CommerceEntityModelName = "u_customer_number",
+                                SortDirection = sortOption.SortOrder == SortOrder.Ascending ? SortDirection.Ascending : SortDirection.Descending
+                            };
+                            queryOrg.SearchCriteria.SortProperties.Add(sortNumber);
                             break;
                     }
                 }
             }
 
-            //queryOrg.SearchCriteria.SortProperties = new List<CommerceSortProperty>() { new CommerceSortProperty() { SortDirection = SortDirection.Descending, CommerceEntityModelName = "u_customer_number" } };
-
             CommerceQueryOperationResponse res = (Svc.Impl.Helpers.FoundationService.ExecuteRequest(queryOrg.ToRequest())).OperationResponses[0] as CommerceQueryOperationResponse;
 
             var customers = new System.Collections.Concurrent.BlockingCollection<Customer>();
             var dsrs = RetrieveDsrList();
-            System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e =>
-            {
+            System.Threading.Tasks.Parallel.ForEach(res.CommerceEntities, e => {
                 Organization org = new KeithLink.Svc.Core.Models.Generated.Organization(e);
                 customers.Add(OrgToCustomer(org, dsrs));
             });

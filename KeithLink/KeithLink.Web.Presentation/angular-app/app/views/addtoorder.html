@@ -24,8 +24,8 @@
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
     </div>
   </div>
-<!-- <button class="btn-lg btn btn-primary hidden-print pull-right"  ng-click="loadEntireList()" ng-disabled="selectedList.items.length === selectedList.itemCount">Load All</button>
- -->  <div class="row">
+ <button class="btn-lg btn btn-primary hidden-print pull-right"  ng-click="loadEntireList()" ng-disabled="selectedList.items.length === selectedList.itemCount">Load All</button>
+   <div class="row">
     <div class="col-xs-5" >
       <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel">
       <label for="useParlevel">Use PAR Level</label>
@@ -128,7 +128,7 @@
     class="style-validation-errors" 
     autocomplete="off">
     <div class="table-addtoorder">
-      <table 
+      <table      
         class="table table-striped-rows table-border" 
         navigate-table="mobile"
         infinite-scroll="infiniteScrollLoadMore()">
@@ -157,6 +157,7 @@
               <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
             <th class="hidden-xs hidden-sm"></th>
+            <th class="hidden-xs hidden-sm"></th>
             <th  class="sort-col-header hidden-mobile-visible-print" ng-click="sortList('label',sort.sortDescending)">
               <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
             </th>
@@ -178,7 +179,10 @@
             <th class="hidden-mobile-visible-print">
               Ext Price
             </th>
-            <th>             
+            <th style="margin-left:5px;" class="hidden-mobile-visible-print">
+            Average Use </br> (8 wk)             
+            </th>
+            <th>
             </th>
           </tr>
         </thead>
@@ -208,6 +212,7 @@
             <td class="hidden-mobile-visible-print notes-col">
               {{::item.notes}}
             </td>
+            <td class="hidden-mobile-visible-print" item-icons></td>
             <td class="hidden-xs hidden-sm">
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
             </td>
@@ -224,12 +229,12 @@
               <input 
                   type="text" 
                   id="onHand"
-                  onfocus="this.select();"                 
+                  ng-focus="this.select(); onItemOnHandAmountChanged(item)"                 
                   ng-blur="confirmQuantity('onhand', item, item.onhand)"
                   class="dropdown-toggle input-number text-right mousetrap" 
                   allow-one-positive-decimal
                   ng-model="item.onhand"
-                  ng-init="item.onhand=item.onhand + 0"                        
+                  ng-init="item.onhand=item.onhand + 0"
                   name="onhand" 
                   ng-change="onItemOnHandAmountChanged(item)"/>
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  
@@ -272,6 +277,15 @@
                 {{item.extPrice | currency}}  
               </div>
             </td>
+            <td  class="hidden-mobile-visible-print" >
+            <div ng-if="item.itemstatistics.packageaverage || item.itemstatistics.caseaverage "> 
+            <a><div ng-if="item.each" tooltip="View order history for this item." class="pull-left" ng-click="openItemUsageSummaryModal(item)">{{item.itemstatistics.packageaverage}} Packs</div></a>
+            <a><div ng-if="!item.each" tooltip="View order history for this item." class="pull-left" ng-click="openItemUsageSummaryModal(item)">{{item.itemstatistics.caseaverage}} Cases</div></a>
+          </div>
+          <div ng-click="openItemUsageSummaryModal(item)" ng-if="!item.itemstatistics.packageaverage && !item.itemstatistics.caseaverage">
+            None
+          </div>
+           </td>
             <td class="large-icon icon-col">
               <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
             </td>
@@ -346,13 +360,23 @@
                   <td>Ext Price</td>
                   <td>{{item.extPrice | currency}}</td>
                 </tr>
+                <tr ng-show="item.canOrder">
+                  <td>Average Use </br> (8 wk)</td>
+                <td  ng-click="openItemUsageSummaryModal(item)"> 
+                  <div ng-if="(item.itemstatistics.packageaverage !== 0 || item.itemstatistics.caseaverage !== 0)"> 
+                  <a><div ng-if="item.each" tooltip="View order history for this item." class="pull-left" >{{item.itemstatistics.packageaverage}} Packs</div></a>
+                  <a><div ng-if="!item.each" tooltip="View order history for this item." class="pull-left">{{item.itemstatistics.caseaverage}} Cases</div></a>
+                </div>
+                <div ng-if="item.itemstatistics.packageaverage === 0 && item.itemstatistics.caseaverage === 0">None</div>                 
+                </td>
+                </tr>
               </table>
             </td>
           </tr>
         </tbody>
         <tfoot ng-show="(selectedList.items.length === 0 || !selectedList.items) && selectedList">
           <tr>
-            <td colspan="16">
+            <td colspan="17">
               There are no products to display.
             </td>
           </tr>

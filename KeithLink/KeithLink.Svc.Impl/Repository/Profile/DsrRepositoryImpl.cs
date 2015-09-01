@@ -1,24 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net;
-using System.Net.Http;
-using System.IO;
+﻿
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace KeithLink.Svc.Impl.Repository.Profile {
-    public class DsrRepositoryImpl : EFBaseRepository<Dsr>, IDsrRepository {
+    public class DsrRepositoryImpl : EFBaseRepository<Dsr>, IDsrRepository
+    {
 
+        #region Attributes
         private KeithLink.Common.Impl.Logging.EventLogRepositoryImpl _log;
+        #endregion
 
+        #region ctor
         public DsrRepositoryImpl( IUnitOfWork unitOfWork ) : base( unitOfWork ) {
             _log = new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl( Configuration.ApplicationName );
         }
+        #endregion  
 
+
+        #region Methods
         public Dsr GetDsrByBranchAndDsrNumber( string branchId, string dsrNumber ) {
             if (branchId == null)
                 throw new Exception( "Branch cannot be null" );
@@ -45,6 +54,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile {
                 }
             }
         }
-
+        #endregion
     }
 }

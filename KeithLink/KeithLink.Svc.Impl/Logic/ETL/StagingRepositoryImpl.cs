@@ -60,9 +60,7 @@ namespace KeithLink.Svc.Impl.ETL
                 using (SqlCommand cmd = new SqlCommand("[ETL].[ProcessItemHistoryData]", c))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
-
                     cmd.Parameters.AddWithValue("NumWeeks", numWeeks);
-
                     cmd.CommandTimeout = 0;
                     c.Open();
                     cmd.ExecuteNonQuery();

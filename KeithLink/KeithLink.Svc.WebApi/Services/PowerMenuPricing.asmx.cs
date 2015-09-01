@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Profile;
+﻿using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Paging;
@@ -40,6 +41,14 @@ namespace KeithLink.Svc.WebApi.Services {
         #endregion
 
         #region methods
+        /// <summary>
+        /// Get prices for all of the products
+        /// </summary>
+        /// <param name="customerNumber"></param>
+        /// <param name="products"></param>
+        /// <param name="effDate"></param>
+        /// <param name="getAllFields"></param>
+        /// <returns></returns>
         [WebMethod]
         [SoapHeader("unknownHeaders")]
         [SoapHeader("header")]
@@ -55,7 +64,7 @@ namespace KeithLink.Svc.WebApi.Services {
             if (profileLogicReturn.UserProfiles.Count > 0) {
                 UserProfile profile = profileLogicReturn.UserProfiles[0];
 
-                PagedResults<Customer> customers = profileLogic.CustomerSearch(profile, customerNumber, new Core.Models.Paging.PagingModel(), string.Empty);
+                PagedResults<Customer> customers = profileLogic.CustomerSearch(profile, customerNumber, new Core.Models.Paging.PagingModel(), string.Empty, CustomerSearchType.Customer);
 
                 if (customers.TotalResults > 0) {
                     retVal.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, customerNumber, products, effDate));

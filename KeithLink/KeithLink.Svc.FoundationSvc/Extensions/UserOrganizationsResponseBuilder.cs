@@ -1,31 +1,37 @@
-﻿using System;
+﻿using CommerceServer.Core.Runtime.Profiles;
+using CommerceServer.Foundation;
+using CommerceServer.Foundation.SequenceComponents;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using CommerceServer.Foundation.SequenceComponents;
-using CommerceServer.Foundation;
-using CommerceServer.Core.Runtime.Profiles;
 
-namespace KeithLink.Svc.FoundationSvc.Extensions
-{
-    public class UserOrganizationsResponseBuilder : ProfileResponseBuilderBase
-    {
-        protected override string ProfileModelName
-        {
-            get
-            {
-                return "UserOrganizations";
-            }
+namespace KeithLink.Svc.FoundationSvc.Extensions {
+    public class UserOrganizationsResponseBuilder : ProfileResponseBuilderBase {
+        #region attributes
+        #endregion
+
+        #region ctor
+        public UserOrganizationsResponseBuilder() {
         }
+        #endregion
 
-        public UserOrganizationsResponseBuilder()
-        {
-        }
-
-        protected override List<CommerceEntity> TranslateAll(IEnumerable<Profile> commerceProfileList, CommerceEntity userOrganizationModel)
-        {
+        #region methods
+        protected override List<CommerceEntity> TranslateAll(IEnumerable<Profile> commerceProfileList, CommerceEntity userOrganizationModel) {
             List<CommerceEntity> commerceEntities = base.TranslateAll(commerceProfileList, userOrganizationModel);
             return commerceEntities;
         }
+        #endregion
+
+        #region properties
+        protected override string ProfileModelName {
+            get {
+                return "UserOrganizations";
+            }
+        }
+        #endregion
+
+
     }
 }

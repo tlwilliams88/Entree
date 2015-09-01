@@ -74,6 +74,11 @@ namespace KeithLink.Svc.Impl.ETL
            					""type"" : ""string"",
 							""index"" : ""not_analyzed""
          				},
+                       ""name_edge_ngram_analyzed"" : {
+           					""type"" : ""string"",
+							""index_analyzer"" : ""ngram_analyzer"",
+                            ""search_analyzer"": ""whitespace_analyzer""
+         				},
 						""mfrname_not_analyzed"" : {
 							""type"" : ""string"",
 							""index"" : ""not_analyzed""
@@ -163,9 +168,6 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 eventLog.WriteErrorLog(String.Format("ETL: Error Importing catalog -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
             }
-            
-			
-
         }
 
         #endregion

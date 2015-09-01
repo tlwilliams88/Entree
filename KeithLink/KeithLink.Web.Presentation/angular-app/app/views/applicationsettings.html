@@ -1,0 +1,125 @@
+<div page-header-bar>
+  <div header-message >
+    Application Settings
+    <span style="white-space:nowrap; display:inline-block; float:right;" class="hidden-md hidden-lg hidden-print" >
+     <button type="submit" class="btn btn-lg btn-danger" ng-click="restoreDefaults()">Restore Defaults</button>
+    <button type="submit" ng-disabled="notificationPreferencesForm.$invalid || pageSizeForm.$invalid || sortPreferencesForm.$invalid || (notificationPreferencesForm.$pristine && pageSizeForm.$pristine && sortPreferencesForm.$pristine)" class="btn btn-lg btn-primary" style="margin-right:6px;" ng-click="savePreferences()">Save Preferences</button>
+    </span>
+  </div>
+  <div header-buttons>
+    <button type="submit" class="btn btn-lg btn-danger" ng-click="restoreDefaults()">Restore Defaults</button>
+    <button type="submit" ng-disabled="notificationPreferencesForm.$invalid || pageSizeForm.$invalid || sortPreferencesForm.$invalid || (notificationPreferencesForm.$pristine && pageSizeForm.$pristine && sortPreferencesForm.$pristine)" class="btn btn-lg btn-primary" style="margin-right:6px;" ng-click="savePreferences()">Save Preferences</button>
+  </div>
+</div>
+
+<div class="page-content">
+<a class="text-large btn-link" ng-click="goBack()"><span class="icon-arrow-left6"></span> Back</a>
+<div class="row">
+
+
+  <div class="col-md-6">
+    <h3>Page Size Preferences</h3>
+    <hr>
+
+    <form name = 'pageSizeForm' class="form-inline search-form" novalidate>
+      <p >This section allows you to customize the number of items loaded on the page at one time.</p>      
+      <div class="form-group">  
+
+        <div style="text-align:left">
+          <label class="col-md-6" style="white-space:nowrap; display:inline-block; margin-right:50px; padding-top:5px;">Page Load Size:</label>        
+          <input type="text" style="width:50px !important;" ng-model = "pageLoadSize" class="form-control text-right input-number"/>
+        </div>
+
+      </div>
+    </form>
+  </br>
+  <div class="col-md-12" ng-hide="hideNotificationPreferences">
+    <h3>Notification Preferences &nbsp;&nbsp;&nbsp;
+      <a class="smallerHeaderLinkText" ng-init="canEditNotifications = false"
+         ng-click="canEditNotifications = !canEditNotifications">
+        <span class="glyphicon glyphicon-pencil"></span> Edit
+      </a>
+    </h3>
+    <hr>
+
+    <form name="notificationPreferencesForm">
+      <table class="preferencesTable">
+        <thead>
+        <tr>
+          <th>Email</th>
+          <th>Push</th>
+          <th>Web</th>
+          <th>Notify Me When:</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="preference in defaultPreferences">
+            <td ng-repeat="channel in preference.channels track by $index" ng-hide="preference.description === 'Mail'" class="checkboxCenter">
+              <input type="checkbox" ng-model="preference.channels[$index]" ng-disabled="!canEditNotifications"/>
+            </td>
+            <td ng-hide="preference.description === 'Mail'">{{preference.description}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="form-group button-row">
+        <div class="col-sm-6 sub-content">
+        </div>
+      </div>
+    </form>
+
+    <div class="clearfix"></div>
+
+</div>
+  </div>
+
+  
+  <div class="col-md-6">
+    <h3>Sort Preferences</h3>
+    <hr>
+    <form name = "sortPreferencesForm" class="form-inline search-form" novalidate>
+      <p >This section allows you to choose filters that will apply to your lists on the Add To Order and Lists pages.</p>      
+      <div class="form-group">  
+
+       <div style="text-align:left">
+       <span>Page:&nbsp;&nbsp;&nbsp;
+      <select style="margin-bottom:6px;" id="sortPages" ng-options = "page.name for page in pages.availablePages track by page.id" ng-model="pages.selectedPage" ></select></span>
+
+        <div>
+      <table class="table no-margin table-border table-striped-rows">
+        <thead>
+        <tr>
+          <th class="sort-col-header" >Select
+          </th>
+          <th class="sort-col-header text-center">Field
+          </th>
+          <th class="sort-col-header text-center" >Descending
+          </th>
+          <th class="sort-col-header text-center" >Order
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-if="pages.selectedPage.id === 'lists'" ng-repeat=" field in listFields" ng-class="{ odd : $odd, even: $even, 'item-selected': field.isSelected }"  ng-if="pages.selectedPage.id !== 'addtoorder' || field.value !== 'parlevel'">          
+          <td><input type="checkbox" ng-model="field.isSelected" ng-click="setOrder(field, listFields, field.isSelected)" ></td >
+          <td class="text-center">{{field.text}}</td>
+          <td class="text-center"><input  type="checkbox" ng-click="setDesc(field)"  ng-checked = "field.sortDesc === 'y'"></td>
+          <td class="text-center">{{field.order}}</td>
+        </tr>   
+        <tr ng-if="pages.selectedPage.id === 'addtoorder'" ng-repeat=" field in addToOrderFields" ng-class="{ odd : $odd, even: $even, 'item-selected': field.isSelected }"  ng-if="pages.selectedPage.id !== 'addtoorder' || field.value !== 'parlevel'">          
+          <td><input type="checkbox" ng-model="field.isSelected" ng-click="setOrder(field, addToOrderFields, field.isSelected)" ></td >
+          <td class="text-center">{{field.text}}</td>
+          <td class="text-center"><input  type="checkbox" ng-click="setDesc(field)" ng-checked = "field.sortDesc === 'y'"></td>
+          <td class="text-center">{{field.order}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+        </div>
+
+      </div>
+    </form>
+  </div>
+</div>
+  
+
+</div>

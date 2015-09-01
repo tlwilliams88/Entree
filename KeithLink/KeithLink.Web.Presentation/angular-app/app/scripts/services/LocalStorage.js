@@ -103,12 +103,28 @@ angular.module('bekApp')
         return localStorageService.get(Constants.localStorage.lastOrderList);
       },
 
-      setLastList: function(list) { // for guest users
+      setLastList: function(list) {
       localStorageService.set(Constants.localStorage.lastList, list);
       },
 
-      setLastOrderList: function(allSets) { // for order entry users       
+      setLastOrderList: function(allSets) {        
       localStorageService.set(Constants.localStorage.lastOrderList, allSets);
+      },
+
+      getPageSize: function() {
+        return localStorageService.get(Constants.localStorage.pageSize);
+      },
+
+      setPageSize: function(size) { 
+      localStorageService.set(Constants.localStorage.pageSize, size);
+      },
+
+      getDefaultSort: function() {
+        return localStorageService.get(Constants.localStorage.defaultSort);
+      },
+
+      setDefaultSort: function(sort) { 
+      localStorageService.set(Constants.localStorage.defaultSort, sort);
       }
 
     };

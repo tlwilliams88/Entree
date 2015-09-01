@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics',
-    function ($scope, $state, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics) {
+  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics',
+    function ($scope, $state, $modal, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics) {
+    
     
     // redirect to url with correct parameters
        var basketId;
@@ -296,8 +297,11 @@ angular.module('bekApp')
       });
 
     $scope.confirmQuantity = function(type, item, value) {
+      if(value === undefined && type === 'onhand'){
+        item.onhand = 0;
+      }
           var pattern = /^([0-9])\1+$/; // repeating digits pattern
-          if (value > 50 || pattern.test(value)) {
+          if (value > 50 || (value > 0 && pattern.test(value))) {
             var isConfirmed = window.confirm('Do you want to continue with entered quatity of ' + value + '?');
             if (!isConfirmed) {
               // clear input
@@ -310,12 +314,26 @@ angular.module('bekApp')
             }
           } 
         };
+  
+    $scope.openItemUsageSummaryModal = function(item, type) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/itemusagesummarymodal.html',
+        controller: 'ItemUsageSummaryModalController',
+        windowClass: 'color-background-modal',
+        scope: $scope,
+        resolve: {
+          item: function() {
+            return item;
+          }
+        }
+      });
+    };
 
-	// $scope.loadEntireList = function() {
- //        blockUI.start();
- //        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults);     
- //        blockUI.stop();       
- //  };
+	 $scope.loadEntireList = function() {
+        blockUI.start();
+        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, 'ato');     
+        blockUI.stop();       
+    };
 
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
@@ -331,7 +349,7 @@ angular.module('bekApp')
       listPagingModel.sortListItems($scope.sort);
     };
     $scope.infiniteScrollLoadMore = function() {
-      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, []);
+      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, [], 'ato');
     };
     $scope.redirect = function(listId, cart, useParlevel) {
       var cartId;    
@@ -564,11 +582,15 @@ angular.module('bekApp')
 
     // update quantity from on hand amount and par level
     $scope.onItemOnHandAmountChanged = function(item) {
+      var offset = item.onhand;
+      if(item.onhand && item.onhand.toString() === 'true'){
+        offset= 0;
+      }
       if (!isNaN(item.onhand)) {
         if(item.onhand < 0){
-          item.onhand = 0;
+          item.onhand = offset = 0;
         }
-        var quantity = Math.ceil(item.parlevel - item.onhand);
+        var quantity = Math.ceil(item.parlevel - offset);
         if (quantity > -1) {
           item.quantity = quantity;
         } else {

@@ -62,13 +62,17 @@
       <xs:element minOccurs="0" name="isPowerMenu" type="xs:boolean" />
       <xs:element minOccurs="0" name="kpay" type="xs:boolean" />
       <xs:element minOccurs="0" name="nationalId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nationalIdDesc" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="nationalNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="nationalNumberSubDesc" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="nationalOrRegionalAccountNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="nationalSubNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="phone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="pointofcontact" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="regionalId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="regionalIdDesc" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="regionalNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="regionalNumberDesc" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="termcode" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="termdescription" nillable="true" type="xs:string" />
     </xs:sequence>

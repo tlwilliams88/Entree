@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'MessagePreferenceService', 'DsrAliasService',
-    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, MessagePreferenceService, DsrAliasService) {
+  .controller('UserProfileController', ['$scope', 'UserProfileService', 'branches', 'SessionService', '$state', 'AccessService', 'ApplicationSettingsService', 'DsrAliasService',
+    function ($scope, UserProfileService, branches, SessionService, $state, AccessService, ApplicationSettingsService, DsrAliasService) {
 
   var init = function(){
     $scope.branches = branches;
@@ -10,7 +10,7 @@ angular.module('bekApp')
     $scope.isInternalUser = $scope.userProfile.emailaddress.indexOf('@benekeith.com') > -1;
 
     if (AccessService.isOrderEntryCustomer()){
-      MessagePreferenceService.getPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
+      ApplicationSettingsService.getNotificationPreferencesAndFilterByCustomerNumber(null).then(function (preferences) {
         $scope.defaultPreferences = preferences;
       });
     } else {
@@ -96,7 +96,7 @@ angular.module('bekApp')
   };
 
   $scope.savePreferences = function () {
-    MessagePreferenceService.updatePreferences($scope.defaultPreferences, null).then(function(data) {
+    ApplicationSettingsService.updateNotificationPreferences($scope.defaultPreferences, null).then(function(data) {
       $scope.canEditNotifications = false;
       $scope.notificationPreferencesForm.$setPristine();
     });

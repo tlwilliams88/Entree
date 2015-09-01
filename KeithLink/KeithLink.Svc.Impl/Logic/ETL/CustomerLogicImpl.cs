@@ -134,6 +134,7 @@ namespace KeithLink.Svc.Impl.ETL
                             address.Id = results.Rows[0]["u_preferred_address"].ToString();
                             addressValues = GetUpdateAddressStatement(address);
                             stagingRepository.ExecuteProfileObjectQuery(addressValues["Query"].ToString());
+
                         }
                         else
                         {
@@ -146,6 +147,7 @@ namespace KeithLink.Svc.Impl.ETL
                                 UpdateSingleProfileProperty(ProfileObjectType.Organization, "u_preferred_address", addressValues["AddressId"].ToString(), orgValues["OrganizationId"].ToString());
                             }
                         }
+                        
                     }
                     catch (Exception ex)
                     {
@@ -558,11 +560,35 @@ namespace KeithLink.Svc.Impl.ETL
                 RegionalId = row.GetString("RegionalId"),
                 RegionalNumber = row.GetString("RegionalNumber"),
                 IsKeithnetCustomer = row.GetString("IsKeithnetCustomer"),
-
+                NationalIdDesc = row.GetString("NationalIdDesc"),
+                NationalNumberSubDesc = row.GetString("NationalNumberAndSubDesc"),
+                RegionalIdDesc = row.GetString("RegionalIdDesc"),
+                RegionalNumberDesc = row.GetString("RegionalNumberDesc")
                 // NationalAccountId = row.Get // this will come from a separate file
                 // TODO, add address info
             };
             return org;
+        }
+
+        /// <summary>
+        /// Import customer tasks
+        /// </summary>
+        public void ImportCustomerTasks()
+        {
+            try
+            {
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Customers");
+                var customerTask = Task.Factory.StartNew(() => ImportCustomersToOrganizationProfile());
+                eventLog.WriteInformationLog("ETL Import Process Starting:  Import Dsrs");
+                var dsrTask = Task.Factory.StartNew(() => ImportDsrInfo());
+
+                Task.WaitAll(customerTask, dsrTask);
+            }
+            catch (Exception ex)
+            {
+                //log
+                eventLog.WriteErrorLog("Error with ETL Import -- Import Customer Tasks", ex);
+            }
         }
 
         /// <summary>

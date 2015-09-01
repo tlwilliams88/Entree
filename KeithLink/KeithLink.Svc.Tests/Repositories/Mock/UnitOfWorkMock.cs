@@ -1,7 +1,14 @@
-﻿using FizzWare.NBuilder;
+﻿// KeithLink
 using KeithLink.Svc.Core.Models.EF;
+using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+// Mock Repo Libs
+using FizzWare.NBuilder;
 using Moq;
+
+// Core
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,10 +20,15 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Test.Mock
 {
-	public class UnitOfWorkMock : IUnitOfWork
-	{
-		#region Valid Values
-		private List<string> PossibleItems = new List<string>() { "001195",
+	public class UnitOfWorkMock : IUnitOfWork {
+
+        #region attributes
+
+            private BEKDBContext _context;
+
+            #region Valid Values
+
+        private List<string> PossibleItems = new List<string>() { "001195",
 					"007001",
 					"009083",
 					"018075",
@@ -57,9 +69,11 @@ namespace KeithLink.Svc.Test.Mock
 					"102754",
 					"102967"
 		};
-		#endregion
 
-		private BEKDBContext _context;
+		#endregion
+        #endregion
+
+
 		public BEKDBContext Context
 		{
 			get
@@ -68,42 +82,71 @@ namespace KeithLink.Svc.Test.Mock
 				{
 
 					#region Fake Db Sets
+
 					var mockListSet = new FakeDbSet<List>();
 					var mockListItemSet = new FakeDbSet<ListItem>();
 					var mockShareSet = new FakeDbSet<ListShare>();
 					var mockBranchSupportSet = new FakeDbSet<BranchSupport>();
+                    var mockSettings = new FakeDbSet<Settings>();
+
 					#endregion
 
 					#region Generate data
 
 					//List
-					var listItemTemp = new List<ListItem>();
 					IQueryable<List> listData;
 					IQueryable<ListItem> listItemData;
-					var shareItemData = new List<ListShare>().AsQueryable();
-					IQueryable<BranchSupport> branchSupportData;
+					var listItemTemp = new List<ListItem>();
+                    var shareItemData = new List<ListShare>().AsQueryable();
 
-					GenerateListData(listItemTemp, out listData, out listItemData);
+                    GenerateListData( listItemTemp, out listData, out listItemData );
 
-					branchSupportData = Builder<BranchSupport>.CreateListOfSize(10).Build().AsQueryable();
+                    mockListSet.SetData( listData );
+                    mockListItemSet.SetData( listItemData );
+                    mockShareSet.SetData( shareItemData );
+                    mockListSet.Setup(s => s.Include(It.IsAny<string>())).Returns(mockListSet.Object);
 
-					#endregion
+                    // Branch Support
+                    IQueryable<BranchSupport> branchSupportData;
+                    branchSupportData = Builder<BranchSupport>.CreateListOfSize( 10 ).Build().AsQueryable();
+                    mockBranchSupportSet.SetData( branchSupportData );
+                    //mockBranchSupportSet.Setup( x => x.Include( It.IsAny<string>() ) ).Returns( mockBranchSupportSet.Object );
 
-					mockListSet.SetData(listData);
-					mockListItemSet.SetData(listItemData);
-					mockShareSet.SetData(shareItemData);
-					mockBranchSupportSet.SetData(branchSupportData);
+                    // Settings
+                    IQueryable<Settings> settingsData = Builder<Settings>.CreateListOfSize( 5 ).Build().AsQueryable();
+                    mockSettings.SetData( settingsData );
+                    
+                    // Ensure any settings added to the repository are not null
+                    mockSettings.Setup( x => x.Add( It.IsAny<Settings>() ) ).Callback((Settings s) => {
+                        Assert.IsNotNull( s.UserId );
+                        Assert.IsNotNull( s.Key );
+                        Assert.IsNotNull( s.Value );
 
+                        if (s.Id > 0) {
+                            Assert.AreEqual( s.Value, "UpdatedValue" );
+                        } else {
+                            Assert.IsTrue( s.UserId == Guid.Parse("d616546e-463a-45ba-b1d4-d3512a56ace7") );
+                            Assert.IsTrue( s.Key == "TestSetting" );
+                            Assert.IsTrue( s.Value == "TestValue" );
+                        }
+                    } );
 
+                    mockSettings.Setup( x => x.Remove( It.IsAny<Settings>() ) ).Callback( ( Settings s ) => {
+                        Assert.IsNotNull( s.Id );
+                    } );
 
-					mockListSet.Setup(s => s.Include(It.IsAny<string>())).Returns(mockListSet.Object);
+                    #endregion
+
 
 					#region Wire up Fake Db Sets with Mock Context
+
 					var mockContext = new Mock<BEKDBContext>();
 					mockContext.Setup(c => c.Set<List>()).Returns(mockListSet.Object);
 					mockContext.Setup(c => c.Set<ListItem>()).Returns(mockListItemSet.Object);
 					mockContext.Setup(c => c.Set<ListShare>()).Returns(mockShareSet.Object);
 					mockContext.Setup(c => c.Set<BranchSupport>()).Returns(mockBranchSupportSet.Object);
+                    mockContext.Setup( c => c.Set<Settings>() ).Returns( mockSettings.Object );
+
 					#endregion
 
 
