@@ -46,10 +46,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         System.Threading.Tasks.Task GeneratePasswordResetRequestAsync(string email);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserId", ReplyAction="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserIdResponse")]
-        KeithLink.Svc.Core.Models.Profile.DsrAliasModel[] GetAllDsrAliasesByUserId(System.Guid userId);
+        System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.DsrAliasModel> GetAllDsrAliasesByUserId(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserId", ReplyAction="http://tempuri.org/IProfileService/GetAllDsrAliasesByUserIdResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.DsrAliasModel[]> GetAllDsrAliasesByUserIdAsync(System.Guid userId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.DsrAliasModel>> GetAllDsrAliasesByUserIdAsync(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/IsTokenValid", ReplyAction="http://tempuri.org/IProfileService/IsTokenValidResponse")]
         bool IsTokenValid(string token);
@@ -58,10 +58,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         System.Threading.Tasks.Task<bool> IsTokenValidAsync(string token);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadMarketingPreferences", ReplyAction="http://tempuri.org/IProfileService/ReadMarketingPreferencesResponse")]
-        KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[] ReadMarketingPreferences(System.DateTime from, System.DateTime to);
+        System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel> ReadMarketingPreferences(System.DateTime from, System.DateTime to);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadMarketingPreferences", ReplyAction="http://tempuri.org/IProfileService/ReadMarketingPreferencesResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[]> ReadMarketingPreferencesAsync(System.DateTime from, System.DateTime to);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel>> ReadMarketingPreferencesAsync(System.DateTime from, System.DateTime to);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ResetPassword", ReplyAction="http://tempuri.org/IProfileService/ResetPasswordResponse")]
         bool ResetPassword([System.ServiceModel.MessageParameterAttribute(Name="resetPassword")] KeithLink.Svc.Core.Models.Profile.ResetPasswordModel resetPassword1);
@@ -70,18 +70,20 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         System.Threading.Tasks.Task<bool> ResetPasswordAsync(KeithLink.Svc.Core.Models.Profile.ResetPasswordModel resetPassword);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadProfileSettings", ReplyAction="http://tempuri.org/IProfileService/ReadProfileSettingsResponse")]
-        KeithLink.Svc.Core.Models.Profile.SettingsModel[] ReadProfileSettings(System.Guid userId);
+        System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.SettingsModelReturn> ReadProfileSettings(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadProfileSettings", ReplyAction="http://tempuri.org/IProfileService/ReadProfileSettingsResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.SettingsModel[]> ReadProfileSettingsAsync(System.Guid userId);
+        System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.SettingsModelReturn>> ReadProfileSettingsAsync(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SaveProfileSettings", ReplyAction="http://tempuri.org/IProfileService/SaveProfileSettingsResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(KeithLink.Svc.Core.Models.Profile.SettingsModelReturn))]
         void SaveProfileSettings(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SaveProfileSettings", ReplyAction="http://tempuri.org/IProfileService/SaveProfileSettingsResponse")]
         System.Threading.Tasks.Task SaveProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteProfileSetting", ReplyAction="http://tempuri.org/IProfileService/DeleteProfileSettingResponse")]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(KeithLink.Svc.Core.Models.Profile.SettingsModelReturn))]
         void DeleteProfileSetting(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteProfileSetting", ReplyAction="http://tempuri.org/IProfileService/DeleteProfileSettingResponse")]
@@ -155,11 +157,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
             return base.Channel.GeneratePasswordResetRequestAsync(email);
         }
         
-        public KeithLink.Svc.Core.Models.Profile.DsrAliasModel[] GetAllDsrAliasesByUserId(System.Guid userId) {
+        public System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.DsrAliasModel> GetAllDsrAliasesByUserId(System.Guid userId) {
             return base.Channel.GetAllDsrAliasesByUserId(userId);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.DsrAliasModel[]> GetAllDsrAliasesByUserIdAsync(System.Guid userId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.DsrAliasModel>> GetAllDsrAliasesByUserIdAsync(System.Guid userId) {
             return base.Channel.GetAllDsrAliasesByUserIdAsync(userId);
         }
         
@@ -171,11 +173,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
             return base.Channel.IsTokenValidAsync(token);
         }
         
-        public KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[] ReadMarketingPreferences(System.DateTime from, System.DateTime to) {
+        public System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel> ReadMarketingPreferences(System.DateTime from, System.DateTime to) {
             return base.Channel.ReadMarketingPreferences(from, to);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel[]> ReadMarketingPreferencesAsync(System.DateTime from, System.DateTime to) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel>> ReadMarketingPreferencesAsync(System.DateTime from, System.DateTime to) {
             return base.Channel.ReadMarketingPreferencesAsync(from, to);
         }
         
@@ -187,11 +189,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
             return base.Channel.ResetPasswordAsync(resetPassword);
         }
         
-        public KeithLink.Svc.Core.Models.Profile.SettingsModel[] ReadProfileSettings(System.Guid userId) {
+        public System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.SettingsModelReturn> ReadProfileSettings(System.Guid userId) {
             return base.Channel.ReadProfileSettings(userId);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Profile.SettingsModel[]> ReadProfileSettingsAsync(System.Guid userId) {
+        public System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.SettingsModelReturn>> ReadProfileSettingsAsync(System.Guid userId) {
             return base.Channel.ReadProfileSettingsAsync(userId);
         }
         

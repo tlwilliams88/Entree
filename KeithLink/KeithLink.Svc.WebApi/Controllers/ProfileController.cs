@@ -1087,11 +1087,11 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute( "profile/settings" )]
-        public OperationReturnModel<List<SettingsModel>> GetProfileSettings() {
-            OperationReturnModel<List<SettingsModel> > returnValue = new OperationReturnModel<List<SettingsModel>>() { SuccessResponse = null };
+        public OperationReturnModel<List<SettingsModelReturn>> GetProfileSettings() {
+            OperationReturnModel<List<SettingsModelReturn> > returnValue = new OperationReturnModel<List<SettingsModelReturn>>() { SuccessResponse = null };
 
             try {
-                returnValue.SuccessResponse = _profileService.ReadProfileSettings( AuthenticatedUser.UserId ).ToList<SettingsModel>();
+                returnValue.SuccessResponse = _profileService.ReadProfileSettings( AuthenticatedUser.UserId ).ToList<SettingsModelReturn>();
             } catch (Exception ex) {
                 returnValue.ErrorMessage = string.Format( "Could not retrieve profile settings for specific user: {0}", AuthenticatedUser.UserId );
                 _log.WriteErrorLog( returnValue.ErrorMessage, ex);
@@ -1106,7 +1106,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
 
             // Set the userid
-            settings.UserId = AuthenticatedUser.UserId;
+            settings.UserId = Guid.Parse(AuthenticatedUser.UserId.ToString());
 
             try {
                 _profileService.SaveProfileSettings( settings );

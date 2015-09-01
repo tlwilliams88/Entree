@@ -239,6 +239,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Profile.DsrAliasModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModelReturn.datasource" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />

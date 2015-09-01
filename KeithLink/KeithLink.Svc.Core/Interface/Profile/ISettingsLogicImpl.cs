@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Profile {
     public interface ISettingsLogicImpl {
-        List<SettingsModel> GetAllUserSettings( Guid userId );
+        List<SettingsModelReturn> GetAllUserSettings( Guid userId );
         void CreateOrUpdateSettings( SettingsModel settings );
         void DeleteSettings(SettingsModel settings);
     }

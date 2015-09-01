@@ -1724,7 +1724,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         //    _extAd.UpdateUserGroups(customerNames, roleName, emailAddress);
         //}
 
-        public List<SettingsModel> GetProfileSettings( Guid userId ) {
+        public List<SettingsModelReturn> GetProfileSettings( Guid userId ) {
             return _settingsLogic.GetAllUserSettings( userId );
         }
 

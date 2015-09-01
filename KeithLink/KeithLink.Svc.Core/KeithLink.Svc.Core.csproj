@@ -287,6 +287,7 @@
     <Compile Include="Models\Profile\MarketingPreferenceModel.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
     <Compile Include="Models\Profile\SettingsModel.cs" />
+    <Compile Include="Models\Profile\SettingsModelReturn.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />

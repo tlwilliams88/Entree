@@ -28,6 +28,20 @@ namespace KeithLink.Svc.Core.Extensions {
             };
         }
 
+        public static SettingsModelReturn ToReturnModel( this SettingsModel model ) {
+            return new SettingsModelReturn() {
+                Key = model.Key,
+                Value = model.Value,
+            };
+        }
+
+        public static SettingsModelReturn ToReturnModel( this Settings model ) {
+            return new SettingsModelReturn() {
+                Key = model.Key,
+                Value = model.Value,
+            };
+        }
+
 
     }
 }
