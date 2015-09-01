@@ -3,7 +3,7 @@ using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl.Models;
-
+using System.IO;
 // Core
 using System;
 using System.Collections.Generic;
@@ -374,6 +374,51 @@ namespace KeithLink.Svc.Impl.ETL
             }
 
             return worksheetItems;
+        }
+
+        /// <summary>
+        /// Helper function to populate data tables
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public DataTable ExecuteProfileObjectQueryReturn(string query)
+        {
+            var dataTable = new DataTable();
+            using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+            {
+                conn.Open();
+
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }
+            }
+            return dataTable;
+        }
+
+        public bool ExecuteProfileObjectQuery(string query)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+                {
+                    using (var cmd = new SqlCommand(query.ToString(), conn))
+                    {
+                        //File.WriteAllText("c:\\query.txt", query.ToString()); //for debugging
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog(String.Format("Etl:  Error updating profile object. {0} {1}", ex.Message, ex.StackTrace));
+                return false;
+            }
         }
 
         #endregion

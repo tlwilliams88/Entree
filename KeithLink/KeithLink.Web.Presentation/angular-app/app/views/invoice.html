@@ -53,17 +53,17 @@
 
     </div>
     <div class="row page-content" style="margin-top:5px;">  
-      <div class="col-xs-12"  style="margin-top:16px;">
-        <a ui-sref="menu.transaction">View Pending Transactions for All Customers</a>      
+      <div colspan="12" style="margin-top:16px;">
+        <a style="margin-left:15px;" ui-sref="menu.transaction">View Pending Transactions for All Customers</a>      
         <p class="text-red" ng-if="errorMessage.length">{{errorMessage}}</p>
+        <span class="text-right pull-right" style="padding-right:15px;">
+          Showing {{invoices.length}} of {{totalInvoices}} Invoices
+        </span>
       </div>
     <div class="col-md-12" ng-if="viewingAllCustomers">
       <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
     </div>  
       <div class="padding-top-xs padding-top-sm">
-         <span class="text-right pull-right" style="padding-right:15px;">
-          Showing {{invoices.length}} of {{totalInvoices}} Invoices
-        </span>
         <div class="table-invoices" style="padding-left:15px; padding-right:15px;">
 
         <table class="table table-border table-striped-rows invoice-table" navigate-table="mobile" infinite-scroll="infiniteScrollLoadMore()">

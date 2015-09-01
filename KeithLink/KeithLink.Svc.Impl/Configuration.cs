@@ -65,6 +65,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_ELASTIC_SEARCH_URL = "ElasticSearchURL";
         private const string KEY_MAX_SORT_BY_PRICE_ITEM_COUNT = "MaxSortByPriceItemCount";
         private const string KEY_ENABLE_ETA_FOR_USERS = "EnableEtaForUsers";
+        private const string KEY_CS_PROFILE_DB_CONNECTION = "ProfileDbConnection";
 
         // Mainframe Keys
         private const string KEY_MF_ADDRESS = "MfAddress";
@@ -411,6 +412,11 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_SITE_NAME, string.Empty); }
         }
         
+        public static string CSProfileDbConnection
+        {
+            get { return GetConnectionString(KEY_CS_PROFILE_DB_CONNECTION); }
+        }
+
         public static string CorsEnabledDomains
         {
             get { return GetValue(KEY_CORS_ENABLED_DOMAINS, string.Empty); }

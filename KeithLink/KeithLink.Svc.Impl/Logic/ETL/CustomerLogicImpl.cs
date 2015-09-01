@@ -16,16 +16,19 @@ using KeithLink.Svc.Core.Models.Customers.EF;
 
 // Core
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Data;
 
 namespace KeithLink.Svc.Impl.ETL
 {
-    public class CustomerLogicImpl : ICustomerLogic {
+    public class CustomerLogicImpl : ICustomerLogic
+    {
         #region attributes
 
         private IStagingRepository stagingRepository;
@@ -36,7 +39,7 @@ namespace KeithLink.Svc.Impl.ETL
 
         #endregion
 
-        #region constructor 
+        #region constructor
 
         public CustomerLogicImpl(IStagingRepository stagingRepository, IDsrLogic dsrLogic, IEventLogRepository eventLog, IItemHistoryRepository itemHistoryRepository)
         {
@@ -73,7 +76,7 @@ namespace KeithLink.Svc.Impl.ETL
         }
 
         /// <summary>
-        /// Import customers to organization profile
+        /// Import Customers to CS
         /// </summary>
         public void ImportCustomersToOrganizationProfile()
         {
@@ -84,10 +87,9 @@ namespace KeithLink.Svc.Impl.ETL
 
                 DataTable customers = stagingRepository.ReadCustomers();
 
-                BlockingCollection<Organization> orgsForImport = new BlockingCollection<Organization>();
-                BlockingCollection<AddressProfiles> addressesForImport = new BlockingCollection<AddressProfiles>();
+                List<Organization> orgsForImport = new List<Organization>();
+                List<AddressProfiles> addressesForImport = new List<AddressProfiles>();
 
-                //Parallel.ForEach(customers.AsEnumerable(), row =>
                 foreach (DataRow row in customers.Rows)
                 {
                     orgsForImport.Add(CreateOrganizationFromStagedData(row));
@@ -95,84 +97,62 @@ namespace KeithLink.Svc.Impl.ETL
                 }
 
                 // Get Existing Organizations from CS
-                List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type and natl_or_regl_account_number
+                List<Organization> existingOrgs = GetExistingOrganizations(""); // for merge purposes, only pull customer_number, org_type, preferred_address and natl_or_regl_account_number
 
-                ProfileContext ctxt = GetProfileContext();
-
-                //Parallel.ForEach(orgsForImport, org =>
                 foreach (Organization org in orgsForImport)
+                //Parallel.ForEach(orgsForImport, new ParallelOptions { MaxDegreeOfParallelism = 2 }, org =>
                 {
+                    Hashtable orgValues = null;
+                    Hashtable addressValues = null;
                     try
                     {
-                        // Create a new profile object.
-                        Profile prof = null;
+                        //if org exists, then update it
                         if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
                         {
-                            prof = ctxt.GetProfile(existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id, "Organization");
+                            org.Id = existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id;
+                            orgValues = GetUpdateOrganizationStatement(org);
+                            stagingRepository.ExecuteProfileObjectQuery(orgValues["Query"].ToString());
                         }
+                        //if it doesn't exist, then create it
                         else
                         {
-                            prof = ctxt.CreateProfile((Guid.NewGuid()).ToCommerceServerFormat(), "Organization");
-                        }
-                        // Set the profile properties.
-                        prof.Properties["GeneralInfo.name"].Value = org.Name;
-                        prof.Properties["GeneralInfo.customer_number"].Value = org.CustomerNumber;
-                        prof.Properties["GeneralInfo.is_po_required"].Value = org.IsPoRequired;
-                        prof.Properties["GeneralInfo.is_power_menu"].Value = org.IsPowerMenu;
-                        prof.Properties["GeneralInfo.contract_number"].Value = org.ContractNumber;
-                        prof.Properties["GeneralInfo.dsr_number"].Value = org.DsrNumber;
-                        prof.Properties["GeneralInfo.dsm_number"].Value = org.DsmNumber;
-                        prof.Properties["GeneralInfo.natl_or_regl_account_number"].Value = org.NationalOrRegionalAccountNumber;
-                        prof.Properties["GeneralInfo.branch_number"].Value = org.BranchNumber;
-                        prof.Properties["GeneralInfo.organization_type"].Value = "0"; // customer org.OrganizationType;
-                        prof.Properties["GeneralInfo.term_code"].Value = org.TermCode;
-                        prof.Properties["GeneralInfo.amount_due"].Value = org.AmountDue;
-                        prof.Properties["GeneralInfo.credit_limit"].Value = org.CreditLimit;
-                        prof.Properties["GeneralInfo.credit_hold_flag"].Value = org.CreditHoldFlag;
-                        prof.Properties["GeneralInfo.date_of_last_payment"].Value = org.DateOfLastPayment;
-                        prof.Properties["GeneralInfo.current_balance"].Value = org.CurrentBalance;
-                        prof.Properties["GeneralInfo.balance_age_1"].Value = org.BalanceAge1;
-                        prof.Properties["GeneralInfo.balance_age_2"].Value = org.BalanceAge2;
-                        prof.Properties["GeneralInfo.balance_age_3"].Value = org.BalanceAge3;
-                        prof.Properties["GeneralInfo.balance_age_4"].Value = org.BalanceAge4;
-                        prof.Properties["GeneralInfo.customer_ach_type"].Value = org.AchType;
-                        prof.Properties["GeneralInfo.national_id"].Value = org.NationalId;
-                        prof.Properties["GeneralInfo.national_number"].Value = org.NationalNumber;
-                        prof.Properties["GeneralInfo.national_sub_number"].Value = org.NationalSubNumber;
-                        prof.Properties["GeneralInfo.regional_id"].Value = org.RegionalId;
-                        prof.Properties["GeneralInfo.regional_number"].Value = org.RegionalNumber;
-                        prof.Properties["GeneralInfo.is_keithnet_customer"].Value = org.IsKeithnetCustomer;
-
-                        Profile addressProfile = null;
-                        if (prof.Properties["GeneralInfo.preferred_address"] == null || String.IsNullOrEmpty((string)prof.Properties["GeneralInfo.preferred_address"].Value))
-                        { // create a new address
-                            string newAddressId = (Guid.NewGuid()).ToCommerceServerFormat();
-                            addressProfile = ctxt.CreateProfile(newAddressId, "Address");
-                            prof.Properties["GeneralInfo.preferred_address"].Value = newAddressId;
-                        }
-                        else
-                        { // update existing address
-                            addressProfile = ctxt.GetProfile((string)prof.Properties["GeneralInfo.preferred_address"].Value, "Address");
+                            orgValues = GetCreateOrganizationStatment(org);
+                            stagingRepository.ExecuteProfileObjectQuery(orgValues["Query"].ToString());
                         }
 
                         AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber && x.AddressType == org.BranchNumber).FirstOrDefault();
-                        addressProfile.Properties["GeneralInfo.address_name"].Value = address.AddressName;
-                        addressProfile.Properties["GeneralInfo.address_line1"].Value = address.Line1;
-                        addressProfile.Properties["GeneralInfo.address_line2"].Value = address.Line2;
-                        addressProfile.Properties["GeneralInfo.city"].Value = address.City;
-                        addressProfile.Properties["GeneralInfo.region_code"].Value = address.StateProvinceCode;
-                        addressProfile.Properties["GeneralInfo.postal_code"].Value = address.ZipPostalCode;
-                        addressProfile.Properties["GeneralInfo.tel_number"].Value = address.Telephone;
-                        addressProfile.Update();
+                        string existingOrgId = String.Empty;
+                        if (existingOrgs.Any(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber))
+                        {
+                            existingOrgId = existingOrgs.Where(x => x.CustomerNumber == org.CustomerNumber && x.BranchNumber == org.BranchNumber).FirstOrDefault().Id;
+                        }
 
-                        prof.Update();
+                        DataTable results = GetSingleProfileProperty(ProfileObjectType.Organization, "u_preferred_address", existingOrgId);
+
+                        if (results.Rows.Count > 0)
+                        {
+                            address.Id = results.Rows[0]["u_preferred_address"].ToString();
+                            addressValues = GetUpdateAddressStatement(address);
+                            stagingRepository.ExecuteProfileObjectQuery(addressValues["Query"].ToString());
+                        }
+                        else
+                        {
+                            addressValues = GetCreateAddressStatement(address);
+                            stagingRepository.ExecuteProfileObjectQuery(addressValues["Query"].ToString());
+
+                            //update the preferred address of parent object
+                            if (orgValues != null)
+                            {
+                                UpdateSingleProfileProperty(ProfileObjectType.Organization, "u_preferred_address", addressValues["AddressId"].ToString(), orgValues["OrganizationId"].ToString());
+                            }
+                        }
                     }
                     catch (Exception ex)
                     {
                         eventLog.WriteErrorLog(String.Format("ETL: Error Importing customer to CS -- individual customer.  {0} -- {1}", ex.Message, ex.StackTrace));
                     }
-
                 }
+                //);
 
                 TimeSpan took = DateTime.Now - start;
                 eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import customers to CS.  Process took {0}", took.ToString()));
@@ -181,6 +161,285 @@ namespace KeithLink.Svc.Impl.ETL
             {
                 eventLog.WriteErrorLog(String.Format("ETL: Error Importing customers to CS -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
             }
+        }
+
+        /// <summary>
+        /// Update a single profile property
+        /// </summary>
+        private void UpdateSingleProfileProperty(ProfileObjectType objectType, string propertyName, string propertyValue, string objectId)
+        {
+            switch (objectType)
+            {
+                case ProfileObjectType.Organization:
+                    stagingRepository.ExecuteProfileObjectQuery(String.Format("UPDATE OrganizationObject SET {0} = '{1}' WHERE u_org_id = '{2}'", propertyName, propertyValue, objectId));
+                    break;
+                case ProfileObjectType.Address:
+                    stagingRepository.ExecuteProfileObjectQuery(String.Format("UPDATE Addresses SET {0} = '{1}' WHERE u_org_id = '{2}'", propertyName, propertyValue, objectId));
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Retrieve a single profile property
+        /// </summary>
+        private DataTable GetSingleProfileProperty(ProfileObjectType objectType, string propertyName, string objectId)
+        {
+            switch (objectType)
+            {
+                case ProfileObjectType.Organization:
+                    return stagingRepository.ExecuteProfileObjectQueryReturn(String.Format("SELECT {0} FROM OrganizationObject WHERE u_org_id = '{1}'", propertyName, objectId));
+                case ProfileObjectType.Address:
+                    return stagingRepository.ExecuteProfileObjectQueryReturn(String.Format("SELECT {0} FROM Addresses WHERE u_org_id = '{1}'", propertyName, objectId));
+                default:
+                    return null;
+            }
+        }
+
+        /// <summary>
+        /// Generate SQL update query for organizations
+        /// </summary>
+        private Hashtable GetUpdateOrganizationStatement(Organization org)
+        {
+            Hashtable returnVal = new Hashtable();
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE OrganizationObject SET ");
+
+            Hashtable values = SetOrganizationProperties(org, ProfileOperationType.Update);
+            query.Append(values["Query"]).ToString();
+            query.Append(String.Format(" WHERE [u_org_id] = '{0}'", org.Id));
+
+            returnVal.Add("Query", query.ToString());
+            returnVal.Add("OrganizationId", org.Id);
+
+            return returnVal;
+        }
+
+        /// <summary>
+        /// Generate SQL create query for organizations
+        /// </summary>
+        private Hashtable GetCreateOrganizationStatment(Organization org)
+        {
+            Hashtable returnVal = new Hashtable();
+            StringBuilder query = new StringBuilder();
+            query.Append(@"INSERT INTO OrganizationObject 
+                            (
+                                [u_org_id]
+                                , [u_Name]
+                                , [u_is_po_required]
+                                , [u_is_power_menu]
+                                , [u_contract_number]
+                                , [u_dsr_number]
+                                , [u_national_or_regional_account_number]
+                                , [u_branch_number]
+                                , [u_customer_number]
+                                , [u_parent_organization]
+                                , [u_organization_type]
+                                , [u_national_account_id]
+                                , [u_term_code]
+                                , [u_credit_limit]
+                                , [u_credit_hold_flag]
+                                , [u_date_of_last_payment]
+                                , [u_amount_due]
+                                , [u_current_balance]
+                                , [u_balance_age_1]
+                                , [u_balance_age_2]
+                                , [u_balance_age_3]
+                                , [u_balance_age_4]
+                                , [u_customer_ach_type]
+                                , [u_dsm_number]
+                                , [u_national_id]
+                                , [u_national_number]
+                                , [u_national_sub_number]
+                                , [u_regional_id]
+                                , [u_regional_number]
+                                , [u_is_keithnet_customer]
+                           )
+                            VALUES ( ");
+
+            Hashtable values = SetOrganizationProperties(org, ProfileOperationType.Create);
+            query.Append(values["Query"].ToString());
+            query.Append(")");
+
+            returnVal.Add("Query", query.ToString());
+            returnVal.Add("OrganizationId", values["OrganizationId"]);
+
+            return returnVal;
+        }
+
+        /// <summary>
+        /// Set the individual properties for use in query generation
+        /// </summary>
+        private Hashtable SetOrganizationProperties(Organization org, ProfileOperationType operation)
+        {
+            Hashtable returnVal = new Hashtable();
+            StringBuilder query = new StringBuilder();
+            // Set the profile properties.
+            string newId = Guid.NewGuid().ToCommerceServerFormat();
+            if (operation == ProfileOperationType.Create)
+            {
+                query.Append(String.Format("'{0}'", newId));
+                if (org.Name != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.Name))); else query.Append(",null");
+                if (org.IsPoRequired != null) query.Append(String.Format(",'{0}'", org.IsPoRequired)); else query.Append(",null");
+                if (org.IsPowerMenu != null) query.Append(String.Format(",'{0}'", org.IsPowerMenu)); else query.Append(",null");
+                if (org.ContractNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.ContractNumber))); else query.Append(",null");
+                if (org.DsrNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.DsrNumber))); else query.Append(",null");
+                if (org.NationalOrRegionalAccountNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.NationalOrRegionalAccountNumber))); else query.Append(",null");
+                if (org.BranchNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.BranchNumber))); else query.Append(",null");
+                if (org.CustomerNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.CustomerNumber))); else query.Append(",null");
+                if (org.ParentOrganizationId != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.ParentOrganizationId))); else query.Append(",null");
+                if (org.OrganizationType != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.OrganizationType))); else query.Append(",null");
+                if (org.NationalAccountId != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.NationalAccountId))); else query.Append(",null");
+                if (org.TermCode != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.TermCode))); else query.Append(",null");
+                if (org.CreditLimit != null) query.Append(String.Format(",'{0}'", org.CreditLimit)); else query.Append(",null");
+                if (org.CreditHoldFlag != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.CreditHoldFlag))); else query.Append(",null");
+                if (org.DateOfLastPayment != null) query.Append(String.Format(",'{0}'", org.DateOfLastPayment)); else query.Append(",null");
+                if (org.AmountDue != null) query.Append(String.Format(",'{0}'", org.AmountDue)); else query.Append(",null");
+                if (org.CurrentBalance != null) query.Append(String.Format(",'{0}'", org.CurrentBalance)); else query.Append(",null");
+                if (org.BalanceAge1 != null) query.Append(String.Format(",'{0}'", org.BalanceAge1)); else query.Append(",null");
+                if (org.BalanceAge2 != null) query.Append(String.Format(",'{0}'", org.BalanceAge2)); else query.Append(",null");
+                if (org.BalanceAge3 != null) query.Append(String.Format(",'{0}'", org.BalanceAge3)); else query.Append(",null");
+                if (org.BalanceAge4 != null) query.Append(String.Format(",'{0}'", org.BalanceAge4)); else query.Append(",null");
+                if (org.AchType != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.AchType))); else query.Append(",null");
+                if (org.DsmNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.DsmNumber))); else query.Append(",null");
+                if (org.NationalId != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.NationalId))); else query.Append(",null");
+                if (org.NationalNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.NationalNumber))); else query.Append(",null");
+                if (org.NationalSubNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.NationalSubNumber))); else query.Append(",null");
+                if (org.RegionalId != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.RegionalId))); else query.Append(",null");
+                if (org.RegionalNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.RegionalNumber))); else query.Append(",null");
+                if (org.IsKeithnetCustomer != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.IsKeithnetCustomer))); else query.Append(",null");
+
+                returnVal.Add("OrganizationId", newId);
+            }
+            else
+            {
+                if (org.Name != null) query.Append(String.Format("[u_Name] = '{0}'", ToSQLFormat(org.Name))); else query.Append("[u_Name] = ''"); //always attach a value to the first record in the update statement
+                if (org.IsPoRequired != null) query.Append(String.Format(",[u_is_po_required] = '{0}'", org.IsPoRequired));
+                if (org.IsPowerMenu != null) query.Append(String.Format(",[u_is_power_menu] = '{0}'", org.IsPowerMenu));
+                if (org.ContractNumber != null) query.Append(String.Format(",[u_contract_number] = '{0}'", ToSQLFormat(org.ContractNumber)));
+                if (org.DsrNumber != null) query.Append(String.Format(",[u_dsr_number] = '{0}'", ToSQLFormat(org.DsrNumber)));
+                if (org.NationalOrRegionalAccountNumber != null) query.Append(String.Format(",[u_national_or_regional_account_number] = '{0}'", ToSQLFormat(org.NationalOrRegionalAccountNumber)));
+                if (org.BranchNumber != null) query.Append(String.Format(",[u_branch_number] = '{0}'", ToSQLFormat(org.BranchNumber)));
+                if (org.CustomerNumber != null) query.Append(String.Format(",[u_customer_number] = '{0}'", ToSQLFormat(org.CustomerNumber)));
+                if (org.ParentOrganizationId != null) query.Append(String.Format(",[u_parent_organization] = '{0}'", ToSQLFormat(org.ParentOrganizationId)));
+                if (org.OrganizationType != null) query.Append(String.Format(",[u_organization_type] = '{0}'", ToSQLFormat(org.OrganizationType)));
+                if (org.NationalAccountId != null) query.Append(String.Format(",[u_national_account_id] = '{0}'", ToSQLFormat(org.NationalAccountId)));
+                if (org.TermCode != null) query.Append(String.Format(",[u_term_code] = '{0}'", ToSQLFormat(org.TermCode)));
+                if (org.CreditLimit != null) query.Append(String.Format(",[u_credit_limit] = '{0}'", org.CreditLimit));
+                if (org.CreditHoldFlag != null) query.Append(String.Format(",[u_credit_hold_flag] = '{0}'", ToSQLFormat(org.CreditHoldFlag)));
+                if (org.DateOfLastPayment != null) query.Append(String.Format(",[u_date_of_last_payment] = '{0}'", org.DateOfLastPayment));
+                if (org.AmountDue != null) query.Append(String.Format(",[u_amount_due] = '{0}'", org.AmountDue));
+                if (org.CurrentBalance != null) query.Append(String.Format(",[u_current_balance] = '{0}'", org.CurrentBalance));
+                if (org.BalanceAge1 != null) query.Append(String.Format(",[u_balance_age_1] = '{0}'", org.BalanceAge1));
+                if (org.BalanceAge2 != null) query.Append(String.Format(",[u_balance_age_2] = '{0}'", org.BalanceAge2));
+                if (org.BalanceAge3 != null) query.Append(String.Format(",[u_balance_age_3] = '{0}'", org.BalanceAge3));
+                if (org.BalanceAge4 != null) query.Append(String.Format(",[u_balance_age_4] = '{0}'", org.BalanceAge4));
+                if (org.AchType != null) query.Append(String.Format(",[u_customer_ach_type] = '{0}'", ToSQLFormat(org.AchType)));
+                if (org.DsmNumber != null) query.Append(String.Format(",[u_dsm_number] = '{0}'", ToSQLFormat(org.DsmNumber)));
+                if (org.NationalId != null) query.Append(String.Format(",[u_national_id] = '{0}'", ToSQLFormat(org.NationalId)));
+                if (org.NationalNumber != null) query.Append(String.Format(",[u_national_number] = '{0}'", ToSQLFormat(org.NationalNumber)));
+                if (org.NationalSubNumber != null) query.Append(String.Format(",[u_national_sub_number] = '{0}'", ToSQLFormat(org.NationalSubNumber)));
+                if (org.RegionalId != null) query.Append(String.Format(",[u_regional_id] = '{0}'", org.RegionalId));
+                if (org.RegionalNumber != null) query.Append(String.Format(",[u_regional_number] = '{0}'", ToSQLFormat(org.RegionalNumber)));
+                if (org.IsKeithnetCustomer != null) query.Append(String.Format(",[u_is_keithnet_customer] = '{0}'", ToSQLFormat(org.IsKeithnetCustomer)));
+
+                returnVal.Add("OrganizationId", org.Id);
+            }
+
+            returnVal.Add("Query", query.ToString());
+
+            return returnVal;
+
+        }
+
+        /// <summary>
+        /// Generate SQL create query for addresses
+        /// </summary>
+        private Hashtable GetCreateAddressStatement(AddressProfiles address)
+        {
+            Hashtable returnVal = new Hashtable();
+            StringBuilder query = new StringBuilder();
+            query.Append(@"INSERT INTO ADDRESSES
+                (
+                    [u_address_id]
+                    , [u_address_name]
+                    , [u_address_line1]
+                    , [u_address_line2]
+                    , [u_city]
+                    , [u_region_code]
+                    , [u_postal_code]
+                    , [u_tel_number]
+                )
+                VALUES (");
+
+            Hashtable values = SetAddressProperties(address, ProfileOperationType.Create);
+            query.Append(values["Query"].ToString());
+            query.Append(");");
+
+            returnVal.Add("Query", query);
+            returnVal.Add("AddressId", values["AddressId"]);
+
+            return returnVal;
+        }
+
+        /// <summary>
+        /// Generate SQL update query for addresses
+        /// </summary>
+        private Hashtable GetUpdateAddressStatement(AddressProfiles address)
+        {
+            Hashtable returnVal = new Hashtable();
+            StringBuilder query = new StringBuilder();
+            query.Append("UPDATE Addresses SET ");
+
+            Hashtable values = SetAddressProperties(address, ProfileOperationType.Update);
+            query.Append(values["Query"]);
+            query.Append(String.Format(" WHERE [u_address_id] = '{0}'", address.Id));
+
+            returnVal.Add("Query", query.ToString());
+            returnVal.Add("AddressId", values["AddressId"].ToString());
+
+            return returnVal;
+        }
+
+        /// <summary>
+        /// Set the individual properties for use in query generation
+        /// </summary>
+        private Hashtable SetAddressProperties(AddressProfiles address, ProfileOperationType operation)
+        {
+            Hashtable returnVal = new Hashtable();
+            StringBuilder query = new StringBuilder();
+            string newId = Guid.NewGuid().ToCommerceServerFormat();
+            // Set the profile properties.
+            if (operation == ProfileOperationType.Create)
+            {
+                query.Append(String.Format("'{0}'", newId));
+                if (address.AddressName != null) query.Append(String.Format(",'{0}'", ToSQLFormat(address.AddressName))); else query.Append(",null");
+                if (address.Line1 != null) query.Append(String.Format(",'{0}'", ToSQLFormat(address.Line1))); else query.Append(",null");
+                if (address.Line2 != null) query.Append(String.Format(",'{0}'", ToSQLFormat(address.Line2))); else query.Append(",null");
+                if (address.City != null) query.Append(String.Format(",'{0}'", ToSQLFormat(address.City))); else query.Append(",null");
+                if (address.StateProvinceCode != null) query.Append(String.Format(",'{0}'", ToSQLFormat(address.StateProvinceCode))); else query.Append(",null");
+                if (address.ZipPostalCode != null) query.Append(String.Format(",'{0}'", ToSQLFormat(address.ZipPostalCode))); else query.Append(",null");
+                if (address.Telephone != null) query.Append(String.Format(",'{0}'", ToSQLFormat(address.Telephone))); else query.Append(",null");
+
+                returnVal.Add("AddressId", newId);
+            }
+            else
+            {
+                if (address.AddressName != null) query.Append(String.Format("[u_address_name] = '{0}'", ToSQLFormat(address.AddressName))); else query.Append("[u_address_name] = ''"); //always attach a value to the first record in the update statement
+                if (address.Line1 != null) query.Append(String.Format(",[u_address_line1] = '{0}'", ToSQLFormat(address.Line1)));
+                if (address.Line2 != null) query.Append(String.Format(",[u_address_line2] = '{0}'", ToSQLFormat(address.Line2)));
+                if (address.City != null) query.Append(String.Format(",[u_city] = '{0}'", ToSQLFormat(address.City)));
+                if (address.StateProvinceCode != null) query.Append(String.Format(",[u_region_code] = '{0}'", ToSQLFormat(address.StateProvinceCode)));
+                if (address.ZipPostalCode != null) query.Append(String.Format(",[u_postal_code] = '{0}'", ToSQLFormat(address.ZipPostalCode)));
+                if (address.Telephone != null) query.Append(String.Format(",[u_tel_number] = '{0}'", ToSQLFormat(address.Telephone)));
+
+                returnVal.Add("AddressId", address.Id);
+            }
+
+            returnVal.Add("Query", query);
+
+            return returnVal;
         }
 
         /// <summary>
@@ -252,7 +511,7 @@ namespace KeithLink.Svc.Impl.ETL
             return new AddressProfiles()
             {
                 Description = row.GetString("CustomerNumber"), // use the customer number in description to look up the addy when creating the profile
-				AddressType = row.GetString("BranchNumber"), //Use AddressType for branch Id for look up when addy is created
+                AddressType = row.GetString("BranchNumber"), //Use AddressType for branch Id for look up when addy is created
                 AddressName = "Preferred",
                 Line1 = row.GetString("Address1"),
                 Line2 = row.GetString("Address2"),
@@ -260,7 +519,7 @@ namespace KeithLink.Svc.Impl.ETL
                 StateProvinceCode = row.GetString("State"),
                 ZipPostalCode = row.GetString("ZipCode"),
                 Telephone = row.GetString("Telephone")
-				
+
             };
         }
 
@@ -298,8 +557,8 @@ namespace KeithLink.Svc.Impl.ETL
                 NationalSubNumber = row.GetString("NationalSubNumber"),
                 RegionalId = row.GetString("RegionalId"),
                 RegionalNumber = row.GetString("RegionalNumber"),
-                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer")
-                
+                IsKeithnetCustomer = row.GetString("IsKeithnetCustomer"),
+
                 // NationalAccountId = row.Get // this will come from a separate file
                 // TODO, add address info
             };
@@ -325,7 +584,7 @@ namespace KeithLink.Svc.Impl.ETL
         private List<Organization> GetExistingOrganizations(string organizationType)
         {
             ProfileContext ctxt = GetProfileContext();
-            string cmdText = "SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type, GeneralInfo.branch_number FROM Organization";
+            string cmdText = "SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type, GeneralInfo.branch_number, GeneralInfo.preferred_address FROM Organization";
 
             // Create a new RecordsetClass object.
             ADODB.Recordset rs = new ADODB.Recordset();
@@ -345,12 +604,14 @@ namespace KeithLink.Svc.Impl.ETL
                 while (!rs.EOF)
                 {
                     // Write out the user_id value.
-                    existingOrgs.Add(new Organization() { CustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
-                                                          NationalOrRegionalAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
-                                                          OrganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
-														  Id = rs.Fields["GeneralInfo.org_id"].Value.ToString(),
-														  BranchNumber = rs.Fields["GeneralInfo.branch_number"].Value.ToString()
-                                                        });
+                    existingOrgs.Add(new Organization()
+                    {
+                        CustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
+                        NationalOrRegionalAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
+                        OrganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
+                        Id = rs.Fields["GeneralInfo.org_id"].Value.ToString(),
+                        BranchNumber = rs.Fields["GeneralInfo.branch_number"].Value.ToString()
+                    });
 
                     // Move to the next record.
                     rs.MoveNext();
@@ -361,6 +622,88 @@ namespace KeithLink.Svc.Impl.ETL
                 System.Runtime.InteropServices.Marshal.ReleaseComObject(rs);
             }
             return existingOrgs;
+        }
+
+        /// <summary>
+        /// Get existing organizations
+        /// </summary>
+        /// <param name="organizationType"></param>
+        /// <returns></returns>
+        private Organization GetExistingOrganization(string customerNumber, string branchId)
+        {
+            ProfileContext ctxt = GetProfileContext();
+            StringBuilder cmdText = new StringBuilder();
+            cmdText.Append("SELECT GeneralInfo.org_id,GeneralInfo.natl_or_regl_account_number,GeneralInfo.customer_number,GeneralInfo.organization_type, GeneralInfo.branch_number, GeneralInfo.is_keithnet_customer, GeneralInfo.customer_ach_type FROM Organization");
+            cmdText.Append(String.Format(" WHERE GeneralInfo.customer_number = '{0}' AND GeneralInfo.branch_number = '{1}'", customerNumber, branchId));
+
+            // Create a new RecordsetClass object.
+            ADODB.Recordset rs = new ADODB.Recordset();
+            List<Organization> existingOrgs = new List<Organization>();
+
+            try
+            {
+                // Open a RecordsetClass instance by executing the SQL statement to the CSOLEDB provider.
+                rs.Open(
+                cmdText.ToString(),
+                ctxt.CommerceOleDbProvider,
+                ADODB.CursorTypeEnum.adOpenForwardOnly,
+                ADODB.LockTypeEnum.adLockReadOnly,
+                (int)ADODB.CommandTypeEnum.adCmdText);
+
+                // Iterate through the records.
+                while (!rs.EOF)
+                {
+                    // Write out the user_id value.
+                    existingOrgs.Add(new Organization()
+                    {
+                        CustomerNumber = rs.Fields["GeneralInfo.customer_number"].Value.ToString(),
+                        NationalOrRegionalAccountNumber = rs.Fields["GeneralInfo.natl_or_regl_account_number"].Value.ToString(),
+                        OrganizationType = rs.Fields["GeneralInfo.organization_type"].Value.ToString(),
+                        Id = rs.Fields["GeneralInfo.org_id"].Value.ToString(),
+                        BranchNumber = rs.Fields["GeneralInfo.branch_number"].Value.ToString(),
+                        IsKeithnetCustomer = rs.Fields["GeneralInfo.is_keithnet_customer"].Value.ToString(),
+                        AchType = rs.Fields["GeneralInfo.customer_ach_type"].Value.ToString()
+                    });
+
+                    // Move to the next record.
+                    rs.MoveNext();
+                }
+            }
+            finally
+            {
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(rs);
+            }
+            if (existingOrgs.Count != 1)
+            {
+                throw new Exception("More than one customer with a specific customer and branch combination");
+            }
+            else
+            {
+                return existingOrgs.FirstOrDefault();
+            }
+
+        }
+
+        /// <summary>
+        /// Compare data from incoming ETL file to updated profile to ensure important fields were updated
+        /// </summary>
+        /// <returns></returns>
+        private bool CompareExistingToUpdatedOrganization(Organization org)
+        {
+            bool confirmUpdate = false;
+
+            Organization updatedOrg = GetExistingOrganization(org.CustomerNumber, org.BranchNumber);
+
+            if (org.IsKeithnetCustomer == updatedOrg.IsKeithnetCustomer && org.AchType == updatedOrg.AchType)
+            {
+                confirmUpdate = true;
+            }
+            else
+            {
+                eventLog.WriteErrorLog(String.Format("ETL:  Profile did not update correctly for customer {0} - branch {1}", org.CustomerNumber, org.BranchNumber));
+            }
+
+            return confirmUpdate;
         }
 
         /// <summary>
@@ -382,6 +725,26 @@ namespace KeithLink.Svc.Impl.ETL
             return profileSystem;
         }
 
+        private enum ProfileOperationType
+        {
+            Create
+            , Update
+        }
+
+        private enum ProfileObjectType
+        {
+            Organization
+            , Address
+        }
+
+        public static string ToSQLFormat(string valueToParse)
+        {
+            //replace single quotes with triple quotes for insert
+            valueToParse = valueToParse.Replace("'", "''");
+            return valueToParse;
+        }
+
         #endregion
     }
 }
+

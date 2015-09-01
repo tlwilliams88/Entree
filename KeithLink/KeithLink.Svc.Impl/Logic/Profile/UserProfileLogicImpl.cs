@@ -577,7 +577,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             //List<Customer> userCustomers;
             string dsrRole = string.Empty;
             string dsrNumber = string.Empty;
-			string dsmNumber = string.Empty;
+            string dsmNumber = string.Empty;
             string dsmRole = string.Empty;
             string userRole = string.Empty;
             string userBranch = string.Empty;
@@ -587,130 +587,107 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             bool isPowerMenuCustomer = false;
             bool isPowerMenuAdmin = false;
 
-			try
-			{
-				if (isInternalUser)
-				{
-					adUser = _intAd.GetUser(csProfile.Email);
-					DirectoryEntry directoryEntry = (DirectoryEntry)adUser.GetUnderlyingObject();
-					List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Svc.Core.Constants.INTERNAL_USER_ROLES);
+            try {
+                if (isInternalUser) {
+                    adUser = _intAd.GetUser(csProfile.Email);
+                    // if the user is not found in AD return null
+                    if (adUser == null) { return null; }
 
-					userBranch = GetBranchFromOU(adUser.GetOrganizationalunit());
+                    DirectoryEntry directoryEntry = (DirectoryEntry)adUser.GetUnderlyingObject();
+                    List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Svc.Core.Constants.INTERNAL_USER_ROLES);
 
-					if (internalUserRoles.Intersect(Constants.BEK_SYSADMIN_ROLES).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_SYSADMIN;
-						isPowerMenuAdmin = true;
-					}
-					else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_BRANCHIS;
-						isPowerMenuAdmin = true;
-						//userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-					}
-					else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_POWERUSER;
-						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-					}
-					else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_MARKETING;
-						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-					}
-					else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0)
-					{
-						dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
-						userRole = Constants.ROLE_NAME_DSM;
-						//userBranch = dsmRole.Substring(0, 3);
-						//dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
-						if (adUser.Description.Length == 3)
-						{
-							dsmNumber = adUser.Description.Substring(1, 2);
-						}
-						else if (adUser.Description.Length == 2)
-						{
-							dsmNumber = adUser.Description;
-						}
-					}
-					else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0)
-					{
-						dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
-						userRole = Constants.ROLE_NAME_DSR;
-						dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
-						//userBranch = dsrRole.Substring(0, 3);
-					}
-					else
-					{
-						userRole = Constants.ROLE_NAME_GUEST;
-					}
-				}
-				else
-				{
-					adUser = _extAd.GetUser(csProfile.Email);
+                    userBranch = GetBranchFromOU(adUser.GetOrganizationalunit());
 
-					if (_extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitAdmin))
-					{
-						userRole = Constants.ROLE_NAME_KBITADMIN;
-						isKbitCustomer = true;
-					}
-					else
-					{
-						userRole = GetUserRole(csProfile.Email);
-						isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
-					}
+                    if (internalUserRoles.Intersect(Constants.BEK_SYSADMIN_ROLES).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_SYSADMIN;
+                        isPowerMenuAdmin = true;
+                    } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_BRANCHIS;
+                        isPowerMenuAdmin = true;
+                        //userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_POWERUSER;
+                        //userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    } else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_MARKETING;
+                        //userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
+                        dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
+                        userRole = Constants.ROLE_NAME_DSM;
+                        //userBranch = dsmRole.Substring(0, 3);
+                        //dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                        if (adUser.Description.Length == 3) {
+                            dsmNumber = adUser.Description.Substring(1, 2);
+                        } else if (adUser.Description.Length == 2) {
+                            dsmNumber = adUser.Description;
+                        }
+                    } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
+                        dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
+                        userRole = Constants.ROLE_NAME_DSR;
+                        dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                        //userBranch = dsrRole.Substring(0, 3);
+                    } else {
+                        userRole = Constants.ROLE_NAME_GUEST;
+                    }
+                } else {
+                    adUser = _extAd.GetUser(csProfile.Email);
 
-					userBranch = csProfile.DefaultBranch;
-					isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
-					isPowerMenuCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupPowerMenuCustomer);
-				}
+                    if (_extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitAdmin)) {
+                        userRole = Constants.ROLE_NAME_KBITADMIN;
+                        isKbitCustomer = true;
+                    } else {
+                        userRole = GetUserRole(csProfile.Email);
+                        isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
+                    }
 
-				string userNameToken = string.Concat(adUser.SamAccountName, "-", DateTime.Now.ToString("yyyyMMddHHmmss"));
-				byte[] tokenBytes = System.Text.Encoding.UTF8.GetBytes(userNameToken);
-				string tokenBase64 = Convert.ToBase64String(tokenBytes);
+                    userBranch = csProfile.DefaultBranch;
+                    isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
+                    isPowerMenuCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupPowerMenuCustomer);
+                }
 
-				UserProfile retVal = new UserProfile();
+                string userNameToken = string.Concat(adUser.SamAccountName, "-", DateTime.Now.ToString("yyyyMMddHHmmss"));
+                byte[] tokenBytes = System.Text.Encoding.UTF8.GetBytes(userNameToken);
+                string tokenBase64 = Convert.ToBase64String(tokenBytes);
 
-				retVal.UserId = Guid.Parse(csProfile.Id);
-				retVal.IsInternalUser = IsInternalAddress(csProfile.Email);
-				retVal.PasswordExpired = (isInternalUser) ? false : _extAd.IsPasswordExpired(csProfile.Email);
-				retVal.FirstName = csProfile.FirstName;
-				retVal.LastName = csProfile.LastName;
-				retVal.EmailAddress = csProfile.Email;
-				retVal.PhoneNumber = csProfile.Telephone;
-				retVal.CustomerNumber = csProfile.DefaultCustomer;
-				retVal.BranchId = userBranch;
-				retVal.RoleName = userRole;
-				retVal.DSMRole = dsmRole;
-				retVal.DSRNumber = dsrNumber;
-				retVal.DSMNumber = dsmNumber;
-				//retVal.UserCustomers = userCustomers;
-				retVal.ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id));
-				retVal.UserName = adUser.SamAccountName;
-				retVal.UserNameToken = tokenBase64;
-				retVal.IsKBITCustomer = isKbitCustomer;
-				retVal.IsPowerMenuCustomer = isPowerMenuCustomer;
-				retVal.PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email) : "";
-				retVal.PowerMenuLoginUrl = (isInternalUser) ? "" : GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName);
-				retVal.PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl) : "";
+                UserProfile retVal = new UserProfile();
+
+                retVal.UserId = Guid.Parse(csProfile.Id);
+                retVal.IsInternalUser = IsInternalAddress(csProfile.Email);
+                retVal.PasswordExpired = (isInternalUser) ? false : _extAd.IsPasswordExpired(csProfile.Email);
+                retVal.FirstName = csProfile.FirstName;
+                retVal.LastName = csProfile.LastName;
+                retVal.EmailAddress = csProfile.Email;
+                retVal.PhoneNumber = csProfile.Telephone;
+                retVal.CustomerNumber = csProfile.DefaultCustomer;
+                retVal.BranchId = userBranch;
+                retVal.RoleName = userRole;
+                retVal.DSMRole = dsmRole;
+                retVal.DSRNumber = dsrNumber;
+                retVal.DSMNumber = dsmNumber;
+                //retVal.UserCustomers = userCustomers;
+                retVal.ImageUrl = AddProfileImageUrl(Guid.Parse(csProfile.Id));
+                retVal.UserName = adUser.SamAccountName;
+                retVal.UserNameToken = tokenBase64;
+                retVal.IsKBITCustomer = isKbitCustomer;
+                retVal.IsPowerMenuCustomer = isPowerMenuCustomer;
+                retVal.PowerMenuPermissionsUrl = (isPowerMenuCustomer) ? String.Format(Configuration.PowerMenuPermissionsUrl, csProfile.Email) : "";
+                retVal.PowerMenuLoginUrl = (isInternalUser) ? "" : GetPowerMenuLoginUrl(Guid.Parse(csProfile.Id), csProfile.Email, adUser.SamAccountName);
+                retVal.PowerMenuGroupSetupUrl = (isPowerMenuAdmin) ? String.Format(Configuration.PowerMenuGroupSetupUrl) : "";
 #if DEMO
 		    retVal.IsDemo = true;
 #endif
-				if (isInternalUser)
-				{
-					retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
-					if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAliasModel() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
-				}
+                if (isInternalUser) {
+                    retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
+                    if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAliasModel() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
+                }
 
-				return retVal;
-			}
-			catch (Exception ex)
-			{
+                return retVal;
+            } catch (Exception ex) {
 
-				_eventLog.WriteErrorLog(string.Format("Error retrieving user {0} information", csProfile.Email), ex);
-				return null;
+                _eventLog.WriteErrorLog(string.Format("Error retrieving user {0} information", csProfile.Email), ex);
+                return null;
 
-			}
+            }
         }
 
         private string GenerateTemporaryPassword() {
@@ -915,21 +892,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             var usersWithAccess = new List<UserProfile>();
 
-			try
-			{
-				foreach (var user in internalUsers)
-				{
+			try {
+				foreach (var user in internalUsers) {
 					var userProfile = FillUserProfile(user);
 					if (userProfile == null) continue; //User not found
+
 					var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null);
-					if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any())
-					{
+					if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any()) {
 						usersWithAccess.Add(userProfile);
 					}
 				}
-			}
-			catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				_eventLog.WriteErrorLog(string.Format("Error retrieving internal users for {0}-{1}", customerNumber, branchId), ex);
 			}
 
