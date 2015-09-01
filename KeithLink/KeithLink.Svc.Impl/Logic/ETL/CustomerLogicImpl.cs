@@ -256,6 +256,10 @@ namespace KeithLink.Svc.Impl.ETL
                                 , [u_regional_id]
                                 , [u_regional_number]
                                 , [u_is_keithnet_customer]
+                                , [u_national_id_desc]
+                                , [u_national_numbersub_desc]
+                                , [u_regional_id_desc]
+                                , [u_regional_number_desc]
                            )
                             VALUES ( ");
 
@@ -311,6 +315,11 @@ namespace KeithLink.Svc.Impl.ETL
                 if (org.RegionalNumber != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.RegionalNumber))); else query.Append(",null");
                 if (org.IsKeithnetCustomer != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.IsKeithnetCustomer))); else query.Append(",null");
 
+                if (org.NationalIdDesc != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.NationalIdDesc))); else query.Append(",null");
+                if (org.NationalNumberSubDesc != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.NationalNumberSubDesc))); else query.Append(",null");
+                if (org.RegionalIdDesc != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.RegionalIdDesc))); else query.Append(",null");
+                if (org.RegionalNumberDesc != null) query.Append(String.Format(",'{0}'", ToSQLFormat(org.RegionalNumberDesc))); else query.Append(",null");
+
                 returnVal.Add("OrganizationId", newId);
             }
             else
@@ -344,6 +353,11 @@ namespace KeithLink.Svc.Impl.ETL
                 if (org.RegionalId != null) query.Append(String.Format(",[u_regional_id] = '{0}'", org.RegionalId));
                 if (org.RegionalNumber != null) query.Append(String.Format(",[u_regional_number] = '{0}'", ToSQLFormat(org.RegionalNumber)));
                 if (org.IsKeithnetCustomer != null) query.Append(String.Format(",[u_is_keithnet_customer] = '{0}'", ToSQLFormat(org.IsKeithnetCustomer)));
+
+                if (org.NationalIdDesc != null) query.Append(String.Format(",[u_national_id_desc] = '{0}'", ToSQLFormat(org.NationalIdDesc)));
+                if (org.NationalNumberSubDesc != null) query.Append(String.Format(",[u_national_numbersub_desc] = '{0}'", ToSQLFormat(org.NationalNumberSubDesc)));
+                if (org.RegionalIdDesc != null) query.Append(String.Format(",[u_regional_id_desc] = '{0}'", ToSQLFormat(org.RegionalIdDesc)));
+                if (org.RegionalNumberDesc != null) query.Append(String.Format(",[u_regional_number_desc] = '{0}'", ToSQLFormat(org.RegionalNumberDesc)));
 
                 returnVal.Add("OrganizationId", org.Id);
             }
