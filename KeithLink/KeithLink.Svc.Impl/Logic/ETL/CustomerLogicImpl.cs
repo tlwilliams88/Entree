@@ -147,25 +147,6 @@ namespace KeithLink.Svc.Impl.ETL
                                 UpdateSingleProfileProperty(ProfileObjectType.Organization, "u_preferred_address", addressValues["AddressId"].ToString(), orgValues["OrganizationId"].ToString());
                             }
                         }
-<<<<<<< HEAD
-                        
-=======
-
-                        AddressProfiles address = addressesForImport.Where(x => x.Description == org.CustomerNumber && x.AddressType == org.BranchNumber).FirstOrDefault();
-                        addressProfile.Properties["GeneralInfo.address_name"].Value = address.AddressName;
-                        addressProfile.Properties["GeneralInfo.address_line1"].Value = address.Line1;
-                        addressProfile.Properties["GeneralInfo.address_line2"].Value = address.Line2;
-                        addressProfile.Properties["GeneralInfo.city"].Value = address.City;
-                        addressProfile.Properties["GeneralInfo.region_code"].Value = address.StateProvinceCode;
-                        addressProfile.Properties["GeneralInfo.postal_code"].Value = address.ZipPostalCode;
-                        addressProfile.Properties["GeneralInfo.tel_number"].Value = address.Telephone;
-                        addressProfile.Update();
-
-                        prof.Update();
-
-                        //temporarily removed for performance
-                        //CompareExistingToUpdatedOrganization(org);
->>>>>>> origin/hotfix_slowNotifications
                     }
                     catch (Exception ex)
                     {
