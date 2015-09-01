@@ -10,7 +10,7 @@
 
       <div 
         style="display:inline-block;" 
-        ng-show="selectedList" 
+        ng-if="selectedList" 
         ng-if="::selectedList.permissions.canDeleteList || selectedList.permissions.canRenameList">
         
         <a 
@@ -30,14 +30,14 @@
 
     </div>
 
-    <form name="renameListForm" class="style-validation-errors inline-header-form nowrap" ng-show="selectedList.isRenaming">
+    <form name="renameListForm" class="style-validation-errors inline-header-form nowrap" ng-if="selectedList.isRenaming">
       <input 
         no-duplicates="name" 
         collection="lists" 
         type="text" 
         focus-me="selectedList.isRenaming" 
         required 
-        ng-model="selectedList.name" 
+        ng-model-options="{ debounce: 1000 }" ng-model="selectedList.name" 
         name="listName" 
         id="listName" 
         class="input-lg form-control" />
@@ -52,8 +52,8 @@
       
       <a ng-click="cancelRenameList()"><span class="large-icon text-red icon-cross"></span></a>
       
-      <span class="form-error-message" ng-show="renameListForm.listName.$error.required">List name is required</span>
-      <span class="form-error-message" ng-show="renameListForm.listName.$error.noDuplicates">Duplicate list name</span>
+      <span class="form-error-message" ng-if="renameListForm.listName.$error.required">List name is required</span>
+      <span class="form-error-message" ng-if="renameListForm.listName.$error.noDuplicates">Duplicate list name</span>
     </form>
 
   </div>
@@ -122,7 +122,7 @@
    
 <!-- 
   <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__button button-right">
-    Lists <span ng-show="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
+    Lists <span ng-if="filterCount>0">({{filterCount}})</span><span class="icon-arrow-down5"></span>
   </div> -->
 
   <div class="btn-group pull-right" dropdown is-open="status.listsisopen">
@@ -143,7 +143,7 @@
 
 </div>
 
-<div class="custom-lists hidden-md hidden-lg" ng-show="displayedListNames">
+<div class="custom-lists hidden-md hidden-lg" ng-if="displayedListNames">
   <div class="btn-group-vertical list-names text-blue">
     <button 
       type="button" 
@@ -186,7 +186,7 @@
             </div>
             <h5>
               <a 
-                ng-show="lists.length > numberListNamesToShow" 
+                ng-if="lists.length > numberListNamesToShow" 
                 ng-click="showMoreListNames = !showMoreListNames">
                 {{showMoreListNames ? '+ Show More' : '- Show Less'}}
               </a>
@@ -251,13 +251,13 @@
     <div class="padding-top-sm padding-top-xs items col-md-10 col-xs-12">
       
       <div class="hidden-print">
-        <p class="text-red" ng-show="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
+        <p class="text-red" ng-if="listForm.$invalid && listForm.$dirty" >List has some errors. Please fix these before saving.</p>
       </div>
       
       <form name="listSearchForm" class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
         <div class="input-group input-group-lg">
           <input 
-            ng-model="listSearchTerm"
+            ng-model-options="{ debounce: 1000 }" ng-model="listSearchTerm"
             type="text" 
             class="form-control" 
             placeholder="Search current list by keyword, item # or label" />
@@ -270,7 +270,7 @@
       </form>
 
       <!-- Multi-select menu -->
-      <div class="hidden-print row" ng-show="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+      <div class="hidden-print row" ng-if="(selectedList.items | filter:{isSelected:'true'}).length > 0">
         <div class="col-xs-12 col-sm-6">
           <div class="btn-group custom-lists__multi-actions">
             <!-- Add to List -->
@@ -314,7 +314,7 @@
           <input 
             type="text" 
             class="input-lg form-control" 
-            ng-model="newLabel" 
+            ng-model-options="{ debounce: 1000 }" ng-model="newLabel" 
             focus-me="multiSelect.addingNewLabel" 
             placeholder="Add New Label..." />
         </div>
@@ -358,12 +358,12 @@
             stop: stopReorder, 
             tolerance: 'pointer', 
             containment: 'document' }" 
-          ng-model="selectedList.items">
+          ng-model-options="{ debounce: 1000 }" ng-model="selectedList.items">
 
           <thead>
             <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
-                <input class="hidden-print" type="checkbox" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
+                <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort.sortDescending)"> 
                   #
                   <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span>
@@ -407,8 +407,9 @@
             </tr> 
           </thead>
 
-          <tbody ng-class="{ 'item-selected': item.isSelected }" 
-              ng-repeat="item in ::selectedList.items | filter:{listitemid: '!!', isdeleted:false} track by item.listitemid" 
+          <tbody  
+              ng-class="{ 'item-selected': item.isSelected }" 
+              ng-repeat="item in selectedList.items | filter:{listitemid: '!!', isdeleted:false} track by item.listitemid" 
               data-product="{{item}}" 
               data-drag="dragEnabled" 
               data-jqyoui-options="{
@@ -420,10 +421,13 @@
               jqyoui-draggable="{
                 onStart: 'setIsDragging(true)', 
                 onStop: 'setIsDragging(false)'}">
+
+
+                
            
-            <tr ng-class="::{ odd : $odd, even: $even}">
+            <tr ng-if="item.showBody" ng-class="::{ odd : $odd, even: $even}">
               <td class="hidden-drag bek-drag-handle large-icon icon-col">
-                <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model="item.isSelected" no-dirty-check>
+                <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model-options="{ debounce: 1000 }" ng-model="item.isSelected" no-dirty-check>
                 <span style="font-size:11px;">
                   {{item.position}}
                 </span>
@@ -455,9 +459,9 @@
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
+              <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
                 <div ng-hide="item.isEditing" class="bek-no-drag full-width-mobile">
-                  <select name="" id="" ng-model="item.label" ng-options="label for label in ::labels track by label">
+                  <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in ::labels track by label">
                     <option value="">Select A Label...</option>
                   </select>
                   <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
@@ -472,27 +476,27 @@
                     focus-me="item.isEditing" 
                     placeholder="New Label..." 
                     ng-required="item.isEditing" 
-                    ng-model="item.editLabel" />
+                    ng-model-options="{ debounce: 1000 }" ng-model="item.editLabel" />
 
                   <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                 </ng-form>
               </td>
-              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle" ng-show="::(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
+              <td class="input-col nowrap hidden-xs hidden-sm hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels)">
                 {{::item.label}}
               </td>
               <!-- Label for Print -->
-              <td class="visible-print" ng-show="::(selectedList.permissions.canSeeLabels)">
+              <td class="visible-print" ng-if="::(selectedList.permissions.canSeeLabels)">
                 {{::item.label}}
               </td>
               </td>
               <td class="input-col hidden-mobile-visible-print" ng-if="::(selectedList.name !== 'History' && !selectedList.is_contract_list)">
               <ng-form name="eachForm" ng-if="::(item.hasPackagePrice)">
-                <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model="item.each" id="each" name="each" />
+                <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model-options="{ debounce: 1000 }" ng-model="item.each" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
               </td>
               <!-- Parlevel -->
-              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-show="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
+              <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
                 <ng-form name="parlevelForm">
                   <input
                     type="text" 
@@ -507,7 +511,7 @@
                     name="parlevel" 
                     type="text" 
                     allow-one-positive-decimal 
-                    ng-model="item.parlevel" 
+                    ng-model-options="{ debounce: 1000 }" ng-model="item.parlevel" 
                     ng-blur="initParLvl(item)"
                     class="text-right input-number bek-no-drag" />
                 </ng-form>
@@ -577,7 +581,7 @@
                       <td ng-if="::(selectedList.permissions.canEditLabels)">
                         <div ng-hide="item.isEditing" class="form-control-group__input">
                           <div class="select-div bek-no-drag hidden-print">
-                            <select name="" id="" ng-model="item.label" ng-options="label for label in labels">
+                            <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in labels">
                               <option value="">Select A Label...</option>
                             </select>
                           </div>
@@ -594,7 +598,7 @@
                             class="form-control edit-label bek-no-drag" 
                             placeholder="New Label..." 
                             ng-required="item.isEditing" 
-                            ng-model="item.editLabel" />
+                            ng-model-options="{ debounce: 1000 }" ng-model="item.editLabel" />
                           <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
@@ -606,7 +610,7 @@
                     <td>Each</td>
                     <td>
                       <ng-form name="eachForm_mobile">
-                        <input type="checkbox" ng-model="item.each" ng-checked = "!item.hasCasePrice || item.each" class="mousetrap" ng-disabled="::(!item.hasCasePrice)" id="each" name="each" />
+                        <input type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="item.each" ng-checked = "!item.hasCasePrice || item.each" class="mousetrap" ng-disabled="::(!item.hasCasePrice)" id="each" name="each" />
                       </ng-form>
                     </td>
                 </tr>
@@ -619,7 +623,7 @@
                             name="parlevel" 
                             type="text"
                             allow-one-positive-decimal 
-                            ng-model="item.parlevel" 
+                            ng-model-options="{ debounce: 1000 }" ng-model="item.parlevel" 
                             ng-blur="initParLvl(item)"
                             class="input-number input-number-mobile text-right bek-no-drag form-control" 
                             />
@@ -638,9 +642,96 @@
                 </table>
               </td>
             </tr>
-          </tbody>
 
-          <tfoot ng-if="::((selectedList.items.length - 1) <= 0 && !loadingResults)">
+
+
+
+            <tr ng-if="!item.showBody" ng-class="{ odd : $odd, even: $even}" ng-mouseenter="item.showBody = true" ng-focus="item.showBody = true">
+              <td class=" large-icon icon-col">
+                <input type="checkbox" class="hidden-print ">
+                <span style="font-size:11px;">
+                  {{item.position}}
+                </span>
+                <span favorite-icons></span>
+              </td>
+              <td >
+                <a>{{::item.itemnumber}}</a>
+              </td>
+              <td >
+                {{::item.name}}
+              </td>
+              <td class="hidden-mobile-visible-print">
+                {{::item.brand_extended_description}}
+              </td>
+              <td class="hidden-mobile-visible-print">
+                {{::item.class}}
+              </td>
+              <td class="hidden-mobile-visible-print">
+                {{::item.packsize}}
+              </td>
+              <!-- Notes -->
+              <td class="hidden-mobile-visible-print notes-col ">
+                {{::item.notes}}
+              </td>
+              <td class="hidden-sm hidden-xs" >                
+              <td class="hidden-mobile-visible-print" item-icons></td>
+              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm">
+                {{::item[selectedList.permissions.alternativeFieldName]}}
+              </td>
+              <!-- Label -->
+              <td class="input-col nowrap hidden-sm hidden-xs" ng-if="::selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels">
+                {{::item.label}}
+              </td>
+              <td class="input-col nowrap hidden-xs hidden-sm" ng-if="::selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels">
+                {{::item.label}}
+              </td>
+              <!-- Label for Print -->
+              <td class="visible-print" ng-if="::selectedList.permissions.canSeeLabels">
+                {{::item.label}}
+              </td>
+              </td>
+              <td class="input-col hidden-mobile-visible-print" ng-if="selectedList.name !== 'History' && !selectedList.is_contract_list">
+              <ng-form ng-if="item.hasPackagePrice">
+                <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" />
+                <label for="each"></label>
+              </ng-form>
+              </td>
+              <!-- Parlevel -->
+              <td class="input-col hidden-sm hidden-xs" ng-if="::selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel">
+                <ng-form name="parlevelForm">
+                  <input
+                    type="text" 
+                    ng-if="!item.showParLevelInput && !(item.parlevel > 0)"                  
+                    class="text-right input-number"
+                   />                 
+                </ng-form>
+              </td>
+
+              <td class="input-col hidden-sm hidden-xs" ng-if="::selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel">
+                {{::item.parlevel}}
+              </td>
+              <!-- Parlevel for Print -->
+              <td class="visible-print" ng-if="::selectedList.permissions.canSeeParlevel">
+                {{::item.parlevel}}
+              </td>
+
+              <td class="nowrap hidden-print large-icon icon-col">
+ 
+                <a class="icon-plus2" ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" ng-if="!item.useContextMenu"></a>
+                <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }"><span class="text-red icon-cross"></span></a>                
+                <span 
+                  ng-if="!hideDragToReorder && selectedList.permissions.canReorderItems" 
+                  class="hidden-xs hidden-sm icon-list2 " 
+                 >
+                </span>
+                
+                <a ><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
+              </td>
+
+            </tr>
+          </tbody> 
+
+          <tfoot ng-if="(selectedList.items.length - 1) <= 0 && !loadingResults">
             <tr>
               <td colspan="12">
                 No products to display.
@@ -654,3 +745,5 @@
     </div>
   </div>
 </div>
+
+ 
