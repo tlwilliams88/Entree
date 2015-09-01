@@ -160,7 +160,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 // send messages to providers...
                 if (recipients != null && recipients.Count > 0)
                 {
-                    base.SendMessage(recipients, message);
+                    try
+                    {
+                        base.SendMessage(recipients, message);
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+                    } 
                 }
             }
         }
@@ -195,7 +202,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 // send messages to providers...
                 if (recipients != null && recipients.Count > 0)
                 {
-                    base.SendMessage(recipients, message);
+                    try
+                    {
+                        base.SendMessage(recipients, message);
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+                    } 
                 }
             }
         }

@@ -114,7 +114,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                         NotificationType = NotificationType.HasNews
                     };
 
-                    base.SendMessage(recipients, msg);
+                    try
+                    {
+                        base.SendMessage(recipients, msg);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+                    } 
                 }
             }
         }
@@ -157,7 +164,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                         NotificationType = NotificationType.HasNews
                     };
 
-                    base.SendMessage(recipients, msg);
+                    try
+                    {
+                        base.SendMessage(recipients, msg);
+                    }
+                    catch (Exception ex)
+                    {
+                        eventLogRepository.WriteErrorLog(String.Format("Error sending messages {0} {1}", ex.Message, ex.StackTrace));
+                    } 
                 }
             }
         }

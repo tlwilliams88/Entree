@@ -50,12 +50,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 //get all internal users and no external users
                 users.UserProfiles.AddRange(userProfileLogic.GetInternalUsersWithAccessToCustomer(customer.CustomerNumber, customer.CustomerBranch)); //Retreive any internal users that have access to this customer
             }
-            if (getOnlyExternal && !dsrDSMOnly && !getOnlyInternal)
+            else if (getOnlyExternal && !dsrDSMOnly && !getOnlyInternal)
             {
                 //get all external users and no internal users
                 users = userProfileLogic.GetUsers(new Core.Models.Profile.UserFilterModel() { CustomerId = customer.CustomerId });
             }
-            if (dsrDSMOnly && !getOnlyExternal && !getOnlyInternal)
+            else if (dsrDSMOnly && !getOnlyExternal && !getOnlyInternal)
             {
                 //Only load DSRs and DSMs for the customer
 

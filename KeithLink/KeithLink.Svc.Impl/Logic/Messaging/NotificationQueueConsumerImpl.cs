@@ -94,23 +94,28 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
 
         public string ConsumeMessageFromQueueForExternalUsers() {
             return this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
-                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotificationExternal);
         }
 
         public string ConsumeMessageFromQueueForInternalUsers()
         {
             return this.genericQueueRepository.ConsumeFromQueue(Configuration.RabbitMQNotificationServer, Configuration.RabbitMQNotificationUserNameConsumer,
-                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotificationExternal);
+                Configuration.RabbitMQNotificationUserPasswordConsumer, Configuration.RabbitMQVHostNotification, Configuration.RabbitMQQueueNotification);
         }
 
-        public void StopExternal() {
+        public void Stop()
+        {
+            StopExternal();
+            StopInternal();
+        }
+        private void StopExternal() {
             if (listenForQueueMessagesTaskForExternalUsers != null && doListenForMessagesInTaskForExternalUsers == true) {
                 doListenForMessagesInTaskForExternalUsers = false;
                 listenForQueueMessagesTaskForExternalUsers.Wait();
             }
         }
 
-        public void StopInternal()
+        private void StopInternal()
         {
             if (listenForQueueMessagesTaskForInternalUsers != null && doListenForMessagesInTaskForInternalUsers == true)
             {
