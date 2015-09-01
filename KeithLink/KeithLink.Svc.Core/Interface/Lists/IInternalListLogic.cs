@@ -22,7 +22,9 @@ namespace KeithLink.Svc.Core.Interface.Lists
         void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote);
 
 		void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
-		
+
+        List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
+
         long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 		
 		void DeleteItem(long Id);
@@ -32,8 +34,12 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void DeleteItemNumberFromList(long Id, string itemNumber);
 		
         void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
-		
-		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
+
+        List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+
+        List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
+
+        List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
         
         ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 
@@ -42,26 +48,21 @@ namespace KeithLink.Svc.Core.Interface.Lists
         List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
         
 		List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
-		
+
+        PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, PagingModel paging);
+
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
+
+        List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
         List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo);
 
         List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
 
+        void ShareList(ListCopyShareModel shareListModel);
+
         void UpdateItem(ListItemModel item);
 		
         void UpdateList(ListModel userList);
-
-		List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
-		void ShareList(ListCopyShareModel shareListModel);
-
-		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
-
-		List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
-
-		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, PagingModel paging);
-
-		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 	}
 }

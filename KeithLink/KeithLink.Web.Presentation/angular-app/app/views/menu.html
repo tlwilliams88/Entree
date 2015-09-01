@@ -43,6 +43,13 @@
             ng-click="isSidebarOpen = false"
             ui-sref="menu.userprofile">
             <li>Profile Settings</li>
+          </button>          
+          <button
+            class="btn-no-style"
+            type="button"
+            ng-click="isSidebarOpen = false"
+            ui-sref="menu.applicationsettings">
+            <li>Application Settings</li>
           </button>
           <button
             class="btn-no-style"
@@ -311,6 +318,7 @@
                 <span ng-if="userProfile.displayRole === 'buyer'" class="user-info__job-title">Shopper</span>
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
+                  <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
                   <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
                   <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>

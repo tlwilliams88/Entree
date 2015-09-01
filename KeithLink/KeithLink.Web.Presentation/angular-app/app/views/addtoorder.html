@@ -229,12 +229,12 @@
               <input 
                   type="text" 
                   id="onHand"
-                  onfocus="this.select();"                 
+                  ng-focus="this.select(); onItemOnHandAmountChanged(item)"                 
                   ng-blur="confirmQuantity('onhand', item, item.onhand)"
                   class="dropdown-toggle input-number text-right mousetrap" 
                   allow-one-positive-decimal
                   ng-model="item.onhand"
-                  ng-init="item.onhand=item.onhand + 0"                        
+                  ng-init="item.onhand=item.onhand + 0"
                   name="onhand" 
                   ng-change="onItemOnHandAmountChanged(item)"/>
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  

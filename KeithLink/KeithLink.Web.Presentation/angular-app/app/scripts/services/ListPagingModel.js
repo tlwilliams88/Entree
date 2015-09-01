@@ -7,14 +7,14 @@
  * # ListPagingModel
  * Service of the bekApp
  */
-angular.module('bekApp').factory('ListPagingModel', ['ListService', function (ListService) {
+angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorage', function (ListService, LocalStorage) {
 
   // Define the constructor function.
   function ListPagingModel( listId, setListItems, appendListItems, startLoading, stopLoading, sort ) {
     
     this.listId = listId;
 
-    this.pageSize = 30;
+    this.pageSize = LocalStorage.getPageSize() || 30;
     this.pageIndex = 0;
     this.searchTerm = '';
     this.sort = sort;
@@ -27,24 +27,24 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
 
   ListPagingModel.prototype = {
 
-    loadList: function(appendData, usemessage) {
+    loadList: function(appendData, usemessage, page) {
       var setData = this.setListItems;
       if (appendData) {
         setData = this.appendListItems;
       }
 
-      var sortArray = [{
-        field: this.sort.field,
-        order: this.sort.sortDescending ? 'desc' : 'asc'
-      }];
-
-      var params = {
+      var filterObject = LocalStorage.getDefaultSort();
+      
+      var sortArray = ListService.sortObject;
+ 
+       var params = {
         size: this.pageSize,
         from: this.pageIndex,
         terms: this.searchTerm,
         sort: sortArray,
         filter: this.filter        
-      };
+       };
+
       if(usemessage){
         params.message = 'Loading List...'
       }
@@ -100,6 +100,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
     sortListItems: function(sort) {
       this.pageIndex = 0;
       this.sort = sort;
+      ListService.sortObject = sort
       this.loadList();
     },
 
@@ -107,18 +108,25 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', function (Li
       this.pageIndex = 0;
     },
 
-    loadMoreData: function(results, total, loading, deletedItems) {
+    loadMoreData: function(results, total, loading, deletedItems, page) {
       if ( (!results || (results.length + deletedItems.length) < total) && !loading ) {
-        this.pageIndex += this.pageSize;
-        this.loadList(true);
+
+        var pageSize = parseInt(LocalStorage.getPageSize());
+        var sortOrder = LocalStorage.getDefaultSort();
+
+        if(pageSize > 0){
+          this.pageSize = pageSize;
+        }
+        this.pageIndex += this.pageSize; 
+        this.loadList(true, false, page);
       }
     },
 
-    loadAllData: function(results, total, loading) {
+    loadAllData: function(results, total, loading, page) {
       if ( (!results || (results.length < total)) && !loading ) {
         this.pageIndex = results.length;
         this.pageSize = total - results.length;
-        this.loadList(true,true);
+        this.loadList(true,true, page);
       }
     },
 

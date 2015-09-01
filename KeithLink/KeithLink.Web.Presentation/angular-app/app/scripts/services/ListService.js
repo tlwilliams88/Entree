@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List',
-    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
+    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -220,31 +220,36 @@ angular.module('bekApp')
 
         // accepts listId (guid), paging params
         // returns paged list object
-        getList: function(listId, params) {
-          if (!params) {
-            params = {
-              size: 30,
-              from: 0
-            };
-          }
-          return $http.post('/list/' + listId, params).then(function(response) {
-            var list = response.data;
-            if (!list) {
-              return $q.reject('No list found.');
+        getList: function(listId, params) {         
+
+            if (!params) {
+              var pageSize = LocalStorage.getPageSize() || 30;             
+              params = {
+                size: pageSize,
+                from: 0
+              };             
             }
-            
-            // transform paged data
-            list.itemCount = list.items.totalResults;
-            list.items = list.items.results;
 
-            // get calculated fields
-            PricingService.updateCaculatedFields(list.items);
-            updateListPermissions(list);
+            Service.sortObject = params.sort;
+            return $http.post('/list/' + listId, params).then(function(response) {
+              var list = response.data;
+              if (!list) {
+                return $q.reject('No list found.');
+              }
 
-            Service.updateCache(list);
+              // transform paged data
+              list.itemCount = list.items.totalResults;
+              list.items = list.items.results;
 
-            return list;
-          });
+              // get calculated fields
+              PricingService.updateCaculatedFields(list.items);
+              updateListPermissions(list);
+
+              Service.updateCache(list);
+
+              return list;
+            });
+                              
         },
 
         findListById: function(listId) {
@@ -313,7 +318,8 @@ angular.module('bekApp')
         
         remapItems: function(item) {
           return {
-            itemnumber: item.itemnumber
+            itemnumber: item.itemnumber,
+            each: item.each
           };
         },
         
@@ -406,8 +412,9 @@ angular.module('bekApp')
 
         // accepts list object
         // returns promise and updated list object
-        updateList: function(list, getEntireList) {
+        updateList: function(list, getEntireList, params) {
           list.message = 'Saving list...';
+
           return List.update(null, list).$promise.then(function(response) {
             
             // update labels
@@ -421,7 +428,7 @@ angular.module('bekApp')
             if (getEntireList) {
               promise = Service.getListWithItems(response.listid, { includePrice: false });
             } else {
-              promise = Service.getList(response.listid);
+              promise = Service.getList(response.listid, params);
             }
 
             return promise.then(function(list) {
@@ -535,7 +542,8 @@ angular.module('bekApp')
           var newItems = [];
           items.forEach(function(item) {
             newItems.push({
-              itemnumber: item.itemnumber
+              itemnumber: item.itemnumber,
+              each: item.each
             });
           });
 

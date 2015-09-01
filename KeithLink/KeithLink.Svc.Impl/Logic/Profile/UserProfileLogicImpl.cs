@@ -4,8 +4,9 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
-using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Enumerations.Messaging;
+using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.PowerMenu;
@@ -504,13 +505,13 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 5/1/2015 - add DSR Alias support
         /// jwames - 5/10/2015 - cast to the DSR Alias Model
         /// </remarks>
-        public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account)
+        public Core.Models.Paging.PagedResults<Customer> CustomerSearch(UserProfile user, string searchTerms, Core.Models.Paging.PagingModel paging, string account, CustomerSearchType searchType)
         {
             if (string.IsNullOrEmpty(searchTerms))
                 searchTerms = "";
 
             if (!string.IsNullOrEmpty(account))
-                return _customerRepo.GetPagedCustomersForAccount(paging, searchTerms, account.ToGuid().ToCommerceServerFormat());
+                return _customerRepo.GetPagedCustomersForAccount(paging, searchTerms, account.ToGuid().ToCommerceServerFormat(), searchType);
 
             if (IsInternalAddress(user.EmailAddress))
             {
@@ -529,8 +530,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                                                   select new Dsr() {
                                                                       Branch = d.BranchId,
                                                                       DsrNumber = d.DsrNumber
-                                                                  })
-                                                                 .ToList());
+                                                                  }).ToList(),
+                                                                  searchType);
                     }
                 }
                 if (user.IsDSM)
@@ -538,17 +539,17 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                     if (!String.IsNullOrEmpty(user.DSMNumber))
                     {
                         // lookup customers by their assigned dsr number
-                        returnValue = _customerRepo.GetPagedCustomersForDSM(paging, user.DSMNumber, user.BranchId, searchTerms);
+                        returnValue = _customerRepo.GetPagedCustomersForDSM(paging, user.DSMNumber, user.BranchId, searchTerms, searchType);
                     }
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF))
                 {
-                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms, searchType);
 
                 }
                 else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId == Constants.BRANCH_GOF))
                 {
-                    returnValue = _customerRepo.GetPagedCustomers(paging, searchTerms);
+                    returnValue = _customerRepo.GetPagedCustomers(paging, searchTerms, searchType);
                 }
 
                 if (returnValue.Results != null)
@@ -565,9 +566,9 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             } else { // external user
 				if (user.RoleName == Constants.ROLE_NAME_KBITADMIN)
-					return _customerRepo.GetPagedCustomers(paging, searchTerms);
+                    return _customerRepo.GetPagedCustomers(paging, searchTerms, searchType);
 				else
-					return _customerRepo.GetPagedCustomersForUser(paging, user.UserId, searchTerms);
+                    return _customerRepo.GetPagedCustomersForUser(paging, user.UserId, searchTerms, searchType);
             }
         }
         
@@ -929,7 +930,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 				{
 					var userProfile = FillUserProfile(user);
 					if (userProfile == null) continue; //User not found
-					var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null);
+					var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null, CustomerSearchType.Customer);
 					if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any())
 					{
 						usersWithAccess.Add(userProfile);
@@ -1723,7 +1724,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         //    _extAd.UpdateUserGroups(customerNames, roleName, emailAddress);
         //}
 
-        public List<SettingsModel> GetProfileSettings( Guid userId ) {
+        public List<SettingsModelReturn> GetProfileSettings( Guid userId ) {
             return _settingsLogic.GetAllUserSettings( userId );
         }
 
