@@ -129,6 +129,77 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 }
             }
         }
+
+        public void ProcessNotificationForExternalUsers(BaseNotification notification)
+        {
+            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.PaymentConfirmation)
+                throw new ApplicationException("notification/handler type mismatch");
+
+            // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
+            PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
+
+            // load up recipients, customer and message
+            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
+
+            if (customer == null)
+            {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                _log.WriteWarningLog(warningMessage.ToString());
+            }
+            else
+            {
+                List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer, false, false, true); 
+                Message message = GetEmailMessageForNotification(confirmation, customer);
+
+                // send messages to providers...
+                if (recipients != null && recipients.Count > 0)
+                {
+                    base.SendMessage(recipients, message);
+                }
+            }
+        }
+
+        public void ProcessNotificationForInternalUsers(BaseNotification notification)
+        {
+            if (notification.NotificationType != Core.Enumerations.Messaging.NotificationType.PaymentConfirmation)
+                throw new ApplicationException("notification/handler type mismatch");
+
+            // had to setup a translation for this type in Svc.Core.Extensions to deserialize the message with the concrete type
+            PaymentConfirmationNotification confirmation = (PaymentConfirmationNotification)notification;
+
+            // load up recipients, customer and message
+            Svc.Core.Models.Profile.Customer customer = _customerRepo.GetCustomerByCustomerNumber(confirmation.CustomerNumber, confirmation.BranchId);
+
+            if (customer == null)
+            {
+                System.Text.StringBuilder warningMessage = new StringBuilder();
+                warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Payment Confirmation notification.", notification.BranchId, notification.CustomerNumber);
+                warningMessage.AppendLine();
+                warningMessage.AppendLine();
+                warningMessage.AppendLine("Notification:");
+                warningMessage.AppendLine(notification.ToJson());
+
+                _log.WriteWarningLog(warningMessage.ToString());
+            }
+            else
+            {
+                List<Recipient> recipients = base.LoadRecipients(confirmation.NotificationType, customer, false, true, false);
+                Message message = GetEmailMessageForNotification(confirmation, customer);
+
+                // send messages to providers...
+                if (recipients != null && recipients.Count > 0)
+                {
+                    base.SendMessage(recipients, message);
+                }
+            }
+        }
+        
         #endregion
     }
 }
