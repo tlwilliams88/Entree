@@ -167,6 +167,161 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             //    }
             //}
         }
+
+        public void ProcessNotificationForExternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
+        {
+            if (notification.NotificationType != NotificationType.Eta) { throw new ApplicationException("notification/handler type mismatch"); }
+
+            EtaNotification eta = (EtaNotification)notification;
+
+            // load up recipients, customer and message
+            eventLogRepository.WriteInformationLog("Received ETA Message with " + eta.Orders.Count + " orders");
+            List<string> invoiceNumbers = eta.Orders.Select(x => x.OrderId).ToList();
+            var orders = orderHistoryRepository.Read(x => invoiceNumbers.Contains(x.InvoiceNumber)).ToList(); // get all orders for order ETAs
+
+            foreach (OrderHistoryHeader order in orders)
+            {
+                try
+                {
+                    var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
+
+                    if (etaInfo != null)
+                    {
+                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
+                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
+                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
+                        order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
+                        order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepository.WriteErrorLog("Error processing ETA notification for : " + order.InvoiceNumber + ".  " + ex.Message + ".  " + ex.StackTrace);
+                }
+            }
+
+            foreach (var order in orders)
+            {
+                try
+                {
+                    orderHistoryRepository.Update(order);
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepository.WriteErrorLog("Error saving ETA notification for : " + order.InvoiceNumber + ".  " + ex.Message + ".  " + ex.StackTrace);
+                }
+            }
+
+            unitOfWork.SaveChanges();
+
+            // send out notifications by customer - this may be enabled eventually, but for now, we just display the data in the UI
+            //List<string> customerNumbers = orders
+            //    .GroupBy(o => o.CustomerNumber)
+            //    .Select(grp => grp.First().CustomerNumber)
+            //    .ToList(); // get list of customer numbers
+
+            // for now, just update the order history entry with the currently estimated/scheduled/arrived times
+            //foreach (string customerNumber in customerNumbers) {
+            //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
+            //    if (customer == null) {
+            //        System.Text.StringBuilder warningMessage = new StringBuilder();
+            //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, notification.CustomerNumber);
+            //        warningMessage.AppendLine();
+            //        warningMessage.AppendLine();
+            //        warningMessage.AppendLine("Notification:");
+            //        warningMessage.AppendLine(notification.ToJson());
+
+            //        eventLogRepository.WriteWarningLog(warningMessage.ToString());
+            //    } else {
+            //external
+            //        List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer, false, false, true); 
+            //        Message message = GetEmailMessageForNotification(eta.Orders, orders.Where(o => o.CustomerNumber == customerNumber), customer);
+
+            //        // send messages to providers...
+            //        if (recipients != null && recipients.Count > 0) {
+            //            base.SendMessage(recipients, message);
+            //        }
+            //    }
+            //}
+        }
+        public void ProcessNotificationForInternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
+        {
+            if (notification.NotificationType != NotificationType.Eta) { throw new ApplicationException("notification/handler type mismatch"); }
+
+            EtaNotification eta = (EtaNotification)notification;
+
+            // load up recipients, customer and message
+            eventLogRepository.WriteInformationLog("Received ETA Message with " + eta.Orders.Count + " orders");
+            List<string> invoiceNumbers = eta.Orders.Select(x => x.OrderId).ToList();
+            var orders = orderHistoryRepository.Read(x => invoiceNumbers.Contains(x.InvoiceNumber)).ToList(); // get all orders for order ETAs
+
+            foreach (OrderHistoryHeader order in orders)
+            {
+                try
+                {
+                    var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
+
+                    if (etaInfo != null)
+                    {
+                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
+                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
+                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
+                        order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
+                        order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepository.WriteErrorLog("Error processing ETA notification for : " + order.InvoiceNumber + ".  " + ex.Message + ".  " + ex.StackTrace);
+                }
+            }
+
+            foreach (var order in orders)
+            {
+                try
+                {
+                    orderHistoryRepository.Update(order);
+                }
+                catch (Exception ex)
+                {
+                    eventLogRepository.WriteErrorLog("Error saving ETA notification for : " + order.InvoiceNumber + ".  " + ex.Message + ".  " + ex.StackTrace);
+                }
+            }
+
+            unitOfWork.SaveChanges();
+
+            // send out notifications by customer - this may be enabled eventually, but for now, we just display the data in the UI
+            //List<string> customerNumbers = orders
+            //    .GroupBy(o => o.CustomerNumber)
+            //    .Select(grp => grp.First().CustomerNumber)
+            //    .ToList(); // get list of customer numbers
+
+            // for now, just update the order history entry with the currently estimated/scheduled/arrived times
+            //foreach (string customerNumber in customerNumbers) {
+            //    Svc.Core.Models.Profile.Customer customer = customerRepository.GetCustomerByCustomerNumber(notification.CustomerNumber, notification.BranchId);
+            //    if (customer == null) {
+            //        System.Text.StringBuilder warningMessage = new StringBuilder();
+            //        warningMessage.AppendFormat("Could not find customer({0}-{1}) to send Has News notification.", notification.BranchId, notification.CustomerNumber);
+            //        warningMessage.AppendLine();
+            //        warningMessage.AppendLine();
+            //        warningMessage.AppendLine("Notification:");
+            //        warningMessage.AppendLine(notification.ToJson());
+
+            //        eventLogRepository.WriteWarningLog(warningMessage.ToString());
+            //    } else {
+            //        List<Recipient> recipients = base.LoadRecipients(orderConfirmation.NotificationType, customer, false, true, false);
+            //        Message message = GetEmailMessageForNotification(eta.Orders, orders.Where(o => o.CustomerNumber == customerNumber), customer);
+
+            //        // send messages to providers...
+            //        if (recipients != null && recipients.Count > 0) {
+            //            base.SendMessage(recipients, message);
+            //        }
+            //    }
+            //}
+        }
+        
         #endregion
     }
 }

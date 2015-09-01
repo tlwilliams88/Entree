@@ -98,6 +98,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_REPROCESS = "RabbitMQOrderReprocessQueue";
         private const string KEY_RABBITMQ_QUEUE_NOTIFICATION = "RabbitMQNotificationQueue";
+        private const string KEY_RABBITMQ_QUEUE_NOTIFICATION_EXTERNAL = "RabbitMQNotificationQueueExternal";
         private const string KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST = "RabbitMQUpdateRequestQueue";
         private const string KEY_RABBITMQ_SERVER_ACCESS = "RabbitMQAccessServer";
         private const string KEY_RABBITMQ_SERVER_ORDER = "RabbitMQOrderServer";
@@ -796,6 +797,14 @@ namespace KeithLink.Svc.Impl
             get
             {
                 return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueNotificationExternal
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION_EXTERNAL, string.Empty);
             }
         }
 
