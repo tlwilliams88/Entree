@@ -101,6 +101,28 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         }
         
         private dynamic BuildFunctionScoreQuery(SearchInputModel searchModel, ExpandoObject filterTerms, List<string> fieldsToSearch, string searchExpression) {
+            List<dynamic> shouldQueries = new List<dynamic>();
+            shouldQueries.Add(
+                new {
+                    query_string = new {
+                        fields = fieldsToSearch,
+                        query = searchExpression,
+                        use_dis_max = true
+                    }
+                }
+            );
+
+            shouldQueries.Add(
+                new {
+                    match = new {
+                        name_ngram_analyzed = new {
+                            query = searchExpression,
+                            @operator = "and",
+                            minimum_should_match = "75%"
+                        }
+                    }
+                }
+            );
             return new {
                 from = searchModel.From,
                 size = searchModel.Size,
@@ -109,10 +131,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         query = new {
                             filtered = new {
                                 query = new {
-                                    query_string = new {
-                                        fields = fieldsToSearch,
-                                        query = searchExpression,
-                                        use_dis_max = true
+                                    @bool = new {
+                                        should = shouldQueries
                                     }
                                 },
                                 filter = new { query = filterTerms }
@@ -134,24 +154,24 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
 			if(!string.IsNullOrEmpty(searchTerms))
 			{
-                boosts.Add(new {
-                    filter = new {
-                        query = new {
-                            @bool = new {
-                                must = new List<dynamic>() { 
-                                    new { 
-                                        match = new { 
-                                            name_ngram_analyzed = new { 
-                                                query = searchTerms.ToLower(), @operator = "and", minimum_should_match = "75%" 
-                                            } 
-                                        } 
-                                    } 
-                                }
-                            }
-                        }
-                    },
-                    boost_factor = 1600
-                });
+                //boosts.Add(new {
+                //    filter = new {
+                //        query = new {
+                //            @bool = new {
+                //                must = new List<dynamic>() { 
+                //                    new { 
+                //                        match = new { 
+                //                            name_ngram_analyzed = new { 
+                //                                query = searchTerms.ToLower(), @operator = "and", minimum_should_match = "75%" 
+                //                            } 
+                //                        } 
+                //                    } 
+                //                }
+                //            }
+                //        }
+                //    },
+                //    boost_factor = 1600
+                //});
 				boosts.Add(new
 				{
 					filter = new { query = new { @bool = new { should = new List<dynamic>() { new { match_phrase_prefix = new { name_not_analyzed = searchTerms.ToLower() } } } } } },
