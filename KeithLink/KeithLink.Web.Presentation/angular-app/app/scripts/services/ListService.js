@@ -223,7 +223,7 @@ angular.module('bekApp')
         getList: function(listId, params) {         
 
             if (!params) {
-              var pageSize = LocalStorage.getPageSize() || 30;             
+              var pageSize = LocalStorage.getPageSize();             
               params = {
                 size: pageSize,
                 from: 0

@@ -36,10 +36,10 @@ angular.module('bekApp')
         var truncatedVal ='';
         if (attrs.id === 'inventoryRep' || attrs.id==="parlevel"  || attrs.id==="onHand") {
           //allows for 2 decimal places
-          truncatedVal = truncateDecimals(2,viewValue);
+          truncatedVal = truncateViewValue(2,viewValue);
           scope.checkRegex = (directive.REGEXP2.test(truncatedVal) || directive.REGEXP.test(truncatedVal));
         } else{
-          truncatedVal =  truncateDecimals(1,viewValue);
+          truncatedVal =  truncateViewValue(1,viewValue);
           scope.checkRegex = directive.REGEXP.test(truncatedVal);
         }
         //set validity
@@ -52,16 +52,22 @@ angular.module('bekApp')
         }
       }
 
-      function truncateDecimals(limit,viewVal){
-        //filter out special/alpha characters
+      function truncateViewValue(limit,viewVal){
+        //filter out special/alpha characters and remove leading 0s
            if(typeof viewVal === 'string'){
-          for (var i = 0, length = viewVal.length; i < length; i++) {
-            if(['1','2','3','4','5','6','7','8','9','0','.'].indexOf(viewVal[i]) === -1){
-              viewVal = viewVal.replace(viewVal[i], '');         
-              ctrl.$setViewValue(viewVal);   
-              ctrl.$render();    
+            if(viewVal.length>1 && viewVal.indexOf(0) === 0){
+              viewVal = viewVal.slice(1,viewVal.length);
+                ctrl.$setViewValue(viewVal);   
+                ctrl.$render(); 
             }
-          }            
+
+            for (var i = 0, length = viewVal.length; i < length; i++) {
+              if(['1','2','3','4','5','6','7','8','9','0','.'].indexOf(viewVal[i]) === -1){
+                viewVal = viewVal.replace(viewVal[i], '');         
+                ctrl.$setViewValue(viewVal);   
+                ctrl.$render();    
+              }
+            }            
         } 
         //truncate decimals to correct length
          if(viewVal && typeof viewVal === 'string' && viewVal.indexOf('.') !== -1 && viewVal.slice(viewVal.indexOf('.'),(viewVal.length-1)).length > limit ){             
