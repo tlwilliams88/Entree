@@ -602,11 +602,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 				{
 					adUser = _intAd.GetUser(csProfile.Email);
 					DirectoryEntry directoryEntry = (DirectoryEntry)adUser.GetUnderlyingObject();
-					List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Svc.Core.Constants.INTERNAL_USER_ROLES);
+					List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Configuration.InternalUserRoles);
 
 					userBranch = GetBranchFromOU(adUser.GetOrganizationalunit());
 
-					if (internalUserRoles.Intersect(Constants.BEK_SYSADMIN_ROLES).Count() > 0)
+					if (internalUserRoles.Intersect(Configuration.BekSysAdminRoles).Count() > 0)
 					{
 						userRole = Constants.ROLE_NAME_SYSADMIN;
 						isPowerMenuAdmin = true;
