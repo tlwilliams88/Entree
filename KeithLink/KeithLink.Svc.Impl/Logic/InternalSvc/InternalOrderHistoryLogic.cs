@@ -215,9 +215,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
                 try {
-                    var rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+                    var rawOrder = ReadOrderFromQueue();
 
-                    while (_keepListening && !string.IsNullOrEmpty(rawOrder)) {
+                    while (!string.IsNullOrEmpty(rawOrder)) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
 
                         historyFile = JsonConvert.DeserializeObject<OrderHistoryFile>(rawOrder);
@@ -229,7 +229,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                         _unitOfWork.SaveChangesAndClearContext();
 
-                        rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+                        // to make sure we do not pull an order off the queue without processing it
+                        // check to make sure we can still process before pulling off the queue
+                        if (_keepListening) {
+                            rawOrder = ReadOrderFromQueue();
+                        } else {
+                            rawOrder = null;
+                        }
                     }
                 } catch (Exception ex) {
                     KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, subject: "Exception processing Order History in Queue Service");
@@ -361,6 +367,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             });
 
             return mergedOrdeList.ToList();
+        }
+
+        private string ReadOrderFromQueue() {
+            return _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
+                                           Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
         }
 
         public void SaveOrder(OrderHistoryFile historyFile) {
