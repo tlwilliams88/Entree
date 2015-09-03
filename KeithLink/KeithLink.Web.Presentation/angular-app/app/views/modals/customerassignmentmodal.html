@@ -1,10 +1,19 @@
 <div class="modal-body">
   <h3>Customer Assignment</h3>
   <form name="customerSearchForm" class="search-form">
+            <div class="form-group radio-button-group">
+          <label>Search by</label>
+          <div class="radio-button" ng-repeat="option in searchOptions">
+            <label>
+              <input type="radio" ng-model="search.field" value="{{option.value}}" />
+              {{option.text}}
+            </label>
+          </div>
+        </div>
     <div class="input-group">
       <input ng-model="customerSearchTerm" type="text" class="input-lg form-control" placeholder="Filter customers by name or number" />
       <span class="input-group-btn">
-        <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-lg btn-default" style="height:40px;"><span class="icon-search"></span></button>
+        <button type="submit" ng-click="searchCustomers(customerSearchTerm, search.field)" class="btn btn-lg btn-default" style="height:40px;"><span class="icon-search"></span></button>
         <button type="button" ng-click="clearFilter()" class="btn btn-lg btn-default " style="height:40px;"><span class="icon-cross"></span></button>
       </span>
     </div>
