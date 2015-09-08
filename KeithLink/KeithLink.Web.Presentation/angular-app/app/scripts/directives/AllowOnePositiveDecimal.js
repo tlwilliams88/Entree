@@ -32,7 +32,7 @@ angular.module('bekApp')
           return parseFloat(viewValue);
           }
           //remove leading zeroes
-          if (viewValue.length > 1 && viewValue.match(/^0+/).length > 0) {
+          if (viewValue.length > 1 && viewValue.match(/^0+/) != null) {
               viewValue = viewValue.replace(/^0+/, '');
               ctrl.$setViewValue(viewValue);
               ctrl.$render();
