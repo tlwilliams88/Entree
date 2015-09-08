@@ -30,7 +30,13 @@ angular.module('bekApp')
             ctrl.$render();
            ctrl.$setValidity('allowOnePositiveDecimal', false);
           return parseFloat(viewValue);
-          }    
+          }
+          //remove leading zeroes
+          if (viewValue.length > 1 && viewValue.match(/^0+/).length > 0) {
+              viewValue = viewValue.replace(/^0+/, '');
+              ctrl.$setViewValue(viewValue);
+              ctrl.$render();
+          }
         }
     
         var truncatedVal ='';
