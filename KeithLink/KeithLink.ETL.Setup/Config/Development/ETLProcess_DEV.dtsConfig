@@ -3,6 +3,7 @@
   <DTSConfigurationHeading>
     <DTSConfigurationFileInfo GeneratedBy="BEKCO\jmmcmillan" GeneratedFromPackageName="ETLProcess" GeneratedFromPackageID="{771D6206-93B3-4567-8503-E3972BF38350}" GeneratedDate="8/4/2014 11:09:35 AM"/>
   </DTSConfigurationHeading>
+  <!-- uncomment the "DEV" section to run this against the development environment -->
   <!--DEV
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerFile.SSIS</ConfiguredValue>
@@ -40,14 +41,14 @@
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalNumber].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\nationalNumberAndSub.SSIS</ConfiguredValue>
 	</Configuration>
-	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NaionalId].Properties[ConnectionString]" ValueType="String">
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalId].Properties[ConnectionString]" ValueType="String">
 		<ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\nationalId.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalNumber].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalId.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalNumber.SSIS</ConfiguredValue>
 	</Configuration>
 	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalId].Properties[ConnectionString]" ValueType="String">
-		<ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalNumber.SSIS</ConfiguredValue>
+		<ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalId.SSIS</ConfiguredValue>
 	</Configuration>
 	
     <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
@@ -79,7 +80,7 @@
 	</Configuration>
 	-->
 
-
+  <!-- uncomment the "LOCAL" section to run this against your local environment. You may need to make configuration changes as necessary. -->
   <!--LOCAL-->
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_Customer].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\customerFile.SSIS</ConfiguredValue>
@@ -117,14 +118,14 @@
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalNumber].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\nationalNumberAndSub.SSIS</ConfiguredValue>
   </Configuration>
-  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NaionalId].Properties[ConnectionString]" ValueType="String">
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalId].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\nationalId.SSIS</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalNumber].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\regionalId.SSIS</ConfiguredValue>
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\regionalNumber.SSIS</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalId].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\regionalNumber.SSIS</ConfiguredValue>
+    <ConfiguredValue>\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\regionalId.SSIS</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>http://localhost:1317/ETLService.svc?wsdl</ConfiguredValue>

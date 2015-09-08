@@ -312,5 +312,22 @@ namespace KeithLink.Svc.Impl.ETL
 				}
 			}
 		}
+
+        /// <summary>
+        /// Import customers and addresses to CS
+        /// </summary>
+        public void ImportCustomersToCS()
+        {
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (var cmd = new SqlCommand("[ETL].[LoadOrgsAndAddressesToCS]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 	}
 }
