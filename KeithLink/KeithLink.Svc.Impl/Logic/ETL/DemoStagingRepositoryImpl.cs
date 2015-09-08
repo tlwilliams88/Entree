@@ -114,12 +114,12 @@ namespace KeithLink.Svc.Impl.ETL
 			return gsData;
 		}
 
-
 		public DataTable ReadProprietaryItems()
 		{
 			return PopulateDataTable("[ETL].[ReadProprietaryItems]");
 		}
-		public DataTable ReadCustomers()
+
+        public DataTable ReadCustomers()
 		{
 			//Two possible ways for this to work. 
 			//1. The script below can be executed and the system can populate customers as usual, which will contain the scrubed customer names. This could also be be made into a Stored Procedure
@@ -244,7 +244,8 @@ namespace KeithLink.Svc.Impl.ETL
 
 			return contractItems;
 		}
-		public DataTable ReadWorksheetItems(string customerNumber, string divisionName)
+		
+        public DataTable ReadWorksheetItems(string customerNumber, string divisionName)
 		{
 			var worksheetItems = new DataTable();
 
@@ -278,12 +279,10 @@ namespace KeithLink.Svc.Impl.ETL
 			return PopulateDataTable("[ETL].[ReadDsrInfo]");
 		}
 
-
-		public DataTable ReadDsrImages()
+        public DataTable ReadDsrImages()
 		{
 			return PopulateDataTable("[ETL].[ReadDsrImage]");
 		}
-
 
 		public void ProcessContractItems()
 		{
@@ -359,7 +358,22 @@ namespace KeithLink.Svc.Impl.ETL
             }
             return dataTable;
         }
+
+        /// <summary>
+        /// Import customers and addresses to CS
+        /// </summary>
+        public void ImportCustomersToCS()
+        {
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (var cmd = new SqlCommand("[ETL].[LoadOrgsAndAddressesToCS]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 	}
-
-
 }

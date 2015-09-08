@@ -29,5 +29,6 @@ namespace KeithLink.Svc.Core.Interface.ETL
 		void ProcessWorksheetItems();
         DataTable ExecuteProfileObjectQueryReturn(string query);
         bool ExecuteProfileObjectQuery(string query);
+        void ImportCustomersToCS();
     }
 }

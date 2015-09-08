@@ -38,20 +38,18 @@
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_CustomerWorksheet].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\customerWorksheet.SSIS</ConfiguredValue>
   </Configuration>
-
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalNumber].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\nationalNumberAndSub.SSIS</ConfiguredValue>
   </Configuration>
-  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NaionalId].Properties[ConnectionString]" ValueType="String">
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_NationalId].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\nationalId.SSIS</ConfiguredValue>
   </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalNumber].Properties[ConnectionString]" ValueType="String">
-    <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\regionalId.SSIS</ConfiguredValue>
-  </Configuration>
-  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalId].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\regionalNumber.SSIS</ConfiguredValue>
   </Configuration>
-
+  <Configuration ConfiguredType="Property" Path="\Package.Connections[FF_RegionalId].Properties[ConnectionString]" ValueType="String">
+    <ConfiguredValue>\\bekkecoct1\sys-scr-inetoe$\ftpdata\QA\Entree\regionalId.SSIS</ConfiguredValue>
+  </Configuration>
   <Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLWebService].Properties[ConnectionString]" ValueType="String">
     <ConfiguredValue>http://corpkecqas1:9876/ETLService.svc?wsdl</ConfiguredValue>
   </Configuration>

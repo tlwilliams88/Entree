@@ -13,7 +13,7 @@
   DTS:ObjectName="ETLProcess_RELEASE"
   DTS:PackageType="5"
   DTS:VersionBuild="355"
-  DTS:VersionGUID="{988764E0-C641-4F3B-A0B9-01CB323AC773}">
+  DTS:VersionGUID="{2B9D38FF-197F-4452-82BC-E500BA9B4D53}">
   <DTS:Property
     DTS:Name="PackageFormatVersion">6</DTS:Property>
   <DTS:ConnectionManagers>
@@ -31,7 +31,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\bidContractDetail.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\bidContractDetail.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -139,7 +139,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\bidContractHeader.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\bidContractHeader.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -215,7 +215,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\customerFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -731,7 +731,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\customerBid.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerBid.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -815,7 +815,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\customerWorksheet.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerWorksheet.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -922,7 +922,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\keithNetInvoice.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\keithNetInvoice.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1245,7 +1245,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\nationalId.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\nationalId.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1288,7 +1288,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\nationalNumberAndSub.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\nationalNumberAndSub.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1340,7 +1340,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\openDetailAR.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\openDetailAR.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1488,7 +1488,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\paidDetailFile.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\paidDetailFile.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1635,7 +1635,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\propCustomer.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\propCustomer.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1710,7 +1710,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\propItem.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\propItem.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1785,7 +1785,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\regionalNumber.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalId.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1828,7 +1828,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\regionalId.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\regionalNumber.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1872,7 +1872,7 @@
           DTS:RowDelimiter=""
           DTS:TextQualifier="_x003C_none_x003E_"
           DTS:CodePage="1252"
-          DTS:ConnectionString="\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\customerTerms.SSIS">
+          DTS:ConnectionString="\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\customerTerms.SSIS">
           <DTS:FlatFileColumns>
             <DTS:FlatFileColumn
               DTS:ColumnDelimiter=""
@@ -1964,17 +1964,17 @@
       DTS:ObjectName="HTTP_ETLWebService">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
+          DTS:ConnectionString="http://corpkecdev1:9876/ETLService.svc?wsdl">
           <DTS:HttpConnection
-            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
+            DTS:ServerURL="http://corpkecdev1:9876/ETLService.svc?wsdl">
             <DTS:Property
               DTS:Name="ServerPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAAl1WtkhBXgWRpVkIr+e8jFAAAAAASAAACgAAAAEAAAADntRN3f2gEq+OIgOnR0PSwIAAAAzLAFMGpebOEUAAAAbUJyFZ1XANtseZwQ9HhVmPK/dNk</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAADM3bMLwi9u7H+6grBNEePcAAAAAASAAACgAAAAEAAAAP+4bIi7BTK6R0VvinZ2dc4IAAAAli5L1f1wK3cUAAAAHcNzA+8wCcPiSAmZ+rTTWFOegWU</DTS:Property>
             <DTS:Property
               DTS:Name="ProxyPassword"
               Sensitive="1"
-              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAABE2nwM25Q8obyvdunZUr0UAAAAAASAAACgAAAAEAAAAC0VNaGFI5c66lOrFUbyxdEIAAAAxxLx8rD5jUMUAAAARhWEivUJizb+UZbRPmGmDx39jsU</DTS:Property>
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAhek9zSK430Wm7ZTGV206YQAAAAAIAAAARABUAFMAAAADZgAAwAAAABAAAAA0SbsBcbCRvFEVsiSkbk/JAAAAAASAAACgAAAAEAAAAFn2/tILQjEpr5iVF/nZr14IAAAA6oCGjH3OygUUAAAAG7XTQZOhtGFGNVggXF5H6jIsfws</DTS:Property>
           </DTS:HttpConnection>
         </DTS:ConnectionManager>
       </DTS:ObjectData>
@@ -1986,7 +1986,7 @@
       DTS:ObjectName="OLE_BEK_Commerce_AppData">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2026,7 +2026,7 @@
       DTS:ObjectName="OLE_Log">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=localhost;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqlirst12;Initial Catalog=SSISSupport_ECOM;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2036,7 +2036,7 @@
       DTS:ObjectName="OLE_PRODCAT">
       <DTS:ObjectData>
         <DTS:ConnectionManager
-          DTS:ConnectionString="Data Source=bekscsql;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
+          DTS:ConnectionString="Data Source=corpsqltst12;Initial Catalog=PRODCAT;Provider=SQLNCLI11.1;Integrated Security=SSPI;" />
       </DTS:ObjectData>
     </DTS:ConnectionManager>
     <DTS:ConnectionManager
@@ -2078,7 +2078,7 @@
       DTS:Namespace="User"
       DTS:ObjectName="ETLProcess_KeithComDir">
       <DTS:VariableValue
-        DTS:DataType="8">\\bekbackup\ftproot\eBusiness\Test\KeithCom\jmm\</DTS:VariableValue>
+        DTS:DataType="8">\\bekkecoct1\sys-scr-inetoe$\ftpdata\Test\Entree\</DTS:VariableValue>
     </DTS:Variable>
     <DTS:Variable
       DTS:CreationName=""
@@ -12076,13 +12076,13 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               </DTS:ObjectData>
             </DTS:Executable>
             <DTS:Executable
-              DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc"
+              DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc"
               DTS:CreationName="SSIS.Pipeline.3"
               DTS:Description="Data Flow Task"
               DTS:DTSID="{29B5BD90-E30B-4D95-A877-2A3D3A9A0D44}"
               DTS:ExecutableType="SSIS.Pipeline.3"
               DTS:LocaleID="-1"
-              DTS:ObjectName="Stage Reginoal Id Desc"
+              DTS:ObjectName="Stage Regional Id Desc"
               DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
               <DTS:Variables />
               <DTS:ObjectData>
@@ -12090,7 +12090,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   version="1">
                   <components>
                     <component
-                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData"
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData"
                       componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
                       contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
                       description="OLE DB Destination"
@@ -12147,7 +12147,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       </properties>
                       <connections>
                         <connection
-                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Connections[OleDbConnection]"
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Connections[OleDbConnection]"
                           connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
                           connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
                           description="The OLE DB runtime connection used to access the database."
@@ -12155,39 +12155,39 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       </connections>
                       <inputs>
                         <input
-                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input]"
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input]"
                           errorOrTruncationOperation="Insert"
                           errorRowDisposition="FailComponent"
                           hasSideEffects="true"
                           name="OLE DB Destination Input">
                           <inputColumns>
                             <inputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input].Columns[RegionalId]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input].Columns[RegionalId]"
                               cachedCodepage="1252"
                               cachedDataType="str"
                               cachedLength="5"
                               cachedName="RegionalId"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalId]"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalId]" />
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalId]" />
                             <inputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input].Columns[RegionalIdDesc]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input].Columns[RegionalIdDesc]"
                               cachedCodepage="1252"
                               cachedDataType="str"
                               cachedLength="45"
                               cachedName="RegionalIdDesc"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalIdDesc]"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalIdDesc]" />
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalIdDesc]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalIdDesc]" />
                           </inputColumns>
                           <externalMetadataColumns
                             isUsed="True">
                             <externalMetadataColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalId]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalId]"
                               codePage="1252"
                               dataType="str"
                               length="5"
                               name="RegionalId" />
                             <externalMetadataColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalIdDesc]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input].ExternalColumns[RegionalIdDesc]"
                               codePage="1252"
                               dataType="str"
                               length="45"
@@ -12197,22 +12197,22 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       </inputs>
                       <outputs>
                         <output
-                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Outputs[OLE DB Destination Error Output]"
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Outputs[OLE DB Destination Error Output]"
                           exclusionGroup="1"
                           isErrorOut="true"
                           name="OLE DB Destination Error Output"
-                          synchronousInputId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input]">
+                          synchronousInputId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input]">
                           <outputColumns>
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                               dataType="i4"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
                               name="ErrorCode"
                               specialFlags="1" />
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                               dataType="i4"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
                               name="ErrorColumn"
                               specialFlags="2" />
                           </outputColumns>
@@ -12221,7 +12221,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       </outputs>
                     </component>
                     <component
-                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId"
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId"
                       componentClassID="{D23FD76B-F51D-420F-BBCB-19CBF6AC1AB4}"
                       contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
                       description="Flat File Source"
@@ -12241,25 +12241,25 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                       </properties>
                       <connections>
                         <connection
-                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Connections[FlatFileConnection]"
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Connections[FlatFileConnection]"
                           connectionManagerID="Package.ConnectionManagers[FF_RegionalId]"
                           connectionManagerRefId="Package.ConnectionManagers[FF_RegionalId]"
                           name="FlatFileConnection" />
                       </connections>
                       <outputs>
                         <output
-                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output]"
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output]"
                           name="Flat File Source Output">
                           <outputColumns>
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalId]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalId]"
                               codePage="1252"
                               dataType="str"
                               errorOrTruncationOperation="Conversion"
                               errorRowDisposition="FailComponent"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalId]"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalId]"
                               length="5"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalId]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalId]"
                               name="RegionalId"
                               truncationRowDisposition="FailComponent">
                               <properties>
@@ -12274,14 +12274,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               </properties>
                             </outputColumn>
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalIdDesc]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalIdDesc]"
                               codePage="1252"
                               dataType="str"
                               errorOrTruncationOperation="Conversion"
                               errorRowDisposition="FailComponent"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalIdDesc]"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalIdDesc]"
                               length="45"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalIdDesc]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[RegionalIdDesc]"
                               name="RegionalIdDesc"
                               truncationRowDisposition="FailComponent">
                               <properties>
@@ -12296,14 +12296,14 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                               </properties>
                             </outputColumn>
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[CrLf]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[CrLf]"
                               codePage="1252"
                               dataType="str"
                               errorOrTruncationOperation="Conversion"
                               errorRowDisposition="FailComponent"
-                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[CrLf]"
+                              externalMetadataColumnId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[CrLf]"
                               length="2"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[CrLf]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].Columns[CrLf]"
                               name="CrLf"
                               truncationRowDisposition="FailComponent">
                               <properties>
@@ -12321,19 +12321,19 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           <externalMetadataColumns
                             isUsed="True">
                             <externalMetadataColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalId]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalId]"
                               codePage="1252"
                               dataType="str"
                               length="5"
                               name="RegionalId" />
                             <externalMetadataColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalIdDesc]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[RegionalIdDesc]"
                               codePage="1252"
                               dataType="str"
                               length="45"
                               name="RegionalIdDesc" />
                             <externalMetadataColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[CrLf]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output].ExternalColumns[CrLf]"
                               codePage="1252"
                               dataType="str"
                               length="2"
@@ -12341,27 +12341,27 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                           </externalMetadataColumns>
                         </output>
                         <output
-                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output]"
+                          refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output]"
                           isErrorOut="true"
                           name="Flat File Source Error Output">
                           <outputColumns>
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
                               codePage="1252"
                               dataType="text"
                               description="Flat File Source Error Output Column"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
                               name="Flat File Source Error Output Column" />
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
                               dataType="i4"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
                               name="ErrorCode"
                               specialFlags="1" />
                             <outputColumn
-                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                              refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
                               dataType="i4"
-                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                              lineageId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
                               name="ErrorColumn"
                               specialFlags="2" />
                           </outputColumns>
@@ -12372,10 +12372,10 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
                   </components>
                   <paths>
                     <path
-                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc.Paths[Flat File Source Output]"
-                      endId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData.Inputs[OLE DB Destination Input]"
+                      refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc.Paths[Flat File Source Output]"
+                      endId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData.Inputs[OLE DB Destination Input]"
                       name="Flat File Source Output"
-                      startId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId.Outputs[Flat File Source Output]" />
+                      startId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId.Outputs[Flat File Source Output]" />
                   </paths>
                 </pipeline>
               </DTS:ObjectData>
@@ -13016,6 +13016,16 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA</BinaryItem>
               </DTS:ObjectData>
             </DTS:Executable>
           </DTS:Executables>
+          <DTS:PrecedenceConstraints>
+            <DTS:PrecedenceConstraint
+              DTS:refId="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks.PrecedenceConstraints[Constraint]"
+              DTS:CreationName=""
+              DTS:DTSID="{67AF12B7-297F-4458-B795-D3EF83F369F7}"
+              DTS:From="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Id Desc"
+              DTS:LogicalAnd="True"
+              DTS:ObjectName="Constraint"
+              DTS:To="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage National Number Sub Desc" />
+          </DTS:PrecedenceConstraints>
         </DTS:Executable>
         <DTS:Executable
           DTS:refId="Package\Process_CatalogAndCustomer\GS1 Import Tasks"
@@ -26848,7 +26858,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           TopLeft="48.5,412" />
         <NodeLayout
           Size="190,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc"
           TopLeft="46,459.5" />
         <NodeLayout
           Size="218,42"
@@ -26858,6 +26868,34 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
           Size="152,42"
           Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Staging Brands"
           TopLeft="50,137.083333333333" />
+        <EdgeLayout
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks.PrecedenceConstraints[Constraint]"
+          TopLeft="236.333333333333,380.952380952382">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-69.333333333333,31.047619047618"
+              Start="0,0"
+              End="-69.333333333333,23.547619047618">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="-65.333333333333,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-65.333333333333,0"
+                    Point2="-69.333333333333,0"
+                    Point3="-69.333333333333,4" />
+                  <mssgle:LineSegment
+                    End="-69.333333333333,23.547619047618" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
         <ContainerLayout
           HeaderHeight="43"
           IsExpanded="True"
@@ -28206,20 +28244,20 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     </Properties>
   </PipelineComponentMetadata>
   <TaskHost
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc">
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc">
     <LayoutInfo>
       <GraphLayout
         Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
         <NodeLayout
           Size="121,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData"
           TopLeft="501,211" />
         <NodeLayout
           Size="148,42"
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\FF_RegionalId"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\FF_RegionalId"
           TopLeft="331,53" />
         <EdgeLayout
-          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc.Paths[Flat File Source Output]"
+          Id="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc.Paths[Flat File Source Output]"
           TopLeft="405,95">
           <EdgeLayout.Curve>
             <mssgle:Curve
@@ -28256,7 +28294,7 @@ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</BinaryItem>
     </LayoutInfo>
   </TaskHost>
   <PipelineComponentMetadata
-    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Reginoal Id Desc\AppData">
+    design-time-name="Package\Process_CatalogAndCustomer\Catalog And Customer Import Tasks\Stage Regional Id Desc\AppData">
     <Properties>
       <Property>
         <Name>DataSourceViewID</Name>
