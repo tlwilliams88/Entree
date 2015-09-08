@@ -72,6 +72,26 @@ namespace KeithLink.Svc.Impl.ETL
             }
         }
 
+        public void ImportCustomersToOrganizationProfile()
+        {
+            try
+            {
+                DateTime start = DateTime.Now;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import organizations to CS {0}", start.ToString()));
+
+                stagingRepository.ImportCustomersToCS();
+
+                TimeSpan took = DateTime.Now - start;
+                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import organizations to CS.  Process took {0}", took.ToString()));
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog(String.Format("ETL: Error importing organizations to CS -- whole process failed.  {0} -- {1}", ex.Message, ex.StackTrace));
+            }
+        }
+
+        /*
+         * deprecated 2015-09-08, JMM -- moved all processing into SQL
         /// <summary>
         /// Import customers to organization profile
         /// </summary>
@@ -189,7 +209,7 @@ namespace KeithLink.Svc.Impl.ETL
                 eventLog.WriteErrorLog(String.Format("ETL: Error Importing customers to CS -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
             }
         }
-
+        */
         /// <summary>
         /// Import DSR data
         /// </summary>

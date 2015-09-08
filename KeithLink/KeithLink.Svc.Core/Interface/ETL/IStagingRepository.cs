@@ -27,5 +27,6 @@ namespace KeithLink.Svc.Core.Interface.ETL
 		void ProcessInvoices();
         void ProcessItemHistoryData(int numWeeks);
 		void ProcessWorksheetItems();
+        void ImportCustomersToCS();
     }
 }
