@@ -36,43 +36,24 @@ angular.module('bekApp')
 
 
      $scope.pageChanged = function(page) {
-      //document.getElementById('selectAllCheckbox').checked = false;
       $scope.selectedList.allSelected = false;
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize)) + 1;
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize) - 1;
       $scope.setRange();
-
-
-  //   var startPoint = (page.currentPage - 1)*parseInt($scope.pagingPageSize)
-  
-    //blockUI.start();
-   //$scope.selectedList.items =  $scope.entireList.items.slice(startPoint,endPoint);
-    // listPagingModel.loadMoreData(startPoint, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems, 'lists');
-    //blockUI.stop();  
   };
 
   $scope.setRange = function(){
     $scope.endPoint = $scope.endPoint + 1;
     $scope.rangeStart = $scope.startingPoint;
     $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
-    //$scope.endPoint = $scope.endPoint +1;
-    // if($scope.currentPage === 1){
-    //   $scope.rangeStart = 1;
-    //   $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
-    // }
   }
-
-
-
     $scope.pagingPageSize = LocalStorage.getPageSize();
-
-
-
+    
     function resetPage(list) {
       $scope.selectedList = angular.copy(list);
       $scope.totalItems = $scope.selectedList.itemCount;
       originalList = list;
-      $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header rows
+      $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
       $scope.startingPoint = 1;
@@ -154,11 +135,6 @@ angular.module('bekApp')
       resetPage(angular.copy(originalList));
     };
 
-    // $scope.loadEntireList = function() { 
-    //   blockUI.start();    
-    //   listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults, 'lists');    
-    //   blockUI.stop();   
-    // };
 
     /**********
     PAGING

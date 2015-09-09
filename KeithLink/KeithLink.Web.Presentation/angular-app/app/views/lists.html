@@ -359,8 +359,7 @@
           navigate-table="lists" 
           class="custom-lists__table table table-border table-striped-rows"       
           
-          ui-sortable="{ 
-            handle: '.bek-sortable-handle', 
+          ui-sortable="{          
             stop: stopReorder, 
             tolerance: 'pointer', 
             containment: 'document' }" 
@@ -632,20 +631,6 @@
               </td>
             </tr>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             <tr ng-if="!item.showBody" ng-class="{ odd : $odd, even: $even}" ng-mouseenter="item.showBody = true" ng-focus="item.showBody = true">
               <td class=" large-icon icon-col">
                 <input type="checkbox" ng-checked = "item.isSelected" class="hidden-print ">
@@ -741,14 +726,6 @@
               </td>
 
             </tr>
-
-
-
-
-
-
-
-
 
           </tbody> 
 
