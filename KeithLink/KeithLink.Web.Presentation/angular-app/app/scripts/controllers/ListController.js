@@ -33,12 +33,53 @@ angular.module('bekApp')
       $scope.hideRecommendedListCreateButton = true;
     }
 
+
+
+     $scope.pageChanged = function(page) {
+      //document.getElementById('selectAllCheckbox').checked = false;
+      $scope.selectedList.allSelected = false;
+      $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize)) + 1;
+      $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize) - 1;
+      $scope.setRange();
+
+
+  //   var startPoint = (page.currentPage - 1)*parseInt($scope.pagingPageSize)
+  
+    //blockUI.start();
+   //$scope.selectedList.items =  $scope.entireList.items.slice(startPoint,endPoint);
+    // listPagingModel.loadMoreData(startPoint, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems, 'lists');
+    //blockUI.stop();  
+  };
+
+  $scope.setRange = function(){
+    $scope.endPoint = $scope.endPoint + 1;
+    $scope.rangeStart = $scope.startingPoint;
+    $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
+    //$scope.endPoint = $scope.endPoint +1;
+    // if($scope.currentPage === 1){
+    //   $scope.rangeStart = 1;
+    //   $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
+    // }
+  }
+
+
+
+    $scope.pagingPageSize = LocalStorage.getPageSize();
+
+
+
     function resetPage(list) {
       $scope.selectedList = angular.copy(list);
+      $scope.totalItems = $scope.selectedList.itemCount;
       originalList = list;
-      $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
+      $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header rows
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
+      $scope.startingPoint = 1;
+      //Adding one to offset dummy sort row
+      $scope.endPoint = parseInt($scope.pagingPageSize);
+      $scope.currentPage = 1;
+      $scope.setRange();
 
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
@@ -59,7 +100,7 @@ angular.module('bekApp')
       list.items.forEach(function(item) {
         item.editPosition = item.position;
       });
-      $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
+      $scope.selectedList.items = list.items;
     }
 
     function startLoading() {
@@ -113,11 +154,11 @@ angular.module('bekApp')
       resetPage(angular.copy(originalList));
     };
 
-    $scope.loadEntireList = function() { 
-      blockUI.start();    
-      listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults, 'lists');    
-      blockUI.stop();   
-    };
+    // $scope.loadEntireList = function() { 
+    //   blockUI.start();    
+    //   listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults, 'lists');    
+    //   blockUI.stop();   
+    // };
 
     /**********
     PAGING
@@ -141,9 +182,10 @@ angular.module('bekApp')
       listPagingModel.sortListItems($scope.sort);
     };
 
-    $scope.infiniteScrollLoadMore = function() {
-      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems, 'lists');
-    };
+ //    $scope.infiniteScrollLoadMore = function() {
+ //      // listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems, 'lists');
+ // listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults, 'lists'); 
+ //    };
 
     /**********
     CREATE LIST
@@ -415,10 +457,10 @@ angular.module('bekApp')
       return dragItemSelection;
     }
 
-    $scope.changeAllSelectedItems = function() {
-      angular.forEach($scope.selectedList.items, function(item, index) {
-        if (item.itemnumber) {
-          item.isSelected = $scope.selectedList.allSelected;
+    $scope.changeAllSelectedItems = function(allSelected) {
+      angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint) , function(item, index) {
+        if (item.itemnumber) {      
+            item.isSelected = !$scope.selectedList.allSelected; 
         }
       });
     };

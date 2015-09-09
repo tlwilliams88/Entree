@@ -329,13 +329,20 @@
         </div>
       </div><!-- end Multi-select menu -->
 
-    <button class="btn-lg btn btn-primary hidden-print pull-right hidden-sm hidden-xs" style="margin-top:5px;"  ng-click="loadEntireList()" ng-disabled="(selectedList.items|filter:{isdeleted:'false'}).length === selectedList.itemCount">Load All</button>
+
+    <div>
+    <pagination total-items="selectedList.itemCount" ng-model="currentPage" items-per-page="pagingPageSize" ng-change="pageChanged(this)" class="pagination"></pagination>
+    </div>
+
   <div class="row sub-content">
     <div class="col-xs-5 " >         
       <span>{{(selectedList.items|filter:{isSelected:'true', isdeleted:'false'}).length}} Items Selected</span>
     </div>
+
+
+
     <div class="col-xs-7 col-md-5 col-lg-5 text-right" style="float:right; " >      
-     Showing {{(selectedList.items|filter:{isdeleted:'false'}).length}} of {{selectedList.itemCount}} Items
+     Showing {{rangeStart}} - {{rangeEnd}} of {{selectedList.itemCount}} Items
     </div>
   </div>
 
@@ -350,8 +357,7 @@
       
         <table 
           navigate-table="lists" 
-          class="custom-lists__table table table-border table-striped-rows" 
-          infinite-scroll="infiniteScrollLoadMore()" 
+          class="custom-lists__table table table-border table-striped-rows"       
           
           ui-sortable="{ 
             handle: '.bek-sortable-handle', 
@@ -363,7 +369,7 @@
           <thead>
             <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
-                <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="selectedList.allSelected" ng-change="changeAllSelectedItems()" no-dirty-check>
+                <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="selectedList.allSelected" ng-click="changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort.sortDescending)"> 
                   #
                   <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span>
@@ -409,7 +415,7 @@
 
           <tbody  
               ng-class="{ 'item-selected': item.isSelected }" 
-              ng-repeat="item in selectedList.items | filter:{listitemid: '!!', isdeleted:false} track by item.listitemid" 
+              ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:false} track by item.listitemid" 
               data-product="{{item}}" 
               data-drag="dragEnabled" 
               data-jqyoui-options="{
@@ -498,15 +504,7 @@
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
                 <ng-form name="parlevelForm">
-                  <input
-                    type="text" 
-                    ng-if="::(!item.showParLevelInput && !(item.parlevel > 0))"
-                    ng-focus="item.showParLevelInput = true"
-                    ng-mouseenter="item.showParLevelInput = true"
-                    class="text-right input-number bek-no-drag"
-                   />
-                  <input
-                    ng-if="::(item.showParLevelInput || item.parlevel > 0)"
+                   <input                   
                     id="parlevel" 
                     name="parlevel" 
                     type="text" 
@@ -523,24 +521,15 @@
               <!-- Parlevel for Print -->
               <td class="visible-print hidden-drag" ng-if="::(selectedList.permissions.canSeeParlevel)">
                 {{::item.parlevel}}
-              </td>
-
+              </td> 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
               <div
-                  ng-if="::(item.useContextMenu)"
-                  ng-class="::{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
+                  ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
                   context-menu-template
                   class="context-menu-template context-menu__in-list hidden-print">           
                   <a class="icon-plus2"></a>
               </div>
-                <a class="icon-plus2" ng-class="::{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" ng-if="::(!item.useContextMenu)" ng-mouseenter="item.useContextMenu = true;"></a>
                 <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>                
-                <span 
-                  ng-if="::(!hideDragToReorder && selectedList.permissions.canReorderItems)" 
-                  class="hidden-xs hidden-sm icon-list2 bek-sortable-handle bek-no-drag" 
-                  style="cursor:move;">
-                </span>
-                
                 <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
               </td>
 
@@ -646,13 +635,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
             <tr ng-if="!item.showBody" ng-class="{ odd : $odd, even: $even}" ng-mouseenter="item.showBody = true" ng-focus="item.showBody = true">
               <td class=" large-icon icon-col">
-                <input type="checkbox" class="hidden-print ">
+                <input type="checkbox" ng-checked = "item.isSelected" class="hidden-print ">
                 <span style="font-size:11px;">
-                  {{item.position}}
+                  {{::item.position}}
                 </span>
-                <span favorite-icons></span>
+                <span ng-class="{'icon-star2': !item.favorite, 'icon-star': item.favorite, 'text-gold': item.favorite}"></span>
+
               </td>
               <td >
                 <a>{{::item.itemnumber}}</a>
@@ -674,13 +675,29 @@
                 {{::item.notes}}
               </td>
               <td class="hidden-sm hidden-xs" >                
-              <td class="hidden-mobile-visible-print" item-icons></td>
+              <td class="hidden-mobile-visible-print">
+              <a ng-if="::item.inhistory === true"><span class="text-regular icon-history"></span></a>            
+              <a ng-if="::item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>
+              <a ng-if="::item.replaceditem > 0"><span class="text-green icon-cycle"></span></a>            
+              <a ng-if="::item.substituteditemnumber"><span class="icon-switch text-regular"></span></a>              
+              <a ng-if="::item.deviatedcost === 'Y'"><span class="text-regular icon-dollar"></span></a>            
+              <a ng-if="::item.sellsheet === 'Y'"><span class="text-regular icon-sellsheet"></span></a>             
+              <a ng-if="::item.childnutrition === 'Y'"><span class="text-regular icon-apple"></span></a>        
+              <a ng-if="::item.nonstock === 'Y'"><span class="text-regular icon-user"></span></a>
+              <a ng-if="::item.temp_zone === 'F'"><span  class="text-regular icon-snowflake"></span></a>
+              <a ng-if="::item.temp_zone === 'C'"><span class="text-regular icon-thermometer"></span></a>
+              <a ng-if="::item.temp_zone === 'D'"><span class="text-regular icon-air"></span></a>
+              </td>
               <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm">
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs" ng-if="::selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels">
-                {{::item.label}}
+              <td class="input-col nowrap hidden-sm hidden-xs">
+               <div class="full-width-mobile">
+                  <select ng-if="!item.label  && selectedList.permissions.canEditLabels"><option>Select A Label...</option></select>
+                  <select ng-if="item.label && selectedList.permissions.canEditLabels" style="width:103.636px;" ><option>{{item.label}}</option></select>
+                  <a class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
+                </div>
               </td>
               <td class="input-col nowrap hidden-xs hidden-sm" ng-if="::selectedList.permissions.canSeeLabels && !selectedList.permissions.canEditLabels">
                 {{::item.label}}
@@ -701,7 +718,8 @@
                 <ng-form name="parlevelForm">
                   <input
                     type="text" 
-                    ng-if="!item.showParLevelInput && !(item.parlevel > 0)"                  
+                    ng-init="item.parlevel = item.parlevel || 0"
+                    ng-model="item.parlevel"                  
                     class="text-right input-number"
                    />                 
                 </ng-form>
@@ -717,18 +735,21 @@
 
               <td class="nowrap hidden-print large-icon icon-col">
  
-                <a class="icon-plus2" ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" ng-if="!item.useContextMenu"></a>
-                <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }"><span class="text-red icon-cross"></span></a>                
-                <span 
-                  ng-if="!hideDragToReorder && selectedList.permissions.canReorderItems" 
-                  class="hidden-xs hidden-sm icon-list2 " 
-                 >
-                </span>
-                
-                <a ><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
+                <a class="icon-plus2" ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }"></a>
+                <a class="hidden-xs hidden-sm" ng-if="selectedList.permissions.canDeleteItems" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+               
               </td>
 
             </tr>
+
+
+
+
+
+
+
+
+
           </tbody> 
 
           <tfoot ng-if="(selectedList.items.length - 1) <= 0 && !loadingResults">
@@ -741,7 +762,9 @@
         </table>
       </form>
 
-      <div class="text-center sub-content" ng-show="loadingResults" loading-spinner="loadingResults"></div>
+    <div>
+    <pagination total-items="selectedList.itemCount" ng-model="currentPage" items-per-page="pagingPageSize" ng-change="pageChanged(this)" class="pagination"></pagination>
+    </div>
     </div>
   </div>
 </div>
