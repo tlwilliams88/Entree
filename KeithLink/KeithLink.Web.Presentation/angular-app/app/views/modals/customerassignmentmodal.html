@@ -36,6 +36,8 @@
             Name
             <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
+            <th>Group Id</th>
+            <th>Group Description</th>
         </tr>
       </thead>
     </table>
@@ -54,6 +56,8 @@
             Name
             <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
+            <th>Group Id</th>
+            <th>Group Description</th>
         </tr>
       </thead>
       <tbody>
@@ -63,6 +67,8 @@
           </td>
           <td>{{customer.customerNumber}}</td>
           <td>({{customer.customerBranch}})- {{customer.customerName}}</td>
+            <td>{{customer.nationalId.length > 0 ? customer.nationalId : (customer.regionalId.length > 0 ? customer.regionalId : "")}}</td>
+            <td>{{customer.nationalIdDesc.length > 0 ? customer.nationalIdDesc : (customer.regionalIdDesc.length > 0 ? customer.regionalIdDesc : "")}}</td>
         </tr>
       </tbody>
       <tfoot>
