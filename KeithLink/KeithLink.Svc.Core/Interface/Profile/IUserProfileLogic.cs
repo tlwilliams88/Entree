@@ -87,7 +87,7 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
 		List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId);
 
-        List<SettingsModel> GetProfileSettings( Guid userId );
+        List<SettingsModelReturn> GetProfileSettings( Guid userId );
 
         void SaveProfileSettings( SettingsModel settings );
     }

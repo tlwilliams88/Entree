@@ -528,30 +528,37 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			
 		}
 
-		private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
-		{
-			if (list.Items == null || list.Items.Count == 0)
-				return;
+        private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo) {
+            if (list.Items == null || list.Items.Count == 0)
+                return;
 
-			var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Notes, i => i.Items).FirstOrDefault();
-			var favorites = listRepository.Read(l => l.UserId == user.UserId && l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) && l.BranchId.Equals(catalogInfo.BranchId) && l.Type == ListType.Favorite, i => i.Items).FirstOrDefault();
+            var notes = listRepository.Read(l => l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) &&
+                                                 l.BranchId.Equals(catalogInfo.BranchId) &&
+                                                 l.Type == ListType.Notes,
+                                            i => i.Items).FirstOrDefault();
+            var favorites = listRepository.Read(l => l.UserId == user.UserId &&
+                                                     l.CustomerId.Equals(catalogInfo.CustomerId, StringComparison.CurrentCultureIgnoreCase) &&
+                                                     l.BranchId.Equals(catalogInfo.BranchId) &&
+                                                     l.Type == ListType.Favorite,
+                                                i => i.Items).FirstOrDefault();
 
-			var notesHash = new Dictionary<string, ListItem>();
-			var favHash = new Dictionary<string, ListItem>();
+            var notesHash = new Dictionary<string, ListItem>();
+            var favHash = new Dictionary<string, ListItem>();
 
-			if (notes != null && notes.Items != null)
-				notesHash = notes.Items.ToDictionary(n => n.ItemNumber);
-			if (favorites != null && favorites.Items != null)
-				favHash = favorites.Items.ToDictionary(f => f.ItemNumber);
+            if (notes != null && notes.Items != null)
+                notesHash = notes.Items
+                                    .GroupBy(i => i.ItemNumber)
+                                    .ToDictionary(n => n.Key, n => n.First());
+            if (favorites != null && favorites.Items != null)
+                favHash = favorites.Items
+                                    .GroupBy(i => i.ItemNumber)
+                                    .ToDictionary(f => f.Key, f => f.First());
 
-			
-			Parallel.ForEach(list.Items, listItem =>
-			{
-				listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);// favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
-				listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;// notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
-			});
-
-		}
+            Parallel.ForEach(list.Items, listItem => {
+                listItem.Favorite = favHash.ContainsKey(listItem.ItemNumber);// favorites.Items.Where(l => l.ItemNumber.Equals(listItem.ItemNumber)).Any();
+                listItem.Notes = notesHash.ContainsKey(listItem.ItemNumber) ? notesHash[listItem.ItemNumber].Note : null;// notes.Items.Where(n => n.ItemNumber.Equals(listItem.ItemNumber)).Select(i => i.Note).FirstOrDefault();
+            });
+        }
 		
 		private void PopulateProductDetails(UserSelectedContext catalogInfo, List<RecentItem> returnList)
 		{

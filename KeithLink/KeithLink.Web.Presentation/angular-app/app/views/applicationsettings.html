@@ -1,15 +1,19 @@
 <div page-header-bar>
-  <div header-message>
+  <div header-message >
     Application Settings
+    <span style="white-space:nowrap; display:inline-block; float:right;" class="hidden-md hidden-lg hidden-print" >
+     <button type="submit" class="btn btn-lg btn-danger" ng-click="restoreDefaults()">Restore Defaults</button>
+    <button type="submit" ng-disabled="notificationPreferencesForm.$invalid || pageSizeForm.$invalid || sortPreferencesForm.$invalid || (notificationPreferencesForm.$pristine && pageSizeForm.$pristine && sortPreferencesForm.$pristine)" class="btn btn-lg btn-primary" style="margin-right:6px;" ng-click="savePreferences()">Save Preferences</button>
+    </span>
   </div>
-  <div header-buttons></div>
-    <button type="submit" class="btn btn-lg btn-danger pull-right" ng-click="restoreDefaults()">Restore Defaults</button>
-<button type="submit" ng-disabled="notificationPreferencesForm.$invalid || pageSizeForm.$invalid || sortPreferencesForm.$invalid || (notificationPreferencesForm.$pristine && pageSizeForm.$pristine && sortPreferencesForm.$pristine)" class="btn btn-lg btn-primary pull-right" style="margin-right:6px;" ng-click="savePreferences()">Save Preferences</button>
+  <div header-buttons>
+    <button type="submit" class="btn btn-lg btn-danger" ng-click="restoreDefaults()">Restore Defaults</button>
+    <button type="submit" ng-disabled="notificationPreferencesForm.$invalid || pageSizeForm.$invalid || sortPreferencesForm.$invalid || (notificationPreferencesForm.$pristine && pageSizeForm.$pristine && sortPreferencesForm.$pristine)" class="btn btn-lg btn-primary" style="margin-right:6px;" ng-click="savePreferences()">Save Preferences</button>
+  </div>
 </div>
 
-
 <div class="page-content">
-<a class="text-large btn-link" ui-sref="menu.admin.customergroup" ng-if="canViewCustomerGroups"><span class="icon-arrow-left6"></span> Back</a>
+<a class="text-large btn-link" ng-click="goBack()"><span class="icon-arrow-left6"></span> Back</a>
 <div class="row">
 
 
@@ -23,7 +27,7 @@
 
         <div style="text-align:left">
           <label class="col-md-6" style="white-space:nowrap; display:inline-block; margin-right:50px; padding-top:5px;">Page Load Size:</label>        
-          <input type="text" style="width:45px !important;" ng-model = "pageLoadSize" class="form-control text-right input-number"/>
+          <input type="text" style="width:50px !important;" ng-model = "pageLoadSize" class="form-control text-right input-number"/>
         </div>
 
       </div>

@@ -75,7 +75,7 @@
             ng-click="sort('par', sortDescending)">
             <span>PAR <span sort-icons field="'par'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th></th>
+          <th></th> <th></th>
         </tr>
       </thead>
       <tbody ng-repeat="item in list.items | filter:{listitemid: '!!'} " class="item_{{item.listitemid}}">
@@ -120,8 +120,15 @@
           <td class="icon-col">
             <span class="hidden-md hidden-lg icon-ellipsis text-light hand large-icon" ng-click="showDetails = !showDetails;"></span>
           </td>
+          <td>
+          <span         
+            class="hidden-xs hidden-sm icon-list2 large-icon" 
+            tooltip="Click and drag to reorder list."
+            style="cursor:move; margin-right:40px;">
+          </span>
+          </td>
         </tr>
-        <tr ng-show="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
+        <tr ng-if="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">
           <td colspan="10">
             <table>
               <colgroup>

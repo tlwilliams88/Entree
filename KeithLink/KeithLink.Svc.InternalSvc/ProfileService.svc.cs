@@ -74,7 +74,7 @@ namespace KeithLink.Svc.InternalSvc
 			return _passwordResetLogic.ResetPassword(resetPassword);
 		}
 
-        public List<SettingsModel> ReadProfileSettings( Guid userId ) {
+        public List<SettingsModelReturn> ReadProfileSettings( Guid userId ) {
             return _settingsLogic.GetAllUserSettings( userId );
         }
 

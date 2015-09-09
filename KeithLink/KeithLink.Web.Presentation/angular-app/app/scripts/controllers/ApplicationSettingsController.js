@@ -74,6 +74,10 @@
       $scope.setDesc = function(field){
         field.sortDesc = (field.sortDesc === 'n') ? 'y' : 'n' ;
       }
+      
+      $scope.goBack = function(){
+        $state.go('menu.home');
+      };
 
       $scope.setOrder = function(field, fields, isSelected){
         if(!field.isSelected){

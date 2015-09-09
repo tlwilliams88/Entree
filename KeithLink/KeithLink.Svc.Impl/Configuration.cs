@@ -1,13 +1,13 @@
-﻿using System;
+﻿using KeithLink.Common.Core;
+using KeithLink.Svc.Core;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using KeithLink.Common.Core;
 
-namespace KeithLink.Svc.Impl
-{
-    public class Configuration : ConfigurationFacade
-    {
+namespace KeithLink.Svc.Impl {
+    public class Configuration : ConfigurationFacade {
         #region attributes
         // General site settings
         private const string PRESENTATION_URL = "PresentationUrl";
@@ -40,6 +40,7 @@ namespace KeithLink.Svc.Impl
         private const string KEY_AD_GUEST_CONTAINER = "ADGuestOU";
         private const string KEY_AD_INTERNAL_DOMAIN = "ADIntDomain";
         private const string KEY_AD_INTERNAL_PASSWORD = "ADIntPass";
+        private const string KEY_AD_INTERNAL_ROLE_CORPADMIN = "ADIntRoleNameCorporateAdmin";
         private const string KEY_AD_INTERNAL_ROOTNODE = "ADIntRoot";
         private const string KEY_AD_INTERNAL_SERVERNAME = "ADIntServer";
         private const string KEY_AD_INTERNAL_USER = "ADIntUser";
@@ -174,12 +175,36 @@ namespace KeithLink.Svc.Impl
         #endregion
 
         #region methods
-        private static List<string> GetCommaSeparatedValues(string val)
-        {
+        public static readonly List<string> BekSysAdminRoles = new List<string>() {
+           RoleNameCorporateAdmin, Constants.ROLE_CORPORATE_SECURITY 
+        };
+
+        private static List<string> GetCommaSeparatedValues(string val) {
             if (!String.IsNullOrEmpty(val))
                 return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList();
             return new List<string>();
         }
+
+        public static readonly List<string> InternalUserRoles = new List<string>() { 
+            RoleNameCorporateAdmin, Constants.ROLE_CORPORATE_SECURITY, 
+            Constants.ROLE_INTERNAL_CSR_FAQ, Constants.ROLE_INTERNAL_CSR_FAM, Constants.ROLE_INTERNAL_CSR_FDF, 
+            Constants.ROLE_INTERNAL_CSR_FHS, Constants.ROLE_INTERNAL_CSR_FLR, Constants.ROLE_INTERNAL_CSR_FSA, 
+            Constants.ROLE_INTERNAL_CSR_FOK, Constants.ROLE_INTERNAL_DSM_FAQ, Constants.ROLE_INTERNAL_DSM_FAM, 
+            Constants.ROLE_INTERNAL_DSM_FDF, Constants.ROLE_INTERNAL_DSM_FHS, Constants.ROLE_INTERNAL_DSM_FLR, 
+            Constants.ROLE_INTERNAL_DSM_FSA, Constants.ROLE_INTERNAL_DSM_FOK, Constants.ROLE_INTERNAL_DSR_FAQ, 
+            Constants.ROLE_INTERNAL_DSR_FAM, Constants.ROLE_INTERNAL_DSR_FDF, Constants.ROLE_INTERNAL_DSR_FHS, 
+            Constants.ROLE_INTERNAL_DSR_FLR, Constants.ROLE_INTERNAL_DSR_FSA, Constants.ROLE_INTERNAL_DSR_FOK,
+            Constants.ROLE_INTERNAL_MIS_FAQ, Constants.ROLE_INTERNAL_MIS_FAM, Constants.ROLE_INTERNAL_MIS_FDF, 
+            Constants.ROLE_INTERNAL_MIS_FHS, Constants.ROLE_INTERNAL_MIS_FLR, Constants.ROLE_INTERNAL_MIS_FSA, 
+            Constants.ROLE_INTERNAL_MIS_FOK, Constants.ROLE_INTERNAL_MIS_FAR, Constants.ROLE_INTERNAL_POWERUSER_FAM, 
+            Constants.ROLE_INTERNAL_POWERUSER_FAQ, Constants.ROLE_INTERNAL_POWERUSER_FAR, Constants.ROLE_INTERNAL_POWERUSER_FDF, 
+            Constants.ROLE_INTERNAL_POWERUSER_FHS, Constants.ROLE_INTERNAL_POWERUSER_FLR, Constants.ROLE_INTERNAL_POWERUSER_FOK, 
+            Constants.ROLE_INTERNAL_POWERUSER_FSA, Constants.ROLE_INTERNAL_POWERUSER_GOF, Constants.ROLE_INTERNAL_MARKETING_FAQ, 
+            Constants.ROLE_INTERNAL_MARKETING_FAM, Constants.ROLE_INTERNAL_MARKETING_FDF, Constants.ROLE_INTERNAL_MARKETING_FHS,
+            Constants.ROLE_INTERNAL_MARKETING_FLR, Constants.ROLE_INTERNAL_MARKETING_FAR, Constants.ROLE_INTERNAL_MARKETING_FSA,
+            Constants.ROLE_INTERNAL_MARKETING_FOK, Constants.ROLE_INTERNAL_MARKETING_GOF
+        };
+
         #endregion
 
         #region properties
@@ -197,14 +222,14 @@ namespace KeithLink.Svc.Impl
 
         public static string AccessGroupPowerMenuCustomer {
             get {
-                return GetValue( KEY_AD_EXTERNAL_ACCESSGROUP_POWERMENUCUSTOMER, string.Empty );
+                return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_POWERMENUCUSTOMER, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryExternalDomain { 
-            get { 
-                return GetValue(KEY_AD_EXTERNAL_DOMAIN, string.Empty); 
-            } 
+        public static string ActiveDirectoryExternalDomain {
+            get {
+                return GetValue(KEY_AD_EXTERNAL_DOMAIN, string.Empty);
+            }
         }
 
         public static string ActiveDirectoryExternalDomainUserName {
@@ -212,35 +237,27 @@ namespace KeithLink.Svc.Impl
                 return string.Format("{0}\\{1}", ActiveDirectoryExternalDomain, ActiveDirectoryExternalUserName);
             }
         }
-        
-        public static string ActiveDirectoryExternalPassword
-        {
-            get
-            {
+
+        public static string ActiveDirectoryExternalPassword {
+            get {
                 return GetValue(KEY_AD_EXTERNAL_PASSWORD, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryExternalRootNode
-        {
-            get
-            {
+        public static string ActiveDirectoryExternalRootNode {
+            get {
                 return GetValue(KEY_AD_EXTERNAL_ROOTNODE, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryExternalServerName
-        {
-            get
-            {
+        public static string ActiveDirectoryExternalServerName {
+            get {
                 return GetValue(KEY_AD_EXTERNAL_SERVERNAME, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryExternalUserName
-        {
-            get
-            {
+        public static string ActiveDirectoryExternalUserName {
+            get {
                 return GetValue(KEY_AD_EXTERNAL_USER, string.Empty);
             }
         }
@@ -255,10 +272,8 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_AD_GUEST_CONTAINER, string.Empty); }
         }
 
-        public static string ActiveDirectoryInternalDomain
-        {
-            get
-            {
+        public static string ActiveDirectoryInternalDomain {
+            get {
                 return GetValue(KEY_AD_INTERNAL_DOMAIN, string.Empty);
             }
         }
@@ -269,63 +284,49 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string ActiveDirectoryInternalPassword
-        {
-            get
-            {
+        public static string ActiveDirectoryInternalPassword {
+            get {
                 return GetValue(KEY_AD_INTERNAL_PASSWORD, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryInternalRootNode
-        {
-            get
-            {
+        public static string ActiveDirectoryInternalRootNode {
+            get {
                 return GetValue(KEY_AD_INTERNAL_ROOTNODE, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryInternalServerName
-        {
-            get
-            {
+        public static string ActiveDirectoryInternalServerName {
+            get {
                 return GetValue(KEY_AD_INTERNAL_SERVERNAME, string.Empty);
             }
         }
 
-        public static string ActiveDirectoryInternalUserName
-        {
-            get
-            {
+        public static string ActiveDirectoryInternalUserName {
+            get {
                 return GetValue(KEY_AD_INTERNAL_USER, string.Empty);
             }
         }
 
-        public static int ActiveDirectoryInvalidAttempts { 
-            get 
-            {
-                try
-                {
+        public static int ActiveDirectoryInvalidAttempts {
+            get {
+                try {
                     return Convert.ToInt32(GetValue(KEY_AD_INVALIDATTEMPTS, "3"));
-                }
-                catch
-                {
+                } catch {
                     return 3;
                 }
-            } 
+            }
         }
 
-        public static int ActiveDirectoryLockoutDuration { 
+        public static int ActiveDirectoryLockoutDuration {
             get {
-                try
-                {
+                try {
                     return Convert.ToInt32(GetValue(KEY_AD_LOCKOUTDURATION, "30"));
 
-                }
-                catch {
+                } catch {
                     return 30;
                 }
-            } 
+            }
         }
 
         public static bool AddServerNameToHeader {
@@ -335,10 +336,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static List<string> AllowedApiKeys
-        {
-            get
-            {
+        public static List<string> AllowedApiKeys {
+            get {
                 string val = GetValue(KEY_ALLOWED_API_KEYS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
@@ -355,7 +354,7 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID, string.Empty);
             }
         }
-        
+
         public static string AmazonSnsMobilePlatformAppArnIOS {
             get {
                 return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS, string.Empty);
@@ -368,32 +367,26 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string AppDataConnectionString
-        {
+        public static string AppDataConnectionString {
             get { return GetConnectionString(KEY_APPDATA_CONNECTIONSTRING); }
         }
 
-        public static string ApplicationName
-        {
-            get
-            {
+        public static string ApplicationName {
+            get {
                 return GetValue(KEY_APP_NAME, DEFAULT_APPNAME);
             }
         }
-        
-        public static string BaseCatalog
-        {
+
+        public static string BaseCatalog {
             get { return GetValue(KEY_BASE_CATALOG, string.Empty); }
         }
 
-		public static string BranchContactEmail(string branchId)
-		{
-			return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
+        public static string BranchContactEmail(string branchId) {
+            return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
 
-		}
+        }
 
-        public static string BrandAssetsUrl
-        {
+        public static string BrandAssetsUrl {
             get { return GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
         }
 
@@ -404,72 +397,57 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string CategoryPrefixesToExclude
-        {
+        public static string CategoryPrefixesToExclude {
             get { return GetValue(KEY_CATEGORY_PREFIXES, string.Empty); }
         }
-        
-        public static string CSSiteName
-        {
+
+        public static string CSSiteName {
             get { return GetValue(KEY_SITE_NAME, string.Empty); }
         }
-        
-        public static string CorsEnabledDomains
-        {
+
+        public static string CorsEnabledDomains {
             get { return GetValue(KEY_CORS_ENABLED_DOMAINS, string.Empty); }
         }
 
-        public static string CorsEnabledHeaders
-        {
+        public static string CorsEnabledHeaders {
             get { return GetValue(KEY_CORS_ENABLED_HEADERS, string.Empty); }
         }
 
-        public static string CorsEnabledMethods
-        {
+        public static string CorsEnabledMethods {
             get { return GetValue(KEY_CORS_ENABLED_METHODS, string.Empty); }
         }
 
-        public static int DefaultCategoryReturnSize
-        {
-            get 
-            { 
+        public static int DefaultCategoryReturnSize {
+            get {
                 string value = GetValue(KEY_DEFAULT_CATEGORY_RETURN_SIZE, DEFAULT_CATEGORY_RETURN_SIZE);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_CATEGORY_RETURN_SIZE);
             }
         }
 
-        public static int DefaultProductReturnSize
-        {
-            get
-            { 
+        public static int DefaultProductReturnSize {
+            get {
                 string value = GetValue(KEY_DEFAULT_PRODUCT_RETURN_SIZE, DEFAULT_PRODUCT_RETURN_SIZE);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_PRODUCT_RETURN_SIZE);
             }
         }
-        
-        public static string ElasticSearchAggregations
-        {
+
+        public static string ElasticSearchAggregations {
             get { return GetValue(KEY_ELASTIC_SEARCH_AGGREGATIONS, string.Empty); }
         }
 
-        public static int ElasticSearchBatchSize
-        {
-            get
-            {
+        public static int ElasticSearchBatchSize {
+            get {
                 string value = GetValue(KEY_ELASTIC_SEARCH_BATCH_SIZE, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
             }
         }
 
-        public static string EnableEtaForUsers
-        {
+        public static string EnableEtaForUsers {
             get { return GetValue(KEY_ENABLE_ETA_FOR_USERS, DEFAULT_ENABLE_ETA_FOR_USERS); }
         }
 
-        public static List<string> ElasticSearchDigitSearchFields
-        {
-            get 
-            { 
+        public static List<string> ElasticSearchDigitSearchFields {
+            get {
                 string val = GetValue(KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
@@ -479,17 +457,14 @@ namespace KeithLink.Svc.Impl
             get { return GetValue(KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES, string.Empty); }
         }
 
-        public static List<string> ElasticSearchTermSearchFields
-        {
-            get 
-            {
+        public static List<string> ElasticSearchTermSearchFields {
+            get {
                 string val = GetValue(KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
 
-        public static string ElasticSearchURL
-        {
+        public static string ElasticSearchURL {
             get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
         }
 
@@ -532,7 +507,7 @@ namespace KeithLink.Svc.Impl
 
         public static int ItemHistoryAverageWeeks {
             get {
-                return ValueParsingUtil.ParseInt(GetValue( KEY_ITEM_HISTORY_WEEKS, String.Empty ), String.Empty);
+                return ValueParsingUtil.ParseInt(GetValue(KEY_ITEM_HISTORY_WEEKS, String.Empty), String.Empty);
             }
         }
         public static string KbitConnectionString {
@@ -554,18 +529,14 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string MainframeIPAddress
-        {
-            get
-            {
+        public static string MainframeIPAddress {
+            get {
                 return GetValue(KEY_MF_ADDRESS, "192.168.20.12");
             }
         }
 
-        public static int MainframeConfirmationListeningPort
-        {
-            get
-            {
+        public static int MainframeConfirmationListeningPort {
+            get {
                 return int.Parse(GetValue(KEY_MF_CONFRIMATION_PORT, "4001"));
             }
         }
@@ -576,10 +547,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static int MainframeListeningPort
-        {
-            get
-            {
+        public static int MainframeListeningPort {
+            get {
                 return int.Parse(GetValue(KEY_MF_PORT, "0"));
             }
         }
@@ -590,10 +559,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string MainframeOrderTransactionId
-        {
-            get
-            {
+        public static string MainframeOrderTransactionId {
+            get {
                 return GetValue(KEY_MF_TRANS_ORDER, string.Empty);
             }
         }
@@ -616,19 +583,15 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static int MaxSortByPriceItemCount
-        {
-            get
-            {
+        public static int MaxSortByPriceItemCount {
+            get {
                 string value = GetValue(KEY_MAX_SORT_BY_PRICE_ITEM_COUNT, DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
             }
         }
-        
-        public static string MultiDocsUrl
-        {
-            get 
-            { 
+
+        public static string MultiDocsUrl {
+            get {
                 string configValue = GetValue(KEY_MULTIDOCS_URL, string.Empty);
                 if (!String.IsNullOrEmpty(configValue) && !configValue.EndsWith("/"))
                     configValue = configValue + "/";
@@ -636,10 +599,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string MultiDocsProxyUrl
-        {
-            get 
-            { 
+        public static string MultiDocsProxyUrl {
+            get {
                 string configValue = GetValue(KEY_MULTIDOCS_PROXY_URL, string.Empty);
                 if (!String.IsNullOrEmpty(configValue) && !configValue.EndsWith("/"))
                     configValue = configValue + "/";
@@ -648,35 +609,35 @@ namespace KeithLink.Svc.Impl
         }
 
         public static string OrderUpdateWatchPath {
-            get{ return GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
+            get { return GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
         }
 
         public static string PowerMenuAdminUsername {
-            get { return GetValue( KEY_POWERMENU_ADMIN_USERNAME, string.Empty ); }
+            get { return GetValue(KEY_POWERMENU_ADMIN_USERNAME, string.Empty); }
         }
 
         public static string PowerMenuAdminPassword {
-            get { return GetValue( KEY_POWERMENU_ADMIN_PASSWORD, string.Empty ); }
+            get { return GetValue(KEY_POWERMENU_ADMIN_PASSWORD, string.Empty); }
         }
 
         public static string PowerMenuWebServiceUrl {
-            get { return GetValue( KEY_POWERMENU_WEBSERVICE_URL, string.Empty ); }
+            get { return GetValue(KEY_POWERMENU_WEBSERVICE_URL, string.Empty); }
         }
 
         public static string PowerMenuPermissionsUrl {
-            get { return GetValue( KEY_POWERMENU_PERMISSIONS_URL, string.Empty ); }
+            get { return GetValue(KEY_POWERMENU_PERMISSIONS_URL, string.Empty); }
         }
-        
+
         public static string PowerMenuLoginUrl {
-            get { return GetValue( KEY_POWERMENU_LOGIN_URL, string.Empty ); }
+            get { return GetValue(KEY_POWERMENU_LOGIN_URL, string.Empty); }
         }
 
         public static string PowerMenuGroupSetupUrl {
-            get { return GetValue( KEY_POWERMENU_GROUP_SETUP_URL, string.Empty ); }
+            get { return GetValue(KEY_POWERMENU_GROUP_SETUP_URL, string.Empty); }
         }
 
         public static string PresentationUrl {
-            get { return GetValue( PRESENTATION_URL, string.Empty ); }
+            get { return GetValue(PRESENTATION_URL, string.Empty); }
         }
 
         public static string RabbitMQExchangeAccess {
@@ -696,7 +657,7 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS, string.Empty);
             }
         }
-        
+
         public static string RabbitMQExchangeHourlyUpdates {
             get { return GetValue(KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES, string.Empty); }
         }
@@ -719,10 +680,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQExchangeNotification
-        {
-            get
-            {
+        public static string RabbitMQExchangeNotification {
+            get {
                 return GetValue(KEY_RABBITMQ_EXCHANGE_NOTIFICATION, string.Empty);
             }
         }
@@ -785,10 +744,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQQueueNotification
-        {
-            get
-            {
+        public static string RabbitMQQueueNotification {
+            get {
                 return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
             }
         }
@@ -829,10 +786,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQUserNamePublisher
-        {
-            get
-            {
+        public static string RabbitMQUserNamePublisher {
+            get {
                 return GetValue(KEY_RABBITMQ_USER_ORDER_PUBLISHUSER, string.Empty);
             }
         }
@@ -842,43 +797,33 @@ namespace KeithLink.Svc.Impl
                 return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEPASS, string.Empty);
             }
         }
-        
-        public static string RabbitMQUserPasswordPublisher
-        {
-            get
-            {
+
+        public static string RabbitMQUserPasswordPublisher {
+            get {
                 return GetValue(KEY_RABBITMQ_USER_ORDER_PUBLISHPASS, string.Empty);
             }
         }
 
-        public static string RabbitMQNotificationUserNameConsumer
-        {
-            get
-            {
+        public static string RabbitMQNotificationUserNameConsumer {
+            get {
                 return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEUSER, string.Empty);
             }
         }
 
-        public static string RabbitMQNotificationUserNamePublisher
-        {
-            get
-            {
+        public static string RabbitMQNotificationUserNamePublisher {
+            get {
                 return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHUSER, string.Empty);
             }
         }
 
-        public static string RabbitMQNotificationUserPasswordConsumer
-        {
-            get
-            {
+        public static string RabbitMQNotificationUserPasswordConsumer {
+            get {
                 return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEPASS, string.Empty);
             }
         }
 
-        public static string RabbitMQNotificationUserPasswordPublisher
-        {
-            get
-            {
+        public static string RabbitMQNotificationUserPasswordPublisher {
+            get {
                 return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHPASS, string.Empty);
             }
         }
@@ -889,34 +834,26 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQConfirmationServer
-        {
-            get
-            {
+        public static string RabbitMQConfirmationServer {
+            get {
                 return GetValue(KEY_RABBITMQ_SERVER_CONFIRMATION, string.Empty);
             }
         }
 
-        public static string RabbitMQOrderServer
-        {
-            get
-            {
+        public static string RabbitMQOrderServer {
+            get {
                 return GetValue(KEY_RABBITMQ_SERVER_ORDER, string.Empty);
             }
         }
 
-        public static string RabbitMQNotificationServer
-        {
-            get
-            {
+        public static string RabbitMQNotificationServer {
+            get {
                 return GetValue(KEY_RABBITMQ_SERVER_NOTIFICATION, string.Empty);
             }
         }
 
-        public static string RabbitMQVHostAccess
-        {
-            get
-            {
+        public static string RabbitMQVHostAccess {
+            get {
                 return GetValue(KEY_RABBITMQ_VHOST_ACCESS, string.Empty);
             }
         }
@@ -933,10 +870,8 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static string RabbitMQVHostOrder
-        {
-            get
-            {
+        public static string RabbitMQVHostOrder {
+            get {
                 return GetValue(KEY_RABBITMQ_VHOST_ORDER, string.Empty);
             }
         }
@@ -954,7 +889,7 @@ namespace KeithLink.Svc.Impl
                 return ValueParsingUtil.ParseBool(value, "false");
             }
         }
-		
+
         public static string RoleNameAccounting {
             get {
                 return GetValue(KEY_AD_EXTERNAL_ROLENAME_ACCOUNTING, string.Empty);
@@ -973,6 +908,12 @@ namespace KeithLink.Svc.Impl
             }
         }
 
+        public static string RoleNameCorporateAdmin {
+            get {
+                return GetValue(KEY_AD_INTERNAL_ROLE_CORPADMIN, string.Empty);
+            }
+        }
+
         public static string RoleNameGuest {
             get {
                 return GetValue(KEY_AD_EXTERNAL_ROLENAME_GUEST, string.Empty);
@@ -985,42 +926,34 @@ namespace KeithLink.Svc.Impl
             }
         }
 
-        public static bool RunInternalServiceQueues
-        {
-            get
-            {
+        public static bool RunInternalServiceQueues {
+            get {
                 return bool.Parse(GetValue(KEY_RUN_INTERNAL_SERVICE_QUEUES, "true"));
             }
         }
-		
-        public static string ServiceEmailAddress
-		{
-			get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
-		}
 
-        public static string SMTPHostName
-		{
-			get { return GetValue(KEY_SMTP_SERVERNAME, null); }
-		}
+        public static string ServiceEmailAddress {
+            get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
+        }
 
-		public static int SMTPSendPort
-		{
-			get
-			{
-				string value = GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
-				return ValueParsingUtil.ParseInt(value, DEFAULT_SMTP_SEND_PORT);
-			}
-		}
+        public static string SMTPHostName {
+            get { return GetValue(KEY_SMTP_SERVERNAME, null); }
+        }
 
-		public static string SMTPUsername
-		{
-			get { return GetValue(KEY_SMTP_USERNAME, null); }
-		}
+        public static int SMTPSendPort {
+            get {
+                string value = GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
+                return ValueParsingUtil.ParseInt(value, DEFAULT_SMTP_SEND_PORT);
+            }
+        }
 
-		public static string SMTPPassword
-		{
-			get { return GetValue(KEY_SMTP_PASSWORD, null); }
-		}
+        public static string SMTPUsername {
+            get { return GetValue(KEY_SMTP_USERNAME, null); }
+        }
+
+        public static string SMTPPassword {
+            get { return GetValue(KEY_SMTP_PASSWORD, null); }
+        }
 
         public static string WebNowUrl {
             get {

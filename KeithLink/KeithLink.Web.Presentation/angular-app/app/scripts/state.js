@@ -170,7 +170,7 @@ angular.module('bekApp')
           var last = LocalStorage.getLastList();
           var stillExists = false;
           //if no stored page size, use default 30
-          var pageSize = LocalStorage.getPageSize() || 30;
+          var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
           var filterObject = LocalStorage.getDefaultSort();
           var  fields =  [
           { 'field': 'position', 'order': ''},
@@ -204,7 +204,7 @@ angular.module('bekApp')
                  }
             }
           });    
-
+          $stateParams.sortingParams = params;
          if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
             last.timeset =  moment().format('YYYYMMDDHHmm');
              LocalStorage.setLastList(last); 
@@ -338,7 +338,7 @@ angular.module('bekApp')
         selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
              
              //if no stored page size, use default 30
-             var pageSize = LocalStorage.getPageSize() || 30;
+             var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
              var filterObject = LocalStorage.getDefaultSort();
              var  fields =  [
                { 'field': 'position', 'order': ''},
@@ -350,7 +350,7 @@ angular.module('bekApp')
                { 'field': 'label', 'order': ''}];
              var params = {size: pageSize, from: 0, sort: []};
              //Decode stored sort preferences and buils params sort object with it.
-             if(filterObject.length > 6){        
+             if(filterObject && filterObject.length > 6){        
               var atoSettings = filterObject.slice(filterObject.indexOf('a') + 3, filterObject.length);
               
                 for (var i = 0;  i < atoSettings.length; i++) {
@@ -360,7 +360,7 @@ angular.module('bekApp')
                   }
                 } 
              }
-
+          $stateParams.sortingParams = params;
           if($stateParams.cartId !== 'New'){
             var allSets = LocalStorage.getLastOrderList();
             var allValidSets = [];           
