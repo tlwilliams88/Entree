@@ -28,16 +28,17 @@
           <th style="width:8%">
             <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
           </th>
-          <th style="width:22%;" class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
+          <th style="width:14%;" class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
             Number
             <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
+          <th style="width:27%" class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
             Name
             <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
-            <th>Group Id</th>
-            <th>Group Description</th>
+          <th style="width:12%">Group Id</th>
+          <th style="width:12%">Group Number</th>
+          <th>Group Description</th>
         </tr>
       </thead>
     </table>
@@ -45,35 +46,37 @@
     <table class="table table-border table-striped-rows customer-assignment-table" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.modal .infiniteScroll'">
       <thead ng-hide="true">
         <tr fsm-sticky-header scroll-body="'.customer-assignment-table'" scroll-stop="0" scroll-offset="0">
-          <th>
+          <th style="width:8%">
             <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
           </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
+          <th style="width:14%;" class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
             Number
             <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
+          <th style="width:27%" class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
             Name
             <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
-            <th>Group Id</th>
-            <th>Group Description</th>
+          <th style="width:12%">Group Id</th>
+          <th style="width:12%">Group Number</th>
+          <th>Group Description</th>
         </tr>
       </thead>
       <tbody>
         <tr ng-repeat="customer in customers" class="hand" ng-class="{ odd : $odd, even: $even }" ng-click="selectCustomer(customer)">
-          <td>
+          <td style="width: 8%">
             <input type="checkbox" ng-model="customer.selected" ng-change="updateCount(customer.selected)" ng-click="stopEvent($event, customer)">
           </td>
-          <td>{{customer.customerNumber}}</td>
-          <td>({{customer.customerBranch}})- {{customer.customerName}}</td>
-            <td>{{customer.nationalId.length > 0 ? customer.nationalId : (customer.regionalId.length > 0 ? customer.regionalId : "")}}</td>
-            <td>{{customer.nationalIdDesc.length > 0 ? customer.nationalIdDesc : (customer.regionalIdDesc.length > 0 ? customer.regionalIdDesc : "")}}</td>
+          <td style="width: 14%">{{customer.customerNumber}}</td>
+          <td style="width: 27%">({{customer.customerBranch}})- {{customer.customerName}}</td>
+          <td style="width: 12%">{{customer.nationalId.length > 0 ? customer.nationalId : (customer.regionalId.length > 0 ? customer.regionalId : "")}}</td>
+          <td style="width: 12%">{{customer.nationalNumber.length > 0 ? customer.nationalNumber + customer.nationalSubNumber : (customer.regionalNumber.length > 0 ? customer.regionalNumber : "")}}</td>
+          <td>{{customer.nationalIdDesc.length > 0 ? customer.nationalIdDesc : (customer.regionalIdDesc.length > 0 ? customer.regionalIdDesc : "")}}</td>
         </tr>
       </tbody>
       <tfoot>
         <tr ng-show="customers.length === 0">
-          <td colspan="4">There are no customers to display.</td>
+          <td colspan="5">There are no customers to display.</td>
         </tr>
       </tfoot>
     </table>
