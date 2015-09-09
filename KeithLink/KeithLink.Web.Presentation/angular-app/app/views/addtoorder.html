@@ -242,6 +242,7 @@
             </td>
             <td class="input-col nowrap">
               <!--  QUANTITY -->
+              <span class="hidden-mobile visible-print">{{::item.quantity}}</span>
               <ng-form class="hidden-print" name="quantityForm">
                 <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder" ng-if="!useParlevel && item.canOrder"></div>
                 <span  class="counter-container"  >
