@@ -460,6 +460,7 @@
               </td>
               <td class="hidden-sm hidden-xs hidden-drag" >
                 <span tooltip="{{item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
+              </td>
               <td class="hidden-mobile-visible-print" item-icons></td>
               <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm hidden-drag">
                 {{::item[selectedList.permissions.alternativeFieldName]}}
@@ -494,12 +495,11 @@
               <td class="visible-print" ng-if="::(selectedList.permissions.canSeeLabels)">
                 {{::item.label}}
               </td>
-              </td>
               <td class="input-col hidden-mobile-visible-print" ng-if="::(selectedList.name !== 'History' && !selectedList.is_contract_list)">
-              <ng-form name="eachForm" ng-if="::(item.hasPackagePrice)">
-                <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model-options="{ debounce: 1000 }" ng-model="item.each" id="each" name="each" />
-                <label for="each"></label>
-              </ng-form>
+                  <ng-form name="eachForm" ng-if="::(item.hasPackagePrice)">
+                    <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model-options="{ debounce: 1000 }" ng-model="item.each" id="each" name="each" />
+                    <label for="each"></label>
+                  </ng-form>
               </td>
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
@@ -523,14 +523,14 @@
                 {{::item.parlevel}}
               </td> 
               <td class="nowrap hidden-print hidden-drag bek-no-drag large-icon icon-col">
-              <div
-                  ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
-                  context-menu-template
-                  class="context-menu-template context-menu__in-list hidden-print">           
-                  <a class="icon-plus2"></a>
-              </div>
-                <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>                
-                <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+                  <div
+                      ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }" 
+                      context-menu-template
+                      class="context-menu-template context-menu__in-list hidden-print">           
+                      <a class="icon-plus2"></a>
+                  </div>
+                    <a class="hidden-xs hidden-sm" ng-if="::(selectedList.permissions.canDeleteItems)" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+                    <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
               </td>
 
             </tr>
@@ -692,7 +692,7 @@
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
-              <td class="input-col nowrap hidden-sm hidden-xs">
+              <td ng-if="::(selectedList.name !== 'History' && !selectedList.ismandatory && !selectedList.isreminder)" class="input-col nowrap hidden-sm hidden-xs">
                <div class="full-width-mobile">
                   <select ng-if="!item.label  && selectedList.permissions.canEditLabels"><option>Select A Label...</option></select>
                   <select ng-if="item.label && selectedList.permissions.canEditLabels" style="width:103.636px;" ><option>{{item.label}}</option></select>
@@ -729,9 +729,6 @@
                 {{::item.parlevel}}
               </td>
               <!-- Parlevel for Print -->
-              <td class="visible-print" ng-if="::selectedList.permissions.canSeeParlevel">
-                {{::item.parlevel}}
-              </td>
 
               <td class="nowrap hidden-print large-icon icon-col">
  
