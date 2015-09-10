@@ -369,43 +369,43 @@
             <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="selectedList.allSelected" ng-click="changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
-                <span class="sort-col-header" ng-click="sortList('position',sort.sortDescending)"> 
+                <span class="sort-col-header" ng-click="sortList('position',sort[0].order)"> 
                   #
-                  <span sort-icons field="'position'" sortorder="sort.sortDescending" sortby="sort.field"></span>
+                  <span sort-icons field="'position'" sortorder="sort[0].order" sortby="sort[0].field"></span>
                 </span>
               </th>
-              <th class="sort-col-header" ng-click="sortList('itemnumber',sort.sortDescending)">
-                <span>Item <span sort-icons field="'itemnumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              <th class="sort-col-header" ng-click="sortList('itemnumber',sort[0].order)">
+                <span>Item <span sort-icons field="'itemnumber'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="sort-col-header" ng-click="sortList('name',sort.sortDescending)">
-                <span>Name <span sort-icons field="'name'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              <th class="sort-col-header" ng-click="sortList('name',sort[0].order)">
+                <span>Name <span sort-icons field="'name'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brandextendeddescription',sort.sortDescending)">
-                <span>Brand <span sort-icons field="'brandextendeddescription'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('brandextendeddescription',sort[0].order)">
+                <span>Brand <span sort-icons field="'brandextendeddescription'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('itemclass',sort.sortDescending)">
-                <span>Category <span sort-icons field="'class'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('itemclass',sort[0].order)">
+                <span>Category <span sort-icons field="'class'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print">
                 Pack/Size
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('notes',sort.sortDescending)">
-                <span>Notes <span sort-icons field="'notes'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortList('notes',sort[0].order)">
+                <span>Notes <span sort-icons field="'notes'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print"></th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.alternativeFieldHeader" ng-click="sortList(selectedList.permissions.alternativeFieldName,sort.sortDescending)">
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.alternativeFieldHeader" ng-click="sortList(selectedList.permissions.alternativeFieldName,sort[0].order)">
                 <span>{{::selectedList.permissions.alternativeFieldHeader}}
-                <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort.sortDescending)">
-                <span>Label <span sort-icons field="'label'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
+                <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print" ng-if="::(selectedList.name !== 'History' && !selectedList.is_contract_list)">
                   Each
               </th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeParlevel" ng-click="sortList('parlevel',sort.sortDescending)">
-                <span>{{::selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeParlevel" ng-click="sortList('parlevel',sort[0].order)">
+                <span>{{::selectedList.permissions.alternativeParHeader || 'PAR'}}<span sort-icons field="'parlevel'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               
               <th class="hidden-print"></th>
