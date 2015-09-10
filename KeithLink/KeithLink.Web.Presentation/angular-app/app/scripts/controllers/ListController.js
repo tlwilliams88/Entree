@@ -162,11 +162,6 @@ angular.module('bekApp')
       listPagingModel.sortListItems($scope.sort);
     };
 
- //    $scope.infiniteScrollLoadMore = function() {
- //      // listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, deletedItems, 'lists');
- // listPagingModel.loadAllData(($filter('filter')($scope.selectedList.items, {isdeleted: 'false'})), $scope.selectedList.itemCount, $scope.loadingResults, 'lists'); 
- //    };
-
     /**********
     CREATE LIST
     **********/
