@@ -96,10 +96,10 @@ angular.module('bekApp')
       $scope.loadingResults = false;
     }
 
-    $scope.sort = {
+    $scope.sort = [{
       field: 'position',
-      sortDescending: false
-    };
+      order: 'asc'
+    }];
     var listPagingModel = new ListPagingModel( 
       originalList.listid,
       resetPage,
@@ -150,15 +150,15 @@ angular.module('bekApp')
     };
     
     $scope.sortList = function(sortBy, sortOrder) {
-      if (sortBy === $scope.sort.field) {
-        sortOrder = !sortOrder;
+      if (sortBy === $scope.sort[0].field) {
+       sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
       } else {
-        sortOrder = false;
+        sortOrder = 'asc';
       }
-      $scope.sort = {
+      $scope.sort = [{
         field: sortBy,
-        sortDescending: sortOrder
-      };
+        order: sortOrder
+      }];
       listPagingModel.sortListItems($scope.sort);
     };
 
