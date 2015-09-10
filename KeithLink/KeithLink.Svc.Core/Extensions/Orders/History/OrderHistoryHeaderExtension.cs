@@ -114,7 +114,12 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
                     entityControlNumber = 0;
                 }
 
-                value.ControlNumber = entityControlNumber >= valueControlNumber? entity.ControlNumber : value.ControlNumber;
+                if (entityControlNumber > valueControlNumber) {
+                    value.ControlNumber = entity.ControlNumber;
+                } else {
+                    entity.ControlNumber = value.ControlNumber;
+                }
+                //value.ControlNumber = entityControlNumber >= valueControlNumber? entity.ControlNumber : value.ControlNumber;
                 value.OriginalControlNumber = entity.OriginalControlNumber?? entity.ControlNumber;
             }
         }
