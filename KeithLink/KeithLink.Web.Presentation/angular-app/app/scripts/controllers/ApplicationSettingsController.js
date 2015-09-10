@@ -67,7 +67,7 @@
 
         
         $scope.listFields =  [
-            { "value": 'position', "text": "Position", "order": '', "sortDesc": "n", "isSelected": false, "code": 0 },
+            { "value": 'position', "text": "Line #", "order": '', "sortDesc": "n", "isSelected": false, "code": 0 },
             { "value": 'itemnumber', "text": "Item #", "order": '', "sortDesc": "n", "isSelected": false, "code":  1 },
             { "value": 'name', "text": "Name", "order": '', "sortDesc": "n", "isSelected": false, "code": 2  },
             { "value": 'brandextendeddescription', "text": "Brand", "order": '', "sortDesc": "n", "isSelected": false, "code":  3 },
