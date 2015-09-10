@@ -27,7 +27,9 @@ angular.module('bekApp')
     $scope.indexOfSDestroyedRow = '';
     $scope.destroyedOnField = '';
 
+
     function onItemQuantityChanged(newVal, oldVal) {
+
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
@@ -172,7 +174,7 @@ angular.module('bekApp')
     $scope.rangeStart = $scope.startingPoint + 1;
     $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint;
   }
-
+$scope.usefunctions = false;
    $scope.rowChanged = function(index, field){
     $scope.destroyedOnField = field;
     $scope.indexOfSDestroyedRow = index;
@@ -202,6 +204,7 @@ angular.module('bekApp')
        $stateParams.listItems = undefined;
       }
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      //addItemWatches(0);
     }
     function appendListItems(list) {
       $stateParams.listItems = $scope.selectedList.items;
