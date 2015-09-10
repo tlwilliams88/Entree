@@ -1039,7 +1039,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                         allCustomers = _customerRepo.GetCustomersByNameSearchAndBranch(search, user.BranchId);
                     else
                         allCustomers = _customerRepo.GetCustomersForUser(user.UserId);
-                } else { // assume admin user with access to all customers or a PowerUser from GOF
+                } else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || user.RoleName.Equals(Constants.ROLE_NAME_MARKETING) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId.Equals(Constants.BRANCH_GOF))){ // assume admin user with access to all customers or a PowerUser from GOF
                     if (search.Length >= 3)
                         allCustomers = _customerRepo.GetCustomersByNameSearch(search);
                     else
