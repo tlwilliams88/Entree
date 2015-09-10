@@ -204,7 +204,7 @@
           <tr ng-mouseenter="item.initInputs = true">
             <td>
               {{::item.position}}
-              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities(); addItemWatches(startingPoint, endPoint); usefunctions=true; "></a>
+              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities(); addItemWatches(startingPoint, endPoint);"></a>
             </td>
             <td>
               <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
@@ -297,7 +297,7 @@
 
             <td class="input-col hidden-mobile-visible-print">
               <ng-form name="eachForm" ng-if="item.hasPackagePrice">
-                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" ng-change="onItemQuantityChanged()"/>
+                <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each"/>
                 <label for="each"></label>
               </ng-form>
             </td>
@@ -420,56 +420,6 @@
       </table>
     </div>
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   <div>
