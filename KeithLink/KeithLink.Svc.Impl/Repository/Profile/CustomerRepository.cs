@@ -71,16 +71,35 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                     whereClause.Append(" AND ");
                 }
 
+                int tempSearchNumber = 0;
+                bool isNumber = int.TryParse(searchTerm, out tempSearchNumber);
+                
                 switch (searchType) {
                     case CustomerSearchType.NationalAccount:
-                        whereClause.Append("(u_national_number = '{SearchTerm}' " +
-                                           "OR u_national_id_desc LIKE '%{SearchTerm}%' " +
-                                           "OR u_national_id LIKE '%{SearchTerm}%')");
+                        if (isNumber) {
+                            if (searchTerm.Length > 2) {
+                                // search by national account number and sub number
+                                whereClause.Append(string.Format("(u_national_number = '{0}' AND u_national_sub_number ='{1}')", searchTerm.Substring(0, 2), searchTerm.Substring(2)));
+                            } else {
+                                // search only by national account number
+                                whereClause.Append("u_national_number = '{SearchTerm}'");
+                            }
+                        } else {
+                            // search by national id or national id description
+                            whereClause.Append("(u_national_id_desc LIKE '%{SearchTerm}%' " +
+                                               "OR u_national_id LIKE '%{SearchTerm}%')");
+
+                        }
+                        
                         break;
                     case CustomerSearchType.RegionalAccount:
-                        whereClause.Append("(u_regional_number = '{SearchTerm}' " +
-                                           "OR u_regional_id_desc LIKE '%{SearchTerm}%' " +
-                                           "OR u_regional_id LIKE '%{SearchTerm}%')");
+                        if (isNumber) {
+                            whereClause.Append("u_regional_number = '{SearchTerm}'");
+                        } else {
+                            whereClause.Append("(u_regional_id_desc LIKE '%{SearchTerm}%' " +
+                                               "OR u_regional_id LIKE '%{SearchTerm}%')");
+                        }
+
                         break;
                     case CustomerSearchType.Customer:
                     default:
