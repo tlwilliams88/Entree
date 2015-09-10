@@ -27,7 +27,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
 
   ListPagingModel.prototype = {
 
-    loadList: function(appendData, usemessage, page) {
+    loadList: function(appendData, page) {
       var setData = this.setListItems;
       if (appendData) {
         setData = this.appendListItems;
@@ -42,12 +42,9 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
         from: this.pageIndex,
         terms: this.searchTerm,
         sort: sortArray,
-        filter: this.filter        
+        filter: this.filter,
+        message: 'Loading List...'    
        };
-
-      if(usemessage){
-        params.message = 'Loading List...'
-      }
 
       this.startLoading();
       return ListService.getList(
@@ -109,7 +106,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
     },
 
     loadMoreData: function(results, total, loading, deletedItems, page) {
-      if ( (!results || (results.length + deletedItems.length) < total) && !loading ) {
+      if ( (!results || (results + deletedItems.length) < total) && !loading ) {
 
         var pageSize = parseInt(LocalStorage.getPageSize());
         var sortOrder = LocalStorage.getDefaultSort();
@@ -117,16 +114,16 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
         if(pageSize > 0){
           this.pageSize = pageSize;
         }
-        this.pageIndex += this.pageSize; 
-        this.loadList(true, false, page);
+        this.pageIndex = results; 
+        this.loadList(true, page);
       }
     },
 
     loadAllData: function(results, total, loading, page) {
       if ( (!results || (results.length < total)) && !loading ) {
-        this.pageIndex = results.length;
-        this.pageSize = total - results.length;
-        this.loadList(true,true, page);
+        this.pageIndex = 0;
+        this.pageSize = total;
+        this.loadList(true, page);
       }
     },
 

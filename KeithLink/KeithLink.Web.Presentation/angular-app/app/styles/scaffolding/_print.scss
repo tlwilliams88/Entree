@@ -30,6 +30,7 @@
         border-right: 1px solid black !important;
       }
     }
+    > thead > tr > th,
     > tbody > tr > td, 
     > tfoot > tr > td {
       border-bottom: 1px solid black !important;
@@ -39,4 +40,40 @@
       border-top: none;
     }
   }
+
+  //Menu.Cart.Items print styles
+  .info-box {
+      border: 0px solid #fff !important;
+      vertical-align: text-top !important;
+  }
+
+  .info-box label, .info-box p {
+      padding-top: 0 !important;
+      vertical-align: text-top !important;
+      white-space: nowrap;
+  }
+
+  .info-box label {
+      text-align: right !important;
+  }
+
+  .info-box input {
+    margin: 0 !important;
+    padding: 0 0 15px 0 !important;
+  }
+
+  .print-clean {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transition: none !important;
+  }
+
+  .page-header-bar {
+      border-bottom: 1px solid #000 !important;
+  }
+
+
+
 }

@@ -25,11 +25,10 @@
       <p >This section allows you to customize the number of items loaded on the page at one time.</p>      
       <div class="form-group">  
 
-        <div style="text-align:left">
+        <div style="text-align:left">        
           <label class="col-md-6" style="white-space:nowrap; display:inline-block; margin-right:50px; padding-top:5px;">Page Load Size:</label>        
-          <input type="text" style="width:50px !important;" ng-model = "pageLoadSize" class="form-control text-right input-number"/>
-        </div>
-
+        <!--   <input type="text" style="width:50px !important;" ng-model = "selectedSize" class="form-control text-right input-number"/> --> 
+         <select style="width:50px !important;" class="text-right"  ng-options = "qty for qty in pageSizes.availableSizes track by qty" ng-model="pageSizes.selectedSize" ></select></div>
       </div>
     </form>
   </br>

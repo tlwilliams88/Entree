@@ -24,19 +24,26 @@ angular.module('bekApp')
     }
     $scope.confirmQuantity = ListService.confirmQuantity;
     $scope.basketId = basketId;   
+    $scope.indexOfSDestroyedRow = '';
+    $scope.destroyedOnField = '';
 
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
       var item = $scope[object].items[idx];
+      if(newVal !== oldVal){
+        item.initInputs = true;
+        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+        $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
+      }
       item.extPrice = PricingService.getPriceForItem(item);
-      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-      $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
+
     }
     var watches = [];
-    function addItemWatches(startingIndex) {
-      for (var i = startingIndex; i < $scope.selectedList.items.length; i++) {
+    $scope.addItemWatches = function(startingIndex, endingIndex) {
+      endingIndex = ($scope.selectedList.itemCount < (startingIndex + endingIndex)) ? $scope.selectedList.itemCount : endingIndex;
+      for (var i = startingIndex; i < endingIndex; i++) {
         watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
         watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
       }
@@ -49,7 +56,7 @@ angular.module('bekApp')
     }
 
     var cartWatches = [];
-    function addCartWatches() {
+    $scope.addCartWatches = function() {
       for (var i = 0; i < $scope.selectedCart.items.length; i++) {
         cartWatches.push($scope.$watch('selectedCart.items[' + i + '].quantity', onItemQuantityChanged));
         cartWatches.push($scope.$watch('selectedCart.items[' + i + '].each', onItemQuantityChanged));
@@ -152,12 +159,36 @@ angular.module('bekApp')
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     }
 
+  $scope.pagingPageSize = LocalStorage.getPageSize();
+  $scope.pageChanged = function(page) {
+      $scope.selectedList.allSelected = false;
+      $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
+      $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
+      $scope.setRange();
+  };
+
+  $scope.setRange = function(){
+    $scope.endPoint = $scope.endPoint;
+    $scope.rangeStart = $scope.startingPoint + 1;
+    $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint;
+  }
+
+   $scope.rowChanged = function(index, field){
+    $scope.destroyedOnField = field;
+    $scope.indexOfSDestroyedRow = index;
+   }
+
     function setSelectedCart(cart) {
       $scope.selectedCart = cart;
       addCartWatches();
     }
     function setSelectedList(list) {
       $scope.selectedList = list;
+       $scope.startingPoint = 0;
+      
+      $scope.endPoint = parseInt($scope.pagingPageSize);
+      $scope.currentPage = 1;
+      $scope.setRange();
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);    
 
       if($stateParams.listItems){
@@ -171,7 +202,6 @@ angular.module('bekApp')
        $stateParams.listItems = undefined;
       }
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
-      addItemWatches(0);
     }
     function appendListItems(list) {
       $stateParams.listItems = $scope.selectedList.items;
@@ -181,7 +211,7 @@ angular.module('bekApp')
       $scope.appendedItems = list.items;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items); 
-      addItemWatches(originalItemCount);
+      //addItemWatches(originalItemCount);
     }
     function startLoading() {
       $scope.loadingResults = true;
@@ -336,12 +366,6 @@ angular.module('bekApp')
       });
     };
 
-	 $scope.loadEntireList = function() {
-        blockUI.start();
-        listPagingModel.loadAllData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, 'ato');     
-        blockUI.stop();       
-    };
-
     $scope.sortList = function(sortBy, sortOrder) {
       if (sortBy === $scope.sort.field) {
         sortOrder = !sortOrder;
@@ -355,9 +379,7 @@ angular.module('bekApp')
       clearItemWatches(watches);
       listPagingModel.sortListItems($scope.sort);
     };
-    $scope.infiniteScrollLoadMore = function() {
-      listPagingModel.loadMoreData($scope.selectedList.items, $scope.selectedList.itemCount, $scope.loadingResults, [], 'ato');
-    };
+
     $scope.redirect = function(listId, cart, useParlevel) {
       var cartId;    
       if ($scope.isChangeOrder) {
