@@ -24,6 +24,7 @@ angular.module('bekApp')
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
     $scope.numberListNamesToShow = 10;
+    $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
 
     if (ListService.findMandatoryList()) {
@@ -34,6 +35,9 @@ angular.module('bekApp')
     }
 
 
+    $scope.rowChanged = function(index){
+      $scope.indexOfSDestroyedRow = index + 1;
+    }
 
      $scope.pageChanged = function(page) {
       $scope.selectedList.allSelected = false;

@@ -24,24 +24,31 @@ angular.module('bekApp')
     }
     $scope.confirmQuantity = ListService.confirmQuantity;
     $scope.basketId = basketId;   
+    $scope.indexOfSDestroyedRow = '';
+    $scope.destroyedOnField = '';
 
-    function onItemQuantityChanged(newVal, oldVal) {
+    function onItemQuantityChanged(newVal, oldVal, elm) {
       console.log('onItemQuantityChanged');
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
       var item = $scope[object].items[idx];
+      if(newVal !== oldVal){
+        item.initInputs = true;
+        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+        $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
+      }
       item.extPrice = PricingService.getPriceForItem(item);
-      refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-      $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
+
     }
     var watches = [];
-    function addItemWatches(startingIndex) {
+    $scope.addItemWatches = function(startingIndex, endingIndex) {
+      endingIndex = ($scope.selectedList.itemCount < (startingIndex + endingIndex)) ? $scope.selectedList.itemCount : endingIndex;
       console.log('addItemWatches');
-      //for (var i = startingIndex; i < $scope.selectedList.items.length; i++) {
-        // watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
-        // watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
-      //}
+      for (var i = startingIndex; i < endingIndex; i++) {
+        watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
+        watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
+      }
     }
     function clearItemWatches(watchers) {
       console.log('clearItemWatches');
@@ -52,12 +59,12 @@ angular.module('bekApp')
     }
 
     var cartWatches = [];
-    function addCartWatches() {
+    $scope.addCartWatches = function() {
       console.log('addCartWatches');
-      //for (var i = 0; i < $scope.selectedCart.items.length; i++) {
-        // cartWatches.push($scope.$watch('selectedCart.items[' + i + '].quantity', onItemQuantityChanged));
-        // cartWatches.push($scope.$watch('selectedCart.items[' + i + '].each', onItemQuantityChanged));
-      //}
+      for (var i = 0; i < $scope.selectedCart.items.length; i++) {
+        cartWatches.push($scope.$watch('selectedCart.items[' + i + '].quantity', onItemQuantityChanged));
+        cartWatches.push($scope.$watch('selectedCart.items[' + i + '].each', onItemQuantityChanged));
+      }
     }
 
         // combine cart and list items and total their quantities
@@ -173,7 +180,11 @@ angular.module('bekApp')
     $scope.rangeStart = $scope.startingPoint + 1;
     $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint;
   }
-
+$scope.usefunctions = false;
+   $scope.rowChanged = function(index, field){
+    $scope.destroyedOnField = field;
+    $scope.indexOfSDestroyedRow = index;
+   }
 
     function setSelectedCart(cart) {
       console.log('setSelectedCart');
@@ -201,7 +212,7 @@ angular.module('bekApp')
        $stateParams.listItems = undefined;
       }
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
-      addItemWatches(0);
+      //addItemWatches(0);
     }
     function appendListItems(list) {
       console.log('appendListItems');

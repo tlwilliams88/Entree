@@ -344,7 +344,7 @@
     <div class="col-xs-7 col-md-5 col-lg-5 text-right" style="float:right; " >      
      Showing {{rangeStart}} - {{rangeEnd}} of {{selectedList.itemCount}} Items
     </div>
-  </div>
+    </div>
 
      <form 
       unsaved-warning-form 
@@ -425,7 +425,8 @@
                 delay: 200}" 
               jqyoui-draggable="{
                 onStart: 'setIsDragging(true)', 
-                onStop: 'setIsDragging(false)'}">
+                onStop: 'setIsDragging(false)'}"
+                id="listsTableRows">
 
 
                 
@@ -434,7 +435,7 @@
               <td class="hidden-drag bek-drag-handle large-icon icon-col">
                 <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model-options="{ debounce: 1000 }" ng-model="item.isSelected" no-dirty-check>
                 <span style="font-size:11px;">
-                  {{item.position}}
+                  {{::item.position}}
                 </span>
                 <span favorite-icons class="bek-no-drag"></span>
               </td>
@@ -503,9 +504,11 @@
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
                 <ng-form name="parlevelForm">
-                   <input                   
+                   <input
+                    
                     id="parlevel" 
-                    name="parlevel" 
+                    name="parlevel"
+                    focus-me="indexOfSDestroyedRow === $index"
                     type="text" 
                     allow-one-positive-decimal 
                     ng-model-options="{ debounce: 1000 }" ng-model="item.parlevel" 
@@ -529,11 +532,11 @@
                   <a class="icon-plus2"></a>
               </div>
                 <a class="hidden-xs hidden-sm" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>                
-                <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+                <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
               </td>
 
             </tr>
-            <tr ng-if="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="::{ odd : $odd, even: $even }">
+            <tr ng-if="item.showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="::{ odd : $odd, even: $even }">
               <td colspan="10">
                 <table>
                   <colgroup>
@@ -613,7 +616,7 @@
                             allow-one-positive-decimal 
                             ng-model-options="{ debounce: 1000 }" ng-model="item.parlevel" 
                             ng-blur="initParLvl(item)"
-                            class="input-number input-number-mobile text-right bek-no-drag form-control" 
+                            class="input-number input-number-mobile text-right bek-no-drag form-control"
                             />
                         </ng-form>
                       </td>
@@ -631,7 +634,7 @@
               </td>
             </tr>
 
-            <tr ng-if="!item.showBody" ng-class="{ odd : $odd, even: $even}" ng-mouseenter="item.showBody = true" ng-focus="item.showBody = true">
+            <tr ng-if="!item.showBody" ng-class="{ odd : $odd, even: $even}" ng-mouseenter="item.showBody = true">
               <td class=" large-icon icon-col">
                 <input type="checkbox" ng-checked = "item.isSelected" class="hidden-print ">
                 <span style="font-size:11px;">
@@ -704,6 +707,7 @@
                   <input
                     type="text" 
                     ng-init="item.parlevel = item.parlevel || 0"
+                    ng-change="rowChanged($index)"
                     ng-model="item.parlevel"                  
                     class="text-right input-number"
                    />                 
@@ -722,7 +726,8 @@
  
                 <a class="icon-plus2" ng-class="{'hidden-icon' : !((canManageLists || canCreateOrders || canSubmitOrders) && item.canOrder) }"></a>
                 <a class="hidden-xs hidden-sm" ng-if="selectedList.permissions.canDeleteItems" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
-               
+                <a><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+
               </td>
 
             </tr>
