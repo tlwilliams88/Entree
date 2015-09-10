@@ -225,11 +225,11 @@ angular.module('bekApp')
             if (!params) {
               var pageSize = LocalStorage.getPageSize();             
               params = {
-                size: pageSize,
+                size: 0,
                 from: 0
               };             
             }
-
+            params.size = 500000;
             Service.sortObject = params.sort;
             return $http.post('/list/' + listId, params).then(function(response) {
               var list = response.data;
