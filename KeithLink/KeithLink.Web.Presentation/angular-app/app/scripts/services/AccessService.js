@@ -150,11 +150,11 @@ angular.module('bekApp')
       return ( isSysAdmin() || isKbitAdmin() );
     },
 	
-	canGrantAccessToKbit: function() {
+	  canGrantAccessToKbit: function() {
       return ( isSysAdmin() || isKbitAdmin() || isBranchManager() );
     },
 	
-	canGrantAccessToEmenuManage: function() {
+	  canGrantAccessToEmenuManage: function() {
       return ( isSysAdmin() );
     },
 
