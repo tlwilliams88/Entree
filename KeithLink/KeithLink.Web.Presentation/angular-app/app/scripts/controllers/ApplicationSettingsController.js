@@ -5,13 +5,7 @@
         function ($scope, SessionService, $state, $filter, AccessService, ApplicationSettingsService, LocalStorage) {
 
 
-     $scope.pages =  {
-      availablePages: [
-        { id: 'lists', name: "Lists" },
-        { id: 'addtoorder', name: "Add To Order" }
-      ],
-      selectedPage: { id: 'lists', name: "Lists" }
-      };
+
        
       var init = function(){ 
         if (AccessService.isOrderEntryCustomer()){
@@ -22,21 +16,12 @@
           $scope.hideNotificationPreferences = true;
         }
 
-    $scope.listFields =  [
-        { "value": 'position', "text": "Position", "order": '', "sortDesc": "n", "isSelected": false, "code": 0 },
-        { "value": 'itemnumber', "text": "Item #", "order": '', "sortDesc": "n", "isSelected": false, "code":  1 },
-        { "value": 'name', "text": "Name", "order": '', "sortDesc": "n", "isSelected": false, "code": 2  },
-        { "value": 'brandextendeddescription', "text": "Brand", "order": '', "sortDesc": "n", "isSelected": false, "code":  3 },
-        { "value": 'itemclass', "text": "Category", "order": '', "sortDesc": "n", "isSelected": false, "code": 4  },
-        { "value": 'notes', "text": "Notes", "order": '', "sortDesc": "n", "isSelected": false, "code":  5 },
-        { "value": 'label', "text": "Label", "order": '', "sortDesc": "n", "isSelected": false, "code": 6 },
-        { "value": 'parlevel', "text": "Par Level", "order": '', "sortDesc": "n", "isSelected": false, "code": 7 }];
 
-
+    $scope.resetPage();
     $scope.addToOrderFields =  angular.copy($scope.listFields);
     $scope.addToOrderFields = $scope.addToOrderFields.slice(0,7);
 
-    $scope.pageLoadSize = LocalStorage.getPageSize();
+    $scope.pageSizes.selectedSize = LocalStorage.getPageSize();
     var sortSettings = LocalStorage.getDefaultSort();
     var userid = SessionService.userProfile.userid;
 
@@ -64,16 +49,38 @@
           }
         }
     }
-
-      if(!$scope.pageLoadSize){
-        $scope.pageLoadSize = 30;
-      }
-
       };
+
+      $scope.resetPage = function(){        
+        $scope.pages =  {
+          availablePages: [
+            { id: 'lists', name: "Lists" },
+            { id: 'addtoorder', name: "Add To Order" }
+          ],
+          selectedPage: { id: 'lists', name: "Lists" }
+        };
+
+        $scope.pageSizes = {
+          availableSizes: [25, 50, 75, 100],
+          selectedSize: 25
+        };
+
+        
+        $scope.listFields =  [
+            { "value": 'position', "text": "Position", "order": '', "sortDesc": "n", "isSelected": false, "code": 0 },
+            { "value": 'itemnumber', "text": "Item #", "order": '', "sortDesc": "n", "isSelected": false, "code":  1 },
+            { "value": 'name', "text": "Name", "order": '', "sortDesc": "n", "isSelected": false, "code": 2  },
+            { "value": 'brandextendeddescription', "text": "Brand", "order": '', "sortDesc": "n", "isSelected": false, "code":  3 },
+            { "value": 'itemclass', "text": "Category", "order": '', "sortDesc": "n", "isSelected": false, "code": 4  },
+            { "value": 'notes', "text": "Notes", "order": '', "sortDesc": "n", "isSelected": false, "code":  5 },
+            { "value": 'label', "text": "Label", "order": '', "sortDesc": "n", "isSelected": false, "code": 6 },
+            { "value": 'parlevel', "text": "Par Level", "order": '', "sortDesc": "n", "isSelected": false, "code": 7 }];
+      }
 
       $scope.setDesc = function(field){
         field.sortDesc = (field.sortDesc === 'n') ? 'y' : 'n' ;
       }
+
       
       $scope.goBack = function(){
         $state.go('menu.home');
@@ -112,7 +119,8 @@
        $scope.restoreDefaults = function(){
          var pageSizeSettings = {key: 'pageLoadSize'};
           ApplicationSettingsService.resetApplicationSettings(pageSizeSettings).then(function(resp) { 
-            LocalStorage.setPageSize(30);
+            LocalStorage.setPageSize(25);
+            $scope.resetPage();
             var sortOrderSettings = {key: 'sortPreferences'};
             ApplicationSettingsService.resetApplicationSettings(sortOrderSettings).then(function(resp) {
              LocalStorage.setDefaultSort([]);
@@ -125,8 +133,8 @@
         ApplicationSettingsService.updateNotificationPreferences($scope.defaultPreferences, null).then(function(data) {
           $scope.canEditNotifications = false;
           $scope.notificationPreferencesForm.$setPristine();
-          var pageSizeSettings = {userid: '', key: 'pageLoadSize', value: $scope.pageLoadSize};
-          LocalStorage.setPageSize($scope.pageLoadSize);
+          var pageSizeSettings = {userid: '', key: 'pageLoadSize', value: $scope.pageSizes.selectedSize};
+          LocalStorage.setPageSize($scope.pageSizes.selectedSize);
           ApplicationSettingsService.saveApplicationSettings(pageSizeSettings).then(function(resp) {
 
             $scope.pageSizeForm.$setPristine();
