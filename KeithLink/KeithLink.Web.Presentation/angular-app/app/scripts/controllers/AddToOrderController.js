@@ -28,7 +28,6 @@ angular.module('bekApp')
     $scope.destroyedOnField = '';
 
     function onItemQuantityChanged(newVal, oldVal) {
-      console.log('onItemQuantityChanged');
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
@@ -44,14 +43,12 @@ angular.module('bekApp')
     var watches = [];
     $scope.addItemWatches = function(startingIndex, endingIndex) {
       endingIndex = ($scope.selectedList.itemCount < (startingIndex + endingIndex)) ? $scope.selectedList.itemCount : endingIndex;
-      console.log('addItemWatches');
       for (var i = startingIndex; i < endingIndex; i++) {
         watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
         watches.push($scope.$watch('selectedList.items[' + i + '].each', onItemQuantityChanged));
       }
     }
     function clearItemWatches(watchers) {
-      console.log('clearItemWatches');
       watchers.forEach(function(watch) {
         watch();
       });
@@ -60,7 +57,6 @@ angular.module('bekApp')
 
     var cartWatches = [];
     $scope.addCartWatches = function() {
-      console.log('addCartWatches');
       for (var i = 0; i < $scope.selectedCart.items.length; i++) {
         cartWatches.push($scope.$watch('selectedCart.items[' + i + '].quantity', onItemQuantityChanged));
         cartWatches.push($scope.$watch('selectedCart.items[' + i + '].each', onItemQuantityChanged));
@@ -69,7 +65,6 @@ angular.module('bekApp')
 
         // combine cart and list items and total their quantities
     function getCombinedCartAndListItems(cartItems, listItems) {
-      console.log('getCombinedCartAndListItems');
       var items = angular.copy(cartItems.concat(listItems));
       // combine quantities if itemnumber is a duplicate
       var newCartItems = [];
@@ -104,7 +99,6 @@ angular.module('bekApp')
 
 
      function flagDuplicateCartItems(cartItems, listItems) {
-      console.log('flagDuplicateCartItems');
       angular.forEach(cartItems, function(cartItem) {
         var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
         if (existingItem) {
@@ -167,7 +161,6 @@ angular.module('bekApp')
 
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page) {
-    console.log('pageChanged');
       $scope.selectedList.allSelected = false;
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
@@ -175,7 +168,6 @@ angular.module('bekApp')
   };
 
   $scope.setRange = function(){
-    console.log('setRange');
     $scope.endPoint = $scope.endPoint;
     $scope.rangeStart = $scope.startingPoint + 1;
     $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint;
@@ -187,13 +179,11 @@ angular.module('bekApp')
    }
 
     function setSelectedCart(cart) {
-      console.log('setSelectedCart');
       $scope.selectedCart = cart;
       addCartWatches();
     }
     function setSelectedList(list) {
       $scope.selectedList = list;
-      console.log('setSelectedList');
        $scope.startingPoint = 0;
       
       $scope.endPoint = parseInt($scope.pagingPageSize);
@@ -214,7 +204,6 @@ angular.module('bekApp')
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
     }
     function appendListItems(list) {
-      console.log('appendListItems');
       $stateParams.listItems = $scope.selectedList.items;
       var originalItemCount = $scope.selectedList.items.length;
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
@@ -225,16 +214,13 @@ angular.module('bekApp')
       //addItemWatches(originalItemCount);
     }
     function startLoading() {
-      console.log('startLoading');
       $scope.loadingResults = true;
     }
     function stopLoading() {
-      console.log('stopLoading');
       $scope.loadingResults = false;
     }
 
     function init() {
-      console.log('init');
       $scope.lists = lists;
       $scope.shipDates = CartService.shipDates;
       $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
@@ -271,13 +257,11 @@ angular.module('bekApp')
     **********/
 
     $scope.refreshQuantities = function(){
-      console.log('refreshQuantities');
       $scope.clearedWhilePristine = false;
         flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
         getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
     }
     $scope.filterItems = function(searchTerm) {  
-      console.log('filterItems');
      
       if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
         if($stateParams.searchTerm ){
@@ -302,7 +286,6 @@ angular.module('bekApp')
     };
 
     $scope.validateAndSave = function(){
-      console.log('validateAndSave');
       if($scope.addToOrderForm.$invalid){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
@@ -316,7 +299,6 @@ angular.module('bekApp')
     };
 
     $scope.clearFilter = function(){ 
-      console.log('clearFilter');
 
           $scope.orderSearchTerm = '';
          $stateParams.searchTerm = '';
@@ -352,7 +334,6 @@ angular.module('bekApp')
       });
 
     $scope.confirmQuantity = function(type, item, value) {
-      console.log('confirmQuantity');
       if(value === undefined && type === 'onhand'){
         item.onhand = 0;
       }
@@ -372,7 +353,6 @@ angular.module('bekApp')
         };
   
     $scope.openItemUsageSummaryModal = function(item, type) {
-      console.log('openItemUsageSummaryModal');
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/itemusagesummarymodal.html',
         controller: 'ItemUsageSummaryModalController',
@@ -387,7 +367,6 @@ angular.module('bekApp')
     };
 
     $scope.sortList = function(sortBy, sortOrder) {
-      console.log('sortList');
       if (sortBy === $scope.sort.field) {
         sortOrder = !sortOrder;
       } else {
@@ -402,7 +381,6 @@ angular.module('bekApp')
     };
 
     $scope.redirect = function(listId, cart, useParlevel) {
-      console.log('redirect');
       var cartId;    
       if ($scope.isChangeOrder) {
         cartId = cart.ordernumber;
@@ -459,13 +437,11 @@ angular.module('bekApp')
     **********/
 
     $scope.startRenamingCart = function(cartName) {
-      console.log('startRenamingCart');
       $scope.tempCartName = cartName;
       $scope.isRenaming = true;
     };
 
     $scope.renameCart = function(cartId, name) {
-      console.log('renameCart');
 
       if (cartId === 'New') {
         // don't need to call the backend function for new cart
@@ -485,7 +461,6 @@ angular.module('bekApp')
     };
 
     $scope.generateNewCartForDisplay = function() {
-      console.log('generateNewCartForDisplay');
       var cart = {};
       cart.items = [];
       cart.id = 'New';
@@ -503,7 +478,6 @@ angular.module('bekApp')
 
     var processingUpdateCart = false; 
     function updateCart(cart) {
-      console.log('updateCart');
       if (!processingUpdateCart) {
         processingUpdateCart = true;
         return CartService.updateCart(cart).then(function(updatedCart) {
@@ -537,7 +511,6 @@ angular.module('bekApp')
 
     
     function createNewCart(items, shipDate, name) {
-      console.log('createNewCart');
       $analytics.eventTrack('Create Order', {  category: 'Orders', label: 'From List' });
       if (!processingSaveCart) {
         var processingSaveCart = true;
@@ -557,7 +530,6 @@ angular.module('bekApp')
 
     var processingSaveChangeOrder = false;
     function updateChangeOrder(order) {
-      console.log('updateChangeOrder');
       if (!processingSaveChangeOrder) {
         processingSaveChangeOrder = true;
 
@@ -596,13 +568,11 @@ angular.module('bekApp')
     }
 
     $scope.saveAndContinue = function(){
-      console.log('saveAndContinue');
       $scope.continueToCart = true;
       $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
     }
 
     $scope.saveAndRetainQuantity = function(){
-      console.log('saveAndRetainQuantity');
       $stateParams.listItems = $scope.selectedList.items;
       if($scope.selectedCart.id === 'New'){
            $scope.createFromSearch = true;
@@ -612,7 +582,6 @@ angular.module('bekApp')
     }
 
     $scope.updateOrderClick = function(list, cart) {
-      console.log('updateOrderClick');
       clearItemWatches(cartWatches);
       var cartItems = getCombinedCartAndListItems(cart.items, list.items);
       UtilityService.deleteFieldFromObjects(cartItems, ['listitemid']);
@@ -635,7 +604,6 @@ angular.module('bekApp')
     };
 
     function refreshSubtotal(cartItems, listItems) {
-      console.log('refreshSubtotal');
       var items = getCombinedCartAndListItems(cartItems, listItems);
       $scope.selectedCart.subtotal = PricingService.getSubtotalForItems(items);
       return $scope.selectedCart.subtotal;
@@ -643,7 +611,6 @@ angular.module('bekApp')
 
     // update quantity from on hand amount and par level
     $scope.onItemOnHandAmountChanged = function(item) {
-      console.log('onItemOnHandAmountChanged');
       var offset = item.onhand;
       if(item.onhand && item.onhand.toString() === 'true'){
         offset= 0;
