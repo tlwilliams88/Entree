@@ -174,7 +174,6 @@ angular.module('bekApp')
     $scope.rangeStart = $scope.startingPoint + 1;
     $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint;
   }
-$scope.usefunctions = false;
    $scope.rowChanged = function(index, field){
     $scope.destroyedOnField = field;
     $scope.indexOfSDestroyedRow = index;
@@ -204,7 +203,6 @@ $scope.usefunctions = false;
        $stateParams.listItems = undefined;
       }
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
-      //addItemWatches(0);
     }
     function appendListItems(list) {
       $stateParams.listItems = $scope.selectedList.items;
@@ -214,7 +212,6 @@ $scope.usefunctions = false;
       $scope.appendedItems = list.items;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items); 
-      //addItemWatches(originalItemCount);
     }
     function startLoading() {
       $scope.loadingResults = true;
