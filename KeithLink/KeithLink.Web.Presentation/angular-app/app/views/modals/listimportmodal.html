@@ -32,7 +32,7 @@
 
 </div>
  <p class="text-red text-left" style="padding-left:15px;" ng-show="invalidType">This is an incompatible file type. Please choose a file with one of the following extensions: .xls .xlsx .csv .txt.</p>
- <p class="text-left" style="padding-left:15px;" ng-show="!invalidType">Please choose a file with one of the following extensions: .xls .xlsx .csv .txt.</p>
+ <p class="text-left" style="padding-left:15px;" ng-show="!invalidType">Please choose a file with one of the following extensions: .xls, .xlsx, .csv, or .txt.</p>
 <div class="modal-footer" style="white-space:nowrap; ">
     <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
     <button class="btn-lg btn btn-primary" ng-disabled = "invalidType" ng-click="startListUpload(options)">Import</button>
