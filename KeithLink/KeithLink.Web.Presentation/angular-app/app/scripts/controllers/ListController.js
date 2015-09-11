@@ -100,6 +100,11 @@ angular.module('bekApp')
       field: 'position',
       order: 'asc'
     }];
+
+    if($stateParams.sortingParams){
+      $scope.sort = $stateParams.sortingParams.sort;
+    }
+
     var listPagingModel = new ListPagingModel( 
       originalList.listid,
       resetPage,
@@ -669,10 +674,7 @@ angular.module('bekApp')
           },
           pagingModelOptions: function() {
             return { 
-              sort: [{
-                field: $scope.sort.field,
-                order: $scope.sort.sortDescending ? 'desc' : 'asc'
-              }],
+              sort: $scope.sort,
               terms: $scope.listSearchTerm
             };
           }
