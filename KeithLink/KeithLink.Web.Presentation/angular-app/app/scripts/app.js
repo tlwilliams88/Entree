@@ -60,9 +60,7 @@ angular
   $httpProvider.useApplyAsync(true);
  
   // Enable Angular debug information for everything but prod and QA
-  if (ENV.name != 'prod' && ENV.name != 'test') {
-    $compileProvider.debugInfoEnabled(true);
-  }
+  $compileProvider.debugInfoEnabled(ENV.enableDebugInfo);
 
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
