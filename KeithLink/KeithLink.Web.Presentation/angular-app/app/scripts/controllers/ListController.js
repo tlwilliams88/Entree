@@ -39,18 +39,21 @@ angular.module('bekApp')
       $scope.indexOfSDestroyedRow = index + 1;
     }
 
-     $scope.pageChanged = function(page) {
-      $scope.selectedList.allSelected = false;
+     $scope.pageChanged = function(page) {  
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize)) + 1;
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize) - 1;
       $scope.setRange();
-  };
+      $scope.selectedList.allSelected = false;
+      if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
+        $scope.selectedList.allSelected = true;
+      };
+     };
 
-  $scope.setRange = function(){
-    $scope.endPoint = $scope.endPoint + 1;
-    $scope.rangeStart = $scope.startingPoint;
-    $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
-  }
+    $scope.setRange = function(){
+      $scope.endPoint = $scope.endPoint + 1;
+      $scope.rangeStart = $scope.startingPoint;
+      $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
+    }
     $scope.pagingPageSize = LocalStorage.getPageSize();
     
     function resetPage(list) {
@@ -674,7 +677,10 @@ angular.module('bekApp')
           },
           pagingModelOptions: function() {
             return { 
-              sort: $scope.sort,
+              sort: [{
+                field: $scope.sort.field,
+                order: $scope.sort.sortDescending ? 'desc' : 'asc'
+              }],
               terms: $scope.listSearchTerm
             };
           }
