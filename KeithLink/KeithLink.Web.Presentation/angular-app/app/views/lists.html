@@ -186,7 +186,7 @@
             </div>
             <h5>
               <a 
-                ng-if="lists.length > numberListNamesToShow" 
+                ng-show="lists.length > numberListNamesToShow" 
                 ng-click="showMoreListNames = !showMoreListNames">
                 {{showMoreListNames ? '+ Show More' : '- Show Less'}}
               </a>
