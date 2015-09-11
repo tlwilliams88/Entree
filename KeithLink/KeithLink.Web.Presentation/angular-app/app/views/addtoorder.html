@@ -435,8 +435,7 @@
   <h3>Other Cart Items</h3>
   <table 
     class="table table-striped-rows table-border" 
-    navigate-table="mobile"
-    infinite-scroll="infiniteScrollLoadMoreCart()">
+    navigate-table="lists">
     <thead>
       <tr>
         <th>Item #</th>
@@ -459,7 +458,7 @@
 
         <td>
           <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
-          <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities(); addCartWatches(startingPoint, endPoint) "></a>
+          <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>
