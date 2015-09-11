@@ -410,6 +410,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 				options.Paging.Size = int.MaxValue;
 				options.Paging.From = 0;
 
+                if (options.Paging.Sort.Count == 1 && options.Paging.Sort[0].Field == null) {
+                    options.Paging.Sort = new List<SortInfo>();
+                }
+
 				var list = listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, options.Paging);
 
 				if (list == null)
