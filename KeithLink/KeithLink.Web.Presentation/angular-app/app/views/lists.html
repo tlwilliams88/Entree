@@ -111,14 +111,6 @@
     ng-disabled="listForm.$pristine">
     Cancel
   </button>
-
-  <button     
-  class="btn-no-style page-subheader-bar__button button-left" 
-  type="button"
-  ng-click="loadEntireList()" 
-  ng-if="(selectedList.items|filter:{isdeleted:'false'}).length < selectedList.itemCount">
-  Load All
-  </button>    
    
 <!-- 
   <div ng-click="displayedListNames = !displayedListNames" class="page-subheader-bar__button button-right">
@@ -690,7 +682,14 @@
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
-              <td ng-if="::(selectedList.name !== 'History' && !selectedList.ismandatory && !selectedList.isreminder && !selectedList.is_contract_list)" class="input-col nowrap hidden-sm hidden-xs">
+              <td 
+              ng-if="::(selectedList.name !== 'History' 
+              && !selectedList.ismandatory 
+              && !selectedList.isreminder 
+              && !selectedList.is_contract_list
+              && !selectedList.isfavorite
+              && !selectedList.isrecommended)" 
+              class="input-col nowrap hidden-sm hidden-xs">
                <div class="full-width-mobile">
                   <select ng-if="!item.label  && selectedList.permissions.canEditLabels"><option>Select A Label...</option></select>
                   <select ng-if="item.label && selectedList.permissions.canEditLabels" style="width:103.636px;" ><option>{{item.label}}</option></select>

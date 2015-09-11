@@ -37,7 +37,6 @@
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
     </div>
   </div>
- <button class="btn-lg btn btn-primary hidden-print pull-right"  ng-click="loadEntireList()" ng-disabled="selectedList.items.length === selectedList.itemCount">Load All</button>
    <div class="row">
     <div class="col-xs-5" >
       <input id="useParlevel" name="useParlevel" type="checkbox" ng-model="useParlevel">
@@ -248,6 +247,7 @@
                   ng-blur="confirmQuantity('onhand', item, item.onhand);"
                   class="dropdown-toggle input-number text-right mousetrap" 
                   allow-one-positive-decimal
+                  ng-init="onItemOnHandAmountChanged(item)"
                   ng-model="item.onhand"
                   name="onhand" 
                   />
@@ -260,7 +260,7 @@
               <button type="button" class="btn btn-warning icon-minus3 hidden-lg"></button>
               <input 
                   type="text"
-                  id="onHand"                
+                  id="onHand"    
                   class="dropdown-toggle input-number text-right"                  
                   ng-model="item.onhand"
                   ng-init="item.onhand=item.onhand + 0"
