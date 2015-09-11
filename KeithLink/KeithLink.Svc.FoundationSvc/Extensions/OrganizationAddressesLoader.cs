@@ -36,7 +36,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions
 
                     foreach (var entity in currentBatch) {
                         string preferredAddressId = entity.GetPropertyValue("GeneralInfo.preferred_address") as string;
-                        if (!String.IsNullOrEmpty(preferredAddressId)) {
+                        if (!String.IsNullOrEmpty(preferredAddressId) && !addressToParentIdMap.ContainsKey(preferredAddressId)) {
                             preferredAddressIds.Add("'" + preferredAddressId + "'");
                             addressToParentIdMap.Add(preferredAddressId, entity.Id);
                         }
