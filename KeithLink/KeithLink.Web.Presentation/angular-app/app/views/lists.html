@@ -330,9 +330,19 @@
       </div><!-- end Multi-select menu -->
 
 
-    <div>
-    <pagination total-items="selectedList.itemCount" ng-model="currentPage" items-per-page="pagingPageSize" ng-change="pageChanged(this)" class="pagination"></pagination>
-    </div>
+
+  <div ng-show="selectedList.itemCount > pagingPageSize">
+   <pagination 
+    total-items="selectedList.itemCount" 
+    ng-model="currentPage" 
+    items-per-page="pagingPageSize" 
+    max-size="10" 
+    boundary-links="true" 
+    rotate="false" 
+    ng-change="pageChanged(this)" 
+    class="pagination">
+   </pagination> 
+  </div>
 
   <div class="row sub-content">
     <div class="col-xs-5 " >         
@@ -532,7 +542,7 @@
                       <a class="icon-plus2"></a>
                   </div>
                     <a class="hidden-xs hidden-sm" ng-if="::(selectedList.permissions.canDeleteItems)" ng-class="{'hidden-icon' : !selectedList.permissions.canDeleteItems }" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
-                    <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+                    <a class="bek-no-drag"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="item.showDetails = !item.showDetails;"></span></a>
               </td>
 
             </tr>
@@ -680,7 +690,7 @@
                 {{::item[selectedList.permissions.alternativeFieldName]}}
               </td>
               <!-- Label -->
-              <td ng-if="::(selectedList.name !== 'History' && !selectedList.ismandatory && !selectedList.isreminder)" class="input-col nowrap hidden-sm hidden-xs">
+              <td ng-if="::(selectedList.name !== 'History' && !selectedList.ismandatory && !selectedList.isreminder && !selectedList.is_contract_list)" class="input-col nowrap hidden-sm hidden-xs">
                <div class="full-width-mobile">
                   <select ng-if="!item.label  && selectedList.permissions.canEditLabels"><option>Select A Label...</option></select>
                   <select ng-if="item.label && selectedList.permissions.canEditLabels" style="width:103.636px;" ><option>{{item.label}}</option></select>
@@ -741,9 +751,20 @@
         </table>
       </form>
 
-    <div>
-    <pagination total-items="selectedList.itemCount" ng-model="currentPage" items-per-page="pagingPageSize" ng-change="pageChanged(this)" class="pagination"></pagination>
-    </div>
+
+  <div ng-show="selectedList.itemCount > pagingPageSize">
+   <pagination 
+    total-items="selectedList.itemCount" 
+    ng-model="currentPage" 
+    items-per-page="pagingPageSize" 
+    max-size="10" 
+    boundary-links="true" 
+    rotate="false" 
+    ng-change="pageChanged(this)" 
+    class="pagination">
+   </pagination> 
+  </div>
+
     </div>
   </div>
 </div>
