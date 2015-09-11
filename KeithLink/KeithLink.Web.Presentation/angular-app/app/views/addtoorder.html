@@ -133,8 +133,7 @@
     <div class="table-addtoorder">
       <table      
         class="table table-striped-rows table-border" 
-        navigate-table="lists"
-        infinite-scroll="infiniteScrollLoadMore()">
+        navigate-table="lists">
         <thead>
           <tr fsm-sticky-header scroll-body="'.table-addtoorder'" scroll-stop="0">
             <th class="sort-col-header" ng-click="sortList('position',sort[0].order)">
@@ -451,9 +450,8 @@
         <th></th>
       </tr>
     </thead>
-    <tbody>
-      <tr 
-        ng-repeat-start="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)"
+    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)">
+      <tr        
         ng-class="{ odd : $odd, even: $even }">
 
         <td>
@@ -495,7 +493,7 @@
           <a class="hidden-print visible-xs-inline visible-sm-inline" ng-click="showDetails = !showDetails;"><span class="text-light icon-ellipsis"></span></a>
         </td>
       </tr>
-      <tr ng-repeat-end ng-if="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
+      <tr ng-if="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
         <td colspan="11">
           <table>
             <colgroup>
