@@ -335,12 +335,12 @@ angular.module('bekApp')
         if(invoice.pendingtransaction && invoice.pendingtransaction.amount == invoice.paymentAmount){ // jshint ignore:line
           invoice.isSelected = false;
         }
-        break
+        break;
       case 'account':   
       case 'date':
         invoice.isSelected = true;
         $scope.selectInvoice(invoice , true);
-        break
+        break;
     }
   };
 

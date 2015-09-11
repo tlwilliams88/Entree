@@ -174,7 +174,7 @@ angular.module('bekApp')
 
     function setSelectedCart(cart) {
       $scope.selectedCart = cart;
-      addCartWatches();
+      $scope.addCartWatches();
     }
     function setSelectedList(list) {
       $scope.selectedList = list;
