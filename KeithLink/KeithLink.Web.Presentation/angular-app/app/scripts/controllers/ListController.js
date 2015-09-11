@@ -104,7 +104,7 @@ angular.module('bekApp')
       order: 'asc'
     }];
 
-    if($stateParams.sortingParams){
+    if($stateParams.sortingParams && $stateParams.sortingParams.sort.length){
       $scope.sort = $stateParams.sortingParams.sort;
     }
 

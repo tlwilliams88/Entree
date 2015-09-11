@@ -242,12 +242,12 @@
               <input 
                   type="text"
                   id="onHand"
-                  onfocus="this.select();"                  
+                  ng-focus="this.select(); onItemOnHandAmountChanged(item)" 
+                  ng-change="onItemOnHandAmountChanged(item)"          
                   focus-me="($first || (indexOfSDestroyedRow === $index && destroyedOnField === 'onhand'))"
                   ng-blur="confirmQuantity('onhand', item, item.onhand);"
                   class="dropdown-toggle input-number text-right mousetrap" 
-                  allow-one-positive-decimal
-                  ng-init="onItemOnHandAmountChanged(item)"
+                  allow-one-positive-decimal                                 
                   ng-model="item.onhand"
                   name="onhand" 
                   />
@@ -261,10 +261,11 @@
               <input 
                   type="text"
                   id="onHand"    
+                  ng-focus="this.select(); onItemOnHandAmountChanged(item)" 
                   class="dropdown-toggle input-number text-right"                  
                   ng-model="item.onhand"
                   ng-init="item.onhand=item.onhand + 0"
-                  ng-change="rowChanged($index, 'onhand')"
+                  ng-change="rowChanged($index, 'onhand'); onItemOnHandAmountChanged(item)"
                   name="onhand"/>
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg"></button>                  
               </ng-form>  
