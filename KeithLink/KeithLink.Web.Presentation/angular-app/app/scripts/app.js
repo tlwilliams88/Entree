@@ -59,8 +59,11 @@ angular
   // group multiple aysnc methods together to only run through one digest cycle
   $httpProvider.useApplyAsync(true);
  
-  $compileProvider.debugInfoEnabled(true);
- 
+  // Enable Angular debug information for everything but prod and QA
+  if (ENV.name != 'prod' && ENV.name != 'test') {
+    $compileProvider.debugInfoEnabled(true);
+  }
+
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
 
