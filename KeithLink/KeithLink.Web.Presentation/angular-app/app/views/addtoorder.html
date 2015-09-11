@@ -18,9 +18,20 @@
 <div class="page-content" ng-hide="invalidParams">
   
   <a class="btn-lg btn btn-default hidden-md hidden-lg hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
-  <div>
-    <pagination total-items="selectedList.itemCount" ng-model="currentPage" items-per-page="pagingPageSize" ng-change="pageChanged(this)" class="pagination"></pagination> 
+
+  <div ng-if="selectedList.itemCount > pagingPageSize">
+   <pagination 
+    total-items="selectedList.itemCount" 
+    ng-model="currentPage" 
+    items-per-page="pagingPageSize" 
+    max-size="10" 
+    boundary-links="true" 
+    rotate="false" 
+    ng-change="pageChanged(this)" 
+    class="pagination">
+   </pagination> 
   </div>
+
   <div class="row" ng-if="addToOrderForm.$invalid">
     <div class="col-xs-12 text-red">
       <span>Your form has some errors. Please fix these before adding items to an order.</span>
@@ -425,11 +436,18 @@
         </tfoot>
       </table>
     </div>
-  
 
-
-  <div>
-    <pagination total-items="selectedList.itemCount" ng-model="currentPage" items-per-page="pagingPageSize" ng-change="pageChanged(this)" class="pagination"></pagination> 
+  <div ng-show="selectedList.itemCount > pagingPageSize">
+   <pagination 
+    total-items="selectedList.itemCount" 
+    ng-model="currentPage" 
+    items-per-page="pagingPageSize" 
+    max-size="10" 
+    boundary-links="true" 
+    rotate="false" 
+    ng-change="pageChanged(this)" 
+    class="pagination">
+   </pagination> 
   </div>
 
   <h3>Other Cart Items</h3>
