@@ -165,36 +165,21 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId);
         }],
-        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, validListId, lists, ListService, UtilityService, LocalStorage, ENV) {
+        originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, validListId, lists, ListService, UtilityService, LocalStorage, ENV) {
          
           var last = LocalStorage.getLastList();
           var stillExists = false;
-          //if no stored page size, use default 30
+
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
-          var filterObject = LocalStorage.getDefaultSort();
-          var  fields =  [
-          { 'field': 'position', 'order': ''},
-          { 'field': 'itemnumber', 'order': ''},
-          { 'field': 'name', 'order': ''},
-          { 'field': 'brandextendeddescription', 'order': ''},
-          { 'field': 'itemclass', 'order': ''},
-          { 'field': 'notes', 'order': ''},
-          { 'field': 'label', 'order': ''},
-          { 'field': 'parlevel', 'order': ''}];
-
           var params = {size: pageSize, from: 0, sort: []};
-          //Decode stored sort preferences and buils params sort object with it.
-          if(filterObject && filterObject.length > 6){        
-           var listSettings = filterObject.slice(3, filterObject.indexOf('a'));
+          var listHeader = $filter('filter')(lists, {listid: validListId})[0];
 
-           for (var i = 0;  i < listSettings.length; i++) {
-             if(listSettings[i] !== 'y' && listSettings[i] !== 'n'){
-               fields[listSettings[i]].order = (listSettings[i + 1] === 'n') ? 'asc':'desc';
-               params.sort.push(fields[listSettings[i]])
-             }
-           }
-          }
-
+         if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
+           ListService.getParamsObject(params, 'lists').then(function(storedParams){
+             $stateParams.sortingParams = storedParams; 
+            })
+          }            
+                
           ListService.lists.forEach(function(list){
             if(last && list.listid === last.listId){
                stillExists = true;
@@ -204,7 +189,7 @@ angular.module('bekApp')
                  }
             }
           });    
-          $stateParams.sortingParams = params;
+   
          if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
             last.timeset =  moment().format('YYYYMMDDHHmm');
              LocalStorage.setLastList(last); 
@@ -335,32 +320,19 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
-        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
+        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
              
-             //if no stored page size, use default 30
              var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
-             var filterObject = LocalStorage.getDefaultSort();
-             var  fields =  [
-               { 'field': 'position', 'order': ''},
-               { 'field': 'itemnumber', 'order': ''},
-               { 'field': 'name', 'order': ''},
-               { 'field': 'brandextendeddescription', 'order': ''},
-               { 'field': 'itemclass', 'order': ''},
-               { 'field': 'notes', 'order': ''},
-               { 'field': 'label', 'order': ''}];
              var params = {size: pageSize, from: 0, sort: []};
-             //Decode stored sort preferences and buils params sort object with it.
-             if(filterObject && filterObject.length > 6){        
-              var atoSettings = filterObject.slice(filterObject.indexOf('a') + 3, filterObject.length);
-              
-                for (var i = 0;  i < atoSettings.length; i++) {
-                  if(atoSettings[i] !== 'y' && atoSettings[i] !== 'n'){
-                    fields[atoSettings[i]].order = (atoSettings[i + 1] === 'n') ? 'asc':'desc';
-                    params.sort.push(fields[atoSettings[i]])
-                  }
-                } 
-             }
-          $stateParams.sortingParams = params;
+             var listHeader = $filter('filter')(lists, {listid: validListId})[0];
+
+            if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
+              ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
+                $stateParams.sortingParams = storedParams; 
+              })
+            }            
+                
+
           if($stateParams.cartId !== 'New'){
             var allSets = LocalStorage.getLastOrderList();
             var allValidSets = [];           
@@ -384,7 +356,8 @@ angular.module('bekApp')
               });  
             } 
             LocalStorage.setLastOrderList(allValidSets);  
-          }          
+          } 
+         
           return ListService.getList(validListId, params);
         }]
       }
