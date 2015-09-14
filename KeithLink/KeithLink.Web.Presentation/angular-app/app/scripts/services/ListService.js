@@ -180,6 +180,42 @@ angular.module('bekApp')
 
         getListHeaders: function() {
           return Service.getAllLists({ header: true });
+        },    
+
+        getParamsObject: function(params, page) {
+          var deferred = $q.defer();
+            //if no stored page size, use default 30
+             var filterObject = LocalStorage.getDefaultSort();
+             var  fields =  [
+             { 'field': 'position', 'order': ''},
+             { 'field': 'itemnumber', 'order': ''},
+             { 'field': 'name', 'order': ''},
+             { 'field': 'brandextendeddescription', 'order': ''},
+             { 'field': 'itemclass', 'order': ''},
+             { 'field': 'notes', 'order': ''},
+             { 'field': 'label', 'order': ''},
+             { 'field': 'parlevel', 'order': ''}];
+             
+             //Decode stored sort preferences and buils params sort object with it.
+             if(filterObject && filterObject.length > 6){        
+              var settings = []
+              if(page === 'addToOrder'){
+                settings = filterObject.slice(filterObject.indexOf('a') + 3, filterObject.length);
+              }
+
+              if(page === 'lists'){
+                settings = filterObject.slice(3, filterObject.indexOf('a'));
+              }
+              
+                for (var i = 0;  i < settings.length; i++) {
+                  if(settings[i] !== 'y' && settings[i] !== 'n'){
+                    fields[settings[i]].order = (settings[i + 1] === 'n') ? 'asc':'desc';
+                    params.sort.push(fields[settings[i]])
+                  }
+                } 
+             }
+             deferred.resolve(params);
+             return deferred.promise;
         },
 
       
@@ -229,7 +265,9 @@ angular.module('bekApp')
                 from: 0
               };             
             }
-            params.size = 500000;
+            if(params.size){
+              delete params.size;
+            }
             Service.sortObject = params.sort;
             return $http.post('/list/' + listId, params).then(function(response) {
               var list = response.data;

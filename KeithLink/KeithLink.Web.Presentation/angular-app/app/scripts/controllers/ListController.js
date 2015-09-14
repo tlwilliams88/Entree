@@ -258,9 +258,8 @@ angular.module('bekApp')
     var processingSaveList = false;
     $scope.saveList = function(list) {
       var params = {
-          from: 0,
-          size: 30,
-          sort: [{}]    
+          from: 0,    
+          sort: []    
         }
 
       if($stateParams.sortingParams){
