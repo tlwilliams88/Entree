@@ -676,10 +676,7 @@ angular.module('bekApp')
           },
           pagingModelOptions: function() {
             return { 
-              sort: [{
-                field: $scope.sort.field,
-                order: $scope.sort.sortDescending ? 'desc' : 'asc'
-              }],
+              sort: $scope.sort,
               terms: $scope.listSearchTerm
             };
           }
