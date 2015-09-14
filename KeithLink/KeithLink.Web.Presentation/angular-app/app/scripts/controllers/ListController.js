@@ -458,7 +458,7 @@ angular.module('bekApp')
     };
 
     function unselectAllDraggedItems() {
-      $scope.selectedList.allSelected = false;
+      $scope.selectedList.allSelected = true;
       $scope.changeAllSelectedItems();
     }
     // disable drag on mobile
