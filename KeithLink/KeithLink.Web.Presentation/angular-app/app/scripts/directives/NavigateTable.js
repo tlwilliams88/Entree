@@ -11,80 +11,12 @@
 angular.module('bekApp')
   .directive('navigateTable', [ function(){
     return function(scope, element, attr) {
-      
 
     element.on('keyup', 'input[type="text"]', handleNavigation);
     
-    function rowHasInput(moveToRow, pos) {
-      var hasInput = false;
-      if (moveToRow && moveToRow.length) {
-        var inputCell = angular.element(moveToRow[0].cells[pos]);
-        if (inputCell.length) {
-          var input = inputCell.find('input,textarea');
-          if (input.length && input.is(':visible')) {
-            hasInput = true;
-          }
-        }
-      }
-      return hasInput;
-    }
-
-    function findNextInput(td, navigateTableType, isNavigatingDown) {
-      var tr = td.closest('tr');
-      if (attr.navigateTable === 'lists') {
-        tr = td.closest('tbody');
-      }
-      var pos = td[0].cellIndex;
-      var rowCount = element[0].rows.length;
-
-      var nextRow = tr,
-        moveToRow = null,
-        count = 0;
-      while (!rowHasInput(moveToRow, pos) && count < rowCount) {
-        if (isNavigatingDown) {
-          if (navigateTableType === 'mobile') {
-            moveToRow = nextRow.next('tr').next('tr');
-          } else if (navigateTableType === 'lists') {
-            moveToRow = nextRow.next('tbody').children('tr:not(.mobile-details-row)');
-          } else {
-            moveToRow = nextRow.next('tr');
-          }
-
-          // if (!moveToRow.length) { // go to first row
-          //   moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').first();
-          // }
-        } else {
-          if (navigateTableType === 'mobile') {
-            moveToRow = nextRow.prev('tr').prev('tr');
-          } else if (navigateTableType === 'lists') {
-            moveToRow = nextRow.prev('tbody').children('tr:not(.mobile-details-row)');
-          } else {
-            moveToRow = nextRow.prev('tr');
-          }
-
-          // if (!moveToRow.length) { // go to last row
-          //   moveToRow = element.find('> tbody > tr:not(.filter-row, .mobile-details-row)').last();
-          // }
-        }
-
-        nextRow = moveToRow;
-        count++;
-      }
-
-      if (moveToRow && moveToRow.length) {
-        return angular.element(moveToRow[0].cells[pos]);  
-      } else {
-        return;
-      }      
-    }
-
-
-    
     function handleNavigation(e) {
-      
       // select all on focus
       element.find('input').keydown(function (e) {
-          
           var key = { left: 37, up: 38, right: 39, down: 40, enter: 13, tab: 9 };
 
           // shortcut for key other than arrow keys
@@ -92,43 +24,45 @@ angular.module('bekApp')
 
           var input = e.target;
           var td = angular.element(e.target).closest('td');
+          var row = td.closest('tbody');
           var moveTo = null;
 
           switch (e.which) {
 
               case key.left: {
                   if (input.type === 'checkbox' || input.selectionStart === 0) {
-                      moveTo = td.prev('td:has(input,textarea)');
+                      moveTo = td.prev('td:has(input,textarea)').find('input,textarea')[0];
                   }
                   break;
               }
               case key.right: {
-                  if (input.selectionEnd === input.value.length) {
-                      moveTo = td.next('td:has(input,textarea)');
+                  if (input.type == 'checkbox' || input.selectionEnd === input.value.length) {
+                      moveTo = td.next('td:has(input,textarea)').find('input,textarea')[0];
                   }
                   break;
               }
 
-              case key.up:
+              case key.up: {
+                moveTo = row.prevUntil('tr td .tabstop').find('.tabstop').last()[0];
+                break;
+              }
               case key.down:
               case key.enter:
               case key.tab: {
                 var isNavigatingDown = e.which === key.down || e.which === key.enter || e.which === key.tab;
-                moveTo = findNextInput(td, attr.navigateTable, isNavigatingDown);
+                moveTo = row.nextUntil('tr td .tabstop').find('.tabstop')[0]; //findNextInput(td, attr.navigateTable, isNavigatingDown);
                 break;
               }
 
           }
 
-          if (moveTo && moveTo.length) {
-
+          if (moveTo) {
               e.preventDefault();
-
-              moveTo.find('input,textarea').each(function (i, input) {
-                  input.focus();
-                  input.select();
-              });
-
+              
+                moveTo.focus();
+                if (moveTo.type != 'checkbox') {
+                  moveTo.select();
+                }
           }
 
       });
@@ -149,7 +83,7 @@ angular.module('bekApp')
     }
 
     scope.$on('$destroy',function() {
-      // console.log('done!');
+      console.log('done!');
       angular.element( window ).off( 'resize.Viewport' );
     });
   };
