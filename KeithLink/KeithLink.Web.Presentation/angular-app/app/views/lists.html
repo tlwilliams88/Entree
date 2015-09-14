@@ -160,7 +160,7 @@
     <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists">
       <div class="row">
         <div class="col-sm-12">
-          <div class="custom-lists" sticky confine="true">
+          <div class="custom-lists" sticky>
             <h3>Your Lists</h3>
 
             <div class="btn-group-vertical list-names text-blue">
@@ -515,7 +515,7 @@
                     allow-one-positive-decimal 
                     ng-model-options="{ debounce: 1000 }" ng-model="item.parlevel" 
                     ng-blur="initParLvl(item)"
-                    class="text-right input-number bek-no-drag" />
+                    class="text-right input-number bek-no-drag tabstop" />
                 </ng-form>
               </td>
 
@@ -718,7 +718,7 @@
                     ng-init="item.parlevel = item.parlevel || 0"
                     ng-change="rowChanged($index)"
                     ng-model="item.parlevel"                  
-                    class="text-right input-number"
+                    class="text-right input-number tabstop"
                    />                 
                 </ng-form>
               </td>
