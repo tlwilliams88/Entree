@@ -174,8 +174,8 @@ angular.module('bekApp')
           var params = {size: pageSize, from: 0, sort: []};
           var listHeader = $filter('filter')(lists, {listid: validListId})[0];
 
-         if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
-           ListService.getParamsObject(params, 'lists').then(function(storedParams){
+         if(listHeader && (listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory)){
+             ListService.getParamsObject(params, 'lists').then(function(storedParams){
              $stateParams.sortingParams = storedParams; 
             })
           }            
@@ -289,7 +289,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm',
+      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?currentPage',
       params: {listItems: null},
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
@@ -321,7 +321,6 @@ angular.module('bekApp')
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
         selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
-             
              var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
              var params = {size: pageSize, from: 0, sort: []};
              var listHeader = $filter('filter')(lists, {listid: validListId})[0];

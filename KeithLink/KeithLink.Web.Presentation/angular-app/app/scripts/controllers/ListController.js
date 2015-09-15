@@ -56,18 +56,21 @@ angular.module('bekApp')
     }
     $scope.pagingPageSize = LocalStorage.getPageSize();
     
-    function resetPage(list) {
+    function resetPage(list, initialPageLoad) {
       $scope.selectedList = angular.copy(list);
       $scope.totalItems = $scope.selectedList.itemCount;
       originalList = list;
       $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
-      $scope.startingPoint = 1;
-      //Adding one to offset dummy sort row
-      $scope.endPoint = parseInt($scope.pagingPageSize);
-      $scope.currentPage = 1;
-      $scope.setRange();
+
+      if(initialPageLoad){
+        //starting point initialized at 1 to avoid the dummy sort row occupying index 0
+        $scope.startingPoint = 1;        
+        $scope.endPoint = parseInt($scope.pagingPageSize);
+        $scope.currentPage = 1;
+        $scope.setRange();
+      }
 
       if ($scope.listForm) {
         $scope.listForm.$setPristine();
@@ -413,8 +416,9 @@ angular.module('bekApp')
         if ($scope.selectedList.listid === updatedList.listid) {
           $scope.selectedList = list;
         }
-
-        $scope.multiSelect.showLists = false;
+        if($scope.multiSelect){
+          $scope.multiSelect.showLists = false;
+        }
         unselectAllDraggedItems();
       });
     };
@@ -458,7 +462,7 @@ angular.module('bekApp')
     };
 
     function unselectAllDraggedItems() {
-      $scope.selectedList.allSelected = true;
+      $scope.selectedList.allSelected = false;
       $scope.changeAllSelectedItems();
     }
     // disable drag on mobile
@@ -684,7 +688,7 @@ angular.module('bekApp')
       });
     };
 
-    resetPage(angular.copy(originalList));
+    resetPage(angular.copy(originalList), true);
     // $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
 
     if (ListService.renameList === true) {
