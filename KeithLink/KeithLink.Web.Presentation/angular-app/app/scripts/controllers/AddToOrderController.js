@@ -26,10 +26,10 @@ angular.module('bekApp')
     $scope.basketId = basketId;   
     $scope.indexOfSDestroyedRow = '';
     $scope.destroyedOnField = '';
+    $scope.useParLevel = false;
 
 
     function onItemQuantityChanged(newVal, oldVal) {
-
       var changedExpression = this.exp; // jshint ignore:line
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
@@ -156,6 +156,7 @@ angular.module('bekApp')
 
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page) {
+      $scope.currentPage = page.currentPage
       $scope.selectedList.allSelected = false;
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
@@ -181,7 +182,7 @@ angular.module('bekApp')
        $scope.startingPoint = 0;
       
       $scope.endPoint = parseInt($scope.pagingPageSize);
-      $scope.currentPage = 1;
+      $scope.currentPage = $stateParams.currentPage || 1;
       $scope.setRange();
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);    
 
@@ -190,6 +191,7 @@ angular.module('bekApp')
          $scope.selectedList.items.forEach(function(selectedlistitem){
           if(item.listitemid === selectedlistitem.listitemid){
             selectedlistitem.quantity = item.quantity; 
+            selectedlistitem.onhand = item.onhand; 
           }
          })
         })       
@@ -373,7 +375,7 @@ angular.module('bekApp')
       listPagingModel.sortListItems($scope.sort);
     };
 
-    $scope.redirect = function(listId, cart, useParlevel) {
+    $scope.redirect = function(listId, cart) {
       var cartId;    
       if ($scope.isChangeOrder) {
         cartId = cart.ordernumber;
@@ -422,7 +424,14 @@ angular.module('bekApp')
         sameListItems = undefined;
       }
         var continueToCart = $scope.continueToCart
-      $state.go('menu.addtoorder.items', { listId: listId, cartId: cartId, useParlevel: useParlevel, continueToCart: continueToCart, listItems: sameListItems, searchTerm: searchTerm})
+      $state.go('menu.addtoorder.items', { 
+        listId: listId,
+        cartId: cartId,
+        useParlevel: $scope.useParlevel,
+        continueToCart: continueToCart,
+        listItems: sameListItems,
+        searchTerm: searchTerm,
+        currentPage: $scope.retainedPage})
     };
 
     /**********
@@ -508,7 +517,8 @@ angular.module('bekApp')
       if (!processingSaveCart) {
         var processingSaveCart = true;
         return CartService.createCart(items, shipDate, name).then(function(cart) {
-          $scope.addToOrderForm.$setPristine();          
+          $scope.addToOrderForm.$setPristine();
+          $scope.retainedPage = $scope.currentPage;
           $scope.redirect($scope.selectedList.listid, cart);
           $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');          
           return cart;
