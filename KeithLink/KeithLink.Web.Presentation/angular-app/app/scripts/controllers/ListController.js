@@ -153,7 +153,6 @@ angular.module('bekApp')
     **********/
 
     $scope.filterItems = function(searchTerm) {
-      $scope.hideDragToReorder = !!searchTerm.length;
       listPagingModel.filterListItems(searchTerm);
     };
     
@@ -655,7 +654,6 @@ angular.module('bekApp')
 
     $scope.clearFilter = function(){  
       $scope.listSearchTerm = '';
-      $scope.hideDragToReorder = false;
       $scope.filterItems( $scope.listSearchTerm );     
     };
 

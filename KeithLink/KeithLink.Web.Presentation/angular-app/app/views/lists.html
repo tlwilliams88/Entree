@@ -249,7 +249,7 @@
       <form name="listSearchForm" class="hidden-print" ng-hide="(selectedList.items | filter:{isSelected:'true'}).length > 0">
         <div class="input-group input-group-lg">
           <input 
-            ng-model-options="{ debounce: 1000 }" ng-model="listSearchTerm"
+            ng-model="listSearchTerm"
             type="text" 
             class="form-control" 
             placeholder="Search current list by keyword, item # or label" />
