@@ -61,8 +61,8 @@
         };
 
         $scope.pageSizes = {
-          availableSizes: [25, 50, 75, 100],
-          selectedSize: 25
+          availableSizes: [50, 100, 250, 500, 1000],
+          selectedSize: 100
         };
 
         
