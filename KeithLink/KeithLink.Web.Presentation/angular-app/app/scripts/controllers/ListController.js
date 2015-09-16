@@ -26,6 +26,8 @@ angular.module('bekApp')
     $scope.numberListNamesToShow = 10;
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
+    $scope.visitedPages = [];
+    $scope.dictionary = {};
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -39,14 +41,29 @@ angular.module('bekApp')
       $scope.indexOfSDestroyedRow = index + 1;
     }
 
-     $scope.pageChanged = function(page) {  
+     $scope.pageChanged = function(page) {
+      $scope.currentPage = page.currentPage;
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize)) + 1;
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize) - 1;
       $scope.setRange();
       $scope.selectedList.allSelected = false;
-      if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
-        $scope.selectedList.allSelected = true;
-      };
+
+      var str = $scope.currentPage.toString();      
+
+      var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
+      if(!visited.length){
+        blockUI.start();
+        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems, 'lists');
+        blockUI.stop();
+      }
+      else{
+        $scope.selectedList.items.forEach(function(item, index){
+          if(item.listitemid === visited[0].items[0].listitemid){
+            $scope.startingPoint = index;
+            $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
+          }
+        })
+      }
      };
 
     $scope.setRange = function(){
@@ -70,6 +87,7 @@ angular.module('bekApp')
         $scope.endPoint = parseInt($scope.pagingPageSize);
         $scope.currentPage = 1;
         $scope.setRange();
+        $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
       }
 
       if ($scope.listForm) {
@@ -91,7 +109,30 @@ angular.module('bekApp')
       list.items.forEach(function(item) {
         item.editPosition = item.position;
       });
-      $scope.selectedList.items = list.items;
+
+      $scope.visitedPages.push({page: $scope.currentPage, items: list.items});
+
+      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
+        var sorterval1 = obj1.page;      
+        var sorterval2 = obj2.page;       
+        return sorterval1 - sorterval2;         
+      })
+      $scope.selectedList.items = [];
+      $scope.visitedPages.forEach(function(page){
+        $scope.selectedList.items = $scope.selectedList.items.concat(page.items);
+      })
+
+      $scope.selectedList.items.forEach(function(item, index){
+        if(item.listitemid === list.items[0].listitemid){
+          $scope.startingPoint = index;
+          $scope.endPoint = index + list.items.length;
+        }
+      })
+
+      if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
+        $scope.selectedList.allSelected = true;
+      };
+      
     }
 
     function startLoading() {
