@@ -27,6 +27,7 @@ angular.module('bekApp')
     $scope.indexOfSDestroyedRow = '';
     $scope.destroyedOnField = '';
     $scope.useParLevel = false;
+    $scope.visitedPages = [];
 
 
     function onItemQuantityChanged(newVal, oldVal) {
@@ -34,12 +35,15 @@ angular.module('bekApp')
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
       var item = $scope[object].items[idx];
-      if(newVal !== oldVal){
+      if(newVal !== oldVal && item){
         item.initInputs = true;
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
         $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
       }
-      item.extPrice = PricingService.getPriceForItem(item);
+      if(item !== undefined){
+        item.extPrice = PricingService.getPriceForItem(item);
+      }
+      
 
     }
     var watches = [];
@@ -157,10 +161,30 @@ angular.module('bekApp')
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page) {
       $scope.currentPage = page.currentPage
-      $scope.selectedList.allSelected = false;
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
       $scope.setRange();
+
+       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
+        if(!visited.length){
+          blockUI.start();
+          listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, []);
+          blockUI.stop();
+        }
+        else{
+        var foundStartPoint = false;
+        $scope.selectedList.items.forEach(function(item, index){
+          if(item.listitemid && item.listitemid === visited[0].items[0].listitemid){
+            $scope.startingPoint = index;
+            $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
+            foundStartPoint = true;
+          }
+        })
+
+        if(!foundStartPoint){
+          appendListItems(visited[0].items);
+        }
+        }
   };
 
   $scope.setRange = function(){
@@ -203,6 +227,24 @@ angular.module('bekApp')
       $stateParams.listItems = $scope.selectedList.items;
       var originalItemCount = $scope.selectedList.items.length;
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
+       $scope.visitedPages.push({page: $scope.currentPage, items: list.items});
+      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
+        var sorterval1 = obj1.page;      
+        var sorterval2 = obj2.page;       
+        return sorterval1 - sorterval2;         
+      })
+      $scope.selectedList.items = [];
+      $scope.visitedPages.forEach(function(page){
+        $scope.selectedList.items = $scope.selectedList.items.concat(page.items);
+      })
+
+      $scope.selectedList.items.forEach(function(item, index){
+        if(item.listitemid === list.items[0].listitemid){
+          $scope.startingPoint = index;
+          $scope.endPoint = angular.copy(index + list.items.length);
+        }
+      })
+
       $scope.appendingList = true;
       $scope.appendedItems = list.items;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
@@ -227,6 +269,8 @@ angular.module('bekApp')
         // create new cart if no cart was selected
         $scope.generateNewCartForDisplay();
       }
+
+      $scope.visitedPages.push({page: 1, items: selectedList.items});
        setSelectedList(selectedList);
 
       if($stateParams.cartId !== 'New' && $stateParams.searchTerm){
