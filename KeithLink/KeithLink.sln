@@ -63,11 +63,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8
 		KeithLink.ETL.Setup\SQL\ETL_CleanupScript_BEK_Commerce_AppData.sql = KeithLink.ETL.Setup\SQL\ETL_CleanupScript_BEK_Commerce_AppData.sql
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Development", "Development", "{93D900A9-B444-4628-81C9-FA8E171F1966}"
-	ProjectSection(SolutionItems) = preProject
-		KeithLink.ETL.Setup\Config\Development\ETLProcess_DEV.dtsConfig = KeithLink.ETL.Setup\Config\Development\ETLProcess_DEV.dtsConfig
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Production", "Production", "{85599C7B-357D-4C78-8551-9AD8EC771379}"
 	ProjectSection(SolutionItems) = preProject
 		ETLProcess_RELEASE.dtsConfig = ETLProcess_RELEASE.dtsConfig
@@ -871,9 +866,6 @@ Global
 		{DA2CC32A-4740-4031-8D5D-5905463ED93B} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
 		{5FF02D94-A213-444C-90FF-E851196846E2} = {7BAD83A7-06E2-48FA-B2F7-5D1A1BF896D7}
 		{1FFC01AE-BA8E-4CAD-8036-C21BA08B6E72} = {5FF02D94-A213-444C-90FF-E851196846E2}
-		{93D900A9-B444-4628-81C9-FA8E171F1966} = {BA613763-1505-4E83-969D-18E6D28B95CA}
-		{85599C7B-357D-4C78-8551-9AD8EC771379} = {BA613763-1505-4E83-969D-18E6D28B95CA}
-		{0AA5ACC1-A2AB-472C-8802-C84D15574D14} = {BA613763-1505-4E83-969D-18E6D28B95CA}
 		{F808F8FA-F86E-4102-951C-5D4C5F70C1AE} = {5FF02D94-A213-444C-90FF-E851196846E2}
 		{4FC23A03-67A8-4C95-8B5A-113A99AF4EC8} = {C2142FA1-5A69-4427-95CE-C30ACD3C9F00}
 		{8CCC69D6-E11A-4765-83C1-20853DBA43C9} = {C2142FA1-5A69-4427-95CE-C30ACD3C9F00}
@@ -889,7 +881,7 @@ Global
 		{E4E27BCE-8E26-44F2-A90F-958A27689A39} = {F808F8FA-F86E-4102-951C-5D4C5F70C1AE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.2\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Security.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.Cryptography.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Logging.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.ExceptionHandling.5.0.505.0\lib\NET35
+		EnterpriseLibraryConfigurationToolBinariesPathV6 = packages\EnterpriseLibrary.Common.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.ExceptionHandling.6.0.1304.0\lib\NET45;packages\EnterpriseLibrary.Logging.6.0.1304.0\lib\NET45
 	EndGlobalSection
 EndGlobal
