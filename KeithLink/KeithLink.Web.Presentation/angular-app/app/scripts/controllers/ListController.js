@@ -431,7 +431,7 @@ angular.module('bekApp')
 
       $scope.visitedPages.forEach(function(page){
         if(page.page === $scope.currentPage){
-        page.items = $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint);
+        page.items = $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint -1);
         }
       })
 
