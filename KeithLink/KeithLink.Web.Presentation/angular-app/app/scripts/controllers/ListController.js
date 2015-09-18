@@ -16,7 +16,6 @@ angular.module('bekApp')
 
     var orderBy = $filter('orderBy');
 
-    var deletedItems = []; // keep track of deleted items
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;  
@@ -46,10 +45,16 @@ angular.module('bekApp')
       $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize) - 1);
       $scope.setRange();
       $scope.selectedList.allSelected = false;
+      var deletedItems = [];
+      $scope.selectedList.items.forEach(function(item){
+        if(item.deleted){
+          deletedItems.push(item);
+        }
 
+      })
        var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
-        blockUI.start();
+        blockUI.start();        
         listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);
         blockUI.stop();
       }
@@ -66,24 +71,10 @@ angular.module('bekApp')
         $scope.selectedList.items.forEach(function(item, index){
           if(item.listitemid && item.listitemid === page.items[0].listitemid){
             $scope.startingPoint = index;
-            //$scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
-            var endItem = page.items[page.items.length - 1];
-            $scope.selectedList.items.forEach(function(listItem, index){
-              if(listItem.listitemid === endItem.listitemid){
-                $scope.endPoint = index + 1;
-              }
-            })
+            $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
             foundStartPoint = true;
           }
         })
-        // var startIndex = $scope.selectedList.items.indexOf(page.items[0]);
-        // if(startIndex === -1){
-        //   appendListItems(page);
-        // }
-        // else{
-        //   $scope.startingPoint = startIndex;
-        //   $scope.endPoint = $scope.selectedList.items.indexOf(page.items[page.items.length]);
-        // }
 
         if(!foundStartPoint){
           appendListItems(page);
@@ -222,7 +213,7 @@ angular.module('bekApp')
       resetPage(angular.copy(originalList));
     };
 
-    $scope.validateAndSave = function(){
+    $scope.unsavedChangesConfirmation = function(){
       if($scope.listForm.$dirty){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
@@ -238,24 +229,26 @@ angular.module('bekApp')
     **********/
 
     $scope.filterItems = function(searchTerm) {
-      if($scope.validateAndSave()){
+      if($scope.unsavedChangesConfirmation()){
         listPagingModel.filterListItems(searchTerm);
       }
     };
     
     $scope.sortList = function(sortBy, sortOrder) {
-      $scope.visitedPages = [];
-      $scope.currentPage = 1;
-      if (sortBy === $scope.sort[0].field) {
-       sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
-      } else {
-        sortOrder = 'asc';
-      }
-      $scope.sort = [{
-        field: sortBy,
-        order: sortOrder
-      }];
-      listPagingModel.sortListItems($scope.sort);
+      if($scope.unsavedChangesConfirmation()){         
+        $scope.visitedPages = [];
+        $scope.currentPage = 1;
+        if (sortBy === $scope.sort[0].field) {
+         sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
+        } else {
+          sortOrder = 'asc';
+        }
+        $scope.sort = [{
+          field: sortBy,
+          order: sortOrder
+        }];
+        listPagingModel.sortListItems($scope.sort); 
+      } 
     };
 
     /**********
@@ -375,14 +368,7 @@ angular.module('bekApp')
           }
         });
 
-        // mark deleted items
-        deletedItems.forEach(function(item) {
-          item.isdeleted = true;
-        });
-        updatedList.items = updatedList.items.concat(deletedItems);
-        
-        // reset paging model 
-        listPagingModel.resetPaging();
+       listPagingModel.resetPaging();
 
         return ListService.updateList(updatedList, false, params)
           .then(resetPage)
@@ -419,48 +405,19 @@ angular.module('bekApp')
     $scope.deleteItem = function(item) {
 
       var deletedIndex = $scope.selectedList.items.indexOf(item);
-
-      if (deletedIndex < 0) {
-        angular.forEach($scope.selectedList.items, function(listItem, index) {
-          if (listItem.listitemid === item.listitemid) {
-            deletedIndex = index;
-          }
-        });
-      }
-
-      deletedItems = deletedItems.concat($scope.selectedList.items.splice(deletedIndex, 1));
-
-      // Remove an item from the count
-      $scope.selectedList.itemCount = ($scope.selectedList.itemCount - 1);
-
-      $scope.visitedPages.forEach(function(page){
-        if(page.page === $scope.currentPage){
-        page.items = $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint -1);
-        }
-      })
-
+      $scope.selectedList.items[deletedIndex].isdeleted = true;
       $scope.listForm.$setDirty();
     };
 
     $scope.deleteMultipleItems = function() {
       var selectedItemsForDelete = $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
-
-
-      $scope.visitedPages.forEach(function(page){
-        if(page.page === $scope.currentPage){
-          page.items = $filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: '!'});        
+      $scope.selectedList.items.forEach(function(item){
+        if(item.isSelected){
+          item.isdeleted = true;
         }
       })
 
-
-      deletedItems = deletedItems.concat(selectedItemsForDelete);
-
-      $scope.selectedList.items = $filter('filter')($scope.selectedList.items, {isSelected: '!true'});
-
       $scope.selectedList.allSelected = false;
-      // Remove an item from the count
-      $scope.selectedList.itemCount = ($scope.selectedList.itemCount - selectedItemsForDelete.length);
-
       $scope.listForm.$setDirty();
     };
 
@@ -662,7 +619,7 @@ angular.module('bekApp')
     };
 
     $scope.clearFilter = function(){
-      if($scope.validateAndSave()){
+      if($scope.unsavedChangesConfirmation()){
         $scope.listSearchTerm = '';
         $scope.filterItems( $scope.listSearchTerm );       
       }    
