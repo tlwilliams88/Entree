@@ -27,7 +27,7 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
 
   ListPagingModel.prototype = {
 
-    loadList: function(appendData, page) {
+    loadList: function(appendData) {
       var setData = this.setListItems;
       if (appendData) {
         setData = this.appendListItems;
@@ -102,28 +102,28 @@ angular.module('bekApp').factory('ListPagingModel', ['ListService', 'LocalStorag
     },
 
     resetPaging: function() {
-      this.pageIndex = 0;
+      //this.pageIndex = 0;
     },
 
-    loadMoreData: function(results, total, loading, deletedItems, page) {
+    loadMoreData: function(results, total, loading, deletedItems) {
       if ( (!results || (results + deletedItems.length) < total) && !loading ) {
 
-        var pageSize = parseInt(LocalStorage.getPageSize());
+        var pageSize =  parseInt(LocalStorage.getPageSize());
         var sortOrder = LocalStorage.getDefaultSort();
 
         if(pageSize > 0){
           this.pageSize = pageSize;
         }
         this.pageIndex = results; 
-        this.loadList(true, page);
+        this.loadList(true);
       }
     },
 
-    loadAllData: function(results, total, loading, page) {
+    loadAllData: function(results, total, loading) {
       if ( (!results || (results.length < total)) && !loading ) {
         this.pageIndex = 0;
         this.pageSize = total;
-        this.loadList(true, page);
+        this.loadList(true);
       }
     },
 
