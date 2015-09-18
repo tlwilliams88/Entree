@@ -42,7 +42,7 @@ angular.module('bekApp')
      $scope.pageChanged = function(page) {
       $scope.currentPage = page.currentPage;
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize)) + 1;
-      $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize) - 1);
+      $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
       $scope.setRange();
       $scope.selectedList.allSelected = false;
       var deletedItems = [];
@@ -52,7 +52,8 @@ angular.module('bekApp')
         }
 
       })
-       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
+
+      var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){
         blockUI.start();        
         listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);
@@ -60,7 +61,7 @@ angular.module('bekApp')
       }
       else{        
         $scope.setStartAndEndPoints(visited[0]);
-        if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true}).length === ($scope.endPoint - $scope.startingPoint)){
+        if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
           $scope.selectedList.allSelected = true;
         };
       }
@@ -69,7 +70,7 @@ angular.module('bekApp')
      $scope.setStartAndEndPoints = function(page){
       var foundStartPoint = false;
         $scope.selectedList.items.forEach(function(item, index){
-          if(item.listitemid && item.listitemid === page.items[0].listitemid){
+          if(page.items[0] && item.listitemid === page.items[0].listitemid){
             $scope.startingPoint = index;
             $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
             foundStartPoint = true;
@@ -83,25 +84,26 @@ angular.module('bekApp')
 
 
     $scope.setRange = function(){
-      $scope.endPoint = $scope.endPoint + 1;
+      $scope.endPoint = $scope.endPoint;
       $scope.rangeStart = $scope.startingPoint;
       $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
+      if($scope.rangeStart === 0 && $scope.rangeEnd === parseInt($scope.pagingPageSize) - 1){
+        $scope.rangeStart++;
+        $scope.rangeEnd ++;
+      }
     }
+
     $scope.pagingPageSize = LocalStorage.getPageSize();
     
     function resetPage(list, initialPageLoad) {
       $scope.selectedList = angular.copy(list);
       $scope.totalItems = $scope.selectedList.itemCount;
       originalList = list;
-      $scope.selectedList.items.unshift({}); // adds empty item that allows ui sortable work with a header row
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
       $scope.setStartAndEndPoints(list);
 
-      if(initialPageLoad){
-        //starting point initialized at 1 to avoid the dummy sort row occupying index 0
-        $scope.startingPoint = 1;        
-        $scope.endPoint = parseInt($scope.pagingPageSize);
+      if(initialPageLoad){      
         $scope.currentPage = 1;
         $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
       }
@@ -115,12 +117,6 @@ angular.module('bekApp')
         item.editPosition = item.position;
       });
     }
-    
-    function updateItemPositionWithEditPosition() {
-        $scope.selectedList.items.forEach(function(item) {
-            item.position = item.editPosition;
-        });
-    }
 
     function appendListItems(list) {
       list.items.forEach(function(item) {
@@ -128,27 +124,24 @@ angular.module('bekApp')
       });
 
       $scope.visitedPages.push({page: $scope.currentPage, items: list.items});
-
+      //Since pages can be visited out of order, sort visited pages into numeric order.
       $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
         var sorterval1 = obj1.page;      
         var sorterval2 = obj2.page;       
         return sorterval1 - sorterval2;         
       })
+      //Rebuild selectedList with all items currently in the controller, in the correct order.
       $scope.selectedList.items = [];
       $scope.visitedPages.forEach(function(page){
         $scope.selectedList.items = $scope.selectedList.items.concat(page.items);
       })
 
-      $scope.selectedList.items.forEach(function(item, index){
-        if(list.items[0] && item.listitemid === list.items[0].listitemid){
-          $scope.startingPoint = index;
-          $scope.endPoint = angular.copy(index + list.items.length);
-        }
-      })
-
       if(list.items.length === 0){
         $scope.startingPoint = 0;
         $scope.endPoint = 0;
+      }
+      else{
+       $scope.setStartAndEndPoints(list);
       }
 
       if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
@@ -353,11 +346,6 @@ angular.module('bekApp')
         processingSaveList = true;
         var updatedList = angular.copy(list);
 
-        // remove empty item that is used for ui sortable
-        if (updatedList.items.length && !updatedList.items[0].listitemid) {
-          updatedList.items.splice(0, 1);
-        }
-
         angular.forEach(updatedList.items, function(item, itemIndex) {
           if (item.listitemid) {
             if (item.editLabel && item.isEditing) {
@@ -403,7 +391,6 @@ angular.module('bekApp')
     **********/
 
     $scope.deleteItem = function(item) {
-
       var deletedIndex = $scope.selectedList.items.indexOf(item);
       $scope.selectedList.items[deletedIndex].isdeleted = true;
       $scope.listForm.$setDirty();

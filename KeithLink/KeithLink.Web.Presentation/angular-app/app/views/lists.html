@@ -359,14 +359,7 @@
       
         <table 
           navigate-table="lists" 
-          class="custom-lists__table table table-border table-striped-rows"       
-          
-          ui-sortable="{          
-            stop: stopReorder, 
-            tolerance: 'pointer', 
-            containment: 'document' }" 
-          ng-model-options="{ debounce: 1000 }" ng-model="selectedList.items">
-
+          class="custom-lists__table table table-border table-striped-rows">
           <thead>
             <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
               <th class="nowrap input-col">
@@ -428,10 +421,7 @@
               jqyoui-draggable="{
                 onStart: 'setIsDragging(true)', 
                 onStop: 'setIsDragging(false)'}"
-                id="listsTableRows">
-
-
-                
+                id="listsTableRows">                
            
             <tr ng-if="item.showBody" ng-class="::{ odd : $odd, even: $even}">
               <td class="hidden-drag bek-drag-handle large-icon icon-col">
