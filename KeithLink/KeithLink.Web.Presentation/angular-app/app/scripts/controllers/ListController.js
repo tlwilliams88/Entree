@@ -67,8 +67,12 @@ angular.module('bekApp')
           if(item.listitemid && item.listitemid === page.items[0].listitemid){
             $scope.startingPoint = index;
             //$scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
-            $scope.endPoint = $scope.selectedList.items.indexOf(page.items[page.items.length - 1]) + 1;
-
+            var endItem = page.items[page.items.length - 1];
+            $scope.selectedList.items.forEach(function(listItem, index){
+              if(listItem.listitemid === endItem.listitemid){
+                $scope.endPoint = index + 1;
+              }
+            })
             foundStartPoint = true;
           }
         })
