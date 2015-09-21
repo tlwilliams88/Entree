@@ -8,6 +8,10 @@ angular.module('bekApp')
   .filter('formatDate', [function() {
  
     function getFormattedDateTime(dateTime, formatString) {
+     // Don't do anything if it's null
+     if (!dateTime) {
+       return;
+     }
     // check UTC time and convert to format 2015-02-13 00:00:00 -- all times coming from the backend are Central
      if (dateTime && dateTime.indexOf && dateTime.indexOf('T') > -1 && dateTime.indexOf('Z') > -1) {
         dateTime = dateTime.replace('T', ' ');
