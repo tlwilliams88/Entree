@@ -158,6 +158,14 @@ angular.module('bekApp')
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
     }
 
+    $scope.blockUIAndChangePage = function(page){
+      $scope.startingPoint = 0;
+      $scope.endPoint = 0;
+      blockUI.start("Loading List...").then(function(){
+        $scope.pageChanged(page);
+      })
+    }
+
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page) {
       $scope.currentPage = page.currentPage
@@ -167,9 +175,7 @@ angular.module('bekApp')
 
        var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
         if(!visited.length){
-          blockUI.start();
           listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, []);
-          blockUI.stop();
         }
         else{
         var foundStartPoint = false;
@@ -184,7 +190,8 @@ angular.module('bekApp')
         if(!foundStartPoint){
           appendListItems(visited[0].items);
         }
-        }
+        stopLoading();
+        }       
   };
 
   $scope.setRange = function(){
@@ -255,6 +262,7 @@ angular.module('bekApp')
     }
     function stopLoading() {
       $scope.loadingResults = false;
+       blockUI.stop();
     }
 
     function init() {
@@ -276,6 +284,7 @@ angular.module('bekApp')
       if($stateParams.cartId !== 'New' && $stateParams.searchTerm){
         $scope.filterItems($stateParams.searchTerm);
       }
+      blockUI.stop();
     }
 
     $scope.sort = [{
@@ -468,14 +477,16 @@ angular.module('bekApp')
         sameListItems = undefined;
       }
         var continueToCart = $scope.continueToCart
-      $state.go('menu.addtoorder.items', { 
-        listId: listId,
-        cartId: cartId,
-        useParlevel: $scope.useParlevel,
-        continueToCart: continueToCart,
-        listItems: sameListItems,
-        searchTerm: searchTerm,
-        currentPage: $scope.retainedPage})
+      blockUI.start("Loading List...").then(function(){
+        $state.go('menu.addtoorder.items', { 
+          listId: listId,
+          cartId: cartId,
+          useParlevel: $scope.useParlevel,
+          continueToCart: continueToCart,
+          listItems: sameListItems,
+          searchTerm: searchTerm,
+          currentPage: $scope.retainedPage})
+      });
     };
 
     /**********
