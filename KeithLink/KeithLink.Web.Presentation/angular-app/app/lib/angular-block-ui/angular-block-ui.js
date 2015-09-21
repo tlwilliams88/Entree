@@ -381,7 +381,7 @@ blkUI.factory('blockUIHttpInterceptor', ["$q", "$injector", "blockUIConfig", "$t
 
 }]);
 
-blkUI.factory('blockUI', ["blockUIConfig", "$timeout", "blockUIUtils", "$document", function(blockUIConfig, $timeout, blockUIUtils, $document) {
+blkUI.factory('blockUI', ["blockUIConfig", "$timeout", "blockUIUtils", "$document", "$q", function(blockUIConfig, $timeout, blockUIUtils, $document, $q) {
 
   var $body = $document.find('body');
 
@@ -401,7 +401,7 @@ blkUI.factory('blockUI', ["blockUIConfig", "$timeout", "blockUIUtils", "$documen
     this._refs = 0;
 
     this.start = function(message) {
-
+      var deferred = $q.defer();
       if(state.blockCount > 0) {
         message = message || state.message || blockUIConfig.message;
       } else {
@@ -441,6 +441,9 @@ blkUI.factory('blockUI', ["blockUIConfig", "$timeout", "blockUIUtils", "$documen
           state.blocking = true;
         }, blockUIConfig.delay);
       }
+      deferred.resolve(startPromise);
+      return deferred.promise;
+
     };
 
     this._cancelStartTimeout = function() {

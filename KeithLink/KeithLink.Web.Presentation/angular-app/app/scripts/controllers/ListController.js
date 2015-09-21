@@ -39,7 +39,15 @@ angular.module('bekApp')
       $scope.indexOfSDestroyedRow = index + 1;
     }
 
-     $scope.pageChanged = function(page) {
+    $scope.blockUIAndChangePage = function(page){
+      $scope.startingPoint = 0;
+      $scope.endPoint = 0;
+      blockUI.start("Loading List...").then(function(){
+        $scope.pageChanged(page);
+      })
+    }
+
+     $scope.pageChanged = function(page) {       
       $scope.currentPage = page.currentPage;
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize)) + 1;
       $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
@@ -54,16 +62,14 @@ angular.module('bekApp')
       })
 
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
-      if(!visited.length){
-        blockUI.start();        
-        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);
-        blockUI.stop();
+      if(!visited.length){             
+        listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);       
       }
-      else{        
-        $scope.setStartAndEndPoints(visited[0]);
-        if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
-          $scope.selectedList.allSelected = true;
-        };
+      else{
+          $scope.setStartAndEndPoints(visited[0]);
+          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
+            $scope.selectedList.allSelected = true;
+          };
       }
      };
 
@@ -80,8 +86,8 @@ angular.module('bekApp')
         if(!foundStartPoint){
           appendListItems(page);
         }
+        blockUI.stop();
      }
-
 
     $scope.setRange = function(){
       $scope.endPoint = $scope.endPoint;
@@ -178,6 +184,7 @@ angular.module('bekApp')
 
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
+
       var timeset =  moment().format('YYYYMMDDHHmm');
     
       var lastlist ={
@@ -186,7 +193,11 @@ angular.module('bekApp')
       }
      
       LocalStorage.setLastList(lastlist);
-      return $state.go('menu.lists.items', {listId: list.listid, renameList: false});
+      if(list.listid !== $scope.selectedList.listid){
+        blockUI.start("Loading List...").then(function(){
+          return $state.go('menu.lists.items', {listId: list.listid, renameList: false});      
+        });
+      }
     };
     
     function goToNewList(newList) {

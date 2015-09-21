@@ -171,7 +171,7 @@ angular.module('bekApp')
           var stillExists = false;
 
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
-          var params = {size: pageSize, from: 0, sort: []};
+          var params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'};
           var listHeader = $filter('filter')(lists, {listid: validListId})[0];
 
          if(listHeader && (listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory)){
