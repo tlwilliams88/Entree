@@ -109,17 +109,17 @@ angular.module('bekApp')
     },
 
     isInternalAccountAdminUser: function() {
-      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() || isMarketing() ) );
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser()) );
     },
 
     isInternalUser: function() {
-      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser()) );
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() || isMarketing() ) );
     },
 
     // PRIVILEDGES
 
     canBrowseCatalog: function() {
-      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() || isMarketing() || isGuest() );
     },
 
     canSeePrices: function() {

@@ -542,12 +542,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                         returnValue = _customerRepo.GetPagedCustomersForDSM(paging, user.DSMNumber, user.BranchId, searchTerms, searchType);
                     }
                 }
-                else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId != Constants.BRANCH_GOF))
+                else if (user.RoleName.Equals(Constants.ROLE_NAME_BRANCHIS) || ((user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) || user.RoleName.Equals(Constants.ROLE_NAME_MARKETING)) && user.BranchId != Constants.BRANCH_GOF))
                 {
                     returnValue = _customerRepo.GetPagedCustomersForBranch(paging, user.BranchId, searchTerms, searchType);
 
                 }
-                else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || (user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) && user.BranchId == Constants.BRANCH_GOF))
+                else if (user.RoleName.Equals(Constants.ROLE_NAME_SYSADMIN) || ((user.RoleName.Equals(Constants.ROLE_NAME_POWERUSER) || user.RoleName.Equals(Constants.ROLE_NAME_MARKETING)) && user.BranchId == Constants.BRANCH_GOF))
                 {
                     returnValue = _customerRepo.GetPagedCustomers(paging, searchTerms, searchType);
                 }
