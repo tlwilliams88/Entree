@@ -55,6 +55,25 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
 		}
 
+
+        /// <summary>
+        /// Export Cart + List
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <param name="listId"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute( "cart/print/{cartId}/{listId}" )]
+        public HttpResponseMessage PrintCartWithList( Guid cartId, long listId, PrintListModel options ) {
+            var p = options;
+            var l = listId;
+            var u = this.SelectedUserContext;
+
+
+            return new HttpResponseMessage( HttpStatusCode.OK );
+        }
+
 		/// <summary>
 		/// Create a user cart
 		/// </summary>
