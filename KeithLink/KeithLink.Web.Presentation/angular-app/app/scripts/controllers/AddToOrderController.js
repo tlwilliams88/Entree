@@ -181,7 +181,6 @@ angular.module('bekApp')
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
       $scope.setRange();
-        console.log(visited.length)
         if(!visited.length){
           listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, []);
         }
@@ -324,6 +323,7 @@ angular.module('bekApp')
         if($stateParams.searchTerm ){
           $scope.orderSearchTerm = $stateParams.searchTerm;
         }
+        $scope.visitedPages = [];
         listPagingModel.filterListItems(searchTerm);
         $stateParams.searchTerm = '';
         clearItemWatches(watches);       
@@ -333,6 +333,7 @@ angular.module('bekApp')
            var continueSearch = resp;
      
         if(continueSearch){           
+          $scope.visitedPages = [];
           $scope.addToOrderForm.$setPristine();    
           listPagingModel.filterListItems(searchTerm);
           clearItemWatches(watches);         
@@ -424,6 +425,9 @@ angular.module('bekApp')
     };
 
     $scope.sortList = function(sortBy, sortOrder) {
+      
+        $scope.visitedPages = [];
+        $scope.currentPage = 1;
       if (sortBy === $scope.sort[0].field) {
        sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
       } else {

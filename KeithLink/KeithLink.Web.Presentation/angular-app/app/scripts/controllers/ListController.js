@@ -242,6 +242,7 @@ angular.module('bekApp')
 
     $scope.filterItems = function(searchTerm) {
       if($scope.unsavedChangesConfirmation()){
+        $scope.visitedPages = [];
         listPagingModel.filterListItems(searchTerm);
       }
     };
