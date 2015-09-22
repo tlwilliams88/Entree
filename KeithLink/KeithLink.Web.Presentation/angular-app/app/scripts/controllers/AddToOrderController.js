@@ -507,11 +507,12 @@ angular.module('bekApp')
       }
       else{
         sameListItems = undefined;
+        console.log('sameListItems = undefined')
       }
         var continueToCart = $scope.continueToCart
         console.log('blockUI.start()')
       blockUI.start("Loading List...").then(function(){
-        console.log('blockUI.then.. Redirect: listId '+listId+' cartId '+cartId+' $scope.useParlevel '+$scope.useParlevel+' continueToCart '+continueToCart+' sameListItems.length '+sameListItems.length+' searchTerm '+searchTerm+' $scope.retainedPage '+$scope.retainedPage)
+        console.log('blockUI.then.. Redirect: listId '+listId+' cartId '+cartId+' $scope.useParlevel '+$scope.useParlevel+' continueToCart '+continueToCart+' sameListItems'+sameListItems+' searchTerm '+searchTerm+' $scope.retainedPage '+$scope.retainedPage)
         $state.go('menu.addtoorder.items', { 
           listId: listId,
           cartId: cartId,
