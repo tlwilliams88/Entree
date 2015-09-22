@@ -159,39 +159,48 @@ angular.module('bekApp')
     }
 
     $scope.blockUIAndChangePage = function(page){
+      //Check if items for page already exist in the controller     
       $scope.startingPoint = 0;
-      $scope.endPoint = 0;
-      blockUI.start("Loading List...").then(function(){
-        $scope.pageChanged(page);
-      })
+      $scope.endPoint = 0;    
+       var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+         blockUI.start("Loading List...").then(function(){
+          if(visited.length > 0){
+            $timeout(function() {
+              $scope.pageChanged(page, visited);
+            }, 100);
+          }
+          else{
+            $scope.pageChanged(page, visited);
+          }
+        })     
     }
 
   $scope.pagingPageSize = LocalStorage.getPageSize();
-  $scope.pageChanged = function(page) {
+  $scope.pageChanged = function(page, visited) {
       $scope.currentPage = page.currentPage
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
       $scope.setRange();
-
-       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
+        console.log(visited.length)
         if(!visited.length){
           listPagingModel.loadMoreData($scope.startingPoint, $scope.endPoint - 1, $scope.loadingResults, []);
         }
         else{
-        var foundStartPoint = false;
-        $scope.selectedList.items.forEach(function(item, index){
-          if(item.listitemid && item.listitemid === visited[0].items[0].listitemid){
-            $scope.startingPoint = index;
-            $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
-            foundStartPoint = true;
-          }
-        })
+          var foundStartPoint = false;
+          $scope.selectedList.items.forEach(function(item, index){
+            if(item.listitemid && item.listitemid === visited[0].items[0].listitemid){
+              $scope.startingPoint = index;
+              $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
+              foundStartPoint = true;
+            }
+          })
 
-        if(!foundStartPoint){
-          appendListItems(visited[0].items);
-        }
-        stopLoading();
-        }       
+          if(!foundStartPoint){
+            appendListItems(visited[0].items);
+          }
+           blockUI.stop();
+        }        
+
   };
 
   $scope.setRange = function(){

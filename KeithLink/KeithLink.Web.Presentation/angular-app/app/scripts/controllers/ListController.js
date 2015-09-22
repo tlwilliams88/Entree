@@ -41,10 +41,18 @@ angular.module('bekApp')
 
     $scope.blockUIAndChangePage = function(page){
       $scope.startingPoint = 0;
-      $scope.endPoint = 0;
-      blockUI.start("Loading List...").then(function(){
-        $scope.pageChanged(page);
-      })
+       $scope.endPoint = 0;
+        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+        blockUI.start("Loading List...").then(function(){
+          if(visited.length > 0){
+            $timeout(function() {
+              $scope.pageChanged(page, visited);
+            }, 100);
+          }
+          else{
+            $scope.pageChanged(page, visited);
+          }
+        })     
     }
 
      $scope.pageChanged = function(page) {       
