@@ -55,6 +55,7 @@ angular.module('bekApp')
       }
     }
     function clearItemWatches(watchers) {
+      console.log('clearItemWatches')
       watchers.forEach(function(watch) {
         watch();
       });
@@ -213,18 +214,25 @@ angular.module('bekApp')
    }
 
     function setSelectedCart(cart) {
+      console.log('setSelectedCart: cart.id '+cart.id+' cart.name '+cart.name+' cart.items.length '+cart.items.length+' cart.items[0].quantity '+cart.items[0].quantity)
       $scope.selectedCart = cart;
       $scope.addCartWatches();
     }
     function setSelectedList(list) {
+      console.log('setSelectedList: list.name '+list.name)
       $scope.selectedList = list;
        $scope.startingPoint = 0;
       
       $scope.endPoint = parseInt($scope.pagingPageSize);
       $scope.currentPage = $stateParams.currentPage || 1;
       $scope.setRange();
-      flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);    
-
+      flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
+      if($stateParams.listItems){
+        console.log('setSelectedList: $stateParams.listItems '+$stateParams.listItems.length+' $stateParams.listItems[0].quantity '+$stateParams.listItems[0].quantity)
+      }
+      else{
+        console.log('No $stateParams.listitems')
+      }
       if($stateParams.listItems){
        $stateParams.listItems.forEach(function(item){
          $scope.selectedList.items.forEach(function(selectedlistitem){
@@ -239,6 +247,7 @@ angular.module('bekApp')
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
     }
     function appendListItems(list) {
+      console.log('appendListItems: $scope.selectedList.items '+$scope.selectedList.items+' list.items.length '+list.items.length)
       $stateParams.listItems = $scope.selectedList.items;
       var originalItemCount = $scope.selectedList.items.length;
       $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
@@ -266,14 +275,17 @@ angular.module('bekApp')
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items); 
     }
     function startLoading() {
+      console.log('startLoading')
       $scope.loadingResults = true;
     }
     function stopLoading() {
+      console.log('stopLoading')
       $scope.loadingResults = false;
        blockUI.stop();
     }
 
     function init() {
+      console.log('init')
       $scope.lists = lists;
       $scope.shipDates = CartService.shipDates;
       $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
@@ -318,7 +330,7 @@ angular.module('bekApp')
         getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items)
     }
     $scope.filterItems = function(searchTerm) {  
-     
+     console.log('filterItems: $stateParams.searchTerm '+$stateParams.searchTerm)
       if($stateParams.searchTerm || $scope.addToOrderForm.$pristine){
         if($stateParams.searchTerm ){
           $scope.orderSearchTerm = $stateParams.searchTerm;
@@ -329,12 +341,13 @@ angular.module('bekApp')
         clearItemWatches(watches);       
       }
       else{      
-          $scope.validateAndSave().then(function(resp){
-           var continueSearch = resp;
-     
+          $scope.validateAndSave().then(function(resp){           
+           var continueSearch = resp;       
+          console.log('filterItems: continueSearch.id '+ continueSearch.id)
         if(continueSearch){           
           $scope.visitedPages = [];
-          $scope.addToOrderForm.$setPristine();    
+          $scope.addToOrderForm.$setPristine();
+          console.log('filterItems: listPagingModel.filterListItems(searchTerm) '+ searchTerm)    
           listPagingModel.filterListItems(searchTerm);
           clearItemWatches(watches);         
         }
@@ -344,6 +357,7 @@ angular.module('bekApp')
     };
 
     $scope.validateAndSave = function(){
+      console.log('validateAndSave')
       if($scope.addToOrderForm.$invalid){
           var r = confirm('Unsaved data will be lost. Do you wish to continue?');
           return r;   
@@ -351,6 +365,7 @@ angular.module('bekApp')
       else{  
           if($scope.selectedCart.id === 'New'){
              $scope.createFromSearch = true;
+             console.log('validateAndSave: $scope.createFromSearch '+ $scope.createFromSearch)
           }           
           return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
       }      
@@ -442,6 +457,7 @@ angular.module('bekApp')
     };
 
     $scope.redirect = function(listId, cart) {
+      console.log('redirect: listId: '+listId+' cart.id: '+cart.id)
       var cartId;    
       if ($scope.isChangeOrder) {
         cartId = cart.ordernumber;
@@ -456,7 +472,7 @@ angular.module('bekApp')
           }
       var allSets = [];
           allSets = LocalStorage.getLastOrderList();
-
+          console.log('allSets')
         if(!allSets || (allSets[0] && !allSets[0].timeset)){
           allSets = [];
         }
@@ -470,7 +486,7 @@ angular.module('bekApp')
               matchFound = true;
             }
           });
-
+          console.log('redirect: matchFound: '+matchFound)
           if(!matchFound){
             allSets.push(orderList);
           }
@@ -478,19 +494,24 @@ angular.module('bekApp')
        var searchTerm = '';
         if($scope.orderSearchTerm && $scope.createFromSearch){
          var searchTerm = $scope.orderSearchTerm;
+         console.log('redirect: searchTerm '+searchTerm)
         }
 
         LocalStorage.setLastOrderList(allSets);
 
       var sameListItems= [];
+      console.log('redirect: listId: '+listId+' $scope.selectedList.listid: '+$scope.selectedList.listid)
       if(listId === $scope.selectedList.listid){
         sameListItems = $scope.selectedList.items;
+        console.log('redirect:  sameListItems.length '+sameListItems.length+' sameListItems[0].quantity '+ sameListItems[0].quantity)
       }
       else{
         sameListItems = undefined;
       }
         var continueToCart = $scope.continueToCart
+        console.log('blockUI.start()')
       blockUI.start("Loading List...").then(function(){
+        console.log('blockUI.then.. Redirect: listId '+listId+' cartId '+cartId+' $scope.useParlevel '+$scope.useParlevel+' continueToCart '+continueToCart+' sameListItems.length '+sameListItems.length+' searchTerm '+searchTerm+' $scope.retainedPage '+$scope.retainedPage)
         $state.go('menu.addtoorder.items', { 
           listId: listId,
           cartId: cartId,
@@ -581,14 +602,17 @@ angular.module('bekApp')
 
     
     function createNewCart(items, shipDate, name) {
+      console.log('createNewCart: name '+ name+' items.length '+items.length+' items[0].quantity '+items[0].quantity)
       $analytics.eventTrack('Create Order', {  category: 'Orders', label: 'From List' });
       if (!processingSaveCart) {
         var processingSaveCart = true;
         return CartService.createCart(items, shipDate, name).then(function(cart) {
+          console.log('createNewCart: cart.id '+ cart.id+' cart.name '+cart.name+' cart.')
           $scope.addToOrderForm.$setPristine();
           $scope.retainedPage = $scope.currentPage;
           $scope.redirect($scope.selectedList.listid, cart);
-          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');          
+          $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
+          console.log('createNewCart: return cart')          
           return cart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
@@ -653,6 +677,7 @@ angular.module('bekApp')
     }
 
     $scope.updateOrderClick = function(list, cart) {
+      console.log('updateOrderClick: list.items[0].quantity: '+list.items[0].quantity+' cart.id: '+ cart.id)
       clearItemWatches(cartWatches);
       var cartItems = getCombinedCartAndListItems(cart.items, list.items);
       UtilityService.deleteFieldFromObjects(cartItems, ['listitemid']);
@@ -668,6 +693,7 @@ angular.module('bekApp')
             return updateCart(updatedCart);            
       
           } else {
+            console.log('updateOrderClick: createNewCart: cartItems.length: '+cartItems.length+' cartItems[0].quantity '+cartItems[0].quantity+' updatedCart.requestedshipdate '+updatedCart.requestedshipdate)
             return createNewCart(cartItems, updatedCart.requestedshipdate, updatedCart.name);
           }
         }
