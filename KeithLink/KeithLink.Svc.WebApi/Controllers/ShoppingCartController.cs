@@ -1,12 +1,19 @@
-﻿using KeithLink.Svc.Core.Interface.Cart;
+﻿// KeithLink
+using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
+
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
+// Core
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -66,12 +73,35 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute( "cart/print/{cartId}/{listId}" )]
         public HttpResponseMessage PrintCartWithList( Guid cartId, long listId, PrintListModel options ) {
-            var p = options;
-            var l = listId;
-            var u = this.SelectedUserContext;
+            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options.Paging );
 
+            ReportViewer rv = new ReportViewer();
 
-            return new HttpResponseMessage( HttpStatusCode.OK );
+            Assembly assembly = Assembly.Load( "KeithLink.Svc.Impl" );
+
+            Stream rdlcStream = null;
+            var deviceInfo = string.Empty;
+            deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
+            rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
+
+            rv.LocalReport.LoadReportDefinition( rdlcStream );
+            ReportParameter[] parameters = new ReportParameter[2];
+            parameters[0] = new ReportParameter( "ListName", "Yay" );
+            parameters[1] = new ReportParameter( "ShowParValues", options.ShowParValues ? "true" : "false" );
+
+            rv.LocalReport.SetParameters( parameters );
+            rv.LocalReport.DataSources.Add( new ReportDataSource( "CartItems", reportModel.CartItems ) );
+            rv.LocalReport.DataSources.Add( new ReportDataSource( "ListItems", reportModel.ListItems ) );
+
+            var bytes = rv.LocalReport.Render( "PDF", deviceInfo );
+            Stream stream = new MemoryStream( bytes );
+
+            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue( "application/pdf" );
+
+            return result;
         }
 
 		/// <summary>

@@ -15096,6 +15096,25 @@ public partial class LineItem : ICommerceEntity
 		}
 	}
 
+    /// <summary>
+    /// Gets or sets the IsCombinedQuantity property.
+    /// </summary>
+    /// <value>
+    /// The IsCombinedQuantity property from the property collection.
+    /// </value>
+    public virtual bool? IsCombinedQuantity 
+    {
+        get 
+        {
+            return this._commerceEntity.GetPropertyValue( PropertyName.IsCombinedQuantity ) as bool?;
+        }
+
+        set 
+        {
+            this._commerceEntity.SetPropertyValue( PropertyName.IsCombinedQuantity, value );
+        }
+    }
+
 
 	/// <summary>
     /// Gets or sets the ProductCategory property.
@@ -15658,6 +15677,11 @@ public partial class LineItem : ICommerceEntity
         /// Constant for accessing QuantityShipped property.
         /// </summary>
 		public const string QuantityShipped = "QuantityShipped";
+
+        /// <summary>
+        /// Constant for accessing IsCombinedQuantity property.
+        /// </summary>
+        public const string IsCombinedQuantity = "IsCombinedQuantity";
 
 
 		/// <summary>

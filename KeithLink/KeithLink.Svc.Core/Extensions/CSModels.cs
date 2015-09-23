@@ -38,7 +38,10 @@ namespace KeithLink.Svc.Core.Extensions
                 DisplayName = cartItem.Name,
                 Quantity = cartItem.Quantity, 
                 Each = cartItem.Each,
-                CatchWeight = cartItem.CatchWeight
+                CatchWeight = cartItem.CatchWeight,
+                Label = cartItem.Label,
+                ParLevel = cartItem.ParLevel,
+                IsCombinedQuantity = cartItem.IsCombinedQuantity,
             };
 		}
 

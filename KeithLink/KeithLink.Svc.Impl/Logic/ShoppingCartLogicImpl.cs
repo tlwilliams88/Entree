@@ -1,28 +1,39 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Core.Extensions;
+
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
+
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core.Extensions.ShoppingCart;
+
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+
 using CS = KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
+// Core
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.AuditLog;
+
+
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -253,6 +264,43 @@ namespace KeithLink.Svc.Impl.Logic
 			LookupProductDetails(user, catalogInfo, cart, notes);
 			return cart;
 		}
+
+        /// <summary>
+        /// Combines a list and cart for report pdf printing
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="context"></param>
+        /// <param name="cartId"></param>
+        /// <param name="listId"></param>
+        /// <param name="paging"></param>
+        /// <returns></returns>
+        public ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, long listId, PagingModel paging ) {
+            CS.Basket csBasket = basketLogic.RetrieveSharedCustomerBasket( user, context, cartId );
+            var list = listServiceRepository.ReadList( user, context, listId, true );
+
+            if (csBasket == null || list == null)
+                return null;
+
+            UserActiveCartModel userActiveCart = orderServiceRepository.GetUserActiveCart( context, user.UserId );
+
+            ShoppingCart cart = ToShoppingCart( csBasket, userActiveCart );
+            List<Core.Models.Lists.ListItemModel> notes = listServiceRepository.ReadNotes( user, context );
+
+            LookupProductDetails( user, context, cart, notes );
+
+            List<ShoppingCartItemReportModel> cartReportItems = cart.Items.ToReportModel();
+            List<ShoppingCartItemReportModel> listReportItems = list.ToShoppingCartItemReportList();
+             
+            listReportItems.ForEach(x => {
+                ShoppingCartItemReportModel cartItem = cartReportItems.Where( i => i.ItemNumber.Equals( x.ItemNumber ) ).FirstOrDefault();
+                if (cartItem != null) {
+                    x.Quantity = cartItem.Quantity;
+                    cartReportItems.Remove( cartItem );
+                }
+            });
+
+            return new ShoppingCartReportModel() { CartItems = cartReportItems, ListItems = listReportItems };
+        }
         
         public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{
