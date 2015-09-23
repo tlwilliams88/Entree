@@ -60,9 +60,10 @@
           selectedPage: { id: 'lists', name: "Lists" }
         };
 
+        $scope.defaultPageSize = 50;
         $scope.pageSizes = {
-          availableSizes: [50, 100, 250, 500, 1000],
-          selectedSize: 100
+          availableSizes: [25, 50, 100, 200],
+          selectedSize: $scope.defaultPageSize
         };
 
         
@@ -119,7 +120,7 @@
        $scope.restoreDefaults = function(){
          var pageSizeSettings = {key: 'pageLoadSize'};
           ApplicationSettingsService.resetApplicationSettings(pageSizeSettings).then(function(resp) { 
-            LocalStorage.setPageSize(25);
+            LocalStorage.setPageSize($scope.defaultPageSize);
             $scope.resetPage();
             var sortOrderSettings = {key: 'sortPreferences'};
             ApplicationSettingsService.resetApplicationSettings(sortOrderSettings).then(function(resp) {
