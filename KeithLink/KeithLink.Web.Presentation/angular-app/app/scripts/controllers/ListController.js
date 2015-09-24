@@ -201,7 +201,8 @@ angular.module('bekApp')
       }
      
       LocalStorage.setLastList(lastlist);
-      if(list.listid !== $scope.selectedList.listid){
+      if(list.listid !== $scope.selectedList.listid && $scope.unsavedChangesConfirmation()){
+        $scope.listForm.$setPristine();
         blockUI.start("Loading List...").then(function(){
           return $state.go('menu.lists.items', {listId: list.listid, renameList: false});      
         });
