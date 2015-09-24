@@ -59,6 +59,8 @@ angular.module('bekApp')
     }).finally(function() {
       $scope.loadingAccountBalance = false;
     });
+
+    $scope.hidePayNowButton = ($scope.selectedUserContext.customer.termcode === '50' || $scope.selectedUserContext.customer.termcode === '51');
  
     $scope.showPromoItemContent = function(promoItem) {
       var modalInstance = $modal.open({

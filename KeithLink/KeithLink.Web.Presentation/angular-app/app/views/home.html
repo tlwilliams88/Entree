@@ -13,7 +13,7 @@
     <div class="col-md-4 col-md-push-8">
       <!-- Account Summary -->
       <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" ng-if="canPayInvoices">
-        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
+        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser || hidePayNowButton" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         <h4><strong>Account Balance</strong></h4>
         <div loading-spinner="loadingAccountBalance"></div>
         <div ng-show="!loadingAccountBalance">
