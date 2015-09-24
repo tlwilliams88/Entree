@@ -341,18 +341,22 @@ angular.module('bekApp')
         clearItemWatches(watches);       
       }
       else{      
-          $scope.validateAndSave().then(function(resp){           
-           var continueSearch = resp;       
-          console.log('filterItems: continueSearch.id '+ continueSearch.id)
-        if(continueSearch){           
-          $scope.visitedPages = [];
-          $scope.addToOrderForm.$setPristine();
-          console.log('filterItems: listPagingModel.filterListItems(searchTerm) '+ searchTerm)    
-          listPagingModel.filterListItems(searchTerm);
-          clearItemWatches(watches);         
-        }
-        return resp;  
-        })      
+          $scope.validateAndSave().then(function(resp){
+            if(resp.message && resp.message === "Creating cart..."){
+              $scope.redirect($scope.selectedList.listid, resp);
+            }
+            else{
+              var continueSearch = resp;       
+              console.log('filterItems: continueSearch.id '+ continueSearch.id)
+              if(continueSearch){           
+                $scope.visitedPages = [];
+                $scope.addToOrderForm.$setPristine();
+                console.log('filterItems: listPagingModel.filterListItems(searchTerm) '+ searchTerm)    
+                listPagingModel.filterListItems(searchTerm);
+                clearItemWatches(watches);         
+              }
+            }        
+          })      
       }   
     };
 
@@ -440,20 +444,22 @@ angular.module('bekApp')
     };
 
     $scope.sortList = function(sortBy, sortOrder) {
-      
+      var r = ($scope.addToOrderForm.$pristine) ? true : confirm('Unsaved data will be lost. Do you wish to continue?');
+      if(r){
         $scope.visitedPages = [];
         $scope.currentPage = 1;
-      if (sortBy === $scope.sort[0].field) {
-       sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
-      } else {
-        sortOrder = 'asc';
+        if (sortBy === $scope.sort[0].field) {
+          sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
+        } else {
+          sortOrder = 'asc';
+        }
+        $scope.sort = [{
+          field: sortBy,
+          order: sortOrder
+        }];
+        clearItemWatches(watches);
+        listPagingModel.sortListItems($scope.sort);
       }
-      $scope.sort = [{
-        field: sortBy,
-        order: sortOrder
-      }];
-      clearItemWatches(watches);
-      listPagingModel.sortListItems($scope.sort);
     };
 
     $scope.redirect = function(listId, cart) {
@@ -611,15 +617,13 @@ angular.module('bekApp')
           console.log('createNewCart: cart.id '+ cart.id+' cart.name '+cart.name+' cart.')
           $scope.addToOrderForm.$setPristine();
           $scope.retainedPage = $scope.currentPage;
-          $scope.redirect($scope.selectedList.listid, cart);
           $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
           console.log('createNewCart: return cart')          
           return cart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function(){
-          processingSaveCart = false;
-          $scope.createFromSearch = false;         
+          processingSaveCart = false;          
         });
       }
     }
@@ -678,7 +682,7 @@ angular.module('bekApp')
     }
 
     $scope.updateOrderClick = function(list, cart) {
-      console.log('updateOrderClick: list.items[0].quantity: '+list.items[0].quantity+' cart.id: '+ cart.id)
+      console.log('updateOrderClick: cart.id: '+ cart.id)
       clearItemWatches(cartWatches);
       var cartItems = getCombinedCartAndListItems(cart.items, list.items);
       UtilityService.deleteFieldFromObjects(cartItems, ['listitemid']);
