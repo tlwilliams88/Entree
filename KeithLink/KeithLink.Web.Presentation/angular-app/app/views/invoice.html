@@ -75,51 +75,51 @@
               </th>
               <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customername', !sort.sortDescending)">
                 Customer 
-                <span>Name <span style="display:none" sort-icons field="'customername'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span>Name <span sort-icons field="'customername'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customernumber', !sort.sortDescending)">
                 Customer
-                <span># <span style="display:none" sort-icons field="'customernumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span># <span sort-icons field="'customernumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="sort-col-header" ng-click="sortInvoices('invoicenumber', !sort.sortDescending)">
                 Reference
-                <span># <span style="display:none" sort-icons field="'invoicenumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span># <span sort-icons field="'invoicenumber'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('type', !sort.sortDescending)">
-                <span>Type <span style="display:none" sort-icons field="'type'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span>Type <span sort-icons field="'type'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortInvoices('status', !sort.sortDescending)">
-                <span>Status <span style="display:none" sort-icons field="'status'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span>Status <span sort-icons field="'status'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortInvoices('ponumber', !sort.sortDescending)">
                 <span>PO Number</span>
               </th>
               <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('duedate', !sort.sortDescending)">
                 Due
-                <span>Date<span style="display:none" sort-icons field="'duedate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span>Date<span sort-icons field="'duedate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="sort-col-header" ng-click="sortInvoices('amount', !sort.sortDescending)">
                 Amount
-                <span>Due<span style="display:none" sort-icons field="'amount'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span>Due<span sort-icons field="'amount'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
               </th>
               <th class="text-center hidden-mobile-visible-print">Invoice Image</th>
               <th ng-show="!viewingAllCustomers"  class="sort-col-header hidden-mobile-visible-print" ng-click="sortByScheduleDate(ascendingDate)">
                 Schedule 
-                <span>Date<span style="display:none" sort-icons field="'scheduledate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+                <span>Date<span sort-icons field="'scheduledate'" sortorder="ascendingDate" sortby="sort.field"></span></span>
               </th>
               <th ng-show="!viewingAllCustomers">Payment Amt</th>
               <th ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print">Bank Account</th>
               <th class="large-icon icon-col">
-                <a style="display:none" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+                <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
               </th>
             </tr>
           </thead>
           <tbody>
 
-          <!-- Filter Row 
+          <!-- Filter Row -->
           <tr class="filter-row" ng-show="showFilter">
             <td ng-if="!viewingAllCustomers" class="input-col">
-              <!-- <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterRowFields.isSelected)"/>
+              <!-- <input type="checkbox" ng-model="tempSelected" ng-change="setSelectedFilter(filterRowFields.isSelected)"/> -->
             </td>
             <td ng-show="viewingAllCustomers" class="input-col">
               <input type="text" placeholder="Filter..." ng-model="filterRowFields.customername" no-dirty-check>

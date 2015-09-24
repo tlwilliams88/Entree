@@ -16,7 +16,7 @@ angular.module('bekApp')
   }];
   $scope.selectedInvoiceContext = $scope.invoiceCustomerContexts[1];
   $scope.accounts = accounts;
-  $scope.ascendingDate = true;
+ 
   $scope.currDate = new Date();  
   $scope.currDate = moment($scope.currDate).format('YYYY-MM-DD');
   $scope.mindate = moment($scope.currDate).add(1,'d');
@@ -174,9 +174,9 @@ angular.module('bekApp')
     };
 
   $scope.filterInvoices = function(filterFields) {
-    // InvoiceService.setFilters($scope.selectedFilterView , filterFields);
-    // getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
-    // invoicePagingModel.loadData();
+    InvoiceService.setFilters($scope.selectedFilterView , filterFields);
+    getInvoicesFilterObject(filterFields, $scope.selectedFilterView);
+    invoicePagingModel.loadData();
   };
   $scope.clearFilters = function() {
     $scope.filterRowFields = InvoiceService.filterRowFields = {};
@@ -197,31 +197,51 @@ angular.module('bekApp')
   };
 
   $scope.sortInvoices = function(field, sortDescending) {
-    // $scope.sort = {
-    //   field: field,
-    //   sortDescending: sortDescending
-    // };
-    // invoicePagingModel.sortData($scope.sort);
+    $scope.sort = {
+      field: field,
+      sortDescending: sortDescending
+    };
+    invoicePagingModel.sortData($scope.sort);
+  };
+
+  $scope.setDateSortValues = function(invoice){
+    if(invoice.userCanPayInvoice && invoice.statusdescription !== 'Past Due' && invoice.statusdescription !== 'Payment Pending' && invoice.date){
+      return invoice.date;
+    }
+    if(invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due' && !invoice.selectedDate){
+      return $scope.tomorrow;
+    }
+    if(invoice.statusdescription === 'Payment Pending' && !invoice.selectedDate){
+      return invoice.date  || invoice.pendingtransaction.date;
+    }  
+    if((invoice.statusdescription === 'Payment Pending' || invoice.statusdescription === 'Past Due') && invoice.selectedDate){
+      return invoice.selectedDate;
+    }
   };
 
   $scope.sortByScheduleDate = function(ascendingDate) {
-   // $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
-   //      var sorterval1 = (obj1.statusdescription !== 'Past Due') ? obj1.date : $scope.tomorrow;
-   //      var sorterval2 = (obj2.statusdescription !== 'Past Due') ? obj2.date : $scope.tomorrow;
-   //      $scope.ascendingDate = !ascendingDate;    
-   //      if(!sorterval1){
-   //        sorterval1 = 0
-   //      }
-   //      if(!sorterval2){
-   //        sorterval2 = 0;
-   //      }
-   //      if(ascendingDate){      
-   //        return sorterval1 - sorterval2;
-   //      }
-   //      else{
-   //        return sorterval2 - sorterval1;
-   //      }   
-   // });
+        $scope.sort = {
+      field: 'scheduledate'
+    };
+
+   $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
+        var sorterval1 = moment($scope.setDateSortValues(obj1));
+        var sorterval2 = moment($scope.setDateSortValues(obj2));
+
+        $scope.ascendingDate = !ascendingDate;    
+        if(!sorterval1){
+          sorterval1 = 0
+        }
+        if(!sorterval2){
+          sorterval2 = 0;
+        }
+        if(ascendingDate){      
+          return sorterval1 - sorterval2;
+        }
+        else{
+          return sorterval2 - sorterval1;
+        }   
+   });
   };
 
 
