@@ -305,21 +305,26 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             var confId = _invoiceRepo.GetNextConfirmationId();
 
             foreach (var payment in payments) {
+                var testInvoice = _invoiceRepo.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
+                if (testInvoice == null) {
+                    throw new ApplicationException("Could find invoice for selected customer");
+                }
+
                 if (!payment.PaymentDate.HasValue) { payment.PaymentDate = DateTime.Now; }
                 payment.ConfirmationId = (int)confId;
 
                 _invoiceRepo.PayInvoice(new Core.Models.OnlinePayments.Payment.EF.PaymentTransaction() {
                     AccountNumber = payment.AccountNumber,
-					Division = DivisionHelper.GetDivisionFromBranchId(userContext.BranchId),
+					Division = DivisionHelper.GetDivisionFromBranchId(payment.BranchId),
                     ConfirmationId = payment.ConfirmationId,
-                    CustomerNumber = userContext.CustomerId,
+                    CustomerNumber = payment.CustomerNumber,
                     InvoiceNumber = payment.InvoiceNumber,
                     PaymentAmount = payment.PaymentAmount,
                     PaymentDate = payment.PaymentDate.Value,
                     UserName = emailAddress
                 });
 
-				_invoiceRepo.MarkInvoiceAsPaid(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, payment.InvoiceNumber);
+				_invoiceRepo.MarkInvoiceAsPaid(DivisionHelper.GetDivisionFromBranchId(payment.BranchId), payment.CustomerNumber, payment.InvoiceNumber);
 
                 _kpaylog.Write(emailAddress, string.Format("Invoice paid({0} - {1} - {2})", payment.InvoiceNumber, payment.PaymentDate.Value, payment.PaymentAmount));
             }

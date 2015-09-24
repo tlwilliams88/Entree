@@ -146,9 +146,18 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("invoice/payment")]
 		public OperationReturnModel<bool> Payment(List<PaymentTransactionModel> payments)
 		{
-			_repo.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser.EmailAddress, payments);
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
-			return new OperationReturnModel<bool>() { SuccessResponse = true };
+            try {
+			    _repo.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser.EmailAddress, payments);
+
+                retVal.SuccessResponse = true;
+            } catch (Exception ex) {
+                retVal.SuccessResponse = false;
+                retVal.ErrorMessage = ex.Message;
+            }
+
+            return retVal;
 		}
 
         /// <summary>
