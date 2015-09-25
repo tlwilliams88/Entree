@@ -1,5 +1,7 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
 
+using KeithLink.Svc.Core.Helpers;
+
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Reports;
@@ -126,6 +128,13 @@ namespace KeithLink.Svc.Core.Extensions {
                 item.Each = i.Each;
                 item.CasePrice = i.CasePrice;
                 item.PackagePrice = i.PackagePrice;
+
+                int pack = 0;
+                int.TryParse(i.Pack, out pack);
+
+                item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
+                                                       (i.Each ?? false), i.CatchWeight, i.AverageWeight,
+                                                       pack).ToString("f2");
 
                 items.Add( item );
             }

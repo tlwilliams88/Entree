@@ -116,16 +116,42 @@ namespace KeithLink.Svc.Impl.Logic
 			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
 		}
 
-		public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
-		{
-			//var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
-			
-			//MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
-			//cart.Active = true;
-			//basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
-		}
+        public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items) {
+            //Create a shoppingcart model and pass to the existing createcart method
+            var shoppingCart = new ShoppingCart();
+            shoppingCart.Items = new List<ShoppingCartItem>();
+            shoppingCart.BranchId = catalogInfo.BranchId;
+            shoppingCart.Name = string.Format("Quick Add - {0} - {1} {2}", catalogInfo.CustomerId, DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
 
-		
+            var itemErrorMessage = new StringBuilder();
+
+            foreach (var item in items) {
+                if (item == null || string.IsNullOrEmpty(item.ItemNumber))
+                    continue;
+
+                //Verify they have access to item, if the item is invalid, log then return error
+                var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
+
+                if (prod == null)
+                    itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);
+                else {
+                    shoppingCart.Items.Add(new ShoppingCartItem() {
+                        ItemNumber = item.ItemNumber,
+                        Each = item.Each,
+                        Quantity = item.Quantity
+                    }
+                    );
+                }
+
+            }
+
+            if (itemErrorMessage.Length > 0)
+                return new QuickAddReturnModel() { Success = false, ErrorMessage = itemErrorMessage.ToString() };
+
+            return new QuickAddReturnModel() { Success = true, CartId = CreateCart(user, catalogInfo, shoppingCart) };
+
+        }
+
         public void DeleteCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
@@ -156,7 +182,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(basket.UserId.ToGuid(), cartId, itemId);
 		}
         
-		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes)
+		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null)
 		{
 			if (cart.Items == null)
 				return;
@@ -182,6 +208,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
+                    item.CategoryId = prod.CategoryId;
+                    item.CategoryName = prod.CategoryName;
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
@@ -197,7 +225,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.CasePrice = price.CasePrice.ToString();
 
 				}
-
+                
 				item.Notes = notesHash.ContainsKey(item.ItemNumber) ? notesHash[item.ItemNumber].Notes : null;
 			});			
 			
@@ -275,27 +303,25 @@ namespace KeithLink.Svc.Impl.Logic
         /// <param name="paging"></param>
         /// <returns></returns>
         public ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, long listId, PagingModel paging ) {
-            CS.Basket csBasket = basketLogic.RetrieveSharedCustomerBasket( user, context, cartId );
-            var list = listServiceRepository.ReadList( user, context, listId, true );
+            ShoppingCart cart = ReadCart(user, context, cartId);
+            ListModel list = listServiceRepository.ReadList( user, context, listId, true );
 
-            if (csBasket == null || list == null)
+            if (cart == null || list == null)
                 return null;
-
-            UserActiveCartModel userActiveCart = orderServiceRepository.GetUserActiveCart( context, user.UserId );
-
-            ShoppingCart cart = ToShoppingCart( csBasket, userActiveCart );
-            List<Core.Models.Lists.ListItemModel> notes = listServiceRepository.ReadNotes( user, context );
-
-            LookupProductDetails( user, context, cart, notes );
-
+            
             List<ShoppingCartItemReportModel> cartReportItems = cart.Items.ToReportModel();
+            List<ShoppingCartItemReportModel> clonedCartReportItems = cartReportItems.ConvertAll(i => i);
             List<ShoppingCartItemReportModel> listReportItems = list.ToShoppingCartItemReportList();
              
-            listReportItems.ForEach(x => {
-                ShoppingCartItemReportModel cartItem = cartReportItems.Where( i => i.ItemNumber.Equals( x.ItemNumber ) ).FirstOrDefault();
-                if (cartItem != null) {
-                    x.Quantity = cartItem.Quantity;
-                    cartReportItems.Remove( cartItem );
+            clonedCartReportItems.ForEach(x => {
+                ShoppingCartItemReportModel item = listReportItems.Where( i => i.ItemNumber.Equals( x.ItemNumber ) ).FirstOrDefault();
+                if (item != null) {
+                    item.Category = x.Category;
+                    item.Label = x.Label;
+                    item.Quantity = x.Quantity;
+                    item.ExtPrice = x.ExtPrice;
+
+                    cartReportItems.Remove( cartReportItems.Where(p => p.ItemNumber.Equals(x.ItemNumber)).First() );
                 }
             });
 
@@ -325,6 +351,14 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
 		}
+
+        public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId) {
+            //var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
+
+            //MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
+            //cart.Active = true;
+            //basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
+        }
         
 		private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
 		{
@@ -469,44 +503,5 @@ namespace KeithLink.Svc.Impl.Logic
         #endregion
 
 
-		public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
-		{
-			//Create a shoppingcart model and pass to the existing createcart method
-			var shoppingCart = new ShoppingCart();
-			shoppingCart.Items = new List<ShoppingCartItem>();
-			shoppingCart.BranchId = catalogInfo.BranchId;
-			shoppingCart.Name = string.Format("Quick Add - {0} - {1} {2}", catalogInfo.CustomerId, DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
-
-			var itemErrorMessage = new StringBuilder();
-
-			foreach (var item in items)
-			{
-				if (item == null || string.IsNullOrEmpty(item.ItemNumber))
-					continue;
-
-				//Verify they have access to item, if the item is invalid, log then return error
-				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
-
-				if (prod == null)
-					itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);
-				else
-				{
-					shoppingCart.Items.Add(new ShoppingCartItem()
-					{
-						ItemNumber = item.ItemNumber,
-						Each = item.Each,
-						Quantity = item.Quantity
-					}
-					);
-				}
-
-			}
-						
-			if (itemErrorMessage.Length > 0)
-				return new QuickAddReturnModel() { Success = false, ErrorMessage = itemErrorMessage.ToString() };
-
-			return new QuickAddReturnModel() { Success = true, CartId = CreateCart(user, catalogInfo, shoppingCart) };
-
-		}
 	}
 }

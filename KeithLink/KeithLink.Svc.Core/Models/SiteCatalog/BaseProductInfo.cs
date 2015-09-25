@@ -25,7 +25,17 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
 		[DataMember(Name = "caseprice", EmitDefaultValue = false)]
 		[Description("Price")]
-		public string CasePrice { get; set; }
+		public string CasePrice {
+            get {
+                return CasePriceNumeric.ToString("f2");
+            }
+            set {
+                CasePriceNumeric = double.Parse(value);
+            }
+        }
+
+        [IgnoreDataMember]
+        public double CasePriceNumeric { get; set; }
 
 		[DataMember(Name = "caseonly")]
 		public bool CaseOnly { get; set; }
@@ -56,11 +66,15 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 			}
 		}
 
-        [IgnoreDataMember]
-        public double CasePriceNumeric { get; set; }
-
 		[DataMember(Name = "packageprice", EmitDefaultValue = false)]
-		public string PackagePrice { get; set; }
+		public string PackagePrice {
+            get { 
+                return PackagePriceNumeric.ToString("f2"); 
+            }
+            set { 
+                PackagePriceNumeric = double.Parse(value); 
+            }
+        }
 
         [IgnoreDataMember]
         public double PackagePriceNumeric { get; set; }

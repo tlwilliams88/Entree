@@ -73,8 +73,6 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute( "cart/print/{cartId}/{listId}" )]
         public HttpResponseMessage PrintCartWithList( Guid cartId, long listId, PrintListModel options ) {
-            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options.Paging );
-
             ReportViewer rv = new ReportViewer();
 
             Assembly assembly = Assembly.Load( "KeithLink.Svc.Impl" );
@@ -90,6 +88,8 @@ namespace KeithLink.Svc.WebApi.Controllers
             parameters[1] = new ReportParameter( "ShowParValues", options.ShowParValues ? "true" : "false" );
 
             rv.LocalReport.SetParameters( parameters );
+
+            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options.Paging );
             rv.LocalReport.DataSources.Add( new ReportDataSource( "CartItems", reportModel.CartItems ) );
             rv.LocalReport.DataSources.Add( new ReportDataSource( "ListItems", reportModel.ListItems ) );
 
