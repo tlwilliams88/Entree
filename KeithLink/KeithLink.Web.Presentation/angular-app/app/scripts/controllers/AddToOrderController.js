@@ -81,6 +81,9 @@ angular.module('bekApp')
         if (duplicateItem) {
           if(item.quantity){
             duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
+            if(item.quantity > 0){
+              duplicateItem.iscombinedquantity = true;
+            }
           }
         } else {
           // do not double-count items in both the list and cart 
@@ -140,7 +143,7 @@ angular.module('bekApp')
             if(!$stateParams.listItems){
               $scope.selectedList.items.forEach(function(listItem, index){
               if(listItem.itemnumber === lastDupeInDisplayedList.itemnumber && listItem.listitemid !== lastDupeInDisplayedList.listitemid){
-                $scope.selectedList.items[index].quantity = '';
+                $scope.selectedList.items[index].quantity = 0;
               }
                 if(listItem.listitemid === lastDupeInDisplayedList.listitemid){
                   $scope.selectedList.items[index].quantity = cartItem.quantity;

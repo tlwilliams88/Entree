@@ -469,7 +469,7 @@
         <th></th>
       </tr>
     </thead>
-    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)">
+    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items |  orderBy:'createddate':false)">
       <tr        
         ng-class="{ odd : $odd, even: $even }">
 
@@ -478,7 +478,7 @@
           <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
         </td>
         <td>{{item.name}}</td>
-        <td class="hidden-mobile-visible-print">{{item.brand}}</td>
+        <td class="hidden-mobile-visible-print">{{item.iscombinedquantity}}</td>
         <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
         <td class="hidden-mobile-visible-print">
           {{::item.notes}}
