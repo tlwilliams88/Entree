@@ -325,7 +325,7 @@ namespace KeithLink.Svc.Impl.Logic
                 }
             });
 
-            return new ShoppingCartReportModel() { CartItems = cartReportItems, ListItems = listReportItems };
+            return new ShoppingCartReportModel() { CartName = cart.Name, ListName = list.Name, CartItems = cartReportItems, ListItems = listReportItems };
         }
         
         public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)

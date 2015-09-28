@@ -10,6 +10,12 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart {
     public class ShoppingCartReportModel {
 
         [DataMember]
+        public string CartName { get; set; }
+
+        [DataMember]
+        public string ListName { get; set; }
+
+        [DataMember]
         public List<ShoppingCartItemReportModel> CartItems { get; set; }
 
         [DataMember]

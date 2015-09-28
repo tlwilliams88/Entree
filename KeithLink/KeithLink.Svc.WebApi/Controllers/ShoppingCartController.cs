@@ -79,17 +79,24 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             Stream rdlcStream = null;
             var deviceInfo = string.Empty;
-            deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
-            rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
+            if (options.Landscape) {
+                deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
+                rdlcStream = assembly.GetManifestResourceStream( "KeithLink.Svc.Impl.Reports.CartReport_Landscape.rdlc" );
+            } else {
+                deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
+                rdlcStream = assembly.GetManifestResourceStream( "KeithLink.Svc.Impl.Reports.CartReport.rdlc" );
+            }
+
+            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options.Paging );
 
             rv.LocalReport.LoadReportDefinition( rdlcStream );
-            ReportParameter[] parameters = new ReportParameter[2];
-            parameters[0] = new ReportParameter( "ListName", "Yay" );
-            parameters[1] = new ReportParameter( "ShowParValues", options.ShowParValues ? "true" : "false" );
+            ReportParameter[] parameters = new ReportParameter[3];
+            parameters[0] = new ReportParameter( "ListName", reportModel.ListName );
+            parameters[1] = new ReportParameter( "CartName", reportModel.CartName );
+            parameters[2] = new ReportParameter( "ShowParValues", options.ShowParValues ? "true" : "false" );
 
             rv.LocalReport.SetParameters( parameters );
 
-            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options.Paging );
             rv.LocalReport.DataSources.Add( new ReportDataSource( "CartItems", reportModel.CartItems ) );
             rv.LocalReport.DataSources.Add( new ReportDataSource( "ListItems", reportModel.ListItems ) );
 
