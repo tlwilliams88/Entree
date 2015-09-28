@@ -50,18 +50,18 @@
         <div ng-show="hasPayableInvoices && selectedFilterView.name !== 'Invoices Pending Payment'" class="total-line"> Total: <span  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
         <div class="pull-left update-btn" ng-if="hasPayableInvoices && selectedFilterView.name === 'Invoices Pending Payment'" class="total-line"> <br><button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Update Payment(s)</button></div>
        </div>
+    <span ng-if="hasPayableInvoices && !viewingAllCustomers" style="padding-top:100px; display:block;"><br></span>
 
     </div>
     <div class="row page-content" style="margin-top:5px;">  
       <div colspan="12" style="margin-top:16px;">
         <div class="col-md-12" ng-if="viewingAllCustomers">
           <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
-        </div> 
-        <a style="margin-left:15px;" ui-sref="menu.transaction">View Pending Transactions for All Customers</a>      
-        <p class="text-red" ng-if="errorMessage.length">{{errorMessage}}</p>
-        <span class="text-right pull-right" style="padding-right:15px;">
-          Showing {{invoices.length}} of {{totalInvoices}} Invoices
-        </span>
+        </div>
+       
+        <a style="margin-left:15px;" ui-sref="menu.transaction">View Pending Transactions for All Customers</a><br>               
+        <span class="text-red" style="padding-left:15px;" ng-if="errorMessage.length">{{errorMessage}}</span>      
+        <span class="text-right pull-right" style="padding-right:15px;">Showing {{invoices.length}} of {{totalInvoices}} Invoices</span>
       </div>
 
       <div class="padding-top-xs padding-top-sm">
@@ -152,7 +152,7 @@
 
           <tr ng-repeat-start="invoice in invoices" ng-class="{ odd : $odd, even: $even, 'item-selected': (invoice.isSelected && !errorMessage.length), 'invalid-item': invoice.failedBatchValidation, 'invoice__late':  invoice.status === 2}">
             <td ng-if="!viewingAllCustomers">
-              <input no-dirty-check ng-if="invoice.userCanPayInvoice" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
+              <input no-dirty-check ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser" type="checkbox" ng-model="invoice.isSelected" ng-change="selectInvoice(invoice, invoice.isSelected)">
             </td>
             <td ng-show="viewingAllCustomers">
               {{::invoice.customername}}

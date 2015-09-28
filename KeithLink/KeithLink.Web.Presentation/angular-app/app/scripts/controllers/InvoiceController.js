@@ -499,33 +499,39 @@ angular.module('bekApp')
         var payments = $scope.invoices;
       }
       else{
-         var payments = $scope.getSelectedInvoices();
-       }     
+        var payments = $scope.getSelectedInvoices();
+      }     
       payments = $scope.defaultDates(payments);
       if(payments.length){
-      InvoiceService.checkTotals(payments).then(function(resp) {
-
-           payments.forEach(function(payment){
-             if((payment.statusdescription === 'Past Due' || payment.statusdescription === 'Payment Pending') && payment.date){            
-                payment.selectedDate = payment.date
-               delete payment.date       
-             }
-           });
-
-        if(resp.successResponse.isvalid){
-          $scope.errorMessage = '';
-          $scope.invoices.forEach(function(invoice){
-            invoice.failedBatchValidation = false;
+        InvoiceService.checkTotals(payments).then(function(resp) {
+          payments.forEach(function(payment){
+            if((payment.statusdescription === 'Past Due' || payment.statusdescription === 'Payment Pending') && payment.date){            
+              payment.selectedDate = payment.date
+              delete payment.date       
+            }
           });
-        }
-        else{  
-          $scope.displayValidationError(resp);
-        }        
-     });
+
+          if(resp.successResponse.isvalid){
+            $scope.clearValidationErrors();
+          }
+          else{  
+            $scope.displayValidationError(resp);
+          }        
+        });
+      }
+      else{
+        $scope.clearValidationErrors();
+      }
+      $scope.validating = false;
     }
-    $scope.validating = false;
-   }
   };
+
+  $scope.clearValidationErrors = function(){
+    $scope.errorMessage = '';
+    $scope.invoices.forEach(function(invoice){
+      invoice.failedBatchValidation = false;
+    });
+  }
   
   $scope.displayValidationError = function(resp){
     $scope.errorMessage = resp.errorMessage || "There was an issue processing your payment. Please contact your DSR or Ben E. Keith representative.";
