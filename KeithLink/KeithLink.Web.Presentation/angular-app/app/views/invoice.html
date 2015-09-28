@@ -186,7 +186,7 @@
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
             <a 
               ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"               
-              ng-if="invoice.userCanPayInvoice && !invoice.showDatePicker"
+              ng-if="invoice.userCanPayInvoice && !invoice.showDatePicker && !isInternalAccountAdminUser"
               ng-mouseenter="invoice.showDatePicker=true"
               class="icon-calendar text-right">
             </a>
@@ -194,7 +194,7 @@
                 id="datePickerWithOptions"
                 ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"
                 ng-click="openDatepicker = true"
-                ng-if="invoice.userCanPayInvoice && invoice.showDatePicker"
+                ng-if="invoice.userCanPayInvoice && invoice.showDatePicker && !isInternalAccountAdminUser"
                 class="icon-calendar text-right"                
                 datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                 ng-model="invoice.date"
@@ -215,6 +215,7 @@
               <div style="width:75px; padding-right:6px; padding-top:8px;" class = "text-right" ng-if="invoice.pendingtransaction && !invoice.pendingtransaction.editable">{{invoice.pendingtransaction.amount}}</div>
               <input
                 remove-positive-numbers
+                ng-disabled="isInternalAccountAdminUser"
                 name="paymentAmount"
                 id="paymentAmount"
                 status = '{{invoice.statusdescription}}'
@@ -238,7 +239,7 @@
             </td>
             <td ng-if="!viewingAllCustomers" class="input-col hidden-mobile-visible-print" >
               <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="accounts.length >= 1 && invoice.statusdescription !== 'Paid'">
-               <button ng-init="defaultAccount(invoice);" type="button" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1">
+               <button ng-init="defaultAccount(invoice);" type="button" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1 || isInternalAccountAdminUser">
                   <div class = "account-info">                  
                     {{invoice.account}}
                   </div>
@@ -310,7 +311,7 @@
                   <a
                     ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due') || viewingAllCustomers)}"
                     ng-click="openDatepicker = true"              
-                    ng-if="invoice.userCanPayInvoice"                   
+                    ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser"                   
                     class="icon-calendar text-right"                
                     datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                     ng-model="invoice.date"
@@ -333,7 +334,7 @@
                   </td>            
                   <td>
                     <div class="btn-group accounts-btn" dropdown is-open="status.isopen" ng-if="accounts.length >= 1 && invoice.statusdescription !== 'Paid'">
-                      <button type="button" ng-init="defaultAccount(invoice);" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1">
+                      <button type="button" ng-init="defaultAccount(invoice);" class="btn btn-default dropdown-toggle" ng-disabled="accounts.length <= 1 || isInternalAccountAdminUser">
                         <div class = "account-info">                  
                           {{invoice.account}}
                         </div>
