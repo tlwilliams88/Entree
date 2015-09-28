@@ -379,6 +379,7 @@ namespace KeithLink.Svc.Impl.Logic
 					Notes = l.Notes,
 					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
 					Each = l.Each.HasValue ? l.Each.Value : false,
+                    Label = l.Label,
 					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
 				}).ToList()
 			};
@@ -408,7 +409,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
 
-                    // Commenting on this mystery, I believe it is for quick add items.
+                    // Commenting on this mystery, I believe it is for quick add items
 					if (existingItem.Any() && item.CartItemId == Guid.Empty)
 					{
 						existingItem.First().Quantity += item.Quantity;
