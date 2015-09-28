@@ -317,8 +317,9 @@ namespace KeithLink.Svc.Impl.Logic
                 ShoppingCartItemReportModel item = listReportItems.Where( i => i.ItemNumber.Equals( x.ItemNumber ) ).FirstOrDefault();
                 if (item != null) {
                     item.Category = x.Category;
-                    item.Label = x.Label;
+                    //item.Label = x.Label;
                     item.Quantity = x.Quantity;
+                    item.Each = x.Each;
                     item.ExtPrice = x.ExtPrice;
 
                     cartReportItems.Remove( cartReportItems.Where(p => p.ItemNumber.Equals(x.ItemNumber)).First() );
@@ -406,6 +407,8 @@ namespace KeithLink.Svc.Impl.Logic
 				foreach (var item in cart.Items)
 				{
 					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
+
+                    // Commenting on this mystery, I believe it is for quick add items.
 					if (existingItem.Any() && item.CartItemId == Guid.Empty)
 					{
 						existingItem.First().Quantity += item.Quantity;
