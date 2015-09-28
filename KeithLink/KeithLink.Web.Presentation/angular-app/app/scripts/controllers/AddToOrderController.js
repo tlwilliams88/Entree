@@ -653,12 +653,16 @@ angular.module('bekApp')
     }
 
     $scope.saveAndRetainQuantity = function(){
-      $stateParams.listItems = $scope.selectedList.items;
-      if($scope.selectedCart.id === 'New'){
-           $scope.createFromSearch = true;
-        }
-       $scope.updateOrderClick($scope.selectedList, $scope.selectedCart)
-          $scope.addToOrderForm.$setPristine();
+    $stateParams.listItems = $scope.selectedList.items;
+    if($scope.selectedCart.id === 'New'){
+      $scope.createFromSearch = true;
+    }
+    $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+      if(resp.message && resp.message === "Creating cart..."){
+        $scope.redirect($scope.selectedList.listid, resp);
+      }
+    })
+    $scope.addToOrderForm.$setPristine();
     }
 
     $scope.updateOrderClick = function(list, cart) {
