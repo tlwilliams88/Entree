@@ -99,7 +99,7 @@ angular.module('bekApp')
 
      function flagDuplicateCartItems(cartItems, listItems) {
       angular.forEach(cartItems, function(cartItem) {
-        var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
+        var existingItem = UtilityService.findObjectByField(listItems.slice($scope.startingPoint, $scope.endPoint), 'itemnumber', cartItem.itemnumber);
         if (existingItem) {
           cartItem.isHidden = true;
           // flag cart items that are in the list multiple times
