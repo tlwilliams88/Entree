@@ -33,13 +33,16 @@
         unsaved-warning-form 
         class="style-validation-errors" 
         novalidate>
-    <div  class = "billing" ng-if="!viewingAllCustomers &&  (!isInternalAccountAdminUser || isDemo)">
+    
+    <div class="row page-content" style="margin-top:5px;">
+      <div  class = "billing" ng-if="!viewingAllCustomers &&  (!isInternalAccountAdminUser || isDemo)">
       <div class="info-box no-open-invoices" ng-if="!hasPayableInvoices && !loadingResults">
         <p>You have no payable invoices at this time.</p>
         <p>Contact your DSR to pay invoices online.</p>
       </div>
+      <div style=" width:100%; display:inline-block;">
       <div class="info-box pull-left billing-info" ng-if="hasPayableInvoices">
-        <div  class = "bill-box" style="padding-right:15px;">
+        <div  class = "bill-box" >
           <b class = "bill-title">Billing Information:</b>
           <address class="text-light">
             {{selectedUserContext.customer.customerName}}<br>
@@ -47,26 +50,54 @@
             {{selectedUserContext.customer.address.city}}, {{selectedUserContext.customer.address.regioncode}} {{selectedUserContext.customer.address.postalcode}}<br>
           </address>
         </div>
-        <div ng-show="hasPayableInvoices && selectedFilterView.name !== 'Invoices Pending Payment'" class="total-line"> Total: <span  class="total-amt">{{totalPaymentAmount() | currency}}</span><br> <button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Pay Invoice(s)</button></div>
-        <div class="pull-left update-btn" ng-if="hasPayableInvoices && selectedFilterView.name === 'Invoices Pending Payment'" class="total-line"> <br><button type="button" ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" ng-click="payInvoices()" ng-if="hasPayableInvoices" class="btn btn-primary btn-lg pay-btn" analytics-on analytics-category="Invoices" analytics-event="Pay Invoices">Update Payment(s)</button></div>
+        <div 
+          ng-show="hasPayableInvoices && selectedFilterView.name !== 'Invoices Pending Payment'" 
+          class="total-line">Total: 
+          <span class="total-amt">{{totalPaymentAmount() | currency}}</span>
+          <br> 
+          <button 
+            type="button" 
+            ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" 
+            ng-click="payInvoices()" 
+            ng-if="hasPayableInvoices" 
+            class="btn btn-primary btn-lg pay-btn" 
+            analytics-on 
+            analytics-category="Invoices" 
+            analytics-event="Pay Invoices">Pay Invoice(s)
+          </button>
        </div>
-    <span ng-if="hasPayableInvoices && !viewingAllCustomers" style="padding-top:100px; display:block;"><br></span>
-
+        <div 
+          class="pull-left update-btn" 
+          ng-if="hasPayableInvoices && selectedFilterView.name === 'Invoices Pending Payment'" 
+          class="total-line"> 
+          <br>
+          <button 
+            type="button" 
+            ng-disabled="invoiceForm.$invalid || invoiceForm.$pristine || getSelectedInvoices() <= 0 || errorMessage.length" 
+            ng-click="payInvoices()" 
+            ng-if="hasPayableInvoices" 
+            class="btn btn-primary btn-lg pay-btn" 
+            style="margin-left:6px;"
+            analytics-on 
+            analytics-category="Invoices" 
+            analytics-event="Pay Invoices">Update Payment(s)
+          </button>
+        </div>
+       </div>
+     </div> 
     </div>
-    <div class="row page-content" style="margin-top:5px;">  
-      <div colspan="12" style="margin-top:16px;">
-        <div class="col-md-12" ng-if="viewingAllCustomers">
-          <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
-        </div>       
-        <a style="margin-left:15px;" ui-sref="menu.transaction">View Pending Transactions for All Customers</a><br>               
-        <span class="text-red" style="padding-left:15px;" ng-if="errorMessage.length">{{errorMessage}}</span>      
-        <span class="text-right pull-right" style="padding-right:15px;">Showing {{invoices.length}} of {{totalInvoices}} Invoices</span>
-        <span class="visible-lg visible-md"><br></span>
-      </div>
 
-      <div class="padding-top-xs padding-top-sm">
+       <div colspan="12" style="width:100%; display:inline-block;">
+          <div class="col-md-12" ng-if="viewingAllCustomers">
+            <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
+          </div>
+          <a style="float:left;" class="col-md-12 col-sm-12 col-lg-12 col-xs-12" ui-sref="menu.transaction">View Pending Transactions for All Customers</a>
+          <div class="text-red" style="float:left; margin-left:15px;">{{errorMessage}}</div>
+          <div class="text-right"  style=" float:right; margin-right:15px; ">Showing {{invoices.length}} of {{totalInvoices}} Invoices</div> 
+        </div>
+     
         <div class="table-invoices" style="padding-left:15px; padding-right:15px;">
-
+          
         <table class="table table-border table-striped-rows invoice-table" navigate-table="mobile" infinite-scroll="infiniteScrollLoadMore()">
           <thead>
             <tr fsm-sticky-header scroll-body="'.table-invoices'" scroll-stop="0" scroll-offset="74 + 64 + 17 + 30">
@@ -373,7 +404,7 @@
       </div>
 
       <div class="text-center" loading-spinner="loadingResults"></div>
-    </div>
+   
     <div class="clearfix"></div>
   </form>
 </div>
