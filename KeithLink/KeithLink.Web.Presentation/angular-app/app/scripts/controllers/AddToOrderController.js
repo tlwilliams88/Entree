@@ -398,7 +398,11 @@ angular.module('bekApp')
       });
 
       Mousetrap.bind(['alt+s'], function(e) {
-        $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+        $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+          if(resp.message && resp.message === "Creating cart..."){
+            $scope.redirect($scope.selectedList.listid, resp);
+          }
+        })
       });
 
       Mousetrap.bind(['alt+z'], function(e) {      
