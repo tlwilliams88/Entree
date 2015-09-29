@@ -9,6 +9,8 @@ using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
+using KeithLink.Svc.Core.Helpers;
+
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Lists;
@@ -275,6 +277,16 @@ namespace KeithLink.Svc.Impl.Logic
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
 					LookupProductDetails(user, catalogInfo, list, notes);
+
+                    list.ItemCount = list.Items.Count;
+
+                    foreach (var item in list.Items) {
+                        int qty = (int)item.Quantity;
+                        int pack = 1;
+                        int.TryParse(item.Pack, out pack);
+
+                        list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                    }
 				});
 				return returnCart;
 			}
