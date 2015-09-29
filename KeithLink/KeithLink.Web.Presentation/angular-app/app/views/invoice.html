@@ -54,13 +54,14 @@
 
     </div>
     <div class="row page-content" style="margin-top:5px;">  
-      <div colspan="12" style="margin-top:16px; display:block;">
+      <div colspan="12" style="margin-top:16px;">
         <div class="col-md-12" ng-if="viewingAllCustomers">
           <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
         </div>       
         <a style="margin-left:15px;" ui-sref="menu.transaction">View Pending Transactions for All Customers</a><br>               
         <span class="text-red" style="padding-left:15px;" ng-if="errorMessage.length">{{errorMessage}}</span>      
-        <span class="text-right pull-right" style="padding-right:15px;">Showing {{invoices.length}} of {{totalInvoices}} Invoices</span><span class="visible-lg visible-md"><br></span>
+        <span class="text-right pull-right" style="padding-right:15px;">Showing {{invoices.length}} of {{totalInvoices}} Invoices</span>
+        <span class="visible-lg visible-md"><br></span>
       </div>
 
       <div class="padding-top-xs padding-top-sm">
