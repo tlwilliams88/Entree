@@ -2495,7 +2495,8 @@ This file contains the Metadata Repository
               <PropertyMapping property="SubstitutedItemNumber" csProperty="SubstitudedItemNumber" />
               <PropertyMapping property="MainFrameStatus" csProperty="MainFrameStatus" />
               <PropertyMapping property="QuantityOrdered" csProperty="QuantityOrdered" />
-              <PropertyMapping property="QuantityShipped" csProperty="QuantityShipped" />              
+              <PropertyMapping property="QuantityShipped" csProperty="QuantityShipped" />
+              <PropertyMapping property="IsCombinedQuantity" csProperty="IsCombinedProperty" />
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
@@ -2572,6 +2573,9 @@ This file contains the Metadata Repository
           </Property>
           <Property name="QuantityShipped" dataType="String">
             <DisplayName value="QuantityShipped"/>
+          </Property>
+          <Property name="IsCombinedQuantity" dataType="Boolean">
+            <DisplayName value="IsCombinedQuantity" />
           </Property>
 				</Properties>
 

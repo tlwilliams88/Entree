@@ -765,6 +765,8 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.InventoryValuationModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.ShoppingCart.ShoppingCartItemReportModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.ShoppingCart.ShoppingCartReportModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
     <None Include="Properties\Settings.settings">
@@ -932,6 +934,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\CartReport.rdlc" />
+    <EmbeddedResource Include="Reports\CartReport_Landscape.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Reports\ListReport.rdlc" />

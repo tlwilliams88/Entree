@@ -147,6 +147,7 @@
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
+    <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\PricingHelper.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />
@@ -291,6 +292,8 @@
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
+    <Compile Include="Models\ShoppingCart\ShoppingCartItemReportModel.cs" />
+    <Compile Include="Models\ShoppingCart\ShoppingCartReportModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />
     <Compile Include="Models\SingleSignOn\KbitCustomerAccessRequest.cs" />
     <Compile Include="Models\ImportFiles\BaseFileImportModel.cs" />

@@ -101,9 +101,11 @@ angular.module('bekApp')
       $scope.endPoint = $scope.endPoint;
       $scope.rangeStart = $scope.startingPoint;
       $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
-      if($scope.rangeStart === 0 && $scope.rangeEnd === parseInt($scope.pagingPageSize) - 1){
+      if($scope.rangeStart === 0){
         $scope.rangeStart++;
-        $scope.rangeEnd ++;
+        if($scope.rangeEnd === parseInt($scope.pagingPageSize) - 1){
+          $scope.rangeEnd ++;
+        }
       }
     }
 

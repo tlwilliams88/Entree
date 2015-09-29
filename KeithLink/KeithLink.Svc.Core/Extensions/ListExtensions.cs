@@ -1,7 +1,11 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
+
+using KeithLink.Svc.Core.Helpers;
+
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Reports;
+using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using System;
@@ -97,6 +101,46 @@ namespace KeithLink.Svc.Core.Extensions {
                         Notes = i.Notes
                     }).ToList()
             };
+        }
+
+        /// <summary>
+        /// Converts listitems to ShoppingCartItemReportModel
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static List<ShoppingCartItemReportModel> ToShoppingCartItemReportList( this ListModel list ) {
+            List<ShoppingCartItemReportModel> items = new List<ShoppingCartItemReportModel>();
+
+            foreach (ListItemModel i in list.Items) {
+                ShoppingCartItemReportModel item = new ShoppingCartItemReportModel();
+
+                item.ItemNumber = i.ItemNumber;
+                item.Name = i.Name;
+                item.Brand = i.Brand;
+                item.Category = i.Category;
+                item.PackSize = i.PackSize;
+                if (i.Notes != null) {
+                    item.Notes = i.Notes;
+                }
+                item.Label = i.Label;
+                item.ParLevel = i.ParLevel;
+                item.Quantity = i.Quantity.ToString();
+                item.Each = i.Each;
+                item.CasePrice = i.CasePrice;
+                item.PackagePrice = i.PackagePrice;
+
+                int pack = 0;
+                int.TryParse(i.Pack, out pack);
+
+                item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
+                                                       (i.Each ?? false), i.CatchWeight, i.AverageWeight,
+                                                       pack).ToString("f2");
+
+                items.Add( item );
+            }
+
+
+            return items;
         }
         #endregion
     }
