@@ -63,19 +63,30 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart {
         public decimal ParLevel { get; set; }
 
         [DataMember]
-        public string Quantity { get; set; }
+        public decimal Quantity { get; set; }
 
         [DataMember]
         public bool? Each { get; set; }
 
         [DataMember]
-        public string CasePrice { get; set; }
+        public string EachAsString {
+            get {
+                if (Each.HasValue && Each.Value == true) {
+                    return "Yes";
+                } else {
+                    return "No";
+                }
+            }
+        }
 
         [DataMember]
-        public string PackagePrice { get; set; }
+        public double CasePrice { get; set; }
 
         [DataMember]
-        public string ExtPrice { get; set; }
+        public double PackagePrice { get; set; }
+
+        [DataMember]
+        public double ExtPrice { get; set; }
 
         #endregion
     }

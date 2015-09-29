@@ -775,6 +775,7 @@
                               <Value>=Fields!ParLevel.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>0.00;(0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -809,6 +810,7 @@
                               <Value>=Fields!Quantity.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>0.00;(0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -833,14 +835,14 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Each">
+                    <Textbox Name="EachAsString">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Each.Value</Value>
+                              <Value>=Fields!EachAsString.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                               </Style>
@@ -851,7 +853,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Each</rd:DefaultName>
+                      <rd:DefaultName>EachAsString</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -877,6 +879,7 @@
                               <Value>=Fields!CasePrice.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>'$'0.00;('$'0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -895,8 +898,10 @@
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
+                        <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -911,6 +916,7 @@
                               <Value>=Fields!ExtPrice.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>'$'0.00;('$'0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -929,6 +935,7 @@
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
+                        <rd:FormatSymbolCulture>en-US</rd:FormatSymbolCulture>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -976,7 +983,7 @@
         <DataSetName>ListItems</DataSetName>
         <Top>0.375in</Top>
         <Height>0.63416in</Height>
-        <Width>10.52084in</Width>
+        <Width>10.52086in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1756,6 +1763,7 @@
                               <Value>=Fields!ParLevel.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>0.00;(0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1790,6 +1798,7 @@
                               <Value>=Fields!Quantity.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>0.00;(0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1821,7 +1830,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!Each.Value</Value>
+                              <Value>=Fields!EachAsString.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
                               </Style>
@@ -1858,6 +1867,7 @@
                               <Value>=Fields!CasePrice.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>0.00;(0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1892,6 +1902,7 @@
                               <Value>=Fields!ExtPrice.Value</Value>
                               <Style>
                                 <FontSize>8pt</FontSize>
+                                <Format>0.00;(0.00);'0'</Format>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1957,7 +1968,7 @@
         <DataSetName>CartItems</DataSetName>
         <Top>1.42833in</Top>
         <Height>0.63416in</Height>
-        <Width>10.52084in</Width>
+        <Width>10.52086in</Width>
         <ZIndex>1</ZIndex>
         <Visibility>
           <Hidden>=CountRows() = 0</Hidden>
@@ -2064,7 +2075,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>10.52084in</Width>
+  <Width>10.52086in</Width>
   <Page>
     <PageHeader>
       <Height>0.3425in</Height>
@@ -2261,6 +2272,10 @@
           <DataField>Each</DataField>
           <rd:TypeName>System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
+        <Field Name="EachAsString">
+          <DataField>EachAsString</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
         <Field Name="ExtPrice">
           <DataField>ExtPrice</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -2329,6 +2344,10 @@
         <Field Name="Each">
           <DataField>Each</DataField>
           <rd:TypeName>System.Nullable`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
+        </Field>
+        <Field Name="EachAsString">
+          <DataField>EachAsString</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ExtPrice">
           <DataField>ExtPrice</DataField>
