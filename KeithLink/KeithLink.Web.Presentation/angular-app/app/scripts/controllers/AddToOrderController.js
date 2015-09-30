@@ -335,8 +335,8 @@ angular.module('bekApp')
       }
       else{      
           $scope.validateAndSave().then(function(resp){
-            if(resp.message && resp.message === "Creating cart..."){
-              $scope.redirect($scope.selectedList.listid, resp);
+            if($scope.isRedirecting(resp)){
+              
             }
             else{
               var continueSearch = resp;       
@@ -376,8 +376,7 @@ angular.module('bekApp')
       }
       else{
        $scope.validateAndSave().then(function(resp){
-        if(resp.message && resp.message === "Creating cart..."){
-        $scope.redirect($scope.selectedList.listid, resp);
+        if($scope.isRedirecting(resp)){        
         return
         }
         else{
@@ -399,9 +398,7 @@ angular.module('bekApp')
 
       Mousetrap.bind(['alt+s'], function(e) {
         $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
-          if(resp.message && resp.message === "Creating cart..."){
-            $scope.redirect($scope.selectedList.listid, resp);
-          }
+          $scope.isRedirecting(resp);
         })
       });
 
@@ -654,9 +651,21 @@ angular.module('bekApp')
       }
     }
 
+    $scope.isRedirecting = function(resp){
+      if(resp.message && resp.message === "Creating cart..."){
+        $scope.redirect($scope.selectedList.listid, resp);
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+
     $scope.saveAndContinue = function(){
       $scope.continueToCart = true;
-      $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+      $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+        $scope.isRedirecting(resp);
+      })
     }
 
     $scope.saveAndRetainQuantity = function(){
@@ -665,9 +674,7 @@ angular.module('bekApp')
       $scope.createFromSearch = true;
     }
     $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
-      if(resp.message && resp.message === "Creating cart..."){
-        $scope.redirect($scope.selectedList.listid, resp);
-      }
+      $scope.isRedirecting(resp);
     })
     $scope.addToOrderForm.$setPristine();
     }

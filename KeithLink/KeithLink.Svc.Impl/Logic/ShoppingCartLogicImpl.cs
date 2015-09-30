@@ -302,6 +302,17 @@ namespace KeithLink.Svc.Impl.Logic
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
+
+            cart.ItemCount = cart.Items.Count;
+
+            foreach (var item in cart.Items) {
+                int qty = (int)item.Quantity;
+                int pack = 1;
+                int.TryParse(item.Pack, out pack);
+
+                cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            }
+
 			return cart;
 		}
 
