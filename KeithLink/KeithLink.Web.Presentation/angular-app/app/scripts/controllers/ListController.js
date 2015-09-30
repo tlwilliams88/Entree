@@ -25,7 +25,7 @@ angular.module('bekApp')
     $scope.numberListNamesToShow = 10;
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
-    $scope.visitedPages = [];
+   
 
     if (ListService.findMandatoryList()) {
       $scope.hideMandatoryListCreateButton = true;
@@ -39,26 +39,36 @@ angular.module('bekApp')
       $scope.indexOfSDestroyedRow = index + 1;
     }
 
-    $scope.blockUIAndChangePage = function(page){
-      $scope.startingPoint = 0;
-       $scope.endPoint = 0;
-        var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
-        blockUI.start("Loading List...").then(function(){
-          if(visited.length > 0){
-            $timeout(function() {
-              $scope.pageChanged(page, visited);
-            }, 100);
-          }
-          else{
-            $scope.pageChanged(page, visited);
-          }
-        })     
+    $scope.initPagingValues = function(){
+      $scope.visitedPages = [];
+      $scope.rangeStartOffset = 0;
+      $scope.rangeEndOffset = 0;
+      $scope.itemCountOffset = 0;
     }
 
-     $scope.pageChanged = function(page) {
+    $scope.initPagingValues();
+
+    $scope.blockUIAndChangePage = function(page){
+        $scope.startingPoint = 0;
+         $scope.endPoint = 0;   
+          var visited = $filter('filter')($scope.visitedPages, {page: page.currentPage});
+          blockUI.start("Loading List...").then(function(){
+            if(visited.length > 0){
+              $timeout(function() {
+                $scope.pageChanged(page, visited);
+              }, 100);
+            }
+            else{
+              $scope.pageChanged(page, visited);
+            }
+          }) 
+    }
+
+     $scope.pageChanged = function(page) {      
       $scope.rangeStartOffset = 0;
-      $scope.rangeEndOffset = 0;     
-      $scope.currentPage = page.currentPage;
+      $scope.rangeEndOffset = 0;
+      $scope.loadingPage = true;    
+      $scope.currentPage = page.currentPage
       $scope.startingPoint = ((page.currentPage - 1)*$scope.pagingPageSize) + 1;
       $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
       $scope.setRange();
@@ -68,9 +78,7 @@ angular.module('bekApp')
         if(item.deleted){
           deletedItems.push(item);
         }
-
       })
-
       var visited = $filter('filter')($scope.visitedPages, {page: $scope.currentPage});
       if(!visited.length){             
         listPagingModel.loadMoreData($scope.startingPoint - 1, $scope.endPoint - 1, $scope.loadingResults, deletedItems);       
@@ -81,7 +89,7 @@ angular.module('bekApp')
             $scope.selectedList.allSelected = true;
           };
           updateItemPositions();
-      }
+      }     
      };
 
      $scope.setStartAndEndPoints = function(page){
@@ -97,6 +105,9 @@ angular.module('bekApp')
         if(!foundStartPoint){
           appendListItems(page);
         }
+        //We need two calls for stop here because we have two paging directives on the view. If the page change is triggered 
+        //automatically (deleting all items on page/saving) the event will fire twice and two loading overlays will be generated.
+        blockUI.stop();
         blockUI.stop();
      }
 
@@ -115,6 +126,7 @@ angular.module('bekApp')
     $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
     
     function resetPage(list, initialPageLoad) {
+      $scope.initPagingValues();
       $scope.selectedList = angular.copy(list);
       $scope.totalItems = $scope.selectedList.itemCount;
       originalList = list;
@@ -251,14 +263,14 @@ angular.module('bekApp')
 
     $scope.filterItems = function(searchTerm) {
       if($scope.unsavedChangesConfirmation()){
-        $scope.visitedPages = [];
+        $scope.initPagingValues();
         listPagingModel.filterListItems(searchTerm);
       }
     };
     
     $scope.sortList = function(sortBy, sortOrder) {
       if($scope.unsavedChangesConfirmation()){         
-        $scope.visitedPages = [];
+        $scope.initPagingValues();
         $scope.currentPage = 1;
         if (sortBy === $scope.sort[0].field) {
          sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
@@ -454,15 +466,13 @@ angular.module('bekApp')
       item.isdeleted = true;
       updateDeletedCount();
       updateItemPositions();
-      //$scope.rangeEnd --;
     };
 
     $scope.deleteMultipleItems = function() {   
-      $scope.selectedList.items.forEach(function(item){
+      $scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint).forEach(function(item){
         if(item.isSelected){
           item.isdeleted = true;
           updateDeletedCount();
-          //$scope.rangeEnd --;
         }
       })
 
