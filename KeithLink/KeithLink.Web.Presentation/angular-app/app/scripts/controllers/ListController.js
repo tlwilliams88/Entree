@@ -509,14 +509,14 @@ angular.module('bekApp')
     $scope.changeAllSelectedItems = function(allSelected) {
       angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint) , function(item, index) {
         if (item.itemnumber) {      
-            item.isSelected = !$scope.selectedList.allSelected; 
+            item.isSelected = !allSelected; 
         }
       });
     };
 
     function unselectAllDraggedItems() {
       $scope.selectedList.allSelected = false;
-      $scope.changeAllSelectedItems();
+      $scope.changeAllSelectedItems(true);
     }
     // disable drag on mobile
     $scope.isDragEnabled = function() {
