@@ -112,7 +112,7 @@ angular.module('bekApp')
       },
 
       getPageSize: function() {
-        var pageSize = localStorageService.get(Constants.localStorage.pageSize) || 25;
+        var pageSize = localStorageService.get(Constants.localStorage.pageSize) || 50;
         return parseInt(pageSize);
       },
 
