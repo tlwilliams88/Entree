@@ -357,13 +357,8 @@ angular.module('bekApp')
       var params = {
           from: $scope.rangeStart - 1,
           size: $scope.pagingPageSize,
-          sort: []    
+          sort: $scope.sort
         }
-
-      if($stateParams.sortingParams){
-        params.size = $stateParams.pageSize;
-        params.sort = $stateParams.sortingParams;
-      }
 
       if (!processingSaveList) {
         processingSaveList = true;

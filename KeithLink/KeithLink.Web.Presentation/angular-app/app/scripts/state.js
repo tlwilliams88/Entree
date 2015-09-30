@@ -176,7 +176,8 @@ angular.module('bekApp')
 
          if(listHeader && (listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory)){
              ListService.getParamsObject(params, 'lists').then(function(storedParams){
-             $stateParams.sortingParams = storedParams; 
+             $stateParams.sortingParams = storedParams;
+             params = storedParams;
             })
           }            
                 
@@ -328,6 +329,7 @@ angular.module('bekApp')
             if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
               ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
                 $stateParams.sortingParams = storedParams; 
+                params = storedParams;
               })
             }            
                 
