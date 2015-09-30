@@ -30,7 +30,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
                 return CasePriceNumeric.ToString("f2");
             }
             set {
-                CasePriceNumeric = double.Parse(value);
+                double price = 0;
+                double.TryParse(value, out price);
+
+                CasePriceNumeric = price;
             }
         }
 
@@ -71,8 +74,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
             get { 
                 return PackagePriceNumeric.ToString("f2"); 
             }
-            set { 
-                PackagePriceNumeric = double.Parse(value); 
+            set {
+                double price = 0;
+                double.TryParse(value, out price);
+
+                PackagePriceNumeric = price; 
             }
         }
 
