@@ -55,10 +55,12 @@ angular.module('bekApp')
         })     
     }
 
-     $scope.pageChanged = function(page) {       
+     $scope.pageChanged = function(page) {
+      $scope.rangeStartOffset = 0;
+      $scope.rangeEndOffset = 0;     
       $scope.currentPage = page.currentPage;
-      $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize)) + 1;
-      $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
+      $scope.startingPoint = ((page.currentPage - 1)*$scope.pagingPageSize) + 1;
+      $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
       $scope.setRange();
       $scope.selectedList.allSelected = false;
       var deletedItems = [];
@@ -78,6 +80,7 @@ angular.module('bekApp')
           if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {isSelected: true, isdeleted: false}).length === ($scope.endPoint - $scope.startingPoint)){
             $scope.selectedList.allSelected = true;
           };
+          updateItemPositions();
       }
      };
 
@@ -86,7 +89,7 @@ angular.module('bekApp')
         $scope.selectedList.items.forEach(function(item, index){
           if(page.items[0] && item.listitemid === page.items[0].listitemid){
             $scope.startingPoint = index;
-            $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
+            $scope.endPoint = angular.copy($scope.startingPoint + $scope.pagingPageSize);
             foundStartPoint = true;
           }
         })
@@ -103,13 +106,13 @@ angular.module('bekApp')
       $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint - 1;
       if($scope.rangeStart === 0){
         $scope.rangeStart++;
-        if($scope.rangeEnd === parseInt($scope.pagingPageSize) - 1){
+        if($scope.rangeEnd === $scope.pagingPageSize - 1){
           $scope.rangeEnd ++;
         }
       }
     }
 
-    $scope.pagingPageSize = LocalStorage.getPageSize();
+    $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
     
     function resetPage(list, initialPageLoad) {
       $scope.selectedList = angular.copy(list);
@@ -117,11 +120,14 @@ angular.module('bekApp')
       originalList = list;
       $scope.selectedList.isRenaming = false;
       $scope.selectedList.allSelected = false;
+      $scope.rangeStartOffset = 0;
+      $scope.rangeEndOffset = 0;
       $scope.setStartAndEndPoints(list);
 
       if(initialPageLoad){      
         $scope.currentPage = 1;
-        $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
+        $scope.visitedPages.push({page: 1, items: $scope.selectedList.items, deletedCount: 0});
+        updateItemPositions();
       }
       $scope.setRange();
 
@@ -139,7 +145,7 @@ angular.module('bekApp')
         item.editPosition = item.position;
       });
 
-      $scope.visitedPages.push({page: $scope.currentPage, items: list.items});
+      $scope.visitedPages.push({page: $scope.currentPage, items: list.items, deletedCount: 0});
       //Since pages can be visited out of order, sort visited pages into numeric order.
       $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
         var sorterval1 = obj1.page;      
@@ -159,7 +165,7 @@ angular.module('bekApp')
       else{
        $scope.setStartAndEndPoints(list);
       }
-
+       updateItemPositions();
       if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.rangeEnd), {isSelected: true}).length === ($scope.rangeEnd - $scope.startingPoint)){
         $scope.selectedList.allSelected = true;
       };
@@ -404,25 +410,64 @@ angular.module('bekApp')
       $scope.selectedList.isRenaming = false;
     };
 
+      // saves new item indexes in cached editPosition field after sorting or ordering the list items
+     function updateItemPositions() {
+       var deletedItemCount = 0;
+       var currentPageDeletes = 0;
+       var currentPageDeletedCount = 0;
+       $scope.itemCountOffset = 0;
+       $scope.visitedPages.forEach(function(page){
+        if($scope.currentPage > page.page){
+          deletedItemCount += page.deletedCount;
+        }
+        if($scope.currentPage === page.page){
+          currentPageDeletedCount = page.deletedCount
+        }
+        $scope.itemCountOffset += page.deletedCount;
+       })
+
+       $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
+       $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
+       var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
+       angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
+        if(!item.isdeleted){
+           item.position = newPosition;
+           item.editPosition = newPosition;
+           newPosition += 1;
+        }
+       });
+     }
+
     /**********
     DELETE ITEMS
     **********/
+     function updateDeletedCount() {
+      $scope.visitedPages.forEach(function(page){
+        if($scope.currentPage === page.page){
+          page.deletedCount++;
+        }
+      })
+    }
 
-    $scope.deleteItem = function(item) {
-      var deletedIndex = $scope.selectedList.items.indexOf(item);
-      $scope.selectedList.items[deletedIndex].isdeleted = true;
+    $scope.deleteItem = function(item) {    
       $scope.listForm.$setDirty();
+      item.isdeleted = true;
+      updateDeletedCount();
+      updateItemPositions();
+      //$scope.rangeEnd --;
     };
 
-    $scope.deleteMultipleItems = function() {
-      var selectedItemsForDelete = $filter('filter')($scope.selectedList.items, {isSelected: 'true'});
+    $scope.deleteMultipleItems = function() {   
       $scope.selectedList.items.forEach(function(item){
         if(item.isSelected){
           item.isdeleted = true;
+          updateDeletedCount();
+          //$scope.rangeEnd --;
         }
       })
 
       $scope.selectedList.allSelected = false;
+      updateItemPositions();
       $scope.listForm.$setDirty();
     };
 
