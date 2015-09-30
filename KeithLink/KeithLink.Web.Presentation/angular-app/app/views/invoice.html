@@ -36,7 +36,7 @@
     
     <div class="row page-content" style="margin-top:5px;">
       <div  class = "billing" ng-if="!viewingAllCustomers &&  (!isInternalAccountAdminUser || isDemo)">
-      <div class="info-box no-open-invoices" ng-if="!hasPayableInvoices && !loadingResults">
+      <div class="info-box no-open-invoices" style="margin-left:15px;" ng-if="!hasPayableInvoices && !loadingResults">
         <p>You have no payable invoices at this time.</p>
         <p>Contact your DSR to pay invoices online.</p>
       </div>
@@ -91,7 +91,12 @@
           <div class="col-md-12" ng-if="viewingAllCustomers">
             <h3>Total Amount Due: <span class="currency-value">{{totalAmountDue | currency}}</span></h3>
           </div>
-          <a style="float:left;" class="col-md-12 col-sm-12 col-lg-12 col-xs-12" ui-sref="menu.transaction">View Pending Transactions for All Customers</a>
+          <a 
+            style="float:left;" 
+            class="col-md-12 col-sm-12 col-lg-12 col-xs-12" 
+            ng-class="{'top-offset' : (!viewingAllCustomers && isInternalAccountAdminUser)}" 
+            ui-sref="menu.transaction">View Pending Transactions for All Customers
+          </a>
           <div class="text-red" style="float:left; margin-left:15px;">{{errorMessage}}</div>
           <div class="text-right"  style=" float:right; margin-right:15px; ">Showing {{invoices.length}} of {{totalInvoices}} Invoices</div> 
         </div>
@@ -208,8 +213,10 @@
               {{::invoice.duedate | formatDate}}
             </td>
             <td >
+              <div style="display:inline-block; white-space:nowrap;">
               <span class="pull-left" >{{::invoice.amount | currency}}</span>
-               <strong><a class="icon-plus3 transaction-summary large-icon pull-right"  ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></strong>
+               <strong><a class="icon-plus3 large-icon" style="margin-left:5px;" ng-if="invoice.transactioncount > 2" tooltip="View transaction history for this invoice."  ng-click="openTransactionSummaryModal(invoice)"></a></strong>
+             </div>
             </td>
             <td class="text-center icon-col large-icon hidden-mobile-visible-print">
               <a ui-sref="invoiceimage({ invoiceNumber: invoice.invoicenumber })" target="_blank" class="icon-camera"></a>
