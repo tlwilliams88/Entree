@@ -57,7 +57,7 @@
           <span class="pull-right icon-arrow-down7 text-light"></span>
           <ul class="dropdown-menu" role="menu">
             <li ng-repeat="list in lists | sortLists" ng-if="list.listid !== selectedList.listid">
-              <a ng-click="redirect(list.listid, selectedCart, useParlevel)">
+              <a ng-click=" lastVisitedPageBeforeSearch = ''; redirect(list.listid, selectedCart, useParlevel)">
                 {{list.name}}
               </a>
             </li>
