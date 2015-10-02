@@ -30,7 +30,7 @@
 
         <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg">
 
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
+        <button type="submit" class="btn btn-primary btn-lg" ng-disabled="!itemNumber"  ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
         
         <div class="lists-dropdown btn-group hidden-print" dropdown is-open="status.listactions">
           <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
