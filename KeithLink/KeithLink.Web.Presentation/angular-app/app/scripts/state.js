@@ -314,6 +314,10 @@ angular.module('bekApp')
         //   }
         // }],
         selectedCart: ['$stateParams', 'CartService', 'OrderService', function($stateParams, CartService, OrderService) {
+          if(!CartService.shipDates || CartService.shipDates.length === 0){
+            alert('An error has occurred retrieving available shipping dates. Please contact your DSR for more information.');
+            $state.go('menu.home');
+          }
           if ($stateParams.cartId !== 'New') {
             // determine if id is a change order or a cart, carts are guids show they have dashes
             if ($stateParams.cartId.indexOf('-') > -1) {
