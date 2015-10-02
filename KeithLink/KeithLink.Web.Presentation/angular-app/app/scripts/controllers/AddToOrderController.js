@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics',
-    function ($scope, $state, $modal, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics) {
+  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
+    function ($scope, $state, $modal, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
     
     
     // redirect to url with correct parameters
@@ -10,7 +10,6 @@ angular.module('bekApp')
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
       $scope.origItemCount = selectedCart.items.length;
-
 
       if($stateParams.continueToCart){
       //continueToCart indicates the Proceed to Checkout button was pressed.
@@ -298,6 +297,11 @@ angular.module('bekApp')
       if($stateParams.cartId !== 'New' && $stateParams.searchTerm){
         $scope.filterItems($stateParams.searchTerm);
       }
+      if($stateParams.createdFromPrint){
+        $stateParams.createdFromPrint = false;
+        $scope.createdFromPrint = false;
+        $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+      }
       blockUI.stop();
     }
 
@@ -343,7 +347,7 @@ angular.module('bekApp')
       else{      
           $scope.validateAndSave().then(function(resp){
             if($scope.isRedirecting(resp)){
-              
+              //do nothing
             }
             else{
               var continueSearch = resp;       
@@ -520,6 +524,7 @@ angular.module('bekApp')
           continueToCart: continueToCart,
           listItems: sameListItems,
           searchTerm: searchTerm,
+          createdFromPrint: $scope.createdFromPrint,
           currentPage: $scope.retainedPage})
       });
     };
@@ -534,8 +539,20 @@ angular.module('bekApp')
     };
 
     $scope.renameCart = function(cartId, name) {
+      var duplicateName = false;
+      CartService.cartHeaders.forEach(function(header){
+        if(name === header.name){
+          duplicateName = true;
+        }
+      });
 
-      if (cartId === 'New') {
+      if(duplicateName){
+        $scope.tempCartName = '';
+        angular.element(renameCartForm.cartName).focus();
+        toaster.pop('error', 'Error Saving Cart -- Cannot have two carts with the same name. Please rename this cart');
+      }
+      else{
+        if (cartId === 'New') {
         // don't need to call the backend function for new cart
         $scope.selectedCart.name = name;
         $scope.isRenaming = false;
@@ -550,6 +567,7 @@ angular.module('bekApp')
           CartService.renameCart = false;
         });
       }
+    }      
     };
 
     $scope.generateNewCartForDisplay = function() {
@@ -732,6 +750,25 @@ angular.module('bekApp')
         }
       }
     };
+
+    $scope.saveBeforePrint = function(){
+      if($scope.addToOrderForm.$pristine){
+        $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+      }
+      else{
+        if($scope.selectedCart.id === 'New'){
+        $scope.createdFromPrint = true;
+      }         
+      $scope.validateAndSave().then(function(resp){
+        if($scope.isRedirecting(resp)){
+          //do nothing
+        }
+        else{
+          $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
+        }
+      })
+      }
+    }
 
     $scope.openPrintOptionsModal = function(list, cart) {
       var modalInstance = $modal.open({

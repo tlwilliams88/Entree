@@ -172,15 +172,7 @@ angular.module('bekApp')
 
           var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
           var params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'};
-          var listHeader = $filter('filter')(lists, {listid: validListId})[0];
-
-         if(listHeader && (listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory)){
-             ListService.getParamsObject(params, 'lists').then(function(storedParams){
-             $stateParams.sortingParams = storedParams;
-             params = storedParams;
-            })
-          }            
-                
+   
           ListService.lists.forEach(function(list){
             if(last && list.listid === last.listId){
                stillExists = true;
@@ -189,16 +181,29 @@ angular.module('bekApp')
                   stillExists = false;
                  }
             }
-          });    
-   
-         if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
-            last.timeset =  moment().format('YYYYMMDDHHmm');
-             LocalStorage.setLastList(last); 
-            return ListService.getList(last.listId, params);
-          }else{
+          });
+
+          var listIdtoBeUsed = '';
+          if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
+             last.timeset =  moment().format('YYYYMMDDHHmm');
+             LocalStorage.setLastList(last);
+             listIdtoBeUsed = last.listId;
+          }
+          else{
              LocalStorage.setLastList({});
-            return ListService.getList(validListId, params);
-        }
+             listIdtoBeUsed = validListId
+           }
+
+          var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
+
+         if(listHeader && (listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory)){
+             ListService.getParamsObject(params, 'lists').then(function(storedParams){
+             $stateParams.sortingParams = storedParams;
+             params = storedParams;
+            })
+          } 
+            return ListService.getList(listIdtoBeUsed, params);
+        
         }]
       }
     })
@@ -290,7 +295,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?currentPage',
+      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage',
       params: {listItems: null},
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
@@ -324,15 +329,6 @@ angular.module('bekApp')
         selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
              var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
              var params = {size: pageSize, from: 0, sort: []};
-             var listHeader = $filter('filter')(lists, {listid: validListId})[0];
-
-            if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
-              ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
-                $stateParams.sortingParams = storedParams; 
-                params = storedParams;
-              })
-            }            
-                
 
           if($stateParams.cartId !== 'New'){
             var allSets = LocalStorage.getLastOrderList();
@@ -355,9 +351,17 @@ angular.module('bekApp')
                     });
                   }
               });  
-            } 
+            }                
             LocalStorage.setLastOrderList(allValidSets);  
           } 
+          var listHeader = $filter('filter')(lists, {listid: validListId})[0];
+
+            if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
+              ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
+                $stateParams.sortingParams = storedParams; 
+                params = storedParams;
+              })
+            }   
          
           return ListService.getList(validListId, params);
         }]
