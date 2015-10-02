@@ -148,6 +148,7 @@
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
+    <Compile Include="Helpers\PagingHelper.cs" />
     <Compile Include="Helpers\PricingHelper.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />

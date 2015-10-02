@@ -87,7 +87,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 rdlcStream = assembly.GetManifestResourceStream( "KeithLink.Svc.Impl.Reports.CartReport.rdlc" );
             }
 
-            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options.Paging );
+            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options );
 
             rv.LocalReport.LoadReportDefinition( rdlcStream );
             ReportParameter[] parameters = new ReportParameter[3];
