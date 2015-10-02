@@ -314,10 +314,7 @@ angular.module('bekApp')
         //   }
         // }],
         selectedCart: ['$stateParams', 'CartService', 'OrderService', function($stateParams, CartService, OrderService) {
-          if(!CartService.shipDates || CartService.shipDates.length === 0){
-            alert('An error has occurred retrieving available shipping dates. Please contact your DSR for more information.');
-            $state.go('menu.home');
-          }
+
           if ($stateParams.cartId !== 'New') {
             // determine if id is a change order or a cart, carts are guids show they have dashes
             if ($stateParams.cartId.indexOf('-') > -1) {
@@ -330,7 +327,13 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
-        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
+        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'CartService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, CartService, UtilityService, LocalStorage, ENV) {
+             
+          if(!CartService.shipDates || CartService.shipDates.length === 0){
+            alert('An error has occurred retrieving available shipping dates. Please contact your DSR for more information.');
+            $state.go('menu.home');
+          }
+
              var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
              var params = {size: pageSize, from: 0, sort: []};
 
