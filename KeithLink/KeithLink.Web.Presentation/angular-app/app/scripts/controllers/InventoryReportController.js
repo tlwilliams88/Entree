@@ -157,6 +157,7 @@ angular.module('bekApp')
 
         $scope.successMessage = '';
         $scope.errorMessage = '';
+        $scope.subtotal = 0;
         if(!listId){
             $scope.report = {};
             $scope.report.items = [];
