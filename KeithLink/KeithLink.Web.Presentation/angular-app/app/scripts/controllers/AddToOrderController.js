@@ -301,10 +301,17 @@ angular.module('bekApp')
       blockUI.stop();
     }
 
-    $scope.sort = [{
+
+
+    if($stateParams.sortingParams){
+      $scope.sort = $stateParams.sortingParams.sort;
+    }
+    else{
+      $scope.sort = [{
       field: 'position',
       order: false
     }];
+    }
     var listPagingModel = new ListPagingModel( 
       selectedList.listid,
       setSelectedList,
@@ -724,6 +731,28 @@ angular.module('bekApp')
           item.quantity = 0;
         }
       }
+    };
+
+    $scope.openPrintOptionsModal = function(list, cart) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/printoptionsmodal.html',
+        controller: 'PrintOptionsModalController',
+        scope: $scope,
+        resolve: {
+          list: function() {
+            return list;
+          },
+          cart: function() {
+            return cart;
+          },
+          pagingModelOptions: function() {
+            return { 
+              sort: $scope.sort,
+              terms: $scope.orderSearchTerm
+            };
+          }
+        }
+      });
     };
 
     init();

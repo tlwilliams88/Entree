@@ -700,6 +700,9 @@ angular.module('bekApp')
           list: function() {
             return list;
           },
+          cart: function() {
+            return false;
+          },
           pagingModelOptions: function() {
             return { 
               sort: $scope.sort,
