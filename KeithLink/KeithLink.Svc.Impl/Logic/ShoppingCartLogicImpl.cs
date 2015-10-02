@@ -325,9 +325,9 @@ namespace KeithLink.Svc.Impl.Logic
         /// <param name="listId"></param>
         /// <param name="paging"></param>
         /// <returns></returns>
-        public ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, long listId, PagingModel paging ) {
+        public ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options ) {
             ShoppingCart cart = ReadCart(user, context, cartId);
-            ListModel list = listServiceRepository.ReadList( user, context, listId, true );
+            PagedListModel list = listServiceRepository.ReadPagedList( user, context, listId, PagingHelper.BuildPagingFilter(options).Paging );
 
             if (cart == null || list == null)
                 return null;
