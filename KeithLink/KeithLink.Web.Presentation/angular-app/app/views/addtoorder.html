@@ -247,6 +247,7 @@
                   focus-me="($first || (indexOfSDestroyedRow === $index && destroyedOnField === 'onhand'))"
                   ng-blur="confirmQuantity('onhand', item, item.onhand);"
                   class="dropdown-toggle input-number text-right mousetrap" 
+                  ng-class="{ tabstop: useParlevel }"
                   allow-one-positive-decimal                                 
                   ng-model="item.onhand"
                   name="onhand" 
@@ -263,6 +264,7 @@
                   id="onHand"    
                   ng-focus="this.select(); onItemOnHandAmountChanged(item)" 
                   class="dropdown-toggle input-number text-right"                  
+                  ng-class="{ tabstop: useParlevel }"
                   ng-model="item.onhand"
                   ng-init="item.onhand=item.onhand + 0"
                   ng-change="rowChanged($index, 'onhand'); onItemOnHandAmountChanged(item)"
@@ -282,7 +284,8 @@
                   focus-me="($first || (indexOfSDestroyedRow === $index && destroyedOnField === 'quantity'))"
                   ng-if="useParlevel && item.canOrder && item.initInputs"
                   ng-blur="confirmQuantity('quantity', item, item.quantity)"
-                  class="input-number text-right mousetrap tabstop" 
+                  class="input-number text-right mousetrap" 
+                  ng-class="{ tabstop: !useParlevel }"
                   allow-one-positive-decimal
                   ng-model="item.quantity"/>
                   <input                             
@@ -290,7 +293,8 @@
                   focus-me="($first)"              
                   ng-if="useParlevel && item.canOrder && !item.initInputs"
                   ng-init="item.quantity = item.quantity + 0"                
-                  class="input-number text-right tabstop" 
+                  class="input-number text-right" 
+                  ng-class="{ tabstop: !useParlevel }"
                   ng-model="item.quantity"
                   ng-change="rowChanged($index, 'quantity')"/>
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg show-mobile" ng-if="useParlevel && item.canOrder" ng-click="item.quantity = item.quantity + 1;"></button> 
