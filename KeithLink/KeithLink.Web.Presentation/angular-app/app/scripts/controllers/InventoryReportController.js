@@ -137,6 +137,7 @@ angular.module('bekApp')
         }
 
         promise.then(function(response) {
+          $scope.report.listid = response.listitemid;
           $scope.inventoryForm.$setPristine();
           deletedItems = [];
           toaster.pop('success', 'Successfully saved report.');
@@ -154,12 +155,21 @@ angular.module('bekApp')
           watch();
         });
 
-        List.delete({
+        $scope.successMessage = '';
+        $scope.errorMessage = '';
+        if(!listId){
+            $scope.report = {};
+            $scope.report.items = [];
+        }
+        else{
+          List.delete({
             listId: listId
           }).$promise.then(function() {
             $scope.report = {};
             $scope.report.items = [];
           });
+        }
+
       };
 
       $scope.openExportModal = function() {

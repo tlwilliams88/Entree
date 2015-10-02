@@ -281,6 +281,7 @@ angular.module('bekApp')
     function init() {
       $scope.lists = lists;
       $scope.shipDates = CartService.shipDates;
+
       $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
       
       if (selectedCart) {
@@ -470,6 +471,10 @@ angular.module('bekApp')
     };
 
     $scope.redirect = function(listId, cart) {
+      if(!$scope.unsavedChangesConfirmation()){
+        return;
+      } 
+      $scope.addToOrderForm.$setPristine();
       var cartId;    
       if ($scope.isChangeOrder) {
         cartId = cart.ordernumber;
@@ -516,6 +521,7 @@ angular.module('bekApp')
         sameListItems = undefined;
       }
         var continueToCart = $scope.continueToCart
+        
       blockUI.start("Loading List...").then(function(){
         $state.go('menu.addtoorder.items', { 
           listId: listId,
@@ -527,6 +533,17 @@ angular.module('bekApp')
           createdFromPrint: $scope.createdFromPrint,
           currentPage: $scope.retainedPage})
       });
+
+    };
+
+    $scope.unsavedChangesConfirmation = function(){
+      if($scope.addToOrderForm.$dirty){
+          var r = confirm('Unsaved data will be lost. Do you wish to continue?');
+          return r;   
+      }
+      else{
+        return true;
+      }  
     };
 
     /**********
