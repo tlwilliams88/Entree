@@ -295,7 +295,14 @@ angular.module('bekApp')
 
     function init() {
       $scope.lists = lists;
-      $scope.shipDates = CartService.shipDates;
+      if(CartService.shipDates && CartService.shipDates.length > 0){
+        $scope.shipDates = CartService.shipDates;
+      }
+      else{
+          alert('An error has occurred retrieving available shipping dates. Please contact your DSR for more information.');
+          $state.go('menu.home');
+          return;
+      }
 
       $scope.useParlevel = $stateParams.useParlevel === 'true' ? true : false;
       
@@ -668,7 +675,7 @@ angular.module('bekApp')
           processingSaveCart = false;          
         });
       }
-    }
+    };
 
     var processingSaveChangeOrder = false;
     function updateChangeOrder(order) {
