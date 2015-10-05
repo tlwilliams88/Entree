@@ -9,7 +9,7 @@
     <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ui-sref="menu.home">Cancel Order</button>
     <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity()" ng-disabled="addToOrderForm.$invalid">Save</button>
     <a class="btn-lg btn btn-default pull-right-sm hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
-    <button title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></button>
+    <button title="Print" class="btn btn-default btn-icon" ng-click="saveBeforePrint()"><span class="icon-printer"></span></button>
   </div>
 </div>
 
@@ -71,7 +71,7 @@
           </span>
           <span ng-if="isRenaming">
             <form name="renameCartForm">
-              <input type="text" ng-model="tempCartName" focus-me="isRenaming" required>
+              <input type="text" id="cartName" ng-model="tempCartName" focus-me="isRenaming" required>
               <button type="submit" class="btn-no-style icon-checkmark large-icon hand text-green" ng-disabled="renameCartForm.$invalid" ng-click="renameCart(selectedCart.id, tempCartName)"></button>
               <span class="icon-cross large-icon hand text-red" ng-click="isRenaming = false"></span>
             </form>
@@ -102,7 +102,7 @@
 
         <div class="col-md-3 col-sm-6 col-xs-12 info-box">
           <span class="nav-description text-light">Cart Info</span>
-          <span class="nav-title">{{itemCount || '0'}} Items</span>
+          <span class="nav-title">{{itemCount || selectedCart.items.length ||  '0'}} Items</span>
           <span class="nav-subtotal pull-right text-green">{{selectedCart.subtotal | currency}}</span>
         </div>
 
@@ -247,6 +247,7 @@
                   focus-me="($first || (indexOfSDestroyedRow === $index && destroyedOnField === 'onhand'))"
                   ng-blur="confirmQuantity('onhand', item, item.onhand);"
                   class="dropdown-toggle input-number text-right mousetrap" 
+                  ng-class="{ tabstop: useParlevel }"
                   allow-one-positive-decimal                                 
                   ng-model="item.onhand"
                   name="onhand" 
@@ -263,6 +264,7 @@
                   id="onHand"    
                   ng-focus="this.select(); onItemOnHandAmountChanged(item)" 
                   class="dropdown-toggle input-number text-right"                  
+                  ng-class="{ tabstop: useParlevel }"
                   ng-model="item.onhand"
                   ng-init="item.onhand=item.onhand + 0"
                   ng-change="rowChanged($index, 'onhand'); onItemOnHandAmountChanged(item)"
@@ -282,7 +284,8 @@
                   focus-me="($first || (indexOfSDestroyedRow === $index && destroyedOnField === 'quantity'))"
                   ng-if="useParlevel && item.canOrder && item.initInputs"
                   ng-blur="confirmQuantity('quantity', item, item.quantity)"
-                  class="input-number text-right mousetrap tabstop" 
+                  class="input-number text-right mousetrap" 
+                  ng-class="{ tabstop: !useParlevel }"
                   allow-one-positive-decimal
                   ng-model="item.quantity"/>
                   <input                             
@@ -290,7 +293,8 @@
                   focus-me="($first)"              
                   ng-if="useParlevel && item.canOrder && !item.initInputs"
                   ng-init="item.quantity = item.quantity + 0"                
-                  class="input-number text-right tabstop" 
+                  class="input-number text-right" 
+                  ng-class="{ tabstop: !useParlevel }"
                   ng-model="item.quantity"
                   ng-change="rowChanged($index, 'quantity')"/>
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg show-mobile" ng-if="useParlevel && item.canOrder" ng-click="item.quantity = item.quantity + 1;"></button> 
@@ -467,7 +471,7 @@
         <th></th>
       </tr>
     </thead>
-    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)">
+    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items | filter:{isShown:'!true'} |  orderBy:'createddate':false)">
       <tr        
         ng-class="{ odd : $odd, even: $even }">
 

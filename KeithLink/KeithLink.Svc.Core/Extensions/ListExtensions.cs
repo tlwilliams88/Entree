@@ -109,15 +109,15 @@ namespace KeithLink.Svc.Core.Extensions {
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static List<ShoppingCartItemReportModel> ToShoppingCartItemReportList( this ListModel list ) {
+        public static List<ShoppingCartItemReportModel> ToShoppingCartItemReportList( this PagedListModel list ) {
             List<ShoppingCartItemReportModel> items = new List<ShoppingCartItemReportModel>();
 
-            foreach (ListItemModel i in list.Items) {
+            foreach (ListItemModel i in list.Items.Results) {
                 ShoppingCartItemReportModel item = new ShoppingCartItemReportModel();
 
                 item.ItemNumber = i.ItemNumber;
                 item.Name = i.Name;
-                item.Brand = i.Brand;
+                item.Brand = i.BrandExtendedDescription;
                 item.Category = i.Category;
                 item.PackSize = i.PackSize;
                 if (i.Notes != null) {

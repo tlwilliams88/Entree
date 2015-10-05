@@ -252,7 +252,7 @@ angular.module('bekApp')
         });
  
         changeOrder.items = $filter('filter')( changeOrder.items, function(item){ 
-          return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item)); 
+          return item.quantity > 0 && (PricingService.hasPackagePrice(item) || PricingService.hasCasePrice(item) || (item.price && PricingService.hasPrice(item.price))); 
         });
  
         return OrderService.updateOrder(changeOrder).then(function(order) {

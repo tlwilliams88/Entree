@@ -107,7 +107,7 @@
           <thead>
             <tr fsm-sticky-header scroll-body="'.table-invoices'" scroll-stop="0" scroll-offset="74 + 64 + 17 + 30">
               <th ng-if="!viewingAllCustomers" class="input-col">
-                <input type="checkbox" ng-if="!isInternalAccountAdminUser" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
+                <input type="checkbox" ng-if="!isInternalAccountAdminUser && invoices.length > 0" ng-model="selectAllPayable" ng-change="selectAll(selectAllPayable)" no-dirty-check>
               </th>
               <th ng-show="viewingAllCustomers" class="sort-col-header" ng-click="sortInvoices('customername', !sort.sortDescending)">
                 Customer 
@@ -150,8 +150,7 @@
               </th>
             </tr>
           </thead>
-          <tbody>
-
+          <tbody ng-if="invoices.length > 0">
           <!-- Filter Row -->
           <tr class="filter-row" ng-show="showFilter">
             <td ng-if="!viewingAllCustomers" class="input-col">

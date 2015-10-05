@@ -16,6 +16,30 @@ angular.module('bekApp')
 
     element.on('keyup', 'input[type="text"]', handleNavigation);
 
+    function getPreviousTabstop(row) {
+      return row.prevUntil('tr td .tabstop').find('.tabstop').last()[0];
+    }
+
+    function getNextTabstop(row) {
+      return row.nextUntil('tr td .tabstop').find('.tabstop')[0];
+    }
+
+    function moveLeft(td, row) {
+      var moveTo = td.prev('td:has(input,textarea)').find('input,textarea')[0];
+      if (!moveTo) {
+        moveTo = getPreviousTabstop(row);
+      }
+      return moveTo;
+    }
+
+    function moveRight(td, row) {
+      var moveTo = td.next('td:has(input,textarea)').find('input,textarea')[0];
+      if (!moveTo) {
+        moveTo = getNextTabstop(row);
+      }
+      return moveTo;
+    }
+
     function handleNavigation(e) {
       // select all on focus
       element.find('input').keydown(function (e) {
@@ -36,29 +60,27 @@ angular.module('bekApp')
 
           case key.left: {
             if (input.type === 'checkbox' || input.selectionStart === 0) {
-              moveTo = td.prev('td:has(input,textarea)').find('input,textarea')[0];
+              moveTo = moveLeft(td, row); 
             }
             break;
           }
-          case key.right: {
+          case key.right:
+          case key.tab: {
             if (input.type == 'checkbox' || input.selectionEnd === input.value.length) {
-              moveTo = td.next('td:has(input,textarea)').find('input,textarea')[0];
+              moveTo = moveRight(td, row);
             }
             break;
           }
 
           case key.up: {
-            moveTo = row.prevUntil('tr td .tabstop').find('.tabstop').last()[0];
+            moveTo = getPreviousTabstop(row);
             break;
           }
           case key.down:
-            case key.enter:
-            case key.tab: {
-            var isNavigatingDown = e.which === key.down || e.which === key.enter || e.which === key.tab;
-            moveTo = row.nextUntil('tr td .tabstop').find('.tabstop')[0]; //findNextInput(td, attr.navigateTable, isNavigatingDown);
+            case key.enter: {
+            moveTo = getNextTabstop(row);
             break;
           }
-
         }
 
         if (moveTo) {
