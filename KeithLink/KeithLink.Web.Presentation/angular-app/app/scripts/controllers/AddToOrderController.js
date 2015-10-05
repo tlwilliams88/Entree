@@ -309,7 +309,7 @@ angular.module('bekApp')
 
       $scope.visitedPages.push({page: 1, items: selectedList.items});
        setSelectedList(selectedList);
-
+      $scope.setCartItemsDisplayFlag();
       if($stateParams.cartId !== 'New' && $stateParams.searchTerm){
         $scope.filterItems($stateParams.searchTerm);
       }
@@ -624,6 +624,7 @@ angular.module('bekApp')
         processingUpdateCart = true;
         return CartService.updateCart(cart).then(function(updatedCart) {
           setSelectedCart(updatedCart);
+          $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           $scope.addToOrderForm.$setPristine();
 
@@ -676,6 +677,7 @@ angular.module('bekApp')
 
         return OrderService.updateOrder(order).then(function(cart) {
           setSelectedCart(cart);
+          $scope.setCartItemsDisplayFlag();
           flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
           refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
           $scope.addToOrderForm.$setPristine();
