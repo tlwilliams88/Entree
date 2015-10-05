@@ -101,7 +101,7 @@ angular.module('bekApp')
 
      function flagDuplicateCartItems(cartItems, listItems) {
       angular.forEach(cartItems, function(cartItem) {
-        var existingItem = UtilityService.findObjectByField(listItems.slice($scope.startingPoint, $scope.endPoint), 'itemnumber', cartItem.itemnumber);
+        var existingItem = UtilityService.findObjectByField(listItems, 'itemnumber', cartItem.itemnumber);
         if (existingItem) {
           cartItem.isHidden = true;
           // flag cart items that are in the list multiple times
@@ -177,6 +177,19 @@ angular.module('bekApp')
         })     
     }
 
+    $scope.setCartItemsDisplayFlag = function (){
+      if($scope.selectedCart.items && $scope.selectedCart.items.length > 0){
+        $scope.selectedCart.items.forEach(function(item){
+          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber}).length > 0){
+            item.isShown = true;
+          }
+          else{
+            item.isShown = false;
+          }      
+      })
+      }
+    }
+
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page, visited) {
       $scope.currentPage = page.currentPage
@@ -193,6 +206,7 @@ angular.module('bekApp')
               $scope.startingPoint = index;
               $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
               foundStartPoint = true;
+              $scope.setCartItemsDisplayFlag();
             }
           })
 
@@ -262,6 +276,7 @@ angular.module('bekApp')
         if(item.listitemid === list.items[0].listitemid){
           $scope.startingPoint = index;
           $scope.endPoint = angular.copy(index + list.items.length);
+          $scope.setCartItemsDisplayFlag();
         }
       })
 
