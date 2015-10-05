@@ -485,6 +485,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				if (prod != null)
 				{
 					listItem.Name = prod.Name;
+                    listItem.Pack = prod.Pack;
 					listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
 					listItem.Description = prod.Description;
