@@ -471,7 +471,7 @@
         <th></th>
       </tr>
     </thead>
-    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items | filter:{isHidden:'!true'} |  orderBy:'createddate':false)">
+    <tbody ng-repeat="item in filteredCartItems = (selectedCart.items | filter:{isShown:'!true'} |  orderBy:'createddate':false)">
       <tr        
         ng-class="{ odd : $odd, even: $even }">
 
