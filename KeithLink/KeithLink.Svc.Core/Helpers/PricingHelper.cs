@@ -9,6 +9,8 @@ namespace KeithLink.Svc.Core.Helpers {
         public static double GetPrice(int qty, double casePrice, double splitPrice, 
                                       bool each, bool catchWeight, double avgWeight, 
                                       int pack){
+        if(pack == 0) {pack = 1;}
+
         if (catchWeight) {
                 if (each) {
                     return GetCatchweightPriceForPackage(qty, pack, avgWeight, splitPrice);
