@@ -130,8 +130,8 @@ namespace KeithLink.Svc.Core.Extensions {
                 item.CasePrice = i.CasePrice.ToDouble().Value;
                 item.PackagePrice = i.PackagePrice.ToDouble().Value;
 
-                int pack = 0;
-                int.TryParse(i.Pack, out pack);
+                int pack;
+                if (!int.TryParse(i.Pack, out pack)) { pack = 1; }
 
                 item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
                                                        (i.Each ?? false), i.CatchWeight, i.AverageWeight,

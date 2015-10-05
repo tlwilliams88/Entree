@@ -36,8 +36,8 @@ namespace KeithLink.Svc.Core.Extensions.ShoppingCart {
                 n.CasePrice = i.CasePrice.ToDouble().Value;
                 n.PackagePrice = i.PackagePrice.ToDouble().Value;
 
-                int pack = 0;
-                int.TryParse(i.Pack, out pack);
+                int pack;
+                if(!int.TryParse(i.Pack, out pack)){ pack = 1;}
 
                 n.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
                                                     i.Each, i.CatchWeight, i.AverageWeight,
