@@ -330,7 +330,7 @@ angular.module('bekApp')
 
 
 
-    if($stateParams.sortingParams){
+    if($stateParams.sortingParams && $stateParams.sortingParams.sort.length > 0){
       $scope.sort = $stateParams.sortingParams.sort;
     }
     else{
@@ -793,12 +793,13 @@ angular.module('bekApp')
     };
 
     $scope.saveBeforePrint = function(){
-      if($scope.addToOrderForm.$pristine){
+      if($scope.addToOrderForm.$pristine && $scope.selectedCart.id !== 'New'){
         $scope.openPrintOptionsModal($scope.selectedList, $scope.selectedCart);
       }
       else{
         if($scope.selectedCart.id === 'New'){
         $scope.createdFromPrint = true;
+        $scope.addToOrderForm.$setDirty();
       }         
       $scope.validateAndSave().then(function(resp){
         if($scope.isRedirecting(resp)){
