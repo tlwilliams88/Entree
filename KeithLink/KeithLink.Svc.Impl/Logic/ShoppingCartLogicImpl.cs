@@ -282,8 +282,8 @@ namespace KeithLink.Svc.Impl.Logic
 
                     foreach (var item in list.Items) {
                         int qty = (int)item.Quantity;
-                        int pack = 1;
-                        int.TryParse(item.Pack, out pack);
+                        int pack;
+                        if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
 
                         list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
                     }
@@ -307,8 +307,8 @@ namespace KeithLink.Svc.Impl.Logic
 
             foreach (var item in cart.Items) {
                 int qty = (int)item.Quantity;
-                int pack = 1;
-                int.TryParse(item.Pack, out pack);
+                int pack;
+                if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
 
                 cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
             }
