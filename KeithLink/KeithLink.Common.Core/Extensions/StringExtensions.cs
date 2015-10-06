@@ -8,73 +8,120 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace KeithLink.Common.Core.Extensions
-{
-	public static class StringExtensions
-	{
-		public static Guid ToGuid(this string value)
-		{
-			var parsedValue = Guid.Empty;
+namespace KeithLink.Common.Core.Extensions {
+	public static class StringExtensions {
+        public static Guid ToGuid(this string value) {
+            var parsedValue = Guid.Empty;
 
-			if (!Guid.TryParse(value, out parsedValue))
-				return Guid.Empty;
+            if (!Guid.TryParse(value, out parsedValue))
+                return Guid.Empty;
 
-			return parsedValue;
-		}
+            return parsedValue;
+        }
 
-		public static DateTime? ToDateTime(this string value)
-		{
-			var parsedDate = new DateTime();
+        public static DateTime? ToDateTime(this string value) {
+            var parsedDate = new DateTime();
 
-			if (!DateTime.TryParse(value, out parsedDate))
-				return null;
+            if (!DateTime.TryParse(value, out parsedDate))
+                return null;
 
-			return parsedDate;
-		}
+            return parsedDate;
+        }
 
-		public static short? ToShort(this string value)
-		{
-			short parsedShort;
+        public static DateTime ToDateTime(this string value, DateTime defaultValue) {
+            var parsedDate = new DateTime();
 
-			if (!short.TryParse(value, out parsedShort))
-				return null;
+            if (!DateTime.TryParse(value, out parsedDate)) {
+                return defaultValue;
+            }
 
-			return parsedShort;
-		}
+            return parsedDate;
+        }
 
-		public static double? ToDouble(this string value)
-		{
-			double parsedDouble;
+        public static short? ToShort(this string value) {
+            short parsedShort;
 
-			if (!double.TryParse(value, out parsedDouble))
-				return null;
-			return parsedDouble;
-		}
+            if (!short.TryParse(value, out parsedShort))
+                return null;
 
-		public static decimal? ToDecimal(this string value)
-		{
-			decimal parsedDecimal;
+            return parsedShort;
+        }
 
-			if (!decimal.TryParse(value, out parsedDecimal))
-				return null;
-			return parsedDecimal;
-		}
+        public static short ToShort(this string value, short defaultValue) {
+            short parsedShort;
 
-		public static int? ToInt(this string value)
-		{
-			int parsedInt;
+            if (!short.TryParse(value, out parsedShort)) {
+                return defaultValue;
+            }
 
-			if (!int.TryParse(value, out parsedInt))
-				return null;
-			return parsedInt;
-		}
+            return parsedShort;
+        }
 
+        public static double? ToDouble(this string value) {
+            double parsedDouble;
 
-        public static long? ToLong( this string value ) {
+            if (!double.TryParse(value, out parsedDouble))
+                return null;
+            return parsedDouble;
+        }
+
+        public static double ToDouble(this string value, double defaultValue) {
+            double parsedDouble;
+
+            if (!double.TryParse(value, out parsedDouble))
+                return defaultValue;
+
+            return parsedDouble;
+        }
+
+        public static decimal? ToDecimal(this string value) {
+            decimal parsedDecimal;
+
+            if (!decimal.TryParse(value, out parsedDecimal))
+                return null;
+            return parsedDecimal;
+        }
+
+        public static decimal ToDecimal(this string value, decimal defaultValue) {
+            decimal parsedDecimal;
+
+            if (!decimal.TryParse(value, out parsedDecimal))
+                return defaultValue;
+
+            return parsedDecimal;
+        }
+
+        public static int? ToInt(this string value) {
+            int parsedInt;
+
+            if (!int.TryParse(value, out parsedInt))
+                return null;
+            return parsedInt;
+        }
+
+        public static int ToInt(this string value, int defaultValue){
+            int parsedInt;
+
+            if (!int.TryParse(value, out parsedInt))
+                return defaultValue;
+            return parsedInt;
+        }
+
+        public static long? ToLong(this string value) {
             long parsedLong;
 
-            if (!long.TryParse( value, out parsedLong )) {
+            if (!long.TryParse(value, out parsedLong)) {
                 return null;
+            }
+
+            return parsedLong;
+        }
+
+        public static long ToLong(this string value, long defaultValue) {
+            long parsedLong;
+
+            if (!long.TryParse(value, out parsedLong)) {
+                return defaultValue;
             }
 
             return parsedLong;

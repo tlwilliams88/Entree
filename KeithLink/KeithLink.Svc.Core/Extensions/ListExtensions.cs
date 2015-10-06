@@ -130,12 +130,9 @@ namespace KeithLink.Svc.Core.Extensions {
                 item.CasePrice = i.CasePrice.ToDouble().Value;
                 item.PackagePrice = i.PackagePrice.ToDouble().Value;
 
-                int pack;
-                if (!int.TryParse(i.Pack, out pack)) { pack = 1; }
-
                 item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
                                                        (i.Each ?? false), i.CatchWeight, i.AverageWeight,
-                                                       pack);
+                                                       i.Pack.ToInt(1));
 
                 items.Add( item );
             }

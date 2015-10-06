@@ -1,9 +1,10 @@
 ﻿// KeithLink
+using KeithLink.Common.Core.Extensions;
+
 using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 
-using KeithLink.Common.Core.Extensions;
 
 // Core
 using System;
@@ -36,12 +37,9 @@ namespace KeithLink.Svc.Core.Extensions.ShoppingCart {
                 n.CasePrice = i.CasePrice.ToDouble().Value;
                 n.PackagePrice = i.PackagePrice.ToDouble().Value;
 
-                int pack;
-                if(!int.TryParse(i.Pack, out pack)){ pack = 1;}
-
                 n.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
                                                     i.Each, i.CatchWeight, i.AverageWeight,
-                                                    pack);
+                                                    i.Pack.ToInt(1));
 
                 newList.Add( n );
             }
