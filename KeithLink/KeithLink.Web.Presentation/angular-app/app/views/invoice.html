@@ -223,14 +223,14 @@
             </td>
             <td ng-if="!viewingAllCustomers" class="hidden-mobile-visible-print datepicker">
             <a 
-              ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"               
+              ng-class="{'hidden-icon' : ((invoice.statusdescription === 'Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"               
               ng-if="invoice.userCanPayInvoice && !invoice.showDatePicker && !isInternalAccountAdminUser"
               ng-mouseenter="invoice.showDatePicker=true"
               class="icon-calendar text-right">
             </a>
             <a
                 id="datePickerWithOptions"
-                ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"
+                ng-class="{'hidden-icon' : ((invoice.statusdescription === 'Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"
                 ng-click="openDatepicker = true"
                 ng-if="invoice.userCanPayInvoice && invoice.showDatePicker && !isInternalAccountAdminUser"
                 class="icon-calendar text-right"                
@@ -342,14 +342,13 @@
                 </tr> -->
                 <tr ng-if="!viewingAllCustomers">
                   <td>
-                    Schedule Date
+                    Schedule<br>
+                    Date
                   </td>
-                  <td  ng-if="invoice.userCanPayInvoice && invoice.statusdescription !='Past Due' && invoice.statusdescription != 'Payment Pending'" class="datepicker">
+                  <td  ng-if="invoice.userCanPayInvoice" class="datepicker">
                   <a
-                    ng-class="{'hidden-icon' : ((invoice.statusdescription =='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) || viewingAllCustomers)}"
                     ng-click="openDatepicker = true"              
-                    ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser"                   
-                    class="icon-calendar text-right"                
+                    ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser && !(invoice.statusdescription ==='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) && !viewingAllCustomers"       class="icon-calendar text-right"                
                     datepicker-popup="{{datepickerOptions.options.dateFormat}}"
                     ng-model="invoice.date"
                     ng-change="toggleSelect(invoice, 'date'); validateBatch()"
@@ -359,11 +358,12 @@
                     datepicker-options="datepickerOptions.options"
                     date-disabled="disabled(date, mode)"
                     close-text="Close"></a>
-                  </td>
-              <td class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !== 'Past Due' && invoice.statusdescription !== 'Payment Pending' && invoice.date">{{invoice.date | formatDate}}</td>
-              <td class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due'">{{invoice.date || tomorrow | formatDate}}</td>
-              <td class = "date-picker-field" ng-if="invoice.statusdescription === 'Payment Pending'">{{invoice.date || invoice.pendingtransaction.date | formatDate}}</td>             
-                </tr>
+                 
+              <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription !== 'Past Due' && invoice.statusdescription !== 'Payment Pending' && invoice.date">{{invoice.date | formatDate}}</span>
+              <span class = "date-picker-field" ng-if="invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due'">{{invoice.date || tomorrow | formatDate}}</span>
+              <span class = "date-picker-field" ng-if="invoice.statusdescription === 'Payment Pending'">{{invoice.date || invoice.pendingtransaction.date | formatDate}}</span>             
+                 </td>
+               </tr>
                 <tr ng-if="!viewingAllCustomers && accounts.length">
                   <td ng-if="accounts.length >= 1 && invoice.statusdescription !== 'Paid'">
                     Bank Account
