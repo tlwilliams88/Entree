@@ -345,7 +345,7 @@
                     Schedule<br>
                     Date
                   </td>
-                  <td  ng-if="invoice.userCanPayInvoice" class="datepicker">
+                  <td class="datepicker">
                   <a
                     ng-click="openDatepicker = true"              
                     ng-if="invoice.userCanPayInvoice && !isInternalAccountAdminUser && !(invoice.statusdescription ==='Past Due' && (invoice.amount > 0 || currDate > invoice.maxPaymentDate)) && !viewingAllCustomers"       class="icon-calendar text-right"                
