@@ -12,8 +12,8 @@
   <div class="row">
     <div class="col-md-4 col-md-push-8">
       <!-- Account Summary -->
-      <div class="info-box account-summary-info" ng-if="canPayInvoices">
-        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser" class="pull-right btn btn-primary btn-lg">Pay Now</a>
+      <div class="info-box" ng-class="{ 'account-summary-info': canViewOrders}" ng-if="canPayInvoices">
+        <a ui-sref="menu.invoice" ng-hide="isInternalAccountAdminUser || hidePayNowButton" class="pull-right btn btn-primary btn-lg">Pay Now</a>
         <h4><strong>Account Balance</strong></h4>
         <div loading-spinner="loadingAccountBalance"></div>
         <div ng-show="!loadingAccountBalance">
@@ -64,7 +64,7 @@
               </div>
               <div class="notification__message">
                 {{notification.subject}}
-                <div class="timestamp"> {{notification.messagecreated | formatDate: 'h:mma'}}</div>
+                <div class="timestamp"> {{notification.messagecreated | formatDateWithTimezone: 'h:mma'}}</div>
               </div>
             </div>
           </div>
@@ -93,7 +93,7 @@
         <div class="row no-margin">
           <div class="col-md-3 order-col">
             <a ui-sref="menu.cart.items({cartId: cart.id})" class="order-col__number">{{cart.name}}</a>
-            <span class="order-col__date" style="font-size:11px;">{{cart.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
+            <span class="order-col__date" style="font-size:11px;">{{cart.createddate | formatDateWithTimezone}}</span>
           </div>
           <div class="col-md-3 table-col">
             <span>{{(cart.requestedshipdate || 'N/A') | formatDate}}</span>
@@ -136,7 +136,7 @@
           <div class="row no-margin">
             <div class="col-md-3 order-col">
               <div class="order-col__number" order-link></div>
-              <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}</span>
+              <span class="order-col__date" style="font-size:11px;">{{order.createddate | formatDateWithTimezone}}</span>
             </div>
             <div class="col-md-2 table-col nowrap">
               <span ng-if="order.deliverydate != null">{{order.deliverydate | formatDate}}</span>
@@ -200,7 +200,7 @@
                 <div class="order-col__number" order-link></div>
               </div>
               <div class="col-xs-6 order-col__date">
-                <span class="icon-calendar"></span> {{cart.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}
+                <span class="icon-calendar"></span> {{cart.createddate | formatDateWithTimezone}}
               </div>
             </div>
           </div>
@@ -250,7 +250,7 @@
                 <div class="order-col__number" order-link></div>
               </div>
               <div class="col-xs-6 order-col__date">
-                <span class="icon-calendar"></span> {{order.createddate | formatDate:'ddd, MMM D, YYYY h:mma'}}
+                <span class="icon-calendar"></span> {{order.createddate | formatDateWithTimezone}}
               </div>
             </div>
           </div>

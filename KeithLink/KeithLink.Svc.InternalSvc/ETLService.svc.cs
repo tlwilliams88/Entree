@@ -1,6 +1,7 @@
 ﻿// KeithLink
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.ETL;
+using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.InternalSvc.Interfaces;
 
@@ -24,16 +25,17 @@ namespace KeithLink.Svc.InternalSvc
 
         private readonly ICatalogLogic categoryLogic;
         private readonly ICustomerLogic customerLogic;
-        private readonly IElasticSearchCategoriesImport _esCategoriesImportLogic;
-        private readonly IElasticSearchHouseBrandsImport _esHouseBrandsImportLogic;
-        private readonly IElasticSearchItemImport _esItemImportLogic;
+        private readonly ICategoriesImport _esCategoriesImportLogic;
+        private readonly IHouseBrandsImport _esHouseBrandsImportLogic;
+        private readonly IItemImport _esItemImportLogic;
         private readonly IListsImportLogic _listImportLogic;
 
         #endregion
 
         #region constructor
 
-        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, IElasticSearchCategoriesImport esCategoriesImport, IElasticSearchHouseBrandsImport esHouseBrandsImport, IElasticSearchItemImport esItemImport, IListsImportLogic listImportLogic)
+        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, ICategoriesImport esCategoriesImport, IHouseBrandsImport esHouseBrandsImport, IItemImport esItemImport, IListsImportLogic listImportLogic)
+
         {
             this.categoryLogic = categoryLogic;
             this.customerLogic = customerLogic;
@@ -47,6 +49,10 @@ namespace KeithLink.Svc.InternalSvc
 
         #region methods
 
+        /// <summary>
+        /// PRocess catalog data
+        /// </summary>
+        /// <returns></returns>
         public bool ProcessCatalogData()
         {
             Task.Factory.StartNew(() => categoryLogic.ImportCatalog()).ContinueWith((t) =>
@@ -54,7 +60,6 @@ namespace KeithLink.Svc.InternalSvc
 
             return true;
         }
-
         /// <summary>
         /// Process staging customer data
         /// </summary>

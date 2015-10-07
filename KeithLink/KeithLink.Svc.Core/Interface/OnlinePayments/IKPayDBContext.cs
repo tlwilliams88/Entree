@@ -27,6 +27,7 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments {
         DbSet<Branch> Branches { get; set; }
         DbSet<Dsr> DSRs { get; set; }
         DbSet<KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF.Invoice> Invoices { get; set; }
+        DbSet<KeithLink.Svc.Core.Models.OnlinePayments.Invoice.EF.InvoiceHeader> InvoiceHeaders { get; set; }
         DbSet<PaymentTransaction> PaymentTransactions { get; set; }
         DbSet<ProcessLog> ProcessLogs { get; set; }
         DbSet<State> States { get; set; }

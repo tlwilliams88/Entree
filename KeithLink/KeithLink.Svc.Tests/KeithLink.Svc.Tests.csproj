@@ -75,8 +75,6 @@
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\Foundation_Assemblies\CommerceServer.Foundation.Presentation.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
-    <Reference Include="EntityFramework.BulkInsert, Version=6.0.2.8, Culture=neutral, PublicKeyToken=630a17433349cb76, processorArchitecture=MSIL" />
-    <Reference Include="EntityFramework.MappingAPI, Version=6.0.0.7, Culture=neutral, PublicKeyToken=7ee2e825d201459e, processorArchitecture=MSIL" />
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL" />
     <Reference Include="FizzWare.NBuilder">
       <HintPath>..\packages\NBuilder.3.0.1.1\lib\FizzWare.NBuilder.dll</HintPath>
@@ -114,6 +112,7 @@
   <ItemGroup>
     <Compile Include="AutoFac\DependencyMap.cs" />
     <Compile Include="Email\EmailTemplateTest.cs" />
+    <Compile Include="Helpers\PricingHelperTests.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalDivisionLogicTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />
@@ -123,16 +122,19 @@
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />
     <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />
+    <Compile Include="Logic\Profile\ProfileSettingsTests.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicTests.cs" />
     <Compile Include="Logic\ConfirmationLogicImplTests.cs" />
+    <Compile Include="Logic\Dsr\DsrLogicTests.cs" />
     <Compile Include="Logic\UserProfileLogicImplTests.cs" />
-    <Compile Include="Mock\BasketRepositoryMock.cs" />
-    <Compile Include="Mock\UnitOfWorkMock.cs" />
+    <Compile Include="Repositories\Mock\BasketRepositoryMock.cs" />
+    <Compile Include="Repositories\Mock\UnitOfWorkMock.cs" />
     <Compile Include="PowerMenu\PowerMenuRequest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Catalog\SiteCatalogTests.cs" />
     <Compile Include="Repositories\Catalog\CategoryImageRepositoryTests.cs" />
     <Compile Include="Repositories\ContentManagement\ContentManagementExternalRepositoryImplTests.cs" />
+    <Compile Include="Repositories\InternalCatalog\ElasticSearchRepoTests.cs" />
     <Compile Include="Repositories\Invoices\ImagingRepoTests.cs" />
     <Compile Include="Repositories\OnlinePayments\CustomerBankRepositoryTests.cs" />
     <Compile Include="Repositories\OnlinePayments\KPayInvoiceRepositoryTests.cs" />
@@ -142,9 +144,12 @@
     <Compile Include="Repositories\Order\PurchaseOrderRepositoryTest.cs" />
     <Compile Include="Repositories\Price\PriceRepositoryImplTests.cs" />
     <Compile Include="Repositories\Price\PriceCacheRepositoryImplTests.cs" />
+    <Compile Include="Repositories\Profile\CustomerRepositoryTests.cs" />
     <Compile Include="Repositories\Profile\ExternalUserDomainRepositoryTests.cs" />
     <Compile Include="Repositories\Profile\InternalUserDomainRepositoryTests.cs" />
     <Compile Include="Repositories\Profile\CustomerContainerRepositoryTests.cs" />
+    <Compile Include="Repositories\Profile\ProfileSettingsRepositoryTest.cs" />
+    <Compile Include="Repositories\Profile\DsrRepositoryTests.cs" />
     <Compile Include="Repositories\Profile\UserProfileRepositoryTests.cs" />
     <Compile Include="Repositories\Catalog\ProductImageRepositoryTests.cs" />
     <Compile Include="Repositories\Order\OrderSocketConnectionRepositoryTests.cs" />

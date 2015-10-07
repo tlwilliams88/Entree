@@ -61,14 +61,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="angular-app\.editorconfig" />
-    <Content Include="angular-app\.jshintrc" />
-    <Content Include="angular-app\app\404.html" />
-    <Content Include="angular-app\app\favicon.ico" />
-    <Content Include="angular-app\app\index.html" />
-    <Content Include="angular-app\app\robots.txt" />
-    <Content Include="angular-app\build.bat" />
-    <Content Include="angular-app\Gruntfile.js" />
+    <Content Include="angular-app\app\scripts\directives\EndRepeat.js" />
+    <Content Include="angular-app\app\scripts\directives\MatchHeaderColumnWidth.js" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
@@ -80,9 +74,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="angular-app\app\lib\icomoon\css\" />
-    <Folder Include="angular-app\test\test-results\" />
-    <Folder Include="angular-app\test\unit\controllers\" />
     <Folder Include="app\" />
     <Folder Include="App_Data\" />
     <Folder Include="App_Start\" />
@@ -93,7 +84,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="angular-app\package.json" />
     <None Include="Properties\PublishProfiles\Demo.pubxml">
       <SubType>Designer</SubType>
     </None>
@@ -173,7 +163,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>59194</DevelopmentServerPort>
+          <DevelopmentServerPort>58489</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

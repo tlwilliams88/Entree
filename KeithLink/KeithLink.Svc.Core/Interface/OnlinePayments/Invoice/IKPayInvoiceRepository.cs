@@ -29,5 +29,6 @@ namespace KeithLink.Svc.Core.Interface.OnlinePayments.Invoice {
         
         IEnumerable<Core.Models.OnlinePayments.Invoice.EF.Invoice> ReadAll();
 
+        IEnumerable<Core.Models.OnlinePayments.Invoice.EF.InvoiceHeader> ReadAllHeaders();
     }
 }

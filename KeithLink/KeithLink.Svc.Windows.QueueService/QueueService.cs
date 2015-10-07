@@ -94,9 +94,9 @@ namespace KeithLink.Svc.Windows.QueueService
 
 		private void TerminateNotificationsThread()
 		{
-			if (_notificationQueueConsumer != null)
-				_notificationQueueConsumer.Stop();
-
+            if (_notificationQueueConsumer != null)
+                _notificationQueueConsumer.Stop();
+            
 			if (notificationScope != null)
 				notificationScope.Dispose();
 		}

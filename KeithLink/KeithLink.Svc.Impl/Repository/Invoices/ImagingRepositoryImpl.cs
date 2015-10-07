@@ -83,7 +83,7 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
         /// <remarks>
         /// jwames - 3/30/2015 - original code
         /// </remarks>
-        public string GetDocumentId(string sessionToken, UserSelectedContext customerInfo, string invoiceNumber) {
+        public List<string> GetDocumentIds(string sessionToken, UserSelectedContext customerInfo, string invoiceNumber) {
             if (sessionToken.Length == 0) { throw new ArgumentException("SessionToken cannot be blank. Reauthentication might be necessary."); }
             if (customerInfo.BranchId.Length == 0) { throw new ArgumentException("Branch cannot be blank"); }
             if (customerInfo.CustomerId.Length == 0) { throw new ArgumentException("Customer number cannot be blank"); }
@@ -109,9 +109,13 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
                         if (jsonResponse.resultRows.Count == 0) {
                             throw new ApplicationException("Document not found");
                         } else {
-                            string docId = jsonResponse.resultRows[0].fields.Where(item => item.columnId.Equals("8")).FirstOrDefault().value;
+                            List<string> docIds = new List<string>();
 
-                            return docId;
+                            foreach (var result in jsonResponse.resultRows) {
+                                docIds.AddRange(result.fields.Where(item => item.columnId.Equals("8")).Select(i => i.value).ToList());
+                            }
+
+                            return docIds;
                         }
                     } else {
                         throw new ApplicationException("Invalid response from server");
@@ -214,31 +218,42 @@ namespace KeithLink.Svc.Impl.Repository.Invoices {
             }
         }
 
-		private Bitmap ResizeImage(Bitmap imgToResize, Size size)
-		{
+        /// <summary>
+        /// resizes the image to specified width and height
+        /// </summary>
+        /// <param name="imgToResize">the raw image as a bitmap object </param>
+        /// <param name="size">the width and height of the image</param>
+        /// <returns>the resized image</returns>
+        private Bitmap ResizeImage(Bitmap imgToResize, Size size) {
+            Bitmap b = new Bitmap(size.Width, size.Height);
 
-			Bitmap b = new Bitmap(size.Width, size.Height);
-			using (Graphics g = Graphics.FromImage((Image)b))
-			{
-				g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-				g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);
-			}
-			return b;
-		}
+            using (Graphics g = Graphics.FromImage((Image)b)) {
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+                g.DrawImage(imgToResize, 0, 0, size.Width, size.Height);
+            }
+            
+            return b;
+        }
 
-		private Rectangle GetResizedRectangleWithAspectRatio(Bitmap image, double targetWidth, double targetheight)
-		{
-			double ratioX = (double)targetWidth / (double)image.Width;
-			double ratioY = (double)targetheight / (double)image.Height;
-			// use whichever multiplier is smaller 
-			double ratio = ratioX < ratioY ? ratioX : ratioY;
+        /// <summary>
+        /// get the dimensions of an image after resizing while maintaing the same aspect ratio
+        /// </summary>
+        /// <param name="image">the raw image as a bitmap object</param>
+        /// <param name="targetWidth">the max width</param>
+        /// <param name="targetheight">the max height</param>
+        /// <returns>rectangle object with the scaled dimensions</returns>
+        private Rectangle GetResizedRectangleWithAspectRatio(Bitmap image, double targetWidth, double targetheight) {
+            double ratioX = (double)targetWidth / (double)image.Width;
+            double ratioY = (double)targetheight / (double)image.Height;
+            // use whichever multiplier is smaller 
+            double ratio = ratioX < ratioY ? ratioX : ratioY;
 
-			// now we can get the new height and width 
-			int newHeight = Convert.ToInt32(image.Height * ratio);
-			int newWidth = Convert.ToInt32(image.Width * ratio);
+            // now we can get the new height and width 
+            int newHeight = Convert.ToInt32(image.Height * ratio);
+            int newWidth = Convert.ToInt32(image.Width * ratio);
 
-			return new Rectangle(0, 0, newWidth, newHeight);
-		}
+            return new Rectangle(0, 0, newWidth, newHeight);
+        }
 
         #endregion
     }

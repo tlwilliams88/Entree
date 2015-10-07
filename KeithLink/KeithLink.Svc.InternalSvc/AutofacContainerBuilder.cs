@@ -20,6 +20,7 @@ using KeithLink.Svc.Core.Models.SiteCatalog;
 #region using__interface
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.ETL;
+using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Lists;
@@ -267,9 +268,9 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
 
             // ElasticSearch ETL 
-            builder.RegisterType<ElasticSearchItemImportLogicImpl>().As<IElasticSearchItemImport>();
-            builder.RegisterType<ElasticSearchCategoriesImportLogicImpl>().As<IElasticSearchCategoriesImport>();
-            builder.RegisterType<ElasticSearchHouseBrandsImportLogicImpl>().As<IElasticSearchHouseBrandsImport>();
+            builder.RegisterType<ItemImportLogicImpl>().As<IItemImport>();
+            builder.RegisterType<CategoriesImportLogicImpl>().As<ICategoriesImport>();
+            builder.RegisterType<HouseBrandsImportLogicImpl>().As<IHouseBrandsImport>();
 
             // List ETL
             builder.RegisterType<ListImportLogicImpl>().As<IListsImportLogic>();
@@ -277,6 +278,10 @@ namespace KeithLink.Svc.InternalSvc
             // Item History
             builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
 
+            // Profile Settings
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            
             return builder.Build();
         }
 	}

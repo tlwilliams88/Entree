@@ -48,7 +48,7 @@ margin-top:20px;
   }
 
   .billing-info{
-
+    margin-left:15px;
     display:inline-block; 
     white-space:nowrap;
 
@@ -81,6 +81,13 @@ margin-top:20px;
   }
 }
 
+.billing:after{
+  content: "";
+  display: inline-block;
+  width: 100%;
+}
+
+
 .accounts-btn{
   max-width:90px; 
   margin-right:30px;
@@ -88,6 +95,14 @@ margin-top:20px;
 
   .update-btn {
     margin-top:10px;
-  } 
+  }
 
+.tooltip-inner{
+  width:100px;
+  word-wrap:break-word;
+}
+
+.top-offset{
+  margin-top:15px;
+}
 

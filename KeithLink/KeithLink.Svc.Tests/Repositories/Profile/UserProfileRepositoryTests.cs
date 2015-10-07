@@ -1,10 +1,16 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿// KeithLink
+using KeithLink.Common.Impl.AuditLog;
+using KeithLink.Common.Impl.Logging;
+
+using KeithLink.Svc.Core.Models;
 using KeithLink.Svc.Core.Models.Profile;
+
+using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.Profile;
+
+// Core
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KeithLink.Svc.Impl.Repository.Cache;
-using KeithLink.Common.Impl.AuditLog;
 
 namespace KeithLink.Svc.Test.Repositories.Profile
 {
@@ -47,6 +53,17 @@ namespace KeithLink.Svc.Test.Repositories.Profile
 			KeithLink.Svc.Core.Models.Generated.UserProfile userProfile = _profile.GetCSProfile("corp-ssa-entreadmin@benekeith.com");
 
             Assert.IsTrue(userProfile != null);
+        }
+
+        [TestMethod]
+        public void GetProfileSettings() {
+			KeithLink.Svc.Core.Models.Generated.UserProfile userProfile = _profile.GetCSProfile("corp-ssa-entreadmin@benekeith.com");
+
+            //KeithLink.Svc.Core.Models.Profile.EF.Settings settings = _profile.GetUserPreferences( userProfile.Id );
+
+            //Assert.IsNotNull( settings );
+
+            Assert.IsTrue( true );
         }
         #endregion
     }

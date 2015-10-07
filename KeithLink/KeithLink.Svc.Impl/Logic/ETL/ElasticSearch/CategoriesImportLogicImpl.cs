@@ -3,6 +3,7 @@ using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 
 using KeithLink.Svc.Core.Interface.ETL;
+using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 
 using KeithLink.Svc.Impl.Models;
@@ -18,7 +19,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.ETL {
-    public class ElasticSearchCategoriesImportLogicImpl : IElasticSearchCategoriesImport {
+    public class CategoriesImportLogicImpl : ICategoriesImport {
 
         #region attributes
 
@@ -30,7 +31,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         #region constructor
 
-        public ElasticSearchCategoriesImportLogicImpl(IStagingRepository stagingRepository,
+        public CategoriesImportLogicImpl(IStagingRepository stagingRepository,
                                                       IElasticSearchRepository esRepository,
                                                       IEventLogRepository eventLogRepository) {
 

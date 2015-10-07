@@ -78,13 +78,10 @@
   </div>
   <div class="hidden-xs hidden-sm hidden-print page-header-bar__actions">
 
-    <div class="pull-right">
+    <div class="pull-right" header-buttons >
       <div class="page-header__buttons">
         <a title="Print" class="btn btn-default btn-icon" ng-click="print()"><span class="icon-printer"></span></a>
         <a title="Import" class="btn btn-default btn-icon" ng-click="openOrderImportModal()"><span class="icon-publish"></span></a>
-      </div>
-      <div class="page-header__orders" ng-if="isOrderEntryCustomer">
-        <a ui-sref="menu.cart.items({ cartId: 1 })"><span class="large-icon icon-truck"></span></a>
       </div>
     </div>
 
@@ -98,7 +95,7 @@
       <div class="info-box">
         
         <div class="row">
-          <div class="col-xs-12">
+          <div class="col-xs-12 hidden-print">
             
             <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
             <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
@@ -130,7 +127,7 @@
             <div class="btn-group" dropdown is-open="showShipDates">
               <p class="form-control-static">
                 {{currentCart.requestedshipdate | formatDate}}
-                <button type="button" class="btn-no-style dropdown-toggle"> <span class="text-blue icon-calendar"></span></button>
+                <button type="button" class="btn-no-style dropdown-toggle hidden-print"> <span class="text-blue icon-calendar"></span></button>
                 <div class="dropdown-menu">
                   <table class="table no-margin">
                     <tr>
@@ -157,12 +154,12 @@
             <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date ng-if="!isInternalUser">
             <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" ng-if="isInternalUser">
           </div>
-        </div>
+        </div> 
 
         <div class="form-group">
           <label for="shipDate" class="col-sm-3 control-label">PO #:</label>
           <div class="col-sm-6">
-            <input class="form-control" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
+            <input class="form-control print-clean" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
           </div>
         </div>
 
@@ -340,7 +337,7 @@
               Ext Price
             </th>
             <th class="large-icon icon-col">
-              <a ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+              <a ng-click="showFilter = !showFilter;"><span class="icon-filter hidden-print"></span></a>
             </th>
           </tr>
         </thead>
@@ -399,6 +396,7 @@
             <td class="hidden-mobile-visible-print " item-icons>
             </td>
             <td class="input-col nowrap">
+              <span class="visible-print">{{item.quantity}}</span>
               <ng-form class="hidden-print" name="quantityForm">
                 <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
                 <div counter ng-model="item.quantity" min="0" length="5" ></div>

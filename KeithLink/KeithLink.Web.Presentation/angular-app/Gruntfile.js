@@ -472,7 +472,8 @@ module.exports = function (grunt) {
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: false,
-                    lastListStorageTimeout: 48
+                    lastListStorageTimeout: 48,
+                    enableDebugInfo: true
                   }
               }
           },
@@ -486,7 +487,8 @@ module.exports = function (grunt) {
                     googleAnalytics: '<%= config.environment.demo.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.demo.cognosUrl %>',
                     mobileApp: false,
-                    lastListStorageTimeout: 48
+                    lastListStorageTimeout: 48,
+                    enableDebugInfo: true
                   }
               }
           },
@@ -502,7 +504,8 @@ module.exports = function (grunt) {
                     username: 'sabroussard@somecompany.com',
                     password: 'L1ttleStev1e',
                     mobileApp: false,
-                    lastListStorageTimeout: 48
+                    lastListStorageTimeout: 48,
+                    enableDebugInfo: true
                   }
               }
           },
@@ -516,7 +519,8 @@ module.exports = function (grunt) {
                     googleAnalytics: '<%= config.environment.test.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.test.cognosUrl %>',
                     mobileApp: false,
-                    lastListStorageTimeout: 48
+                    lastListStorageTimeout: 48,
+                    enableDebugInfo: false
                   }
               }
           },
@@ -530,7 +534,8 @@ module.exports = function (grunt) {
                     googleAnalytics: '<%= config.environment.prod.googleAnalytics.web %>',
                     cognosUrl: '<%= config.environment.prod.cognosUrl %>',
                     mobileApp: false,
-                    lastListStorageTimeout: 48
+                    lastListStorageTimeout: 48,
+                    enableDebugInfo: false
                   }
               }
           },
@@ -543,7 +548,8 @@ module.exports = function (grunt) {
                       googleAnalytics: '<%= config.environment.stage.cognosUrl %>',
                       loggingEnabled: false,
                       cognosUrl: 'UA-58495303-1',
-                      lastListStorageTimeout: 48
+                      lastListStorageTimeout: 48,
+                      enableDebugInfo: false
                   }
               }
           }

@@ -14,7 +14,7 @@
 
 <div class="page-content inventory-report">
   
-  <div class="row">
+  <div style="max-width:100px;" class="row">
     <a class="col-xs-12 hidden-print text-large btn-link" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
   </div>
 
@@ -30,7 +30,7 @@
 
         <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg">
 
-        <button type="submit" class="btn btn-primary btn-lg" ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
+        <button type="submit" class="btn btn-primary btn-lg" ng-disabled="!itemNumber"  ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
         
         <div class="lists-dropdown btn-group hidden-print" dropdown is-open="status.listactions">
           <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
@@ -88,7 +88,7 @@
             <td class="hidden-mobile-visible-print">{{::item.label}}</td>
             <td class="input-col nowrap">
               <!-- <div type="text" counter allow-one-positive-decimal min="0" length="5" ng-model="item.quantity"></div> -->
-              <input type="text" allow-one-positive-decimal class="input-number" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity">
+              <input type="text" allow-one-positive-decimal class="input-number tabstop" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity">
             </td>
             <td class="input-col hidden-xs hidden-sm">
               <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">

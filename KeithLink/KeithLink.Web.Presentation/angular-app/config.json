@@ -17,6 +17,8 @@
       "password": "L1ttleStev1e",
       "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
       "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "enableDebugInfo": true,
       "googleAnalytics": {
         "web": "UA-58495462-2",
         "mobile": "UA-58495462-4"
@@ -29,6 +31,8 @@
       "loggingEnabled": false,
       "cognosUrl": "http://corpmisdev2d.bekco.com/ibmcognos/setCookie.htm",
       "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "enableDebugInfo": false,
       "googleAnalytics": {
         "web": "UA-58495462-2",
         "mobile": "UA-58495462-4"
@@ -43,6 +47,8 @@
       "password": "L1ttleStev1e",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "enableDebugInfo": true,
       "googleAnalytics": {
         "web": "UA-58495462-2",
         "mobile": "UA-58495462-4"
@@ -55,6 +61,8 @@
       "loggingEnabled": true,
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "enableDebugInfo": false,
       "phonegapAppId": "com.benekeith.entree",
       "googleAnalytics": {
         "web": "UA-58495462-2",
@@ -67,6 +75,8 @@
 	    "apiEndpoint": "https://shop.benekeith.com/api",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
       "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "enableDebugInfo": false,
       "loggingEnabled": false,
       "phonegapAppId": "com.benekeith.entreeprod",
       "googleAnalytics": {
@@ -78,7 +88,9 @@
       "name": "stage",
       "apiKey": "web_stage_v1",
       "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
-      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "enableDebugInfo": false,
+      "loggingEnabled": false,
       "loggingEnabled": false,
       "googleAnalytics": {
         "web": "UA-58495303-1",

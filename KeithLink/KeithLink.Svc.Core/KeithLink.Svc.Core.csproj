@@ -142,11 +142,15 @@
     <Compile Include="Enumerations\Messaging.cs" />
     <Compile Include="Enumerations\ListItemStatus.cs" />
     <Compile Include="Enumerations\OrderHistory.cs" />
+    <Compile Include="Enumerations\Profile.cs" />
     <Compile Include="Events\EventArgs\ExceptionEventArgs.cs" />
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
+    <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
+    <Compile Include="Helpers\PagingHelper.cs" />
     <Compile Include="Helpers\PricingHelper.cs" />
+    <Compile Include="Extensions\SettingsExtensions.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
@@ -189,9 +193,9 @@
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
-    <Compile Include="Interface\ETL\IElasticSearchCategoriesImport.cs" />
-    <Compile Include="Interface\ETL\IElasticSearchHouseBrandsImport.cs" />
-    <Compile Include="Interface\ETL\IElasticSearchItemImport.cs" />
+    <Compile Include="Interface\ETL\ElasticSearch\ICategoriesImport.cs" />
+    <Compile Include="Interface\ETL\ElasticSearch\IHouseBrandsImport.cs" />
+    <Compile Include="Interface\ETL\ElasticSearch\IItemImport.cs" />
     <Compile Include="Interface\ETL\IListsImportLogic.cs" />
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
@@ -222,6 +226,7 @@
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />
+    <Compile Include="Interface\Profile\IAccountRepository.cs" />
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Interface\Profile\IDsrAliasLogic.cs" />
     <Compile Include="Interface\Profile\IDsrAliasRepository.cs" />
@@ -233,6 +238,8 @@
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
+    <Compile Include="Interface\Profile\ISettingsLogicImpl.cs" />
+    <Compile Include="Interface\Profile\ISettingsRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
@@ -273,15 +280,21 @@
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
     <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
+    <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />
     <Compile Include="Models\Profile\EF\DsrAlias.cs" />
     <Compile Include="Models\Profile\EF\MarketingPreference.cs" />
+    <Compile Include="Models\Profile\EF\Settings.cs" />
     <Compile Include="Models\Profile\MarketingPreferenceModel.cs" />
     <Compile Include="Models\Profile\ResetPasswordModel.cs" />
+    <Compile Include="Models\Profile\SettingsModel.cs" />
+    <Compile Include="Models\Profile\SettingsModelReturn.cs" />
     <Compile Include="Models\Profile\ValidateTokenModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationModel.cs" />
     <Compile Include="Models\Reports\InventoryValuationRequestModel.cs" />
+    <Compile Include="Models\ShoppingCart\ShoppingCartItemReportModel.cs" />
+    <Compile Include="Models\ShoppingCart\ShoppingCartReportModel.cs" />
     <Compile Include="Models\SingleSignOn\BaseAccessRequest.cs" />
     <Compile Include="Models\SingleSignOn\KbitCustomerAccessRequest.cs" />
     <Compile Include="Models\ImportFiles\BaseFileImportModel.cs" />
@@ -383,7 +396,6 @@
     <Compile Include="Interface\Orders\IPurchaseOrderRepository.cs" />
     <Compile Include="Interface\Orders\IBasketLogic.cs" />
     <Compile Include="Interface\Profile\ICustomerRepository.cs" />
-    <Compile Include="Interface\Profile\IAccountRepository.cs" />
     <Compile Include="Interface\Orders\IShipDateRepository.cs" />
     <Compile Include="Interface\Profile\ICustomerDomainRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileLogic.cs" />
@@ -557,6 +569,9 @@
     <Folder Include="ETL\" />
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

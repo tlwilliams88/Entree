@@ -6,6 +6,22 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Helpers {
     public static class PricingHelper {
+        public static double GetPrice(int qty, double casePrice, double splitPrice, 
+                                      bool each, bool catchWeight, double avgWeight, 
+                                      int pack){
+        if(pack == 0) {pack = 1;}
+
+        if (catchWeight) {
+                if (each) {
+                    return GetCatchweightPriceForPackage(qty, pack, avgWeight, splitPrice);
+                } else {
+                    return GetCatchweightPriceForCase(qty, avgWeight, casePrice);
+                }
+            } else {
+                return qty * (each ? splitPrice : casePrice);
+            }
+        }
+
         public static double GetCatchweightPriceForCase(int qty, double weight, double price) {
             return (weight * qty) * price;
         }

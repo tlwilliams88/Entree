@@ -15,6 +15,10 @@ input.input-number-mobile {
   height: 30px;
 }
 
+.checkbox-line{
+  bottom:7px
+}
+
 @mixin text-placeholder($color, $style) {
   ::-webkit-input-placeholder {
     color: $color !important;

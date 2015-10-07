@@ -114,12 +114,12 @@ namespace KeithLink.Svc.Impl.ETL
 			return gsData;
 		}
 
-
 		public DataTable ReadProprietaryItems()
 		{
 			return PopulateDataTable("[ETL].[ReadProprietaryItems]");
 		}
-		public DataTable ReadCustomers()
+
+        public DataTable ReadCustomers()
 		{
 			//Two possible ways for this to work. 
 			//1. The script below can be executed and the system can populate customers as usual, which will contain the scrubed customer names. This could also be be made into a Stored Procedure
@@ -244,7 +244,8 @@ namespace KeithLink.Svc.Impl.ETL
 
 			return contractItems;
 		}
-		public DataTable ReadWorksheetItems(string customerNumber, string divisionName)
+		
+        public DataTable ReadWorksheetItems(string customerNumber, string divisionName)
 		{
 			var worksheetItems = new DataTable();
 
@@ -278,12 +279,10 @@ namespace KeithLink.Svc.Impl.ETL
 			return PopulateDataTable("[ETL].[ReadDsrInfo]");
 		}
 
-
-		public DataTable ReadDsrImages()
+        public DataTable ReadDsrImages()
 		{
 			return PopulateDataTable("[ETL].[ReadDsrImage]");
 		}
-
 
 		public void ProcessContractItems()
 		{
@@ -312,5 +311,69 @@ namespace KeithLink.Svc.Impl.ETL
 				}
 			}
 		}
+
+        public bool ExecuteProfileObjectQuery(string query)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+                {
+                    conn.Open();
+
+                    using (var cmd = new SqlCommand(query.ToString(), conn))
+                    {
+
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                //eventLog.WriteErrorLog(String.Format("Etl:  Error updating profile object. {0} {1}", ex.Message, ex.StackTrace));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Helper function to populate data tables
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public DataTable ExecuteProfileObjectQueryReturn(string query)
+        {
+            var dataTable = new DataTable();
+            using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+            {
+                conn.Open();
+
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }
+            }
+            return dataTable;
+        }
+
+        /// <summary>
+        /// Import customers and addresses to CS
+        /// </summary>
+        public void ImportCustomersToCS()
+        {
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (var cmd = new SqlCommand("[ETL].[LoadOrgsAndAddressesToCS]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
 	}
 }

@@ -57,7 +57,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			var list = listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
 			if (exportRequest.Fields != null)
-				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, exportRequest.Fields, exportRequest.SelectedType);
+				exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type, 
+                                                               exportRequest.Fields, exportRequest.SelectedType);
 			return ExportModel<ListItemModel>(list.Items, exportRequest);				
 		}
 
@@ -408,6 +409,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 				options.Paging.Size = int.MaxValue;
 				options.Paging.From = 0;
+
+                if (options.Paging.Sort.Count == 1 && options.Paging.Sort[0].Field == null) {
+                    options.Paging.Sort = new List<SortInfo>();
+                }
 
 				var list = listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, options.Paging);
 

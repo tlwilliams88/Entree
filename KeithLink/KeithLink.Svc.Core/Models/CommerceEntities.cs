@@ -8064,6 +8064,82 @@ public partial class Organization : ICommerceEntity
         }
     }
 
+    /// <summary>
+    /// Gets or sets the NationalIdDesc property.
+    /// </summary>
+    /// <value>
+    /// The NationalIdDesc property from the property collection.
+    /// </value>
+    public virtual string NationalIdDesc
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.NationalIdDesc) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.NationalIdDesc, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the NationalNumberSubDesc property.
+    /// </summary>
+    /// <value>
+    /// The NationalNumberSubDesc property from the property collection.
+    /// </value>
+    public virtual string NationalNumberSubDesc
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.NationalNumberSubDesc) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.NationalNumberSubDesc, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the RegionalIdDesc property.
+    /// </summary>
+    /// <value>
+    /// The RegionalIdDesc property from the property collection.
+    /// </value>
+    public virtual string RegionalIdDesc
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.RegionalIdDesc) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.RegionalIdDesc, value);
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the RegionalNumberDesc property.
+    /// </summary>
+    /// <value>
+    /// The RegionalNumberDesc property from the property collection.
+    /// </value>
+    public virtual string RegionalNumberDesc
+    {
+        get
+        {
+            return this._commerceEntity.GetPropertyValue(PropertyName.RegionalNumberDesc) as string;
+        }
+
+        set
+        {
+            this._commerceEntity.SetPropertyValue(PropertyName.RegionalNumberDesc, value);
+        }
+    }
+
 	/// <summary>
     /// Gets or sets the ProfileSystemuserIdChangedBy property.
     /// </summary>
@@ -8305,6 +8381,26 @@ public partial class Organization : ICommerceEntity
         /// Constant for accessing IsKeithnetCustomer property.
         /// </summary>
         public const string IsKeithnetCustomer = "IsKeithnetCustomer";
+
+        /// <summary>
+        /// Constant for accessing NationalIdDesc property.
+        /// </summary>
+        public const string NationalIdDesc = "NationalIdDesc";
+
+        /// <summary>
+        /// Constant for accessing NationalNumberSubDesc property.
+        /// </summary>
+        public const string NationalNumberSubDesc = "NationalNumberSubDesc";
+
+        /// <summary>
+        /// Constant for accessing RegionalIdDesc property.
+        /// </summary>
+        public const string RegionalIdDesc = "RegionalIdDesc";
+
+        /// <summary>
+        /// Constant for accessing RegionalNumberDesc property.
+        /// </summary>
+        public const string RegionalNumberDesc = "RegionalNumberDesc";
 
         /// <summary>
         /// Constant for accessing ProfileSystem.user_id_changed_by property.
@@ -15000,6 +15096,25 @@ public partial class LineItem : ICommerceEntity
 		}
 	}
 
+    /// <summary>
+    /// Gets or sets the IsCombinedQuantity property.
+    /// </summary>
+    /// <value>
+    /// The IsCombinedQuantity property from the property collection.
+    /// </value>
+    public virtual bool? IsCombinedQuantity 
+    {
+        get 
+        {
+            return this._commerceEntity.GetPropertyValue( PropertyName.IsCombinedQuantity ) as bool?;
+        }
+
+        set 
+        {
+            this._commerceEntity.SetPropertyValue( PropertyName.IsCombinedQuantity, value );
+        }
+    }
+
 
 	/// <summary>
     /// Gets or sets the ProductCategory property.
@@ -15562,6 +15677,11 @@ public partial class LineItem : ICommerceEntity
         /// Constant for accessing QuantityShipped property.
         /// </summary>
 		public const string QuantityShipped = "QuantityShipped";
+
+        /// <summary>
+        /// Constant for accessing IsCombinedQuantity property.
+        /// </summary>
+        public const string IsCombinedQuantity = "IsCombinedQuantity";
 
 
 		/// <summary>

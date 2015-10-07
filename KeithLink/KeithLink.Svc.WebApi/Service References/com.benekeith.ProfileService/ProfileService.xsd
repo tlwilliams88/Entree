@@ -52,4 +52,26 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ResetPasswordModel" nillable="true" type="tns:ResetPasswordModel" />
+  <xs:complexType name="ArrayOfusersettings">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="usersettings" nillable="true" type="tns:usersettings" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfusersettings" nillable="true" type="tns:ArrayOfusersettings" />
+  <xs:complexType name="usersettings">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:user_settings">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="usersettings" nillable="true" type="tns:usersettings" />
+  <xs:complexType name="user_settings">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="key" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="userId" type="ser:guid" />
+      <xs:element minOccurs="0" name="value" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="user_settings" nillable="true" type="tns:user_settings" />
 </xs:schema>
