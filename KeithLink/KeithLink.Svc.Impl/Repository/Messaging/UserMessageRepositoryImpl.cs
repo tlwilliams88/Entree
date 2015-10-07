@@ -20,6 +20,10 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             return this.Entities.Where(a => a.UserId == user.UserId);
         }
 
+        public IEnumerable<UserMessage> ReadUnreadMessagesByUser( Core.Models.Profile.UserProfile user ) {
+            return this.Entities.Where( a => (a.UserId.Equals( user.UserId ) && a.MessageReadUtc.Equals( null )) );
+        }
+
         public int GetUnreadMessagesCount(Guid userId)
         {
             return this.Entities.Count(a => (a.UserId == userId && a.MessageReadUtc.Equals(null)));

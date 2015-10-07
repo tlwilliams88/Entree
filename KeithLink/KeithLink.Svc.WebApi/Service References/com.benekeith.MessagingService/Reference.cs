@@ -39,6 +39,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAsReadUserMessages", ReplyAction="http://tempuri.org/IMessagingService/MarkAsReadUserMessagesResponse")]
         System.Threading.Tasks.Task MarkAsReadUserMessagesAsync(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAllReadByUser", ReplyAction="http://tempuri.org/IMessagingService/MarkAllReadByUserResponse")]
+        void MarkAllReadByUser(KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/MarkAllReadByUser", ReplyAction="http://tempuri.org/IMessagingService/MarkAllReadByUserResponse")]
+        System.Threading.Tasks.Task MarkAllReadByUserAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IMessagingService/ReadMessagingPreferences", ReplyAction="http://tempuri.org/IMessagingService/ReadMessagingPreferencesResponse")]
         KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[] ReadMessagingPreferences(System.Guid userId);
         
@@ -133,6 +139,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.MessagingService {
         
         public System.Threading.Tasks.Task MarkAsReadUserMessagesAsync(KeithLink.Svc.Core.Models.Messaging.UserMessageModel[] userMessages) {
             return base.Channel.MarkAsReadUserMessagesAsync(userMessages);
+        }
+        
+        public void MarkAllReadByUser(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            base.Channel.MarkAllReadByUser(user);
+        }
+        
+        public System.Threading.Tasks.Task MarkAllReadByUserAsync(KeithLink.Svc.Core.Models.Profile.UserProfile user) {
+            return base.Channel.MarkAllReadByUserAsync(user);
         }
         
         public KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel[] ReadMessagingPreferences(System.Guid userId) {

@@ -38,6 +38,10 @@ namespace KeithLink.Svc.WebApi.Repository.Messaging
             serviceClient.MarkAsReadUserMessages(userMessages.ToArray());
         }
 
+        public void MarkAllReadByUser( UserProfile user ) {
+            serviceClient.MarkAllReadByUser( user );
+        }
+
         public MessageTemplateModel ReadMessageTemplateForKey(string key) {
             return serviceClient.ReadMessageTemplateForKey(key);
         }
