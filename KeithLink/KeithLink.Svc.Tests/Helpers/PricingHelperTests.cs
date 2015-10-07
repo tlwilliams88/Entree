@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Helpers;
+﻿using KeithLink.Common.Core.Extensions;
+
+using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 
 using System;
@@ -19,10 +21,8 @@ namespace KeithLink.Svc.Test.Helpers {
             item.Pack = "3";
 
             int qty = (int)item.Quantity;
-            int pack = 1;
-            int.TryParse(item.Pack, out pack);
-
-            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            
+            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
 
             Assert.IsTrue(  cartTotal>= 0);
         }
@@ -39,10 +39,8 @@ namespace KeithLink.Svc.Test.Helpers {
             item.Pack = "3";
 
             int qty = (int)item.Quantity;
-            int pack = 1;
-            int.TryParse(item.Pack, out pack);
 
-            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
 
             Assert.IsTrue(cartTotal >= 0);
         }
@@ -59,10 +57,7 @@ namespace KeithLink.Svc.Test.Helpers {
             item.Pack = "4";
 
             int qty = (int)item.Quantity;
-            int pack = 1;
-            int.TryParse(item.Pack, out pack);
-
-            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
 
             Assert.IsTrue(cartTotal >= 0);
         }
@@ -79,10 +74,7 @@ namespace KeithLink.Svc.Test.Helpers {
             item.Pack = "4";
 
             int qty = (int)item.Quantity;
-            int pack = 1;
-            int.TryParse(item.Pack, out pack);
-
-            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
 
             Assert.IsTrue(cartTotal >= 0);
         }
@@ -99,10 +91,7 @@ namespace KeithLink.Svc.Test.Helpers {
             item.Pack = null;
 
             int qty = (int)item.Quantity;
-            int pack;
-            if(!int.TryParse(item.Pack, out pack)) {pack = 1;}
-
-            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            decimal cartTotal = (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
 
             Assert.IsTrue(cartTotal >= 0);
         }
