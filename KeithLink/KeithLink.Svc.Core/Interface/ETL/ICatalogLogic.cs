@@ -9,5 +9,6 @@ namespace KeithLink.Svc.Core.Interface.ETL
     public interface ICatalogLogic
     {
         void ImportCatalog();
+		void ImportUNFICatalog();
     }
 }

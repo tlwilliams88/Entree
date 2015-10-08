@@ -375,5 +375,62 @@ namespace KeithLink.Svc.Impl.ETL
                 }
             }
         }
+
+
+
+		public DataTable ReadUNFIItems()
+		{
+			return PopulateDataTable("[ETL].[ReadUNFIProducts]");
+		}
+
+		public List<string> ReadDistinctUNFIWarehouses()
+		{
+			var returnList = new List<string>();
+			try
+			{
+				using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+				{
+					using (var cmd = new SqlCommand("[ETL].[ReadUNFIDistinctWarehouses]", conn))
+					{
+						cmd.CommandTimeout = 0;
+						conn.Open();
+
+						var reader = cmd.ExecuteReader();
+						while (reader.Read())
+						{
+							returnList.Add(reader[0].ToString());
+						}
+					}
+				}
+				return returnList;
+			}
+			catch (Exception ex)
+			{
+				return returnList;
+			}
+		}
+
+
+		public DataTable ReadUNFIItems(string warehouse)
+		{
+			var itemTable = new DataTable();
+
+			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+			{
+				using (var cmd = new SqlCommand("[ETL].[ReadIUNFItemsByWarehouse]", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					var paramBranchID = cmd.Parameters.Add("warehouse", SqlDbType.VarChar);
+					paramBranchID.Direction = ParameterDirection.Input;
+					paramBranchID.Value = warehouse;
+
+					cmd.CommandTimeout = 0;
+					conn.Open();
+					var da = new SqlDataAdapter(cmd);
+					da.Fill(itemTable);
+				}
+			}
+			return itemTable;
+		}
 	}
 }

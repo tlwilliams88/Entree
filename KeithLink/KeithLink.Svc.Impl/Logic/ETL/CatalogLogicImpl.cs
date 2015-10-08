@@ -139,40 +139,146 @@ namespace KeithLink.Svc.Impl.ETL
 
         public void ImportCatalog()
         {
-            try
-            {
-                DateTime start = DateTime.Now;
-                eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import catalog to CS {0}", start.ToString()));
+			try
+			{
+				DateTime start = DateTime.Now;
+				eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import catalog to CS {0}", start.ToString()));
 
-                //Create root level catalog object
-                MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
-                catalog.version = "3.0"; //Required for the import to work
+				//Create root level catalog object
+				MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
+				catalog.version = "3.0"; //Required for the import to work
 
-                //Create the BaseCatalog
-                catalog.Catalog = BuildCatalogs();
+				//Create the BaseCatalog
+				catalog.Catalog = BuildCatalogs();
 
-                var memoryStream = new MemoryStream();
-                var streamWriter = new StreamWriter(memoryStream, System.Text.Encoding.Unicode);
-                var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
+				var memoryStream = new MemoryStream();
+				var streamWriter = new StreamWriter(memoryStream, System.Text.Encoding.Unicode);
+				var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
 
-                serializer.Serialize(streamWriter, catalog);
-                memoryStream.Position = 0;
-                var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
+				serializer.Serialize(streamWriter, catalog);
+				memoryStream.Position = 0;
+				var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
 
-                catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);
-                
-                TimeSpan took = DateTime.Now - start;
-                eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import catalog to CS.  Process took {0}", took.ToString()));
-            }
-            catch(Exception e)
-            {
-                eventLog.WriteErrorLog(String.Format("ETL: Error Importing catalog -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
-            }
+				catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);
+
+				TimeSpan took = DateTime.Now - start;
+				eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import catalog to CS.  Process took {0}", took.ToString()));
+			}
+			catch (Exception e)
+			{
+				eventLog.WriteErrorLog(String.Format("ETL: Error Importing catalog -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+			}
         }
+
+		public void ImportUNFICatalog()
+		{
+			try
+			{
+				DateTime start = DateTime.Now;
+				eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import catalog to CS {0}", start.ToString()));
+
+				//Create root level catalog object
+				MSCommerceCatalogCollection2 catalog = new MSCommerceCatalogCollection2();
+				catalog.version = "3.0"; //Required for the import to work
+
+				//Create the BaseCatalog
+				catalog.Catalog = BuildUNFICatalogs();
+
+				var memoryStream = new MemoryStream();
+				var streamWriter = new StreamWriter(memoryStream, System.Text.Encoding.Unicode);
+				var serializer = new XmlSerializer(typeof(MSCommerceCatalogCollection2));
+
+				serializer.Serialize(streamWriter, catalog);
+				memoryStream.Position = 0;
+				var catalogNames = string.Join(",", catalog.Catalog.Select(c => c.name).ToList().ToArray());
+
+				catalogRepository.ImportXML(new CatalogImportOptions() { Mode = ImportMode.Full, TransactionMode = TransactionMode.NonTransactional, CatalogsToImport = catalogNames }, memoryStream);
+
+				TimeSpan took = DateTime.Now - start;
+				eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import catalog to CS.  Process took {0}", took.ToString()));
+			}
+			catch (Exception e)
+			{
+				eventLog.WriteErrorLog(String.Format("ETL: Error Importing catalog -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+			}
+		}
 
         #endregion
 
         #region helper methods
+
+
+		private MSCommerceCatalogCollection2Catalog[] BuildUNFICatalogs()
+		{
+			var catalogs = new List<MSCommerceCatalogCollection2Catalog>();
+
+			var warehouses = stagingRepository.ReadDistinctUNFIWarehouses();
+
+			foreach (var warehouse in warehouses)
+			{
+				var newCatalog = new MSCommerceCatalogCollection2Catalog() { name = string.Format("unfi_{0}",warehouse), productUID = "ProductId", startDate = DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss"), endDate = DateTime.Now.AddYears(500).ToString("yyyy-MM-ddTHH:mm:ss"), languages = Language, DefaultLanguage = Language, ReportingLanguage = Language };
+				newCatalog.DisplayName = CreateDisplayName(string.Format("UNFI_{0}",warehouse));
+
+				newCatalog.Category = GenerateUNFICategories();
+				newCatalog.Product = GenerateUNFIProducts(warehouse);
+				catalogs.Add(newCatalog);
+			}
+
+			return catalogs.ToArray();
+		}
+
+		private MSCommerceCatalogCollection2CatalogCategory[] GenerateUNFICategories()
+		{
+			List<MSCommerceCatalogCollection2CatalogCategory> categories = new List<MSCommerceCatalogCollection2CatalogCategory>();
+
+			var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
+
+
+
+			var dataTable = stagingRepository.ReadUNFIItems();
+			DataView dataView = new DataView(dataTable);
+			var parentCategories = dataView.ToTable(true, "Category");
+			var childCategories = dataView.ToTable(true, "Category", "Subgroup");
+
+			foreach (DataRow cat in parentCategories.Rows)
+			{
+				var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = cat.GetString("Category"), Definition = "Category" };
+				newSubCat.DisplayName = CreateDisplayName(cat.GetString("Category"));
+				categories.Add(newSubCat);
+			}
+
+			foreach (DataRow subCat in childCategories.Rows)
+			{
+				var newSubCat = new MSCommerceCatalogCollection2CatalogCategory() { name = subCat.GetString("Subgroup"), Definition = "Category" };
+				newSubCat.DisplayName = CreateDisplayName(subCat.GetString("Subgroup"));
+				newSubCat.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = subCat.GetString("Category") } };
+				categories.Add(newSubCat);
+
+
+			}
+
+			return categories.ToArray();
+		}
+
+		private MSCommerceCatalogCollection2CatalogProduct[] GenerateUNFIProducts(string warehouse)
+		{
+			var products = new List<MSCommerceCatalogCollection2CatalogProduct>();
+			var itemTable = stagingRepository.ReadUNFIItems(warehouse);
+			
+
+			foreach (DataRow row in itemTable.Rows)
+			{
+				var newProd = new MSCommerceCatalogCollection2CatalogProduct() { ProductId = row.GetString("ProductNumber"), Definition = "Item" };
+				newProd.DisplayName = new DisplayName[1] { new DisplayName() { language = "en-US", Value = row.GetString("Description") } };
+				newProd.ParentCategory = new ParentCategory[1] { new ParentCategory() { Value = row.GetString("Subgroup"), rank = "0" } };
+				newProd.listprice = "0";
+				products.Add(newProd);
+			}
+
+			return products.ToArray();
+		}
+
+
 
         private MSCommerceCatalogCollection2Catalog[] BuildCatalogs()
         {

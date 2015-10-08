@@ -30,5 +30,9 @@ namespace KeithLink.Svc.Core.Interface.ETL
         DataTable ExecuteProfileObjectQueryReturn(string query);
         bool ExecuteProfileObjectQuery(string query);
         void ImportCustomersToCS();
+
+		DataTable ReadUNFIItems();
+		List<string> ReadDistinctUNFIWarehouses();
+		DataTable ReadUNFIItems(string warehouse);
     }
 }

@@ -133,6 +133,63 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
         }
 
+
+		public void ImportUNFIItems()
+		{
+			try
+			{
+				DateTime start = DateTime.Now;
+				_eventLog.WriteInformationLog(String.Format("ETL: Import Process Starting:  Import UNFI items to ES {0}", start.ToString()));
+
+				var items = _stagingRepository.ReadUNFIItems();
+
+
+				var products = new BlockingCollection<ItemUpdate>();
+
+				foreach (DataRow row in items.Rows)
+				{
+					products.Add(PopulateUNFIElasticSearchItem(row));
+				};
+
+				var indexes = products.Select(p => p.index._index).Distinct().ToList();
+
+				foreach (var index in indexes)
+				{
+					if (!_elasticSearchRepository.CheckIfIndexExist(index))
+					{
+						_elasticSearchRepository.CreateEmptyIndex(index);
+						_elasticSearchRepository.MapProductProperties(index, GetProductMapping());
+					}
+				}
+				
+				int totalProcessed = 0;
+
+				while (totalProcessed < products.Count)
+				{
+					try
+					{
+						var batch = products.Skip(totalProcessed).Take(Configuration.ElasticSearchBatchSize).ToList();
+
+						_elasticSearchRepository.Create(string.Concat(batch.Select(i => i.ToJson())));
+
+						totalProcessed += Configuration.ElasticSearchBatchSize;
+					}
+					catch (Exception ex2)
+					{
+						_eventLog.WriteErrorLog(String.Format("ETL: Error Importing items to ES -- error importing individual item to ES.  {0} -- {1}", ex2.Message, ex2.StackTrace));
+					}
+				}
+
+
+				TimeSpan took = DateTime.Now - start;
+				_eventLog.WriteInformationLog(String.Format("ETL: Import Process Finished:  Import UNFI items to ES.  Process took {0}", took.ToString()));
+			}
+			catch (Exception e)
+			{
+				_eventLog.WriteErrorLog(String.Format("ETL: Error Importing UNFI items to ES -- whole process failed.  {0} -- {1}", e.Message, e.StackTrace));
+			}
+		}
+
         #endregion
 
         #region helper methods
@@ -438,6 +495,64 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 
             return item;
         }
+
+
+		private ItemUpdate PopulateUNFIElasticSearchItem(DataRow row)
+		{
+
+			var data = new AdditionalData()
+			{
+				WarehouseNumber = row.GetString("WarehouseNumber"),
+				Name = row.GetString("Description"),
+				Brand = row.GetString("Brand"),
+				BrandNotAnalyzed = row.GetString("Brand"),
+				BranchId = "unfi",
+				CLength = row.GetNullableDouble("CLength"),
+				CWidth = row.GetNullableDouble("CWidth"),
+				CHeight = row.GetNullableDouble("CHeight"),
+				TempZone = row.GetString("TempControl"),
+				UnitOfSale = row.GetString("UnitOfSale"),
+				CatalogDept = row.GetString("CatalogDept"),
+				ShipMinExpire = row.GetString("ShipMinExpire"),
+				MfrItemNumber = row.GetString("ProductNumber"),
+				MinOrder = row.GetNullableInt("MinOrder"),
+				VendorCasesPerTier = row.GetNullableInt("VendorCasesPerTier"),
+				VendorTiersPerPallet = row.GetNullableInt("VendorTiersPerPallet"),
+				VendorCasesPerPallet = row.GetNullableInt("VendorCasesPerPallet"),
+				CaseQuantity = row.GetNullableInt("CaseQuantity"),
+				PutUp = row.GetString("PutUp"),
+				ContSize = row.GetNullableDouble("ContSize"),
+				ContUnit = row.GetString("ContUnit"),
+				TCSCode = row.GetString("TCSCode"),
+				Upc = row.GetString("RetailUPC"),
+				CaseUPC = row.GetString("CaseUPC"),
+				AverageWeight = row.GetDouble("Weight"),
+				PLength = row.GetNullableDouble("PLength"),
+				PHeight = row.GetNullableDouble("PHeight"),
+				PWidth = row.GetNullableDouble("PWidth"),
+				Status = row.GetString("Status"),
+				ItemType = row.GetString("Type"),
+				ParentCategoryName = row.GetString("Category"),
+				ParentCategoryNameNotAnalyzed = row.GetString("Category"),
+				CategoryName = row.GetString("Subgroup"),
+				CategoryNameNotAnalyzed = row.GetString("Subgroup"),
+				CategoryId="KO",
+				Flag1 = row.GetString("Flag1"),
+				Flag2 = row.GetString("Flag2"),
+				Flag3 = row.GetString("Flag3"),
+				Flag4 = row.GetString("Flag4"),
+				OnHandQty = row.GetNullableInt("OnHandQty")
+			};
+
+			RootData index = new RootData();
+			index._id = data.MfrItemNumber.ToString();
+			index._index = string.Format("unfi_{0}", data.WarehouseNumber);
+			index.data = data;
+
+			ItemUpdate item = new ItemUpdate();
+			item.index = index;
+			return item;
+		}
         #endregion
 
     }

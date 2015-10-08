@@ -8,5 +8,6 @@ using System.Threading.Tasks;
 namespace KeithLink.Svc.Core.Interface.ETL.ElasticSearch {
     public interface IItemImport {
         void ImportItems();
+		void ImportUNFIItems();
     }
 }

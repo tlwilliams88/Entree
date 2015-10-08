@@ -162,5 +162,69 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 
         [JsonProperty("averageweight")]
         public double AverageWeight { get; set; }
+
+
+		//UNFI Speicifc properties
+		[JsonProperty("mfritemnumber")]
+		public string MfrItemNumber { get; set; }
+
+		[JsonProperty("warehousenumber")]
+		public string WarehouseNumber { get; set; }
+		[JsonProperty("clength")]
+		public double? CLength { get; set; }
+		[JsonProperty("cwidth")]
+		public double? CWidth { get; set; }
+		[JsonProperty("cheight")]
+		public double? CHeight { get; set; }
+		[JsonProperty("unitofsale")]
+		public string UnitOfSale { get; set; }
+		[JsonProperty("catalogdept")]
+		public string CatalogDept { get; set; }
+		[JsonProperty("shipminexpire")]
+		public string ShipMinExpire { get; set; }
+		[JsonProperty("minorder")]
+		public int? MinOrder { get; set; }
+		[JsonProperty("vendorname")]
+		public string VendorName { get; set; }
+		[JsonProperty("ti")]
+		public int? VendorCasesPerTier { get; set; }
+		[JsonProperty("hi")]
+		public int? VendorTiersPerPallet { get; set; }
+		[JsonProperty("palt")]
+		public int? VendorCasesPerPallet { get; set; }
+		[JsonProperty("casequantity")]
+		public int? CaseQuantity { get; set; }
+		[JsonProperty("putup")]
+		public string PutUp { get; set; }
+		[JsonProperty("contsize")]
+		public double? ContSize { get; set; }
+		[JsonProperty("contunit")]
+		public string ContUnit { get; set; }
+		[JsonProperty("tcscode")]
+		public string TCSCode { get; set; }
+		[JsonProperty("caseupc")]
+		public string CaseUPC { get; set; }
+		[JsonProperty("plength")]
+		public double? PLength { get; set; }
+		[JsonProperty("pheight")]
+		public double? PHeight { get; set; }
+		[JsonProperty("pwidth")]
+		public double? PWidth { get; set; }
+		[JsonProperty("status")]
+		public string Status { get; set; }
+		[JsonProperty("flag1")]
+		public string Flag1 { get; set; }
+		[JsonProperty("flag2")]
+		public string Flag2 { get; set; }
+		[JsonProperty("flag3")]
+		public string Flag3 { get; set; }
+		[JsonProperty("flag4")]
+		public string Flag4 { get; set; }
+		[JsonProperty("onhandqty")]
+		public int? OnHandQty { get; set; }
+
     }
+
+	
+
 }
