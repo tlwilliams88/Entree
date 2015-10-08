@@ -234,16 +234,13 @@ angular.module('bekApp')
     }
     function setSelectedList(list) {
       $scope.selectedList = list;
-       $scope.startingPoint = 0;
-      
+      $scope.startingPoint = 0;
+      $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
       $scope.endPoint = parseInt($scope.pagingPageSize);
       $scope.currentPage = $stateParams.currentPage || 1;
       $scope.setRange();
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-      if($stateParams.listItems){
-      }
-      else{
-      }
+
       if($stateParams.listItems){
        $stateParams.listItems.forEach(function(item){
          $scope.selectedList.items.forEach(function(selectedlistitem){
@@ -255,6 +252,7 @@ angular.module('bekApp')
         })       
        $stateParams.listItems = undefined;
       }
+      $scope.setCartItemsDisplayFlag();
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
     }
     function appendListItems(list) {
