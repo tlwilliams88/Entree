@@ -218,6 +218,22 @@ angular.module('bekApp')
 
   };
 
+  $scope.setCurrentPageAfterRedirect = function(pageToSet){
+    if(!pageToSet && $stateParams.currentPage){
+        var page = $stateParams.currentPage;
+        var visited = [];
+       }
+       else{
+        $stateParams.currentPage = '';
+        var page = 1;
+        var visited = $scope.visitedPages[0] || [];
+       }
+       var selectedPage = {
+        currentPage: page   
+       };
+       $scope.pageChanged(selectedPage, visited);
+  }
+
   $scope.setRange = function(){
     $scope.endPoint = $scope.endPoint;
     $scope.rangeStart = $scope.startingPoint + 1;
@@ -237,7 +253,7 @@ angular.module('bekApp')
       $scope.startingPoint = 0;
       $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
       $scope.endPoint = parseInt($scope.pagingPageSize);
-      $scope.currentPage = $stateParams.currentPage || 1;
+      $scope.setCurrentPageAfterRedirect();
       $scope.setRange();
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
 
@@ -400,6 +416,7 @@ angular.module('bekApp')
 
           $scope.orderSearchTerm = '';
          $stateParams.searchTerm = '';
+
       if($scope.addToOrderForm.$pristine){
 
         $scope.filterItems( $scope.orderSearchTerm)
@@ -420,6 +437,7 @@ angular.module('bekApp')
     }
       })
     }
+     $scope.setCurrentPageAfterRedirect(1);
     angular.element(orderSearchForm.searchBar).focus();
     };
   
@@ -475,7 +493,7 @@ angular.module('bekApp')
       var r = ($scope.addToOrderForm.$pristine) ? true : confirm('Unsaved data will be lost. Do you wish to continue?');
       if(r){
         $scope.visitedPages = [];
-        $scope.currentPage = 1;
+        
         if (sortBy === $scope.sort[0].field) {
           sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
         } else {
@@ -540,7 +558,7 @@ angular.module('bekApp')
       else{
         sameListItems = undefined;
       }
-        var continueToCart = $scope.continueToCart
+        var continueToCart = $scope.continueToCart;
         
       blockUI.start("Loading List...").then(function(){
         $state.go('menu.addtoorder.items', { 
@@ -589,11 +607,15 @@ angular.module('bekApp')
         toaster.pop('error', 'Error Saving Cart -- Cannot have two carts with the same name. Please rename this cart');
       }
       else{
+        $scope.addToOrderForm.$setDirty();
         if (cartId === 'New') {
         // don't need to call the backend function for new cart
         $scope.selectedCart.name = name;
         $scope.isRenaming = false;
         CartService.renameCart = false;
+        $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+          $scope.isRedirecting(resp);
+        })
       } else {
         // call backend to update cart
         var cart = angular.copy($scope.selectedCart);
@@ -623,7 +645,7 @@ angular.module('bekApp')
 
 
 
-    var processingUpdateCart = false; 
+    var processingUpdateCart = false;
     function updateCart(cart) {
       if (!processingUpdateCart) {
         processingUpdateCart = true;
