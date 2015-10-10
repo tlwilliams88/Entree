@@ -219,14 +219,16 @@ angular.module('bekApp')
   };
 
   $scope.setCurrentPageAfterRedirect = function(pageToSet){
+    var visited = [];
     if(!pageToSet && $stateParams.currentPage){
         var page = $stateParams.currentPage;
-        var visited = [];
-       }
+      }
        else{
         $stateParams.currentPage = '';
         var page = 1;
-        var visited = $scope.visitedPages[0] || [];
+        if($scope.visitedPages[0]){
+        visited = $filter('filter')($scope.visitedPages, {page: 1});
+      }
        }
        var selectedPage = {
         currentPage: page   
@@ -251,6 +253,7 @@ angular.module('bekApp')
     function setSelectedList(list) {
       $scope.selectedList = list;
       $scope.startingPoint = 0;
+      $scope.visitedPages = [];
       $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
       $scope.endPoint = parseInt($scope.pagingPageSize);
       $scope.setCurrentPageAfterRedirect();
@@ -270,6 +273,7 @@ angular.module('bekApp')
       }
       $scope.setCartItemsDisplayFlag();
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
     }
     function appendListItems(list) {
       $stateParams.listItems = $scope.selectedList.items;
@@ -298,6 +302,7 @@ angular.module('bekApp')
       $scope.appendedItems = list.items;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items); 
+      $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
     }
     function startLoading() {
       $scope.loadingResults = true;
@@ -416,7 +421,6 @@ angular.module('bekApp')
 
           $scope.orderSearchTerm = '';
          $stateParams.searchTerm = '';
-
       if($scope.addToOrderForm.$pristine){
 
         $scope.filterItems( $scope.orderSearchTerm)
