@@ -50,9 +50,9 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="updatedUserMessages">Array of read messages</param>
 		[HttpPut]
         [ApiKeyedRoute("messaging/usermessages/markasread")]
-        public void UpdateReadMessages(List<UserMessageModel> updatedUserMessages)
+        public void UpdateReadMessages()
         {
-            messagingServiceRepository.MarkAsReadUserMessages(updatedUserMessages);
+            messagingServiceRepository.MarkAllReadByUser(this.AuthenticatedUser);
         }
 
 		/// <summary>

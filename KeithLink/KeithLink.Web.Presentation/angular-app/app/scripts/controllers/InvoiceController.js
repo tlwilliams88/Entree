@@ -19,7 +19,13 @@ angular.module('bekApp')
  
   $scope.currDate = new Date();  
   $scope.currDate = moment($scope.currDate).format('YYYY-MM-DD');
-  $scope.mindate = moment($scope.currDate).add(1,'d');
+  
+  if(moment.utc().format('HHmmss') < 190000){
+    $scope.mindate = moment($scope.currDate);
+  }
+  else{
+    $scope.mindate = moment($scope.currDate).add(1,'d');
+  }
   $scope.tomorrow = moment($scope.mindate).format('YYYY-MM-DD');
 
   $scope.datepickerOptions = {
@@ -197,25 +203,23 @@ angular.module('bekApp')
   };
 
   $scope.sortInvoices = function(field, sortDescending) {
-    $scope.sort = {
+
+   $scope.sort = {
       field: field,
       sortDescending: sortDescending
-    };
+   };
     invoicePagingModel.sortData($scope.sort);
   };
 
   $scope.setDateSortValues = function(invoice){
-    if(invoice.userCanPayInvoice && invoice.statusdescription !== 'Past Due' && invoice.statusdescription !== 'Payment Pending' && invoice.date){
+    if((invoice.userCanPayInvoice || (invoice.statusdescription === 'Payment Pending' || invoice.statusdescription === 'Past Due')) && invoice.date){
       return invoice.date;
     }
-    if(invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due' && !invoice.selectedDate){
+    if(invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due' && !invoice.date){
       return $scope.tomorrow;
     }
-    if(invoice.statusdescription === 'Payment Pending' && !invoice.selectedDate){
-      return invoice.date  || invoice.pendingtransaction.date;
-    }  
-    if((invoice.statusdescription === 'Payment Pending' || invoice.statusdescription === 'Past Due') && invoice.selectedDate){
-      return invoice.selectedDate;
+    if(invoice.statusdescription === 'Payment Pending' && !invoice.date){
+      return invoice.pendingtransaction.date;
     }
   };
 
@@ -418,25 +422,20 @@ angular.module('bekApp')
     if(payments.length){
       payments.forEach(function(payment){
         if((payment.statusdescription === 'Payment Pending') || (payment.statusdescription === 'Past Due' && payment.amount < 0)){
-          if(payment.date){
-            payment.date = payment.date;
-          }
-          else if(payment.selectedDate){
-            payment.date = payment.selectedDate;
-          }
-          else{
-            if(payment.statusdescription === 'Payment Pending'){
+          
+        if(payment.statusdescription === 'Payment Pending' && !payment.date){
              payment.date = moment(payment.pendingtransaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD");
-            }          
-          }             
+            }                       
         }
         
         if(!payment.date){
           payment.date = $scope.tomorrow;          
         }
+
         if(payment.date.length !== 10){
           payment.date = moment(payment.date).format("YYYY-MM-DD");
-        }  
+        }
+
       });
     }
        return payments
@@ -469,10 +468,7 @@ angular.module('bekApp')
           $scope.invoices.forEach(function(invoice){
             invoice.failedBatchValidation = false;
           });
-          payments.forEach(function(payment){
-            if(payment.selectedDate){
-              delete payment.selectedDate;
-            }
+          payments.forEach(function(payment){  
             if(payment.date.length !== 10){
             payment.date = moment(payment.date).format("YYYY-MM-DD");
           }
@@ -504,12 +500,6 @@ angular.module('bekApp')
       payments = $scope.defaultDates(payments);
       if(payments.length){
         InvoiceService.checkTotals(payments).then(function(resp) {
-          payments.forEach(function(payment){
-            if((payment.statusdescription === 'Past Due' || payment.statusdescription === 'Payment Pending') && payment.date){            
-              payment.selectedDate = payment.date
-              delete payment.date       
-            }
-          });
 
           if(resp.successResponse.isvalid){
             $scope.clearValidationErrors();
@@ -541,8 +531,8 @@ angular.module('bekApp')
     resp.successResponse.transactions.forEach(function(transaction){
       $scope.invoices.forEach(function(invoice){       
         var invoiceDate = invoice.date || $scope.tomorrow;
-        if(invoice.pendingtransaction || invoice.selectedDate){
-          invoiceDate = invoice.selectedDate || invoice.pendingtransaction.date;
+        if(invoice.pendingtransaction || invoice.date){
+          invoiceDate = invoice.date || invoice.pendingtransaction.date;
         }
 
         if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(resp.successResponse.transactions[0].date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === moment(invoiceDate).format('YYYYMMDD') && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){

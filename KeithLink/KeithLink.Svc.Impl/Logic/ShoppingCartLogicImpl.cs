@@ -207,6 +207,7 @@ namespace KeithLink.Svc.Impl.Logic
 				if (prod != null)
 				{
 					item.Name = prod.Name;
+                    item.Pack = prod.Pack;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
@@ -282,10 +283,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                     foreach (var item in list.Items) {
                         int qty = (int)item.Quantity;
-                        int pack;
-                        if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
-
-                        list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                        list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
                     }
 				});
 				return returnCart;

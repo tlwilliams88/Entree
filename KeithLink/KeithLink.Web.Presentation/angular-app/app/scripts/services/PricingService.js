@@ -47,6 +47,9 @@ angular.module('bekApp')
     getPriceForItem: function(item) {
       var price = 0;
       if (item) {
+        if(item.hasPackagePrice && !item.hasCasePrice){
+          item.each = true;
+        }
         if (item.catchweight) {
           price = calculateCatchWeightPrice(item);     
         } else {

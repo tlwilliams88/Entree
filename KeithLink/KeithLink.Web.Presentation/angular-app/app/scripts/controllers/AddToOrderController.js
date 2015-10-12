@@ -218,6 +218,24 @@ angular.module('bekApp')
 
   };
 
+  $scope.setCurrentPageAfterRedirect = function(pageToSet){
+    var visited = [];
+    if(!pageToSet && $stateParams.currentPage){
+        var page = $stateParams.currentPage;
+      }
+       else{
+        $stateParams.currentPage = '';
+        var page = 1;
+        if($scope.visitedPages[0]){
+        visited = $filter('filter')($scope.visitedPages, {page: 1});
+      }
+       }
+       var selectedPage = {
+        currentPage: page   
+       };
+       $scope.pageChanged(selectedPage, visited);
+  }
+
   $scope.setRange = function(){
     $scope.endPoint = $scope.endPoint;
     $scope.rangeStart = $scope.startingPoint + 1;
@@ -234,16 +252,14 @@ angular.module('bekApp')
     }
     function setSelectedList(list) {
       $scope.selectedList = list;
-       $scope.startingPoint = 0;
-      
+      $scope.startingPoint = 0;
+      $scope.visitedPages = [];
+      $scope.visitedPages.push({page: 1, items: $scope.selectedList.items});
       $scope.endPoint = parseInt($scope.pagingPageSize);
-      $scope.currentPage = $stateParams.currentPage || 1;
+      $scope.setCurrentPageAfterRedirect();
       $scope.setRange();
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
-      if($stateParams.listItems){
-      }
-      else{
-      }
+
       if($stateParams.listItems){
        $stateParams.listItems.forEach(function(item){
          $scope.selectedList.items.forEach(function(selectedlistitem){
@@ -255,7 +271,9 @@ angular.module('bekApp')
         })       
        $stateParams.listItems = undefined;
       }
+      $scope.setCartItemsDisplayFlag();
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+      $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
     }
     function appendListItems(list) {
       $stateParams.listItems = $scope.selectedList.items;
@@ -284,6 +302,7 @@ angular.module('bekApp')
       $scope.appendedItems = list.items;
       flagDuplicateCartItems($scope.selectedCart.items, $scope.selectedList.items);
       getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items); 
+      $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
     }
     function startLoading() {
       $scope.loadingResults = true;
@@ -422,6 +441,7 @@ angular.module('bekApp')
     }
       })
     }
+     $scope.setCurrentPageAfterRedirect(1);
     angular.element(orderSearchForm.searchBar).focus();
     };
   
@@ -477,7 +497,7 @@ angular.module('bekApp')
       var r = ($scope.addToOrderForm.$pristine) ? true : confirm('Unsaved data will be lost. Do you wish to continue?');
       if(r){
         $scope.visitedPages = [];
-        $scope.currentPage = 1;
+        
         if (sortBy === $scope.sort[0].field) {
           sortOrder = (sortOrder === 'asc') ? 'desc' : 'asc';
         } else {
@@ -542,7 +562,7 @@ angular.module('bekApp')
       else{
         sameListItems = undefined;
       }
-        var continueToCart = $scope.continueToCart
+        var continueToCart = $scope.continueToCart;
         
       blockUI.start("Loading List...").then(function(){
         $state.go('menu.addtoorder.items', { 
@@ -591,11 +611,15 @@ angular.module('bekApp')
         toaster.pop('error', 'Error Saving Cart -- Cannot have two carts with the same name. Please rename this cart');
       }
       else{
+        $scope.addToOrderForm.$setDirty();
         if (cartId === 'New') {
         // don't need to call the backend function for new cart
         $scope.selectedCart.name = name;
         $scope.isRenaming = false;
         CartService.renameCart = false;
+        $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+          $scope.isRedirecting(resp);
+        })
       } else {
         // call backend to update cart
         var cart = angular.copy($scope.selectedCart);
@@ -625,7 +649,7 @@ angular.module('bekApp')
 
 
 
-    var processingUpdateCart = false; 
+    var processingUpdateCart = false;
     function updateCart(cart) {
       if (!processingUpdateCart) {
         processingUpdateCart = true;

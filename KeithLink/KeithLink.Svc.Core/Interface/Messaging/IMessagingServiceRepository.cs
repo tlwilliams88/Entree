@@ -19,6 +19,8 @@ namespace KeithLink.Svc.Core.Interface.Messaging
         int GetUnreadMessagesCount(Guid userId);
 
         void MarkAsReadUserMessages(List<UserMessageModel> updatedUserMessages);
+
+        void MarkAllReadByUser( UserProfile userId );
         
         MessageTemplateModel ReadMessageTemplateForKey(string key);
 

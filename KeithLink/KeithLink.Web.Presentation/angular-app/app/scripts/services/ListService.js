@@ -245,7 +245,10 @@ angular.module('bekApp')
             if (!list) {
               return $q.reject('No list found.');
             }
-            PricingService.updateCaculatedFields(list.items);
+            if(params.includePrice){
+              PricingService.updateCaculatedFields(list.items);
+            }
+            
             updateListPermissions(list);
 
             Service.updateCache(list);

@@ -62,8 +62,8 @@ angular.module('bekApp')
           }
         });
 
-        return Notification.markAsRead(unreadMessages).$promise.then(function() {
-          angular.copy({ unread: Service.userNotificationsCount.unread - unreadMessages.length }, Service.userNotificationsCount);
+        return Notification.markAsRead().$promise.then(function() {
+          angular.copy({ unread: 0 }, Service.userNotificationsCount);
         });
       }
     };
