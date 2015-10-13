@@ -36,7 +36,7 @@ angular.module('bekApp')
 
 
     $scope.rowChanged = function(index){
-      $scope.indexOfSDestroyedRow = index + 1;
+      $scope.indexOfSDestroyedRow = index;
     }
 
     $scope.initPagingValues = function(){
@@ -687,8 +687,8 @@ angular.module('bekApp')
 
     $scope.initParLvl = function(item) {  
       if(!item.parlevel){   
-        item.parlevel=0;
-      }   
+        item.parlevel='0';
+      }
     };
 
     $scope.openPrintOptionsModal = function(list) {
