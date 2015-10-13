@@ -406,7 +406,7 @@ angular.module('bekApp')
       }
       else{  
           if($scope.selectedCart.id === 'New'){
-             $scope.createFromSearch = true;
+             $scope.retainSearchTerm = true;
           }           
           return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
       }      
@@ -549,7 +549,7 @@ angular.module('bekApp')
           }
         }
        var searchTerm = '';
-        if($scope.orderSearchTerm && $scope.createFromSearch){
+        if($scope.orderSearchTerm && $scope.retainSearchTerm){
          var searchTerm = $scope.orderSearchTerm;
         }
 
@@ -761,7 +761,7 @@ angular.module('bekApp')
     $scope.saveAndRetainQuantity = function(){
     $stateParams.listItems = $scope.selectedList.items;
     if($scope.selectedCart.id === 'New'){
-      $scope.createFromSearch = true;
+      $scope.retainSearchTerm = true;
     }
     $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
       $scope.isRedirecting(resp);
