@@ -112,7 +112,7 @@ angular.module('bekApp')
       template: '<div ui-view=""></div>'
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/?brands',
+      url: ':type/:id/:dept/:deptName/?brands',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
       data: {
