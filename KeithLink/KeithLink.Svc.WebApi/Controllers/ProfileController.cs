@@ -521,13 +521,18 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return retVal;
 		}
 
-		/// <summary>
-		/// Paged search of customers
-		/// </summary>
-		/// <param name="paging">Paging information</param>
-		/// <param name="sort">Sort object</param>
-		/// <param name="account">Account</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Paged search of customers
+        /// Two paramaters missing in swagger, 'terms' and 'type'
+        /// terms: Search Text
+        /// type: The type of text we are searching for. Is converted to CustomerSearchType enumerator
+        /// </summary>
+        /// <param name="paging">Paging information</param>
+        /// <param name="sort">Sort object</param>
+        /// <param name="account">Account</param>
+        //       /// <param name="terms"c</param>
+        //       /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
+        /// <returns>search results as a paged list of customers</returns>
 		[Authorize]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
