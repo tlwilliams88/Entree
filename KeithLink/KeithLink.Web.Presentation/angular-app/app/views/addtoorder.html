@@ -230,7 +230,7 @@
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
             </td>
             <td class="hidden-mobile-visible-print">
-              {{item.label}}
+              {{::item.label}}
             </td>
             <td ng-if="useParlevel" class="hidden-mobile">
               {{::item.parlevel}}
@@ -260,7 +260,7 @@
               <!--  QUANTITY -->
               <span class="hidden-mobile visible-print">{{::item.quantity}}</span>
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" ng-blur="confirmQuantity('quantity', item, item.quantity);" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
+                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
                 <span  class="counter-container"  >
                  <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile" ng-disabled = "item.quantity === 0" ng-if="useParlevel && item.canOrder"  ng-click="item.quantity = item.quantity -1;"></button>
                   <input                             
