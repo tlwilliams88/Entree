@@ -141,8 +141,11 @@ angular.module('bekApp')
           setValue( val );
         };
 
-        scope.confirmQuantity = function(qty) {
+        scope.confirmQuantity = function(qty, item) {
           var pattern = /^([0-9])\1+$/; // repeating digits pattern
+          if(!item.value){
+            item.value = 0;
+          }
 
           if (qty > 50 || pattern.test(qty)) {
             var isConfirmed = $window.confirm('Do you want to continue with entered quatity of ' + qty + '?');

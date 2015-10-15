@@ -2,7 +2,7 @@
   <div header-message>
     Add To Order
 
-    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="updateOrderClick(selectedList, selectedCart)" ng-disabled="addToOrderForm.$invalid">Save</button>
+    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="saveAndRetainQuantity()" ng-disabled="addToOrderForm.$invalid">Save</button>
     <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" style="margin-right:3px;" ui-sref="menu.home">Cancel Order</button>
   </div>
   <div header-buttons ng-hide="invalidParams">
@@ -202,7 +202,7 @@
         <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList" ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) track by item.listitemid"          
             ng-class="{ odd : $odd, even: $even }">
 
-          <tr ng-mouseenter="item.initInputs = true">
+          <tr>
             <td>
               {{::item.position}}
               <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities(); addItemWatches(startingPoint, endPoint);"></a>
@@ -230,12 +230,12 @@
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::item.label}}
+              {{item.label}}
             </td>
             <td ng-if="useParlevel" class="hidden-mobile">
               {{::item.parlevel}}
             </td>
-            <td ng-if="useParlevel && item.initInputs" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
+            <td ng-if="useParlevel" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
               <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder">
               <!--  ON HAND AMOUNT -->
               <button type="button" class="btn btn-warning icon-minus3 hidden-lg"  ng-click="item.onhand = item.onhand -1; onItemOnHandAmountChanged(item)"></button>
@@ -244,59 +244,34 @@
                   id="onHand"
                   ng-focus="this.select(); onItemOnHandAmountChanged(item)" 
                   ng-change="onItemOnHandAmountChanged(item)"          
-                  focus-me="($first || (indexOfSDestroyedRow === $index && destroyedOnField === 'onhand'))"
+                  focus-me="$first"
                   ng-blur="confirmQuantity('onhand', item, item.onhand);"
                   class="dropdown-toggle input-number text-right mousetrap" 
                   ng-class="{ tabstop: useParlevel }"
-                  allow-one-positive-decimal                                 
+                  numeric-validation                                
                   ng-model="item.onhand"
-                  name="onhand" 
+                  name="onhand"
+                  ng-init = "item.onhand = item.onhand + 0;"
                   />
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  
-              </ng-form>  
-            </td>
-            <td ng-if="useParlevel && !item.initInputs" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
-              <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder">
-              <!--  ON HAND AMOUNT DUMMY-->
-              <button type="button" class="btn btn-warning icon-minus3 hidden-lg"></button>
-              <input 
-                  type="text"
-                  id="onHand"    
-                  ng-focus="this.select(); onItemOnHandAmountChanged(item)" 
-                  class="dropdown-toggle input-number text-right"                  
-                  ng-class="{ tabstop: useParlevel }"
-                  ng-model="item.onhand"
-                  ng-init="item.onhand=item.onhand + 0"
-                  ng-change="rowChanged($index, 'onhand'); onItemOnHandAmountChanged(item)"
-                  name="onhand"/>
-              <button type="button" class="btn btn-warning icon-plus3 hidden-lg"></button>                  
               </ng-form>  
             </td>
             <td class="input-col nowrap">
               <!--  QUANTITY -->
               <span class="hidden-mobile visible-print">{{::item.quantity}}</span>
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
+                <div counter ng-model="item.quantity" ng-blur="confirmQuantity('quantity', item, item.quantity);" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
                 <span  class="counter-container"  >
                  <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile" ng-disabled = "item.quantity === 0" ng-if="useParlevel && item.canOrder"  ng-click="item.quantity = item.quantity -1;"></button>
                   <input                             
                   type="text" 
-                  focus-me="($first || (indexOfSDestroyedRow === $index && destroyedOnField === 'quantity'))"
-                  ng-if="useParlevel && item.canOrder && item.initInputs"
-                  ng-blur="confirmQuantity('quantity', item, item.quantity)"
+                  focus-me="$first"
+                  ng-if="useParlevel && item.canOrder"
+                  ng-blur="confirmQuantity('quantity', item, item.quantity);"
                   class="input-number text-right mousetrap" 
                   ng-class="{ tabstop: !useParlevel }"
-                  allow-one-positive-decimal
+                  integer
                   ng-model="item.quantity"/>
-                  <input                             
-                  type="text"
-                  focus-me="($first)"              
-                  ng-if="useParlevel && item.canOrder && !item.initInputs"
-                  ng-init="item.quantity = item.quantity + 0"                
-                  class="input-number text-right" 
-                  ng-class="{ tabstop: !useParlevel }"
-                  ng-model="item.quantity"
-                  ng-change="rowChanged($index, 'quantity')"/>
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg show-mobile" ng-if="useParlevel && item.canOrder" ng-click="item.quantity = item.quantity + 1;"></button> 
               </span>        
               </ng-form>
@@ -389,7 +364,7 @@
                       <input 
                         type="text" 
                         class="input-number text-right mousetrap" 
-                        allow-one-positive-decimal 
+                        numeric-validation
                         ng-model="item.onhand" 
                         ng-change="onItemOnHandAmountChanged(item)">
                     </ng-form>
