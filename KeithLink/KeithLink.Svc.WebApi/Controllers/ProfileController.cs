@@ -148,7 +148,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// </summary>
 		/// <param name="guestInfo">Guest</param>
 		/// <returns></returns>
-        /// 
 		[Authorize]
 		[HttpPost]
 		[ApiKeyedRoute("profile/admin/user")]
@@ -543,7 +542,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return retVal;
 		}
 
-
         /// <summary>
         /// Paged search of customers
         /// Two paramaters missing in swagger, 'terms' and 'type'
@@ -556,7 +554,6 @@ namespace KeithLink.Svc.WebApi.Controllers
         //       /// <param name="terms"c</param>
         //       /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
         /// <returns>search results as a paged list of customers</returns>
-
 		[Authorize]
 		[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
@@ -1088,7 +1085,6 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// Get a list of settings for a user
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute( "profile/settings" )]
