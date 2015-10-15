@@ -67,10 +67,6 @@ angular.module('bekApp')
         available: [],
         selected: [],
         showMore: true
-      },
-      department: {
-        available: [],
-        selected: []
       }
     };
 
