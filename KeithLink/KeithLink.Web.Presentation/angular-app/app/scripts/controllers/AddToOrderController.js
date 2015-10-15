@@ -46,6 +46,7 @@ angular.module('bekApp')
     }
     var watches = [];
     $scope.addItemWatches = function(startingIndex, endingIndex) {
+      watches = []
       endingIndex = ($scope.selectedList.itemCount < (startingIndex + endingIndex)) ? $scope.selectedList.itemCount : endingIndex;
       for (var i = startingIndex; i < endingIndex; i++) {
         watches.push($scope.$watch('selectedList.items[' + i + '].quantity', onItemQuantityChanged));
@@ -209,7 +210,7 @@ angular.module('bekApp')
             }
           })
 
-          if(!foundStartPoint){
+          if(!foundStartPoint && visited[0].items.length > 0){
             appendListItems(visited[0].items);
           }
            blockUI.stop();
