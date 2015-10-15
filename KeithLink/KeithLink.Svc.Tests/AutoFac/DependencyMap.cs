@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
@@ -28,6 +29,7 @@ using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.Cache;
@@ -37,6 +39,7 @@ using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
+using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.OnlinePayments;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
@@ -72,7 +75,8 @@ namespace KeithLink.Svc.Test
 			//*******************************************
 			//Mock Items
 			//*******************************************
-			builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            //builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
 			//*******************************************
             //Logic Classes
@@ -89,11 +93,14 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+            builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
+            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
 
 			//*******************************************
 			//Repositories
 			//*******************************************
 			//EF
+            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
 			builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 			builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
@@ -114,7 +121,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
 
 			//Etc
-			builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
 			builder.Register(c => new EventLogRepositoryImpl("Entree Test")).As<IEventLogRepository>();
 			builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
@@ -122,10 +128,12 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-            
+            builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
 
             //Orders
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
+            builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             
             //Profile
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
