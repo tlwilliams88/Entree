@@ -225,9 +225,9 @@ angular.module('bekApp')
       }
        else{
         $stateParams.currentPage = '';
-        var page = 1;
+        var page = pageToSet || 1;
         if($scope.visitedPages[0]){
-        visited = $filter('filter')($scope.visitedPages, {page: 1});
+        visited = $filter('filter')($scope.visitedPages, {page: page});
       }
        }
        var selectedPage = {

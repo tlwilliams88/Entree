@@ -17,9 +17,13 @@ angular.module('bekApp')
       
       getUnreadMessageCount: function() {
         return $http.get('/messaging/usermessages/unreadcount').then(function(response) {
-          angular.copy({ unread: response.data }, Service.userNotificationsCount); // convert int to object
+          Service.setUnreadCount(response.data);
           return response.data;
         });
+      },
+
+      setUnreadCount: function(count){
+        angular.copy({ unread: count }, Service.userNotificationsCount); // convert int to object
       },
 
       getMessages: function(params) {      
@@ -63,7 +67,8 @@ angular.module('bekApp')
         });
 
         return Notification.markAsRead().$promise.then(function() {
-          angular.copy({ unread: 0 }, Service.userNotificationsCount);
+          //set unreadcount to 0 to clear notifications counter badge value
+          Service.setUnreadCount(0);
         });
       }
     };
