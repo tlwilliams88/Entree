@@ -34,8 +34,7 @@ angular.module('bekApp')
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
       var item = $scope[object].items[idx];
-      if(newVal !== oldVal && item){
-        item.initInputs = true;
+      if(newVal !== oldVal && item){        
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
         $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
       }
@@ -221,19 +220,22 @@ angular.module('bekApp')
   $scope.setCurrentPageAfterRedirect = function(pageToSet){
     var visited = [];
     if(!pageToSet && $stateParams.currentPage){
-        var page = $stateParams.currentPage;
-      }
-       else{
-        $stateParams.currentPage = '';
-        var page = 1;
-        if($scope.visitedPages[0]){
-        visited = $filter('filter')($scope.visitedPages, {page: 1});
-      }
-       }
-       var selectedPage = {
-        currentPage: page   
-       };
-       $scope.pageChanged(selectedPage, visited);
+      var page = $stateParams.currentPage;
+    }
+    else{
+    $stateParams.currentPage = '';
+      var page = 1;
+    }
+
+    if($scope.visitedPages[0]){
+      visited = $filter('filter')($scope.visitedPages, {page: page});
+    }
+
+    var selectedPage = {
+    currentPage: page   
+    };
+    
+    $scope.pageChanged(selectedPage, visited);
   }
 
   $scope.setRange = function(){
@@ -241,10 +243,6 @@ angular.module('bekApp')
     $scope.rangeStart = $scope.startingPoint + 1;
     $scope.rangeEnd = ($scope.endPoint > $scope.selectedList.itemCount) ? $scope.selectedList.itemCount : $scope.endPoint;
   }
-   $scope.rowChanged = function(index, field){
-    $scope.destroyedOnField = field;
-    $scope.indexOfSDestroyedRow = index;
-   }
 
     function setSelectedCart(cart) {
       $scope.selectedCart = cart;
@@ -411,7 +409,7 @@ angular.module('bekApp')
       }
       else{  
           if($scope.selectedCart.id === 'New'){
-             $scope.createFromSearch = true;
+             $scope.retainSearchTerm = true;
           }           
           return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
       }      
@@ -461,8 +459,13 @@ angular.module('bekApp')
       });
 
     $scope.confirmQuantity = function(type, item, value) {
-      if(value === undefined && type === 'onhand'){
-        item.onhand = 0;
+
+      if((value === undefined || value === 0) && type === 'onhand'){
+        item.onhand = '0';
+        $scope.onItemOnHandAmountChanged(item);
+      }
+      if((!value || value === undefined) && type === 'quantity'){
+        item.quantity = '0';
       }
           var pattern = /^([0-9])\1+$/; // repeating digits pattern
           if (value > 50 || (value > 0 && pattern.test(value))) {
@@ -549,7 +552,7 @@ angular.module('bekApp')
           }
         }
        var searchTerm = '';
-        if($scope.orderSearchTerm && $scope.createFromSearch){
+        if($scope.orderSearchTerm && $scope.retainSearchTerm){
          var searchTerm = $scope.orderSearchTerm;
         }
 
@@ -761,7 +764,7 @@ angular.module('bekApp')
     $scope.saveAndRetainQuantity = function(){
     $stateParams.listItems = $scope.selectedList.items;
     if($scope.selectedCart.id === 'New'){
-      $scope.createFromSearch = true;
+      $scope.retainSearchTerm = true;
     }
     $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
       $scope.isRedirecting(resp);

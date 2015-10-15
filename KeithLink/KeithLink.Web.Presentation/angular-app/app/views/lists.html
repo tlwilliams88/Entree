@@ -496,14 +496,12 @@
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
                 <ng-form name="parlevelForm">
-                   <input
-                    
+                   <input                    
                     id="parlevel" 
-                    name="parlevel"
-                    focus-me="indexOfSDestroyedRow === $index"
+                    name="parlevel"                    
                     type="text" 
-                    allow-one-positive-decimal 
-                    ng-model-options="{ debounce: 1000 }" ng-model="item.parlevel" 
+                    numeric-validation 
+                    ng-model="item.parlevel" 
                     ng-blur="initParLvl(item)"
                     class="text-right input-number bek-no-drag tabstop" />
                 </ng-form>
@@ -605,8 +603,8 @@
                             id="parlevel" 
                             name="parlevel" 
                             type="text"
-                            allow-one-positive-decimal 
-                            ng-model-options="{ debounce: 1000 }" ng-model="item.parlevel" 
+                            numeric-validation  
+                            ng-model="item.parlevel" 
                             ng-blur="initParLvl(item)"
                             class="input-number input-number-mobile text-right bek-no-drag form-control"
                             />
@@ -673,12 +671,7 @@
               </td>
               <!-- Label -->
               <td 
-              ng-if="::(selectedList.name !== 'History' 
-              && !selectedList.ismandatory 
-              && !selectedList.isreminder 
-              && !selectedList.is_contract_list
-              && !selectedList.isfavorite
-              && !selectedList.isrecommended)" 
+              ng-if="::selectedList.permissions.canEditLabels" 
               class="input-col nowrap hidden-sm hidden-xs">
                <div class="full-width-mobile">
                   <select ng-if="!item.label  && selectedList.permissions.canEditLabels"><option>Select A Label...</option></select>
@@ -705,8 +698,11 @@
                 <ng-form name="parlevelForm">
                   <input
                     type="text" 
-                    ng-init="item.parlevel = item.parlevel || 0"
-                    ng-change="rowChanged($index)"
+                    ng-init="item.parlevel = item.parlevel || 0"   
+                    id="parlevel"   
+                    numeric-validation   
+                    ng-model="item.parlevel"   
+                    ng-blur="initParLvl(item)"
                     ng-model="item.parlevel"                  
                     class="text-right input-number tabstop"
                    />                 
