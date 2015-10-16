@@ -79,6 +79,7 @@
       }
 
       $scope.setDesc = function(field){
+        $scope.sortPreferencesForm.$setDirty();
         field.sortDesc = (field.sortDesc === 'n') ? 'y' : 'n' ;
       }
 

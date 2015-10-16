@@ -9,10 +9,11 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
     function (
       $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
+      $filter,
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
       CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService // bek custom services
@@ -104,6 +105,25 @@ angular.module('bekApp')
   $scope.setSelectedUserContext = function(selectedUserContext) {
     $scope.selectedUserContext = selectedUserContext;
   };
+
+  $scope.departments = [
+    { "value": '', "text": 'All'},
+    { "value": '1', "text": 'Produce'},
+    { "value": '2', "text": 'Frozen'},
+    { "value": '3', "text": 'Frozen Meat'},
+    { "value": '4', "text": 'Grocery'},
+    { "value": '5', "text": 'Boxed Beef'},
+    { "value": '6', "text": 'Dairy'},
+    { "value": '7', "text": 'Non-Food'},
+    { "value": '8', "text": 'Rest. Supply'}];
+
+
+  $scope.selectDepartment = function(dept){
+    $scope.departmentNum = dept;
+    $scope.department = $filter('filter')($scope.departments, {value: dept});
+  };
+
+  $scope.selectDepartment('');
 
   // get default selected user context
   if ($scope.isOrderEntryCustomer) {
