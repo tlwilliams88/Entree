@@ -13,9 +13,15 @@ angular.module('bekApp')
 
   var orderBy = $filter('orderBy');
 
-  function setList(list) {
-    $scope.list = list;
+  function initItemPositions() {
+    $scope.list.items.forEach(function(item, index){
+      //index 0 is assigned to the dummy row used for drag-to-reorder functionality
+      item.position = index;
+    })
+  };
 
+  function setList(list) {
+    $scope.list = list;    
     $scope.list.items.forEach(function(item) {
       item.positionStarting = item.editPosition = item.position;      
     });
@@ -27,7 +33,7 @@ angular.module('bekApp')
   }
 
   setList(list);
-
+  initItemPositions();
   function updateItemPositions(listItemId, oldPosition, newPosition) {
     var isMovingUp = oldPosition > newPosition;
     $scope.list.items.forEach(function(item, index) {
@@ -74,9 +80,11 @@ angular.module('bekApp')
     updateItemPositions(listItemId, oldPosition, newPosition);
   };
 
-  $scope.changePosition = function(items, movedItem) {
-    if(movedItem.position === '0'){
-      movedItem.position = movedItem.editPosition;
+  $scope.changePosition = function(items, movedItem, removeNullValue) {
+    if(movedItem.position === '0' || !movedItem.position){
+      if(removeNullValue || movedItem.position === '0'){   
+        movedItem.position = movedItem.editPosition;
+      }      
       return;
     }
 
