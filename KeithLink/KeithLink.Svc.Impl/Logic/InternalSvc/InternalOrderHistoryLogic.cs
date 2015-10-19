@@ -140,6 +140,38 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
         }
 
+        public OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths ) {
+            OrderTotalByMonth returnValue = new OrderTotalByMonth();
+
+            // Need to get the last day of the current month
+            DateTime end = new DateTime( DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth( DateTime.Today.Year, DateTime.Today.Month ) );
+
+            // Need to get the first day from six months ago, create a new datetime object
+            // Subtract the numberOfMonths but add 1 as the current month is intended as one of the results
+            // Set the day to 1 for the start of the month
+            DateTime start = new DateTime(DateTime.Today.Year, DateTime.Today.AddMonths(-numberOfMonths + 1).Month, 1);
+
+            try {
+                List<Order> orders = GetOrderHeaderInDateRange( customerInfo, start, end ).ToList();
+
+                // Iterate through the buckets and grab the sum for that month
+                for (int i = 0; i <= numberOfMonths - 1; i++) {
+                    DateTime currentMonth = start.AddMonths( i );
+
+                    double bucketValue = (from o in orders
+                                   where o.CreatedDate.Month == currentMonth.Month
+                                   select o.OrderTotal).DefaultIfEmpty(0).Sum();
+
+                    returnValue.Totals.Add( bucketValue );
+                }
+            } catch (Exception e) {
+                _log.WriteErrorLog( String.Format( "Error getting order total by month for customer: {0}, branch: {1}", customerInfo.CustomerId, customerInfo.BranchId ), e );
+                throw e;
+            }
+
+            return returnValue;
+        }
+
         public void SaveOrder(OrderHistoryFile historyFile) {
             Create(historyFile);
 
