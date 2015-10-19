@@ -51,7 +51,7 @@
           </address>
         </div>
         <div 
-          ng-show="hasPayableInvoices && selectedFilterView.name !== 'Invoices Pending Payment'" 
+          ng-show="hasPayableInvoices" 
           class="total-line">Total: 
           <span class="total-amt">{{totalPaymentAmount() | currency}}</span>
           <br> 
@@ -63,13 +63,15 @@
             class="btn btn-primary btn-lg pay-btn" 
             analytics-on 
             analytics-category="Invoices" 
-            analytics-event="Pay Invoices">Pay Invoice(s)
+            analytics-event="Pay Invoices">
+            <span ng-if="selectedFilterView.name !== 'Invoices Pending Payment'" >Pay Invoice(s)</span>
+            <span ng-if="selectedFilterView.name === 'Invoices Pending Payment'" >Update Payment(s)</span>
           </button>
        </div>
-        <div 
-          class="pull-left update-btn" 
+<!--         <div        
           ng-if="hasPayableInvoices && selectedFilterView.name === 'Invoices Pending Payment'" 
-          class="total-line"> 
+          class="total-line pull-left ">Total: 
+          <span class="total-amt">{{totalPaymentAmount() | currency}}</span>
           <br>
           <button 
             type="button" 
@@ -82,7 +84,7 @@
             analytics-category="Invoices" 
             analytics-event="Pay Invoices">Update Payment(s)
           </button>
-        </div>
+        </div> -->
        </div>
      </div> 
     </div>
