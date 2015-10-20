@@ -43,6 +43,7 @@
               <File Id="EF_SqlServer" Name="EntityFramework.SqlServer.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.SqlServer.dll" KeyPath="no" Vital="yes"/>
               <File Id="Excel" Name="Excel.dll" DiskId="1" Source="$(var.SourcePath)\Excel.dll" KeyPath="no" Vital="yes"/>
               <File Id="ICSharpCode_SharpZipLib" Name="ICSharpCode.SharpZipLib.dll" DiskId="1" Source="$(var.SourcePath)\ICSharpCode.SharpZipLib.dll" KeyPath="no" Vital="yes"/>
+              <File Id="InstallConfig" Name="InstallUtil.exe.config" DiskId="1" Source="$(var.SourcePath)\InstallUtil.exe.config" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_DLL" Name="KeithLink.Common.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_PDB" Name="KeithLink.Common.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Impl_DLL" Name="KeithLink.Common.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.dll" KeyPath="no" Vital="yes"/>

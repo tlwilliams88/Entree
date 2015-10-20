@@ -1,10 +1,14 @@
-﻿namespace KeithLink.Svc.Windows.AccessService {
-    partial class ProjectInstaller {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+﻿using System.Configuration;
 
+namespace KeithLink.Svc.Windows.AccessService {
+    partial class ProjectInstaller {
+        #region attributes
+        private System.ComponentModel.IContainer components = null;
+        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
+        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+        #endregion
+
+        #region methods
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
@@ -15,8 +19,6 @@
             }
             base.Dispose(disposing);
         }
-
-        #region Component Designer generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -35,7 +37,9 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
-            this.serviceInstaller1.ServiceName = "Entree Access Service";
+            this.serviceInstaller1.Description = "Used to create and remove access to thrid party applications for Single Sign On";
+            this.serviceInstaller1.DisplayName = DisplayName;
+            this.serviceInstaller1.ServiceName = ServiceName;
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
@@ -45,10 +49,20 @@
             this.serviceInstaller1});
 
         }
-
         #endregion
 
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+        #region properties
+        private string DisplayName {
+            get {
+                return (ConfigurationManager.AppSettings["DisplayName"] ?? "Entree Order Service");
+            }
+        }
+
+        private string ServiceName {
+            get {
+                return (ConfigurationManager.AppSettings["ServiceName"] ?? "Entree Order Service");
+            }
+        }
+        #endregion
     }
 }

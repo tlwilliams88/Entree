@@ -44,6 +44,7 @@
               <File Id="KeithLink_Common_Core_DLL" Name="KeithLink.Common.Core.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF_MappingAPI" Name="EntityFramework.MappingAPI.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.MappingAPI.dll" KeyPath="no" Vital="yes"/>
               <File Id="EF_SqlServer" Name="EntityFramework.SqlServer.dll" DiskId="1" Source="$(var.SourcePath)\EntityFramework.SqlServer.dll" KeyPath="no" Vital="yes"/>
+              <File Id="InstallConfig" Name="InstallUtil.exe.config" DiskId="1" Source="$(var.SourcePath)\InstallUtil.exe.config" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Core_PDB" Name="KeithLink.Common.Core.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Core.pdb" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Impl_DLL" Name="KeithLink.Common.Impl.dll" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.dll" KeyPath="no" Vital="yes"/>
               <File Id="KeithLink_Common_Impl_PDB" Name="KeithLink.Common.Impl.pdb" DiskId="1" Source="$(var.SourcePath)\KeithLink.Common.Impl.pdb" KeyPath="no" Vital="yes"/>
