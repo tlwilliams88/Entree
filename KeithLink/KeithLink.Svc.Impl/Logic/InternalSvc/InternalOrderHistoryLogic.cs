@@ -140,12 +140,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
         }
 
+        /// <summary>
+        /// Get a summary of order totals by month. Current month counts as 1.
+        /// </summary>
+        /// <param name="customerInfo"></param>
+        /// <param name="numberOfMonths"></param>
+        /// <returns></returns>
         public OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths ) {
             OrderTotalByMonth returnValue = new OrderTotalByMonth();
 
             // Need to get the last day of the current month
             DateTime end = new DateTime( DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth( DateTime.Today.Year, DateTime.Today.Month ) );
-
             // Need to get the first day from six months ago, create a new datetime object
             // Subtract the numberOfMonths but add 1 as the current month is intended as one of the results
             // Set the day to 1 for the start of the month
