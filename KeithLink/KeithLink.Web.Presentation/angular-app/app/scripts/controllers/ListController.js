@@ -425,7 +425,7 @@ angular.module('bekApp')
       // saves new item indexes in cached editPosition field after sorting or ordering the list items
      function updateItemPositions() {
 
-      if($scope.selectedList.is_contract_list || $scope.selectedList.name === 'History'){
+      if($scope.selectedList.read_only){
         return;
       }
       var deletedItemCount = 0;
