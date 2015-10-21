@@ -84,12 +84,13 @@
             <ng-form>
               <input 
                 onfocus="this.select();"
-                type="text" 
+                type="text"
+                ng-blur="changePosition(list.items, item, true)"
                 integer 
                 class="text-right input-number bek-no-drag tabstop"
                 ng-model="item.position"
                 ng-model-options="{debounce: 500}"
-                ng-change="changePosition(list.items, item)">
+                ng-change="changePosition(list.items, item, false)">
             </ng-form>
           </td>
           <td>{{::item.itemnumber}}</td>
