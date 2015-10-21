@@ -71,5 +71,16 @@
         <ParameterConfigurationValues />
       </Options>
     </Configuration>
+    <Configuration>
+      <Name>Beta</Name>
+      <Options>
+        <OutputPath>bin</OutputPath>
+        <ConnectionMappings />
+        <ConnectionProviderMappings />
+        <ConnectionSecurityMappings />
+        <DatabaseStorageLocations />
+        <ParameterConfigurationValues />
+      </Options>
+    </Configuration>
   </Configurations>
 </Project>
