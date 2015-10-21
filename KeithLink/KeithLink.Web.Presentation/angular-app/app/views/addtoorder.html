@@ -102,7 +102,10 @@
 
         <div class="col-md-3 col-sm-6 col-xs-12 info-box">
           <span class="nav-description text-light">Cart Info</span>
-          <span class="nav-title">{{(itemCount || selectedCart.items.length ||  '0') +((itemCount === 1 || (!itemCount && selectedCart.items.length === 1)) ? ' Item / ' : ' Items / ')+ (piecesCount || selectedCart.piececount || '0') +((piecesCount === 1 || (!piecesCount && selectedCart.piececount === 1)) ? ' Piece' : ' Pieces')}}</span>
+          <span class="nav-title">
+            {{(itemCount || selectedCart.items.length ||  '0') +((itemCount === 1 || (!itemCount && selectedCart.items.length === 1)) ? ' Item / ' : ' Items / ') +
+             (piecesCount || selectedCart.piececount || '0') +((piecesCount === 1 || (!piecesCount && selectedCart.piececount === 1)) ? ' Piece' : ' Pieces')}}
+          </span>
           <span class="nav-subtotal pull-right text-green">{{selectedCart.subtotal | currency}}</span>
         </div>
 
@@ -205,7 +208,7 @@
           <tr>
             <td>
               {{::item.position}}
-              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities(); addItemWatches(startingPoint, endPoint);"></a>
+              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
             </td>
             <td>
               <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
