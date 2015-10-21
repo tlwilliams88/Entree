@@ -36,7 +36,13 @@ angular.module('bekApp')
       var item = $scope[object].items[idx];
       if(newVal !== oldVal && item){        
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-        $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
+        $scope.piecesCount = 0;
+        var combinedItems = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
+        //total piece count for cart info box
+        combinedItems.forEach(function(item){
+          $scope.piecesCount = $scope.piecesCount + item.quantity;
+        })
+        $scope.itemCount = combinedItems.length;
       }
       if(item !== undefined){
         item.extPrice = PricingService.getPriceForItem(item);
@@ -177,8 +183,9 @@ angular.module('bekApp')
         })     
     }
 
+    
     $scope.setCartItemsDisplayFlag = function (){
-      if($scope.selectedCart.items && $scope.selectedCart.items.length > 0){
+      if($scope.selectedCart.items && $scope.selectedCart.items.length > 0){        
         $scope.selectedCart.items.forEach(function(item){
           if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber}).length > 0){
             item.isShown = true;

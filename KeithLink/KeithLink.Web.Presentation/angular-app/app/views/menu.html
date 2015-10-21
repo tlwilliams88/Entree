@@ -248,6 +248,10 @@
                     <strong>{{cart.name}}</strong>
                     <br>
                     Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
+                    <br>            
+                    Item Count: {{(cart.itemcount || 0) + (cart.itemcount === 1 ? ' Item' : ' Items')+ '/'+(cart.piececount || 0) + (cart.piececount === 1 ? ' Piece ' : ' Pieces')}}
+                    <br>            
+                    Cart Total: {{cart.subtotal | currency}}
                     <br>
                     <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
                     <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })">Continue Shopping</a>
