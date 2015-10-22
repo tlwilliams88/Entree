@@ -15,7 +15,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 		public UnitOfWork(IEventLogRepository eventLogRepository)
 		{
 			this.Context = new BEKDBContext(eventLogRepository);
-            this.Context.Configuration.LazyLoadingEnabled = false;
+            this.Context.Configuration.LazyLoadingEnabled = true;
         }
 
         public UnitOfWork(string nameOrConnectionString) {
