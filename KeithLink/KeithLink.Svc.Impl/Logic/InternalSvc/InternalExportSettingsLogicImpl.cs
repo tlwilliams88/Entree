@@ -17,14 +17,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	public class InternalExportSettingsLogicImpl:IInternalExportSettingLogic
 	{
 		private readonly IExportSettingRepository exportSettingRepository;
+        private readonly IExternalCatalogRepository externalCatalogRepository;
 		private readonly IListRepository listRepository;
 		private readonly IUnitOfWork unitOfWork;
 
-		public InternalExportSettingsLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository)
+		public InternalExportSettingsLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository, IExternalCatalogRepository externalCatalogRepository)
 		{
 			this.unitOfWork = unitOfWork;
 			this.exportSettingRepository = exportSettingRepository;
 			this.listRepository = listRepository;
+            this.externalCatalogRepository = externalCatalogRepository;
 		}
 
 		public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId)
@@ -260,5 +262,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 		}
 		#endregion
-	}
+
+
+        public List<ExternalCatalog> ReadExternalCatalogs()
+        {
+            return this.externalCatalogRepository.ReadAll().ToList();
+        }
+    }
 }

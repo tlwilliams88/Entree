@@ -280,6 +280,7 @@
     <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
     <Compile Include="Repository\Cache\CacheRepositoryImpl.cs" />
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\Configurations\ExternalCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementExternalRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
@@ -574,6 +575,10 @@
     <Compile Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.cs" />
     <Compile Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.Designer.cs">
       <DependentUpon>201510152123307_resynchDB2015-10-15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.cs" />
+    <Compile Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.Designer.cs">
+      <DependentUpon>201510231909196_2015-10-23-adding-external-catalog.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -1139,6 +1144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.resx">
       <DependentUpon>201510152123307_resynchDB2015-10-15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.resx">
+      <DependentUpon>201510231909196_2015-10-23-adding-external-catalog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

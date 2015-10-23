@@ -300,7 +300,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 //Go get the code for this branch, hard code for now
                 branch = branch + ",unfi_5";
             }
-                
+             
 
             return GetProductsFromElasticSearch(branch, "", termSearchExpression);
         }

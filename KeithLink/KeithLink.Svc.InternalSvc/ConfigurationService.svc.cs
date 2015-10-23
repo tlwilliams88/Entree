@@ -32,5 +32,11 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			exportSettingLogic.SaveUserExportSettings(userId, type, listType, configuration, exportFormat);
 		}
+
+        public List<ExternalCatalog> ReadExternalCatalogs()
+        {
+            return exportSettingLogic.ReadExternalCatalogs();
+        }
+
 	}
 }

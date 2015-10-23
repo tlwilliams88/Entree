@@ -486,6 +486,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Configurations\ExternalCatalogServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />

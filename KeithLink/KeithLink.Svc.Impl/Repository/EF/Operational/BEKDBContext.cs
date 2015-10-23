@@ -55,6 +55,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 		public DbSet<PasswordResetRequest> PasswordResetRequests { get; set; }
 		public DbSet<MarketingPreference> MarketingPreferences {get;set;}
         public DbSet<ItemHistory> ItemHistory { get; set; }
+        public DbSet<ExternalCatalog> ExternalCatalogs { get; set; }
 
         protected override void OnModelCreating( DbModelBuilder modelBuilder ) {
             modelBuilder.Entity<List>().ToTable( "Lists", schemaName: "List" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
@@ -80,6 +81,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 
             modelBuilder.Entity<MessageTemplate>().ToTable( "MessageTemplates", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ExportSetting>().ToTable( "ExportSettings", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<ExternalCatalog>().ToTable("ExternalCatalogs", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             modelBuilder.Entity<Term>().ToTable( "Terms", schemaName: "Invoice" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
