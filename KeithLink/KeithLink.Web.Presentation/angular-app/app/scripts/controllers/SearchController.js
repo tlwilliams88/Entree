@@ -210,10 +210,10 @@ angular.module('bekApp')
         $scope.facets.brands.selected,
         $scope.facets.mfrname.selected,
         $scope.facets.dietary.selected, 
-        $scope.facets.itemspecs.selected 
+        $scope.facets.itemspecs.selected
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $scope.includeSpecialItems);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, params);
     }
 
@@ -353,6 +353,11 @@ angular.module('bekApp')
         facetList.push(selectedFacet);
       }
 
+      loadProducts().then(refreshFacets);
+    };
+          
+    $scope.toggleSpecialOrders = function() {
+      console.log("special orders: " + $scope.includeSpecialItems);  
       loadProducts().then(refreshFacets);
     };
 

@@ -64,19 +64,23 @@ angular.module('bekApp')
           return facets;
         },
 
-        getSearchParams: function(pageSize, index, sortField, sortDirection, facets) {
+        getSearchParams: function(pageSize, index, sortField, sortDirection, facets, includeSpecialItems) {
           var params = {
             size: pageSize  || defaultPageSize,
             from: index || defaultStartingIndex,
             facets: facets,
             sfield: sortField,
-            sdir: sortDirection
+            sdir: sortDirection,
+            includeSpecialItems: includeSpecialItems 
           };
           if (!params.facets) {
             delete params.facets;
           } 
           if (!params.sfield) {
             delete params.sfield;
+          }
+          if (!params.includeSpecialItems) {
+              delete params.includeSpecialItems
           }
           return params;  
         },

@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
     public interface ICatalogRepository
     {
 		ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel);
-		ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
+        ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
 		ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel);
         CategoriesReturn GetCategories(int from, int size);
         Product GetProductById(string branch, string id);

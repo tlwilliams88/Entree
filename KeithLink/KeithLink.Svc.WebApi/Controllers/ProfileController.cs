@@ -534,7 +534,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         //       /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
         /// <returns>search results as a paged list of customers</returns>
 		[Authorize]
-		[HttpGet]
+        //[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
 		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", [FromUri] string terms = "")
 		{

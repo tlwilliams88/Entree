@@ -65,7 +65,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         }
 
 
-		public ProductsReturn GetProductsBySearch(string branch, string search, SearchInputModel searchModel)
+        public ProductsReturn GetProductsBySearch(string branch, string search, SearchInputModel searchModel)
         {
             throw new NotImplementedException();
         }
@@ -87,7 +87,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			throw new NotImplementedException();
 		}
 
-		public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel)
+        public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel)
 		{
 			throw new NotImplementedException();
 		}

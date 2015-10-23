@@ -294,7 +294,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel.From, size, searchModel.SField, searchModel.SDir, filterTerms, fieldsToSearch, termSearch);
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
-            return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", termSearchExpression);
+
+            string branch = catalogInfo.BranchId.ToLower();
+            if (searchModel.IncludeSpecialItems) {
+                //Go get the code for this branch, hard code for now
+                branch = branch + ",unfi_5";
+            }
+                
+
+            return GetProductsFromElasticSearch(branch, "", termSearchExpression);
         }
 
         private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody, object searchBodyD = null) {
