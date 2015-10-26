@@ -141,6 +141,38 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         /// <summary>
+        /// Gets just the primary order details needed without the excess of item details or invoice status
+        /// </summary>
+        /// <param name="customerInfo"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
+        private BlockingCollection<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails).ToList();
+
+            BlockingCollection<Order> orders = new BlockingCollection<Order>();
+
+            System.Diagnostics.Stopwatch orderStopwatch = new System.Diagnostics.Stopwatch();
+            orderStopwatch.Start();
+
+            Parallel.ForEach( headers, new ParallelOptions { MaxDegreeOfParallelism = 4 }, h => {
+                Order order = h.ToOrder();
+
+                if (order.Items != null) {
+                    order.OrderTotal = order.Items.AsParallel().Sum(i => i.LineTotal);
+                }
+
+                orders.Add( order );
+            } );
+
+            orderStopwatch.Stop();
+            System.Diagnostics.Debug.WriteLine( "Retrieving Orders Took: {0}", orderStopwatch.Elapsed );
+
+            return orders;
+        }
+
+        /// <summary>
         /// Get a summary of order totals by month. Current month counts as 1.
         /// </summary>
         /// <param name="customerInfo"></param>
@@ -157,10 +189,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             DateTime start = new DateTime(DateTime.Today.Year, DateTime.Today.AddMonths(-numberOfMonths + 1).Month, 1);
 
             try {
-                List<Order> orders = GetOrderHeaderInDateRange( customerInfo, start, end ).ToList();
+                BlockingCollection<Order> orders = GetShallowOrderDetailInDateRange( customerInfo, start, end );
 
                 // Iterate through the buckets and grab the sum for that month
-                for (int i = 0; i <= numberOfMonths - 1; i++) {
+                Parallel.For( 0, numberOfMonths - 1, i => {
                     DateTime currentMonth = start.AddMonths( i );
 
                     double bucketValue = (from o in orders
@@ -168,7 +200,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                                    select o.OrderTotal).DefaultIfEmpty(0).Sum();
 
                     returnValue.Totals.Add( bucketValue );
-                }
+                } );
+                
             } catch (Exception e) {
                 _log.WriteErrorLog( String.Format( "Error getting order total by month for customer: {0}, branch: {1}", customerInfo.CustomerId, customerInfo.BranchId ), e );
                 throw e;
@@ -184,11 +217,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging) {
-            var headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                              h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                            d => d.OrderDetails);
+            var headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase ) &&
+                h.CustomerNumber.Equals( customerInfo.CustomerId ), d => d.OrderDetails );
 
-            return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
+            return LookupControlNumberAndStatus( customerInfo, headers ).AsQueryable().GetPage( paging );
         }
 
         public void StopListening() {
@@ -297,18 +329,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
                             returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
-
-                            //if (po.Properties["LineItems"] != null)
-                            //{
-                            //    var poOrder = po.ToOrder();
-                            //    foreach (var item in returnOrder.Items)
-                            //    {
-                            //        //Get the unit price from the PO
-                            //        var poLine = poOrder.Items.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
-                            //        if (poLine != null)
-                            //            item.Price = poLine.Price;
-                            //    }
-                            //}
                         }
 
                     }
@@ -322,7 +342,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.Status = "Delivered";
                     }
 
-                    LookupProductDetails(h.BranchId, returnOrder);
+                    //LookupProductDetails(h.BranchId, returnOrder);
                     if (returnOrder.Items != null) {
                         returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
