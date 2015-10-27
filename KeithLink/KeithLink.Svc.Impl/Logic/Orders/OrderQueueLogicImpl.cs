@@ -88,7 +88,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         private void SendHeaderRecordToHost(OrderHeader header) {
-            _mfConnection.Send(header.ToMainframeFormat());
+            _mfConnection.Send(header.ToMainframeFormat(Configuration.MainframeCollectorType));
 
             // wait for a response from the mainframe
             bool waiting = true;

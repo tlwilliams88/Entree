@@ -5,10 +5,10 @@ using System.Text;
 
 namespace KeithLink.Svc.Core.Extensions.Orders {
     public static class OrderHeaderExtension {
-        public static string GetOrderSource(OrderSource value) {
+        public static string GetOrderSource(OrderSource value, string entreeCollectorType) {
             switch (value) {
                 case OrderSource.Entree:
-                    return "B";
+                    return entreeCollectorType;
                 default:
                     throw new ArgumentException("Unkown OrderingSystem", "OrderingSystem");
             }
@@ -27,13 +27,13 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             }
         }
 
-        public static string ToMainframeFormat(this OrderHeader value) {
+        public static string ToMainframeFormat(this OrderHeader value, string entreeCollectorType) {
             if (value.Branch.Length != 3) { throw new ArgumentException("Branch is an invalid format", "Branch"); }
             if (value.CustomerNumber.Length != 6) { throw new ArgumentException("CustomerNumber is in an invalid format", "CustomerNumber"); }
 
             StringBuilder output = new StringBuilder("H");
 
-            output.Append(GetOrderSource(value.OrderingSystem));
+            output.Append(GetOrderSource(value.OrderingSystem, entreeCollectorType));
             output.Append(value.Branch);
             output.Append(value.CustomerNumber);
             output.Append(value.DeliveryDate.ToString("yyyyMMdd"));
