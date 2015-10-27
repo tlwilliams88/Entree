@@ -69,7 +69,7 @@
           <span class="nav-title" ng-hide="isRenaming">{{selectedCart.name || selectedCart.invoicenumber || 'New Cart'}} 
             <span ng-if="::!isChangeOrder" class="icon-pencil hand large-icon text-light" ng-click="startRenamingCart(selectedCart.name)"></span>
           </span>
-          <span ng-if="isRenaming">
+          <span ng-show="isRenaming">
             <form name="renameCartForm">
               <input type="text" id="cartName" ng-model="tempCartName" focus-me="isRenaming" required>
               <button type="submit" class="btn-no-style icon-checkmark large-icon hand text-green" ng-disabled="renameCartForm.$invalid" ng-click="renameCart(selectedCart.id, tempCartName)"></button>
