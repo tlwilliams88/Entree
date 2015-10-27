@@ -1,14 +1,16 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 
+using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Enumerations.Profile;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
+using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ModelExport;
-using KeithLink.Svc.Core.Interface.Configuration;
 
 using KeithLink.Svc.WebApi.Models;
 // using KeithLink.Svc.WebApi.Attribute;
@@ -36,6 +38,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
         private readonly com.benekeith.ProfileService.IProfileService _profileService;
+        private IUserMessagingPreferenceRepository _userMessagingPreferenceRepository;
 		
 		#endregion
 
@@ -48,7 +51,9 @@ namespace KeithLink.Svc.WebApi.Controllers
                                 IPasswordResetService passwordResetService,
                                 IDsrAliasService dsrAliasService,
                                 IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
-                                IExportSettingServiceRepository exportSettingRepository, com.benekeith.ProfileService.IProfileService profileService )
+                                IExportSettingServiceRepository exportSettingRepository,
+                                com.benekeith.ProfileService.IProfileService profileService,
+                                IUserMessagingPreferenceRepository userMessagingPreferenceRepository )
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -61,7 +66,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
 			_exportSettingRepository = exportSettingRepository;
             _profileService = profileService;
-		}
+            _userMessagingPreferenceRepository = userMessagingPreferenceRepository;
+        }
 		#endregion
 
 		#region methods
@@ -81,7 +87,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 				retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(this.AuthenticatedUser, userInfo.CustomerName, userInfo.Email, userInfo.Password,
 																			userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
 																			userInfo.Role, userInfo.BranchId);
-			}
+                SetDefaultApplicationSettings(userInfo.Email);
+            }
 			catch (ApplicationException axe)
 			{
 				retVal.ErrorMessage = axe.Message;
@@ -120,6 +127,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 } else {
                     retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
                 }
+                SetDefaultApplicationSettings(guestInfo.Email);
 
                 MarketingPreferenceModel model = new MarketingPreferenceModel(){
                     Email = guestInfo.Email,
@@ -159,7 +167,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			try
 			{
 				returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword(this.AuthenticatedUser, guestInfo.Email, guestInfo.BranchId);
-			}
+                SetDefaultApplicationSettings(guestInfo.Email);
+            }
 			catch (ApplicationException ex)
 			{
 				returnValue.ErrorMessage = ex.Message;
@@ -311,7 +320,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			try
 			{
 				retVal.SuccessResponse = _profileLogic.CreateAccount(this.AuthenticatedUser, account.Name);
-			}
+                SetDefaultApplicationSettings(this.AuthenticatedUser.EmailAddress);
+            }
 			catch (ApplicationException axe)
 			{
 				retVal.ErrorMessage = axe.Message;
@@ -1140,6 +1150,65 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 	        return returnValue;
 	    }
-	    #endregion
+
+        private void SetDefaultApplicationSettings(string email)
+        {
+            UserProfileReturn profile = _profileLogic.GetUserProfile(email);
+            SetDefaultApplicationNotifySetting(profile, Core.Enumerations.Messaging.NotificationType.OrderConfirmation);
+            SetDefaultApplicationNotifySetting(profile, Core.Enumerations.Messaging.NotificationType.OrderShipped);
+            SetDefaultApplicationNotifySetting(profile, Core.Enumerations.Messaging.NotificationType.InvoiceAttention);
+            SetDefaultApplicationNotifySetting(profile, Core.Enumerations.Messaging.NotificationType.HasNews);
+            SetDefaultApplicationNotifySetting(profile, Core.Enumerations.Messaging.NotificationType.PaymentConfirmation);
+            SetDefaultApplicationListSizeSetting(profile, "50");
+            SetDefaultApplicationListSortSetting(profile, "lis4n2nato4n2n");
+        }
+
+        private void SetDefaultApplicationListSizeSetting(UserProfileReturn profile, string listSize)
+        {
+            SettingsModel settings = new SettingsModel()
+            {
+                UserId = profile.UserProfiles[0].UserId,
+                Key = "pageLoadSize",
+                Value = listSize
+            };
+            try
+            {
+                _profileService.SaveProfileSettings(settings);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Error saving profile settings for user: ", ex);
+            }
+        }
+
+        private void SetDefaultApplicationListSortSetting(UserProfileReturn profile, string sortOrder)
+        {
+            SettingsModel settings = new SettingsModel()
+            {
+                UserId = profile.UserProfiles[0].UserId,
+                Key = "sortPreferences",
+                Value = sortOrder
+            };
+            try
+            {
+                _profileService.SaveProfileSettings(settings);
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Error saving profile settings for user: ", ex);
+            }
+        }
+
+        private void SetDefaultApplicationNotifySetting(UserProfileReturn profile, NotificationType notifyType)
+        {
+            Core.Models.Messaging.EF.UserMessagingPreference pref = new Core.Models.Messaging.EF.UserMessagingPreference()
+            {
+                UserId = profile.UserProfiles[0].UserId,
+                Channel = Core.Enumerations.Messaging.Channel.Web,
+                NotificationType = notifyType
+            };
+            _userMessagingPreferenceRepository.Create(pref);
+        }
+        #endregion
 	}
 }
