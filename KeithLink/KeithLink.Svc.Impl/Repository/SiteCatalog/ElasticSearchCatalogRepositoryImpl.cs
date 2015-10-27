@@ -298,6 +298,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             string branch = catalogInfo.BranchId.ToLower();
             if (searchModel.IncludeSpecialItems) {
                 //Go get the code for this branch, hard code for now
+                //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
                 branch = branch + ",unfi_5";
             }
              
@@ -307,7 +308,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
         private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody, object searchBodyD = null) {
             ElasticsearchResponse<DynamicDictionary> res = null;
-
+            
             if (searchBodyD == null)
                 res = _client.Search(branch.ToLower(), "product", searchBody);
             else

@@ -357,7 +357,9 @@ angular.module('bekApp')
     };
           
     $scope.toggleSpecialOrders = function() {
-      console.log("special orders: " + $scope.includeSpecialItems);  
+      console.log("special orders: " + $scope.includeSpecialItems);
+      $scope.itemIndex = 0;
+      $scope.itemsPerPage = 50;
       loadProducts().then(refreshFacets);
     };
 
