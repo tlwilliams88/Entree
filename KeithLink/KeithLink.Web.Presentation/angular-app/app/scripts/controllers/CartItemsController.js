@@ -176,12 +176,28 @@ angular.module('bekApp')
         });
       }
     };
+
+    $scope.validateShipDate = function(){
+      var cutoffDate = moment($scope.selectedShipDate.cutoffdatetime);
+      var now = moment();
+      $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
+      if($scope.invalidShipDate){
+        CartService.getShipDates().then(function(result){
+          $scope.shipDates = result;
+        })
+      }
+      return $scope.invalidSelectedDate;
+    }
    
    var processingSubmitOrder = false;
     $scope.submitOrder = function(cart) {
       if (!processingSubmitOrder) {
-        processingSubmitOrder = true;
- 
+        processingSubmitOrder = true;        
+
+        if($scope.validateShipDate()){
+          return;
+        }
+
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
@@ -279,7 +295,11 @@ angular.module('bekApp')
     $scope.resubmitOrder = function(order) {
       if (!processingResubmitOrder) {
         processingResubmitOrder = true;
- 
+
+        if($scope.validateShipDate()){
+          return;
+        }
+        
         $scope.saveChangeOrder(order)
           .then(OrderService.resubmitOrder)
           .then(function(invoiceNumber) {
