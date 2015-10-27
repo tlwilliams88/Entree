@@ -210,6 +210,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
+            builder.RegisterType<NoExternalCatalogRepositoryImpl>().As<IExternalCatalogServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
@@ -229,6 +230,7 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<InternalExportSettingsLogicImpl>().As<IInternalExportSettingLogic>();
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
+            builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
             builder.RegisterType<ReportRepository>().As<IReportRepository>();

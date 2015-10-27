@@ -282,6 +282,7 @@
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExternalCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
+    <Compile Include="Repository\Configurations\NoExternalCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementExternalRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />

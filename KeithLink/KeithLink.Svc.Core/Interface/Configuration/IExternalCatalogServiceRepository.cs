@@ -11,6 +11,6 @@ namespace KeithLink.Svc.Core.Interface.Configuration
 {
 	public interface IExternalCatalogServiceRepository
 	{
-        List<ExternalCatalog> ReadExternalCatalogs();
+        List<ExportExternalCatalog> ReadExternalCatalogs();
 	}
 }

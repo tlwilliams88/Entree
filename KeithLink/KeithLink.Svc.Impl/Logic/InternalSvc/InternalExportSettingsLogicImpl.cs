@@ -264,9 +264,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		#endregion
 
 
-        public List<ExternalCatalog> ReadExternalCatalogs()
+        public List<ExportExternalCatalog> ReadExternalCatalogs()
         {
-            return this.externalCatalogRepository.ReadAll().ToList();
+            List<ExportExternalCatalog> externalCatalog = new List<ExportExternalCatalog>();
+            foreach (ExternalCatalog externalCatalogItem in this.externalCatalogRepository.ReadAll().ToList())
+            {
+                ExportExternalCatalog item = new ExportExternalCatalog();
+                item.BekBranchId = externalCatalogItem.BekBranchId;
+                item.ExternalBranchId = externalCatalogItem.ExternalBranchId;
+                item.Type = externalCatalogItem.Type.ToString();
+                externalCatalog.Add(item);
+            }
+
+            return externalCatalog;
         }
     }
 }

@@ -19,9 +19,9 @@ namespace KeithLink.Svc.WebApi.Repository.Configurations
 			this.serviceClient = serviceClient;
 		}
 
-        public List<ExternalCatalog> ReadExternalCatalogs()
+        public List<ExportExternalCatalog> ReadExternalCatalogs()
         {
-            throw new NotImplementedException();
+            return this.serviceClient.ReadExternalCatalogs().ToList();
         }
     }
 }

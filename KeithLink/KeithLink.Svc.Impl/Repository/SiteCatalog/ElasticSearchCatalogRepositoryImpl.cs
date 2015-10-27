@@ -296,11 +296,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
 
             string branch = catalogInfo.BranchId.ToLower();
-            if (searchModel.IncludeSpecialItems) {
-                //Go get the code for this branch, hard code for now
-                //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-                branch = branch + ",unfi_5";
-            }
              
 
             return GetProductsFromElasticSearch(branch, "", termSearchExpression);

@@ -15,6 +15,9 @@ using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.ModelExport;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -33,12 +36,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 		protected string CACHE_GROUPNAME { get { return "Catalog"; } }
 		protected string CACHE_NAME { get { return "Catalog"; } }
 		protected string CACHE_PREFIX { get { return "Default"; } }
+        private IExternalCatalogServiceRepository _externalServiceRepository;
         #endregion
 
-        #region ctor
+        #region constructor
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository,
                                                  ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic,
-                                                 IOrderServiceRepository orderServiceRepository) {
+                                                 IOrderServiceRepository orderServiceRepository, IExternalCatalogServiceRepository externalServiceRepository)
+        {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
@@ -47,6 +52,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _catalogCacheRepository = catalogCacheRepository;
             _divisionLogic = divisionLogic;
             _orderServiceRepository = orderServiceRepository;
+            _externalServiceRepository = externalServiceRepository;
         }
         #endregion
 
@@ -304,6 +310,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
+
+            if (searchModel.IncludeSpecialItems)
+            {
+                //Go get the code for this branch, hard code for now
+                //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
+                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
+                List<ExportExternalCatalog> filteredList = externalCatalog.Where(x => catalogInfo.BranchId.ToLower().Equals(x.BekBranchId.Trim().ToLower())).ToList();
+
+                foreach (ExportExternalCatalog catalogItem in filteredList) {
+                    catalogInfo.BranchId = catalogInfo.BranchId + "," + catalogItem.ExternalBranchId;
+                }
+            }
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
