@@ -102,7 +102,10 @@
 
         <div class="col-md-3 col-sm-6 col-xs-12 info-box">
           <span class="nav-description text-light">Cart Info</span>
-          <span class="nav-title">{{itemCount || selectedCart.items.length ||  '0'}} Items</span>
+          <span class="nav-title">
+            {{(itemCount || selectedCart.items.length ||  '0') +((itemCount === 1 || (!itemCount && selectedCart.items.length === 1)) ? ' Item / ' : ' Items / ') +
+             (piecesCount || selectedCart.piececount || '0') +((piecesCount === 1 || (!piecesCount && selectedCart.piececount === 1)) ? ' Piece' : ' Pieces')}}
+          </span>
           <span class="nav-subtotal pull-right text-green">{{selectedCart.subtotal | currency}}</span>
         </div>
 
@@ -205,7 +208,7 @@
           <tr>
             <td>
               {{::item.position}}
-              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities(); addItemWatches(startingPoint, endPoint);"></a>
+              <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
             </td>
             <td>
               <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
@@ -230,7 +233,7 @@
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
             </td>
             <td class="hidden-mobile-visible-print">
-              {{item.label}}
+              {{::item.label}}
             </td>
             <td ng-if="useParlevel" class="hidden-mobile">
               {{::item.parlevel}}
@@ -260,7 +263,7 @@
               <!--  QUANTITY -->
               <span class="hidden-mobile visible-print">{{::item.quantity}}</span>
               <ng-form class="hidden-print" name="quantityForm">
-                <div counter ng-model="item.quantity" ng-blur="confirmQuantity('quantity', item, item.quantity);" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
+                <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
                 <span  class="counter-container"  >
                  <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile" ng-disabled = "item.quantity === 0" ng-if="useParlevel && item.canOrder"  ng-click="item.quantity = item.quantity -1;"></button>
                   <input                             

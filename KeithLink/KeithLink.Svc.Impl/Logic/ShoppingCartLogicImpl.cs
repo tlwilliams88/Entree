@@ -267,6 +267,7 @@ namespace KeithLink.Svc.Impl.Logic
 					PONumber = l.PONumber,
 					SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0, 
 					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0,
+                    PieceCount = l.LineItems != null ? (int)l.LineItems.Sum(i => i.Quantity) : 0,
 					RequestedShipDate = l.RequestedShipDate,
                     CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
 				}).ToList();
@@ -280,6 +281,7 @@ namespace KeithLink.Svc.Impl.Logic
 					LookupProductDetails(user, catalogInfo, list, notes);
 
                     list.ItemCount = list.Items.Count;
+                    list.PieceCount = (int)list.Items.Sum(i => i.Quantity);
 
                     foreach (var item in list.Items) {
                         int qty = (int)item.Quantity;
@@ -302,6 +304,7 @@ namespace KeithLink.Svc.Impl.Logic
 			LookupProductDetails(user, catalogInfo, cart, notes);
 
             cart.ItemCount = cart.Items.Count;
+            cart.PieceCount = (int)cart.Items.Sum(i => i.Quantity);
 
             foreach (var item in cart.Items) {
                 int qty = (int)item.Quantity;

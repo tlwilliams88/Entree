@@ -20,7 +20,8 @@ angular.module('bekApp')
         if (!ctrl) { return; }
 
         ctrl.$validators.passwordRequirements = function(modelValue, viewValue) {
-          return ctrl.$isEmpty(modelValue) || ( UPPERCASE_REGEX.test(viewValue) && LOWERCASE_REGEX.test(viewValue) && NUMBER_REGEX.test(viewValue) && viewValue.length >7 );
+          var email_name_check = new RegExp(attrs.emailAddress.split('@')[0], 'i');
+          return ctrl.$isEmpty(modelValue) || ( UPPERCASE_REGEX.test(viewValue) && LOWERCASE_REGEX.test(viewValue) && NUMBER_REGEX.test(viewValue) && viewValue.length >7 && !email_name_check.test(viewValue) );
         };
       }
     };
