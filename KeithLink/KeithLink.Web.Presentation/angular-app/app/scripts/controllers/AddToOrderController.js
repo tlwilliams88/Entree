@@ -606,7 +606,8 @@ angular.module('bekApp')
       var duplicateName = false;
       CartService.cartHeaders.forEach(function(header){
         if(name === header.name){
-          duplicateName = true;
+          duplicateName = (header.id === cartId) ? false : true;
+            $scope.isRenaming = duplicateName;
         }
       });
 

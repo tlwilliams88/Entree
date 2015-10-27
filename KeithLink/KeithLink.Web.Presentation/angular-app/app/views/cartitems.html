@@ -151,8 +151,7 @@
           <label for="shipDate" class="col-sm-3 control-label">Submit by:</label>
           <div class="col-sm-6">
             <p class="form-control-static text-light">{{selectedShipDate.cutoffdatetime | formatDateWithTimezone}}</p>
-            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date ng-if="!isInternalUser">
-            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" ng-if="isInternalUser">
+            <input name="cutoffDate" type="hidden" ng-model="selectedShipDate.cutoffdatetime" order-cutoff-date>           
           </div>
         </div> 
 
@@ -169,7 +168,7 @@
               <button class="btn btn-primary btn-mobile" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
 
               <button type="button" class="btn btn-default btn-mobile" ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
-              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Order">Submit Order</button>
+              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline || invalidSelectedDate" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Order">Submit Order</button>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
               <button type="button" class="btn btn-primary  btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
@@ -181,6 +180,7 @@
           </div>
           <div class="col-xs-12">
             <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
+            <p class="text-red" ng-if="invalidSelectedDate">It is past the cutoff time for the selected shipping date. Please choose a later date.</p>
           </div>
         </div>
 
