@@ -98,7 +98,7 @@
           <div class="col-xs-12 hidden-print">
             
             <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
-            <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+            <p class="text-red" ng-show="(currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate) || invalidSelectedDate">Selected ship date is invalid.</p>
             <p class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</p>
             <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
             <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
@@ -180,7 +180,6 @@
           </div>
           <div class="col-xs-12">
             <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
-            <p class="text-red" ng-if="invalidSelectedDate">It is past the cutoff time for the selected shipping date. Please choose a later date.</p>
           </div>
         </div>
 
