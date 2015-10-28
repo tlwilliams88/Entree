@@ -76,18 +76,22 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.SettingsModelReturn>> ReadProfileSettingsAsync(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SaveProfileSettings", ReplyAction="http://tempuri.org/IProfileService/SaveProfileSettingsResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(KeithLink.Svc.Core.Models.Profile.SettingsModelReturn))]
         void SaveProfileSettings(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SaveProfileSettings", ReplyAction="http://tempuri.org/IProfileService/SaveProfileSettingsResponse")]
         System.Threading.Tasks.Task SaveProfileSettingsAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteProfileSetting", ReplyAction="http://tempuri.org/IProfileService/DeleteProfileSettingResponse")]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(KeithLink.Svc.Core.Models.Profile.SettingsModelReturn))]
         void DeleteProfileSetting(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/DeleteProfileSetting", ReplyAction="http://tempuri.org/IProfileService/DeleteProfileSettingResponse")]
         System.Threading.Tasks.Task DeleteProfileSettingAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SetDefaultApplicationSettings", ReplyAction="http://tempuri.org/IProfileService/SetDefaultApplicationSettingsResponse")]
+        void SetDefaultApplicationSettings(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/SetDefaultApplicationSettings", ReplyAction="http://tempuri.org/IProfileService/SetDefaultApplicationSettingsResponse")]
+        System.Threading.Tasks.Task SetDefaultApplicationSettingsAsync(string email);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -211,6 +215,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         
         public System.Threading.Tasks.Task DeleteProfileSettingAsync(KeithLink.Svc.Core.Models.Profile.SettingsModel settings) {
             return base.Channel.DeleteProfileSettingAsync(settings);
+        }
+        
+        public void SetDefaultApplicationSettings(string email) {
+            base.Channel.SetDefaultApplicationSettings(email);
+        }
+        
+        public System.Threading.Tasks.Task SetDefaultApplicationSettingsAsync(string email) {
+            return base.Channel.SetDefaultApplicationSettingsAsync(email);
         }
     }
 }

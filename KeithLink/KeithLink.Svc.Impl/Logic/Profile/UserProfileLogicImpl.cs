@@ -75,7 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
                                     IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, 
                                     IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog,
-									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService, 
+									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService,
                                     ISettingsLogicImpl settingsLogic)
 		{
             _cache = profileCache;
@@ -403,7 +403,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// jwames - 4/1/2015 - change AD structure
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId) {
+        public UserProfileReturn CreateGuestUserAndProfile(UserProfile actingUser, string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
@@ -418,7 +418,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                               Configuration.RoleNameGuest
                               );
 
-            _csProfile.CreateUserProfile(actiingUser.EmailAddress,
+            _csProfile.CreateUserProfile(actingUser.EmailAddress,
 										 emailAddress,
                                          Core.Constants.AD_GUEST_FIRSTNAME,
                                          Core.Constants.AD_GUEST_LASTNAME,
@@ -1537,7 +1537,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 4/2/2015 - change AD structure
         /// </remarks>
-		public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId)
+		public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actingUser, string emailAddress, string branchId)
 		{
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             string generatedPassword = GenerateTemporaryPassword(); //This generated password is no longer being sent to the user, but it's still needed to create the account in AD
@@ -1554,7 +1554,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 );
 
             _csProfile.CreateUserProfile(
-				actiingUser.EmailAddress,
+				actingUser.EmailAddress,
                 emailAddress,
                 Core.Constants.AD_GUEST_FIRSTNAME,
                 Core.Constants.AD_GUEST_LASTNAME,
@@ -1705,6 +1705,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         {
             _settingsLogic.DeleteSettings( model );
         }
+
 
         #endregion
 	}
