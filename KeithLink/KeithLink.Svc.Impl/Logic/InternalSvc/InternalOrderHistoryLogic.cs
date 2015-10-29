@@ -147,27 +147,32 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
         /// <returns></returns>
-        private BlockingCollection<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+        private List<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
             List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                                                h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails).ToList();
 
-            BlockingCollection<Order> orders = new BlockingCollection<Order>();
+            List<Order> orders = new List<Order>();
 
-            System.Diagnostics.Stopwatch orderStopwatch = new System.Diagnostics.Stopwatch();
-            orderStopwatch.Start();
-
-            Parallel.ForEach( headers, new ParallelOptions { MaxDegreeOfParallelism = 4 }, h => {
+            foreach (EF.OrderHistoryHeader h in headers) {
                 Order order = h.ToOrder();
 
                 if (order.Items != null) {
-                    order.OrderTotal = order.Items.AsParallel().Sum(i => i.LineTotal);
+                    order.OrderTotal = order.Items.Sum(i => i.LineTotal);
                 }
 
                 orders.Add( order );
-            } );
+            }
 
-            orderStopwatch.Stop();
-            System.Diagnostics.Debug.WriteLine( "Retrieving Orders Took: {0}", orderStopwatch.Elapsed );
+            // Leaving this code commented out in case we need further performance increases
+            //Parallel.ForEach( headers, new ParallelOptions { MaxDegreeOfParallelism = 2 }, h => {
+            //    Order order = h.ToOrder();
+
+            //    if (order.Items != null) {
+            //        order.OrderTotal = order.Items.AsParallel().WithDegreeOfParallelism(2).Sum(i => i.LineTotal);
+            //    }
+
+            //    orders.Add( order );
+            //} );
 
             return orders;
         }
@@ -189,18 +194,30 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             DateTime start = new DateTime(DateTime.Today.Year, DateTime.Today.AddMonths(-numberOfMonths + 1).Month, 1);
 
             try {
-                BlockingCollection<Order> orders = GetShallowOrderDetailInDateRange( customerInfo, start, end );
+                List<Order> orders = GetShallowOrderDetailInDateRange( customerInfo, start, end );
 
                 // Iterate through the buckets and grab the sum for that month
-                Parallel.For( 0, numberOfMonths - 1, i => {
+                for (int i = 0; i <= numberOfMonths - 1; i++) {
                     DateTime currentMonth = start.AddMonths( i );
 
                     double bucketValue = (from o in orders
-                                   where o.CreatedDate.Month == currentMonth.Month
-                                   select o.OrderTotal).DefaultIfEmpty(0).Sum();
+                                          where o.CreatedDate.Month == currentMonth.Month
+                                          select o.OrderTotal).DefaultIfEmpty( 0 ).Sum();
 
                     returnValue.Totals.Add( bucketValue );
-                } );
+                }
+                
+
+                // Leaving this code commented out in case we need further performance increases
+                //Parallel.For( 0, numberOfMonths - 1, new ParallelOptions() { MaxDegreeOfParallelism = 2 }, i => {
+                //    DateTime currentMonth = start.AddMonths( i );
+
+                //    double bucketValue = (from o in orders
+                //                          where o.CreatedDate.Month == currentMonth.Month
+                //                          select o.OrderTotal).DefaultIfEmpty( 0 ).Sum();
+
+                //    returnValue.Totals.Add( bucketValue );
+                //} );
                 
             } catch (Exception e) {
                 _log.WriteErrorLog( String.Format( "Error getting order total by month for customer: {0}, branch: {1}", customerInfo.CustomerId, customerInfo.BranchId ), e );
