@@ -123,10 +123,23 @@ angular.module('bekApp')
       $scope.editCart.name = angular.copy(cartName);
       $scope.currentCart.isRenaming = true;
     };
+
+    $scope.validateShipDate = function(shipDate){
+      var cutoffDate = moment(shipDate.cutoffdatetime);
+      var now = moment();
+      $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
+      if($scope.invalidShipDate){
+        CartService.getShipDates().then(function(result){
+          $scope.shipDates = result;
+        })
+      }
+      $scope.resetSubmitDisableFlag(true);
+      return $scope.invalidSelectedDate;
+    }
  
     $scope.selectShipDate = function(shipDate) {
 
-      if($scope.validateShipDate()){
+      if($scope.validateShipDate(shipDate)){
           return;
         }
 
@@ -189,26 +202,13 @@ angular.module('bekApp')
         });
       }
     };
-
-    $scope.validateShipDate = function(){
-      var cutoffDate = moment($scope.selectedShipDate.cutoffdatetime);
-      var now = moment();
-      $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
-      if($scope.invalidShipDate){
-        CartService.getShipDates().then(function(result){
-          $scope.shipDates = result;
-        })
-      }
-      $scope.resetSubmitDisableFlag(true);
-      return $scope.invalidSelectedDate;
-    }
    
    var processingSubmitOrder = false;
     $scope.submitOrder = function(cart) {
       if (!processingSubmitOrder) {
         processingSubmitOrder = true;        
 
-        if($scope.validateShipDate()){
+        if($scope.validateShipDate($scope.selectedShipDate)){
           return;
         }
 
@@ -311,7 +311,7 @@ angular.module('bekApp')
       if (!processingResubmitOrder) {
         processingResubmitOrder = true;
 
-        if($scope.validateShipDate()){
+        if($scope.validateShipDate($scope.selectedShipDate)){
           return;
         }
         
