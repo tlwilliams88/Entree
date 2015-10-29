@@ -55,6 +55,7 @@ angular.module('bekApp')
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
     $scope.isMobile = ENV.mobileApp;
+    $scope.invalidSelectedDate = false;
     $scope.$watch(function () { 
       return CartService.isOffline;
     }, function (newVal, oldVal) {
@@ -90,8 +91,7 @@ angular.module('bekApp')
     }
 
     $scope.resetSubmitDisableFlag = function(checkForm){
-      var invalidForm = (checkForm) ? $scope.cartForm.$invalid : false;
-      $scope.disableSubmitButtons = (invalidForm || (!$scope.currentCart.items || $scope.currentCart.items.length === 0) || $scope.isOffline || $scope.invalidSelectedDate);
+      $scope.disableSubmitButtons = ((!$scope.currentCart.items || $scope.currentCart.items.length === 0) || $scope.isOffline || $scope.invalidSelectedDate);
     };
     $scope.resetSubmitDisableFlag(false);
  
