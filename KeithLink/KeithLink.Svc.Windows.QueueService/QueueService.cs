@@ -1,10 +1,8 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using Autofac;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
-
-using Autofac;
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -14,49 +12,30 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Windows.QueueService {
-	partial class QueueService : ServiceBase {
-        #region attributes
+namespace KeithLink.Svc.Windows.QueueService
+{
+    partial class QueueService : ServiceBase
+    {
         private IContainer container;
         private IConfirmationLogic _confirmationLogic;
         private IInternalOrderHistoryLogic _orderHistoryLogic;
-        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _notificationQueueConsumer;
+        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _externalNotificationQueueConsumer;
+        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _internalNotificationQueueConsumer;
         private IEventLogRepository _log;
 
         private ILifetimeScope confirmationScope;
         private ILifetimeScope orderHistoryScope;
-        private ILifetimeScope notificationScope;
-        #endregion
+        private ILifetimeScope externalNotificationScope;
+        private ILifetimeScope internalNotificationScope;
 
-        #region ctor
-        public QueueService(IContainer container) {
+        public QueueService(IContainer container)
+        {
             this.container = container;
             InitializeComponent();
         }
-        #endregion
 
-        #region methods
-        private void InitializeConfirmationMoverThread() {
-            confirmationScope = container.BeginLifetimeScope();
-
-            _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
-            _confirmationLogic.ListenForQueueMessages();
-        }
-
-        private void InitializeNotificationsThread() {
-            notificationScope = container.BeginLifetimeScope();
-
-            _notificationQueueConsumer = notificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
-            _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
-        }
-
-        private void InitializeOrderUpdateThread() {
-            orderHistoryScope = container.BeginLifetimeScope();
-            _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
-            _orderHistoryLogic.ListenForQueueMessages();
-        }
-
-        protected override void OnStart(string[] args) {
+        protected override void OnStart(string[] args)
+        {
             _log = container.Resolve<IEventLogRepository>();
             _log.WriteInformationLog("Service starting");
 
@@ -66,7 +45,8 @@ namespace KeithLink.Svc.Windows.QueueService {
             InitializeOrderUpdateThread();
         }
 
-        protected override void OnStop() {
+        protected override void OnStop()
+        {
             TerminateConfirmationThread();
             TerminateOrderHistoryThread();
             TerminateNotificationsThread();
@@ -74,14 +54,43 @@ namespace KeithLink.Svc.Windows.QueueService {
             _log.WriteInformationLog("Service stopped");
         }
 
-        private void TerminateConfirmationThread() {
+        private void InitializeConfirmationMoverThread()
+        {
+            confirmationScope = container.BeginLifetimeScope();
+
+            _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
+            _confirmationLogic.ListenForQueueMessages();
+        }
+
+        private void InitializeNotificationsThread()
+        {
+            externalNotificationScope = container.BeginLifetimeScope();
+
+            _externalNotificationQueueConsumer = externalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _externalNotificationQueueConsumer.ListenForExternalNotificationMessagesOnQueue();
+
+            internalNotificationScope = container.BeginLifetimeScope();
+            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _internalNotificationQueueConsumer.ListenForInternalNotificationMessagesOnQueue();
+        }
+
+        private void InitializeOrderUpdateThread()
+        {
+            orderHistoryScope = container.BeginLifetimeScope();
+            _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
+            _orderHistoryLogic.ListenForQueueMessages();
+        }
+
+        private void TerminateConfirmationThread()
+        {
             if (_confirmationLogic != null)
                 _confirmationLogic.Stop();
             if (confirmationScope != null)
                 confirmationScope.Dispose();
         }
 
-        private void TerminateOrderHistoryThread() {
+        private void TerminateOrderHistoryThread()
+        {
             if (_orderHistoryLogic != null)
                 _orderHistoryLogic.StopListening();
 
@@ -89,13 +98,19 @@ namespace KeithLink.Svc.Windows.QueueService {
                 orderHistoryScope.Dispose();
         }
 
-        private void TerminateNotificationsThread() {
-            if (_notificationQueueConsumer != null)
-                _notificationQueueConsumer.Stop();
+        private void TerminateNotificationsThread()
+        {
+            if (_externalNotificationQueueConsumer != null)
+                _externalNotificationQueueConsumer.Stop();
 
-            if (notificationScope != null)
-                notificationScope.Dispose();
+            if (externalNotificationScope != null)
+                externalNotificationScope.Dispose();
+
+            if (_internalNotificationQueueConsumer != null)
+                _internalNotificationQueueConsumer.Stop();
+
+            if (internalNotificationScope != null)
+                internalNotificationScope.Dispose();
         }
-        #endregion
-	}
+    }
 }
