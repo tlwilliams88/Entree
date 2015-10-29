@@ -98,7 +98,7 @@
           <div class="col-xs-12 hidden-print">
             
             <p class="text-red" ng-show="cartForm.$invalid && !cartForm.$pristine">Your cart has some errors. Please fix these before submitting your order.</p>
-            <p class="text-red" ng-show="currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate">Selected ship date is invalid.</p>
+            <p class="text-red" ng-show="(currentCart.requestedshipdate && cartForm.cutoffDate.$error.orderCutoffDate) || invalidSelectedDate">Selected ship date is invalid.</p>
             <p class="text-red" ng-show="!currentCart.requestedshipdate && !cartForm.$pristine">Selected ship date is required.</p>
             <p class="text-red" ng-show="cartForm.mandatoryItemsCount.$error.mandatoryItemsCheck">Cart is missing some mandatory items.</p>
             <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
@@ -168,19 +168,18 @@
               <button class="btn btn-primary btn-mobile" type="submit" ng-disabled="cartForm.$pristine" ng-click="saveCart(currentCart)">Save Cart</button>
 
               <button type="button" class="btn btn-default btn-mobile" ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
-              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0) || isOffline || invalidSelectedDate" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Order">Submit Order</button>
+              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary pull-right btn-mobile" ng-disabled="cartForm.$invalid || disableSubmitButtons" ng-click="submitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Order">Submit Order</button>
             </div>
             <div class="button-row" ng-if="::isChangeOrder">
               <button type="button" class="btn btn-primary  btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="saveChangeOrder(currentCart)">Save Order</button>
 
               <button type="button" class=" btn btn-default btn-mobile"  ng-disabled="cartForm.$pristine" ng-click="cancelChanges()" >Cancel Changes</button>
 
-              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary btn-mobile pull-right"  ng-disabled="cartForm.$invalid || (!currentCart.items || currentCart.items.length === 0)" ng-click="resubmitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Change Order">Submit Changes</button>
+              <button ng-if="canSubmitOrders" type="button" class=" btn btn-primary btn-mobile pull-right"  ng-disabled="cartForm.$invalid || disableSubmitButtons" ng-click="resubmitOrder(currentCart)" analytics-on analytics-category="Orders" analytics-event="Submit Order" analytics-label="Change Order">Submit Changes</button>
             </div>
           </div>
           <div class="col-xs-12">
             <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
-            <p class="text-red" ng-if="invalidSelectedDate">It is past the cutoff time for the selected shipping date. Please choose a later date.</p>
           </div>
         </div>
 
