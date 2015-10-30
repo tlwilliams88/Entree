@@ -33,6 +33,11 @@
           <FullPath>ETLProcess_DEMO.dtsx</FullPath>
           <References />
         </DtsPackage>
+        <DtsPackage FormatVersion="6">
+          <Name>ETLProcess_BETA.dtsx</Name>
+          <FullPath>ETLProcess_BETA.dtsx</FullPath>
+          <References />
+        </DtsPackage>
       </DTSPackages>
     </Manifest>
   </DeploymentModelSpecificContent>
@@ -62,6 +67,17 @@
     </Configuration>
     <Configuration>
       <Name>Demo</Name>
+      <Options>
+        <OutputPath>bin</OutputPath>
+        <ConnectionMappings />
+        <ConnectionProviderMappings />
+        <ConnectionSecurityMappings />
+        <DatabaseStorageLocations />
+        <ParameterConfigurationValues />
+      </Options>
+    </Configuration>
+    <Configuration>
+      <Name>Beta</Name>
       <Options>
         <OutputPath>bin</OutputPath>
         <ConnectionMappings />
