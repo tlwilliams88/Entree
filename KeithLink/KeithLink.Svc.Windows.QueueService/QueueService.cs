@@ -19,12 +19,14 @@ namespace KeithLink.Svc.Windows.QueueService
 		private IContainer container;
 		private IConfirmationLogic _confirmationLogic;
 		private IInternalOrderHistoryLogic _orderHistoryLogic;
-		private Svc.Core.Interface.Messaging.INotificationQueueConsumer _notificationQueueConsumer;
+		private Svc.Core.Interface.Messaging.INotificationQueueConsumer _externalNotificationQueueConsumer;
+		private Svc.Core.Interface.Messaging.INotificationQueueConsumer _internalNotificationQueueConsumer;
         private IEventLogRepository _log;
 
 		private ILifetimeScope confirmationScope;
 		private ILifetimeScope orderHistoryScope;
-		private ILifetimeScope notificationScope;
+		private ILifetimeScope externalNotificationScope;
+		private ILifetimeScope internalNotificationScope;
 
 		public QueueService(IContainer container)
 		{
@@ -62,10 +64,14 @@ namespace KeithLink.Svc.Windows.QueueService
 
 		private void InitializeNotificationsThread()
 		{
-			notificationScope = container.BeginLifetimeScope();
+			externalNotificationScope = container.BeginLifetimeScope();
 
-			_notificationQueueConsumer = notificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
-			_notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
+			_externalNotificationQueueConsumer = externalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+			_externalNotificationQueueConsumer.ListenForExternalNotificationMessagesOnQueue();
+
+            internalNotificationScope = container.BeginLifetimeScope();
+            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _internalNotificationQueueConsumer.ListenForInternalNotificationMessagesOnQueue();
 		}
 
 		private void InitializeOrderUpdateThread()
@@ -94,11 +100,17 @@ namespace KeithLink.Svc.Windows.QueueService
 
 		private void TerminateNotificationsThread()
 		{
-            if (_notificationQueueConsumer != null)
-                _notificationQueueConsumer.Stop();
+            if (_externalNotificationQueueConsumer != null)
+                _externalNotificationQueueConsumer.Stop();
             
-			if (notificationScope != null)
-				notificationScope.Dispose();
+			if (externalNotificationScope != null)
+				externalNotificationScope.Dispose();
+
+            if (_internalNotificationQueueConsumer != null)
+                _internalNotificationQueueConsumer.Stop();
+            
+			if (internalNotificationScope != null)
+				internalNotificationScope.Dispose();
 		}
 	}
 }

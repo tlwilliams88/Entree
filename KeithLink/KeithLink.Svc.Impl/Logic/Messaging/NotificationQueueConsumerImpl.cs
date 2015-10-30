@@ -37,9 +37,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         #endregion
 
         #region methods
-        public void ListenForNotificationMessagesOnQueue() {
+        public void ListenForExternalNotificationMessagesOnQueue() {
             listenForQueueMessagesTaskForExternalUsers = Task.Factory.StartNew(() => ListenToQueueInTaskForExternalUsers());
-            listenForQueueMessagesTaskForInternalUsers = Task.Factory.StartNew(() => ListenToQueueInTaskForInternalUsers());
+        }
+
+        public void ListenForInternalNotificationMessagesOnQueue() {
+            listenForQueueMessagesTaskForInternalUsers = Task.Factory.StartNew( () => ListenToQueueInTaskForInternalUsers() );
         }
 
         protected void ListenToQueueInTaskForInternalUsers() {
