@@ -116,9 +116,16 @@
               <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortInvoices('ponumber', !sort.sortDescending)">
                 <span>PO Number</span>
               </th>
+              <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('invoicedate', !sort.sortDescending)">
+                Invoice
+                <span>Date<span sort-icons field="'invoicedate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              </th>
               <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortInvoices('duedate', !sort.sortDescending)">
                 Due
                 <span>Date<span sort-icons field="'duedate'" sortorder="sort.sortDescending" sortby="sort.field"></span></span>
+              </th>
+              <th class="sort-col-header" ng-click="sortInvoices('invoiceamount', !sort.sortDescending)">
+                Invoice Amount<span sort-icons field="'invoiceamount'" sortorder="sort.sortDescending" sortby="sort.field"></span>
               </th>
               <th class="sort-col-header" ng-click="sortInvoices('amount', !sort.sortDescending)">
                 Amount
@@ -195,7 +202,15 @@
               {{::invoice.ponumber}}
             </td>
             <td class="hidden-mobile-visible-print">
+              {{::invoice.invoicedate | formatDate}}
+            </td>
+            <td class="hidden-mobile-visible-print">
               {{::invoice.duedate | formatDate}}
+            </td>
+            <td >
+              <div style="display:inline-block; white-space:nowrap;">
+              <span class="pull-left" >{{::invoice.invoiceamount | currency}}</span>
+             </div>
             </td>
             <td >
               <div style="display:inline-block; white-space:nowrap;">
@@ -291,6 +306,10 @@
                   <col width="25%" />
                   <col width="75%" />
                 </colgroup>
+                <tr>
+                  <td>Invoice Date</td>
+                  <td>{{::invoice.invoicedate | formatDate}}</td>
+                </tr>
                 <tr>
                   <td>Due Date</td>
                   <td>{{::invoice.duedate | formatDate}}</td>
