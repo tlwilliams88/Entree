@@ -1101,6 +1101,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        /// <summary>
+        /// Create or update profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute( "profile/settings" )]
         public OperationReturnModel<bool> CreateOrUpdateProfileSettings( SettingsModel settings ) {
