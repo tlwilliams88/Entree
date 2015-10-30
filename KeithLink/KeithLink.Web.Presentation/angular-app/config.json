@@ -84,6 +84,21 @@
         "mobile": "UA-58495462-3"
       }
     },
+	"beta": {
+      "name": "beta",
+      "apiKey": "web_prod_v1",
+	  "apiEndpoint": "https://shopbeta.benekeith.com/api",
+      "cognosUrl": "https://kbitcustomer.benekeith.com/cognos10/setCookie.htm",
+      "lastListStorageTimeout": "48",
+      "mobileApp": false,
+      "enableDebugInfo": false,
+      "loggingEnabled": false,
+      "phonegapAppId": "com.benekeith.entreeprod",
+      "googleAnalytics": {
+        "web": "UA-58495462-5",
+        "mobile": "UA-58495462-3"
+      }
+    },
     "stage": {
       "name": "stage",
       "apiKey": "web_stage_v1",

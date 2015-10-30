@@ -73,6 +73,7 @@ namespace KeithLink.Svc.Impl {
 
         // Mainframe Keys
         private const string KEY_MF_ADDRESS = "MfAddress";
+        private const string KEY_MF_COLLECTOR_TYPE = "EntreeCollectorType";
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_ORDERHISTORY_PORT = "MFOrderHistoryPort";
         private const string KEY_MF_PORT = "MfPort";
@@ -536,9 +537,9 @@ namespace KeithLink.Svc.Impl {
             }
         }
 
-        public static string MainframeIPAddress {
+        public static string MainframeCollectorType {
             get {
-                return GetValue(KEY_MF_ADDRESS, "192.168.20.12");
+                return GetValue(KEY_MF_COLLECTOR_TYPE, "B");
             }
         }
 
@@ -563,6 +564,12 @@ namespace KeithLink.Svc.Impl {
         public static string MainframeHistoryTransactionId {
             get {
                 return GetValue(KEY_MF_TRANS_HISTORY, string.Empty);
+            }
+        }
+
+        public static string MainframeIPAddress {
+            get {
+                return GetValue(KEY_MF_ADDRESS, "192.168.20.12");
             }
         }
 

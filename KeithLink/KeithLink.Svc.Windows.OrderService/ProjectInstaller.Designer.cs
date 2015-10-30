@@ -1,10 +1,14 @@
-﻿namespace KeithLink.Svc.Windows.OrderService {
-    partial class ProjectInstaller {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+﻿using System.Configuration;
 
+namespace KeithLink.Svc.Windows.OrderService {
+    partial class ProjectInstaller {
+        #region attributes
+        private System.ComponentModel.IContainer components = null;
+        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
+        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+        #endregion
+
+        #region methods
         /// <summary> 
         /// Clean up any resources being used.
         /// </summary>
@@ -15,8 +19,6 @@
             }
             base.Dispose(disposing);
         }
-
-        #region Component Designer generated code
 
         /// <summary>
         /// Required method for Designer support - do not modify
@@ -36,8 +38,8 @@
             // 
             this.serviceInstaller1.DelayedAutoStart = true;
             this.serviceInstaller1.Description = "Polls RabbitMQ orders_created queue for orders to send to the mainframe";
-            this.serviceInstaller1.DisplayName = "Entree Order Service";
-            this.serviceInstaller1.ServiceName = "Entree Order Service";
+            this.serviceInstaller1.DisplayName = DisplayName;
+            this.serviceInstaller1.ServiceName = ServiceName;
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
             // ProjectInstaller
@@ -50,7 +52,18 @@
 
         #endregion
 
-        private System.ServiceProcess.ServiceProcessInstaller serviceProcessInstaller1;
-        private System.ServiceProcess.ServiceInstaller serviceInstaller1;
+        #region properties
+        private string DisplayName {
+            get {
+                return (ConfigurationManager.AppSettings["DisplayName"] ?? "Entree Order Service");
+            }
+        }
+
+        private string ServiceName {
+            get {
+                return (ConfigurationManager.AppSettings["ServiceName"] ?? "Entree Order Service" );
+            }
+        }
+        #endregion
     }
 }
