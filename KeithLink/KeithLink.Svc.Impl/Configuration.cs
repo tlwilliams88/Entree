@@ -140,6 +140,7 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_URL_WEBNOW = "WebNowUrl";
         private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
 		private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
+        private const string KEY_CUTOFFTIME_BILLPAY = "BillPayCutOffTime";
 
 		//Email
 		private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -381,6 +382,18 @@ namespace KeithLink.Svc.Impl {
 
         public static string BaseCatalog {
             get { return GetValue(KEY_BASE_CATALOG, string.Empty); }
+        }
+
+        public static TimeSpan BillPayCutOffTime {
+            get {
+                TimeSpan retVal = new TimeSpan();
+
+                if (!TimeSpan.TryParse(GetValue(KEY_CUTOFFTIME_BILLPAY, string.Empty), out retVal)) {
+                    retVal = new TimeSpan(14, 0, 0);
+                }
+
+                return retVal;
+            }
         }
 
         public static string BranchContactEmail(string branchId) {

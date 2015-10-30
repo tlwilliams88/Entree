@@ -1,16 +1,13 @@
 ﻿using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment.EF;
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Extensions.OnlinePayments
 {
 	public static class PaymentTransactionExtensions
 	{
-		public static PaymentTransactionModel ToPaymentTransactionModel(this PaymentTransaction payment, KeithLink.Svc.Core.Models.Profile.Customer customer)
+		public static PaymentTransactionModel ToPaymentTransactionModel(this PaymentTransaction payment, KeithLink.Svc.Core.Models.Profile.Customer customer, TimeSpan cutOffTime)
 		{
             PaymentTransactionModel retVal = new PaymentTransactionModel();
 
@@ -26,10 +23,9 @@ namespace KeithLink.Svc.Core.Extensions.OnlinePayments
 			retVal.UserName = payment.UserName;
 
             if (payment.ScheduledPaymentDate.HasValue) {
-                DateTime cutOffTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day,
-                                                   14, 0, 0, DateTimeKind.Local);
+                DateTime paymentCutOffTime = payment.ScheduledPaymentDate.Value.Add(cutOffTime);
 
-                retVal.Editable = payment.ScheduledPaymentDate.Value < cutOffTime;
+                retVal.Editable = DateTime.Now < paymentCutOffTime;
             } else {
                 retVal.Editable = true;
             }
