@@ -2,6 +2,7 @@
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" />
+  <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:import schemaLocation="http://localhost:1317/OrderService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" />
   <xs:complexType name="ArrayOfOrder">
     <xs:sequence>
@@ -63,6 +64,12 @@
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="OrderLine" nillable="true" type="tns:OrderLine" />
+  <xs:complexType name="monthlysummary">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="totals" nillable="true" type="q2:ArrayOfdouble" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="monthlysummary" nillable="true" type="tns:monthlysummary" />
   <xs:complexType name="UserActiveCartModel">
     <xs:sequence>
       <xs:element minOccurs="0" name="cartid" type="ser:guid" />
@@ -87,8 +94,8 @@
       <xs:element minOccurs="0" name="OrderCreateDateTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="OrderFilled" type="xs:boolean" />
       <xs:element minOccurs="0" name="OrderSendDateTime" type="xs:dateTime" />
-      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderType" type="q2:OrderType" />
-      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderingSystem" type="q3:OrderSource" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderType" type="q3:OrderType" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderingSystem" type="q4:OrderSource" />
       <xs:element minOccurs="0" name="PONumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Specialinstructions" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />

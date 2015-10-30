@@ -45,6 +45,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange", ReplyAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetOrderHeaderInDateRangeAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrderTotalByMonth", ReplyAction="http://tempuri.org/IOrderService/GetOrderTotalByMonthResponse")]
+        KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth GetOrderTotalByMonth(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, int numberOfMonths);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetOrderTotalByMonth", ReplyAction="http://tempuri.org/IOrderService/GetOrderTotalByMonthResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth> GetOrderTotalByMonthAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, int numberOfMonths);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetUserActiveCart", ReplyAction="http://tempuri.org/IOrderService/GetUserActiveCartResponse")]
         KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId);
         
@@ -147,6 +153,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.Order[]> GetOrderHeaderInDateRangeAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, System.DateTime startDate, System.DateTime endDate) {
             return base.Channel.GetOrderHeaderInDateRangeAsync(customerInfo, startDate, endDate);
+        }
+        
+        public KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth GetOrderTotalByMonth(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, int numberOfMonths) {
+            return base.Channel.GetOrderTotalByMonth(customerInfo, numberOfMonths);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth> GetOrderTotalByMonthAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, int numberOfMonths) {
+            return base.Channel.GetOrderTotalByMonthAsync(customerInfo, numberOfMonths);
         }
         
         public KeithLink.Svc.Core.Models.Orders.UserActiveCartModel GetUserActiveCart(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, System.Guid userId) {
