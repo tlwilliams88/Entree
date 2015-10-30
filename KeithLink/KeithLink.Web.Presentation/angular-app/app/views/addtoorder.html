@@ -54,7 +54,7 @@
         <div class="no-border-right-sm info-box col-md-3 col-sm-6 col-xs-12 select-nav btn-group dropdown-toggle hand" dropdown is-open="showLists" ng-disabled="lists.length === 1">
           <span class="nav-description text-light">Select a List</span>
           <span class="nav-title">{{selectedList.name}}</span>
-          <span class="pull-right icon-arrow-down7 text-light"></span>
+          <span class="pull-right caret text-dark"></span>
           <ul class="dropdown-menu" role="menu">
             <li ng-repeat="list in lists | sortLists" ng-if="list.listid !== selectedList.listid">
               <a ng-click="redirect(list.listid, selectedCart, useParlevel)">
@@ -83,7 +83,7 @@
           <span class="nav-title">
             {{(selectedCart.requestedshipdate | formatDate) || 'Select a date...' }}
           </span>
-          <span class="pull-right icon-arrow-down7 text-light"></span>
+          <span class="pull-right caret text-dark"></span>
           <div class="dropdown-menu">
             <table class="table no-margin">
               <tr style="cursor:default">
