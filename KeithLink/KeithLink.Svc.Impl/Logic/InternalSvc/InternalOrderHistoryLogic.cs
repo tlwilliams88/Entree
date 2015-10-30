@@ -213,9 +213,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
         }
-<<<<<<< HEAD
-        
-=======
 
         /// <summary>
         /// Gets just the primary order details needed without the excess of item details or invoice status
@@ -310,13 +307,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             _unitOfWork.SaveChanges();
         }
 
-        public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging) {
-            var headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase ) &&
-                h.CustomerNumber.Equals( customerInfo.CustomerId ), d => d.OrderDetails );
-
-            return LookupControlNumberAndStatus( customerInfo, headers ).AsQueryable().GetPage( paging );
-        }
-
         public void StopListening() {
             _keepListening = false;
 
@@ -325,7 +315,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
         }
 
->>>>>>> origin/hotfix_master_OrderMonthlyTotalsReportEndpoint
         public void ListenForQueueMessages() {
             _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
         }
@@ -472,19 +461,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return mergedOrdeList.ToList();
         }
 
-        public void SaveOrder(OrderHistoryFile historyFile) {
-            Create(historyFile);
-
-            _unitOfWork.SaveChanges();
-        }
-
-        public void StopListening() {
-            _keepListening = false;
-
-            if (_queueTask != null && _queueTask.Status == TaskStatus.Running) {
-                _queueTask.Wait();
-            }
-        }
         #endregion
     }
 }

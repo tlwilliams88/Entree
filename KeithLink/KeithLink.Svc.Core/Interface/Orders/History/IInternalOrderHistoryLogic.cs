@@ -10,6 +10,8 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
     public interface IInternalOrderHistoryLogic {
         Order GetOrder(string branchId, string invoiceNumber);
 
+        List<Order> GetOrders(System.Guid userId, UserSelectedContext customerInfo);
+
 		List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
 
         OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
@@ -20,8 +22,6 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
 		void ListenForQueueMessages();
 
-        void SaveOrder(OrderHistoryFile historyFile);
-
-		void StopListening();
+        void StopListening();
     }
 }
