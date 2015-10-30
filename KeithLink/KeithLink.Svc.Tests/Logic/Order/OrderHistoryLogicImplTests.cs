@@ -63,12 +63,12 @@ namespace KeithLink.Svc.Test.Logic.Order {
         #endregion
 
         #region methods
-        //[TestMethod]
-        //public void ParseOrderHistoryFile() {
-        //    OrderHistoryFileReturn parsedFile = _logic.ParseMainframeFile(String.Format("{0}\\{1}", AppDomain.CurrentDomain.BaseDirectory, TEST_FILE));
+        [TestMethod]
+        public void ParseOrderHistoryFile() {
+            OrderHistoryFileReturn parsedFile = _logic.ParseMainframeFile(String.Format("{0}\\{1}", AppDomain.CurrentDomain.BaseDirectory, TEST_FILE));
 
-        //    Assert.IsTrue(parsedFile.Files.Count > 0);
-        //}
+            Assert.IsTrue(parsedFile.Files.Count > 0);
+        }
 
         //[TestMethod]
         //public void SuccessfulReadOfOrdersForCustomer() {
