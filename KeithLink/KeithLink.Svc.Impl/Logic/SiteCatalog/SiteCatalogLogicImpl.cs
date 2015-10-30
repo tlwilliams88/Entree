@@ -99,16 +99,28 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel) {
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
-
-            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
+            //Substring branchID 
+            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId.Substring(0,3), context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
-                prod.CasePrice = p.CasePrice.ToString();
-                prod.CasePriceNumeric = p.CasePrice;
-                prod.PackagePrice = p.PackagePrice.ToString();
-                prod.PackagePriceNumeric = p.PackagePrice;
-                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                if (prod.CatalogId.StartsWith("unfi"))
+                {
+                    prod.CasePrice = "3.33";
+                    prod.CasePriceNumeric = 3;
+                    prod.PackagePrice = "6.66";
+                    prod.PackagePriceNumeric = 6;
+                    prod.DeviatedCost = "Y";
+                }
+                else
+                {
+                    prod.CasePrice = p.CasePrice.ToString();
+                    prod.CasePriceNumeric = p.CasePrice;
+                    prod.PackagePrice = p.PackagePrice.ToString();
+                    prod.PackagePriceNumeric = p.PackagePrice;
+                    prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                }
+                
             }
 
             if ((searchModel.SField == "caseprice" || searchModel.SField == "unitprice") && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
@@ -325,7 +337,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
-                ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount, IncludeSpecialItems = searchModel.IncludeSpecialItems});
+                ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount, IncludeSpecialItems = searchModel.IncludeSpecialItems });
             else
                 ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
 

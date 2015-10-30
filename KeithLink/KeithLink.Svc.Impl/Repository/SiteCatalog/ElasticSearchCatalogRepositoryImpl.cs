@@ -362,6 +362,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             p.CatchWeight = oProd._source.catchweight;
 			p.IsProprietary = oProd._source.isproprietary;
             p.AverageWeight = oProd._source.averageweight;
+            p.CatalogId = oProd._index;
             Nutritional nutritional = new Nutritional();
             if (oProd._source.nutritional != null) {
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;

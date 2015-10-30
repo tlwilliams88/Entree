@@ -170,5 +170,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "average_weight", EmitDefaultValue = false)]
         [Description("Average Weight")]
         public double AverageWeight { get; set; }
+
+        [DataMember(Name = "catalog_id", EmitDefaultValue = false)]
+        [Description("Catalog Id - index from elastic search")]
+        public string CatalogId { get; set; }
     }
 }
