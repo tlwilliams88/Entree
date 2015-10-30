@@ -331,6 +331,9 @@ angular.module('bekApp')
       if (selectedCart) {
         setSelectedCart(selectedCart);
         $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
+        if(selectedCart.requestedshipdate && moment(selectedCart.requestedshipdate.slice(0,10)) < moment($scope.shipDates[0].shipdate)){
+          selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
+        }
       } else {
         // create new cart if no cart was selected
         $scope.generateNewCartForDisplay();
