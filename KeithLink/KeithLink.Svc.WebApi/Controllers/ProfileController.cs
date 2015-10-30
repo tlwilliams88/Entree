@@ -1125,6 +1125,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+
+        /// <summary>
+        /// Delete profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
 	    [HttpDelete]
 	    [ApiKeyedRoute("profile/settings")]
 	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings)
