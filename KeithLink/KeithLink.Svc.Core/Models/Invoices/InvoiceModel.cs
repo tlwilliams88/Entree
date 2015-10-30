@@ -33,7 +33,10 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "invoicedate")]
 		public DateTime? InvoiceDate { get; set; }
 
-		[DataMember(Name = "orderdate")]
+        [DataMember(Name = "invoiceamount")]
+        public decimal InvoiceAmount { get; set; }
+
+        [DataMember(Name = "orderdate")]
 		public DateTime? OrderDate { get; set; }
 
 		[DataMember(Name = "duedate")]

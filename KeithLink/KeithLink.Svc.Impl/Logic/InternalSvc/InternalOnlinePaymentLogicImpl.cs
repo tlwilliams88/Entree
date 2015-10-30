@@ -225,7 +225,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					}
 				}
 
-				var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
+                //Get transactions
+                var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoice.InvoiceNumber);
+                invoice.InvoiceAmount = transactions
+                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETYPE_INITIALINVOICE)
+                    .Select(x => x.AmountDue).FirstOrDefault();
+                
+                var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
 				if (orderHistory != null){
 					invoice.PONumber = orderHistory.PONumber;
 				}

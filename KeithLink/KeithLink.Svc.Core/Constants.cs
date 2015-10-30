@@ -221,5 +221,8 @@ namespace KeithLink.Svc.Core
         public const string CONTENTMGMT_BRANCHNAME_FOK = "Oklahoma";
         public const string CONTENTMGMT_BRANCHNAME_FSA = "San Antonio";
         public const string CONTENTMGMT_BRANCHNAME_GOF = "General Office";
+
+        // content management
+        public const string INVOICETYPE_INITIALINVOICE = "IN ";
     }
 }
