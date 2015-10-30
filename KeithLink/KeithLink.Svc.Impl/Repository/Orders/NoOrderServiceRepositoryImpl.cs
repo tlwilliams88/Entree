@@ -40,6 +40,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             throw new NotImplementedException();
         }
 
+        public OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths ) {
+            throw new NotImplementedException();
+        }
+
         public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId) {
             throw new NotImplementedException();
         }

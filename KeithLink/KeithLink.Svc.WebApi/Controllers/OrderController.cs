@@ -94,7 +94,18 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
                 _orderServiceRepository.GetOrderHeaderInDateRange(this.SelectedUserContext, from, to));
 		}
-        
+
+        /// <summary>
+        /// Retrieve a summary of order information going back for as many months 
+        /// as the parameter sets for the authenticated user
+        /// </summary>
+        /// <param name="numberOfMonths">Number of months from today</param>
+        [HttpGet]
+        [ApiKeyedRoute( "order/totalbymonth/{numberOfMonths}" )]
+        public OrderTotalByMonth GetOrderTotalByMonth( int numberOfMonths ) {
+            return _orderServiceRepository.GetOrderTotalByMonth(this.SelectedUserContext, numberOfMonths );
+        }       
+
 		/// <summary>
 		/// Export orders
 		/// </summary>
@@ -170,6 +181,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, 0);
 		}
+
+        
 
 
 		/// <summary>

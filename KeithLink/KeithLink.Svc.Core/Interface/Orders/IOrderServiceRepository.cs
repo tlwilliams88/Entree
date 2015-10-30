@@ -21,6 +21,8 @@ namespace KeithLink.Svc.Core.Interface.Orders
         Order GetOrder(string branchId, string invoiceNumber);
 
         List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+
+        OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
         
 		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
 		
