@@ -221,7 +221,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
 
 					if (payment != null) {
-						invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault());
+						invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault(), 
+                                                                                                                            Configuration.BillPayCutOffTime);
 					}
 				}
 
@@ -346,7 +347,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             var transactions = _paymentTransactionRepository.ReadAll().AsQueryable().Filter(customerFilter, null);
 
-            var transactionResults = transactions.ToList().Select(t => t.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(t.CustomerNumber)).First())).AsQueryable().GetPage(paging);
+            var transactionResults = transactions.ToList()
+                                                                 .Select(t => t.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(t.CustomerNumber)).First(), 
+                                                                                                                                Configuration.BillPayCutOffTime
+                                                                                                                                )
+                                                                 )
+                                                                 .AsQueryable()
+                                                                 .GetPage(paging);
 
             return transactionResults;
         }
@@ -356,7 +363,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             var transaction = _paymentTransactionRepository.ReadAllByCustomer(customer.CustomerId, divisionId);
 
-            var transactionModels = transaction.Select(t => t.ToPaymentTransactionModel(currentCustomer));
+            var transactionModels = transaction.Select(t => t.ToPaymentTransactionModel(currentCustomer, Configuration.BillPayCutOffTime));
 
             var retVal = transactionModels.AsQueryable().GetPage(paging);
 
