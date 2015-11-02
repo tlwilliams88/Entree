@@ -501,7 +501,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 						""from"" : 0, ""size"" : 5000,
 						""query"":{
 						""query_string"" : {
-						""fields"" : [""itemnumber""],
+						""fields"" : [""itemnumber"",""mfritemnumber""],
 							""query"" : """ + productList + @""",
 						""use_dis_max"" : true
 							}

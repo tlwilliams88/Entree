@@ -45,6 +45,11 @@ namespace KeithLink.Svc.Impl.Logic
                 }
                 retVal.Prices.AddRange(uncachedPrices);
             }
+
+            foreach (var price in retVal.Prices) {
+                if (price.BranchId.StartsWith("unfi")) 
+                    price.CasePrice = 3.33;
+            }
             return retVal;
         }
 

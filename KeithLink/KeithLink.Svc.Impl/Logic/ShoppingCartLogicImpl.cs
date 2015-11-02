@@ -78,7 +78,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return existingItem.First().Id.ToGuid();
 			}
 						
-			return basketRepository.AddItem(cartId, newItem.ToLineItem(basket.BranchId), basket);
+			return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
 		}
 
 		private string CartName(string name, UserSelectedContext catalogInfo)
@@ -102,7 +102,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
             
-			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
+			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
 		}
 
 		public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
@@ -150,8 +150,17 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items == null)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+            var catalogList = cart.Items.Select(i => i.CatalogId).Distinct().ToList();
+            var products = new ProductsReturn() { Products = new List<Product>() }; ;
+            var pricing = new PriceReturn() { Prices = new List<Price>() }; ;
+            foreach (var catalogId in catalogList)
+            {
+                var tempProducts = catalogLogic.GetProductsByIds(catalogId, cart.Items.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
+                products.AddRange(tempProducts);
+                pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products));
+            }
+            //var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
+            //var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
 			var priceHash = pricing.Prices.ToDictionary(p => p.ItemNumber);
@@ -296,7 +305,8 @@ namespace KeithLink.Svc.Impl.Logic
 					Notes = l.Notes,
 					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
 					Each = l.Each.HasValue ? l.Each.Value : false,
-					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
+					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    CatalogId = l.CatalogName
 				}).ToList()
 			};
 
@@ -330,7 +340,7 @@ namespace KeithLink.Svc.Impl.Logic
 						lineItems.Add(existingItem.First());
 					}	
 					else
-						lineItems.Add(item.ToLineItem(updateCart.BranchId));
+						lineItems.Add(item.ToLineItem());
 				}
 				
 			}
@@ -366,7 +376,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (basket == null)
 				return;
 
-			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem(basket.BranchId));
+			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem());
 		}
 
 		public List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, List<QuickAddItemModel> productsToValidate)
