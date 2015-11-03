@@ -27,7 +27,10 @@ angular.module('bekApp')
     $scope.destroyedOnField = '';
     $scope.useParLevel = false;
     $scope.visitedPages = [];
-
+        
+    $scope.removeRowHighlightParLevel = function(){
+            $('.ATOrowHighlight').removeClass('ATOrowHighlight');
+    }
 
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line

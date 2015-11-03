@@ -255,6 +255,7 @@
                   ng-model="item.onhand"
                   name="onhand"
                   ng-init = "item.onhand = item.onhand + 0;"
+                  row-highlight
                   />
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  
               </ng-form>  
@@ -274,7 +275,9 @@
                   class="input-number text-right mousetrap" 
                   ng-class="{ tabstop: !useParlevel }"
                   integer
-                  ng-model="item.quantity"/>
+                  ng-model="item.quantity"
+                  row-highlight
+                  />
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg show-mobile" ng-if="useParlevel && item.canOrder" ng-click="item.quantity = item.quantity + 1;"></button> 
               </span>        
               </ng-form>
