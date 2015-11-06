@@ -60,7 +60,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
                 QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
-                Each = (bool)lineItem.Properties["Each"]
+                Each = (bool)lineItem.Properties["Each"],
+                ChangeOrderStatus = (lineItem.Status.Equals("deleted")) ? "deleted":"",
             };
         }
     }
