@@ -160,6 +160,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() {
                     ItemNumber = (string)newItem.ProductId,
                     ItemDescription = newItem.DisplayName,
+                    OriginalStatus = (string)origItem["MainFrameStatus"],
                     SubstitutedItemNumber = newItem["SubstitutedItemNumber"] == null ? string.Empty : (string)newItem["SubstitutedItemNumber"],
                     QuantityOrdered = newItem["QuantityOrdered"] == null ? (int)newItem.Quantity : (int)newItem["QuantityOrdered"],
                     QuantityShipped = newItem["QuantityShipped"] == null ? 0 : (int)newItem["QuantityShipped"],
