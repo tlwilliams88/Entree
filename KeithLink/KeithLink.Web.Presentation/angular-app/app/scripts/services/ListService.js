@@ -49,13 +49,8 @@ angular.module('bekApp')
           permissions.specialDisplay = true;
           permissions.canReorderItems = true;
 
-        // CONTRACT
-        } else if (list.is_contract_list) {
-          permissions.alternativeFieldName = 'category';
-          permissions.alternativeFieldHeader = 'Category';
-
-        // WORKSHEET / HISTORY
-        } else if (list.isworksheet) {
+        // CONTRACT, WORKSHEET / HISTORY
+        } else if (list.is_contract_list || list.isworksheet) {
 
           permissions.alternativeFieldName = 'eachString';
           permissions.alternativeFieldHeader = 'Each';
