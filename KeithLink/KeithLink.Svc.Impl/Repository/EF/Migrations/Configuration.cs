@@ -400,7 +400,7 @@ namespace KeithLink.Svc.Impl.Migrations
             orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Exception Items </th>");
             orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Ordered </th>");
             orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Confirmed </th>");
-            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Price/Extended </th>");
+            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Price </th>");
             orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Status</th>");
             orderConfirmationItemsOOSMessage.AppendLine("	</tr>");
             orderConfirmationItemsOOSMessage.AppendLine("   {OrderConfirmationItemOOSDetail}");

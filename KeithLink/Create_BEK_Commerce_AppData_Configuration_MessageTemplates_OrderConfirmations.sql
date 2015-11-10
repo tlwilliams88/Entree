@@ -41,7 +41,7 @@ VALUES ('OrderConfirmationItemsOOS', '', 1, '<table style="width: 100%;">
 		<th style="color:maroon;">Exception Items </th>
 		<th style="color:maroon;">Ordered </th>
 		<th style="color:maroon;">Confirmed </th>
-		<th style="color:maroon;">Price/Extended </th>
+		<th style="color:maroon;">Price </th>
 		<th style="color:maroon;">Status</th>
 	</tr>
 {OrderConfirmationItemOOSDetail}

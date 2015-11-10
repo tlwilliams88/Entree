@@ -429,13 +429,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 				Stream rdlcStream = null;
 				var deviceInfo = string.Empty;
-				if (options.Landscape) {
+				//if (options.Landscape) {
 					deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
 					rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport_Landscape.rdlc");
-				} else {
-					deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
-					rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
-				}
+                //} else {
+                //    deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
+                //    rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
+                //}
 
 				rv.LocalReport.LoadReportDefinition(rdlcStream);
 				ReportParameter[] parameters = new ReportParameter[2];
