@@ -158,7 +158,7 @@
         <div class="form-group">
           <label for="shipDate" class="col-sm-3 control-label">PO #:</label>
           <div class="col-sm-6">
-            <input class="form-control print-clean" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired">
+            <input class="form-control print-clean" ng-maxlength="20" name="poNumber" type="text" ng-model="currentCart.ponumber" ng-required="selectedUserContext.customer.isPoRequired" ng-readonly="::isChangeOrder">
           </div>
         </div>
 
