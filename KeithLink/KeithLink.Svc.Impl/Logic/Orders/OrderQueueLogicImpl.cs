@@ -133,6 +133,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					return Configuration.RabbitMQExchangeOrdersHistory;
 				case OrderQueueLocation.Error:
 					return Configuration.RabbitMQExchangeOrdersError;
+                case OrderQueueLocation.Reprocess:
+                    return Configuration.RabbitMQExchangeOrdersReprocess;
 				default:
 					return Configuration.RabbitMQExchangeOrdersCreated;
 			}
@@ -148,6 +150,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					return Configuration.RabbitMQQueueOrderHistory;
 				case OrderQueueLocation.Error:
 					return Configuration.RabbitMQQueueOrderError;
+                case OrderQueueLocation.Reprocess:
+                    return Configuration.RabbitMQQueueOrderReprocess;
 				default:
 					return Configuration.RabbitMQQueueOrderCreated;
 			}
