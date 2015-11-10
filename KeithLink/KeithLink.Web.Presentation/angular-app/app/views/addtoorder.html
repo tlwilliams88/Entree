@@ -211,10 +211,12 @@
               <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
             </td>
             <td>
-              <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+              <span><a ng-if="item.isvalid" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a></span>
+              <span><a ng-if="!item.isvalid" tooltip="Contact your DSR for more info." ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
             </td>
             <td>
-              {{::item.name}}
+              <span ng-if="item.isvalid">{{::item.name}}</span>
+              <span ng-if="!item.isvalid">Invalid item</span>
             </td>
             <td class="hidden-mobile-visible-print">
               {{::item.brand_extended_description}}
@@ -460,7 +462,10 @@
           <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
           <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
         </td>
-        <td>{{item.name}}</td>
+        <td>              
+        <span ng-if="item.isvalid">{{::item.name}}</span>
+        <span ng-if="!item.isvalid">Invalid item</span>
+        </td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>
         <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
         <td class="hidden-mobile-visible-print">

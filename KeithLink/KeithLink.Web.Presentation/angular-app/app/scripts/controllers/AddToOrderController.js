@@ -29,8 +29,19 @@ angular.module('bekApp')
     $scope.visitedPages = [];
         
     $scope.removeRowHighlightParLevel = function(){
-            $('.ATOrowHighlight').removeClass('ATOrowHighlight');
-    }
+        $('.ATOrowHighlight').removeClass('ATOrowHighlight');
+    };
+
+    $scope.openQuickAddModal = function() {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/cartquickaddmodal.html',
+        controller: 'CartQuickAddModalController'
+      });
+   
+      modalInstance.result.then(function(cartId) {
+        $state.go('menu.cart.items', {cartId: cartId});
+      });
+    };
 
     function onItemQuantityChanged(newVal, oldVal) {
       var changedExpression = this.exp; // jshint ignore:line
