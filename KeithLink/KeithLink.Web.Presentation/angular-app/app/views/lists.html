@@ -432,10 +432,15 @@
                 <span favorite-icons class="bek-no-drag"></span>
               </td>
               <td class="bek-drag-handle">
-                <a class="bek-no-drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a>
+                <a class="bek-no-drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })" tooltip="Please contact your DSR." tooltip-trigger="item.isvalid == true">{{::item.itemnumber}}</a>
               </td>
               <td class="bek-drag-handle">
+              <span ng-if="item.isvalid">
                 {{::item.name}}
+              </span>
+              <span ng-if="!item.isvalid">
+                Invalid
+              </span>
               </td>
               <td class="hidden-mobile-visible-print bek-drag-handle">
                 {{::item.brand_extended_description}}
@@ -636,8 +641,13 @@
               <td >
                 <a>{{::item.itemnumber}}</a>
               </td>
-              <td >
+              <td class="bek-drag-handle">
+              <span ng-if="item.isvalid">
                 {{::item.name}}
+              </span>
+              <span ng-if="!item.isvalid">
+                Invalid
+              </span>
               </td>
               <td class="hidden-mobile-visible-print">
                 {{::item.brand_extended_description}}
