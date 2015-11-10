@@ -432,15 +432,16 @@
                 <span favorite-icons class="bek-no-drag"></span>
               </td>
               <td class="bek-drag-handle">
-                <a class="bek-no-drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })" tooltip="Please contact your DSR." tooltip-trigger="item.isvalid == true">{{::item.itemnumber}}</a>
+                <span><a ng-if="item.isvalid"class="bek-no-drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a></span>
+                <span ng-if="!item.isvalid" class="bek-no -drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })" tooltip="Please contact your DSR for more info.">{{::item.itemnumber}}</span>
               </td>
               <td class="bek-drag-handle">
-              <span ng-if="item.isvalid">
-                {{::item.name}}
-              </span>
-              <span ng-if="!item.isvalid">
-                Invalid
-              </span>
+                <span ng-if="item.isvalid">
+                  {{::item.name}}
+                </span>
+                <span ng-if="!item.isvalid">
+                  Invalid item
+                </span>
               </td>
               <td class="hidden-mobile-visible-print bek-drag-handle">
                 {{::item.brand_extended_description}}
@@ -638,15 +639,16 @@
                 <span ng-class="{'icon-star2': !item.favorite, 'icon-star': item.favorite, 'text-gold': item.favorite}"></span>
 
               </td>
-              <td >
-                <a>{{::item.itemnumber}}</a>
+              <td>
+                <span><a ng-if="item.isvalid">{{::item.itemnumber}}</a></span>
+                <span ng-if="!item.isvalid" tooltip="Please contact your DSR for more info.">{{::item.itemnumber}}</span>
               </td>
               <td class="bek-drag-handle">
               <span ng-if="item.isvalid">
                 {{::item.name}}
               </span>
               <span ng-if="!item.isvalid">
-                Invalid
+                Invalid item
               </span>
               </td>
               <td class="hidden-mobile-visible-print">
