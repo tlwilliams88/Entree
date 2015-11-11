@@ -168,7 +168,7 @@ namespace KeithLink.Svc.FoundationSvc {
 
                 }
 
-                if (po.Status.StartsWith("Confirmed")) {
+                if (po.Status.StartsWith("confirmed", StringComparison.InvariantCultureIgnoreCase)) {
                     po.Status = "Confirmed with un-submitted changes";
                 }
 

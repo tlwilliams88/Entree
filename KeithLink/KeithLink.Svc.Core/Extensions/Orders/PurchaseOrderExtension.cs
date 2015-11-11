@@ -61,7 +61,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
                 SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
                 MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
                 Each = (bool)lineItem.Properties["Each"],
-                ChangeOrderStatus = (lineItem.Status.Equals("deleted")) ? "deleted":"",
+                ChangeOrderStatus = (lineItem.Status != null && (lineItem.Status.Equals("deleted", StringComparison.InvariantCultureIgnoreCase))) ? "deleted":"",
             };
         }
     }
