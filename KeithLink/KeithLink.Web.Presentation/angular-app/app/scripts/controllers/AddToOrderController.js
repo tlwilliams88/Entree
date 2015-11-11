@@ -481,6 +481,12 @@ angular.module('bekApp')
        angular.element(orderSearchForm.searchBar).focus();
       });
 
+      Mousetrap.bind(['alt+o'], function(e){
+        angular.element(quickOrder).focus();{
+          $scope.openQuickAddModal()
+        }
+      })
+
     $scope.confirmQuantity = function(type, item, value) {
 
       if((value === undefined || value === 0) && type === 'onhand'){
