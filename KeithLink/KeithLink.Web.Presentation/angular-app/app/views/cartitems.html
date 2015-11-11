@@ -86,7 +86,7 @@
     </div>
 
   </div>
-</div>
+</div>y
 
 <div class="page-content">
   <form unsaved-warning-form novalidate name="cartForm" class="form-horizontal style-validation-errors cart-items-form">
@@ -104,7 +104,7 @@
             <p class="text-red" ng-show="cartForm.poNumber.$error.required">PO Number is required.</p>
             <p class="text-red" ng-show="cartForm.poNumber.$error.maxlength">PO Number cannot be more than 20 characters.</p>
             <p class="text-red" ng-show="(!currentCart.items || currentCart.items.length === 0)">There are no items in this cart. Cannot submit order.</p>
-            <p class="text-red" ng-show="currentCart.pendingChanges">This order has pending changes. Click Submit Changes to update order.</p>
+            <p class="text-red" ng-show="currentCart.status === 'Confirmed with un-submitted changes'">This order has pending changes. Click Submit Changes to update order.</p>
 
           </div>
         </div>
