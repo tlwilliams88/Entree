@@ -64,8 +64,8 @@ namespace KeithLink.Svc.Windows.OrderService {
             _log = _diContainer.Resolve<IEventLogRepository>();
 
             _orderQueueProcessing = false;
-            _successfulHistoryConnection = false;
-            _successfulOrderConnection = false;
+            _successfulHistoryConnection = true;
+            _successfulOrderConnection = true;
             _unsentCount = 0;
             _orderUpdateProcessing = false;
 
@@ -133,6 +133,9 @@ namespace KeithLink.Svc.Windows.OrderService {
                 _log.WriteErrorLog(msg.ToString());
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, msg.ToString());
             }
+
+            // wait for one minute before allowing the service to continue
+            System.Threading.Thread.Sleep(60000);
         }
 
         private void HandleMissingOrderUpdateWatchPath() {
