@@ -62,7 +62,9 @@ angular.module('bekApp')
     getSubtotalForItems: function(items) {
       var subtotal = 0;
       angular.forEach(items, function(item, index) {
-        subtotal += Service.getPriceForItem(item);
+      if(!item.changeorderstatus || item.changeorderstatus !== 'deleted'){
+          subtotal += Service.getPriceForItem(item);
+        }        
       });
       return subtotal;
     },

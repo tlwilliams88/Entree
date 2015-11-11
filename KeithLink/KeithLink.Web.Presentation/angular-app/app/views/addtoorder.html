@@ -1,7 +1,6 @@
 <div page-header-bar>
   <div header-message>
     Add To Order
-
     <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="saveAndRetainQuantity()" ng-disabled="addToOrderForm.$invalid">Save</button>
     <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" style="margin-right:3px;" ui-sref="menu.home">Cancel Order</button>
   </div>
@@ -103,10 +102,14 @@
 
         <div class="col-md-3 col-sm-6 col-xs-12 info-box">
           <span class="nav-description text-light">Cart Info</span>
+<<<<<<< HEAD
           <span class="nav-title">
             {{(itemCount || selectedCart.items.length ||  '0') +((itemCount === 1 || (!itemCount && selectedCart.items.length === 1)) ? ' Item / ' : ' Items / ') +
              (piecesCount || selectedCart.piececount || '0') +((piecesCount === 1 || (!piecesCount && selectedCart.piececount === 1)) ? ' Piece' : ' Pieces')}}
           </span>
+=======
+          <span class="nav-title">{{itemCount || (selectedCart.items |  filter:({changeorderstatus: '!'}|| {changeorderstatus:!'deleted'})).length ||  '0'}} Items</span>
+>>>>>>> origin/hotfix_1.3.4_ChangeOrderDeletedItemsStillShowingInCart
           <span class="nav-subtotal pull-right text-green">{{selectedCart.subtotal | currency}}</span>
         </div>
 
@@ -303,24 +306,24 @@
                 {{item.extPrice | currency}}  
               </div>
             </td>
-            <td class="hidden-mobile-visible-print text-left" >
-            <div ng-if="item.itemstatistics.packageaverage || item.itemstatistics.caseaverage "> 
+            <td  class="hidden-mobile-visible-print text-left" >
+            <div style="max-width:60px;" ng-if="item.itemstatistics.packageaverage || item.itemstatistics.caseaverage "> 
             <a>
-              <div ng-if="item.each" 
+              <div ng-if="item.each && item.itemstatistics.packageaverage" 
                   tooltip="View order history for this item." 
                   ng-click="openItemUsageSummaryModal(item)">
                     {{item.itemstatistics.packageaverage == 1 ? item.itemstatistics.packageaverage + ' Pack' : item.itemstatistics.packageaverage + ' Packs'}}
               </div>
             </a>
             <a>
-              <div ng-if="!item.each" 
+              <div ng-if="!item.each && item.itemstatistics.caseaverage" 
                   tooltip="View order history for this item." 
                   ng-click="openItemUsageSummaryModal(item)">
                     {{item.itemstatistics.caseaverage == 1 ? item.itemstatistics.caseaverage + ' Case' : item.itemstatistics.caseaverage + ' Cases'}}
               </div>
             </a>
           </div>
-          <div ng-click="openItemUsageSummaryModal(item)" ng-if="!item.itemstatistics.packageaverage && !item.itemstatistics.caseaverage">
+          <div ng-click="openItemUsageSummaryModal(item)" ng-if="(!item.itemstatistics.packageaverage && item.each) || (!item.itemstatistics.caseaverage && !item.each)">
             None
           </div>
            </td>
@@ -402,10 +405,10 @@
                   <td>Average Weekly </br> Usage</td>
                 <td  ng-click="openItemUsageSummaryModal(item)"> 
                   <div ng-if="(item.itemstatistics.packageaverage !== 0 || item.itemstatistics.caseaverage !== 0)"> 
-                  <a><div ng-show="item.each" tooltip="View order history for this item." class="pull-left" >{{item.itemstatistics.packageaverage}} Packs</div></a>
-                  <a><div ng-show="!item.each" tooltip="View order history for this item." class="pull-left">{{item.itemstatistics.caseaverage}} Cases</div></a>
+                  <a><div ng-show="item.each && item.itemstatistics.packageaverage" tooltip="View order history for this item." class="pull-left" >{{item.itemstatistics.packageaverage}} Packs</div></a>
+                  <a><div ng-show="!item.each && item.itemstatistics.caseaverage" tooltip="View order history for this item." class="pull-left">{{item.itemstatistics.caseaverage}} Cases</div></a>
                 </div>
-                <div ng-show="item.itemstatistics.packageaverage === 0 && item.itemstatistics.caseaverage === 0">None</div>                 
+                <div ng-show="(!item.itemstatistics.packageaverage && item.each) || (!item.itemstatistics.caseaverage && !item.each)">None</div>                 
                 </td>
                 </tr>
               </table>
