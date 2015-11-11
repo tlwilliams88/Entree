@@ -344,7 +344,7 @@ namespace KeithLink.Svc.Impl.Migrations
                 new MessageTemplate
                 {
                     TemplateKey = "OrderConfirmation",
-                    Subject = "Ben E. Keith Entrée Order Confirmation for {CustomerNumber}-{CustomerName}",
+                    Subject = "Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}",
                     IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
                     Body = orderConfirmationMessage.ToString()

@@ -1,5 +1,5 @@
 ﻿INSERT INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
-VALUES ('OrderConfirmation', 'Order Confirmation for {CustomerNumber}-{CustomerName}', 1, '<table style="width: 100%;">
+VALUES ('OrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}', 1, '<table style="width: 100%;">
 <tr>
 <td><h3>Thank you for your order.</h3></td>
 <td style="text-align:right;"><h3>{CustomerName}</h3></td>

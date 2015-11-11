@@ -201,8 +201,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private Message MakeConfirmationMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder originalOrderInfo, decimal totalAmount)
         {
             Message message = new Message();
-            message.MessageSubject = "Ben E. Keith: Order Confirmation for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCONFIRMATION);
+            message.MessageSubject = template.Subject.Inject(new
+            {
+                OrderStatus = "Order Confirmation",
+                CustomerNumber = customer.CustomerNumber,
+                CustomerName = customer.CustomerName,
+            });
             message.MessageBody = template.Body.Inject(new
             {
                 CustomerNumber = customer.CustomerNumber,
@@ -342,9 +347,15 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private Message MakeRejectedMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
         {
+            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCONFIRMATION);
             Message message = new Message();
 
-            message.MessageSubject = "Ben E. Keith: Order Rejected for " + string.Format("{0}-{1}", customer.CustomerNumber, customer.CustomerName) + " (" + notification.OrderChange.OrderName + ")";
+            message.MessageSubject = template.Subject.Inject(new
+            {
+                OrderStatus = "Order Rejected",
+                CustomerNumber = customer.CustomerNumber,
+                CustomerName = customer.CustomerName,
+            });
 
             StringBuilder rejectedString = new StringBuilder();
             MessageTemplateModel rejectTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERREJECTED);
@@ -352,7 +363,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 SpecialInstructions = notification.OrderChange.SpecialInstructions
             }));
-            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCONFIRMATION);
             message.MessageBody = template.Body.Inject(new
             {
                 CustomerNumber = customer.CustomerNumber,
