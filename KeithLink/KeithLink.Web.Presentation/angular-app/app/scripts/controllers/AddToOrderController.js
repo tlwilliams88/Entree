@@ -50,27 +50,15 @@ angular.module('bekApp')
       var idx = changedExpression.substr(changedExpression.indexOf('[') + 1, changedExpression.indexOf(']') - changedExpression.indexOf('[') - 1);
       var object = changedExpression.substr(0, changedExpression.indexOf('.'));
       var item = $scope[object].items[idx];      
-
+ 
       if(newVal !== oldVal && item){        
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-<<<<<<< HEAD
-        $scope.piecesCount = 0;
-        var combinedItems = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
-        //total piece count for cart info box
-        combinedItems.forEach(function(item){
-          $scope.piecesCount = $scope.piecesCount + item.quantity;
-        })
-        $scope.itemCount = combinedItems.length;
-=======
         $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
->>>>>>> origin/RC_v1.3.4__hotfix_ChangeOrderDeletedItemsCodeReviewChanges
       }
       if(item !== undefined){
         item.extPrice = PricingService.getPriceForItem(item);
       }  
     }
-
-    
 
     var watches = [];
     $scope.addItemWatches = function(startingIndex, endingIndex) {
