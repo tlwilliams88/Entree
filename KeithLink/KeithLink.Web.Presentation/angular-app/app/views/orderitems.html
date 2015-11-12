@@ -47,10 +47,13 @@
           <div class="order-item-value-1">{{order.invoicestatus || 'N/A'}}</div>
           <div class="order-item-title">PO Number</div>
           <div class="order-item-value-2">{{order.ponumber}}</div>
-        </div>
+        </div>        
         <hr ng-if="order.ischangeorderallowed && canCreateOrders">
         <div ng-if="order.ischangeorderallowed && canCreateOrders">
           <a ui-sref="menu.cart.items({ cartId: order.ordernumber })">View and Edit Change Order</a>
+          <a ui-sref="menu.cart.items({ cartId: order.ordernumber })" class="text-red" ng-if="order.status === 'Confirmed with un-submitted changes'">
+            <br>This order has pending changes. It must be resubmitted for those changes to be applied.
+          </a>
         </div>
       </div>
     </div>

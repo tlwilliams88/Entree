@@ -333,7 +333,7 @@ angular.module('bekApp')
              var params = {size: pageSize, from: 0, sort: []};
 
           if($stateParams.cartId !== 'New'){
-            var allSets = LocalStorage.getLastOrderList() || [];
+            var allSets = LocalStorage.getLastOrderList();
             var allValidSets = [];           
             var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
             allSets.forEach(function(set){          
