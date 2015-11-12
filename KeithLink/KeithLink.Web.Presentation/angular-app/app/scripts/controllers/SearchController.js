@@ -356,13 +356,6 @@ angular.module('bekApp')
 
       loadProducts().then(refreshFacets);
     };
-          
-    $scope.toggleSpecialOrders = function() {
-      console.log("special orders: " + $scope.includeSpecialItems);
-      $scope.itemIndex = 0;
-      $scope.itemsPerPage = 50;
-      loadProducts().then(refreshFacets);
-    };
 
     $scope.goToItemDetails = function(item) {
       ProductService.selectedProduct = item;

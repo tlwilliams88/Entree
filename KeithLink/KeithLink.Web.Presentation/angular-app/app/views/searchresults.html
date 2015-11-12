@@ -120,13 +120,6 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   <!-- Filters -->
   
   <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
-  <div class="row">
-    <div class="col-sm-12">
-        <h3>Special Orders</h3>
-        <input type="checkbox" id ="specialOrder" ng-model="includeSpecialItems" ng-change="toggleSpecialOrders()"/>
-        <label for="specialOrder">Include <strong>Special Order</strong> Items</label>
-    </div>
-  </div>
     <div class="row">
       <div class="col-sm-12">
         <h3>{{paramType === 'category' ? featuredBreadcrumb.displayText : 'Categories'}}</h3>
