@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public string SField { get; set; }
         [DataMember(Name = "sdir")]
         public string SDir { get; set; }
-        [DataMember(Name = "includeSpecialItems")]
-        public bool IncludeSpecialItems { get; set; }
+        [DataMember(Name = "catalogType")]
+        public string CatalogType { get; set; }
     }
 }

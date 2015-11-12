@@ -151,8 +151,8 @@ namespace KeithLink.Svc.Impl.Logic
 				return;
 
             var catalogList = cart.Items.Select(i => i.CatalogId).Distinct().ToList();
-            var products = new ProductsReturn() { Products = new List<Product>() }; ;
-            var pricing = new PriceReturn() { Prices = new List<Price>() }; ;
+            var products = new ProductsReturn() { Products = new List<Product>() };
+            var pricing = new PriceReturn() { Prices = new List<Price>() };
             foreach (var catalogId in catalogList)
             {
                 var tempProducts = catalogLogic.GetProductsByIds(catalogId, cart.Items.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
@@ -276,15 +276,27 @@ namespace KeithLink.Svc.Impl.Logic
 
 			//Save to Commerce Server
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
-			var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), cartId);
-			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
-            orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
-            orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue
+            //split into multiple orders
+            var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
+            var returnOrders = new List<NewOrderReturn>();
+            foreach (var catalogId in catalogList)
+            {
+                var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), cartId);
+                var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
-			auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
+                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
+                //if bek item
+                orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue - mainframe only for BEK 
+                //else 
+                //case os - direct database through Windows.OrderService
 
-			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
+                auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
+
+                returnOrders.Add( new NewOrderReturn() { OrderNumber = orderNumber });
+            }
+            
+			return returnOrders[0]; //Return actual order number
 		}
         
 		private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)

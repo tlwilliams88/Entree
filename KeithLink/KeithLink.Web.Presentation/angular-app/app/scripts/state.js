@@ -92,11 +92,17 @@ angular.module('bekApp')
       template: '<div ui-view=""></div>'
     })
     .state('menu.catalog.home', {
-      url: '',
+      url: ':catalogType',
       templateUrl: 'views/catalog.html',
       controller: 'CatalogController',
       data: {
         authorize: 'canBrowseCatalog'
+      },
+      params: {
+        catalogType: {
+          value: 'BEK',
+          squash: true
+        }
       }
     })
     .state('menu.catalog.products', {

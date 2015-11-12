@@ -323,15 +323,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
 
-            if (searchModel.IncludeSpecialItems)
+            if (searchModel.CatalogType.ToLower() != "bek")
             {
                 //Go get the code for this branch, hard code for now
                 //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
+                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
+                    .Where(x => searchModel.CatalogType.ToLower() == x.Type.ToString().ToLower()).ToList();
+                
                 List<ExportExternalCatalog> filteredList = externalCatalog.Where(x => catalogInfo.BranchId.ToLower().Equals(x.BekBranchId.Trim().ToLower())).ToList();
-
-                foreach (ExportExternalCatalog catalogItem in filteredList) {
-                    catalogInfo.BranchId = catalogInfo.BranchId + "," + catalogItem.ExternalBranchId;
+                
+                
+                if (filteredList.Count > 0) {
+                    catalogInfo.BranchId = filteredList[0].ExternalBranchId;
                 }
             }
 

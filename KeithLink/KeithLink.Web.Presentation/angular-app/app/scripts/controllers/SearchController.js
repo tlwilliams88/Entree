@@ -205,6 +205,7 @@ angular.module('bekApp')
     LOAD PRODUCT DATA
     *************/
     function getData() {
+        debugger;
       var facets = ProductService.getFacets(
         $scope.facets.categories.selected, 
         $scope.facets.brands.selected,

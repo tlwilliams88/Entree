@@ -35,6 +35,7 @@ angular.module('bekApp')
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
+  $scope.specialCatalogOpen = false;
  
   if (AccessService.isOrderEntryCustomer()) {
 
@@ -208,6 +209,16 @@ angular.module('bekApp')
     LocalStorage.setTempContext(selectedUserContext);
     refreshPage();
   };
+          
+  //Submenu for special catalogs
+  $scope.toggleSpecialCatalogSubmenu = function() {
+      if ($scope.$state !== undefined) {
+          console.log("Catalog Name " + $scope.$state.params.catalogType);
+      }
+    $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
+  };
+          
+  //
   
   /**********
   MENU BUTTON CLICK HANDLERS

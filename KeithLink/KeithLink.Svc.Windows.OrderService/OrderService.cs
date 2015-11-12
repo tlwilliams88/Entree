@@ -265,7 +265,8 @@ namespace KeithLink.Svc.Windows.OrderService {
 																			  new NoCacheRepositoryImpl(),
                                                                               new KeithLink.Svc.Impl.Logic.DivisionLogicImpl(divRepo,
                                                                                                                              new KeithLink.Svc.Impl.Repository.SiteCatalog.NoDivisionServiceRepositoryImpl()),
-                                                                              new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl());
+                                                                              new KeithLink.Svc.Impl.Repository.Orders.NoOrderServiceRepositoryImpl(),
+                                                                              new KeithLink.Svc.Impl.Repository.Configurations.NoExternalCatalogRepositoryImpl());
 
                 OrderHistoryLogicImpl logic = new OrderHistoryLogicImpl(_log,
                                                                        new GenericQueueRepositoryImpl(),

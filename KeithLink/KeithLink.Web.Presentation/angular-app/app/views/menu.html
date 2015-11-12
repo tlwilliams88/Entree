@@ -87,13 +87,39 @@
             class="btn-no-style"
             type="button"
             ng-disabled="::!canBrowseCatalog"
-            ui-sref="menu.catalog.home"
-            ng-class="{'is-selected': $state.includes('menu.catalog')}" >
+            ui-sref="menu.catalog.home()"
+            ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogName == 'BEK'}" >
             <li>
               <span class="icon-book2 sidebar-nav__icon"></span>
               Product Catalog
             </li>
           </button>
+          <button
+            class="btn-no-style"
+            type="button"
+            ng-disabled="::!canBrowseCatalog"
+            ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogName == 'UNFI'}" 
+            ng-click="toggleSpecialCatalogSubmenu()">
+            <li>
+              <span class="icon-book2 sidebar-nav__icon"></span>
+              Special Catalogs
+            </li>
+          </button>
+            <ul ng-show="specialCatalogOpen">
+                <button 
+                    class="btn-no-style"
+                    type="button"
+                    ui-sref="menu.catalog.home({catalogType: 'UNFI'})"
+                    ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogName == 'UNFI'}">
+                    <li>UNFI</li>
+                </button>
+                <button
+                        class="btn-no-style"
+                        type="button"
+                        ng-click="toggleSpecialCatalogSubmenu()">
+                    <li>Equipment and Supply</li>
+                </button>
+            </ul>
           <a
             ng-if="::userProfile.ispowermenucustomer"
             ng-href="{{userProfile.powermenuloginurl}}"
