@@ -100,7 +100,8 @@ angular.module('bekApp')
       },
 
       getLastOrderList: function() {
-        return localStorageService.get(Constants.localStorage.lastOrderList);
+       var last = localStorageService.get(Constants.localStorage.lastOrderList)  || [];
+        return last;
       },
 
       setLastList: function(list) {

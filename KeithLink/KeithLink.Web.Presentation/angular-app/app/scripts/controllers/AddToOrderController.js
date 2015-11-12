@@ -9,6 +9,8 @@ angular.module('bekApp')
        var basketId;
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
+      selectedCart.items = $filter('filter')(selectedCart.items , {changeorderstatus: '!deleted'});
+  
       $scope.origItemCount = selectedCart.items.length;
 
       if($stateParams.continueToCart){
@@ -51,6 +53,7 @@ angular.module('bekApp')
 
       if(newVal !== oldVal && item){        
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+<<<<<<< HEAD
         $scope.piecesCount = 0;
         var combinedItems = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);
         //total piece count for cart info box
@@ -58,11 +61,16 @@ angular.module('bekApp')
           $scope.piecesCount = $scope.piecesCount + item.quantity;
         })
         $scope.itemCount = combinedItems.length;
+=======
+        $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
+>>>>>>> origin/RC_v1.3.4__hotfix_ChangeOrderDeletedItemsCodeReviewChanges
       }
       if(item !== undefined){
         item.extPrice = PricingService.getPriceForItem(item);
       }  
     }
+
+    
 
     var watches = [];
     $scope.addItemWatches = function(startingIndex, endingIndex) {
@@ -201,7 +209,7 @@ angular.module('bekApp')
     $scope.setCartItemsDisplayFlag = function (){
       if($scope.selectedCart.items && $scope.selectedCart.items.length > 0){        
         $scope.selectedCart.items.forEach(function(item){
-          if((!item.changeorderstatus || item.changeorderstatus !== 'deleted') && $filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber}).length > 0){
+          if($filter('filter')($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), {itemnumber: item.itemnumber}).length > 0){
             item.isShown = true;
           }
           else{
@@ -265,6 +273,7 @@ angular.module('bekApp')
 
     function setSelectedCart(cart) {
       $scope.selectedCart = cart;
+
       $scope.addCartWatches();
     }
     function setSelectedList(list) {
