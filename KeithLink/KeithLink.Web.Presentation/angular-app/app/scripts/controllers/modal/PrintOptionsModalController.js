@@ -9,6 +9,7 @@ angular.module('bekApp')
     $scope.cart = cart;
     $scope.printingOrder = true;
   }
+  $scope.originalPagingModel = pagingModelOptions;
 
   if($scope.list.isfavorite || $scope.list.name ==='History' || $scope.list.ismandatory || $scope.list.isreminder || $scope.list.is_contract_list){
     $scope.defaultList = true;
@@ -43,6 +44,9 @@ angular.module('bekApp')
               }],
               terms: undefined
             };
+    }
+    else{
+     pagingModelOptions = $scope.originalPagingModel;
     }
     if(!$scope.printingOrder){
       ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions);
