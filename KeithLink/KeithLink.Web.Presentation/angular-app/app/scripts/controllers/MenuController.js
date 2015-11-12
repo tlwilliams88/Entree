@@ -213,7 +213,7 @@ angular.module('bekApp')
   //Submenu for special catalogs
   $scope.toggleSpecialCatalogSubmenu = function() {
       if ($scope.$state !== undefined) {
-          console.log("Catalog Name " + $scope.$state.params.catalogType);
+          console.log("Catalog Name menue controller" + $scope.$state.params.catalogType);
       }
     $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
   };

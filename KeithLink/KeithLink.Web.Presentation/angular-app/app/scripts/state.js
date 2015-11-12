@@ -88,21 +88,21 @@ angular.module('bekApp')
     **********/
     .state('menu.catalog', {
       abstract: true,
-      url: '/catalog/',
-      template: '<div ui-view=""></div>'
+      url: '/catalog/:catalogType/',
+      template: '<div ui-view=""></div>',
+      params: {
+        catalogType: {
+          value: 'BEK',
+          squash: false
+        }
+      }
     })
     .state('menu.catalog.home', {
-      url: ':catalogType',
+      url: '',
       templateUrl: 'views/catalog.html',
       controller: 'CatalogController',
       data: {
         authorize: 'canBrowseCatalog'
-      },
-      params: {
-        catalogType: {
-          value: 'BEK',
-          squash: true
-        }
       }
     })
     .state('menu.catalog.products', {

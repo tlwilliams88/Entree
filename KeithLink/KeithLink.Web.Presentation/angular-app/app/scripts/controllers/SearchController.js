@@ -205,7 +205,6 @@ angular.module('bekApp')
     LOAD PRODUCT DATA
     *************/
     function getData() {
-        debugger;
       var facets = ProductService.getFacets(
         $scope.facets.categories.selected, 
         $scope.facets.brands.selected,
@@ -214,7 +213,8 @@ angular.module('bekApp')
         $scope.facets.itemspecs.selected
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $scope.includeSpecialItems);
+      console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $scope.$state.catalogType);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, params);
     }
 
