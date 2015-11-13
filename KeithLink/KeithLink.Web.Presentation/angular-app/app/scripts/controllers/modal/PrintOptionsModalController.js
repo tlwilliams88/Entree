@@ -49,7 +49,7 @@ angular.module('bekApp')
      pagingModelOptions = $scope.originalPagingModel;
     }
     if(!$scope.printingOrder){
-      ListService.printList(list.listid, true, showparvalues, pagingModelOptions, shownotes);
+      ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions, shownotes);
     }
     else{
     CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
