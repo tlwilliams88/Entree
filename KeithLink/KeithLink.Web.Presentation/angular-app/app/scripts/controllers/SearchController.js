@@ -214,7 +214,7 @@ angular.module('bekApp')
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
       console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $scope.$state.catalogType);
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $scope.$state.params.catalogType);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, params);
     }
 

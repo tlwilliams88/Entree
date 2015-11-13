@@ -340,7 +340,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
-                ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount, IncludeSpecialItems = searchModel.IncludeSpecialItems });
+                ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount, CatalogType = searchModel.CatalogType });
             else
                 ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
 

@@ -79,9 +79,6 @@ angular.module('bekApp')
           if (!params.sfield) {
             delete params.sfield;
           }
-          if (!params.includeSpecialItems) {
-              delete params.includeSpecialItems
-          }
           return params;  
         },
 
