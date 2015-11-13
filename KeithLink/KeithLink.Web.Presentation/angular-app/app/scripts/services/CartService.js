@@ -47,11 +47,12 @@ angular.module('bekApp')
         });
       },
 
-      printOrder: function(listId, cartId, landscape, showparvalues, options) {
+      printOrder: function(listId, cartId, landscape, showparvalues, options, shownotes) {
 
           var printparams = {
             landscape: landscape,
             showparvalues: showparvalues,
+            shownotes: shownotes,
             paging: options
           };
 

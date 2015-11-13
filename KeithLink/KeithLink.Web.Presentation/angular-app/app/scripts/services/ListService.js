@@ -314,11 +314,12 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(listId, landscape, showparvalues, options) {
+        printList: function(listId, landscape, showparvalues, options, shownotes) {
 
             var printparams = {
               landscape: landscape,
               showparvalues: showparvalues,
+              shownotes: shownotes,
               paging: options
             };
 

@@ -11,7 +11,7 @@ angular.module('bekApp')
   }
   $scope.originalPagingModel = pagingModelOptions;
 
-  if($scope.list.isfavorite || $scope.list.name ==='History' || $scope.list.ismandatory || $scope.list.isreminder || $scope.list.is_contract_list){
+  if($scope.list.isfavorite || $scope.list.read_only || $scope.list.ismandatory || $scope.list.isreminder){
     $scope.defaultList = true;
   }
 
@@ -21,7 +21,7 @@ angular.module('bekApp')
     columns: 3
   }];
   $scope.selectedLabelOption = $scope.labelOptions[0]; // pre-select first option
-  $scope.groupLabels = $scope.showparvalues = $scope.landscape = false;
+  $scope.groupLabels = $scope.showparvalues = $scope.shownotes= $scope.landscape = false;
 
   // $scope.printLabels = function(items, labelOption) {
   //   var data = {
@@ -35,7 +35,7 @@ angular.module('bekApp')
     ListService.printBarcodes(list.listid);
   };
 
-  $scope.printList = function(list, landscape, showparvalues, groupLabels) {
+  $scope.printList = function(list, landscape, showparvalues, groupLabels, shownotes) {
     if(groupLabels){
       pagingModelOptions= { 
               sort: [{
@@ -49,10 +49,10 @@ angular.module('bekApp')
      pagingModelOptions = $scope.originalPagingModel;
     }
     if(!$scope.printingOrder){
-      ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions);
+      ListService.printList(list.listid, true, showparvalues, pagingModelOptions, shownotes);
     }
     else{
-    CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions);
+    CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
     }
   };
 
