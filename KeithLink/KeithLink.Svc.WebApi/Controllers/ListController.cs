@@ -19,6 +19,8 @@ using System.Reflection;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.WebApi.Models;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -34,7 +36,8 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
-		public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository, IExportSettingServiceRepository exportSettingRepository, IEventLogRepository elRepo)
+        public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository,
+                              IExportSettingServiceRepository exportSettingRepository, IEventLogRepository elRepo)
 			: base(profileLogic)
 		{
             this.listServiceRepository = listServiceRepository;
@@ -421,33 +424,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 				var printModel = list.ToReportModel();
 
-				ReportViewer rv = new ReportViewer();
-
-				rv.ProcessingMode = ProcessingMode.Local;
-				
-				Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
-
-				Stream rdlcStream = null;
-				var deviceInfo = string.Empty;
-				//if (options.Landscape) {
-					deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
-					rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport_Landscape.rdlc");
-                //} else {
-                //    deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
-                //    rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.ListReport.rdlc");
-                //}
-
-				rv.LocalReport.LoadReportDefinition(rdlcStream);
-				ReportParameter[] parameters = new ReportParameter[2];
-				parameters[0] = new ReportParameter("ListName", printModel.Name);
-                parameters[1] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
-
-				rv.LocalReport.SetParameters(parameters);
-                rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
-				
-				var bytes = rv.LocalReport.Render("PDF", deviceInfo);
-
-				Stream stream = new MemoryStream(bytes);
+                Stream stream = listServiceRepository.BuildReportFromList(options, listId, printModel, this.SelectedUserContext, this.AuthenticatedUser);
 
 				HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
 				result.Content = new StreamContent(stream);
@@ -469,6 +446,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			}
 			return null;
 		}
+
         #endregion
     }
 }

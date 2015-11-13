@@ -1,12 +1,16 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,7 +25,7 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
         public ListServiceRepositoryImpl(com.benekeith.ListService.IListServcie serviceClient)
 		{
 			this.serviceClient = serviceClient;
-		}
+        }
         #endregion
 
         #region methods
@@ -165,7 +169,12 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		public void UpdateList(ListModel userList)
 		{
 			serviceClient.UpdateList(userList);
-		}		
-		#endregion
-	}
+		}
+
+        public Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
+        {
+            return serviceClient.BuildReportFromList(options, listId, printModel, userContext, userProfile);
+        }
+        #endregion
+    }
 }

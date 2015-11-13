@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Models.Paging
 		public string Terms { get; set; }
 		[DataMember(Name = "type")]
 		public string Type { get; set; }
-	}
+    }
 
 	
 

@@ -6,6 +6,7 @@ using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,5 +68,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
 		void DeleteItemNumberFromList(long Id, string itemNumber);
 
 		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
+
+        Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile);
 	}
 }

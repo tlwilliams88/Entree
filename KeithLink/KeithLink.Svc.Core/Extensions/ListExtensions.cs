@@ -98,6 +98,7 @@ namespace KeithLink.Svc.Core.Extensions {
                         ItemNumber = i.ItemNumber,
                         Name = i.Name,
                         PackSize = i.PackSize,
+                        Each = (i.Each != null)?((i.Each == true)? "Y": null): null,
                         ParLevel = i.ParLevel,
                         Notes = i.Notes
                     }).ToList()

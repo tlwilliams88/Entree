@@ -64,5 +64,7 @@ namespace KeithLink.Svc.Core.Interface.Lists
         void UpdateItem(ListItemModel item);
 		
         void UpdateList(ListModel userList);
-	}
+
+        System.IO.Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile);
+    }
 }

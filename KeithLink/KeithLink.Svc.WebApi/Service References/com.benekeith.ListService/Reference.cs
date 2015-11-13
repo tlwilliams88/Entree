@@ -164,6 +164,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ItemsInHistoryList", ReplyAction="http://tempuri.org/IListServcie/ItemsInHistoryListResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[]> ItemsInHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/BuildReportFromList", ReplyAction="http://tempuri.org/IListServcie/BuildReportFromListResponse")]
+        System.IO.Stream BuildReportFromList(KeithLink.Svc.Core.Models.Lists.PrintListModel options, long listId, KeithLink.Svc.Core.Models.Lists.ListReportModel printModel, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile userProfile);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/BuildReportFromList", ReplyAction="http://tempuri.org/IListServcie/BuildReportFromListResponse")]
+        System.Threading.Tasks.Task<System.IO.Stream> BuildReportFromListAsync(KeithLink.Svc.Core.Models.Lists.PrintListModel options, long listId, KeithLink.Svc.Core.Models.Lists.ListReportModel printModel, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile userProfile);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -391,6 +397,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[]> ItemsInHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers) {
             return base.Channel.ItemsInHistoryListAsync(catalogInfo, itemNumbers);
+        }
+        
+        public System.IO.Stream BuildReportFromList(KeithLink.Svc.Core.Models.Lists.PrintListModel options, long listId, KeithLink.Svc.Core.Models.Lists.ListReportModel printModel, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile userProfile) {
+            return base.Channel.BuildReportFromList(options, listId, printModel, userContext, userProfile);
+        }
+        
+        public System.Threading.Tasks.Task<System.IO.Stream> BuildReportFromListAsync(KeithLink.Svc.Core.Models.Lists.PrintListModel options, long listId, KeithLink.Svc.Core.Models.Lists.ListReportModel printModel, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext userContext, KeithLink.Svc.Core.Models.Profile.UserProfile userProfile) {
+            return base.Channel.BuildReportFromListAsync(options, listId, printModel, userContext, userProfile);
         }
     }
 }

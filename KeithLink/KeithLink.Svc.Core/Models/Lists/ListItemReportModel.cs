@@ -23,7 +23,9 @@ namespace KeithLink.Svc.Core.Models.Lists
 
         [DataMember]
 		public string ItemNumber { get; set; }
-		[DataMember]
+        [DataMember]
+        public string Label { get; set; }
+        [DataMember]
 		public string Name { get; set; }
 		[DataMember]
 		public string PackSize { get; set; }
@@ -32,7 +34,13 @@ namespace KeithLink.Svc.Core.Models.Lists
 		[DataMember]
 		public string Brand { get; set; }
         [DataMember]
+        public string Price { get; set; }
+        [DataMember]
+        public string Each { get; set; }
+        [DataMember]
         public decimal ParLevel { get; set; }
+        [DataMember]
+        public string AvgUse { get; set; }
 
         /// <summary>
         /// Report should only show 15 characters and if longer needs to mark it as a continuation.

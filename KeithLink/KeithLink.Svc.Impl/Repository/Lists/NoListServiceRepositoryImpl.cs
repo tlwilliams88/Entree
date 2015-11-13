@@ -170,5 +170,10 @@ namespace KeithLink.Svc.Impl.Repository.Lists
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        public System.IO.Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

@@ -8,6 +8,7 @@
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" />
   <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd10" namespace="http://schemas.microsoft.com/Message" />
   <xs:element name="AddItems">
     <xs:complexType>
       <xs:sequence>
@@ -370,6 +371,24 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q58="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="ItemsInHistoryListResult" nillable="true" type="q58:ArrayOfInHistoryReturnModel" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuildReportFromList">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q59="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="options" nillable="true" type="q59:PrintListModel" />
+        <xs:element minOccurs="0" name="listId" type="xs:long" />
+        <xs:element xmlns:q60="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Lists" minOccurs="0" name="printModel" nillable="true" type="q60:ListReportModel" />
+        <xs:element xmlns:q61="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.SiteCatalog" minOccurs="0" name="userContext" nillable="true" type="q61:UserSelectedContext" />
+        <xs:element xmlns:q62="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Profile" minOccurs="0" name="userProfile" nillable="true" type="q62:userprofile" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BuildReportFromListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q63="http://schemas.microsoft.com/Message" name="BuildReportFromListResult" type="q63:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

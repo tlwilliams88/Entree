@@ -17,5 +17,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 		public PagingModel Paging { get; set; }
         [DataMember(Name = "showparvalues")]
         public bool ShowParValues { get; set; }
-	}
+        [DataMember(Name = "shownotes")]
+        public bool ShowNotes { get; set; }
+    }
 }

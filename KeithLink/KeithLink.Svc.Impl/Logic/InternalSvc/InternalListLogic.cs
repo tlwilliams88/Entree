@@ -33,6 +33,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
+using Microsoft.Reporting.WinForms;
+using System.Reflection;
 
 
 
@@ -1022,6 +1025,104 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 GenerateNewRecommendItemNotification(currentList.CustomerId, currentList.BranchId); //Send a notification that new recommended items have been added
 
             listCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, string.Format("UserList_{0}", currentList.Id)); //Invalidate cache
+        }
+        public Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
+        {
+            ReportViewer rv = new ReportViewer();
+            rv.ProcessingMode = ProcessingMode.Local;
+            var deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
+            Stream rdlcStream = ChooseReportToPrint(options);
+            rv.LocalReport.LoadReportDefinition(rdlcStream);
+            var customer = customerRepository.GetCustomersByNameOrNumber(userContext.CustomerId).FirstOrDefault();
+            ReportParameter[] parameters = new ReportParameter[1];
+            parameters[0] = new ReportParameter("ListName", customer.CustomerName + ", " + printModel.Name);
+            rv.LocalReport.SetParameters(parameters);
+            GatherInfoAboutItems(listId, printModel, userContext, userProfile);
+            rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
+            var bytes = rv.LocalReport.Render("PDF", deviceInfo);
+            Stream stream = new MemoryStream(bytes);
+            return stream;
+        }
+
+        private void GatherInfoAboutItems(long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
+        {
+            var listModel = ReadList(userProfile, userContext, listId, true);
+            var itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
+            List<ItemHistory> itemStatistics = _itemHistoryRepository
+                                                   .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
+                                                   .Where(f => itemHash.Keys.Contains(f.ItemNumber))
+                                                   .ToList();
+            foreach (ListItemReportModel item in printModel.Items)
+            {
+                string priceInfo = "";
+                var itemInfo = itemHash[item.ItemNumber];
+                if (itemInfo.PackagePrice.Equals("0.00") == false)
+                {
+                    priceInfo += "$";
+                    priceInfo += itemInfo.PackagePrice;
+                    priceInfo += "/Pack-";
+                }
+                priceInfo += "$";
+                priceInfo += itemInfo.CasePrice;
+                priceInfo += "/Case";
+                item.Price = priceInfo;
+                item.Label = itemInfo.Label;
+                ItemHistory itemStats = itemStatistics.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
+                if (itemStats != null)
+                {
+                    string AVG8WK = "";
+                    AVG8WK += itemStats.AverageUse;
+                    if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
+                    else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
+                    item.AvgUse = AVG8WK;
+                }
+            }
+        }
+
+        private Stream ChooseReportToPrint(PrintListModel options)
+        {
+            Stream rdlcStream = null;
+            Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+            // Put decision outside of report services to make transparent to our review process
+            if ((options.Paging != null) && (options.Paging.Sort != null) && (options.Paging.Sort.Count > 0) && (options.Paging.Sort[0].Field.Equals("label")))
+            {
+                if ((options.ShowNotes) && (options.ShowParValues))
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPAR_NOTESANDGROUPING);
+                }
+                else if ((options.ShowNotes) && (options.ShowParValues == false))
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHNOTESANDGROUPING);
+                }
+                else if ((options.ShowNotes == false) && (options.ShowParValues))
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPARANDGROUPING);
+                }
+                else
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_GROUPING);
+                }
+            }
+            else
+            {
+                if ((options.ShowNotes) && (options.ShowParValues))
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPAR_NOTESANDNOGROUPING);
+                }
+                else if ((options.ShowNotes) && (options.ShowParValues == false))
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHNOTESANDNOGROUPING);
+                }
+                else if ((options.ShowNotes == false) && (options.ShowParValues))
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPARANDNOGROUPING);
+                }
+                else
+                {
+                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_NOGROUPING);
+                }
+            }
+            return rdlcStream;
         }
         #endregion
 
