@@ -40,6 +40,11 @@ angular.module('bekApp')
     $scope.maxSortCount = 200;      // max number of items that can be sorted by price
 
     $scope.hideMobileFilters = true;
+    if ($state.params.catalogType == "BEK") {
+        $scope.pageTitle = "Product Catalog";
+    } else {
+        $scope.pageTitle = "Special Catalog";
+    }
 
     $scope.products = [];
     $scope.facets = {
@@ -80,7 +85,7 @@ angular.module('bekApp')
       // top level breadcrumb based on the type of search
       var displayText;
       if ($scope.paramType === 'category') {
-        CategoryService.getCategories().then(function(data) {
+        CategoryService.getCategories($state.params.catalogType).then(function(data) {
           angular.forEach(data.categories, function(item, index) {
             if (item.search_name === $scope.paramId) { // for the bread crumb, we map from the search name back to the display name
               displayText = item.name;
@@ -214,8 +219,8 @@ angular.module('bekApp')
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
       console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $scope.$state.params.catalogType);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, params);
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
     }
 
     function loadProducts(appendResults) {
@@ -389,7 +394,7 @@ angular.module('bekApp')
               $scope.facets.itemspecs.selected 
             );
             var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
-            return ProductService.getSearchUrl($scope.paramType, $scope.paramId) + '?' + jQuery.param(params); // search query string param
+            return ProductService.getSearchUrl($scope.paramType, $scope.paramId, $scope.$state.params.catalogType) + '?' + jQuery.param(params); // search query string param
           }
         }
       });

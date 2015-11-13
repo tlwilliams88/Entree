@@ -144,9 +144,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="searchModel"></param>
 		/// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/search/{searchTerms}/products")]
-		public ProductsReturn GetProductsSearch(string searchTerms, [FromUri] SearchInputModel searchModel)
+        [ApiKeyedRoute("catalog/{catalogType}/search/{searchTerms}/products")]
+		public ProductsReturn GetProductsSearch(string catalogType, string searchTerms, [FromUri] SearchInputModel searchModel)
         {
+            searchModel.CatalogType = catalogType;
+            Console.WriteLine("search modle catalogType = " + searchModel.CatalogType);
             ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
             return prods;
         }

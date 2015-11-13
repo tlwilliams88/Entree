@@ -98,7 +98,7 @@
             class="btn-no-style"
             type="button"
             ng-disabled="::!canBrowseCatalog"
-            ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'UNFI'}" 
+            ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == 'UNFI' || $state.params.catalogType == 'E&S')}" 
             ng-click="toggleSpecialCatalogSubmenu()">
             <li>
               <span class="icon-book2 sidebar-nav__icon"></span>
@@ -107,14 +107,14 @@
           </button>
             <ul ng-show="specialCatalogOpen">
                 <button 
-                    class="btn-no-style"
+                    class="btn-no-style sub-btn"
                     type="button"
                     ui-sref="menu.catalog.home({catalogType: 'UNFI'})"
                     ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'UNFI'}">
                     <li>UNFI</li>
                 </button>
                 <button
-                        class="btn-no-style"
+                        class="btn-no-style sub-btn"
                         type="button"
                         ui-sref="menu.catalog.home({catalogType: 'E&S'})"
                         ng-class="{'is-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'E&S'}">

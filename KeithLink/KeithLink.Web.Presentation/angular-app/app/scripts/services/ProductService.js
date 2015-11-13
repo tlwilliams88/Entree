@@ -82,8 +82,8 @@ angular.module('bekApp')
           return params;  
         },
 
-        getSearchUrl: function(type, id) {
-          var url = '/catalog/search/' + id + '/products'; // default to search url
+        getSearchUrl: function(type, id, catalogType) {
+          var url = '/catalog/' + catalogType +'/search/' + id + '/products'; // default to search url
 
           if (type === 'category') {
             url = '/catalog/search/category/' + id + '/products';
@@ -93,9 +93,9 @@ angular.module('bekApp')
           return url;
         },
 
-        searchCatalog: function(type, id, params) {
+        searchCatalog: function(type, id, catalogType,params) {
           
-          var url = Service.getSearchUrl(type, id);
+          var url = Service.getSearchUrl(type, id, catalogType);
           
           var config = {
             params: params

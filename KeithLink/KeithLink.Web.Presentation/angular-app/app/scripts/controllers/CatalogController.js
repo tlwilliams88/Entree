@@ -17,6 +17,11 @@ angular.module('bekApp')
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
+    if ($state.params.catalogType == "BEK") {
+        $scope.pageTitle = "Product Catalog";
+    } else {
+        $scope.pageTitle = "Special Catalog";
+    }
 
     ProductService.getRecentlyViewedItems().then(function(items) {
       $scope.loadingRecentlyViewedItems = false;

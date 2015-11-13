@@ -12,7 +12,13 @@
   &:focus {
     outline: none;
   }
+  &.sub-btn {
+    font-size: 10px;
+    list-style: none;
+  }
 }
+
+
 
 .btn-icon {
   font-size: 20px;
