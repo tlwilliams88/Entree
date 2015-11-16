@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
-    function ($scope, $state, $modal, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
+  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
+    function ($scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
         
 
     $scope.calculatePieces = function(items){
@@ -816,6 +816,21 @@ angular.module('bekApp')
 
       var updatedCart = angular.copy(cart);
       updatedCart.items = cartItems;
+
+      var invalidItemFound = false;
+
+      updatedCart.items.forEach(function(cartitem){
+        if (!cartitem.extPrice && !(cartitem.extPrice > 0)){
+          invalidItemFound = true;
+          $scope.displayMessage('error', 'Cannot create cart. Item ' + cartitem.itemnumber +' is invalid.  Please contact DSR for more information.');
+        }
+      })
+
+      if (invalidItemFound){
+        var deferred = $q.defer();
+        deferred.resolve(invalidItemFound);
+        return deferred.promise;
+      }
 
       if ((cartItems && cartItems.length > 0) || $scope.addToOrderForm.$dirty){
         if ($scope.isChangeOrder) {
