@@ -50,10 +50,20 @@ angular.module('bekApp')
           permissions.canReorderItems = true;
 
         // CONTRACT, WORKSHEET / HISTORY
-        } else if (list.is_contract_list || list.isworksheet) {
-
-          permissions.alternativeFieldName = 'eachString';
-          permissions.alternativeFieldHeader = 'Each';
+         } else if (list.is_contract_list || list.isworksheet) {
+          if(list.is_contract_list){
+            //Set Hedader and fields for wildcard columns on lists page. 
+            //Contract items have two: Contract Category and read-only Each. 
+            //History has one: read-only Each.
+            permissions.alternativeFieldName = 'category';
+            permissions.alternativeFieldHeader = 'Contract Category';
+            permissions.alternativeFieldName2 = 'eachString';
+            permissions.alternativeFieldHeader2 = 'Each';
+          }
+          else{
+            permissions.alternativeFieldName = 'eachString'; 
+            permissions.alternativeFieldHeader = 'Each';
+          }
 
           if (list.items) {
             list.items.forEach(function(item) {
@@ -314,11 +324,12 @@ angular.module('bekApp')
           return ExportService.print(promise);
         },
 
-        printList: function(listId, landscape, showparvalues, options) {
+        printList: function(listId, landscape, showparvalues, options, shownotes) {
 
             var printparams = {
               landscape: landscape,
               showparvalues: showparvalues,
+              shownotes: shownotes,
               paging: options
             };
 

@@ -3,14 +3,22 @@
 angular.module('bekApp')
   .controller('AddToOrderController', ['$scope', '$state', '$modal', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
     function ($scope, $state, $modal, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
-    
-    
+        
+
+    $scope.calculatePieces = function(items){
+      //total piece count for cart info box
+      $scope.piecesCount = 0;
+        items.forEach(function(item){
+          $scope.piecesCount = $scope.piecesCount + item.quantity;
+        })
+    }
+
     // redirect to url with correct parameters
-       var basketId;
+    var basketId;
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
       selectedCart.items = $filter('filter')(selectedCart.items , {changeorderstatus: '!deleted'});
-  
+      $scope.calculatePieces(selectedCart.items);
       $scope.origItemCount = selectedCart.items.length;
 
       if($stateParams.continueToCart){
@@ -52,8 +60,10 @@ angular.module('bekApp')
       var item = $scope[object].items[idx];      
  
       if(newVal !== oldVal && item){        
-        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
-        $scope.itemCount = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items).length;
+        refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);        
+        var combinedItems = getCombinedCartAndListItems($scope.selectedCart.items, $scope.selectedList.items);        
+        $scope.calculatePieces(combinedItems);
+        $scope.itemCount = combinedItems.length;
       }
       if(item !== undefined){
         item.extPrice = PricingService.getPriceForItem(item);

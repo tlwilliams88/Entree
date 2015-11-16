@@ -389,14 +389,18 @@
               </th>
               <th class="hidden-xs hidden-sm"></th>
               <th class="hidden-mobile-visible-print"></th>
-              <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.alternativeFieldHeader" ng-click="sortList(selectedList.permissions.alternativeFieldName,sort[0].order)">
+              <th class="hidden-mobile-visible-print sort-col-header text-center" ng-if="::selectedList.permissions.alternativeFieldHeader" ng-click="sortList(selectedList.permissions.alternativeFieldName,sort[0].order)">
                 <span>{{::selectedList.permissions.alternativeFieldHeader}}
                 <span sort-icons field="selectedList.permissions.alternativeFieldName" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
+              </th>
+              <th class="hidden-mobile-visible-print sort-col-header text-center" ng-if="::selectedList.permissions.alternativeFieldHeader2" ng-click="sortList(selectedList.permissions.alternativeFieldName2,sort[0].order)">
+                <span>{{::selectedList.permissions.alternativeFieldHeader2}}
+                <span sort-icons field="selectedList.permissions.alternativeFieldName2" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeLabels" ng-click="sortList('label',sort[0].order)">
                 <span>Label <span sort-icons field="'label'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
               </th>
-              <th class="hidden-mobile-visible-print" ng-if="::(selectedList.name !== 'History' && !selectedList.is_contract_list)">
+              <th class="hidden-mobile-visible-print" ng-if="::(!selectedList.read_only)">
                   Each
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeParlevel" ng-click="sortList('parlevel',sort[0].order)">
@@ -460,8 +464,11 @@
                 <span tooltip="{{item.notes}}" ng-if="::item.notes" class="icon-docs"></span> 
               </td>
               <td class="hidden-mobile-visible-print" item-icons></td>
-              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm hidden-drag">
+              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm hidden-drag text-center">
                 {{::item[selectedList.permissions.alternativeFieldName]}}
+              </td>
+              <td ng-if="::selectedList.permissions.alternativeFieldName2" class="hidden-xs hidden-sm hidden-drag text-center">
+                {{::item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
@@ -493,7 +500,7 @@
               <td class="visible-print" ng-if="::(selectedList.permissions.canSeeLabels)">
                 {{::item.label}}
               </td>
-              <td class="input-col hidden-mobile-visible-print" ng-if="::(selectedList.name !== 'History' && !selectedList.is_contract_list)">
+              <td class="input-col hidden-mobile-visible-print" ng-if="::(!selectedList.read_only)">
                   <ng-form name="eachForm" ng-if="::(item.hasPackagePrice)">
                     <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model-options="{ debounce: 1000 }" ng-model="item.each" id="each" name="each" />
                     <label for="each"></label>
@@ -563,6 +570,10 @@
                       <td>{{::selectedList.permissions.alternativeFieldHeader}}</td>
                       <td>{{::item[selectedList.permissions.alternativeFieldName]}}</td>
                     </tr>
+                    <tr ng-if="::(selectedList.permissions.alternativeFieldName2)">
+                      <td>{{::selectedList.permissions.alternativeFieldHeader2}}</td>
+                      <td>{{::item[selectedList.permissions.alternativeFieldName2]}}</td>
+                    </tr>
                     <tr ng-if="::(selectedList.permissions.canSeeLabels)">
                       <td>Label</td>
                       <td ng-if="::(selectedList.permissions.canEditLabels)">
@@ -593,7 +604,7 @@
                         {{::item.label}}
                       </td>
                     </tr>
-                    <tr ng-if="::(item.hasPackagePrice && selectedList.name !== 'History' && !selectedList.is_contract_list)">
+                    <tr ng-if="::(item.hasPackagePrice && !selectedList.read_only)">
                     <td>Each</td>
                     <td>
                       <ng-form name="eachForm_mobile">
@@ -665,7 +676,7 @@
                 {{::item.notes}}
               </td>
               <td class="hidden-sm hidden-xs" >                
-              <td class="hidden-mobile-visible-print">
+              <td class="hidden-mobile-visible-print" style="white-space:nowrap;">
               <a ng-if="::item.inhistory === true"><span class="text-regular icon-history"></span></a>            
               <a ng-if="::item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>
               <a ng-if="::item.replaceditem > 0"><span class="text-green icon-cycle"></span></a>            
@@ -678,8 +689,11 @@
               <a ng-if="::item.temp_zone === 'C'"><span class="text-regular icon-thermometer"></span></a>
               <a ng-if="::item.temp_zone === 'D'"><span class="text-regular icon-air"></span></a>
               </td>
-              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm">
+              <td ng-if="::selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
                 {{::item[selectedList.permissions.alternativeFieldName]}}
+              </td>
+              <td ng-if="::selectedList.permissions.alternativeFieldName2" class="hidden-xs hidden-sm text-center">
+                {{::item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
               <td 
@@ -699,7 +713,7 @@
                 {{::item.label}}
               </td>
               </td>
-              <td class="input-col hidden-mobile-visible-print" ng-if="selectedList.name !== 'History' && !selectedList.is_contract_list">
+              <td class="input-col hidden-mobile-visible-print" ng-if="!selectedList.read_only">
               <ng-form ng-if="item.hasPackagePrice">
                 <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" />
                 <label for="each"></label>

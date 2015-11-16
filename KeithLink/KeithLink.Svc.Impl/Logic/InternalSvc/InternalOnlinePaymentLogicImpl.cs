@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
@@ -229,14 +230,41 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 //Get transactions
                 var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoice.InvoiceNumber);
                 invoice.InvoiceAmount = transactions
-                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETYPE_INITIALINVOICE)
+                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
                     .Select(x => x.AmountDue).FirstOrDefault();
-                
+
+                if (transactions
+                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
+                    .Count() > 0)
+                {
+                    invoice.HasCreditMemos = true;
+                }
+                else
+                {
+                    invoice.HasCreditMemos = false;
+                }
+
                 var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
 				if (orderHistory != null){
 					invoice.PONumber = orderHistory.PONumber;
 				}
 			}
+
+            if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
+                && (paging.Filter.Filters.Count > 0) 
+                && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
+            {
+                var filter = paging.Filter.Filters
+                    .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).FirstOrDefault();
+                if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos).ToList();
+                }
+                else if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
+                }
+            }
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,

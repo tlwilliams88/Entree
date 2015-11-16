@@ -147,7 +147,12 @@ namespace KeithLink.Svc.InternalSvc
 		public void UpdateList(Core.Models.Lists.ListModel userList)
 		{
 			listLogic.UpdateList(userList);
-		}		
-		#endregion
+		}
+
+        public System.IO.Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
+        {
+            return listLogic.BuildReportFromList(options, listId, printModel, userContext, userProfile);
+        }
+        #endregion
 	}
 }
