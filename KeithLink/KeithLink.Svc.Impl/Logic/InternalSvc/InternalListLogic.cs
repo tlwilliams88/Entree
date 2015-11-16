@@ -1060,7 +1060,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 {
                     priceInfo += "$";
                     priceInfo += itemInfo.PackagePrice;
-                    priceInfo += "/Pack-";
+                    priceInfo += "/Pack";
+                    priceInfo += "-";
                 }
                 priceInfo += "$";
                 priceInfo += itemInfo.CasePrice;
@@ -1074,6 +1075,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     AVG8WK += itemStats.AverageUse;
                     if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
                     else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
+                    if (itemStats.AverageUse > 1) AVG8WK += "s";
                     item.AvgUse = AVG8WK;
                 }
             }

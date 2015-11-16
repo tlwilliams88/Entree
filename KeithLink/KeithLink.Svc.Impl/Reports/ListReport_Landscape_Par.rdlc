@@ -325,7 +325,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Avg Weekly Use</Value>
+                              <Value>Avg. Weekly Use</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -1071,12 +1071,14 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -1114,6 +1116,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1157,6 +1160,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1200,6 +1204,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1243,6 +1248,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1286,6 +1292,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1329,6 +1336,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1372,6 +1380,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1416,6 +1425,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1460,6 +1470,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1512,6 +1523,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1564,6 +1576,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1616,6 +1629,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1668,6 +1682,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1746,7 +1761,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>10.79165in</Width>
+  <Width>10.0in</Width>
   <Page>
     <PageHeader>
       <Height>0.35069in</Height>

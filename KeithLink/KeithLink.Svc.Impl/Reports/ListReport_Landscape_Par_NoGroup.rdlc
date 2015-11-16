@@ -12,7 +12,7 @@
               <Width>1.08274in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.03763in</Width>
+              <Width>0.91263in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.73553in</Width>
@@ -42,7 +42,7 @@
               <Width>0.77084in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.65621in</Width>
+              <Width>0.78121in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.68749in</Width>
@@ -325,7 +325,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Avg Weekly Use</Value>
+                              <Value>Avg. Weekly Use</Value>
                               <Style>
                                 <FontSize>9pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
@@ -708,6 +708,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -751,6 +752,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -794,6 +796,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -837,6 +840,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -880,6 +884,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -923,6 +928,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -966,6 +972,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1009,6 +1016,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1053,6 +1061,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1097,6 +1106,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1149,6 +1159,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1201,6 +1212,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1253,6 +1265,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1305,6 +1318,7 @@
                         <RightBorder>
                           <Style>None</Style>
                         </RightBorder>
+                        <VerticalAlign>Bottom</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1366,7 +1380,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>10.77958in</Width>
+  <Width>10.0in</Width>
   <Page>
     <PageHeader>
       <Height>0.35069in</Height>
