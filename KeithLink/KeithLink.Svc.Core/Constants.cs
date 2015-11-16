@@ -222,8 +222,12 @@ namespace KeithLink.Svc.Core
         public const string CONTENTMGMT_BRANCHNAME_FSA = "San Antonio";
         public const string CONTENTMGMT_BRANCHNAME_GOF = "General Office";
 
-        // invoice types
-        public const string INVOICETYPE_INITIALINVOICE = "IN ";
+        // invoice transaction types and requests
+        public const string INVOICETRANSACTIONTYPE_INITIALINVOICE = "IN ";
+        public const string INVOICETRANSACTIONTYPE_CREDITMEMO = "CM ";
+        public const string INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY = "creditmemo";
+        public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY = "only";
+        public const string INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM = "none";
 
         // item history unit of measure
         public const string ITEMHISTORY_AVERAGEUSE_CASE = "C";
