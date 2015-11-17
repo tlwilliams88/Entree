@@ -615,7 +615,7 @@
                     </tr>
                     <tr>
                       <td>Price</td>
-                      <td ng-if="::!isChangeOrder">
+                      <td>
                         {{item.each ? item.packageprice : item.caseprice | currency}}
                         <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
                       </td>
