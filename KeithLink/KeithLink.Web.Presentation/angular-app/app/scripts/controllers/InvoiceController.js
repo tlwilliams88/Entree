@@ -36,6 +36,8 @@ angular.module('bekApp')
     }
   };
 
+  //Scope variable for credit memo filter on invoices page
+  $scope.invoiceFilter = false;
     
   // different filter views for users to choose in the header dropdown
   $scope.filterViews = [{
