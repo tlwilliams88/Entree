@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Models.SiteCatalog.Schemas;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,78 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 {
     public class PriceRepositoryImpl : IPriceRepository
     {
-		public PriceRepositoryImpl()
-        {
-			
+
+        public List<Price> GetNonBekItemPrices(string branchId, string customerNumber, DateTime shipDate, string source, List<Product> products) {
+            if (products == null || products.Count == 0)
+                return null;
+
+            List<Price> prices = new List<Price>();
+
+            if (customerNumber == null) {
+                foreach (Product item in products) {
+                    prices.Add(new Price() {
+                        BranchId = branchId,
+                        CustomerNumber = customerNumber,
+                        ItemNumber = item.ItemNumber,
+                        CasePrice = 0.00,
+                        PackagePrice = 0.00
+                    });
+                }
+
+            } else {
+                // build the request XML
+                System.IO.StringWriter requestBody = new System.IO.StringWriter();
+                GetNonBekItemRequestBody(branchId, customerNumber, shipDate, source, products).WriteXml(requestBody);
+
+                // load the pricing service
+                com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
+
+                // call the pricing service and get the response XML
+                PricingResponseMain pricingResponse = GetResponse(pricing.CalculatePricingForNonBekItems(requestBody.ToString()));
+                foreach (PricingResponseMain.ItemRow item in pricingResponse.Item) {
+                    Price itemPrice = new Price();
+
+                    itemPrice.BranchId = branchId;
+                    itemPrice.CustomerNumber = customerNumber;
+                    itemPrice.ItemNumber = item.number;
+                    itemPrice.DeviatedCost = item.DeviatedCost;
+
+                    PricingResponseMain.PricesRow[] priceRows = item.GetPricesRows();
+
+                    itemPrice.CasePrice = (double)priceRows[0].NetCase;
+                    itemPrice.PackagePrice = (double)priceRows[0].NetEach;
+
+                    prices.Add(itemPrice);
+                }
+            }
+
+
+            return prices;
+        }
+
+        private NonBekItemPricingRequest GetNonBekItemRequestBody(string branchId, string customerNumber, DateTime shipDate, string source, List<Product> products) {
+            NonBekItemPricingRequest request = new NonBekItemPricingRequest();
+
+            NonBekItemPricingRequest.PricingRequestRow reqRow = request.PricingRequest.NewPricingRequestRow();
+            reqRow.BranchId = branchId;
+            reqRow.CustomerNumber = customerNumber;
+            reqRow.ShipDate = shipDate;
+            request.PricingRequest.AddPricingRequestRow(reqRow);
+
+            request.Items.AddItemsRow(request.Items.NewItemsRow());
+
+            foreach (Product item in products) {
+                NonBekItemPricingRequest._ItemRow itemRow = request._Item.New_ItemRow();
+                itemRow.Source = source;
+                itemRow.Category = item.CategoryName;
+                itemRow.Number = item.ItemNumber;
+                itemRow.IsCatchWeight = item.CatchWeight;
+                itemRow.CaseCost = (decimal)item.CasePriceNumeric;
+                itemRow.PackageCost = (decimal)item.PackagePriceNumeric;
+                request._Item.Add_ItemRow(itemRow);
+            }
+
+            return request;
         }
 
         /// <summary>
@@ -49,7 +119,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             } else {
                 // build the request XML
-                PriceReturn retVal = new PriceReturn();
                 System.IO.StringWriter requestBody = new System.IO.StringWriter();
                 GetRequestBody(branchId, customerNumber, shipDate, products).WriteXml(requestBody);
 
@@ -57,14 +126,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 com.benekeith.PricingService.PricingSoapClient pricing = new com.benekeith.PricingService.PricingSoapClient();
 
                 // call the pricing service and get the response XML
-				var stopWatch = new System.Diagnostics.Stopwatch();//Temp code while tweaking performance. This should be removed
-				stopWatch.Start();
-                PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
-				stopWatch.Stop();
-				var priceCall = stopWatch.ElapsedMilliseconds;
-				stopWatch.Reset();
-				stopWatch.Start();
-                foreach (PricingResponseMain.ItemRow item in pricingResponse.Item) {
+				PricingResponseMain pricingResponse = GetResponse(pricing.Calculate(requestBody.ToString()));
+				foreach (PricingResponseMain.ItemRow item in pricingResponse.Item) {
                     Price itemPrice = new Price();
 
                     itemPrice.BranchId = branchId;
@@ -78,11 +141,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     itemPrice.PackagePrice = (double)priceRows[0].NetEach;
 
                     prices.Add(itemPrice);
-                }
-				stopWatch.Stop();
-				var buildList = stopWatch.ElapsedMilliseconds;
-				//eventLogRepository.WriteInformationLog(string.Format("Retrieve Price: {0} Items, Web Service Call: {1}, Populate List {2}", products.Count, priceCall, buildList));
-           
+                }           
             }
 
 			 return prices;
@@ -144,6 +203,5 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
             return response;
         }
-
     }
 }

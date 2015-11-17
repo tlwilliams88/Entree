@@ -1,12 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
+using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
 
 namespace KeithLink.Svc.Test.Repositories.Price
 {
     [TestClass]
-    public class PriceRepositoryImplTests
-    {
+    public class PriceRepositoryImplTests {
+
+        #region attributes
+        private readonly IPriceRepository _repo;
+        #endregion
+
+        #region ctor
+        public PriceRepositoryImplTests() {
+            IContainer diMap = DependencyMap.Build();
+
+            _repo = diMap.Resolve<IPriceRepository>();
+        }
+        #endregion
+
+        #region methods
         [TestMethod]
         public void GetMultipleItemPrices_Success()
         {
@@ -40,5 +57,22 @@ namespace KeithLink.Svc.Test.Repositories.Price
             // cannot call out to pricing cache
             Assert.IsTrue(true);
         }
+
+        [TestMethod]
+        public void GetNonBekItemPrices() {
+            List<Product> products = new List<Product>();
+            products.Add(new Product() { 
+                ItemNumber = "285141",
+                PackagePriceNumeric = 1.00,
+                CasePriceNumeric = 5.00,
+                CategoryName = "Beans and Franks"
+            });
+
+             List<KeithLink.Svc.Core.Models.SiteCatalog.Price> pricingInfo = _repo.GetNonBekItemPrices("FDF", "010189", DateTime.Now.AddDays(1), "UNFI", products);
+
+
+             Assert.IsTrue(pricingInfo.Count > 0);
+        }
+        #endregion
     }
 }

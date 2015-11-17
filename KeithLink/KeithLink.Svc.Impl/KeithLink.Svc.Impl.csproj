@@ -287,6 +287,11 @@
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />
+    <Compile Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NonBekItemPricingRequest.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
@@ -747,6 +752,11 @@
     <None Include="Logic\Profile\UserProfileLogicImpl.cs.vsspell">
       <DependentUpon>UserProfileLogicImpl.cs</DependentUpon>
     </None>
+    <None Include="Models\SiteCatalog\Schemas\NonBekItemPricingRequest.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>NonBekItemPricingRequest.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsc">
       <DependentUpon>PricingResponse.xsd</DependentUpon>
     </None>
@@ -846,6 +856,9 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.ProcessRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\com.benekeith.PricingService\KeithLink.Svc.Impl.com.benekeith.PricingService.CalculatePricingForNonBekItemsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\com.benekeith.PricingService\KeithLink.Svc.Impl.com.benekeith.PricingService.CalculateResponse.datasource">
