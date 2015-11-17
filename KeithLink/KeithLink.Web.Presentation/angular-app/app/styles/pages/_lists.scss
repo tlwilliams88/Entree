@@ -174,3 +174,20 @@
   max-width:100px;
 }
 }
+
+
+@media (max-width: 1135px) {
+.drop-column{ 
+  display:none !important;
+}
+}
+
+.label-col {
+  max-width:103.636px !important;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.label-width {
+  max-width:103.636px !important;
+}
