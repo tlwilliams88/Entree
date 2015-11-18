@@ -600,6 +600,10 @@
     <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.Designer.cs">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201511172254161_Extend Order History Detail for UNFI.cs" />
+    <Compile Include="Repository\EF\Migrations\201511172254161_Extend Order History Detail for UNFI.Designer.cs">
+      <DependentUpon>201511172254161_Extend Order History Detail for UNFI.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1186,6 +1190,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.resx">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201511172254161_Extend Order History Detail for UNFI.resx">
+      <DependentUpon>201511172254161_Extend Order History Detail for UNFI.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,7 @@ using System.Data.Entity.Infrastructure.MappingViews;
 
 [assembly: DbMappingViewCacheTypeAttribute(
     typeof(KeithLink.Svc.Impl.Repository.EF.Operational.BEKDBContext),
-    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsbf1c1599b7644b0f2d86f8fcfcb66f5da14aef7924d7b9f3e1b0114a4ca44099))]
+    typeof(Edm_EntityMappingGeneratedViews.ViewsForBaseEntitySetsa450754e6f4ef8f70ed47634494f374ccb14beb91644dfef26b69bb8d3caf33b))]
 
 namespace Edm_EntityMappingGeneratedViews
 {
@@ -23,14 +23,14 @@ namespace Edm_EntityMappingGeneratedViews
     /// Implements a mapping view cache.
     /// </summary>
     [GeneratedCode("Entity Framework Power Tools", "0.9.0.0")]
-    internal sealed class ViewsForBaseEntitySetsbf1c1599b7644b0f2d86f8fcfcb66f5da14aef7924d7b9f3e1b0114a4ca44099 : DbMappingViewCache
+    internal sealed class ViewsForBaseEntitySetsa450754e6f4ef8f70ed47634494f374ccb14beb91644dfef26b69bb8d3caf33b : DbMappingViewCache
     {
         /// <summary>
         /// Gets a hash value computed over the mapping closure.
         /// </summary>
         public override string MappingHashValue
         {
-            get { return "bf1c1599b7644b0f2d86f8fcfcb66f5da14aef7924d7b9f3e1b0114a4ca44099"; }
+            get { return "a450754e6f4ef8f70ed47634494f374ccb14beb91644dfef26b69bb8d3caf33b"; }
         }
 
         /// <summary>
@@ -1190,9 +1190,9 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryDetail
-        [CodeFirstDatabaseSchema.OrderHistoryDetail](T3.OrderHistoryDetail_Id, T3.OrderHistoryDetail_BranchId, T3.OrderHistoryDetail_InvoiceNumber, T3.OrderHistoryDetail_LineNumber, T3.OrderHistoryDetail_ItemNumber, T3.OrderHistoryDetail_OrderQuantity, T3.OrderHistoryDetail_ShippedQuantity, T3.OrderHistoryDetail_UnitOfMeasure, T3.OrderHistoryDetail_CatchWeight, T3.OrderHistoryDetail_ItemDeleted, T3.OrderHistoryDetail_SubbedOriginalItemNumber, T3.OrderHistoryDetail_ReplacedOriginalItemNumber, T3.OrderHistoryDetail_ItemStatus, T3.OrderHistoryDetail_TotalShippedWeight, T3.OrderHistoryDetail_SellPrice, T3.OrderHistoryDetail_CreatedUtc, T3.OrderHistoryDetail_ModifiedUtc, T3.[OrderHistoryDetail.OrderHistoryHeader_Id])
+        [CodeFirstDatabaseSchema.OrderHistoryDetail](T3.OrderHistoryDetail_Id, T3.OrderHistoryDetail_BranchId, T3.OrderHistoryDetail_InvoiceNumber, T3.OrderHistoryDetail_LineNumber, T3.OrderHistoryDetail_ItemNumber, T3.OrderHistoryDetail_OrderQuantity, T3.OrderHistoryDetail_ShippedQuantity, T3.OrderHistoryDetail_UnitOfMeasure, T3.OrderHistoryDetail_CatchWeight, T3.OrderHistoryDetail_ItemDeleted, T3.OrderHistoryDetail_SubbedOriginalItemNumber, T3.OrderHistoryDetail_ReplacedOriginalItemNumber, T3.OrderHistoryDetail_ItemStatus, T3.OrderHistoryDetail_TotalShippedWeight, T3.OrderHistoryDetail_SellPrice, T3.OrderHistoryDetail_Source, T3.OrderHistoryDetail_ManufacturerId, T3.OrderHistoryDetail_SpecialOrderHeaderId, T3.OrderHistoryDetail_SpecialOrderLineNumber, T3.OrderHistoryDetail_CreatedUtc, T3.OrderHistoryDetail_ModifiedUtc, T3.[OrderHistoryDetail.OrderHistoryHeader_Id])
     FROM (
-        SELECT T1.OrderHistoryDetail_Id, T1.OrderHistoryDetail_BranchId, T1.OrderHistoryDetail_InvoiceNumber, T1.OrderHistoryDetail_LineNumber, T1.OrderHistoryDetail_ItemNumber, T1.OrderHistoryDetail_OrderQuantity, T1.OrderHistoryDetail_ShippedQuantity, T1.OrderHistoryDetail_UnitOfMeasure, T1.OrderHistoryDetail_CatchWeight, T1.OrderHistoryDetail_ItemDeleted, T1.OrderHistoryDetail_SubbedOriginalItemNumber, T1.OrderHistoryDetail_ReplacedOriginalItemNumber, T1.OrderHistoryDetail_ItemStatus, T1.OrderHistoryDetail_TotalShippedWeight, T1.OrderHistoryDetail_SellPrice, T1.OrderHistoryDetail_CreatedUtc, T1.OrderHistoryDetail_ModifiedUtc, T2.[OrderHistoryDetail.OrderHistoryHeader_Id], T1._from0, (T2._from1 AND T2._from1 IS NOT NULL) AS _from1
+        SELECT T1.OrderHistoryDetail_Id, T1.OrderHistoryDetail_BranchId, T1.OrderHistoryDetail_InvoiceNumber, T1.OrderHistoryDetail_LineNumber, T1.OrderHistoryDetail_ItemNumber, T1.OrderHistoryDetail_OrderQuantity, T1.OrderHistoryDetail_ShippedQuantity, T1.OrderHistoryDetail_UnitOfMeasure, T1.OrderHistoryDetail_CatchWeight, T1.OrderHistoryDetail_ItemDeleted, T1.OrderHistoryDetail_SubbedOriginalItemNumber, T1.OrderHistoryDetail_ReplacedOriginalItemNumber, T1.OrderHistoryDetail_ItemStatus, T1.OrderHistoryDetail_TotalShippedWeight, T1.OrderHistoryDetail_SellPrice, T1.OrderHistoryDetail_Source, T1.OrderHistoryDetail_ManufacturerId, T1.OrderHistoryDetail_SpecialOrderHeaderId, T1.OrderHistoryDetail_SpecialOrderLineNumber, T1.OrderHistoryDetail_CreatedUtc, T1.OrderHistoryDetail_ModifiedUtc, T2.[OrderHistoryDetail.OrderHistoryHeader_Id], T1._from0, (T2._from1 AND T2._from1 IS NOT NULL) AS _from1
         FROM  (
             SELECT 
                 T.Id AS OrderHistoryDetail_Id, 
@@ -1210,6 +1210,10 @@ namespace Edm_EntityMappingGeneratedViews
                 T.ItemStatus AS OrderHistoryDetail_ItemStatus, 
                 T.TotalShippedWeight AS OrderHistoryDetail_TotalShippedWeight, 
                 T.SellPrice AS OrderHistoryDetail_SellPrice, 
+                T.Source AS OrderHistoryDetail_Source, 
+                T.ManufacturerId AS OrderHistoryDetail_ManufacturerId, 
+                T.SpecialOrderHeaderId AS OrderHistoryDetail_SpecialOrderHeaderId, 
+                T.SpecialOrderLineNumber AS OrderHistoryDetail_SpecialOrderLineNumber, 
                 T.CreatedUtc AS OrderHistoryDetail_CreatedUtc, 
                 T.ModifiedUtc AS OrderHistoryDetail_ModifiedUtc, 
                 True AS _from0
@@ -1268,7 +1272,7 @@ namespace Edm_EntityMappingGeneratedViews
         {
             return new DbMappingView(@"
     SELECT VALUE -- Constructing OrderHistoryDetails
-        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryDetail](T1.OrderHistoryDetail_Id, T1.OrderHistoryDetail_BranchId, T1.OrderHistoryDetail_InvoiceNumber, T1.OrderHistoryDetail_LineNumber, T1.OrderHistoryDetail_ItemNumber, T1.OrderHistoryDetail_OrderQuantity, T1.OrderHistoryDetail_ShippedQuantity, T1.OrderHistoryDetail_UnitOfMeasure, T1.OrderHistoryDetail_CatchWeight, T1.OrderHistoryDetail_ItemDeleted, T1.OrderHistoryDetail_SubbedOriginalItemNumber, T1.OrderHistoryDetail_ReplacedOriginalItemNumber, T1.OrderHistoryDetail_ItemStatus, T1.OrderHistoryDetail_TotalShippedWeight, T1.OrderHistoryDetail_SellPrice, T1.OrderHistoryDetail_CreatedUtc, T1.OrderHistoryDetail_ModifiedUtc) WITH 
+        [KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryDetail](T1.OrderHistoryDetail_Id, T1.OrderHistoryDetail_BranchId, T1.OrderHistoryDetail_InvoiceNumber, T1.OrderHistoryDetail_LineNumber, T1.OrderHistoryDetail_ItemNumber, T1.OrderHistoryDetail_OrderQuantity, T1.OrderHistoryDetail_ShippedQuantity, T1.OrderHistoryDetail_UnitOfMeasure, T1.OrderHistoryDetail_CatchWeight, T1.OrderHistoryDetail_ItemDeleted, T1.OrderHistoryDetail_SubbedOriginalItemNumber, T1.OrderHistoryDetail_ReplacedOriginalItemNumber, T1.OrderHistoryDetail_ItemStatus, T1.OrderHistoryDetail_TotalShippedWeight, T1.OrderHistoryDetail_SellPrice, T1.OrderHistoryDetail_Source, T1.OrderHistoryDetail_ManufacturerId, T1.OrderHistoryDetail_SpecialOrderHeaderId, T1.OrderHistoryDetail_SpecialOrderLineNumber, T1.OrderHistoryDetail_CreatedUtc, T1.OrderHistoryDetail_ModifiedUtc) WITH 
         RELATIONSHIP(CREATEREF(BEKDBContext.OrderHistoryHeaders, ROW(T1.[OrderHistoryHeader_OrderDetails.OrderHistoryHeader_OrderDetails_Source.Id]),[KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader]),[KeithLink.Svc.Impl.Repository.EF.Operational.OrderHistoryHeader_OrderDetails],OrderHistoryHeader_OrderDetails_Target,OrderHistoryHeader_OrderDetails_Source) 
     FROM (
         SELECT 
@@ -1287,6 +1291,10 @@ namespace Edm_EntityMappingGeneratedViews
             T.ItemStatus AS OrderHistoryDetail_ItemStatus, 
             T.TotalShippedWeight AS OrderHistoryDetail_TotalShippedWeight, 
             T.SellPrice AS OrderHistoryDetail_SellPrice, 
+            T.Source AS OrderHistoryDetail_Source, 
+            T.ManufacturerId AS OrderHistoryDetail_ManufacturerId, 
+            T.SpecialOrderHeaderId AS OrderHistoryDetail_SpecialOrderHeaderId, 
+            T.SpecialOrderLineNumber AS OrderHistoryDetail_SpecialOrderLineNumber, 
             T.CreatedUtc AS OrderHistoryDetail_CreatedUtc, 
             T.ModifiedUtc AS OrderHistoryDetail_ModifiedUtc, 
             True AS _from0, 

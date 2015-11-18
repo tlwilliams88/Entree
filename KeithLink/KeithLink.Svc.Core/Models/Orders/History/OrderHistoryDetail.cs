@@ -44,6 +44,18 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
 
         [DataMember()]
         public double TotalShippedWeight { get; set; }
+
+        [DataMember()]
+        public string Source { get; set; }
+
+        [DataMember()]
+        public string ManufacturerId { get; set; }
+
+        [DataMember()]
+        public string SpecialOrderHeaderId { get; set; }
+
+        [DataMember()]
+        public string SpecialOrderLineNumber { get; set; }
         #endregion
     }
 }
