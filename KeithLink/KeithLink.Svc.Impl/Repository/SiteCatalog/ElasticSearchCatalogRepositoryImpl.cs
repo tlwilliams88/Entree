@@ -363,6 +363,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 			p.IsProprietary = oProd._source.isproprietary;
             p.AverageWeight = oProd._source.averageweight;
             p.CatalogId = oProd._index;
+            if (p.CatalogId.ToLower().StartsWith("unfi"))
+            {
+                //make vendor into description
+                p.Description = oProd._source.vendor;
+            }
             Nutritional nutritional = new Nutritional();
             if (oProd._source.nutritional != null) {
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;

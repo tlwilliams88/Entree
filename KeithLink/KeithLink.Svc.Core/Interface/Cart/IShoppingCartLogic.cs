@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		List<ShoppingCart> ReadAllCarts(UserProfile user, UserSelectedContext catalogInfo, bool headerInfoOnly);
 		ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 
-		NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
+		List<NewOrderReturn> SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
 
 		void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 

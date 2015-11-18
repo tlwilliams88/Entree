@@ -263,7 +263,7 @@ namespace KeithLink.Svc.Impl.Logic
 			return cart;
 		}
         
-        public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
+        public List<NewOrderReturn> SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 			//Check that RequestedShipDate
@@ -280,23 +280,63 @@ namespace KeithLink.Svc.Impl.Logic
             //split into multiple orders
             var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
             var returnOrders = new List<NewOrderReturn>();
+            var orderNumbers = new List<string>();
+            var tempCatalogInfo = new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalogInfo.BranchId }; 
+
+            //make list of baskets
             foreach (var catalogId in catalogList)
             {
-                var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), cartId);
+                var shoppingCart = new ShoppingCart()
+                {
+                    CartId = basket.Id.ToGuid(),
+                    Name = basket.DisplayName,
+                    BranchId = catalogId,
+                    RequestedShipDate = basket.RequestedShipDate,
+                    Active = false,
+                    PONumber = basket.PONumber,
+                    CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    Items = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => new ShoppingCartItem()
+                    {
+                        ItemNumber = l.ProductId,
+                        CartItemId = l.Id.ToGuid(),
+                        Notes = l.Notes,
+                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                        Each = l.Each.HasValue ? l.Each.Value : false,
+                        CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                        CatalogId = l.CatalogName
+
+                    }).ToList()
+                };
+                tempCatalogInfo.BranchId = catalogId;
+                var newCartId = CreateCart(user, tempCatalogInfo, shoppingCart);
+                orderNumbers.Add(client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId));//need new cart per loop
+            }
+
+            // delete original cart
+            DeleteCart(user, catalogInfo, cartId);
+
+            foreach (var orderNumber in orderNumbers) 
+            {
                 var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
                 orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
-                //if bek item
-                orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue - mainframe only for BEK 
-                //else 
-                //case os - direct database through Windows.OrderService
+
+                //if bek items
+                if (true)
+                {
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue - mainframe only for BEK
+                }
+                else
+                {
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder);
+                }
 
                 auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
-                returnOrders.Add( new NewOrderReturn() { OrderNumber = orderNumber });
+                returnOrders.Add(new NewOrderReturn() { OrderNumber = orderNumber });
             }
-            
-			return returnOrders[0]; //Return actual order number
+
+			return returnOrders; //Return actual order number
 		}
         
 		private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
@@ -440,7 +480,7 @@ namespace KeithLink.Svc.Impl.Logic
 			shoppingCart.Name = string.Format("Quick Add - {0} - {1} {2}", catalogInfo.CustomerId, DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
 
 			var itemErrorMessage = new StringBuilder();
-
+            
 			foreach (var item in items)
 			{
 				if (item == null || string.IsNullOrEmpty(item.ItemNumber))
