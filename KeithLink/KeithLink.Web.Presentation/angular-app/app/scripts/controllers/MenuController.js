@@ -214,15 +214,17 @@ angular.module('bekApp')
   $scope.toggleSpecialCatalogSubmenu = function() {
     if ($scope.$state !== undefined) {
         if ($scope.$state.params.catalogType !== undefined) {
-            if ($scope.$state.params.catalogType !== 'UNFI'/* or other third parties*/) {
+            if ($scope.$state.params.catalogType !== 'UNFI'/* or other third parties $scope.$state.params.catalogType !== 'B&E'*/) {
                 $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
             } else {
-                $scope.specialCatalogOpen
+                $scope.specialCatalogOpen = true;
             }
+        } else { 
+            $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
         }
     }
-    
   };
+  $scope.toggleSpecialCatalogSubmenu(); //call to expand if it is in special catlog
           
   //
   
