@@ -318,11 +318,11 @@
           <div class="col-sm-12 hidden-xs hidden-sm">
             <div ng-repeat="item in promoItems">
               <div class="featured-item text-center">
-                <a><img ng-if="item.imageurl" ng-src="{{item.imageurl}}" ng-click="openExternalLink(item.targeturl)" alt="image"></a>
-                <a><img ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" ng-click="openExternalLink(item.targeturl)" alt="default product image"></a>
+                <img style="cursor: pointer;" ng-if="item.imageurl" ng-src="{{item.imageurl}}" ng-click="openExternalLink(item.targeturl)" alt="image">
+                <img style="cursor: pointer;" ng-if="!item.imageurl" class="product-placeholder-image" src="images/bek-logo.png" ng-click="openExternalLink(item.targeturl)" alt="default product image">
                 <div class="featured-item__detail">
                   {{item.tagline}}
-                  <a ng-if="item.targeturl" ng-click="openExternalLink(item.targeturl)" class="text-uppercase">{{item.targeturltext}}</a>
+                  <a ng-if="item.targeturl" ng-click="openExternalLink(item.targeturl)" class="text-uppercase" target="_blank">{{item.targeturltext}} </a>
                   <a ng-if="item.productid" ui-sref="menu.catalog.products.details({ itemId: item.productid})" class="text-uppercase">{{item.targeturltext}}</a>
                   <a ng-if="!item.targeturl && !item.productid && item.content" ng-click="showPromoItemContent(item)" class="text-uppercase">{{item.targeturltext}}</a>
                 </div>
