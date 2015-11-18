@@ -541,7 +541,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 				Flag2 = row.GetString("Flag2"),
 				Flag3 = row.GetString("Flag3"),
 				Flag4 = row.GetString("Flag4"),
-				OnHandQty = row.GetNullableInt("OnHandQty")
+				OnHandQty = row.GetNullableInt("OnHandQty"),
+				Vendor1 = row.GetString("Vendor")
 			};
 
 			RootData index = new RootData();
