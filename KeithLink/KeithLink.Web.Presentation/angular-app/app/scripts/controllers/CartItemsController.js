@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', 'ENV', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
-    function($scope, $state, $stateParams, $filter, $modal, ENV, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
  
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -173,8 +173,24 @@ angular.module('bekApp')
       // }
     };
  
+    var invalidItemFound = false;
     var processingSaveCart = false;
+
     $scope.saveCart = function(cart) {
+
+        $scope.currentCart.items.forEach(function(item){
+          if (!item.extPrice && !(item.extPrice > 0)){
+            invalidItemFound = true;
+            $scope.displayMessage('error', 'Cannot save cart. Item ' + item.itemnumber +' is invalid.  Please contact DSR for more information.');
+          }
+        })
+
+        if (invalidItemFound){
+          var deferred = $q.defer();
+          deferred.resolve(invalidItemFound);
+          return deferred.promise;
+        }
+
       if (!processingSaveCart) {
         processingSaveCart = true;
         var updatedCart = angular.copy(cart);
@@ -206,8 +222,24 @@ angular.module('bekApp')
       }
     };
    
+   var invalidItemFound = false;
    var processingSubmitOrder = false;
+
     $scope.submitOrder = function(cart) {
+
+        $scope.currentCart.items.forEach(function(item){
+          if (!item.extPrice && !(item.extPrice > 0)){
+            invalidItemFound = true;
+            $scope.displayMessage('error', 'Cannot save cart. Item ' + item.itemnumber +' is invalid.  Please contact DSR for more information.');
+          }
+        })
+
+        if (invalidItemFound){
+          var deferred = $q.defer();
+          deferred.resolve(invalidItemFound);
+          return deferred.promise;
+        }
+
       if (!processingSubmitOrder) {
         processingSubmitOrder = true;        
 
