@@ -127,7 +127,7 @@ angular.module('bekApp')
       },
       resolve: {
         item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
-          return ProductService.getProductDetails($stateParams.itemNumber);
+          return ProductService.getProductDetails($stateParams.itemNumber, $stateParams.catalogType);
         }]
       }
     })

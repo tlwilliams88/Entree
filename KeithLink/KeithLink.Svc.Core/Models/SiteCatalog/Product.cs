@@ -43,8 +43,12 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [OnSerializing]
         void OnSerializing(StreamingContext context) {
             //Do not output a "blank" upc
-            if (this.UPC.Equals("00000000000000"))
-                this.UPC = string.Empty;
+            if (this.UPC != null)
+            {
+                if (this.UPC.Equals("00000000000000"))
+                    this.UPC = string.Empty;
+            }
+            
         }
         #endregion
 

@@ -487,7 +487,7 @@ namespace KeithLink.Svc.Impl.Logic
 					continue;
 
 				//Verify they have access to item, if the item is invalid, log then return error
-				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
+				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user, catalogInfo.BranchId);
 
 				if (prod == null)
 					itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);

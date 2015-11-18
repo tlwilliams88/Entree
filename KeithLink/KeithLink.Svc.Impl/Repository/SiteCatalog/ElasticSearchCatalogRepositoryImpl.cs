@@ -368,8 +368,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 //make vendor into description
                 p.Description = oProd._source.vendor;
             }
-            Nutritional nutritional = new Nutritional();
+          
             if (oProd._source.nutritional != null) {
+                Nutritional nutritional = new Nutritional();
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;
                 nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
                 nutritional.GrossWeight = oProd._source.nutritional.grossweight;
@@ -436,8 +437,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                         nutritional.DietInfo.Add(d);
                     }
                 }
+                p.Nutritional = nutritional;
             }
-            p.Nutritional = nutritional;
+            
             return p;
         }
 

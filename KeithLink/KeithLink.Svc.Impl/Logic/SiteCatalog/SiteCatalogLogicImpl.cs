@@ -197,7 +197,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return returnValue;
         }
 
-        public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile) {
+        public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType) {
+            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 
             if (ret == null)
@@ -323,20 +324,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
 
-            if (searchModel.CatalogType.ToLower() != "bek")
-            {
-                //Go get the code for this branch, hard code for now
-                //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
-                    .Where(x => searchModel.CatalogType.ToLower() == x.Type.ToString().ToLower()).ToList();
-                
-                List<ExportExternalCatalog> filteredList = externalCatalog.Where(x => catalogInfo.BranchId.ToLower().Equals(x.BekBranchId.Trim().ToLower())).ToList();
-                
-                
-                if (filteredList.Count > 0) {
-                    catalogInfo.BranchId = filteredList[0].ExternalBranchId;
-                }
-            }
+            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
@@ -347,6 +335,34 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
             return ret;
+        }
+
+        private string GetBranchId(string bekBranchId, string catalogType)
+        {
+            if (catalogType.ToLower() != "bek")
+            {
+                //Go get the code for this branch, hard code for now
+                //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
+                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
+                    .Where(x => catalogType.ToLower() == x.Type.ToString().ToLower()).ToList();
+
+                List<ExportExternalCatalog> filteredList = externalCatalog.Where(x => bekBranchId.ToLower().Equals(x.BekBranchId.Trim().ToLower())).ToList();
+
+
+                if (filteredList.Count > 0)
+                {
+                    return filteredList[0].ExternalBranchId;
+                }
+                else
+                {
+                    return bekBranchId;
+                }
+            }
+            else
+            {
+                return bekBranchId;
+            }
+
         }
 
         #endregion

@@ -111,11 +111,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="id">Product Id (itemnumber)</param>
 		/// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/product/{id}")]
-        public Product GetProductById(string id)
+        [ApiKeyedRoute("catalog/{catalogType}/product/{id}")]
+        public Product GetProductById(string catalogType, string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            Product prod = _catalogLogic.GetProductById(this.SelectedUserContext, id, this.AuthenticatedUser);
+           
+            Product prod = _catalogLogic.GetProductById(this.SelectedUserContext, id, this.AuthenticatedUser, catalogType);
 
             if (prod == null)
                 return new Product();
@@ -148,7 +149,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public ProductsReturn GetProductsSearch(string catalogType, string searchTerms, [FromUri] SearchInputModel searchModel)
         {
             searchModel.CatalogType = catalogType;
-            Console.WriteLine("search modle catalogType = " + searchModel.CatalogType);
             ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
             return prods;
         }

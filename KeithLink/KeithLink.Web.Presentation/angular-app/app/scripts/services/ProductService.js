@@ -120,10 +120,10 @@ angular.module('bekApp')
           });
         },
 
-        getProductDetails: function(itemNumber) {
+        getProductDetails: function(itemNumber, catalogType) {
           var returnProduct;
           if (!Service.selectedProduct.name) {
-            returnProduct = $http.get('/catalog/product/' + itemNumber).then(function(response) {
+            returnProduct = $http.get('/catalog/' + catalogType + '/product/' + itemNumber).then(function(response) {
               return response.data;
             });
           } else {
