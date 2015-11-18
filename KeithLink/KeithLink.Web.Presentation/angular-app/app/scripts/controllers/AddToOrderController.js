@@ -17,7 +17,7 @@ angular.module('bekApp')
     var basketId;
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
-      selectedCart.items = $filter('filter')(selectedCart.items , {changeorderstatus: '!deleted'});
+      selectedCart.items = OrderService.filterDeletedOrderItems(selectedCart);
       $scope.calculatePieces(selectedCart.items);
       $scope.origItemCount = selectedCart.items.length;
 

@@ -470,9 +470,9 @@
               </td>
               <!-- Label -->
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
-                <div ng-hide="item.isEditing" class="bek-no-drag full-width-mobile label-width">
+                <div ng-hide="item.isEditing" class="bek-no-drag label-width" style="margin-right:10px;">
                   <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in ::labels track by label" class="label-width">
-                    <option class="label-width" value="">Select A Label...</option>
+                    <option value="">Select A Label </option>
                   </select>
                   <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
@@ -498,7 +498,7 @@
               <td class="visible-print label-col" ng-if="::(selectedList.permissions.canSeeLabels)">
                 {{::item.label}}
               </td>
-              <td class="input-col hidden-mobile-visible-print" ng-if="::(!selectedList.read_only)"  style="max-width:20px;">
+              <td class="input-col hidden-mobile-visible-print" ng-if="::(!selectedList.read_only)"  style="max-width:20px; display:inline-block;">
                   <ng-form name="eachForm" ng-if="::(item.hasPackagePrice)">
                     <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model="item.each" id="each" name="each" />
                     <label for="each"></label>
@@ -575,13 +575,13 @@
                       <td>{{::selectedList.permissions.alternativeFieldHeader2}}</td>
                       <td>{{::item[selectedList.permissions.alternativeFieldName2]}}</td>
                     </tr>
-                    <tr ng-if="::(selectedList.permissions.canSeeLabels)" class="label-width">
+                    <tr ng-if="::(selectedList.permissions.canSeeLabels)">
                       <td>Label</td>
                       <td ng-if="::(selectedList.permissions.canEditLabels)">
                         <div ng-hide="item.isEditing" class="form-control-group__input">
                           <div class="select-div bek-no-drag hidden-print">
                             <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in labels">
-                              <option value="">Select A Label...</option>
+                              <option value="">Select A Label </option>
                             </select>
                           </div>
                           <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
@@ -703,13 +703,12 @@
                 {{::item[selectedList.permissions.alternativeFieldName2]}}
               </td>
               <!-- Label -->
-              <td 
-             
+              <td
               ng-if="::selectedList.permissions.canEditLabels" 
               class="input-col nowrap hidden-sm hidden-xs">
-               <div class="full-width-mobile">
-                  <select ng-if="!item.label  && selectedList.permissions.canEditLabels"><option>Select A Label...</option></select>
-                  <select ng-if="item.label && selectedList.permissions.canEditLabels" style="width:103.636px;" ><option>{{item.label}}</option></select>
+               <div class=" label-width" style="margin-right:10px;">
+                  <select ng-if="!item.label  && selectedList.permissions.canEditLabels"  class="label-width"><option>Select A Label </option></select>
+                  <select ng-if="item.label && selectedList.permissions.canEditLabels" class="label-width"><option>{{item.label}}</option></select>
                   <a class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
               </td>

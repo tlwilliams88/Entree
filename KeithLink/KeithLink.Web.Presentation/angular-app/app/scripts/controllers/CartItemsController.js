@@ -53,7 +53,7 @@ angular.module('bekApp')
     $scope.changeOrders = OrderService.changeOrderHeaders;
     $scope.isChangeOrder = originalBasket.hasOwnProperty('ordernumber') ? true : false;
     if($scope.isChangeOrder){
-      originalBasket.items =  $filter('filter')(originalBasket.items , {changeorderstatus: '!deleted'});    
+      originalBasket.items =  OrderService.filterDeletedOrderItems(originalBasket);
     }
     $scope.currentCart = angular.copy(originalBasket);
     $scope.selectedShipDate = CartService.findCutoffDate($scope.currentCart);
