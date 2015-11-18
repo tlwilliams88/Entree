@@ -6,7 +6,7 @@ angular.module('bekApp')
 
 
   $scope.filterDeletedItems = function(order){ 
-    order.items =  $filter('filter')(order.items , {changeorderstatus: '!deleted'});
+    order.items =  OrderService.filterDeletedOrderItems(order);
     return order;
   };
 
