@@ -210,7 +210,7 @@ angular.module('bekApp')
     refreshPage();
   };
           
-  //Submenu for special catalogs
+  //Submenu for specialty catalogs
   $scope.toggleSpecialCatalogSubmenu = function() {
     if ($scope.$state !== undefined) {
         if ($scope.$state.params.catalogType !== undefined) {

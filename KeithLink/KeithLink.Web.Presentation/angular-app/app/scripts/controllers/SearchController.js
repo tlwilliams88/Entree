@@ -43,7 +43,7 @@ angular.module('bekApp')
     if ($state.params.catalogType == "BEK") {
         $scope.pageTitle = "Product Catalog";
     } else {
-        $scope.pageTitle = "Special Catalog";
+        $scope.pageTitle = "Specialty Catalog";
     }
 
     $scope.products = [];

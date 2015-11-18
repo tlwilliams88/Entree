@@ -63,18 +63,29 @@ $sidebar-nav__text--selected: $color-white;
 
     // nav menu items
     li {
+      font-family: $font-family-base;
+      letter-spacing: 1px;
       padding: 14px $padding__size;
       color: $sidebar--text;
       cursor: pointer;
       border-bottom: 1px solid $sidebar-nav__border;
       font-weight: 400;
       letter-spacing: 1px;
+      position: relative;
 
       // menu icons
       .sidebar-nav__icon {
         width: 35px;
         display: inline-block;
         text-align: center;
+        font-size: 16px;
+      }
+    
+      .sidebar-nav__collapse-arrow {
+        width: 16px;
+        display: inline-block;
+        position: absolute;
+        right:0px;
         font-size: 16px;
       }
 
@@ -85,8 +96,62 @@ $sidebar-nav__text--selected: $color-white;
         padding: 2px 7px;
         color: $color-white;
       }
-    }
+      &.is-selected {
+        color: $sidebar--text;
+        background-color: $sidebar-nav__background--selected;
+        border-left: $border__size solid $color-orange;
+        padding-left: $padding__size - $border__size;
+      }     
+        
+          ul {
+              button {
+                  li {
+                      border-left: none;
+                      background: none;
+                      border-bottom: none; 
+                      padding-top: 5px;
+                      padding-bottom: 2px;
+                  }
+                  
+                  &.is-sub-selected  {
+                    li {
+                        color: $sidebar-nav__text--selected;
+                    }  
+                  }
+              }
 
+          }
+        
+        &.is-selected {
+            ul {
+              button {
+                  &.is-sub-selected  {
+                    li {
+                        color: $sidebar-nav__text--selected;
+                        border-left: none;
+                        background: none;
+                        border-bottom: none;
+                        padding-top: 5px;
+                        padding-bottom: 2px;
+
+                    }  
+                  }
+                  li {
+                      border-left: none; 
+                      border-bottom: none;
+                      color: $sidebar--text;
+                      padding-top: 5px;
+                      padding-bottom: 2px;
+                  }
+              }
+          }
+        }
+        
+      .is-sub-selected li {
+      color: $sidebar-nav__text--selected;
+      }
+    
+    }
 
     .is-selected li {
       color: $sidebar-nav__text--selected;

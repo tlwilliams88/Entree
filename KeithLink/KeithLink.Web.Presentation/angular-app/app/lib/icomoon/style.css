@@ -593,6 +593,9 @@
 .icon-book2:before {
 	content: "\e6ac";
 }
+.icon-exclaimation:before {
+    context: "\e6ac";  
+}
 .icon-play:before {
 	content: "\e6ad";
 }
@@ -781,4 +784,7 @@
 }
 .icon-cc-zero:before {
 	content: "\e6eb";
+}
+.icon-exclaimation-splat:before {
+    content: "\e900";
 }
