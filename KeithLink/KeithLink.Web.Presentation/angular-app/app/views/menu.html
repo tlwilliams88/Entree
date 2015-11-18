@@ -95,7 +95,8 @@
             </li>
           </button>
           <li
-              ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == 'UNFI' || $state.params.catalogType == 'E&S')}">
+              ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == 'UNFI' || $state.params.catalogType == 'E&S')}"
+              ng-show="showSpecialtyCatalogs">
           <button
             class="btn-no-style"
             type="button"

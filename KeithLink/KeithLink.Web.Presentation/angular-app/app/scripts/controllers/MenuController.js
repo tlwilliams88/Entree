@@ -36,6 +36,7 @@ angular.module('bekApp')
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
   $scope.specialCatalogOpen = false;
+  $scope.showSpecialtyCatalogs = false;
  
   if (AccessService.isOrderEntryCustomer()) {
 
