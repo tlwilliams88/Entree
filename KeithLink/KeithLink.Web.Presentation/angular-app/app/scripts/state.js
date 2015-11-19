@@ -99,7 +99,13 @@ angular.module('bekApp')
     })
     .state('menu.catalog.home', {
       url: '',
-      templateUrl: 'views/catalog.html',
+      templateUrl: function($stateParams) {
+          if ($stateParams.catalogType == "UNFI") {
+              return 'views/unfi-catalog.html';
+          } else {
+              return 'views/catalog.html';
+          }
+      },
       controller: 'CatalogController',
       data: {
         authorize: 'canBrowseCatalog'
