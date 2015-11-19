@@ -1670,6 +1670,7 @@ This file contains the Metadata Repository
               <PropertyMapping property="NationalNumberSubDesc" csProperty="GeneralInfo.national_numbersub_desc" />
               <PropertyMapping property="RegionalIdDesc" csProperty="GeneralInfo.regional_id_desc" />
               <PropertyMapping property="RegionalNumberDesc" csProperty="GeneralInfo.regional_number_desc" />
+              <PropertyMapping property="CanViewPricing" csProperty="GeneralInfo.can_view_pricing"/>
             </PropertyMappings>
           </EntityMapping>
         </EntityMappings>
