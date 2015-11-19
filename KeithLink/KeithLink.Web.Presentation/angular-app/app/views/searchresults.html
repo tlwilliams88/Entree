@@ -110,6 +110,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 </div>
 </accordion-group>
+          
 </accordion>
 
 </div>
@@ -220,6 +221,15 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 </div>
 </div>
+      <div calls="col-sm-12"
+           ng-show="showSpecialtyFacet">
+          <h3>Specialty Catalogs</h3>
+          <input
+             type="checkbox"
+             id="unfi-checkbox"
+             ng-click="unfiCheckboxClick()">
+             <label for="unfi-checkbox">Natural and Organic (100)</label>
+      </div>
 </div>
 
 <!-- Search Results -->

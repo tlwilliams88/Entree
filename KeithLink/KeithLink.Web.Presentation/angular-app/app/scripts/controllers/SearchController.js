@@ -42,8 +42,14 @@ angular.module('bekApp')
     $scope.hideMobileFilters = true;
     if ($state.params.catalogType == "BEK") {
         $scope.pageTitle = "Product Catalog";
+        $scope.showSpecialtyFacet = true;
     } else {
-        $scope.pageTitle = "Specialty Catalog";
+        $scope.showSpecialtyFacet = false;
+        if ($state.params.catalogType == "UNFI"){
+            $scope.pageTitle = "Natural and Organic";
+        } else {
+            $scope.pageTitle = "Specialty Catalog";
+        } 
     }
 
     $scope.products = [];
@@ -248,6 +254,7 @@ angular.module('bekApp')
         $scope.loadingResults = false;
       });
     }
+        
 
     /*************
     FACETS
@@ -400,6 +407,10 @@ angular.module('bekApp')
       });
     };
 
+    $scope.unfiCheckboxClick = function () {
+        //change state to unfi
+        $state.go($state.current,{catalogType: "UNFI"}, {reload: true});
+    }
     // INIT
     loadProducts().then(refreshFacets);
 
