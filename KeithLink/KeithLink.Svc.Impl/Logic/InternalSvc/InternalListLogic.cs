@@ -1054,19 +1054,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                                                    .ToList();
             foreach (ListItemReportModel item in printModel.Items)
             {
-                string priceInfo = "";
+                StringBuilder priceInfo = new StringBuilder();
                 var itemInfo = itemHash[item.ItemNumber];
                 if (itemInfo.PackagePrice.Equals("0.00") == false)
                 {
-                    priceInfo += "$";
-                    priceInfo += itemInfo.PackagePrice;
-                    priceInfo += "/Pack";
-                    priceInfo += "-";
+                    priceInfo.Append("$");
+                    priceInfo.Append(itemInfo.PackagePrice);
+                    priceInfo.Append("/Pack");
+                    priceInfo.Append("-");
                 }
-                priceInfo += "$";
-                priceInfo += itemInfo.CasePrice;
-                priceInfo += "/Case";
-                item.Price = priceInfo;
+                priceInfo.Append("$");
+                priceInfo.Append(itemInfo.CasePrice);
+                priceInfo.Append("/Case");
+                item.Price = priceInfo.ToString();
                 item.Label = itemInfo.Label;
                 ItemHistory itemStats = itemStatistics.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
                 if (itemStats != null)

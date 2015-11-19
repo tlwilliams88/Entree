@@ -116,7 +116,7 @@
           <button
             class="btn-no-style"
             type="button"
-            ng-disabled="::!canRunReports"
+            ng-disabled="::!canRunReports || !canSeePrices"
             ui-sref="menu.reports"
             ng-class="{'is-selected': $state.includes('menu.reports')}" >
             <li>
@@ -124,7 +124,7 @@
               Reports
             </li>
           </button>
-            <a ng-if="::!canRunReports" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
+            <span ng-if="::!canRunReports || !canSeePrices" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -136,7 +136,7 @@
               Invoices
             </li>
           </button>
-            <a ng-if="::!canPayInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
+            <span ng-if="::!canPayInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -148,7 +148,7 @@
               My Lists
             </li>
           </button>
-            <a ng-if="::!canManageLists" tooltip="Create custom lists of items. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
+            <span ng-if="::!canManageLists" tooltip="Create custom lists of items. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"

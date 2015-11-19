@@ -19,9 +19,13 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
+using System.Collections.Generic;
+using KeithLink.Svc.Core.Models.Generated;
 
-namespace KeithLink.Svc.Windows.OrderService {
-    partial class OrderService : ServiceBase {
+namespace KeithLink.Svc.Windows.OrderService
+{
+    partial class OrderService : ServiceBase
+    {
 
         #region attributes
         private IContainer _diContainer;
@@ -32,6 +36,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         private ILifetimeScope _historyResponseScope;
         private ILifetimeScope _orderScope;
         private ILifetimeScope _queueScope;
+        private ILifetimeScope _checkLostOrdersScope;
 
         private static bool _allowOrderUpdateProcessing;
         private static bool _historyRequestProcessing;
@@ -40,6 +45,7 @@ namespace KeithLink.Svc.Windows.OrderService {
         private static bool _successfulHistoryConnection;
         private static bool _successfulOrderConnection;
         private static bool _silenceOrderUpdateMessages;
+        private static bool _checkLostOrdersProcessing;
 
         private static UInt16 _unsentCount;
 
@@ -48,15 +54,18 @@ namespace KeithLink.Svc.Windows.OrderService {
         private Timer _historyRequestTimer;
         private Timer _orderUpdateTimer;
         private Timer _queueTimer;
+        private Timer _checkLostOrdersTimer;
 
         const int TIMER_DURATION_TICK = 2000;
+        const int TIMER_DURATION_TICKMINUTE = 60000;
         const int TIMER_DURATION_START = 1000;
         const int TIMER_DURATION_STOP = -1;
         const int TIMER_DURATION_IMMEDIATE = 1;
         #endregion
 
         #region ctor
-        public OrderService(IContainer container) {
+        public OrderService(IContainer container)
+        {
             _diContainer = container;
 
             InitializeComponent();
@@ -75,18 +84,23 @@ namespace KeithLink.Svc.Windows.OrderService {
         #endregion
 
         #region methods
-        private bool CanOpenFile(string filePath) {
+        private bool CanOpenFile(string filePath)
+        {
             bool opened = false;
             int loopCnt = 0;
 
-            while (loopCnt < 30 && !opened) {
-                try {
+            while (loopCnt < 30 && !opened)
+            {
+                try
+                {
                     System.IO.FileStream myFile = System.IO.File.OpenWrite(filePath);
                     myFile.Close();
                     myFile.Dispose();
 
                     opened = true;
-                } catch {
+                }
+                catch
+                {
                     System.Threading.Thread.Sleep(1000);
                     loopCnt++;
                 }
@@ -95,7 +109,8 @@ namespace KeithLink.Svc.Windows.OrderService {
             return opened;
         }
 
-        private void HandleCancelledException(CancelledTransactionException ex) {
+        private void HandleCancelledException(CancelledTransactionException ex)
+        {
             StringBuilder msg = new StringBuilder();
 
             msg.AppendLine();
@@ -112,11 +127,16 @@ namespace KeithLink.Svc.Windows.OrderService {
             ExceptionEmail.Send(ex, msg.ToString());
         }
 
-        private void HandleEarlySocketException(Exception ex, bool historyConnection) {
-            if ((historyConnection && _successfulHistoryConnection) || (!historyConnection && _successfulOrderConnection)) {
-                if (historyConnection) {
+        private void HandleEarlySocketException(Exception ex, bool historyConnection)
+        {
+            if ((historyConnection && _successfulHistoryConnection) || (!historyConnection && _successfulOrderConnection))
+            {
+                if (historyConnection)
+                {
                     _successfulHistoryConnection = false;
-                } else {
+                }
+                else
+                {
                     _successfulOrderConnection = false;
                 }
 
@@ -138,7 +158,8 @@ namespace KeithLink.Svc.Windows.OrderService {
             System.Threading.Thread.Sleep(60000);
         }
 
-        private void HandleMissingOrderUpdateWatchPath() {
+        private void HandleMissingOrderUpdateWatchPath()
+        {
             StringBuilder addMsg = new StringBuilder();
             addMsg.Append("The OrderUpdateWatchPath is currently set to ");
             addMsg.Append(Configuration.OrderUpdateWatchPath);
@@ -152,7 +173,8 @@ namespace KeithLink.Svc.Windows.OrderService {
             ExceptionEmail.Send(new ApplicationException("Path specified by OrderUpdateWatchPath does not exist"), addMsg.ToString());
         }
 
-        private void HandleException(Exception ex) {
+        private void HandleException(Exception ex)
+        {
             StringBuilder msg = new StringBuilder();
 
             msg.AppendLine();
@@ -162,11 +184,16 @@ namespace KeithLink.Svc.Windows.OrderService {
             ExceptionEmail.Send(ex, msg.ToString());
         }
 
-        private void HandleSocketResponseException(Exception ex, bool historyConnection) {
-            if (((historyConnection && _successfulHistoryConnection) || (!historyConnection  && _successfulOrderConnection)) && _unsentCount == 5) {
-                if (historyConnection) {
+        private void HandleSocketResponseException(Exception ex, bool historyConnection)
+        {
+            if (((historyConnection && _successfulHistoryConnection) || (!historyConnection && _successfulOrderConnection)) && _unsentCount == 5)
+            {
+                if (historyConnection)
+                {
                     _successfulHistoryConnection = false;
-                } else {
+                }
+                else
+                {
                     _successfulOrderConnection = false;
                 }
 
@@ -182,7 +209,9 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                 _log.WriteErrorLog(msg.ToString());
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, msg.ToString());
-            } else {
+            }
+            else
+            {
                 _unsentCount++;
             }
         }
@@ -193,76 +222,101 @@ namespace KeithLink.Svc.Windows.OrderService {
             _confirmationThread.Start();
         }
 
-        private void InitializeHistoryRequestTimer() {
+        private void InitializeHistoryRequestTimer()
+        {
             TimerCallback cb = new TimerCallback(ProcessOrderHistoryRequestsTick);
             AutoResetEvent auto = new AutoResetEvent(false);
 
             _historyRequestTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
 
-        private void InitializeHistoryResponseThread() {
+        private void InitializeHistoryResponseThread()
+        {
             _historyResponseThread = new Thread(ProcessOrderHistoryListener);
             _historyResponseThread.Start();
         }
 
-        private void InitializeOrderUpdateTimer() {
+        private void InitializeOrderUpdateTimer()
+        {
             AutoResetEvent auto = new AutoResetEvent(true);
             TimerCallback cb = new TimerCallback(ProcessOrderUpdatesTick);
 
             _orderUpdateTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
 
-        private void InitializeQueueTimer() {
+        private void InitializeQueueTimer()
+        {
             AutoResetEvent auto = new AutoResetEvent(true);
             TimerCallback cb = new TimerCallback(ProcessQueueTick);
 
             _queueTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICK);
         }
 
-        protected override void OnStart(string[] args) {
-            _log.WriteInformationLog("Service starting");
+        private void InitializeCheckLostOrdersTimer()
+        {
+            AutoResetEvent auto = new AutoResetEvent(false);
+            TimerCallback cb = new TimerCallback(ProcessCheckLostOrdersMinuteTick);
 
-			InitializeConfirmationThread();
-			InitializeHistoryRequestTimer();
-			InitializeHistoryResponseThread();
-			InitializeOrderUpdateTimer();
-			InitializeQueueTimer();
+            _checkLostOrdersTimer = new Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE);
         }
 
-        protected override void OnStop() {
+        protected override void OnStart(string[] args)
+        {
+            _log.WriteInformationLog("Service starting");
+
+            InitializeConfirmationThread();
+            InitializeHistoryRequestTimer();
+            InitializeHistoryResponseThread();
+            InitializeOrderUpdateTimer();
+            InitializeQueueTimer();
+            InitializeCheckLostOrdersTimer();
+        }
+
+        protected override void OnStop()
+        {
             TerminateHistoryRequestTimer();
             TerminateOrderUpdateTimer();
             TerminateQueueTimer();
+            TerminateCheckLostOrdersTimer();
 
             _log.WriteInformationLog("Service stopping");
         }
 
-        private void ProcessConfirmations() {
-            try {
+        private void ProcessConfirmations()
+        {
+            try
+            {
 
-                using (_confirmationScope = _diContainer.BeginLifetimeScope()) {
+                using (_confirmationScope = _diContainer.BeginLifetimeScope())
+                {
                     IConfirmationLogic confirmationLogic = _confirmationScope.Resolve<IConfirmationLogic>();
 
                     confirmationLogic.ListenForMainFrameCalls();
                 }
             }
-            catch (Exception e) {
+            catch (Exception e)
+            {
                 string logMessage = "Processing failed receiving confirmation. Processing of confirmations will not continue. Please restart this service.";
-                
+
                 _log.WriteErrorLog(logMessage);
 
                 KeithLink.Common.Core.Email.ExceptionEmail.Send(e, logMessage);
             }
         }
 
-        private void ProcessOrderHistoryListener() {
-            try {
-                using (_historyResponseScope = _diContainer.BeginLifetimeScope()) {
+        private void ProcessOrderHistoryListener()
+        {
+            try
+            {
+                using (_historyResponseScope = _diContainer.BeginLifetimeScope())
+                {
                     IOrderHistoryLogic logic = _historyResponseScope.Resolve<IOrderHistoryLogic>();
 
                     logic.ListenForMainFrameCalls();
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 string logMessage = "Processing failed receiving order updates. Processing of order updates will not continue. Please restart this service.";
 
                 _log.WriteErrorLog(logMessage);
@@ -271,18 +325,24 @@ namespace KeithLink.Svc.Windows.OrderService {
             }
         }
 
-        private void ProcessOrderHistoryRequestsTick(object state) {
-            if (!_historyRequestProcessing) {
+        private void ProcessOrderHistoryRequestsTick(object state)
+        {
+            if (!_historyRequestProcessing)
+            {
                 _historyRequestProcessing = true;
 
-                try {
-                    if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5) {
-                        while (DateTime.Now.Hour < 5) {
+                try
+                {
+                    if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5)
+                    {
+                        while (DateTime.Now.Hour < 5)
+                        {
                             System.Threading.Thread.Sleep(60000);
                         }
                     }
 
-                    using (_historyRequestScope = _diContainer.BeginLifetimeScope()) {
+                    using (_historyRequestScope = _diContainer.BeginLifetimeScope())
+                    {
                         IOrderHistoryRequestLogic requestLogic = _historyRequestScope.Resolve<IOrderHistoryRequestLogic>();
 
                         requestLogic.ProcessRequests();
@@ -290,13 +350,21 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                     _successfulHistoryConnection = true;
                     _unsentCount = 0;
-                } catch (EarlySocketException earlyEx) {
+                }
+                catch (EarlySocketException earlyEx)
+                {
                     HandleEarlySocketException(earlyEx, true);
-                } catch (SocketResponseException responseEx) {
+                }
+                catch (SocketResponseException responseEx)
+                {
                     HandleSocketResponseException(responseEx, true);
-                } catch (CancelledTransactionException cancelledEx) {
+                }
+                catch (CancelledTransactionException cancelledEx)
+                {
                     HandleCancelledException(cancelledEx);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     _log.WriteErrorLog("Error processing order update requests", ex);
                     KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
                 }
@@ -305,88 +373,98 @@ namespace KeithLink.Svc.Windows.OrderService {
             }
         }
 
-        private void ProcessOrderUpdatesTick(object state) {
-            if (!_orderUpdateProcessing) {
+        private void ProcessOrderUpdatesTick(object state)
+        {
+            if (!_orderUpdateProcessing)
+            {
                 _orderUpdateProcessing = true;
 
-                try {
+                try
+                {
 
                     // if update path does not exist, send an email then suppress messages
                     // disallow processing here until the folder exists, but do not kill the service
                     // to keep other threads running
-                    if (Directory.Exists(Configuration.OrderUpdateWatchPath)) {
+                    if (Directory.Exists(Configuration.OrderUpdateWatchPath))
+                    {
                         _allowOrderUpdateProcessing = true;
                         _silenceOrderUpdateMessages = false;
-                    } else {
+                    }
+                    else
+                    {
                         _allowOrderUpdateProcessing = false;
 
-                        if (!_silenceOrderUpdateMessages) {
+                        if (!_silenceOrderUpdateMessages)
+                        {
                             HandleMissingOrderUpdateWatchPath();
 
                             _silenceOrderUpdateMessages = true;
                         }
                     }
 
-                    if (_allowOrderUpdateProcessing) {
+                    if (_allowOrderUpdateProcessing)
+                    {
                         string[] files = Directory.GetFiles(Configuration.OrderUpdateWatchPath);
                         _orderScope = _diContainer.BeginLifetimeScope();
-                        
+
                         IGenericQueueRepository repo = _orderScope.Resolve<IGenericQueueRepository>();
-						
-						System.Threading.Tasks.Parallel.ForEach(files, filePath =>
-						{
+
+                        System.Threading.Tasks.Parallel.ForEach(files, filePath =>
+                        {
                             IOrderHistoryLogic logic = _orderScope.Resolve<IOrderHistoryLogic>();
 
-							if (CanOpenFile(filePath))
-							{
-								var items = new System.Collections.Concurrent.BlockingCollection<string>();
-				
-								OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
-								System.Threading.Tasks.Parallel.ForEach(parsedFile.Files, file =>
-								{
+                            if (CanOpenFile(filePath))
+                            {
+                                var items = new System.Collections.Concurrent.BlockingCollection<string>();
 
-									// do not upload an order file with an invalid header
-									if (file.ValidHeader)
-									{
-										file.SenderApplicationName = Configuration.ApplicationName;
-										file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
+                                OrderHistoryFileReturn parsedFile = logic.ParseMainframeFile(filePath);
+                                System.Threading.Tasks.Parallel.ForEach(parsedFile.Files, file =>
+                                {
 
-										try
-										{
-											var jsonValue = JsonConvert.SerializeObject(file);
-											items.Add(jsonValue);
-											StringBuilder logMsg = new StringBuilder();
-											logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
-											logMsg.AppendLine();
-											logMsg.AppendLine(jsonValue);
+                                    // do not upload an order file with an invalid header
+                                    if (file.ValidHeader)
+                                    {
+                                        file.SenderApplicationName = Configuration.ApplicationName;
+                                        file.SenderProcessName = "Process Order History Updates From Mainframe (Flat File)";
 
-											_log.WriteInformationLog(logMsg.ToString());
+                                        try
+                                        {
+                                            var jsonValue = JsonConvert.SerializeObject(file);
+                                            items.Add(jsonValue);
+                                            StringBuilder logMsg = new StringBuilder();
+                                            logMsg.AppendLine(string.Format("Publishing order history to queue for message ({0}).", file.MessageId));
+                                            logMsg.AppendLine();
+                                            logMsg.AppendLine(jsonValue);
 
-											_silenceOrderUpdateMessages = false;
-										}
-										catch (Exception ex)
-										{
-											if (!_silenceOrderUpdateMessages)
-											{
-												HandleException(ex);
-												_silenceOrderUpdateMessages = true;
-												
-											}
-										}
-									}
-								});
+                                            _log.WriteInformationLog(logMsg.ToString());
 
-								if (items.Count > 0)
-									repo.BulkPublishToQueue(items.ToList(), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
-						
-								System.IO.File.Delete(filePath);
-							} // end if CanOpenFile
-						});
+                                            _silenceOrderUpdateMessages = false;
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            if (!_silenceOrderUpdateMessages)
+                                            {
+                                                HandleException(ex);
+                                                _silenceOrderUpdateMessages = true;
+
+                                            }
+                                        }
+                                    }
+                                });
+
+                                if (items.Count > 0)
+                                    repo.BulkPublishToQueue(items.ToList(), Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQExchangeHourlyUpdates);
+
+                                System.IO.File.Delete(filePath);
+                            } // end if CanOpenFile
+                        });
 
 
                         _orderScope.Dispose();
                     }
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     HandleException(ex);
                 }
 
@@ -394,23 +472,29 @@ namespace KeithLink.Svc.Windows.OrderService {
             }
         }
 
-        private void ProcessQueueTick(object state) {
-            if (!_orderQueueProcessing) {
+        private void ProcessQueueTick(object state)
+        {
+            if (!_orderQueueProcessing)
+            {
                 _orderQueueProcessing = true;
 
                 // do not process between 1 and 5
-                if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5) {
+                if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5)
+                {
                     _log.WriteInformationLog("Script stopped for processing window");
 
-                    while (DateTime.Now.Hour < 5) {
+                    while (DateTime.Now.Hour < 5)
+                    {
                         System.Threading.Thread.Sleep(60000);
                     }
 
                     _log.WriteInformationLog("Script started after processing window");
                 }
 
-                try {
-                    using (_queueScope = _diContainer.BeginLifetimeScope()) {
+                try
+                {
+                    using (_queueScope = _diContainer.BeginLifetimeScope())
+                    {
                         IOrderQueueLogic orderQueue = _queueScope.Resolve<IOrderQueueLogic>();
 
                         orderQueue.ProcessOrders();
@@ -418,13 +502,21 @@ namespace KeithLink.Svc.Windows.OrderService {
 
                     _successfulOrderConnection = true;
                     _unsentCount = 0;
-                } catch(EarlySocketException earlyEx){
+                }
+                catch (EarlySocketException earlyEx)
+                {
                     HandleEarlySocketException(earlyEx, false);
-                } catch(SocketResponseException responseEx){
+                }
+                catch (SocketResponseException responseEx)
+                {
                     HandleSocketResponseException(responseEx, false);
-                } catch(CancelledTransactionException cancelledEx){
+                }
+                catch (CancelledTransactionException cancelledEx)
+                {
                     HandleCancelledException(cancelledEx);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     _log.WriteErrorLog("Error processing orders", ex);
                     KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
                 }
@@ -433,35 +525,110 @@ namespace KeithLink.Svc.Windows.OrderService {
             }
         }
 
-        private void TerminateHistoryRequestTimer() {
-            if (_historyRequestTimer != null) {
+        private void ProcessCheckLostOrdersMinuteTick(object state)
+        {
+
+            if (!_checkLostOrdersProcessing)
+            {
+                _checkLostOrdersProcessing = true;
+
+                // do not process between 1 and 5
+                if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5)
+                {
+                    _log.WriteInformationLog("Script stopped for processing window");
+
+                    while (DateTime.Now.Hour < 5)
+                    {
+                        System.Threading.Thread.Sleep(60000);
+                    }
+
+                    _log.WriteInformationLog("Script started after processing window");
+                }
+
+                // only process at the top of the hour
+                if (DateTime.Now.Minute > 0)
+                {
+                    _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
+                    try
+                    {
+                        FoundationService.BEKFoundationServiceClient client = new FoundationService.BEKFoundationServiceClient();
+                        string subject;
+                        string body;
+
+                        subject = client.CheckForLostOrders(out body);
+
+                        KeithLink.Svc.Impl.Repository.Profile.CustomerRepository customerRepo = new Impl.Repository.Profile.CustomerRepository(_log, null, null, null, null);
+                        StringBuilder sbMsgBody = new StringBuilder();
+                        sbMsgBody.Append(body);
+
+                        if ((subject != null) && (subject.Length > 0) && (body != null) && (body.Length > 0))
+                        {
+                            _log.WriteErrorLog(subject + " " + body);
+                            KeithLink.Common.Core.Email.ExceptionEmail.Send(new Exception(subject), body, "BEK: " + subject);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.WriteErrorLog("Error in ProcessCheckLostOrdersMinuteTick", ex);
+                        KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
+                    }
+                }
+
+                _checkLostOrdersProcessing = false;
+            }
+        }
+
+        private void TerminateHistoryRequestTimer()
+        {
+            if (_historyRequestTimer != null)
+            {
                 _historyRequestTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
                 _historyRequestTimer.Dispose();
             }
 
-            if (_historyRequestScope != null) {
+            if (_historyRequestScope != null)
+            {
                 _historyRequestScope.Dispose();
             }
         }
 
-        private void TerminateOrderUpdateTimer() {
-            if (_orderUpdateTimer != null) {
+        private void TerminateOrderUpdateTimer()
+        {
+            if (_orderUpdateTimer != null)
+            {
                 _orderUpdateTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
             }
 
-            if (_orderScope != null) {
+            if (_orderScope != null)
+            {
                 _orderScope.Dispose();
             }
         }
 
-        private void TerminateQueueTimer() {
-            if (_queueTimer != null) {
+        private void TerminateQueueTimer()
+        {
+            if (_queueTimer != null)
+            {
                 _queueTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
             }
 
-            if (_queueScope != null) {
+            if (_queueScope != null)
+            {
                 _queueScope.Dispose();
             }
+        }
+
+        private void TerminateCheckLostOrdersTimer()
+        {
+            if (_checkLostOrdersTimer != null)
+            {
+                _checkLostOrdersTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
+            }
+
+            //if (_queueScope != null)
+            //{
+            //    _queueScope.Dispose();
+            //}
         }
 
         #endregion

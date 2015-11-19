@@ -402,7 +402,7 @@
               <th class="hidden-mobile-visible-print" ng-if="::(!selectedList.read_only)">
                   Each
               </th>
-              <th class="hidden-mobile-visible-print">
+              <th ng-if="canSeePrices" class="hidden-mobile-visible-print">
                   Price
               </th>
               <th class="hidden-mobile-visible-print sort-col-header" ng-if="::selectedList.permissions.canSeeParlevel" ng-click="sortList('parlevel',sort[0].order)">
@@ -504,7 +504,7 @@
                     <label for="each"></label>
                   </ng-form>
               </td>
-              <td ng-if="item.packageprice || item.caseprice" class="hidden-mobile-visible-print" >
+              <td ng-if="(item.packageprice || item.caseprice) && canSeePrices" class="hidden-mobile-visible-print" >
                 {{item.each ? item.packageprice : item.caseprice | currency}}
                 <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
               </td>
@@ -613,7 +613,7 @@
                       </ng-form>
                     </td>
                     </tr>
-                    <tr>
+                    <tr ng-if="canSeePrices">
                       <td>Price</td>
                       <td>
                         {{item.each ? item.packageprice : item.caseprice | currency}}
@@ -726,7 +726,7 @@
                 <label for="each"></label>
               </ng-form>
               </td>
-              <td ng-if="item.packageprice || item.caseprice" class="hidden-mobile-visible-print" >
+              <td ng-if="(item.packageprice || item.caseprice) && canSeePrices" class="hidden-mobile-visible-print" >
                 {{item.each ? item.packageprice : item.caseprice | currency}}
                 <span class="text-small" tooltip="Catch weight pricing" ng-if="::item.catchweight">LB</span>
               </td>

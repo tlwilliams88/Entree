@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.Text;
 using System.Web;
 
 namespace KeithLink.Svc.FoundationSvc.Interface
@@ -15,6 +16,9 @@ namespace KeithLink.Svc.FoundationSvc.Interface
             
 		[OperationContract]
         string SaveOrderAsChangeOrder(Guid userId, Guid cartId);
+
+        [OperationContract]
+        string CheckForLostOrders(out string msgBody);
 
         [OperationContract]
         void CleanUpChangeOrder(Guid userId, Guid cartId);
