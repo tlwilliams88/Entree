@@ -235,7 +235,7 @@
             <td class="hidden-xs hidden-sm">
               <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
             </td>
-            <td class="hidden-mobile-visible-print">
+            <td class="hidden-mobile-visible-print label-col">
               {{::item.label}}
             </td>
             <td ng-if="useParlevel" class="hidden-mobile">
@@ -341,7 +341,7 @@
                 </tr>
                 <tr>
                   <td>Label</td>
-                  <td>{{::item.label}}</td>
+                  <td class = "label-col">{{::item.label}}</td>
                 </tr>
                 <tr>
                   <td>Class</td>

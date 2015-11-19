@@ -580,8 +580,8 @@
                       <td ng-if="::(selectedList.permissions.canEditLabels)">
                         <div ng-hide="item.isEditing" class="form-control-group__input">
                           <div class="select-div bek-no-drag hidden-print">
-                            <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in labels">
-                              <option value="">Select A Label </option>
+                            <select name="" id="" ng-model-options="{ debounce: 1000}" ng-model="item.label" ng-options="label for label in labels" style="max-width:170px;">
+                              <option value="">Select A Label</option>
                             </select>
                           </div>
                           <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
@@ -601,7 +601,7 @@
                           <a ng-click="item.isEditing = false"><span class="large-icon text-red icon-cross"></span></a>
                         </ng-form>
                       </td>
-                      <td ng-if="::(!selectedList.permissions.canEditLabels)">
+                      <td class = "label-col" ng-if="::(!selectedList.permissions.canEditLabels)">
                         {{::item.label}}
                       </td>
                     </tr>
