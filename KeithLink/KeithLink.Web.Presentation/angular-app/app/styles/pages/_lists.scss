@@ -185,3 +185,22 @@
   width:100px;
   max-width:100px;
 }
+
+.dropdown{
+    width:150px;
+    border: 1px solid #cfcfcf;
+    height: auto;
+    border-radius: 5px;
+    padding:3px 4px 4px;
+    position: relative;
+    z-index: 0;
+    overflow:hidden;
+    }
+
+.dropdown select{
+    border: none;
+    background-color: transparent;
+    outline: none;
+    padding: 1px 0 0 5px;
+    width:165%;  
+    }
