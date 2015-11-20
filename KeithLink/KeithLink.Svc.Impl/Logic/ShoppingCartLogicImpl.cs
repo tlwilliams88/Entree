@@ -206,6 +206,7 @@ namespace KeithLink.Svc.Impl.Logic
 				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
 				if (prod != null)
 				{
+                    item.IsValid = true;
 					item.Name = prod.Name;
                     item.Pack = prod.Pack;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
