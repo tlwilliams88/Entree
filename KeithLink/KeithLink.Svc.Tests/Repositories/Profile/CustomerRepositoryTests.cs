@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         [TestMethod]
         public void GetCustomersByNameOrNumber()
         {
-            List<Customer> customerList = _repo.GetCustomersByNameOrNumber("024418");
+            List<Customer> customerList = _repo.GetCustomersByNameOrNumber("010001");
 
             Assert.IsTrue(customerList.Count > 0);
         }
