@@ -93,6 +93,7 @@ namespace KeithLink.Svc.FoundationSvc.Extensions {
                                 org.SetPropertyValue("RegionalIdDesc", dataReader.GetString("u_regional_id_desc"));
                                 org.SetPropertyValue("RegionalNumberDesc", dataReader.GetString("u_regional_number_desc"));
                                 org.SetPropertyValue("GeneralInfo.preferred_address", dataReader.GetString("u_preferred_address"));
+                                org.SetPropertyValue("CanViewPricing", dataReader.GetNullableBool("u_can_view_pricing"));
 
                                 response.CommerceEntities.Add(org);
                             }
