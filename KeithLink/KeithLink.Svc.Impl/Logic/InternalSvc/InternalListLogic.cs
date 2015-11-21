@@ -117,7 +117,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				Label = newItem.Label,
 				Par = newItem.ParLevel,
 				Position = position,
-				Quantity = newItem.Quantity
+				Quantity = newItem.Quantity,
+                CatalogId = newItem.CatalogId
 			};
 
 			list.Items.Add(item);
@@ -174,7 +175,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         Par = item.ParLevel, 
                         Each = !item.Each.Equals(null) ? item.Each : false,
  						Position = nextPosition,
-						Quantity = item.Quantity
+						Quantity = item.Quantity,
+                        CatalogId = item.CatalogId
                     });
 				nextPosition++;
 			}

@@ -351,7 +351,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
                 if (filteredList.Count > 0)
                 {
-                    return filteredList[0].ExternalBranchId;
+                    return filteredList[0].CatalogId;
                 }
                 else
                 {

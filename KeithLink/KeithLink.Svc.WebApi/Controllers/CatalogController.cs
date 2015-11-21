@@ -44,8 +44,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// </summary>
 		/// <returns>List of Categories</returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/categories")]
-        public CategoriesReturn GetCategories()
+        [ApiKeyedRoute("catalog/{catalogType}/categories")]
+        public CategoriesReturn GetCategories(string catalogType)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
             return _catalogLogic.GetCategories(0, 2000);

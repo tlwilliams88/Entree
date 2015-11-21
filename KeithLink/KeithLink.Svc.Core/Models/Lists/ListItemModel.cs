@@ -71,6 +71,9 @@ namespace KeithLink.Svc.Core.Models.Lists
         [DataMember( Name = "itemstatistics" )]
         public ItemHistoryModel ItemStatistics { get; set; }
 
+        [DataMember(Name = "catalog_id")]
+        public string CatalogId { get; set; }
+
         #endregion
 
         #region functions

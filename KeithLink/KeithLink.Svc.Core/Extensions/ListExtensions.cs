@@ -64,7 +64,8 @@ namespace KeithLink.Svc.Core.Extensions
 						FromDate = i.FromDate, 
 						ToDate = i.ToDate, 
 						Each = i.Each.Equals(null) ? false : (bool)i.Each ,
-						Quantity = i.Quantity
+						Quantity = i.Quantity,
+                        CatalogId = i.CatalogId
 					}).ToList()
 			};
 		}

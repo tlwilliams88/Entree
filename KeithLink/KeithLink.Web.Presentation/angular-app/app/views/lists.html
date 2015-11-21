@@ -417,7 +417,8 @@
                 <span favorite-icons class="bek-no-drag"></span>
               </td>
               <td class="bek-drag-handle">
-                <a class="bek-no-drag" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a>
+                <a class="bek-no-drag" ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item, catalogType: 'UNFI' })">{{::item.itemnumber}}</a>
+                <a class="bek-no-drag" ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a>
               </td>
               <td class="bek-drag-handle">
                 {{::item.name}}

@@ -133,7 +133,8 @@ angular.module('bekApp')
       },
       resolve: {
         item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
-          return ProductService.getProductDetails($stateParams.itemNumber, $stateParams.catalogType);
+          var catalogType = $stateParams.item.catalog_id.indexof('unfi') == 0 ? "UNFI" : $stateParams.catalogType
+          return ProductService.getProductDetails($stateParams.itemNumber, catalogType);
         }]
       }
     })

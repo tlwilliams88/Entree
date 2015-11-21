@@ -271,7 +271,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             {
                 ExportExternalCatalog item = new ExportExternalCatalog();
                 item.BekBranchId = externalCatalogItem.BekBranchId;
-                item.ExternalBranchId = externalCatalogItem.ExternalBranchId;
+                item.CatalogId = externalCatalogItem.ExternalBranchId;
                 item.Type = externalCatalogItem.Type.ToString();
                 externalCatalog.Add(item);
             }

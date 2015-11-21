@@ -17,7 +17,9 @@ namespace KeithLink.Svc.Core.Models.Configuration.EF
 
     public class ExternalCatalog : BaseEFModel
     {
+        [MaxLength(24)]
         public string BekBranchId { get; set; }
+        [MaxLength(24)]
         public string ExternalBranchId { get; set; }
         public ExternalCatalogType Type { get; set; }
     }

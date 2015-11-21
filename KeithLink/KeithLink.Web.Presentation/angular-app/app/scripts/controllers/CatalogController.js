@@ -33,7 +33,7 @@ angular.module('bekApp')
       $scope.recommendedItems = items;
     });
 
-    CategoryService.getCategories().then(function(data) {
+    CategoryService.getCategories($state.params.catalogType).then(function(data) {
       $scope.loadingCategories = false;
       $scope.categories = data.categories;
     });

@@ -269,7 +269,7 @@ angular.module('bekApp')
   };
 
   // PHONEGAP Feature
-  $scope.scanBarcode = function() {
+  $scope.scanBarcode = function() { // TODO: should this work with UNFI?
     cordova.plugins.barcodeScanner.scan(
       function (result) {
         var scannedText = result.text;

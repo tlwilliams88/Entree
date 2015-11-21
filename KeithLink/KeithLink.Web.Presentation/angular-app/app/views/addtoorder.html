@@ -189,7 +189,8 @@
               {{::item.position}}
             </td>
             <td>
-              <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+              <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{::item.itemnumber}}</a>
+              <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
             </td>
             <td>
               {{::item.name}}
@@ -379,7 +380,8 @@
         ng-class="{ odd : $odd, even: $even }">
 
         <td>
-          <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+          <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType : 'UNFI' })">{{::item.itemnumber}}</a>
+          <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
         </td>
         <td>{{item.name}}</td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>

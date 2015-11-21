@@ -40,7 +40,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 					decimal casePrice = 0;
 					decimal servingPerPack = 0;
 					decimal.TryParse(this.CasePrice, out casePrice);
-					decimal.TryParse(this.Nutritional.ServingsPerPack, out servingPerPack);
+					decimal.TryParse(this.Nutritional == null ? "" : this.Nutritional.ServingsPerPack, out servingPerPack);
 
 
 					if (casePrice == 0)

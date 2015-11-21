@@ -581,6 +581,14 @@
     <Compile Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.Designer.cs">
       <DependentUpon>201510231909196_2015-10-23-adding-external-catalog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.cs" />
+    <Compile Include="Repository\EF\Migrations\201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.Designer.cs">
+      <DependentUpon>201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.cs" />
+    <Compile Include="Repository\EF\Migrations\201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.Designer.cs">
+      <DependentUpon>201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1148,6 +1156,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.resx">
       <DependentUpon>201510231909196_2015-10-23-adding-external-catalog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.resx">
+      <DependentUpon>201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.resx">
+      <DependentUpon>201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
