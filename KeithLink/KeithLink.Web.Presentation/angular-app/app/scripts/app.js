@@ -59,8 +59,9 @@ angular
   // group multiple aysnc methods together to only run through one digest cycle
   $httpProvider.useApplyAsync(true);
  
-  $compileProvider.debugInfoEnabled(false);
- 
+  // Enable Angular debug information for everything but prod and QA
+  $compileProvider.debugInfoEnabled(ENV.enableDebugInfo);
+
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
 
@@ -177,11 +178,11 @@ angular
     size: 50,
     from: 0,
         filter: {
-        field: "mandatory",
-        value: "true",
+        field: 'mandatory',
+        value: 'true',
         filter:[
         {
-        field: "messagereadutc",
+        field: 'messageread',
         value: 'null'
         }
         ]

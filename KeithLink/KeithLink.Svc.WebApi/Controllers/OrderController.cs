@@ -173,7 +173,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 
 		/// <summary>
-		/// Request order history for customemr
+		/// Request order history for customer
 		/// </summary>
         [HttpPost]
         [ApiKeyedRoute("order/history")]

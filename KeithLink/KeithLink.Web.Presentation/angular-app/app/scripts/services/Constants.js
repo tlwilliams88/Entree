@@ -11,7 +11,11 @@ angular.module('bekApp')
       leadGenInfo: 'leadGenInfo',
       currentCustomer: 'currentCustomer',
       tempContext: 'tempContext',
-      tempBranch: 'tempBranch'
+      tempBranch: 'tempBranch',
+      lastList: 'lastList',
+      lastOrderList: 'lastOrderList',
+      pageSize: 'pageSize',
+      defaultSort: 'defaultSort'
     },
 
     offlineLocalStorage: {

@@ -1,6 +1,9 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Helpers;
+using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Events.EventArgs;
+using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
@@ -9,16 +12,22 @@ using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Models.SiteCatalog;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+
+using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Orders.History;
-using KeithLink.Svc.Core.Interface.Profile;
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,13 +36,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Collections.Concurrent;
-using Newtonsoft.Json;
-using KeithLink.Svc.Core.Models.Paging;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
-using KeithLink.Svc.Impl.Helpers;
-using KeithLink.Common.Core.Helpers;
-using KeithLink.Svc.Core.Enumerations;
+
 
 namespace KeithLink.Svc.Impl.Logic.Orders {
     public class OrderHistoryLogicImpl : IOrderHistoryLogic {

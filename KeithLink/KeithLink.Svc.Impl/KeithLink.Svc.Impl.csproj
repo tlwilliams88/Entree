@@ -67,6 +67,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Dev2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="adodb, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>False</EmbedInteropTypes>
@@ -231,9 +240,9 @@
     <Compile Include="Logic\BasketLogicImpl.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImpl.cs" />
     <Compile Include="Logic\DivisionLogicImpl.cs" />
-    <Compile Include="Logic\ETL\ElasticSearchCategoriesImportLogicImpl.cs" />
-    <Compile Include="Logic\ETL\ElasticSearchHouseBrandsImportLogicImpl.cs" />
-    <Compile Include="Logic\ETL\ElasticSearchItemImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearch\CategoriesImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearch\HouseBrandsImportLogicImpl.cs" />
+    <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
@@ -262,6 +271,7 @@
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
+    <Compile Include="Logic\Orders\NoOrderConverionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
@@ -270,6 +280,8 @@
     <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
+    <Compile Include="Logic\Profile\NoSettingsLogicImpl.cs" />
+    <Compile Include="Logic\Profile\SettingsLogicImpl.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\Reports\InventoryValuationReportLogicImpl.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
@@ -577,17 +589,21 @@
     <Compile Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.Designer.cs">
       <DependentUpon>201510152123307_resynchDB2015-10-15.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.cs" />
-    <Compile Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.Designer.cs">
-      <DependentUpon>201510231909196_2015-10-23-adding-external-catalog.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.cs" />
+    <Compile Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.Designer.cs">
+      <DependentUpon>201506261544525_Add Original Confirmation Number.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.cs" />
-    <Compile Include="Repository\EF\Migrations\201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.Designer.cs">
-      <DependentUpon>201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201507091952569_Add_Profile_Settings_Table.cs" />
+    <Compile Include="Repository\EF\Migrations\201507091952569_Add_Profile_Settings_Table.Designer.cs">
+      <DependentUpon>201507091952569_Add_Profile_Settings_Table.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\EF\Migrations\201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.cs" />
-    <Compile Include="Repository\EF\Migrations\201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.Designer.cs">
-      <DependentUpon>201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs" />
+    <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.Designer.cs">
+      <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.cs" />
+    <Compile Include="Repository\EF\Migrations\201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.Designer.cs">
+      <DependentUpon>201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -673,8 +689,10 @@
     <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\NoDsrServiceRepository.cs" />
+    <Compile Include="Repository\Profile\NoSettingsRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\NoPasswordResetServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
+    <Compile Include="Repository\Profile\SettingsRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />
     <Compile Include="Repository\Brands\BrandRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\BasketRepositoryImpl.cs" />
@@ -736,6 +754,9 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Caching.config" />
+    <None Include="Logic\Profile\UserProfileLogicImpl.cs.vsspell">
+      <DependentUpon>UserProfileLogicImpl.cs</DependentUpon>
+    </None>
     <None Include="Models\SiteCatalog\Schemas\PricingResponse.xsc">
       <DependentUpon>PricingResponse.xsd</DependentUpon>
     </None>
@@ -763,6 +784,8 @@
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.InventoryValuationModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.ShoppingCart.ShoppingCartItemReportModel.datasource" />
+    <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.ShoppingCart.ShoppingCartReportModel.datasource" />
     <None Include="Properties\DataSources\KeithLink.Svc.Core.Models.SiteCatalog.BranchSupportModel.datasource" />
     <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
     <None Include="Properties\Settings.settings">
@@ -911,7 +934,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ETL\" />
     <Folder Include="Repository\InternalSvc\" />
     <Folder Include="Schemas\" />
   </ItemGroup>
@@ -931,6 +953,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Reports\CartReport.rdlc" />
+    <EmbeddedResource Include="Reports\CartReport_Landscape.rdlc" />
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Reports\ListReport.rdlc" />
@@ -1154,14 +1178,17 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.resx">
       <DependentUpon>201510152123307_resynchDB2015-10-15.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201510231909196_2015-10-23-adding-external-catalog.resx">
-      <DependentUpon>201510231909196_2015-10-23-adding-external-catalog.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.resx">
+      <DependentUpon>201506261544525_Add Original Confirmation Number.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.resx">
-      <DependentUpon>201511201556130_2015-11-20_AddCatalogIdToListItemToSupportUnfi.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201507091952569_Add_Profile_Settings_Table.resx">
+      <DependentUpon>201507091952569_Add_Profile_Settings_Table.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.resx">
-      <DependentUpon>201511210324391_2015-11-20_ShortenExternalCatalogFieldNames.cs</DependentUpon>
+    <EmbeddedResource Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.resx">
+      <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.resx">
+      <DependentUpon>201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

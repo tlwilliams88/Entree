@@ -1,25 +1,25 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 
+using KeithLink.Svc.Core.Enumerations.Profile;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.Profile.EF;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 using KeithLink.Svc.WebApi.Models;
-using KeithLink.Svc.WebApi.Attribute;
+// using KeithLink.Svc.WebApi.Attribute;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
+using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Web.Http;
-using KeithLink.Svc.Core.Models.ModelExport;
-using KeithLink.Svc.Core.Interface.Configuration;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -35,19 +35,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IDsrAliasService _dsrAliasService;
 		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
+        private readonly com.benekeith.ProfileService.IProfileService _profileService;
 		
 		#endregion
 
 		#region ctor
 		public ProfileController(ICustomerContainerRepository customerRepo,
-								 IEventLogRepository logRepo,
-								 IUserProfileLogic profileLogic,
-								 IAvatarRepository avatarRepository,
-								 ICustomerDomainRepository customerADRepo,
-			                     IPasswordResetService passwordResetService,
-                                 IDsrAliasService dsrAliasService,
-								IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
-			IExportSettingServiceRepository exportSettingRepository)
+                                IEventLogRepository logRepo,
+                                IUserProfileLogic profileLogic,
+                                IAvatarRepository avatarRepository,
+                                ICustomerDomainRepository customerADRepo,
+                                IPasswordResetService passwordResetService,
+                                IDsrAliasService dsrAliasService,
+                                IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
+                                IExportSettingServiceRepository exportSettingRepository, com.benekeith.ProfileService.IProfileService profileService )
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -59,6 +60,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             _dsrAliasService = dsrAliasService;
 			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
 			_exportSettingRepository = exportSettingRepository;
+            _profileService = profileService;
 		}
 		#endregion
 
@@ -118,6 +120,16 @@ namespace KeithLink.Svc.WebApi.Controllers
                 } else {
                     retVal.SuccessResponse = _profileLogic.CreateGuestUserAndProfile(this.AuthenticatedUser, guestInfo.Email, guestInfo.Password, guestInfo.BranchId);
                 }
+
+                MarketingPreferenceModel model = new MarketingPreferenceModel(){
+                    Email = guestInfo.Email,
+                    BranchId = guestInfo.BranchId,
+                    CurrentCustomer = guestInfo.ExistingCustomer,
+                    LearnMore = guestInfo.MarketingFlag,
+                    RegisteredOn = DateTime.Now
+                };
+
+                _marketingPreferencesServicesRepository.CreateMarketingPref(model);
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
 
@@ -130,7 +142,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             return retVal;
         }
-		/// <summary>
+
+        /// <summary>
 		/// Create guest and assign a temporary password
 		/// </summary>
 		/// <param name="guestInfo">Guest</param>
@@ -174,8 +187,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 			{
 				UserProfileReturn retVal = new UserProfileReturn();
 				retVal.UserProfiles.Add(this.AuthenticatedUser);
-                retVal.UserProfiles.First().DefaultCustomer = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results != null ? _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty).Results.FirstOrDefault() : null;
-				return retVal;
+
+                PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);
+
+                if (customers.Results == null ) {
+                    retVal.UserProfiles.First().DefaultCustomer = null;
+                } else {
+                    retVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
+                }
+
+                return retVal;
 			}
 			else
 			{
@@ -536,13 +557,18 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[Authorize]
         //[HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
-		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", [FromUri] string terms = "")
-		{
-			if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field))
-			{
+		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", 
+                                                                                    [FromUri] string terms = "", [FromUri] string type = "1") {
+			if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field)) {
 				paging.Sort = new List<SortInfo>() { sort };
 			}
-			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account);
+
+            int typeVal;
+            if (!int.TryParse(type, out typeVal)) {
+                typeVal = 1;
+            }
+
+			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType) typeVal);
 		}
 
 		/// <summary>
@@ -1013,7 +1039,6 @@ namespace KeithLink.Svc.WebApi.Controllers
             return retVal;
         }
 
-
 		/// <summary>
 		/// 
 		/// </summary>
@@ -1027,7 +1052,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
 		}
-
 
 		// <summary>
 		/// Export marketing info to CSV, TAB, or Excel
@@ -1057,6 +1081,77 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
 		}
 
-        #endregion
+
+        /// <summary>
+        /// Get a list of settings for a user
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute( "profile/settings" )]
+        public OperationReturnModel<List<SettingsModelReturn>> GetProfileSettings() {
+            OperationReturnModel<List<SettingsModelReturn> > returnValue = new OperationReturnModel<List<SettingsModelReturn>>() { SuccessResponse = null };
+
+            try {
+                returnValue.SuccessResponse = _profileService.ReadProfileSettings( AuthenticatedUser.UserId ).ToList<SettingsModelReturn>();
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = string.Format( "Could not retrieve profile settings for specific user: {0}", AuthenticatedUser.UserId );
+                _log.WriteErrorLog( returnValue.ErrorMessage, ex);
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Create or update profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute( "profile/settings" )]
+        public OperationReturnModel<bool> CreateOrUpdateProfileSettings( SettingsModel settings ) {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            // Set the userid
+            settings.UserId = Guid.Parse(AuthenticatedUser.UserId.ToString());
+
+            try {
+                _profileService.SaveProfileSettings( settings );
+                returnValue.SuccessResponse = true;
+            } catch (Exception ex) {
+                returnValue.ErrorMessage = string.Format( "Error saving profile settings for user: {0}", ex );
+                _log.WriteErrorLog( returnValue.ErrorMessage, ex );
+            }
+
+            return returnValue;
+        }
+
+
+        /// <summary>
+        /// Delete profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
+	    [HttpDelete]
+	    [ApiKeyedRoute("profile/settings")]
+	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings)
+	    {
+            OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
+
+            settings.UserId = AuthenticatedUser.UserId;
+
+	        try
+	        {
+	            _profileService.DeleteProfileSetting(settings);
+                returnValue.SuccessResponse = true;
+	    
+	        }
+	        catch (Exception ex)
+	        {
+	            returnValue .ErrorMessage = String.Format("Error deleting profile settings {0} for userId {1}", settings.Key,settings.UserId);
+	        }
+
+	        return returnValue;
+	    }
+	    #endregion
 	}
 }

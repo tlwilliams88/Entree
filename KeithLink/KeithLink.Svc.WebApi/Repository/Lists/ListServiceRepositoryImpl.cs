@@ -44,6 +44,11 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			serviceClient.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
 		}
+
+        public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel) {
+            var result = serviceClient.CopyList(copyListModel);
+            return result == null ? new List<ListCopyResultModel>() : result.ToList();
+        }
         
         public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
 		{
@@ -54,8 +59,12 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			serviceClient.DeleteItem(Id);
 		}
-		
-		public void DeleteItems(List<long> itemIds)
+
+        public void DeleteItemNumberFromList(long Id, string itemNumber) {
+            serviceClient.DeleteItemNumberFromList(Id, itemNumber);
+        }
+        
+        public void DeleteItems(List<long> itemIds)
 		{
 			foreach (var Id in itemIds)
 				serviceClient.DeleteItem(Id);
@@ -76,8 +85,24 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			foreach (var Id in listIds)
 				serviceClient.DeleteList(Id);
 		}
+
+        public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+            var list = serviceClient.GetBarcodeForList(user, catalogInfo, Id);
+
+            if (list == null)
+                return null;
+            return list.ToList();
+        }
+
+        public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers) {
+            var list = serviceClient.ItemsInHistoryList(catalogInfo, itemNumbers.ToArray());
+
+            if (list == null)
+                return new List<InHistoryReturnModel>();
+            return list.ToList();
+        }
         
-		public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
+        public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			return serviceClient.ReadFavorites(user, catalogInfo).ToList();
 		}
@@ -101,11 +126,19 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		{
 			return serviceClient.ReadNotes(user, catalogInfo).ToList();
 		}
+
+        public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging) {
+            return serviceClient.ReadPagedList(user, catalogInfo, Id, paging);
+        }
 		
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			return serviceClient.ReadRecent(user, catalogInfo).ToList();
 		}
+
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+            return serviceClient.ReadRecommendedItemsList(catalogInfo).ToList();
+        }
 
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
             return serviceClient.ReadReminders(user, catalogInfo).ToList();
@@ -120,6 +153,10 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 			return list.ToList();
 		}
 
+        public void ShareList(ListCopyShareModel shareListModel) {
+            serviceClient.ShareList(shareListModel);
+        } 
+
 		public void UpdateItem(ListItemModel item)
 		{
 			serviceClient.UpdateItem(item);
@@ -128,57 +165,7 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 		public void UpdateList(ListModel userList)
 		{
 			serviceClient.UpdateList(userList);
-		}
-
-		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
-		{
-			var result = serviceClient.CopyList(copyListModel);
-			return result == null ? new List<ListCopyResultModel>() : result.ToList();
-		}
-
-		public void ShareList(ListCopyShareModel shareListModel)
-		{
-			serviceClient.ShareList(shareListModel);
-		} 
-		
+		}		
 		#endregion
-
-
-		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
-		{
-			return serviceClient.ReadRecommendedItemsList(catalogInfo).ToList();
-		}
-
-
-		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
-		{
-			var list = serviceClient.GetBarcodeForList(user, catalogInfo, Id);
-
-			if (list == null)
-				return null;
-			return list.ToList();
-		}
-
-
-		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
-		{
-			return serviceClient.ReadPagedList(user, catalogInfo, Id, paging);
-		}
-
-
-		public void DeleteItemNumberFromList(long Id, string itemNumber)
-		{
-			serviceClient.DeleteItemNumberFromList(Id, itemNumber);
-		}
-
-
-		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
-		{
-			var list = serviceClient.ItemsInHistoryList(catalogInfo, itemNumbers.ToArray());
-
-			if (list == null)
-				return new List<InHistoryReturnModel>();
-			return list.ToList();
-		}
 	}
 }

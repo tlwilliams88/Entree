@@ -7,6 +7,7 @@ using System.Text;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.InternalSvc.Interfaces;
 
 namespace KeithLink.Svc.InternalSvc {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "DsrService" in code, svc and config file together.

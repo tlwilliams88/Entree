@@ -4,6 +4,19 @@ angular.module('bekApp')
 .controller('CustomerAssignmentModalController', ['$scope', '$filter', '$modalInstance', 'CustomerPagingModel', 'customerGroupId', 'selectedCustomers',
   function ($scope, $filter, $modalInstance, CustomerPagingModel, customerGroupId, selectedCustomers) {
 
+      $scope.searchOptions = [{
+    text: 'Customer',
+    value: '1'
+  },{
+    text: 'Regional Account',
+    value: '3'
+  },{
+    text: 'National Account',
+    value: '2'
+  }];
+  $scope.search = {};
+  $scope.search.field = $scope.searchOptions[0].value;
+
   function findSelectedCustomers(customers) {
     var unselectedCustomers = [];
     // check if customer is selected
@@ -23,9 +36,10 @@ angular.module('bekApp')
   }
 
   function setCustomers(data) {
-    $scope.customers = findSelectedCustomers(data.results);
+    $scope.customers = findSelectedCustomers(data.results);    
     $scope.totalCustomers = data.totalResults;
     setSelected();  
+
   }
 
   function setSelected(){
@@ -63,6 +77,7 @@ angular.module('bekApp')
   }
   function stopLoading() {
     $scope.loadingCustomers = false;
+    if($scope.customers.length <30){$scope.infiniteScrollLoadMore();}
   }
 
   $scope.selectedCount = 0;
@@ -140,8 +155,8 @@ angular.module('bekApp')
     updateStoredCustomers(customer);
   };
 
-  $scope.searchCustomers = function (searchTerm) {
-    customerPagingModel.filterCustomers(searchTerm);
+  $scope.searchCustomers = function (searchTerm, type) {
+    customerPagingModel.filterCustomers(searchTerm, type);
     $scope.allAvailableSelected = false;
   };
 

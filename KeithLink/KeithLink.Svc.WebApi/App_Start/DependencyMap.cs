@@ -102,7 +102,8 @@ namespace KeithLink.Svc.WebApi
 			#endif
 			
             builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
-            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<ISocketConnectionRepository>();
+            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
+            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
             builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
             
 			builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
@@ -159,11 +160,20 @@ namespace KeithLink.Svc.WebApi
 
 			builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
 
+
+            // Profile Settings
+            builder.RegisterType<SettingsLogicImpl>().As <ISettingsLogicImpl>();
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+
             // Build the container.
             var container = builder.Build();
 
-            // Create the depenedency resolver.
+            // Create the dependency resolver.
             var resolver = new AutofacWebApiDependencyResolver(container);
+
+
             return resolver;
         }
     }

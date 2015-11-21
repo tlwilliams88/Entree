@@ -25,7 +25,14 @@ namespace KeithLink.Svc.Core.Interface.ETL
         DataTable ReadDsrImages();
         void ProcessContractItems();
 		void ProcessInvoices();
-        void ProcessItemHistoryData(int numDays);
+        void ProcessItemHistoryData(int numWeeks);
 		void ProcessWorksheetItems();
+        DataTable ExecuteProfileObjectQueryReturn(string query);
+        bool ExecuteProfileObjectQuery(string query);
+        void ImportCustomersToCS();
+
+		DataTable ReadUNFIItems();
+		List<string> ReadDistinctUNFIWarehouses();
+		DataTable ReadUNFIItems(string warehouse);
     }
 }

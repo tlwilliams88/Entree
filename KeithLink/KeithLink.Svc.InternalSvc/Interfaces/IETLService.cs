@@ -12,18 +12,18 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
     public interface IETLService
     {
         [OperationContract]
-        bool ProcessETLData();
-        [OperationContract]
         bool ProcessCatalogData();
         [OperationContract]
         bool ProcessCustomerData();
         [OperationContract]
         bool ProcessCustomerItemHistory();
         [OperationContract]
-        bool ProcessInvoiceData();
-        [OperationContract]
         bool ProcessContractAndWorksheetData();
 		[OperationContract]
 		bool ProcessElasticSearchData();
+		[OperationContract]
+		bool ProcessUNFIElasticSearchData();
+		[OperationContract]
+		bool ProcessUNFICatalogData();
     }
 }

@@ -1,28 +1,41 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using KeithLink.Common.Core.AuditLog;
+using KeithLink.Common.Core.Extensions;
+
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
+
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.History;
+using KeithLink.Svc.Core.Extensions.ShoppingCart;
+
+using KeithLink.Svc.Core.Helpers;
+
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+
 using CS = KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
+// Core
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.AuditLog;
+
+
 
 namespace KeithLink.Svc.Impl.Logic
 {
@@ -105,16 +118,46 @@ namespace KeithLink.Svc.Impl.Logic
 			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
 		}
 
-		public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
-		{
-			//var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
-			
-			//MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
-			//cart.Active = true;
-			//basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
-		}
+        public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
+        {
+            //Create a shoppingcart model and pass to the existing createcart method
+            var shoppingCart = new ShoppingCart();
+            shoppingCart.Items = new List<ShoppingCartItem>();
+            shoppingCart.BranchId = catalogInfo.BranchId;
+            shoppingCart.Name = string.Format("Quick Add - {0} - {1} {2}", catalogInfo.CustomerId, DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
 
-		
+            var itemErrorMessage = new StringBuilder();
+
+            foreach (var item in items)
+            {
+                if (item == null || string.IsNullOrEmpty(item.ItemNumber))
+                    continue;
+
+                //Verify they have access to item, if the item is invalid, log then return error
+                var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user, catalogInfo.BranchId);
+
+                if (prod == null)
+                    itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);
+                else
+                {
+                    shoppingCart.Items.Add(new ShoppingCartItem()
+                    {
+                        ItemNumber = item.ItemNumber,
+                        Each = item.Each,
+                        Quantity = item.Quantity
+                    }
+                    );
+                }
+
+            }
+
+            if (itemErrorMessage.Length > 0)
+                return new QuickAddReturnModel() { Success = false, ErrorMessage = itemErrorMessage.ToString() };
+
+            return new QuickAddReturnModel() { Success = true, CartId = CreateCart(user, catalogInfo, shoppingCart) };
+
+        }
+
         public void DeleteCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
@@ -145,7 +188,7 @@ namespace KeithLink.Svc.Impl.Logic
 			basketRepository.DeleteItem(basket.UserId.ToGuid(), cartId, itemId);
 		}
         
-		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes)
+		private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes = null)
 		{
 			if (cart.Items == null)
 				return;
@@ -180,6 +223,8 @@ namespace KeithLink.Svc.Impl.Logic
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional == null ? "" : prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
+                    item.CategoryId = prod.CategoryId;
+                    item.CategoryName = prod.CategoryName;
 					item.ReplacedItem = prod.ReplacedItem;
 					item.ReplacementItem = prod.ReplacementItem;
 					item.NonStock = prod.NonStock;
@@ -195,7 +240,7 @@ namespace KeithLink.Svc.Impl.Logic
 					item.CasePrice = price.CasePrice.ToString();
 
 				}
-
+                
 				item.Notes = notesHash.ContainsKey(item.ItemNumber) ? notesHash[item.ItemNumber].Notes : null;
 			});			
 			
@@ -245,6 +290,16 @@ namespace KeithLink.Svc.Impl.Logic
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
 					LookupProductDetails(user, catalogInfo, list, notes);
+
+                    list.ItemCount = list.Items.Count;
+
+                    foreach (var item in list.Items) {
+                        int qty = (int)item.Quantity;
+                        int pack = 1;
+                        int.TryParse(item.Pack, out pack);
+
+                        list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                    }
 				});
 				return returnCart;
 			}
@@ -260,8 +315,55 @@ namespace KeithLink.Svc.Impl.Logic
 			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
+
+            cart.ItemCount = cart.Items.Count;
+
+            foreach (var item in cart.Items) {
+                int qty = (int)item.Quantity;
+                int pack = 1;
+                int.TryParse(item.Pack, out pack);
+
+                cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+            }
+
 			return cart;
 		}
+
+        /// <summary>
+        /// Combines a list and cart for report pdf printing
+        /// </summary>
+        /// <param name="user"></param>
+        /// <param name="context"></param>
+        /// <param name="cartId"></param>
+        /// <param name="listId"></param>
+        /// <param name="paging"></param>
+        /// <returns></returns>
+        public ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext context, Guid cartId, long listId, PrintListModel options ) {
+            ShoppingCart cart = ReadCart(user, context, cartId);
+            PagedListModel list = listServiceRepository.ReadPagedList( user, context, listId, PagingHelper.BuildPagingFilter(options).Paging );
+
+            if (cart == null || list == null)
+                return null;
+            
+            List<ShoppingCartItemReportModel> cartReportItems = cart.Items.ToReportModel();
+            List<ShoppingCartItemReportModel> clonedCartReportItems = cartReportItems.ConvertAll(i => i);
+            List<ShoppingCartItemReportModel> listReportItems = list.ToShoppingCartItemReportList();
+             
+            clonedCartReportItems.ForEach(x => {
+                ShoppingCartItemReportModel item = listReportItems.Where( i => i.ItemNumber.Equals( x.ItemNumber ) ).FirstOrDefault();
+                if (item != null) {
+                    item.Category = x.Category;
+                    //item.Label = x.Label;
+                    item.Quantity = x.Quantity;
+                    item.Each = x.Each;
+                    item.ExtPrice = x.ExtPrice;
+
+                    cartReportItems.Remove( cartReportItems.Where(p => p.ItemNumber.Equals(x.ItemNumber)).First() );
+                }
+            });
+
+            return new ShoppingCartReportModel() { CartName = cart.Name, ListName = list.Name, CartItems = cartReportItems, ListItems = listReportItems };
+        }
         
         public List<NewOrderReturn> SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{
@@ -338,6 +440,14 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return returnOrders; //Return actual order number
 		}
+
+        public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId) {
+            //var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
+
+            //MarkCurrentActiveCartAsInactive(user, catalogInfo, catalogInfo.BranchId.ToLower());
+            //cart.Active = true;
+            //basketRepository.CreateOrUpdateBasket(cart.UserId.ToGuid(), cart.BranchId, cart, cart.LineItems);
+        }
         
 		private ShoppingCart ToShoppingCart(CS.Basket basket, UserActiveCartModel activeCart)
 		{
@@ -357,6 +467,7 @@ namespace KeithLink.Svc.Impl.Logic
 					Notes = l.Notes,
 					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
 					Each = l.Each.HasValue ? l.Each.Value : false,
+                    Label = l.Label,
 					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
                     CatalogId = l.CatalogName
 				}).ToList()
@@ -386,6 +497,8 @@ namespace KeithLink.Svc.Impl.Logic
 				foreach (var item in cart.Items)
 				{
 					var existingItem = updateCart.LineItems.Where(l => l.ProductId.Equals(item.ItemNumber));
+
+                    // Commenting on this mystery, I believe it is for quick add items
 					if (existingItem.Any() && item.CartItemId == Guid.Empty)
 					{
 						existingItem.First().Quantity += item.Quantity;
@@ -440,7 +553,7 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				var batch = productsToValidate.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
 
-				var tempProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
+				var tempProducts = catalogLogic.GetProductsByIdsWithPricing(catalogInfo, batch);
 
 				products.Products.AddRange(tempProducts.Products);
 				totalProcessed += 50;
@@ -458,10 +571,22 @@ namespace KeithLink.Svc.Impl.Logic
 					results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.InvalidItemNumber });
 				else
 				{
-					if(item.Each && product.CaseOnly)
-						results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
-					else
-						results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
+                    if (item.Each) {
+                        if (product.CaseOnly) {
+						    results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                        } else if (product.PackagePriceNumeric > 0) {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
+                        } else {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.EachNotAllowed });
+                        }
+                    } else {
+                        if (product.CasePriceNumeric > 0) {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = true });
+                        } else {
+                            results.Add(new ItemValidationResultModel() { ItemNumber = item.ItemNumber, Valid = false, Reason = InvalidReason.InvalidItemNumber });
+                        }
+
+                    }
 				}				
 			}
 
@@ -469,46 +594,5 @@ namespace KeithLink.Svc.Impl.Logic
 		}
 
         #endregion
-
-
-		public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
-		{
-			//Create a shoppingcart model and pass to the existing createcart method
-			var shoppingCart = new ShoppingCart();
-			shoppingCart.Items = new List<ShoppingCartItem>();
-			shoppingCart.BranchId = catalogInfo.BranchId;
-			shoppingCart.Name = string.Format("Quick Add - {0} - {1} {2}", catalogInfo.CustomerId, DateTime.Now.ToShortDateString(), DateTime.Now.ToShortTimeString());
-
-			var itemErrorMessage = new StringBuilder();
-            
-			foreach (var item in items)
-			{
-				if (item == null || string.IsNullOrEmpty(item.ItemNumber))
-					continue;
-
-				//Verify they have access to item, if the item is invalid, log then return error
-				var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user, catalogInfo.BranchId);
-
-				if (prod == null)
-					itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);
-				else
-				{
-					shoppingCart.Items.Add(new ShoppingCartItem()
-					{
-						ItemNumber = item.ItemNumber,
-						Each = item.Each,
-						Quantity = item.Quantity
-					}
-					);
-				}
-
-			}
-						
-			if (itemErrorMessage.Length > 0)
-				return new QuickAddReturnModel() { Success = false, ErrorMessage = itemErrorMessage.ToString() };
-
-			return new QuickAddReturnModel() { Success = true, CartId = CreateCart(user, catalogInfo, shoppingCart) };
-
-		}
 	}
 }

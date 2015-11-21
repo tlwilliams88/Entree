@@ -152,13 +152,8 @@
   }
 }
 
-@media (min-width: $screen-md-min) {
-  // .list-form {
-  //   // max-height: 523px;
-  //   height: 523px;
-  //   overflow-y: auto;
-  //   overflow-x: auto;
-  // }
+.table-label{
+  top:25px;
 }
 
 @media (max-width: $screen-sm-max) {
@@ -172,4 +167,10 @@
     right: 10px; 
     top: 155px;
   }
+}
+
+@media (min-width: 1400px) {
+.full-width-mobile{
+  max-width:100px;
+}
 }

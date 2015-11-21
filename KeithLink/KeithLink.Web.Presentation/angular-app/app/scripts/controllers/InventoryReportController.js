@@ -8,13 +8,13 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$q', '$modal', 'reports', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $q, $modal, reports, ProductService, PricingService, ListService, List) {
+  .controller('InventoryReportController', ['$scope', '$q', '$modal', 'toaster', 'reports', 'ProductService', 'PricingService', 'ListService', 'List',
+    function($scope, $q, $modal, toaster, reports, ProductService, PricingService, ListService, List) {
 
       $scope.subtotal = 0;
       $scope.sortField = 'position';
       $scope.sortDescending = false;
-
+      $scope.confirmQuantity = ListService.confirmQuantity;
       $scope.listsLoading = true;
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;
@@ -133,15 +133,16 @@ angular.module('bekApp')
         if (report.listid) {
           promise = List.update({}, report).$promise;
         } else {
-          promise = List.save({ type: 'InventoryValuation' }, report);
+          promise = List.save({ type: 'InventoryValuation' }, report).$promise;
         }
 
         promise.then(function(response) {
+          $scope.report.listid = response.listitemid;
           $scope.inventoryForm.$setPristine();
           deletedItems = [];
-          $scope.displayMessage('success', 'Successfully saved report.');
+          toaster.pop('success', 'Successfully saved report.');
         }, function() {
-          $scope.displayMessage('error', 'Error saving report.');
+          toaster.pop('error', 'Error saving report.');
         });
       };
 
@@ -154,12 +155,22 @@ angular.module('bekApp')
           watch();
         });
 
-        List.delete({
+        $scope.successMessage = '';
+        $scope.errorMessage = '';
+        $scope.subtotal = 0;
+        if(!listId){
+            $scope.report = {};
+            $scope.report.items = [];
+        }
+        else{
+          List.delete({
             listId: listId
           }).$promise.then(function() {
             $scope.report = {};
             $scope.report.items = [];
           });
+        }
+
       };
 
       $scope.openExportModal = function() {

@@ -38,6 +38,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="caseonly" type="xs:boolean" />
       <xs:element minOccurs="0" name="caseprice" nillable="true" type="xs:string">
         <xs:annotation>
           <xs:appinfo>
@@ -190,6 +191,7 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="temp_zone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="unitprice" type="xs:decimal" />
       <xs:element minOccurs="0" name="upc" nillable="true" type="xs:string">
         <xs:annotation>
           <xs:appinfo>

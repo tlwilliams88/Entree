@@ -124,6 +124,10 @@ namespace KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice {
 			return this._dbContext.Invoices;
 		}
 
+        public IEnumerable<Core.Models.OnlinePayments.Invoice.EF.InvoiceHeader> ReadAllHeaders() {
+            return this._dbContext.InvoiceHeaders;
+        }
+
 		#endregion
 
 

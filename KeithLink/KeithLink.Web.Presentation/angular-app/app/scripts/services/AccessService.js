@@ -109,13 +109,17 @@ angular.module('bekApp')
     },
 
     isInternalAccountAdminUser: function() {
+      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser()) );
+    },
+
+    isInternalUser: function() {
       return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() || isMarketing() ) );
     },
 
     // PRIVILEDGES
 
     canBrowseCatalog: function() {
-      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() || isGuest() );
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() || isMarketing() || isGuest() );
     },
 
     canSeePrices: function() {
@@ -144,6 +148,14 @@ angular.module('bekApp')
 
     canGrantAccessToOtherServices: function() {
       return ( isSysAdmin() || isKbitAdmin() );
+    },
+	
+	  canGrantAccessToKbit: function() {
+      return ( isSysAdmin() || isKbitAdmin() || isBranchManager() );
+    },
+	
+	  canGrantAccessToEmenuManage: function() {
+      return ( isSysAdmin() );
     },
 
     canViewCustomerGroups: function() {
@@ -175,11 +187,16 @@ angular.module('bekApp')
     },
 
     canViewMarketing: function() {
-      return ( isSysAdmin() || isBranchManager() || isMarketing() );
+      return ( isSysAdmin() || isMarketing() );
     },
 
     isDemo: function() {
       return isDemo();
+    },
+
+    //used primarily for Inventory Valuation and Item Usage Reports.  KBIT access is handled differently.  
+    canRunReports: function() {
+      return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     }
 
   };

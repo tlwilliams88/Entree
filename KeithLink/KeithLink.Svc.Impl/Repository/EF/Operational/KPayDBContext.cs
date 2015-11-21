@@ -115,6 +115,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             modelBuilder.Entity<Invoice>().Property(x => x.ItemSequence).HasColumnType("SMALLINT");
             modelBuilder.Entity<Invoice>().Property(x => x.InvoiceNumber).HasColumnType("VARCHAR");
 
+            modelBuilder.Entity<InvoiceHeader>().ToTable("vw_GetInvoiceHeadersWithCounts");
 
             modelBuilder.Entity<LastConfirmation>()
                 .ToTable("LastConfirmation");
@@ -178,6 +179,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Dsr> DSRs { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
+        public DbSet<InvoiceHeader> InvoiceHeaders { get; set; }
         public DbSet<PaymentTransaction> PaymentTransactions { get; set; }
         public DbSet<ProcessLog> ProcessLogs { get; set; }
         public DbSet<State> States { get; set; }

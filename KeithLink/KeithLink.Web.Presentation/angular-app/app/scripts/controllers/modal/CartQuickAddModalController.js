@@ -21,19 +21,24 @@ angular.module('bekApp')
 
   function getRowsWithQuantity(items) {
     return $filter('filter')( items, function(item) {
-      return item.quantity > 0 && item.itemnumber.length === 6; 
+      return item.quantity > 0 && item.itemnumber && item.itemnumber.length === 6; 
     });
   }
 
   $scope.validateItems = function(items) {
     var invalidItemsExist = false;
-    $scope.items = getRowsWithQuantity(items);
+    $scope.validationItems = getRowsWithQuantity(items);
 
-    if ($scope.items.length > 0) {
-      CartService.validateQuickAdd($scope.items).then(function(validatedItems) {
-        $scope.items.forEach(function(item, index) {
-          var validatedItem = validatedItems[index];
-          item.valid = validatedItem.valid;
+    if ($scope.validationItems.length > 0) {
+      CartService.validateQuickAdd($scope.validationItems).then(function(validatedItems) {
+        $scope.items.forEach(function(item) {
+          var validatedItem = [];
+          validatedItems.forEach(function(valItem, index) {     
+            if(item.itemnumber === valItem.itemnumber){
+               validatedItem = validatedItems[index];
+              item.valid = validatedItem.valid;
+            }
+          });          
 
           if (validatedItem.valid === false) {
             invalidItemsExist = true;
@@ -51,7 +56,6 @@ angular.module('bekApp')
       $scope.enableSubmit = false;
       $scope.addRow();
     }
-
   };
 
   $scope.saveCart = function(items) {

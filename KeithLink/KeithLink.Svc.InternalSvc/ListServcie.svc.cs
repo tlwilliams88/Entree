@@ -51,6 +51,10 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			listLogic.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
 		}
+
+        public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel) {
+            return listLogic.CopyList(copyListModel);
+        }
         
         public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
 		{
@@ -61,8 +65,12 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			listLogic.DeleteItem(Id);
 		}
-		
-		public void DeleteList(long Id)
+
+        public void DeleteItemNumberFromList(long Id, string itemNumber) {
+            listLogic.DeleteItemNumberFromList(Id, itemNumber);
+        }
+        
+        public void DeleteList(long Id)
 		{
 			listLogic.DeleteList(Id);
 		}
@@ -71,8 +79,16 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			listLogic.DeleteNote(user, catalogInfo, ItemNumber);
 		}
-        
-		public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
+
+        public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+            return listLogic.GetBarcodeForList(user, catalogInfo, Id);
+        }
+
+        public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers) {
+            return listLogic.ItemsInHistoryList(catalogInfo, itemNumbers);
+        }
+
+        public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			return listLogic.ReadFavorites(user, catalogInfo);
 		}
@@ -96,11 +112,19 @@ namespace KeithLink.Svc.InternalSvc
 		{
 			return listLogic.ReadNotes(user, catalogInfo);
 		}
-		
+
+        public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging) {
+            return listLogic.ReadPagedList(user, catalogInfo, Id, paging);
+        }
+
         public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
 		{
 			return listLogic.ReadRecent(user, catalogInfo);
 		}
+
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+            return listLogic.ReadRecommendedItemsList(catalogInfo);
+        }
 
         public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
             return listLogic.ReadReminders(user, catalogInfo);
@@ -111,7 +135,11 @@ namespace KeithLink.Svc.InternalSvc
 			return listLogic.ReadUserList(user, catalogInfo, headerOnly);
 		}
 
-		public void UpdateItem(ListItemModel item)
+        public void ShareList(ListCopyShareModel shareListModel) {
+            listLogic.ShareList(shareListModel);
+        }
+        
+        public void UpdateItem(ListItemModel item)
 		{
 			listLogic.UpdateItem(item);
 		}
@@ -119,47 +147,7 @@ namespace KeithLink.Svc.InternalSvc
 		public void UpdateList(Core.Models.Lists.ListModel userList)
 		{
 			listLogic.UpdateList(userList);
-		}
-
-		public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
-		{
-			return listLogic.CopyList(copyListModel);
 		}		
-
-		public void ShareList(ListCopyShareModel shareListModel)
-		{
-			listLogic.ShareList(shareListModel);
-		}
-		
-		public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
-		{
-			return listLogic.ReadRecommendedItemsList(catalogInfo);
-		}
-
-
-		public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
-		{
-			return listLogic.GetBarcodeForList(user, catalogInfo, Id);
-		}
-
-
-		public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
-		{
-			return listLogic.ReadPagedList(user, catalogInfo, Id, paging);
-		}
-		
-
-		public void DeleteItemNumberFromList(long Id, string itemNumber)
-		{
-			listLogic.DeleteItemNumberFromList(Id, itemNumber);
-		}
-
-
-		public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
-		{
-			return listLogic.ItemsInHistoryList(catalogInfo, itemNumbers);
-		}
-		
 		#endregion
 	}
 }

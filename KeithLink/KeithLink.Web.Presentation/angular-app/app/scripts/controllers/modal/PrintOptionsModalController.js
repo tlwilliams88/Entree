@@ -1,20 +1,26 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('PrintOptionsModalController', ['$scope', '$modalInstance', 'PrintService', 'ListService', 'list', 'pagingModelOptions',
-  function ($scope, $modalInstance, PrintService, ListService, list, pagingModelOptions) {
+.controller('PrintOptionsModalController', ['$scope', '$modalInstance', 'PrintService', 'ListService', 'CartService', 'list', 'cart', 'pagingModelOptions',
+  function ($scope, $modalInstance, PrintService, ListService, CartService, list, cart, pagingModelOptions) {
 
   $scope.list = list;
+  if(cart){
+    $scope.cart = cart;
+    $scope.printingOrder = true;
+  }
+
+  if($scope.list.isfavorite || $scope.list.name ==='History' || $scope.list.ismandatory || $scope.list.isreminder || $scope.list.is_contract_list){
+    $scope.defaultList = true;
+  }
+
   $scope.labelOptions = [{
     type: '5160',
     numberOnPage: 30,
     columns: 3
   }];
   $scope.selectedLabelOption = $scope.labelOptions[0]; // pre-select first option
-  $scope.landscape = false;
-  $scope.showparvalues = false;
-  $scope.groupLabels = false;
-
+  $scope.groupLabels = $scope.showparvalues = $scope.landscape = false;
 
   // $scope.printLabels = function(items, labelOption) {
   //   var data = {
@@ -38,8 +44,12 @@ angular.module('bekApp')
               terms: undefined
             };
     }
-
-    ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions);
+    if(!$scope.printingOrder){
+      ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions);
+    }
+    else{
+    CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions);
+    }
   };
 
   $scope.cancel = function () {

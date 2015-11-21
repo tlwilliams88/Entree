@@ -178,6 +178,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber); // TODO: incorporate multi user query
 
+            List<OrderLine> items = ((CommerceServer.Foundation.CommerceRelationshipList)order.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList();
+            if (items == null || items.Count == 0) {
+                throw new ApplicationException("Cannot submit order with 0 line items");
+            }
+
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.SaveOrderAsChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 

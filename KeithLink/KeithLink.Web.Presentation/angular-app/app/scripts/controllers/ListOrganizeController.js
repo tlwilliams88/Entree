@@ -17,8 +17,7 @@ angular.module('bekApp')
     $scope.list = list;
 
     $scope.list.items.forEach(function(item) {
-      item.positionStarting = item.position;
-      item.editPosition = item.position;
+      item.positionStarting = item.editPosition = item.position;      
     });
     $scope.list.items.unshift({ position: 0 });
 
@@ -37,12 +36,12 @@ angular.module('bekApp')
 
           // items above the new position move down
           if (item.editPosition < oldPosition && item.editPosition >= newPosition) {
-            item.editPosition = item.editPosition + 1;
+            item.editPosition = item.position = item.editPosition + 1;
           }
          } else { // moving down
           // item below the new position move up
           if (item.editPosition > oldPosition && item.editPosition <= newPosition) {
-            item.editPosition = item.editPosition - 1;
+            item.editPosition = item.position = item.editPosition - 1;
           }
         }
       }
@@ -76,6 +75,11 @@ angular.module('bekApp')
   };
 
   $scope.changePosition = function(items, movedItem) {
+    if(movedItem.position === '0'){
+      movedItem.position = movedItem.editPosition;
+      return;
+    }
+
     movedItem.position = parseInt(movedItem.position, 10);
 
     var oldPosition = movedItem.editPosition;
@@ -94,10 +98,15 @@ angular.module('bekApp')
     $scope.sortField = field;
     $scope.sortDescending = sortDescending;
 
-    $scope.list.items = orderBy($scope.list.items, field, sortDescending);
+    $scope.list.items = orderBy($scope.list.items, field, sortDescending);  
+    if($scope.list.items.length && !$scope.list.items[($scope.list.items.length -1)].listitemid){
+      var dummy = $scope.list.items.slice($scope.list.items.length -1, $scope.list.items.length );
+       $scope.list.items = $scope.list.items.slice(0, $scope.list.items.length -1);
+       $scope.list.items.splice(0,0,dummy[0]);  
+   }
+
     $scope.list.items.forEach(function(item, index) {
-      item.editPosition = index;
-      item.position = index;
+      item.editPosition = item.position = index ;     
     });
 
     $scope.organizeListForm.$setDirty();
@@ -127,11 +136,7 @@ angular.module('bekApp')
       if (list.items.length && !list.items[0].listitemid) {
         list.items.splice(0, 1);
       }
-
-      list.items.forEach(function(item) {
-        item.position = item.editPosition;
-      });
-
+ 
     //   orderedItems.forEach(function(item, index) {
     //     item.position = index + 1;
     //   });

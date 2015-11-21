@@ -12,6 +12,11 @@ angular.module('bekApp')
         method: 'POST'
       },
 
+      validate: {
+        url: '/invoice/payment/validate',
+        method: 'POST'
+      },
+
       getInvoice: {
         url: '/invoice/:invoiceNumber',
         method: 'GET'

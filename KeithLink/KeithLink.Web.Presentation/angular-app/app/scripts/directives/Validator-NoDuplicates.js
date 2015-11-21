@@ -28,7 +28,7 @@ angular.module('bekApp')
         var isDuplicate = false;
         if (viewValue !== ctrl.$modelValue) { // check only if the user has tried to change the name
           angular.forEach(scope.collection, function(item, index) {
-            if (item[attrs.noDuplicates].toUpperCase() === viewValue.toUpperCase()) {
+            if (item[attrs.noDuplicates] != null && item[attrs.noDuplicates].toUpperCase() === viewValue.toUpperCase()) {
               isDuplicate = true;
             }
           });

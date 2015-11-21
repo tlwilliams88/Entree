@@ -2,6 +2,7 @@
 using CommerceServer.Core.Runtime.Orders;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core;
+using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -76,7 +77,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
 
                 // second attempt to find the order, look by confirmation number
                 if (header == null) {
-                    header = _historyRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault();
+                    header = _historyRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber, currentFile.Header.OrderSystem.ToShortString()).FirstOrDefault();
+
                     if (header != null) {
                         header.InvoiceNumber = confFile.Header.InvoiceNumber;
                     }
@@ -128,7 +130,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         public void SaveOrderHistoryAsConfirmation(OrderHistoryFile histFile) {
             if (histFile.Header.OrderSystem == Core.Enumerations.Order.OrderSource.Entree) {
                 ConfirmationFile confirmation = histFile.ToConfirmationFile();
-                PurchaseOrder po = GetCsPurchaseOrderByNumber(confirmation.Header.ConfirmationNumber);
+                PurchaseOrder po = GetCsPurchaseOrderByNumber(histFile.Header.ControlNumber);
 
                 if (po != null) {
                     // need to save away pre and post status info, then if different, add something to the messaging
@@ -148,8 +150,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         }
 
         private void SaveRejectedConfirmationAsOrderHistory(ConfirmationFile confFile) {
-            EF.OrderHistoryHeader header = _historyRepo.ReadByConfirmationNumber(confFile.Header.ConfirmationNumber).FirstOrDefault();
-
+            //Assume we will only get rejections for Entree Orders
+            Core.Enumerations.Order.OrderSource orderSource = Core.Enumerations.Order.OrderSource.Entree;
+            EF.OrderHistoryHeader header = _historyRepo.ReadByConfirmationNumber(confFile.Header.ConfirmationNumber, orderSource.ToShortString()).FirstOrDefault();
+            
             if (header != null) {
                 header.OrderStatus = Constants.CONFIRMATION_HEADER_REJECTED_CODE;
                 header.InvoiceNumber = Constants.CONFIRMATION_HEADER_REJECTED_STATUS;
@@ -217,7 +221,5 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             }
         }
         #endregion
-
-
     }
 }

@@ -12,7 +12,9 @@ namespace KeithLink.Svc.Core.Interface.Orders.Confirmations
         void ListenForMainFrameCalls();
         
         void ListenForQueueMessages();
-        
+
+        void ProcessFileData(string[] file);
+
         bool ProcessIncomingConfirmation(ConfirmationFile confirmation);
         
         void Stop();

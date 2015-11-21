@@ -3,7 +3,7 @@ using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Impl.Models;
-
+using System.IO;
 // Core
 using System;
 using System.Collections.Generic;
@@ -38,45 +38,33 @@ namespace KeithLink.Svc.Impl.ETL
         /// </summary>
 		public void ProcessContractItems()
 		{
-            try
+            using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
             {
-                using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+                using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
                 {
-                    using (var cmd = new SqlCommand("[ETL].[ProcessContractItemList]", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        cmd.CommandTimeout = 0;
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                    }
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.CommandTimeout = 0;
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
-            {
-                eventLog.WriteErrorLog("Error Processing Contract Lists", ex);
-            }
-            
 		}
 
         /// <summary>
         /// Read customer item history
         /// </summary>
         /// <returns></returns>
-        public void ProcessItemHistoryData(int numDays) {
-            try {
-                using (SqlConnection c = new SqlConnection( Configuration.AppDataConnectionString )) {
-                    using (SqlCommand cmd = new SqlCommand( "[ETL].[ProcessItemHistoryData]", c )) {
-                        cmd.CommandType = CommandType.StoredProcedure;
-
-                        cmd.Parameters.AddWithValue( "NumDays", numDays );
-
-                        cmd.CommandTimeout = 0;
-                        c.Open();
-                        cmd.ExecuteNonQuery();
-                    }
+        public void ProcessItemHistoryData(int numWeeks) {
+            using (SqlConnection c = new SqlConnection(Configuration.AppDataConnectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("[ETL].[ProcessItemHistoryData]", c))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("NumWeeks", numWeeks);
+                    cmd.CommandTimeout = 0;
+                    c.Open();
+                    cmd.ExecuteNonQuery();
                 }
-            } catch (Exception ex) {
-                eventLog.WriteErrorLog( "Error processing Item History data", ex );
             }
         }
 
@@ -169,6 +157,31 @@ namespace KeithLink.Svc.Impl.ETL
             catch (Exception ex)
             {
                 eventLog.WriteErrorLog("Error Processing History Lists", ex);
+            }
+
+        }
+
+        /// <summary>
+        /// Import customers and addresses to CS
+        /// </summary>
+        public void ImportCustomersToCS()
+		{
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+                {
+                    using (var cmd = new SqlCommand("[ETL].[LoadOrgsAndAddressesToCS]", conn))
+                    {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog("Error importing organizations to CS", ex);
             }
 
         }
@@ -324,6 +337,30 @@ namespace KeithLink.Svc.Impl.ETL
             return itemTable;
         }
 
+
+		public DataTable ReadUNFIItems(string warehouse)
+		{
+			var itemTable = new DataTable();
+
+			using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+			{
+				using (var cmd = new SqlCommand("[ETL].[ReadUNFItemsByWarehouse]", conn))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					var paramBranchID = cmd.Parameters.Add("warehouse", SqlDbType.VarChar);
+					paramBranchID.Direction = ParameterDirection.Input;
+					paramBranchID.Value = warehouse;
+
+					cmd.CommandTimeout = 0;
+					conn.Open();
+					var da = new SqlDataAdapter(cmd);
+					da.Fill(itemTable);
+				}
+			}
+			return itemTable;
+		}
+
+
         /// <summary>
         /// Read parent categories
         /// </summary>
@@ -386,6 +423,87 @@ namespace KeithLink.Svc.Impl.ETL
             return worksheetItems;
         }
 
+        /// <summary>
+        /// Helper function to populate data tables
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public DataTable ExecuteProfileObjectQueryReturn(string query)
+        {
+            var dataTable = new DataTable();
+            using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+            {
+                conn.Open();
+
+                using (var cmd = new SqlCommand(query, conn))
+                {
+                    cmd.CommandTimeout = 0;
+                    var da = new SqlDataAdapter(cmd);
+                    da.Fill(dataTable);
+                }
+            }
+            return dataTable;
+        }
+
+        public bool ExecuteProfileObjectQuery(string query)
+        {
+            try
+            {
+                using (var conn = new SqlConnection(Configuration.CSProfileDbConnection))
+                {
+                    using (var cmd = new SqlCommand(query.ToString(), conn))
+                    {
+                        //File.WriteAllText("c:\\query.txt", query.ToString()); //for debugging
+                        cmd.CommandTimeout = 0;
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                eventLog.WriteErrorLog(String.Format("Etl:  Error updating profile object. {0} {1}", ex.Message, ex.StackTrace));
+                return false;
+            }
+        }
+
+		public DataTable ReadUNFIItems()
+		{
+			return PopulateDataTable("[ETL].[ReadUNFIProducts]");
+		}
+
+		public List<string> ReadDistinctUNFIWarehouses()
+		{
+			var returnList = new List<string>();
+			try
+			{
+				using (var conn = new SqlConnection(Configuration.AppDataConnectionString))
+				{
+					using (var cmd = new SqlCommand("[ETL].[ReadUNFIDistinctWarehouses]", conn))
+					{
+						cmd.CommandTimeout = 0;
+						conn.Open();
+
+						var reader = cmd.ExecuteReader();
+						while (reader.Read())
+						{
+							returnList.Add(reader[0].ToString());
+						}
+					}
+				}
+				return returnList;
+			}
+			catch (Exception ex)
+			{
+				eventLog.WriteErrorLog(String.Format("Etl:  Error reading distinct UNFI warehouses. {0} {1}", ex.Message, ex.StackTrace));
+				return returnList;
+			}
+		}		
+
         #endregion
-    }
+
+
+		
+	}
 }

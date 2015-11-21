@@ -36,16 +36,26 @@
   }
 }
 
+.login-btn{
+  width:274px;
+  height:36px;  
+}
+
+.register-input{
+  width:274px;
+  height:44px;
+  margin:0 auto;
+
+}
+
 @media (max-width: $screen-sm-max) {
   .register-header {
     .login-form {
-      padding-top: $gutter-size;
-
-      button {
-        margin-top: 0;
-      }
+      padding-top: $gutter-size;    
     }
+
   }
+
   .register-form {
     input[type='text'], input[type='email'], input[type='password'] {
       min-height: 40px;

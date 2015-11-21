@@ -1,0 +1,22 @@
+
+   <div class="modal-header">
+<!--       <div class="modal-close-button" ng-click="closeModal()"><span class="icon-cross large-icon"></span></div>
+ -->    <h3 class="modal-title">Order History for {{item.name}} - #{{item.itemnumber}}</h3>
+</div>
+<div class="modal-body">
+
+  <form>
+      <div class="row">
+        <div class="col-xs-4 nowrap" ng-repeat="(key, value) in item.orderhistory">
+          {{key}} - {{value}}
+        </div>
+      </div>
+      <div ng-if="item.orderHistoryKeys.length === 0">
+        No order history.
+      </div>
+  </form>
+
+</div>
+<div class="modal-footer">
+    <button class="btn-lg btn btn-default" ng-click="closeModal()">Cancel</button>
+</div>

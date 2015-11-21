@@ -124,7 +124,16 @@ namespace KeithLink.Svc.Core.Models.Lists
 						CategoryName = item.CategoryName,
 						ItemClass = item.ItemClass,
                         ItemStatistics = item.ItemStatistics,
-                        CatalogId = item.CatalogId
+                        CatalogId = item.CatalogId,
+                        CatchWeight = item.CatchWeight,
+                        AverageWeight = item.AverageWeight,
+                        ChildNutrition = item.ChildNutrition,
+                        ReplacedItem = item.ReplacedItem,
+                        ReplacementItem = item.ReplacementItem,
+                        DeviatedCost = item.DeviatedCost,
+                        SellSheet = item.SellSheet,
+                        NonStock = item.NonStock,
+                        StorageTemp = item.StorageTemp
 					});
 				}
 

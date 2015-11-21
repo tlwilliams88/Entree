@@ -1,7 +1,9 @@
 ﻿using KeithLink.Svc.Core.Enumerations.Order;
+using KeithLink.Svc.Core.Helpers;
 using KeithLink.Svc.Core.Interface.ModelExport;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,11 +34,11 @@ namespace KeithLink.Svc.Core.Models.Orders
 					{
 						if (this.Each) //package catchweight
 						{
-							return ((this.AverageWeight / Int32.Parse(this.Pack)) * this.QantityShipped) * this.Price;
+                            return PricingHelper.GetCatchweightPriceForPackage(QantityShipped, int.Parse(Pack), AverageWeight, Price);
 						}
 						else //case catchweight
 						{
-							return (this.AverageWeight * this.QantityShipped) * this.Price;
+                            return PricingHelper.GetCatchweightPriceForCase(QantityShipped, AverageWeight, Price);
 						}
 					}
                 }

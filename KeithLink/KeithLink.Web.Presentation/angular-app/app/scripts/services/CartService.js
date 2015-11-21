@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'Cart',
-    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart',
+    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart) {
  
     var Service = {
       
@@ -45,6 +45,21 @@ angular.module('bekApp')
           PricingService.updateCaculatedFields(cart.items);
           return cart;
         });
+      },
+
+      printOrder: function(listId, cartId, landscape, showparvalues, options) {
+
+          var printparams = {
+            landscape: landscape,
+            showparvalues: showparvalues,
+            paging: options
+          };
+
+
+        var promise = $http.post('/cart/print/' + cartId + '/' + listId, printparams, {
+          responseType: 'arraybuffer'
+        });
+        return ExportService.print(promise);
       },
  
       findCartById: function(cartId) {

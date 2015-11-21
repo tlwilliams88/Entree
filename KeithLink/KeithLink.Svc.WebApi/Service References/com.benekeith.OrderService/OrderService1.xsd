@@ -58,6 +58,7 @@
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfOrderHistoryDetail" />
       <xs:element minOccurs="0" name="orderstatus" nillable="true" type="xs:string" />
       <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="ordersystem" type="q3:OrderSource" />
+      <xs:element minOccurs="0" name="originalcontrolnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="routenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="scheduledtime" nillable="true" type="xs:dateTime" />

@@ -3,10 +3,11 @@ using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.IO;
@@ -15,23 +16,25 @@ using System.Collections.Generic;
 namespace KeithLink.Svc.Test.Logic
 {
     [TestClass]
-    public class ConfirmationLogicImplTests
-    {
+    public class ConfirmationLogicImplTests {
+        #region attributes
         private const string TEST_FILE = "Assets\\confirmation_file.txt";
+        private readonly IConfirmationLogic _logic;
+        #endregion
 
+        #region ctor
+        public ConfirmationLogicImplTests() {
+            IContainer diContainer = DependencyMap.Build();
+
+            _logic = diContainer.Resolve<IConfirmationLogic>();
+        }
+        #endregion
+
+        #region methods
         [TestMethod]
         public void ConfirmationFileShouldParseAndSendToRabbitMQ()
         {
-			UnitOfWork uow = new UnitOfWork(new EventLogRepositoryImpl("Entree Tests"));
-            OrderConversionLogicImpl conversionLogic = new OrderConversionLogicImpl(new OrderHistoyrHeaderRepositoryImpl(uow), uow, new EventLogRepositoryImpl("Unit Tests")); 
-
-            ConfirmationLogicImpl logic = new ConfirmationLogicImpl(new EventLogRepositoryImpl("Entree Tests"),
-                                                                    new SocketListenerRepositoryImpl(),
-                                                                    new KeithLink.Svc.Impl.Repository.Queue.GenericQueueRepositoryImpl(),
-                                                                    conversionLogic, 
-                                                                    uow);
-
-            StreamReader testFile = new StreamReader(String.Format("{0}\\{1}", AppDomain.CurrentDomain.BaseDirectory, TEST_FILE));
+			StreamReader testFile = new StreamReader(String.Format("{0}\\{1}", AppDomain.CurrentDomain.BaseDirectory, TEST_FILE));
 
             List<string> data = new List<string> { };
 
@@ -43,7 +46,8 @@ namespace KeithLink.Svc.Test.Logic
             testFile.Close();
             testFile.Dispose();
 
-            logic.ProcessFileData(data.ToArray());
+            _logic.ProcessFileData(data.ToArray());
         }
+        #endregion
     }
 }

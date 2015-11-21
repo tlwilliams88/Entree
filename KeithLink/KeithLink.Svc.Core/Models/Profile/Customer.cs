@@ -88,6 +88,14 @@ namespace KeithLink.Svc.Core.Models.Profile
         [DataMember(Name = "isKeithnetCustomer")]
         public bool IsKeithNetCustomer { get; set; }
 
+        [DataMember(Name = "nationalIdDesc")]
+        public string NationalIdDesc { get; set; }
+        [DataMember(Name = "nationalNumberSubDesc")]
+        public string NationalNumberSubDesc { get; set; }
+        [DataMember(Name = "regionalIdDesc")]
+        public string RegionalIdDesc { get; set; }
+        [DataMember(Name = "regionalNumberDesc")]
+        public string RegionalNumberDesc { get; set; }
 
 		[DataMember(Name = "canmessage")]
 		public bool CanMessage { get; set; }

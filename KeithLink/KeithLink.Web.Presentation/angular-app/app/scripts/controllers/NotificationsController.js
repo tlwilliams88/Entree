@@ -27,7 +27,7 @@ angular.module('bekApp')
   document.activeElement.blur();
 
   $scope.sort = {
-    field: 'messagecreatedutc',
+    field: 'messagecreated',
     sortDescending: true
   };
 

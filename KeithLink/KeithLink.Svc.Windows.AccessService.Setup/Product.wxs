@@ -58,7 +58,9 @@
               <File Id="Newtonsoft_Json" Name="Newtonsoft.Json.dll" DiskId="1" Source="$(var.SourcePath)\Newtonsoft.Json.dll" KeyPath="no" Vital="yes"/>
               <File Id="RabbitMQ_Client" Name="RabbitMQ.Client.dll" DiskId="1" Source="$(var.SourcePath)\RabbitMQ.Client.dll" KeyPath="no" Vital="yes"/>
               <File Id="RestSharp" Name="RestSharp.dll" DiskId="1" Source="$(var.SourcePath)\RestSharp.dll" KeyPath="no" Vital="yes"/>
-
+              <File Id="System_net_http_formatting" Name="System.Net.Http.Formatting.dll" DiskId="1" Source="$(var.SourcePath)\System.Net.Http.Formatting.dll" KeyPath="no" Vital="yes"/>
+              <File Id="System_Linq_Dynamic" Name="System.Linq.Dynamic.dll" DiskId="1" Source="$(var.SourcePath)\System.Linq.Dynamic.dll" KeyPath="no" Vital="yes"/>
+              
               <ServiceInstall Id="InstallService" Name="$(var.AppName)" Type="ownProcess" ErrorControl="normal" Start="auto"
                               DisplayName="$(var.AppName)" Description="$(var.AppDescription)">
                 <ServiceConfig OnInstall="yes" DelayedAutoStart="yes" />

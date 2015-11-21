@@ -44,14 +44,20 @@ angular.module('bekApp')
       //   });
       // },
 
-      payInvoices: function(payments, account) {
-        payments.forEach(function(payment) {
-          payment.account = account.accountNumber;
-          payment.amount = parseFloat(payment.paymentAmount);
-        });
-
+      payInvoices: function(payments) {
+        payments.forEach(function(payment) {     
+        payment.amount = parseFloat(payment.paymentAmount);
+      });
 
         return Invoice.pay({}, payments).$promise;
+      },
+
+      checkTotals: function(payments) {
+        payments.forEach(function(payment) {     
+        payment.amount = parseFloat(payment.paymentAmount);
+      });
+
+        return Invoice.validate({}, payments).$promise;
       },
 
       /********************

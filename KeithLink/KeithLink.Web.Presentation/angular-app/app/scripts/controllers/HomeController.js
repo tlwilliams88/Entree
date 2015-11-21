@@ -11,7 +11,11 @@ angular.module('bekApp')
   .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService',
     function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService) {
     
-    $scope.cartHeaders = CartService.cartHeaders;
+
+      CartService.getCartHeaders().then(function(cartHeaders){
+        $scope.cartHeaders = cartHeaders;
+      })
+
 
     // get orders
     $scope.orders = [];
@@ -55,6 +59,8 @@ angular.module('bekApp')
     }).finally(function() {
       $scope.loadingAccountBalance = false;
     });
+
+    $scope.hidePayNowButton = ($scope.selectedUserContext.customer.termcode === '50' || $scope.selectedUserContext.customer.termcode === '51');
  
     $scope.showPromoItemContent = function(promoItem) {
       var modalInstance = $modal.open({
@@ -86,7 +92,7 @@ angular.module('bekApp')
       size: 6,
       from:0,
       sort: [{
-        field: 'messagecreatedutc',
+        field: 'messagecreated',
         order: 'desc'
       }]
     };
@@ -97,7 +103,7 @@ angular.module('bekApp')
         notificationDates ={},
         dates = [];
         notifications.forEach(function(notification){
-         var date = moment(notification.messagecreatedutc).format('YYYY-MM-DD');
+         var date = moment(notification.messagecreated).format('YYYY-MM-DD');
          if(notificationDates[date]){
           notificationDates[date].push(notification);
           }

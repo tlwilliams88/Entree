@@ -13,11 +13,7 @@ angular.module('bekApp')
 
   $scope.isMobileApp = ENV.mobileApp;
 
-  if ($scope.isMobileApp) {
     $scope.signUpBool = false;
-  } else {
-    $scope.signUpBool = true;
-  }
 
   // gets prepopulated login info for dev environment
   $scope.loginInfo = {

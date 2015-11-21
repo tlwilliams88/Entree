@@ -105,7 +105,11 @@ angular.module('bekApp')
           return deferred.promise;
 
         } else {
-          return originalCartService.createCart(items, shipDate, name);
+          return originalCartService.createCart(items, shipDate, name).then(function(newCart){
+            newCart.items = items;
+            PhonegapDbService.setItem(db_table_name_carts, newCart.id, newCart);
+            return newCart;
+          });
         }
       };
 
@@ -131,7 +135,10 @@ angular.module('bekApp')
           deferred.resolve(cart);
           return deferred.promise;
         } else {
-          return originalCartService.updateCart(cart, params);
+          return originalCartService.updateCart(cart, params).then(function(updatedCart){
+            PhonegapDbService.setItem(db_table_name_carts, updatedCart.id, updatedCart);
+            return updatedCart;
+          });
         }
       };
 
@@ -162,6 +169,7 @@ angular.module('bekApp')
           return deferred.promise;
 
         } else {
+          PhonegapDbService.removeItem(db_table_name_carts, cartId);
           return originalCartService.deleteCart(cartId);
         }
       };
@@ -206,7 +214,10 @@ angular.module('bekApp')
           });
           return deferred.promise;
         } else {
-          return originalCartService.addItemToCart(cart, items);
+          return originalCartService.addItemToCart(cart, items).then(function(updatedCart){
+            PhonegapDbService.setItem(db_table_name_carts, updatedCart.id, updatedCart);
+            return updatedCart;
+          });
         }
       }
 
@@ -254,7 +265,6 @@ angular.module('bekApp')
           if (deletedCartGuids) {
             promises.push(Service.deleteMultipleCarts(deletedCartGuids));
           }
-
          
           $q.all(promises).then(function() {
             $log.debug('carts updated!');
@@ -266,7 +276,7 @@ angular.module('bekApp')
           }, function() {
             $log.debug('error updating carts');
           });
-        });
+        })
       };
 
       Service.createCartFromLocal = function(newCart) {

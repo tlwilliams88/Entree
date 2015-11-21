@@ -40,14 +40,16 @@ angular.module('bekApp').factory('CustomerPagingModel', ['Constants', 'CustomerS
         this.pageIndex,
         this.sortField,
         this.sortDescending ? 'desc' : 'asc',
-        this.accountId
+        this.accountId,
+        this.type
       )
         .then(setData)
         .finally(this.stopLoading);
     },
 
-    filterCustomers: function(searchTerm) {
+    filterCustomers: function(searchTerm, type) {
       this.searchTerm = searchTerm;
+      this.type=type;
       this.pageIndex = 0;
       this.loadCustomers();
     },

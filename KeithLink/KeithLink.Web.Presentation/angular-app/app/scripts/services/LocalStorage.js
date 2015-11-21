@@ -89,7 +89,45 @@ angular.module('bekApp')
         setBranchId(customer.customer === null ? '' : customer.customer.customerBranch);
         setCustomerNumber(customer.customer === null ? '' : customer.customer.customerNumber);
         setCurrentCustomer(customer);
+      },
+
+      /*************
+        Last List
+      *************/
+
+      getLastList: function() {
+        return localStorageService.get(Constants.localStorage.lastList);
+      },
+
+      getLastOrderList: function() {
+        return localStorageService.get(Constants.localStorage.lastOrderList);
+      },
+
+      setLastList: function(list) {
+      localStorageService.set(Constants.localStorage.lastList, list);
+      },
+
+      setLastOrderList: function(allSets) {        
+      localStorageService.set(Constants.localStorage.lastOrderList, allSets);
+      },
+
+      getPageSize: function() {
+        var pageSize = localStorageService.get(Constants.localStorage.pageSize) || 50;
+        return parseInt(pageSize);
+      },
+
+      setPageSize: function(size) { 
+      localStorageService.set(Constants.localStorage.pageSize, size);
+      },
+
+      getDefaultSort: function() {
+        return localStorageService.get(Constants.localStorage.defaultSort);
+      },
+
+      setDefaultSort: function(sort) { 
+      localStorageService.set(Constants.localStorage.defaultSort, sort);
       }
+
     };
 
     function setCustomerNumber(customerNumber) {

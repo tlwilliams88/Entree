@@ -26,6 +26,15 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name ="notes")]
 		public string Notes { get; set; }
 
+        [DataMember( Name = "label" )]
+        public string Label { get; set; }
+
+        [DataMember( Name = "iscombinedquantity" )]
+        public bool IsCombinedQuantity { get; set; }
+
+        [DataMember( Name = "parlevel" )]
+        public decimal ParLevel { get; set; }
+
 		[DataMember(Name="each")]
 		public bool Each { get; set; }
 

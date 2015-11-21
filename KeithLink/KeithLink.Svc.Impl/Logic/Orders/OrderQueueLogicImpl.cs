@@ -9,13 +9,14 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
 using CS = KeithLink.Svc.Core.Models.Generated;
+
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using Newtonsoft.Json;
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
@@ -23,12 +24,12 @@ namespace KeithLink.Svc.Impl.Logic.Orders
     {
         #region attributes
         private IEventLogRepository _log;
-        private ISocketConnectionRepository _mfConnection;
+        private IOrderSocketConnectionRepository _mfConnection;
         private IGenericQueueRepository _orderQueue;
         #endregion
 
         #region ctor
-		public OrderQueueLogicImpl(IEventLogRepository eventLog, IGenericQueueRepository orderQueue, ISocketConnectionRepository mfCon)
+		public OrderQueueLogicImpl(IEventLogRepository eventLog, IGenericQueueRepository orderQueue, IOrderSocketConnectionRepository mfCon)
         {
             _log = eventLog;
             _mfConnection = mfCon;

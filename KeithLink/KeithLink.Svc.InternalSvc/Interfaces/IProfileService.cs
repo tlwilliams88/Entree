@@ -18,28 +18,37 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr);
 
         [OperationContract]
-        void DeleteDsrAlias(long dsrAliasId, string email);
-
-		[OperationContract]
-		void GeneratePasswordResetRequest(string email);
+        void CreateMarketingPref(MarketingPreferenceModel preference);
 
         [OperationContract]
-		bool IsTokenValid(string token);
+        void DeleteDsrAlias(long dsrAliasId, string email);
+
+        [OperationContract]
+        void GeneratePasswordForNewUser(string email);
+
+        [OperationContract]
+		void GeneratePasswordResetRequest(string email);
 
         [OperationContract]
         List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId);
 
         [OperationContract]
+		bool IsTokenValid(string token);
+
+        [OperationContract]
+        List<MarketingPreferenceModel> ReadMarketingPreferences(DateTime from, DateTime to);
+
+        [OperationContract]
 		bool ResetPassword(ResetPasswordModel resetPassword);
 
-		[OperationContract]
-		void GeneratePasswordForNewUser(string email);
+        [OperationContract]
+        List<SettingsModelReturn> ReadProfileSettings( Guid userId );
 
-		[OperationContract]
-		void CreateMarketingPref(MarketingPreferenceModel preference);
+        [OperationContract]
+        void SaveProfileSettings( SettingsModel settings );
 
-		[OperationContract]
-		List<MarketingPreferenceModel> ReadMarketingPreferences(DateTime from, DateTime to);
-		
+        [OperationContract]
+        void DeleteProfileSetting( SettingsModel settings );
+
 	}
 }

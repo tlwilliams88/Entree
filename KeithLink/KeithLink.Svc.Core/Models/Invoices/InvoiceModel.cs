@@ -75,6 +75,9 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "transactions")]
 		public List<InvoiceTransactionModel> Transactions { get; set; }
 
+        [DataMember(Name="transactioncount")]
+        public int TransactionCount { get; set; }
+
 		[DataMember(Name = "pendingtransaction")]
 		public PaymentTransactionModel PendingTransaction { get; set; }
 

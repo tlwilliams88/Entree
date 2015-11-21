@@ -58,20 +58,20 @@
         <div class="form-group">
           <label for="userRole" class="col-md-2 control-label">User Role</label>
           <div class="col-md-4">
-            <select id="userRole" ng-options="role as role for role in roles" class="text-capitalize form-control" ng-model="profile.role" required></select>
+            <select id="userRole" ng-options="role.value as role.text for role in roles" class="text-capitalize form-control" ng-model="profile.role" required></select>
           </div>
         
         </div>
       </form>
       <form class="form-horizontal style-validation-errors" name="editUserPermissionsForm">
-        <div class="form-group" ng-if="canGrantAccessToOtherServices">
+        <div class="form-group" ng-if="canGrantAccessToKbit">
           <label for="kbitAccess" class="col-md-2 control-label">Kbit Access</label>
           <div class="col-md-4">
             <input name="kbitAccess" type="checkbox" ng-model="profile.iskbitcustomer" ng-change="changeUserAccess(profile.iskbitcustomer, 'kbit')" class="editDetailsCheckbox"/>
           </div>
         
         </div>
-        <div class="form-group" ng-if="canGrantAccessToOtherServices">
+        <div class="form-group" ng-if="canGrantAccessToEmenuManage">
           <label for="powerMenuAccess" class="col-md-2 control-label">E-Menu Manage Access</label>
           <div class="col-md-2">
             <input name="powerMenuAccess" type="checkbox" ng-model="profile.ispowermenucustomer" ng-change="changeUserAccess(profile.ispowermenucustomer, 'powermenu')" class="editDetailsCheckbox"/>
@@ -88,7 +88,7 @@
     <div class="col-md-12">
       <h3>
         Assigned Customers
-        <button style="margin-left: 5px;" class="btn btn-lg btn-default" type="button" ng-click="openCustomerAssignmentModal()">Assign Additional Customers</button>
+        <button style="margin-left: 5px;" class="btn btn-lg btn-default" type="button" ng-click="openCustomerAssignmentModal()">Assign Customers to User</button>
       </h3>
       <div>
         <a ng-click="removeSelectedCustomers()">Remove Selected Customers</a>

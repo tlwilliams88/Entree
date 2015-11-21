@@ -33,7 +33,10 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		[MaxLength(7)]
 		[Column(TypeName = "char")]
 		public string ControlNumber { get; set; }
-		[MaxLength(1)]
+        [MaxLength(7)]
+        [Column(TypeName = "char")]
+        public string OriginalControlNumber { get; set; }
+        [MaxLength(1)]
 		[Column(TypeName = "char")]
 		public string OrderStatus { get; set; }
 		public bool FutureItems { get; set; }

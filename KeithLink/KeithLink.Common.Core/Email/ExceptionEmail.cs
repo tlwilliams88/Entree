@@ -42,7 +42,15 @@ namespace KeithLink.Common.Core.Email {
                 msg.Body = body.ToString();
 
                 SmtpClient mailServer = new SmtpClient(Configuration.SmtpServerAddress);
-                mailServer.Send(msg);
+                try
+                {
+                    mailServer.Send(msg);
+                }
+                catch (Exception ex)
+                {
+                   //TODO:  add event log error message
+                }
+                
             }
         }
 

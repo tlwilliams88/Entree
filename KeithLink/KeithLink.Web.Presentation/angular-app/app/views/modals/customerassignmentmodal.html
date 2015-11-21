@@ -1,10 +1,19 @@
 <div class="modal-body">
   <h3>Customer Assignment</h3>
   <form name="customerSearchForm" class="search-form">
+            <div class="form-group radio-button-group">
+          <label>Search by</label>
+          <div class="radio-button" ng-repeat="option in searchOptions">
+            <label>
+              <input type="radio" ng-model="search.field" value="{{option.value}}" />
+              {{option.text}}
+            </label>
+          </div>
+        </div>
     <div class="input-group">
       <input ng-model="customerSearchTerm" type="text" class="input-lg form-control" placeholder="Filter customers by name or number" />
       <span class="input-group-btn">
-        <button type="submit" ng-click="searchCustomers(customerSearchTerm)" class="btn btn-lg btn-default" style="height:40px;"><span class="icon-search"></span></button>
+        <button type="submit" ng-click="searchCustomers(customerSearchTerm, search.field)" class="btn btn-lg btn-default" style="height:40px;"><span class="icon-search"></span></button>
         <button type="button" ng-click="clearFilter()" class="btn btn-lg btn-default " style="height:40px;"><span class="icon-cross"></span></button>
       </span>
     </div>
@@ -13,52 +22,43 @@
     <div style="width: 24%; display: inline-block;">{{selectedCount}} Selected</div>
     <div style="width: 75%; display: inline-block;" class="text-right">Showing {{customers.length}} of {{totalCustomers}} Customers</div>
   </div>
-   <table style="margin-bottom:0px;" class="table table-border table-striped-rows customer-assignment-table">
+   <table style="margin-bottom:0px;" class="table table-border table-striped-rows customer-assignment-table"id="customer-assignment-header-table">
       <thead >
         <tr >
           <th style="width:8%">
             <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
           </th>
-          <th style="width:22%;" class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
+          <th style="width:14%;" class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
             Number
             <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
+          <th style="width:27%" class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
             Name
             <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
           </th>
+          <th style="width:12%">Group Id</th>
+          <th style="width:12%">Group Number</th>
+          <th>Group Description</th>
         </tr>
       </thead>
     </table>
-  <div style="margin-top:0px;" class="infiniteScroll">       
-    <table class="table table-border table-striped-rows customer-assignment-table" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.modal .infiniteScroll'">
-      <thead ng-hide="true">
-        <tr fsm-sticky-header scroll-body="'.customer-assignment-table'" scroll-stop="0" scroll-offset="0">
-          <th>
-            <input class="hidden-print" type="checkbox" ng-change="selectAll(allAvailableSelected)" ng-model="allAvailableSelected" />
-          </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerNumber', !customersSortDesc);">
-            Number
-            <span sort-icons field="'customerNumber'" sortorder="customersSortDesc" sortby="customersSortField"></span>
-          </th>
-          <th class="sort-col-header" ng-click="sortCustomers('customerName', !customersSortDesc)">
-            Name
-            <span sort-icons field="'customerName'" sortorder="customersSortDesc" sortby="customersSortField"></span>
-          </th>
-        </tr>
-      </thead>
+  <div style="margin-top:0px; overflow-x: hidden" class="infiniteScroll">       
+    <table class="table table-border table-striped-rows customer-assignment-table" infinite-scroll="infiniteScrollLoadMore()" infinite-scroll-container="'.modal .infiniteScroll'" match-header-column-width="{headingTable: 'customer-assignment-header-table'}">
       <tbody>
-        <tr ng-repeat="customer in customers" class="hand" ng-class="{ odd : $odd, even: $even }" ng-click="selectCustomer(customer)">
+        <tr ng-repeat="customer in customers" class="hand" ng-class="{ odd : $odd, even: $even }" ng-click="selectCustomer(customer)" end-repeat>
           <td>
             <input type="checkbox" ng-model="customer.selected" ng-change="updateCount(customer.selected)" ng-click="stopEvent($event, customer)">
           </td>
           <td>{{customer.customerNumber}}</td>
           <td>({{customer.customerBranch}})- {{customer.customerName}}</td>
+          <td>{{customer.nationalId.length > 0 ? customer.nationalId : (customer.regionalId.length > 0 ? customer.regionalId : "")}}</td>
+          <td>{{customer.nationalNumber.length > 0 ? customer.nationalNumber + customer.nationalSubNumber : (customer.regionalNumber.length > 0 ? customer.regionalNumber : "")}}</td>
+          <td>{{customer.nationalIdDesc.length > 0 ? customer.nationalIdDesc : (customer.regionalIdDesc.length > 0 ? customer.regionalIdDesc : "")}}</td>
         </tr>
       </tbody>
-      <tfoot>
-        <tr ng-show="customers.length === 0">
-          <td colspan="4">There are no customers to display.</td>
+      <tfoot ng-if="customers.length === 0">
+        <tr>
+          <td colspan="5">There are no customers to display.</td>
         </tr>
       </tfoot>
     </table>

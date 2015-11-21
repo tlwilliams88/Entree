@@ -71,7 +71,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             {
                 var currentUserMessage = userMessageRepository.Read(a => a.Id.Equals(userMessage.Id)).FirstOrDefault();
                 //update message read date
-                currentUserMessage.MessageReadUtc = userMessage.MessageReadUtc;
+                currentUserMessage.MessageReadUtc = userMessage.MessageRead.HasValue ? userMessage.MessageRead.Value.ToUniversalTime() : userMessage.MessageRead;
             }
             unitOfWork.SaveChanges();
         }
@@ -170,7 +170,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 		{
 			var userMessages = userMessageRepository.ReadUserMessages(user).ToList();
 
-			return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreatedUtc");
+			return userMessages.Select(m => m.ToUserMessageModel()).AsQueryable<UserMessageModel>().GetPage<UserMessageModel>(paging, "MessageCreated");
 
 			//var returnValue = new PagedResults<UserMessageModel>();
 
@@ -233,7 +233,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 								NotificationType = NotificationType.Mail
 							});
 					}
-
 				}
 			}
 

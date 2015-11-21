@@ -43,25 +43,25 @@
       </div>
     </div>
     <div class="form-group">
-      <label for="ignoreZeroes" class="col-sm-4 control-label">Ignore zero quantities: </label>
+      <label for="ignoreZeroes" class="col-sm-4 control-label checkbox-line">Ignore zero quantities: </label>
       <div class="col-sm-8">
         <input type="checkbox" name="ignoreZeroes" ng-model="options.ignorezero">
       </div>
     </div>
     <div class="form-group">
-      <label for="ignoreFirstLine" class="col-sm-4 control-label">Ignore first line: </label>
+      <label for="ignoreFirstLine" class="col-sm-4 control-label checkbox-line">Ignore first line: </label>
       <div class="col-sm-8">
         <input type="checkbox" name="ignoreFirstLine" ng-model="options.ignorefirst">
       </div>
     </div>
     <div class="form-group">
-      <label for="importByInventory" class="col-sm-4 control-label">Import by PAR Level: </label>
+      <label for="importByInventory" class="col-sm-4 control-label checkbox-line">Import by PAR Level: </label>
       <div class="col-sm-8">
         <input type="checkbox" name="importByInventory" ng-model="options.importbyinventory">
       </div>
     </div>
     <div class="form-group" ng-show="options.importbyinventory">
-      <label for="selectedList" class="col-sm-4 control-label">List with PARs: </label>
+      <label for="selectedList" class="col-sm-4 control-label checkbox-line">List with PARs: </label>
       <div class="col-sm-8">
         <select class="style-select" ng-options="list.listid as list.name for list in customListHeaders" ng-model="options.listid" id="selectedList" name="selectedList"></select>
       </div>
@@ -71,8 +71,10 @@
   </form>
 
 </div>
+ <p class="text-red text-left" style="padding-left:15px;" ng-show="invalidType">This is an incompatible file type. Please choose a file with one of the following extensions: .xls .xlsx .csv .txt.</p>
+ <p class="text-left" style="padding-left:15px;" ng-show="!invalidType">Please choose a file with one of the following extensions: .xls, .xlsx, .csv, or .txt.</p>
 <div class="modal-footer">
     <!-- <button ng-click="upload.abort()">Cancel Upload</button> -->
-    <button class="btn-lg btn btn-primary" analytics-on analytics-category="Orders" analytics-event="Create Order" analytics-label="Import" ng-click="startOrderUpload(options)">Import</button>
+    <button class="btn-lg btn btn-primary" analytics-on analytics-category="Orders" ng-disabled = "invalidType" analytics-event="Create Order" analytics-label="Import" ng-click="startOrderUpload(options)">Import</button>
     <button class="btn-lg btn btn-default" ng-click="cancel()">Cancel</button>
 </div>

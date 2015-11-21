@@ -1,0 +1,2679 @@
+﻿<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="10/6/2015 9:39:48 AM"
+  DTS:CreationName="SSIS.Package.3"
+  DTS:CreatorComputerName="WIN2012BEK"
+  DTS:CreatorName="WIN2012BEK\Administrator"
+  DTS:DTSID="{E5041196-C8C8-44AC-B692-EAC5E6694D2F}"
+  DTS:EnableConfig="True"
+  DTS:ExecutableType="SSIS.Package.3"
+  DTS:LastModifiedProductVersion="11.0.3436.0"
+  DTS:LocaleID="1033"
+  DTS:ObjectName="UNFIETLProcess_DEV"
+  DTS:PackageType="5"
+  DTS:VersionBuild="34"
+  DTS:VersionGUID="{6AA404BF-E2DF-47C8-A9E7-8764AC50FB9F}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">6</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[FF_UNFI]"
+      DTS:CreationName="FLATFILE"
+      DTS:DTSID="{A47E02D9-CD76-48B8-9DDD-1708C1891B8B}"
+      DTS:ObjectName="FF_UNFI">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:Format="Delimited"
+          DTS:LocaleID="1033"
+          DTS:HeaderRowDelimiter="_x000A_"
+          DTS:ColumnNamesInFirstDataRow="True"
+          DTS:RowDelimiter=""
+          DTS:TextQualifier="_x003C_none_x003E_"
+          DTS:CodePage="1252"
+          DTS:ConnectionString="C:\UNFIFiles\bek_prods.txt">
+          <DTS:FlatFileColumns>
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="DC"
+              DTS:DTSID="{30726A0B-3D31-4314-A6A0-D4B82EE86B62}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Product code"
+              DTS:DTSID="{72ED5A9F-5D8D-4B43-8DA4-1CDB046B6121}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Unit of sale"
+              DTS:DTSID="{BB26DF65-FDF2-4C7D-AB12-33931E593C94}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Description"
+              DTS:DTSID="{4AA3E36F-02E8-47B1-A88B-98528A829B93}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Brand"
+              DTS:DTSID="{4BFE568A-C539-4832-8225-D27CA4C78705}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Case length"
+              DTS:DTSID="{31E43876-8ADD-4DCF-B232-4F91B6DE0A12}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Case width"
+              DTS:DTSID="{D09BDBE4-9131-4E3F-BB2D-651DAC9D8A2C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Case height"
+              DTS:DTSID="{671D5CA3-B3D6-4777-9F0F-E86FEF3A8119}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Temp control"
+              DTS:DTSID="{80D1B812-48F3-4D7A-A23F-EAEF8243BA57}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Vendor"
+              DTS:DTSID="{9D5A4C01-3C8C-4FEF-9A6F-B13067610033}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Catalog Dept"
+              DTS:DTSID="{570E8B74-951A-411B-BDE9-DE045346C7E3}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Ship min expire"
+              DTS:DTSID="{8272D444-6C04-4836-86D1-6C3CA237AAC9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Min Order"
+              DTS:DTSID="{73D47711-F0CF-40BA-90E3-E5471EE1BA7F}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Vend Cases per Tier"
+              DTS:DTSID="{DEF2E337-7ABB-419B-9D50-F4F71DE1071B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Vend Tiers per Palt"
+              DTS:DTSID="{A07C07AD-0059-4BE0-8247-299D9B20C78A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Vend Cases per Palt"
+              DTS:DTSID="{6B0F1790-5EBB-44E8-B7D1-9220E6DE5996}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Case Quan"
+              DTS:DTSID="{337AAE20-FAAD-4495-9A3E-69DA923D6A79}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Cont size"
+              DTS:DTSID="{69625B12-65F4-4846-ADFF-FB8283AAC245}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Cont unit"
+              DTS:DTSID="{A7067806-3E85-499D-B497-7C67F38FF114}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Type cat subgrp"
+              DTS:DTSID="{58D3B128-C7DA-4415-82B5-7BFAEE375280}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Put up"
+              DTS:DTSID="{3C1F10A4-F54F-43FE-B7A8-9E87F4462D5A}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Retail UPC"
+              DTS:DTSID="{269E5346-4C0D-4CFE-9AED-5175F4B09800}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Case UPC"
+              DTS:DTSID="{E1081BE9-AD9B-4C58-B3F6-291512498F31}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Weight"
+              DTS:DTSID="{358A11C4-FFD0-482D-9017-A52BEA812A6E}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Retail length"
+              DTS:DTSID="{2633F81A-CF09-4441-B4AA-9A15EE5D844B}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Retail width"
+              DTS:DTSID="{2201D739-3779-4C43-AD5F-8BC06A71ED13}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Retail height"
+              DTS:DTSID="{06A69E73-6BB2-42FE-867B-307DE58FFC18}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Status"
+              DTS:DTSID="{C81B8876-AA0C-4490-A436-1E8093B44C72}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Stock available"
+              DTS:DTSID="{77A95D71-02B6-42E8-B4B7-F3750AD734F7}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Type"
+              DTS:DTSID="{2044AEB5-118A-43B1-BEC2-8A10BE3F074D}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Category"
+              DTS:DTSID="{F2701C7A-3B1E-417D-962D-0C2007590AA9}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Sub-Category"
+              DTS:DTSID="{A778C9C3-368D-40A9-8986-63E75FF2577C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Unit Price"
+              DTS:DTSID="{F650C2FC-18A7-4925-BA6B-8C8F724476FC}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Case Price"
+              DTS:DTSID="{6726E254-3F2F-417B-8637-EA7BA122E810}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Flag1"
+              DTS:DTSID="{3F926FC8-2221-4586-885A-CA20B9E8D945}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Flag2"
+              DTS:DTSID="{A36CDBBA-9E98-4AC7-9743-E724E6D76B88}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Flag3"
+              DTS:DTSID="{891D4798-88F8-460B-AD2E-193028F5536C}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x0009_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Flag4"
+              DTS:DTSID="{270B5140-06F9-405A-984C-DD0BDCA278B8}"
+              DTS:CreationName="" />
+            <DTS:FlatFileColumn
+              DTS:ColumnType="Delimited"
+              DTS:ColumnDelimiter="_x000A_"
+              DTS:MaximumWidth="50"
+              DTS:DataType="129"
+              DTS:TextQualified="True"
+              DTS:ObjectName="Column 38"
+              DTS:DTSID="{CF4FECBA-4B54-4913-A27D-31C5DAB1968D}"
+              DTS:CreationName="" />
+          </DTS:FlatFileColumns>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[HTTP_ETLService]"
+      DTS:CreationName="HTTP"
+      DTS:DTSID="{C92AFD58-7BD2-4400-B1A2-F51DA733CE66}"
+      DTS:ObjectName="HTTP_ETLService">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="http://localhost:1317/ETLService.svc?wsdl">
+          <DTS:HttpConnection
+            DTS:ServerURL="http://localhost:1317/ETLService.svc?wsdl">
+            <DTS:Property
+              DTS:Name="ServerPassword"
+              Sensitive="1"
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAbktlu8nVaUi4mvV9EYAsMgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAABH1rZ1t5q2WY5Xo8jEoyJ3fbLD3NTw8h31sIed+NmaFAAAAAAOgAAAAAIAACAAAABsT+biOb0w7YXFbUoRiXlbDsqBYfLtHnus3A/zixA1BxAAAADcmKmAW7rU9+nS9G2h3KDpQAAAAItIAaHeNgiZUDtaLlLvamB+LPLsFwjaE5d0kqkZ1/kH8NjQVfxaSU/QeRkTjHvFn2xVUnofn3jISYSed2Psukk</DTS:Property>
+            <DTS:Property
+              DTS:Name="ProxyPassword"
+              Sensitive="1"
+              Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAbktlu8nVaUi4mvV9EYAsMgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAi6Pco8dT89pTEUvolzqvsz6CJ+UBZyNvN861YbnD2hAAAAAAOgAAAAAIAACAAAACdmH7sXzA2/jKrSxvkQAFM28AAo3PWWLOarQeMdkSfThAAAAAturJVBjdpJeZSq36PQZGHQAAAAP48YJzopxVhUOI7FJDjz/n1sys5IG7tckxbfqhtQbJF3RuB34HEKvPJSZiqvPwRzt7fAsbc26xWEyio3o50Xvo</DTS:Property>
+          </DTS:HttpConnection>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{84951720-C6D3-4D2D-A75A-66D64367B533}"
+      DTS:ObjectName="OLE_BEK_Commerce_AppData">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectionString="Data Source=WIN2012BEK;User ID=;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;">
+          <DTS:Password
+            DTS:Name="Password"
+            Sensitive="1"
+            Encrypted="1">AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAbktlu8nVaUi4mvV9EYAsMgAAAAAIAAAARABUAFMAAAAQZgAAAAEAACAAAAAAOXX8ZQ49isqe60gR2xwe+ZdZGHOpZfGec589FgWRYwAAAAAOgAAAAAIAACAAAAC/yBXNND3wjLzFZ431nk7XukiWJHDsxbPvnxvJ59qn3RAAAAD98T3t2eu1glBVrSkI6DDJQAAAALc6ra+PdyjZ9i6kADs7q13GOU9UKkgt2Dpl1vXvG54If+eUkFJXBg2mks/ImhQtCvhOLgIHB3Rr+YnrDQOabbg</DTS:Password>
+        </DTS:ConnectionManager>
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Configurations>
+    <DTS:Configuration
+      DTS:ConfigurationString="C:\SSIS_XML\ECOM\UNFIETLProcess_DEV.dtsConfig"
+      DTS:ConfigurationType="1"
+      DTS:CreationName=""
+      DTS:DTSID="{75DD1650-0114-43DE-B69E-0C5BD2F08AD3}"
+      DTS:ObjectName="Configuration 1" />
+  </DTS:Configurations>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Application Data Processing"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{5f42c070-5f4f-48d8-b0df-0f4687185396}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Application Data Processing">
+      <DTS:Variables>
+        <DTS:Variable
+          DTS:CreationName=""
+          DTS:DTSID="{69FBE84D-F55C-4315-8EFB-C76ACF3A5348}"
+          DTS:IncludeInDebugDump="2345"
+          DTS:Namespace="User"
+          DTS:ObjectName="ETLProcess_ProcessStagedData_Result">
+          <DTS:VariableValue
+            DTS:DataSubType="ManagedSerializable"
+            DTS:DataType="13">
+            <SOAP-ENV:Envelope xmlns:clr="http://schemas.microsoft.com/soap/encoding/clr/1.0" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+              <SOAP-ENV:Body>
+                <xsd:anyType
+                  id="ref-1"></xsd:anyType>
+              </SOAP-ENV:Body>
+            </SOAP-ENV:Envelope>
+          </DTS:VariableValue>
+        </DTS:Variable>
+      </DTS:Variables>
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Application Data Processing\Proces Catalog Data"
+          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:Description="Web Service Task"
+          DTS:DTSID="{EAB9E46E-48B9-41F4-A285-21730BEC7FDD}"
+          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Proces Catalog Data"
+          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <WSTask:WebServiceTaskData
+              WSTask:ConnectionName="{C92AFD58-7BD2-4400-B1A2-F51DA733CE66}"
+              WSTask:Service="ETLService"
+              WSTask:WSDLFile="C:\SSIS_WEB\ECOM\WSDL\ETLProcess_DEV.wsdl"
+              WSTask:OutputType="Variable"
+              WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
+              <WSTask:MethodInfo
+                WSTask:MethodName="ProcessUNFICatalogData"
+                WSTask:MessageName="">
+                <WSTask:Documentation></WSTask:Documentation>
+                <WSTask:ParamInfo
+                  WSTask:Name="ProcessUNFICatalogDataResult"
+                  WSTask:Datatype="Boolean&amp;"
+                  WSTask:ParamType="Variable"
+                  WSTask:SeqNumber="0">
+                  <WSTask:VariableValue></WSTask:VariableValue>
+                </WSTask:ParamInfo>
+                <WSTask:ParamInfo
+                  WSTask:Name="ProcessUNFICatalogDataResultSpecified"
+                  WSTask:Datatype="Boolean&amp;"
+                  WSTask:ParamType="Variable"
+                  WSTask:SeqNumber="1">
+                  <WSTask:VariableValue></WSTask:VariableValue>
+                </WSTask:ParamInfo>
+              </WSTask:MethodInfo>
+            </WSTask:WebServiceTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Application Data Processing\Process Elastic Search Data"
+          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:Description="Web Service Task"
+          DTS:DTSID="{a5e2c0aa-015c-4f25-9795-9e2472b66190}"
+          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.WebServiceTask.WebServiceTask, Microsoft.SqlServer.WebServiceTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Process Elastic Search Data"
+          DTS:TaskContact="Web Service Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:LoggingOptions
+            DTS:FilterKind="0" />
+          <DTS:ObjectData>
+            <WSTask:WebServiceTaskData
+              WSTask:ConnectionName="{C92AFD58-7BD2-4400-B1A2-F51DA733CE66}"
+              WSTask:Service="ETLService"
+              WSTask:WSDLFile="C:\SSIS_WEB\ECOM\WSDL\ETLProcess_DEV.wsdl"
+              WSTask:OverwriteWSDLFile="True"
+              WSTask:OutputType="Variable"
+              WSTask:OutputLocation="User::ETLProcess_ProcessStagedData_Result" xmlns:WSTask="www.microsoft.com/sqlserver/dts/tasks/webservicetask">
+              <WSTask:MethodInfo
+                WSTask:MethodName="ProcessUNFIElasticSearchData"
+                WSTask:MessageName="">
+                <WSTask:Documentation></WSTask:Documentation>
+                <WSTask:ParamInfo
+                  WSTask:Name="ProcessUNFIElasticSearchDataResult"
+                  WSTask:Datatype="Boolean&amp;"
+                  WSTask:ParamType="Variable"
+                  WSTask:SeqNumber="0">
+                  <WSTask:VariableValue></WSTask:VariableValue>
+                </WSTask:ParamInfo>
+                <WSTask:ParamInfo
+                  WSTask:Name="ProcessUNFIElasticSearchDataResultSpecified"
+                  WSTask:Datatype="Boolean&amp;"
+                  WSTask:ParamType="Variable"
+                  WSTask:SeqNumber="1">
+                  <WSTask:VariableValue></WSTask:VariableValue>
+                </WSTask:ParamInfo>
+              </WSTask:MethodInfo>
+            </WSTask:WebServiceTaskData>
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Send Fail Message"
+      DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:Description="Send Mail Task"
+      DTS:DTSID="{ec619bd1-31fe-4c59-9364-8496aaa9d696}"
+      DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.SendMailTask.SendMailTask, Microsoft.SqlServer.SendMailTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Send Fail Message"
+      DTS:TaskContact="Send Mail Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="2">
+      <DTS:Variables />
+      <DTS:PropertyExpression
+        DTS:Name="FromLine">@[System::MachineName] + "@noreply.com"</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="MessageSource">"SSIS Package " + @[System::PackageName] + " has failed on " +  @[System::MachineName] + ".  Check the SQL logs for more detail."</DTS:PropertyExpression>
+      <DTS:PropertyExpression
+        DTS:Name="Subject">"SSIS Package " + @[System::PackageName] + " has failed on " +  @[System::MachineName]</DTS:PropertyExpression>
+      <DTS:ObjectData>
+        <SendMailTask:SendMailTaskData
+          SendMailTask:SMTPServer="{49C8C803-A5C5-4620-BBE7-C88CB3BACAAF}"
+          SendMailTask:From="WIN2012BEK@noreply.com"
+          SendMailTask:To="CORP-DIS-eCommDev@benekeith.com"
+          SendMailTask:Subject="SSIS Package UNFIETLProcess_DEV has failed on WIN2012BEK"
+          SendMailTask:MessageSource="SSIS Package UNFIETLProcess_DEV has failed on WIN2012BEK.  Check the SQL logs for more detail." xmlns:SendMailTask="www.microsoft.com/sqlserver/dts/tasks/sendmailtask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Sequence Container"
+      DTS:CreationName="STOCK:SEQUENCE"
+      DTS:Description="Sequence Container"
+      DTS:DTSID="{3197D14B-0631-4BE4-BAC5-7C97E5DC8924}"
+      DTS:ExecutableType="STOCK:SEQUENCE"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Sequence Container">
+      <DTS:Variables />
+      <DTS:Executables>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\Stage UNFI Products"
+          DTS:CreationName="SSIS.Pipeline.3"
+          DTS:Description="Data Flow Task"
+          DTS:DTSID="{381ABD09-9060-4884-8DFE-A3F852A4F4BF}"
+          DTS:ExecutableType="SSIS.Pipeline.3"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Stage UNFI Products"
+          DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <pipeline
+              version="1">
+              <components>
+                <component
+                  refId="Package\Sequence Container\Stage UNFI Products\Flat File Source"
+                  componentClassID="{D23FD76B-F51D-420F-BBCB-19CBF6AC1AB4}"
+                  contactInfo="Flat File Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;1"
+                  description="Flat File Source"
+                  localeId="1033"
+                  name="Flat File Source"
+                  usesDispositions="true"
+                  version="1">
+                  <properties>
+                    <property
+                      dataType="System.Boolean"
+                      description="Specifies whether zero-length columns are treated as null."
+                      name="RetainNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of an output column containing the file name. If no name is specified, no output column containing the file name will be generated."
+                      name="FileNameColumnName"></property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Connections[FlatFileConnection]"
+                      connectionManagerID="Package.ConnectionManagers[FF_UNFI]"
+                      connectionManagerRefId="Package.ConnectionManagers[FF_UNFI]"
+                      name="FlatFileConnection" />
+                  </connections>
+                  <outputs>
+                    <output
+                      refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output]"
+                      name="Flat File Source Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[DC]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DC]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[DC]"
+                          name="DC"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Product code]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Product code]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Product code]"
+                          name="Product code"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Unit of sale]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Unit of sale]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Unit of sale]"
+                          name="Unit of sale"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Description]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Description]"
+                          name="Description"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Brand]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Brand]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Brand]"
+                          name="Brand"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case length]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case length]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case length]"
+                          name="Case length"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case width]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case width]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case width]"
+                          name="Case width"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case height]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case height]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case height]"
+                          name="Case height"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Temp control]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Temp control]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Temp control]"
+                          name="Temp control"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vendor]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vendor]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vendor]"
+                          name="Vendor"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Catalog Dept]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Catalog Dept]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Catalog Dept]"
+                          name="Catalog Dept"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Ship min expire]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Ship min expire]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Ship min expire]"
+                          name="Ship min expire"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Min Order]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Min Order]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Min Order]"
+                          name="Min Order"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Cases per Tier]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vend Cases per Tier]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Cases per Tier]"
+                          name="Vend Cases per Tier"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Tiers per Palt]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vend Tiers per Palt]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Tiers per Palt]"
+                          name="Vend Tiers per Palt"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Cases per Palt]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vend Cases per Palt]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Cases per Palt]"
+                          name="Vend Cases per Palt"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case Quan]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case Quan]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case Quan]"
+                          name="Case Quan"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Cont size]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Cont size]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Cont size]"
+                          name="Cont size"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Cont unit]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Cont unit]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Cont unit]"
+                          name="Cont unit"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type cat subgrp]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Type cat subgrp]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type cat subgrp]"
+                          name="Type cat subgrp"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Put up]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Put up]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Put up]"
+                          name="Put up"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail UPC]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail UPC]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail UPC]"
+                          name="Retail UPC"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case UPC]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case UPC]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case UPC]"
+                          name="Case UPC"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Weight]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Weight]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Weight]"
+                          name="Weight"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail length]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail length]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail length]"
+                          name="Retail length"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail width]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail width]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail width]"
+                          name="Retail width"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail height]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail height]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail height]"
+                          name="Retail height"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Status]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Status]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Status]"
+                          name="Status"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Stock available]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Stock available]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Stock available]"
+                          name="Stock available"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Type]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]"
+                          name="Type"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Category]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]"
+                          name="Category"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Sub-Category]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]"
+                          name="Sub-Category"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Unit Price]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Unit Price]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Unit Price]"
+                          name="Unit Price"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case Price]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case Price]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case Price]"
+                          name="Case Price"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag1]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag1]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag1]"
+                          name="Flag1"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag2]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag2]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag2]"
+                          name="Flag2"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag3]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag3]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag3]"
+                          name="Flag3"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag4]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag4]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag4]"
+                          name="Flag4"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Column 38]"
+                          codePage="1252"
+                          dataType="str"
+                          errorOrTruncationOperation="Conversion"
+                          errorRowDisposition="FailComponent"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Column 38]"
+                          length="50"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Column 38]"
+                          name="Column 38"
+                          truncationRowDisposition="FailComponent">
+                          <properties>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the column uses the faster, locale-neutral parsing routines."
+                              name="FastParse">false</property>
+                            <property
+                              dataType="System.Boolean"
+                              description="Indicates whether the data is in binary format."
+                              name="UseBinaryFormat">false</property>
+                          </properties>
+                        </outputColumn>
+                      </outputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[DC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="DC" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Product code]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Product code" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Unit of sale]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Unit of sale" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Description" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Brand]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Brand" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case length]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Case length" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case width]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Case width" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case height]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Case height" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Temp control]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Temp control" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vendor]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Vendor" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Catalog Dept]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Catalog Dept" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Ship min expire]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Ship min expire" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Min Order]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Min Order" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vend Cases per Tier]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Vend Cases per Tier" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vend Tiers per Palt]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Vend Tiers per Palt" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Vend Cases per Palt]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Vend Cases per Palt" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case Quan]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Case Quan" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Cont size]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Cont size" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Cont unit]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Cont unit" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Type cat subgrp]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Type cat subgrp" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Put up]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Put up" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail UPC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Retail UPC" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case UPC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Case UPC" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Weight]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Weight" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail length]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Retail length" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail width]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Retail width" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Retail height]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Retail height" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Status]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Status" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Stock available]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Stock available" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Type]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Type" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Category]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Sub-Category]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Sub-Category" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Unit Price]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Unit Price" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Case Price]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Case Price" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag1" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag2]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag2" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag3]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag3" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Flag4]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag4" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].ExternalColumns[Column 38]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Column 38" />
+                      </externalMetadataColumns>
+                    </output>
+                    <output
+                      refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Error Output]"
+                      isErrorOut="true"
+                      name="Flat File Source Error Output">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          codePage="1252"
+                          dataType="text"
+                          description="Flat File Source Error Output Column"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Error Output].Columns[Flat File Source Error Output Column]"
+                          name="Flat File Source Error Output Column" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+                <component
+                  refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination"
+                  componentClassID="{4ADA7EAA-136C-4215-8098-D7A7C27FC0D1}"
+                  contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+                  description="OLE DB Destination"
+                  name="OLE DB Destination"
+                  usesDispositions="true"
+                  version="4">
+                  <properties>
+                    <property
+                      dataType="System.Int32"
+                      description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                      name="CommandTimeout">0</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the name of the database object used to open a rowset."
+                      name="OpenRowset">[ETL].[Staging_UNFIProducts]</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies the variable that contains the name of the database object used to open a rowset."
+                      name="OpenRowsetVariable"></property>
+                    <property
+                      dataType="System.String"
+                      description="The SQL command to be executed."
+                      name="SqlCommand"
+                      UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor, Microsoft.DataTransformationServices.Controls, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"></property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the column code page to use when code page information is unavailable from the data source."
+                      name="DefaultCodePage">1252</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Forces the use of the DefaultCodePage property value when describing character data."
+                      name="AlwaysUseDefaultCodePage">false</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies the mode used to access the database."
+                      name="AccessMode"
+                      typeConverter="AccessMode">3</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepIdentity">false</property>
+                    <property
+                      dataType="System.Boolean"
+                      description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                      name="FastLoadKeepNulls">false</property>
+                    <property
+                      dataType="System.String"
+                      description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                      name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                    <property
+                      dataType="System.Int32"
+                      description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                      name="FastLoadMaxInsertCommitSize">2147483647</property>
+                  </properties>
+                  <connections>
+                    <connection
+                      refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Connections[OleDbConnection]"
+                      connectionManagerID="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      connectionManagerRefId="Package.ConnectionManagers[OLE_BEK_Commerce_AppData]"
+                      description="The OLE DB runtime connection used to access the database."
+                      name="OleDbConnection" />
+                  </connections>
+                  <inputs>
+                    <input
+                      refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                      errorOrTruncationOperation="Insert"
+                      errorRowDisposition="FailComponent"
+                      hasSideEffects="true"
+                      name="OLE DB Destination Input">
+                      <inputColumns>
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[DC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="DC"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[WarehouseNumber]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[DC]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Description]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Description"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Description]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Description]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Brand]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Brand"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Brand]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Brand]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Case length]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Case length"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CLength]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case length]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Case width]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Case width"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CWidth]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case width]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Case height]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Case height"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CHeight]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case height]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Temp control]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Temp control"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TempControl]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Temp control]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Unit of sale]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Unit of sale"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UnitOfSale]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Unit of sale]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Catalog Dept]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Catalog Dept"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CatalogDept]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Catalog Dept]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Ship min expire]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Ship min expire"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ShipMinExpire]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Ship min expire]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Product code]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Product code"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductNumber]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Product code]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Min Order]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Min Order"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MinOrder]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Min Order]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Vend Cases per Tier]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Vend Cases per Tier"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[VendorCasesPerTier]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Cases per Tier]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Vend Tiers per Palt]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Vend Tiers per Palt"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[VendorTiersPerPallet]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Tiers per Palt]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Vend Cases per Palt]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Vend Cases per Palt"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[VendorCasesPerPallet]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vend Cases per Palt]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Case Quan]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Case Quan"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CaseQuantity]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case Quan]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Put up]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Put up"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PutUp]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Put up]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Cont size]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Cont size"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContSize]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Cont size]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Cont unit]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Cont unit"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContUnit]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Cont unit]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Type cat subgrp]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Type cat subgrp"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TCSCode]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type cat subgrp]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Retail UPC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Retail UPC"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RetailUPC]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail UPC]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Case UPC]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Case UPC"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CaseUPC]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case UPC]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Weight]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Weight"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Weight]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Weight]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Retail length]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Retail length"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PLength]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail length]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Retail height]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Retail height"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PHeight]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail height]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Retail width]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Retail width"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PWidth]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Retail width]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Status]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Status"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Status]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Type]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Type"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Type]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Type]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Category]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Category"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Category]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Sub-Category]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Sub-Category"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Subgroup]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Sub-Category]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Unit Price]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Unit Price"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EachPrice]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Unit Price]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Case Price]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Case Price"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CasePrice]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Case Price]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Flag1]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Flag1"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag1]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag1]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Flag2]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Flag2"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag2]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag2]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Flag3]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Flag3"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag3]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag3]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Flag4]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Flag4"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag4]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Flag4]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Stock available]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Stock available"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OnHandQty]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Stock available]" />
+                        <inputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[Vendor]"
+                          cachedCodepage="1252"
+                          cachedDataType="str"
+                          cachedLength="50"
+                          cachedName="Vendor"
+                          externalMetadataColumnId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Vendor]"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output].Columns[Vendor]" />
+                      </inputColumns>
+                      <externalMetadataColumns
+                        isUsed="True">
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[WarehouseNumber]"
+                          dataType="i4"
+                          name="WarehouseNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Description]"
+                          codePage="1252"
+                          dataType="str"
+                          length="150"
+                          name="Description" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Brand]"
+                          codePage="1252"
+                          dataType="str"
+                          length="150"
+                          name="Brand" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CLength]"
+                          dataType="numeric"
+                          name="CLength"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CWidth]"
+                          dataType="numeric"
+                          name="CWidth"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CHeight]"
+                          dataType="numeric"
+                          name="CHeight"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TempControl]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="TempControl" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[UnitOfSale]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="UnitOfSale" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CatalogDept]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="CatalogDept" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ShipMinExpire]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="ShipMinExpire" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ProductNumber]"
+                          dataType="i4"
+                          name="ProductNumber" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[MinOrder]"
+                          dataType="i4"
+                          name="MinOrder" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[VendorCasesPerTier]"
+                          dataType="i4"
+                          name="VendorCasesPerTier" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[VendorTiersPerPallet]"
+                          dataType="i4"
+                          name="VendorTiersPerPallet" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[VendorCasesPerPallet]"
+                          dataType="i4"
+                          name="VendorCasesPerPallet" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CaseQuantity]"
+                          dataType="i4"
+                          name="CaseQuantity" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PutUp]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="PutUp" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContSize]"
+                          dataType="numeric"
+                          name="ContSize"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[ContUnit]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="ContUnit" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[TCSCode]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="TCSCode" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[RetailUPC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="RetailUPC" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CaseUPC]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="CaseUPC" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Weight]"
+                          dataType="numeric"
+                          name="Weight"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PLength]"
+                          dataType="numeric"
+                          name="PLength"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PHeight]"
+                          dataType="numeric"
+                          name="PHeight"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[PWidth]"
+                          dataType="numeric"
+                          name="PWidth"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Status]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Status" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Type]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Type" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Category]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Category" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Subgroup]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Subgroup" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[EachPrice]"
+                          dataType="numeric"
+                          name="EachPrice"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[CasePrice]"
+                          dataType="numeric"
+                          name="CasePrice"
+                          precision="18" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag1]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag1" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag2]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag2" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag3]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag3" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Flag4]"
+                          codePage="1252"
+                          dataType="str"
+                          length="50"
+                          name="Flag4" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[OnHandQty]"
+                          dataType="i4"
+                          name="OnHandQty" />
+                        <externalMetadataColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[Vendor]"
+                          codePage="1252"
+                          dataType="str"
+                          length="150"
+                          name="Vendor" />
+                      </externalMetadataColumns>
+                    </input>
+                  </inputs>
+                  <outputs>
+                    <output
+                      refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                      exclusionGroup="1"
+                      isErrorOut="true"
+                      name="OLE DB Destination Error Output"
+                      synchronousInputId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                      <outputColumns>
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                          name="ErrorCode"
+                          specialFlags="1" />
+                        <outputColumn
+                          refId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          dataType="i4"
+                          lineageId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                          name="ErrorColumn"
+                          specialFlags="2" />
+                      </outputColumns>
+                      <externalMetadataColumns />
+                    </output>
+                  </outputs>
+                </component>
+              </components>
+              <paths>
+                <path
+                  refId="Package\Sequence Container\Stage UNFI Products.Paths[Flat File Source Output]"
+                  endId="Package\Sequence Container\Stage UNFI Products\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  name="Flat File Source Output"
+                  startId="Package\Sequence Container\Stage UNFI Products\Flat File Source.Outputs[Flat File Source Output]" />
+              </paths>
+            </pipeline>
+          </DTS:ObjectData>
+        </DTS:Executable>
+        <DTS:Executable
+          DTS:refId="Package\Sequence Container\Truncate Staging Table"
+          DTS:CreationName="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:Description="Execute SQL Task"
+          DTS:DTSID="{28A29F0F-59FA-4379-8EA0-60660D7C27A5}"
+          DTS:ExecutableType="Microsoft.SqlServer.Dts.Tasks.ExecuteSQLTask.ExecuteSQLTask, Microsoft.SqlServer.SQLTask, Version=11.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91"
+          DTS:LocaleID="-1"
+          DTS:ObjectName="Truncate Staging Table"
+          DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2012; © 2007 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+          DTS:ThreadHint="0">
+          <DTS:Variables />
+          <DTS:ObjectData>
+            <SQLTask:SqlTaskData
+              SQLTask:Connection="{84951720-C6D3-4D2D-A75A-66D64367B533}"
+              SQLTask:SqlStatementSource="TRUNCATE TABLE [ETL].[Staging_UNFIProducts]" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+          </DTS:ObjectData>
+        </DTS:Executable>
+      </DTS:Executables>
+      <DTS:PrecedenceConstraints>
+        <DTS:PrecedenceConstraint
+          DTS:refId="Package\Sequence Container.PrecedenceConstraints[Constraint]"
+          DTS:CreationName=""
+          DTS:DTSID="{B6CE2F98-7F03-4743-B2F3-39D61AA54BED}"
+          DTS:From="Package\Sequence Container\Truncate Staging Table"
+          DTS:LogicalAnd="True"
+          DTS:ObjectName="Constraint"
+          DTS:To="Package\Sequence Container\Stage UNFI Products" />
+      </DTS:PrecedenceConstraints>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint]"
+      DTS:CreationName=""
+      DTS:DTSID="{364B2629-0522-47AB-8E95-EA03E6A10A03}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint"
+      DTS:To="Package\Send Fail Message"
+      DTS:Value="1" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{0E4B1F47-A2E9-4993-873C-41323FB5B0E9}"
+      DTS:From="Package\Sequence Container"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 1"
+      DTS:To="Package\Application Data Processing" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Constraint 2]"
+      DTS:CreationName=""
+      DTS:DTSID="{AEDAF687-5D4B-42DE-AFAE-B51E86E3DF46}"
+      DTS:From="Package\Application Data Processing"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Constraint 2"
+      DTS:To="Package\Send Fail Message"
+      DTS:Value="1" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--This CDATA section contains the layout information of the package. The section includes information such as (x,y) coordinates, width, and height.-->
+<!--If you manually edit this section and make a mistake, you can delete it. -->
+<!--The package will still be able to load normally but the previous layout information will be lost and the designer will automatically re-arrange the elements on the design surface.-->
+<Objects
+  Version="sql11">
+  <!--Each node below will contain properties that do not affect runtime behavior.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="177,42"
+          Id="Package\Sequence Container\Stage UNFI Products"
+          TopLeft="55,96" />
+        <NodeLayout
+          Size="188,42"
+          Id="Package\Sequence Container\Truncate Staging Table"
+          TopLeft="46,15" />
+        <EdgeLayout
+          Id="Package\Sequence Container.PrecedenceConstraints[Constraint]"
+          TopLeft="141.75,57">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,39"
+              Start="0,0"
+              End="0,31.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,31.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="294,189"
+          Size="294,232"
+          Id="Package\Sequence Container"
+          TopLeft="350,1121" />
+        <NodeLayout
+          Size="166,42"
+          Id="Package\Send Fail Message"
+          TopLeft="737,1507" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint]"
+          TopLeft="497,1353">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="296.666666666667,154"
+              Start="0,0"
+              End="296.666666666667,146.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,87.5178997613365" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,87.5178997613365"
+                    Point2="0,91.5178997613365"
+                    Point3="4,91.5178997613365" />
+                  <mssgle:LineSegment
+                    End="292.666666666667,91.5178997613365" />
+                  <mssgle:CubicBezierSegment
+                    Point1="292.666666666667,91.5178997613365"
+                    Point2="296.666666666667,91.5178997613365"
+                    Point3="296.666666666667,95.5178997613365" />
+                  <mssgle:LineSegment
+                    End="296.666666666667,146.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="133.091985677083,96.5178997613365,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="210,42"
+          Id="Package\Application Data Processing\Process Elastic Search Data"
+          TopLeft="27.5,90" />
+        <NodeLayout
+          Size="174,42"
+          Id="Package\Application Data Processing\Proces Catalog Data"
+          TopLeft="29,28" />
+        <ContainerLayout
+          HeaderHeight="43"
+          IsExpanded="True"
+          PanelSize="271,281"
+          Size="271,324"
+          Id="Package\Application Data Processing"
+          TopLeft="1015,1132.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 1]"
+          TopLeft="644,1237">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="371,57.5"
+              Start="0,0"
+              End="363.5,57.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="181.5,0" />
+                  <mssgle:CubicBezierSegment
+                    Point1="181.5,0"
+                    Point2="185.5,0"
+                    Point3="185.5,4" />
+                  <mssgle:LineSegment
+                    End="185.5,53.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="185.5,53.5"
+                    Point2="185.5,57.5"
+                    Point3="189.5,57.5" />
+                  <mssgle:LineSegment
+                    End="363.5,57.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Constraint 2]"
+          TopLeft="1150.5,1456.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-304.166666666667,50.5"
+              Start="0,0"
+              End="-304.166666666667,43">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.0107398568019" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26.0107398568019"
+                    Point2="0,30.0107398568019"
+                    Point3="-4,30.0107398568019" />
+                  <mssgle:LineSegment
+                    End="-300.166666666667,30.0107398568019" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-300.166666666667,30.0107398568019"
+                    Point2="-304.166666666667,30.0107398568019"
+                    Point3="-304.166666666667,34.0107398568019" />
+                  <mssgle:LineSegment
+                    End="-304.166666666667,43" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-167.324680989583,35.0107398568019,30.4826953125,9.7490234375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Sequence Container\Stage UNFI Products">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="4" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="171,42"
+          Id="Package\Sequence Container\Stage UNFI Products\OLE DB Destination"
+          TopLeft="532,225" />
+        <NodeLayout
+          Size="151,42"
+          Id="Package\Sequence Container\Stage UNFI Products\Flat File Source"
+          TopLeft="361,78" />
+        <EdgeLayout
+          Id="Package\Sequence Container\Stage UNFI Products.Paths[Flat File Source Output]"
+          TopLeft="436.5,120">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="181,105"
+              Start="0,0"
+              End="181,97.5">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,48.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,48.5"
+                    Point2="0,52.5"
+                    Point3="4,52.5" />
+                  <mssgle:LineSegment
+                    End="177,52.5" />
+                  <mssgle:CubicBezierSegment
+                    Point1="177,52.5"
+                    Point2="181,52.5"
+                    Point3="181,56.5" />
+                  <mssgle:LineSegment
+                    End="181,97.5" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Sequence Container\Stage UNFI Products\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>

@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Profile;
+﻿using KeithLink.Svc.Core.Enumerations.Profile;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.Paging;
@@ -48,6 +49,10 @@ namespace KeithLink.Svc.WebApi.Services {
             }
         }
 
+        /// <summary>
+        /// main method for handling requests send to this handler
+        /// </summary>
+        /// <param name="context"></param>
         public void ProcessRequest(HttpContext context) {
             // get data
             string xml = new StreamReader(context.Request.InputStream).ReadToEnd();
@@ -67,7 +72,7 @@ namespace KeithLink.Svc.WebApi.Services {
             if (profileLogicReturn.UserProfiles.Count > 0) {
                 UserProfile profile = profileLogicReturn.UserProfiles[0];
 
-                PagedResults<Customer> customers = profileLogic.CustomerSearch(profile, body.customerNumber, new Core.Models.Paging.PagingModel(), string.Empty);
+                PagedResults<Customer> customers = profileLogic.CustomerSearch(profile, body.customerNumber, new Core.Models.Paging.PagingModel(), string.Empty, CustomerSearchType.Customer);
 
                 if (customers.TotalResults > 0) {
                     returnedPrices.Products.AddRange(GetItemPricing(customers.Results[0].CustomerBranch, body.customerNumber, body.products, ConvertEffectiveDate(body.effDate)));

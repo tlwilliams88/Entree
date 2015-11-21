@@ -1,6 +1,7 @@
 ﻿// KeithLink
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Interface.ETL;
+using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.InternalSvc.Interfaces;
 
@@ -20,14 +21,21 @@ namespace KeithLink.Svc.InternalSvc
 	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
 	public class ETLService : IETLService
     {
+        #region attributes
+
         private readonly ICatalogLogic categoryLogic;
         private readonly ICustomerLogic customerLogic;
-        private readonly IElasticSearchCategoriesImport _esCategoriesImportLogic;
-        private readonly IElasticSearchHouseBrandsImport _esHouseBrandsImportLogic;
-        private readonly IElasticSearchItemImport _esItemImportLogic;
+        private readonly ICategoriesImport _esCategoriesImportLogic;
+        private readonly IHouseBrandsImport _esHouseBrandsImportLogic;
+        private readonly IItemImport _esItemImportLogic;
         private readonly IListsImportLogic _listImportLogic;
 
-        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, IElasticSearchCategoriesImport esCategoriesImport, IElasticSearchHouseBrandsImport esHouseBrandsImport, IElasticSearchItemImport esItemImport, IListsImportLogic listImportLogic)
+        #endregion
+
+        #region constructor
+
+        public ETLService(ICatalogLogic categoryLogic, ICustomerLogic customerLogic, ICategoriesImport esCategoriesImport, IHouseBrandsImport esHouseBrandsImport, IItemImport esItemImport, IListsImportLogic listImportLogic)
+
         {
             this.categoryLogic = categoryLogic;
             this.customerLogic = customerLogic;
@@ -37,32 +45,21 @@ namespace KeithLink.Svc.InternalSvc
             this._listImportLogic = listImportLogic;
         }
 
-        // Does this need to be removed?
-        public bool ProcessETLData()
-        {
-            /*
-            Task.Factory.StartNew(() => RunAllCatalogTasks()).ContinueWith((t) =>
-            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-            */
+        #endregion
 
-            Task.Factory.StartNew(() => categoryLogic.ProcessCatalogDataSerial()).ContinueWith((t) =>
-            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+        #region methods
 
-            Task.Factory.StartNew(() => customerLogic.ImportCustomerTasks()).ContinueWith((t) =>
-            { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-
-            return true;
-        }
-
-        // TODO: Refactor
+        /// <summary>
+        /// PRocess catalog data
+        /// </summary>
+        /// <returns></returns>
         public bool ProcessCatalogData()
         {
-            Task.Factory.StartNew(() => categoryLogic.ProcessCatalogData()).ContinueWith((t) =>
+            Task.Factory.StartNew(() => categoryLogic.ImportCatalog()).ContinueWith((t) =>
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
         }
-
         /// <summary>
         /// Process staging customer data
         /// </summary>
@@ -77,27 +74,21 @@ namespace KeithLink.Svc.InternalSvc
             { (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
             return true;
+
         }
 
         /// <summary>
         /// Process customer items
         /// </summary>
         /// <returns></returns>
-        public bool ProcessCustomerItemHistory() {
-            Task.Factory.StartNew( () => customerLogic.ImportCustomerItemHistory() ).ContinueWith( ( t ) => { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+        public bool ProcessCustomerItemHistory() 
+        {
+            Task.Factory.StartNew( () => customerLogic.ImportCustomerItemHistory() ).ContinueWith( ( t ) 
+                => { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
 
             return true;
         }
         
-        /// <summary>
-        /// Stub function possibly un-needed
-        /// </summary>
-        /// <returns></returns>
-        public bool ProcessInvoiceData()
-        {
-			return true;
-        }
-
         /// <summary>
         /// Processes contract and worksheet lists
         /// </summary>
@@ -119,16 +110,37 @@ namespace KeithLink.Svc.InternalSvc
         /// <returns></returns>
         public bool ProcessElasticSearchData()
         {
-            // TODO: Remove once ETL has been verified
-            //Task.Factory.StartNew(() => categoryLogic.ProcessElasticSearchData()).ContinueWith((t) =>
-            //{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
-
-            Task.Factory.StartNew( () => _esCategoriesImportLogic.ImportCategories() ).ContinueWith( ( t ) => { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
-            Task.Factory.StartNew( () => _esHouseBrandsImportLogic.ImportHouseBrands() ).ContinueWith( ( t ) => { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
-            Task.Factory.StartNew( () => _esItemImportLogic.ImportItems() ).ContinueWith( ( t ) => { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+            Task.Factory.StartNew( () => _esCategoriesImportLogic.ImportCategories() ).ContinueWith( ( t ) =>
+            { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+            
+            Task.Factory.StartNew( () => _esHouseBrandsImportLogic.ImportHouseBrands() ).ContinueWith( ( t ) =>
+            { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
+            
+            Task.Factory.StartNew( () => _esItemImportLogic.ImportItems() ).ContinueWith( ( t ) =>
+            { (new ErrorHandler()).HandleError( t.Exception ); }, TaskContinuationOptions.OnlyOnFaulted );
 
             return true;
         }
-        
+
+
+		public bool ProcessUNFIElasticSearchData()
+		{
+			Task.Factory.StartNew(() => _esItemImportLogic.ImportUNFIItems()).ContinueWith((t) =>
+			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);           
+
+			return true;
+		}
+
+        #endregion
+
+
+
+		public bool ProcessUNFICatalogData()
+		{
+			Task.Factory.StartNew(() => categoryLogic.ImportUNFICatalog()).ContinueWith((t) =>
+			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
+
+			return true;
+		}
 	}
 }

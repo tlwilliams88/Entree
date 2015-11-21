@@ -21,7 +21,7 @@ angular.module('bekApp')
         var scrollOffset = parseInt(scope.scrollOffset, 10) || 0;
 
         if (scrollableContainer.length == 0){
-          scrollableContainer = $(window);
+          scrollableContainer = $(window) * 10;
         }
 
         function createClone(){

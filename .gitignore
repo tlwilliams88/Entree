@@ -201,3 +201,6 @@ node_modules/
 #Ignore Log Files
 grunt_log.txt
 KeithLink/KeithLink.Svc.InternalSvc/logs/
+
+# WebStorm Config 
+.idea

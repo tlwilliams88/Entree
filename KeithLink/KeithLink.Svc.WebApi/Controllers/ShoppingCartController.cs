@@ -1,12 +1,19 @@
-﻿using KeithLink.Svc.Core.Interface.Cart;
+﻿// KeithLink
+using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
+
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+
+// Core
+using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -54,6 +61,55 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
 		}
+
+
+        /// <summary>
+        /// Export Cart + List
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <param name="listId"></param>
+        /// <param name="options"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ApiKeyedRoute( "cart/print/{cartId}/{listId}" )]
+        public HttpResponseMessage PrintCartWithList( Guid cartId, long listId, PrintListModel options ) {
+            ReportViewer rv = new ReportViewer();
+
+            Assembly assembly = Assembly.Load( "KeithLink.Svc.Impl" );
+
+            Stream rdlcStream = null;
+            var deviceInfo = string.Empty;
+            if (options.Landscape) {
+                deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
+                rdlcStream = assembly.GetManifestResourceStream( "KeithLink.Svc.Impl.Reports.CartReport_Landscape.rdlc" );
+            } else {
+                deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
+                rdlcStream = assembly.GetManifestResourceStream( "KeithLink.Svc.Impl.Reports.CartReport.rdlc" );
+            }
+
+            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options );
+
+            rv.LocalReport.LoadReportDefinition( rdlcStream );
+            ReportParameter[] parameters = new ReportParameter[3];
+            parameters[0] = new ReportParameter( "ListName", reportModel.ListName );
+            parameters[1] = new ReportParameter( "CartName", reportModel.CartName );
+            parameters[2] = new ReportParameter( "ShowParValues", options.ShowParValues ? "true" : "false" );
+
+            rv.LocalReport.SetParameters( parameters );
+
+            rv.LocalReport.DataSources.Add( new ReportDataSource( "CartItems", reportModel.CartItems ) );
+            rv.LocalReport.DataSources.Add( new ReportDataSource( "ListItems", reportModel.ListItems ) );
+
+            var bytes = rv.LocalReport.Render( "PDF", deviceInfo );
+            Stream stream = new MemoryStream( bytes );
+
+            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+            result.Content = new StreamContent(stream);
+            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue( "application/pdf" );
+
+            return result;
+        }
 
 		/// <summary>
 		/// Create a user cart

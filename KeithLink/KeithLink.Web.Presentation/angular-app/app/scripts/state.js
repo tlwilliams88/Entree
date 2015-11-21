@@ -73,6 +73,13 @@ angular.module('bekApp')
           return BranchService.getBranches();
         }]
       }
+    })        .state('menu.applicationsettings', {
+      url: '/applicationsettings/',
+      templateUrl: 'views/applicationsettings.html',
+      controller: 'ApplicationSettingsController',
+      data: {
+        authorize: 'isLoggedIn'
+      }
     })
     .state('menu.notifications', {
       url: '/notifications/',
@@ -160,7 +167,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.lists.items', {
-      url: ':listId/',
+      url: ':listId/?renameList',
       templateUrl: 'views/lists.html',
       controller: 'ListController',
       data: {
@@ -171,8 +178,45 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId);
         }],
-        originalList: ['$stateParams', 'validListId', 'lists', 'ListService', function($stateParams, validListId, lists, ListService) {
-          return ListService.getList(validListId);
+        originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, validListId, lists, ListService, UtilityService, LocalStorage, ENV) {
+         
+          var last = LocalStorage.getLastList();
+          var stillExists = false;
+
+          var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
+          var params = {size: pageSize, from: 0, sort: [], message: 'Loading List...'};
+   
+          ListService.lists.forEach(function(list){
+            if(last && list.listid === last.listId){
+               stillExists = true;
+               var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+               if(last.timeset < timeoutDate){         
+                  stillExists = false;
+                 }
+            }
+          });
+
+          var listIdtoBeUsed = '';
+          if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
+             last.timeset =  moment().format('YYYYMMDDHHmm');
+             LocalStorage.setLastList(last);
+             listIdtoBeUsed = last.listId;
+          }
+          else{
+             LocalStorage.setLastList({});
+             listIdtoBeUsed = validListId
+           }
+
+          var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
+
+         if(listHeader && (listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory)){
+             ListService.getParamsObject(params, 'lists').then(function(storedParams){
+             $stateParams.sortingParams = storedParams;
+             params = storedParams;
+            })
+          } 
+            return ListService.getList(listIdtoBeUsed, params);
+        
         }]
       }
     })
@@ -264,7 +308,8 @@ angular.module('bekApp')
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':cartId/list/:listId/?useParlevel/?continueToCart',
+      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage',
+      params: {listItems: null},
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
       data: {
@@ -282,6 +327,7 @@ angular.module('bekApp')
         //   }
         // }],
         selectedCart: ['$stateParams', 'CartService', 'OrderService', function($stateParams, CartService, OrderService) {
+
           if ($stateParams.cartId !== 'New') {
             // determine if id is a change order or a cart, carts are guids show they have dashes
             if ($stateParams.cartId.indexOf('-') > -1) {
@@ -294,8 +340,50 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
-        selectedList: ['$stateParams', 'lists', 'validListId', 'ListService', function($stateParams, lists, validListId, ListService) {
-          return ListService.getList(validListId);
+        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
+             
+          // if(!CartService.shipDates || CartService.shipDates.length === 0){
+          //   alert('An error has occurred retrieving available shipping dates. Please contact your DSR for more information.');
+          //   $state.go('menu.home');
+          // }
+
+             var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
+             var params = {size: pageSize, from: 0, sort: []};
+
+          if($stateParams.cartId !== 'New'){
+            var allSets = LocalStorage.getLastOrderList();
+            var allValidSets = [];           
+            var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+            allSets.forEach(function(set){          
+              if(set.timeset > timeoutDate){
+                allValidSets.push(set);
+              }
+            });
+
+            if(allValidSets.length){
+              allValidSets.forEach(function(set){
+                if(set.cartId === $stateParams.cartId){
+                    ListService.lists.forEach(function(list){
+                      if(list.listid === set.listId){
+                        validListId = set.listId;
+                         set.timeset =  moment().format('YYYYMMDDHHmm');
+                      }
+                    });
+                  }
+              });  
+            }                
+            LocalStorage.setLastOrderList(allValidSets);  
+          } 
+          var listHeader = $filter('filter')(lists, {listid: validListId})[0];
+
+            if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
+              ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
+                $stateParams.sortingParams = storedParams; 
+                params = storedParams;
+              })
+            }   
+         
+          return ListService.getList(validListId, params);
         }]
       }
     })
@@ -415,7 +503,7 @@ angular.module('bekApp')
       templateUrl: 'views/itemusagereport.html',
       controller: 'ItemUsageReportController',
       data: {
-        authorize: 'canPayInvoices'
+        authorize: 'canRunReports'
       }
     })
     .state('menu.inventoryreport', {
@@ -428,7 +516,7 @@ angular.module('bekApp')
         }]
       },
       data: {
-        authorize: 'canManageLists'
+        authorize: 'canRunReports'
       }
     })
 

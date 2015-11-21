@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
 				PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString(),
 				OrderSystem = new OrderSource().Parse("B").ToString()
             };
-
+            
             retVal.ItemCount = retVal.Items == null ? 0 : retVal.Items.Count;
 
             return retVal;

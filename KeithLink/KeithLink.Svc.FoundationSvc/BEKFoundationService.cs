@@ -1,38 +1,40 @@
-﻿
+﻿using KeithLink.Common.Impl.Logging;
+using KeithLink.Svc.FoundationSvc.Interface;
+
+using CommerceServer.Core;
+using CommerceServer.Core.Runtime.Orders;
+using CommerceServer.Foundation;
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.ServiceModel.Activation;
 using System.Text;
 using System.Web;
-using CommerceServer.Foundation;
-using KeithLink.Svc.FoundationSvc.Interface;
-using System.ServiceModel.Activation;
-using System.Configuration;
-using System.Data.SqlClient;
-using CommerceServer.Core;
 
-namespace KeithLink.Svc.FoundationSvc
-{
+namespace KeithLink.Svc.FoundationSvc {
 	[AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
-	public class BEKFoundationService : OperationService, IBEKFoundationService
-	{
-        private static string applicationNameForLogging = "KeithLink.FoundationSvc";
-		public string SaveCartAsOrder(Guid userId, Guid cartId)
-		{
-            try
-            {
+	public class BEKFoundationService : OperationService, IBEKFoundationService {
+        #region attributes
+        private static string applicationNameForLogging = "Entree Foundation Service";
+        #endregion
+
+        #region methods
+        public string SaveCartAsOrder(Guid userId, Guid cartId) {
+            try {
                 var context = Extensions.SiteHelper.GetOrderContext();
 
                 var basket = context.GetBasket(userId, cartId);
 
                 int startIndex = 1; // main frame needs these to start at 1
-                foreach (CommerceServer.Core.Runtime.Orders.LineItem lineItem in basket.OrderForms[0].LineItems)
-                {
+                foreach (LineItem lineItem in basket.OrderForms[0].LineItems) {
                     lineItem["LinePosition"] = startIndex;
                     startIndex++;
                 }
@@ -45,23 +47,17 @@ namespace KeithLink.Svc.FoundationSvc
                 var purchaseOrder = basket.SaveAsOrder();
 
                 return purchaseOrder.TrackingNumber;
-            }
-            catch (Exception ex)
-            {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+            } catch (Exception ex) {
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in SaveCartAsOrder: ", ex);
                     
                 throw ex;
             }
 		}
 
-        public string SaveOrderAsChangeOrder(Guid userId, Guid cartId)
-        {
-            try
-            {
-                CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
-                    GetPurchaseOrder(userId, cartId);
+        public string SaveOrderAsChangeOrder(Guid userId, Guid cartId) {
+            try {
+                PurchaseOrder po = GetPurchaseOrder(userId, cartId);
 
                 PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
                 pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
@@ -71,43 +67,34 @@ namespace KeithLink.Svc.FoundationSvc
                 po.Save();
 
                 return po.TrackingNumber;
-            }
-            catch (Exception ex)
-            {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+            } catch (Exception ex) {
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in SaveOrderAsChangeOrder: ", ex);
 
                 throw ex;
             }
         }
 
-        public void CleanUpChangeOrder(Guid userId, Guid cartId)
-        {
-            try
-            {
-                CommerceServer.Core.Runtime.Orders.PurchaseOrder po =
-                    GetPurchaseOrder(userId, cartId);
+        public void CleanUpChangeOrder(Guid userId, Guid cartId) {
+            try {
+                PurchaseOrder po = GetPurchaseOrder(userId, cartId);
 
-                List<int> lineItemIndexesToRemove = new List<int>();
+                List<LineItem> lineItemIndexesToRemove = new List<LineItem>();
 
-                foreach (CommerceServer.Core.Runtime.Orders.LineItem li in po.OrderForms[0].LineItems)
-                {
-                    if (li.Status == "deleted")
-                    {
-                        lineItemIndexesToRemove.Add(li.Index);
+                foreach (LineItem li in po.OrderForms[0].LineItems) {
+                    if (li.Status == "deleted") {
+                        lineItemIndexesToRemove.Add(li);
                     }
                     li.Status = string.Empty;
                 }
-                foreach (int index in lineItemIndexesToRemove)
-                    po.OrderForms[0].LineItems.Remove(index);
+
+                foreach (LineItem item in lineItemIndexesToRemove) {
+                    po.OrderForms[0].LineItems.Remove(item);
+                }
 
                 po.Save();
-            }
-            catch (Exception ex)
-            {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+            } catch (Exception ex) {
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in CleanUpChangeOrder: ", ex);
 
                 throw ex;
@@ -268,5 +255,6 @@ namespace KeithLink.Svc.FoundationSvc
 			// Get the XML representation of the purchase orders.
 			return manager.GetPurchaseOrdersAsXml(poIds.ToArray());
 		}
-    }	
+        #endregion
+    }
 }

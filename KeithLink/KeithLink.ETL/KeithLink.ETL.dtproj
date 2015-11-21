@@ -33,6 +33,21 @@
           <FullPath>ETLProcess_DEMO.dtsx</FullPath>
           <References />
         </DtsPackage>
+        <DtsPackage FormatVersion="6">
+          <Name>UNFIETLProcess_DEV.dtsx</Name>
+          <FullPath>UNFIETLProcess_DEV.dtsx</FullPath>
+          <References />
+        </DtsPackage>
+        <DtsPackage FormatVersion="6">
+          <Name>UNFIETLProcess_QA.dtsx</Name>
+          <FullPath>UNFIETLProcess_QA.dtsx</FullPath>
+          <References />
+        </DtsPackage>
+        <DtsPackage FormatVersion="6">
+          <Name>UNFIETLProcess_RELEASE.dtsx</Name>
+          <FullPath>UNFIETLProcess_RELEASE.dtsx</FullPath>
+          <References />
+        </DtsPackage>
       </DTSPackages>
     </Manifest>
   </DeploymentModelSpecificContent>
@@ -62,6 +77,17 @@
     </Configuration>
     <Configuration>
       <Name>Demo</Name>
+      <Options>
+        <OutputPath>bin</OutputPath>
+        <ConnectionMappings />
+        <ConnectionProviderMappings />
+        <ConnectionSecurityMappings />
+        <DatabaseStorageLocations />
+        <ParameterConfigurationValues />
+      </Options>
+    </Configuration>
+    <Configuration>
+      <Name>Dev2</Name>
       <Options>
         <OutputPath>bin</OutputPath>
         <ConnectionMappings />

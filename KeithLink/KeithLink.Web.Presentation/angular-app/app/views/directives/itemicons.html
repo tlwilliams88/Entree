@@ -1,17 +1,18 @@
 <!-- History -->
+<span style="white-space:nowrap;">
 <a ng-if="::item.inhistory === true">
   <span tooltip="Previously ordered" class="text-regular icon-history"></span>
 </a>
 
 <!-- Replacement Item -->
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="::item.replacementitem > 0">
-  <span tooltip="Item is replacing item # {{item.replacementitem}}" class="text-green icon-cycle"></span>
+  <span tooltip="Item is being replaced by item # {{item.replacementitem}}" class="text-red icon-cycle"></span>
 </a>
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="::item.replaceditem > 0">
-  <span tooltip="Item is being replaced by item # {{item.replaceditem}}" class="text-red icon-cycle"></span>
+  <span tooltip="Item is replacing item # {{item.replaceditem}}" class="text-green icon-cycle"></span>
 </a>
 <!-- Substituted Item (orders only) -->
-<a ng-if="::item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item subtituted for Item # {{item.substituteditemnumber}}"></span></a>
+<a ng-if="::item.substituteditemnumber" ui-sref="menu.catalog.products.details({ itemNumber: item.substituteditemnumber })"><span class="icon-switch text-regular" tooltip="Item substituted for Item # {{item.substituteditemnumber}}"></span></a>
 <!-- Deviated Cost -->
 <a ng-if="::item.deviatedcost === 'Y'">
   <span tooltip="Deviated Price" class="text-regular icon-dollar"></span>
@@ -39,3 +40,4 @@
 <a ng-if="::item.temp_zone === 'D'">
   <span tooltip="Dry" class="text-regular icon-air"></span>
 </a>
+</span>

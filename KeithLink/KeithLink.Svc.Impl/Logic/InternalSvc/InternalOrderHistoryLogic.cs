@@ -75,36 +75,53 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #endregion
 
         #region methods
-        private void Create(OrderHistoryFile currentFile) {
-            // first attempt to find the order, look by branch and invoice number
-            EF.OrderHistoryHeader header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+        private void Create(OrderHistoryFile currentFile)
+        {
+            // first attempt to find the order, look by confirmation number
+            EF.OrderHistoryHeader header = null;
 
-            // second attempt to find the order, look by confirmation number
-            if (header == null && !string.IsNullOrEmpty(currentFile.Header.ControlNumber)) { header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber).FirstOrDefault(); }
+            if (!String.IsNullOrEmpty(currentFile.Header.ControlNumber) && !String.IsNullOrEmpty(currentFile.Header.OrderSystem.ToShortString()))
+            {
+                header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber, currentFile.Header.OrderSystem.ToShortString()).FirstOrDefault();
+            }
+
+            // second attempt to find the order, look by invioce number
+            if (header == null && !currentFile.Header.InvoiceNumber.Equals("Processing"))
+            {
+                header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
+            }
 
             // last ditch effort is to create a new header
-            if (header == null) {
+            if (header == null)
+            {
                 header = new EF.OrderHistoryHeader();
                 header.OrderDetails = new List<EF.OrderHistoryDetail>();
             }
 
             currentFile.Header.MergeWithEntity(ref header);
 
-            foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList()) {
+            if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
+
+            foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
+            {
 
                 EF.OrderHistoryDetail detail = null;
 
-                if (header.OrderDetails != null && header.OrderDetails.Count > 0) {
+                if (header.OrderDetails != null && header.OrderDetails.Count > 0)
+                {
                     detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
                 }
 
-                if (detail == null) {
+                if (detail == null)
+                {
                     EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
                     tempDetail.BranchId = header.BranchId;
                     tempDetail.InvoiceNumber = header.InvoiceNumber;
 
                     header.OrderDetails.Add(tempDetail);
-                } else {
+                }
+                else
+                {
                     currentDetail.MergeWithEntityFrameworkModel(ref detail);
 
                     detail.BranchId = header.BranchId;
@@ -135,26 +152,27 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (po != null) {
                         returnOrder.Status = po.Status;
                     }
+                }
+            }
 
-                    if (myOrder.ActualDeliveryTime != null) {
-                        returnOrder.Status = "Delivered";
+
+            // Set the status to delivered if the Actual Delivery Time is populated
+            if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+                    returnOrder.Status = "Delivered";
+            }
+
+            if (myOrder != null) {
+                try {
+                    var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
+                    if (invoice != null) {
+                        returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
                     }
+                } catch (Exception ex) {
+                    _log.WriteErrorLog("Error looking up invoice when trying to get order:  " + ex.Message + ex.StackTrace);
+
                 }
             }
-
-            try
-            {
-                var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
-                if (invoice != null)
-                {
-                    returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
-                }
-            }
-            catch (Exception ex)
-            {
-                _log.WriteErrorLog(String.Format("Error Looking up invoice number {0} for customer {1} - {2}." + ex.Message + ex.StackTrace, myOrder.InvoiceNumber, myOrder.CustomerNumber, myOrder.BranchId));
-            }
-
+            
 			LookupProductDetails(branchId, returnOrder);
 
             if (po != null) {
@@ -244,6 +262,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 }
             }
         }
+
 
         private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers) {
             var customerOrders = new BlockingCollection<Order>();

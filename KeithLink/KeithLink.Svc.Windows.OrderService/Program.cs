@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Autofac;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceProcess;
@@ -14,7 +15,7 @@ namespace KeithLink.Svc.Windows.OrderService {
             ServiceBase[] ServicesToRun;
                 
             ServicesToRun = new ServiceBase[] { 
-                new OrderService() 
+                new OrderService(AutofacContainerBuilder.BuildContainer()) 
             };
 
             if (Environment.UserInteractive)
