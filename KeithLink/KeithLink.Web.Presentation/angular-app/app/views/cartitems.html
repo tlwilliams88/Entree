@@ -223,7 +223,8 @@
                   <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
                 </td>
                 <td>
-                  <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+                  <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber, catalogType: 'UNFI'})">{{item.itemnumber}}</a>                  
+                  <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
                 </td>
                 <td>
                   {{item.name}}
@@ -271,7 +272,8 @@
                   <input type="checkbox" ng-model="item.isSelected" no-dirty-check>
                 </td>
                 <td>
-                  <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
+                  <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber, catalogType: 'UNFI'})">{{item.itemnumber}}</a>
+                  <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{item.itemnumber}}</a>
                 </td>
                 <td colspan="2">
                   {{item.name}}
@@ -373,7 +375,8 @@
           <tr ng-class="{ odd : $odd, even: $even }" 
               ng-repeat-start="item in (filteredItems = (currentCart.items | filter:filterFields | orderBy:sortBy:sortOrder | limitTo:itemsToDisplay))">
             <td>
-              <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+              <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
+              <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
             </td>
             <td>
               {{item.name}}

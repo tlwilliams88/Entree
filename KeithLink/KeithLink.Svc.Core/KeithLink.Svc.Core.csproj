@@ -156,6 +156,8 @@
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
+    <Compile Include="Interface\Configuration\IExternalCatalogServiceRepository.cs" />
+    <Compile Include="Interface\Configuration\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\PagingHelper.cs" />
     <Compile Include="Helpers\PricingHelper.cs" />
@@ -261,6 +263,7 @@
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
+    <Compile Include="Models\Configuration\EF\ExternalCatalog.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
     <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
@@ -289,6 +292,7 @@
     <Compile Include="Models\EF\PasswordResetRequest.cs" />
     <Compile Include="Models\Lists\PrintListModel.cs" />
     <Compile Include="Models\Messaging\Queue\HasNewsNotification.cs" />
+    <Compile Include="Models\ModelExport\ExportExternalCatalog.cs" />
     <Compile Include="Models\OnlinePayments\Invoice\EF\InvoiceHeader.cs" />
     <Compile Include="Models\OnlinePayments\Payment\PaymentValidationResponseModel.cs" />
     <Compile Include="Models\Profile\DsrAliasModel.cs" />

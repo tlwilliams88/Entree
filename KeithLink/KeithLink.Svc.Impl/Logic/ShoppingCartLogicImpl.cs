@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return existingItem.First().Id.ToGuid();
 			}
 						
-			return basketRepository.AddItem(cartId, newItem.ToLineItem(basket.BranchId), basket);
+			return basketRepository.AddItem(cartId, newItem.ToLineItem(), basket);
 		}
 
 		private string CartName(string name, UserSelectedContext catalogInfo)
@@ -115,10 +115,11 @@ namespace KeithLink.Svc.Impl.Logic
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
             
-			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem(catalogInfo.BranchId.ToLower())).ToList());
+			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
 		}
 
-        public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items) {
+        public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
+        {
             //Create a shoppingcart model and pass to the existing createcart method
             var shoppingCart = new ShoppingCart();
             shoppingCart.Items = new List<ShoppingCartItem>();
@@ -127,17 +128,20 @@ namespace KeithLink.Svc.Impl.Logic
 
             var itemErrorMessage = new StringBuilder();
 
-            foreach (var item in items) {
+            foreach (var item in items)
+            {
                 if (item == null || string.IsNullOrEmpty(item.ItemNumber))
                     continue;
 
                 //Verify they have access to item, if the item is invalid, log then return error
-                var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user);
+                var prod = catalogLogic.GetProductById(catalogInfo, item.ItemNumber, user, catalogInfo.BranchId);
 
                 if (prod == null)
                     itemErrorMessage.AppendFormat("Item {0} is not a valid item #", item.ItemNumber);
-                else {
-                    shoppingCart.Items.Add(new ShoppingCartItem() {
+                else
+                {
+                    shoppingCart.Items.Add(new ShoppingCartItem()
+                    {
                         ItemNumber = item.ItemNumber,
                         Each = item.Each,
                         Quantity = item.Quantity
@@ -189,8 +193,17 @@ namespace KeithLink.Svc.Impl.Logic
 			if (cart.Items == null)
 				return;
 
-			var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-			var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+            var catalogList = cart.Items.Select(i => i.CatalogId).Distinct().ToList();
+            var products = new ProductsReturn() { Products = new List<Product>() };
+            var pricing = new PriceReturn() { Prices = new List<Price>() };
+            foreach (var catalogId in catalogList)
+            {
+                var tempProducts = catalogLogic.GetProductsByIds(catalogId, cart.Items.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
+                products.AddRange(tempProducts);
+                pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products));
+            }
+            //var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
+            //var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
 			var priceHash = pricing.Prices.ToDictionary(p => p.ItemNumber);
@@ -208,7 +221,7 @@ namespace KeithLink.Svc.Impl.Logic
 				{
 					item.Name = prod.Name;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
-					item.StorageTemp = prod.Nutritional.StorageTemp;
+					item.StorageTemp = prod.Nutritional == null ? "" : prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
                     item.CategoryId = prod.CategoryId;
                     item.CategoryName = prod.CategoryName;
@@ -352,7 +365,7 @@ namespace KeithLink.Svc.Impl.Logic
             return new ShoppingCartReportModel() { CartName = cart.Name, ListName = list.Name, CartItems = cartReportItems, ListItems = listReportItems };
         }
         
-        public NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
+        public List<NewOrderReturn> SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 			//Check that RequestedShipDate
@@ -365,15 +378,67 @@ namespace KeithLink.Svc.Impl.Logic
 
 			//Save to Commerce Server
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
-			var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), cartId);
-			var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
-            orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
-            orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue
+            //split into multiple orders
+            var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
+            var returnOrders = new List<NewOrderReturn>();
+            var orderNumbers = new List<string>();
+            var tempCatalogInfo = new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalogInfo.BranchId }; 
 
-			auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
+            //make list of baskets
+            foreach (var catalogId in catalogList)
+            {
+                var shoppingCart = new ShoppingCart()
+                {
+                    CartId = basket.Id.ToGuid(),
+                    Name = basket.DisplayName,
+                    BranchId = catalogId,
+                    RequestedShipDate = basket.RequestedShipDate,
+                    Active = false,
+                    PONumber = basket.PONumber,
+                    CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    Items = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => new ShoppingCartItem()
+                    {
+                        ItemNumber = l.ProductId,
+                        CartItemId = l.Id.ToGuid(),
+                        Notes = l.Notes,
+                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                        Each = l.Each.HasValue ? l.Each.Value : false,
+                        CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                        CatalogId = l.CatalogName
 
-			return new NewOrderReturn() { OrderNumber = orderNumber }; //Return actual order number
+                    }).ToList()
+                };
+                tempCatalogInfo.BranchId = catalogId;
+                var newCartId = CreateCart(user, tempCatalogInfo, shoppingCart);
+                orderNumbers.Add(client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId));//need new cart per loop
+            }
+
+            // delete original cart
+            DeleteCart(user, catalogInfo, cartId);
+
+            foreach (var orderNumber in orderNumbers) 
+            {
+                var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
+
+                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
+
+                //if bek items
+                if (true)
+                {
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue - mainframe only for BEK
+                }
+                else
+                {
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder);
+                }
+
+                auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
+
+                returnOrders.Add(new NewOrderReturn() { OrderNumber = orderNumber });
+            }
+
+			return returnOrders; //Return actual order number
 		}
 
         public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId) {
@@ -403,7 +468,8 @@ namespace KeithLink.Svc.Impl.Logic
 					Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
 					Each = l.Each.HasValue ? l.Each.Value : false,
                     Label = l.Label,
-					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
+					CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    CatalogId = l.CatalogName
 				}).ToList()
 			};
 
@@ -439,7 +505,7 @@ namespace KeithLink.Svc.Impl.Logic
 						lineItems.Add(existingItem.First());
 					}	
 					else
-						lineItems.Add(item.ToLineItem(updateCart.BranchId));
+						lineItems.Add(item.ToLineItem());
 				}
 				
 			}
@@ -475,7 +541,7 @@ namespace KeithLink.Svc.Impl.Logic
 			if (basket == null)
 				return;
 
-			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem(basket.BranchId));
+			basketRepository.UpdateItem(basket.UserId.ToGuid(), cartId, updatedItem.ToLineItem());
 		}
 
 		public List<ItemValidationResultModel> ValidateItems(UserSelectedContext catalogInfo, List<QuickAddItemModel> productsToValidate)
@@ -528,7 +594,5 @@ namespace KeithLink.Svc.Impl.Logic
 		}
 
         #endregion
-
-
 	}
 }

@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         
         ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
 		
-        Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile);
+        Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType);
         
 		Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile);
         

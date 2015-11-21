@@ -297,7 +297,9 @@
     <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
     <Compile Include="Repository\Cache\CacheRepositoryImpl.cs" />
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
+    <Compile Include="Repository\Configurations\ExternalCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
+    <Compile Include="Repository\Configurations\NoExternalCatalogRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementExternalRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
@@ -588,6 +590,10 @@
     <Compile Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.Designer.cs">
       <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.cs" />
+    <Compile Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.Designer.cs">
+      <DependentUpon>201510152123307_resynchDB2015-10-15.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.cs" />
     <Compile Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.Designer.cs">
       <DependentUpon>201506261544525_Add Original Confirmation Number.cs</DependentUpon>
@@ -599,6 +605,10 @@
     <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs" />
     <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.Designer.cs">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.cs" />
+    <Compile Include="Repository\EF\Migrations\201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.Designer.cs">
+      <DependentUpon>201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -1178,6 +1188,9 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.resx">
       <DependentUpon>201506081831305_Updated_itemhistory_to_change_eitherweekitem_column_name.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201510152123307_resynchDB2015-10-15.resx">
+      <DependentUpon>201510152123307_resynchDB2015-10-15.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201506261544525_Add Original Confirmation Number.resx">
       <DependentUpon>201506261544525_Add Original Confirmation Number.cs</DependentUpon>
     </EmbeddedResource>
@@ -1186,6 +1199,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.resx">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.resx">
+      <DependentUpon>201511210615272_2015-11-20_Merge_UNFI_ExternalCatalog_Mapping_Changes.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

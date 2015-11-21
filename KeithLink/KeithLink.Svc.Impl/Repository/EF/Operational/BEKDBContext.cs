@@ -40,6 +40,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         // Configuration
         public DbSet<ExportSetting> ExportSettings { get; set; }
         public DbSet<MessageTemplate> MessageTemplates { get; set; }
+        public DbSet<ExternalCatalog> ExternalCatalogs { get; set; }
 
         // ContentManagement
         public DbSet<ContentItem> ContentItems { get; set; }
@@ -105,6 +106,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             // Configuration
             modelBuilder.Entity<MessageTemplate>().ToTable( "MessageTemplates", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ExportSetting>().ToTable( "ExportSettings", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<ExternalCatalog>().ToTable("ExternalCatalogs", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             // ContentManagement
             modelBuilder.Entity<ContentItem>().ToTable( "ContentItems", schemaName: "ContentManagement" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );

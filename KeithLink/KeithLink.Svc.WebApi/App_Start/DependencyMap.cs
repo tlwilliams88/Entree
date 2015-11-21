@@ -121,6 +121,7 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 			builder.RegisterType<Repository.Configurations.ExportSettingServiceRepositoryImpl>().As<IExportSettingServiceRepository>();
+            builder.RegisterType<Repository.Configurations.ExternalCatalogServiceRepositoryImpl>().As<IExternalCatalogServiceRepository>();
             builder.RegisterType<Repository.Reports.ReportServiceRepositoryImpl>().As<IReportServiceRepository>();
             builder.RegisterType<Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
             builder.RegisterType<ImagingRepositoryImpl>().As<IImagingRepository>();

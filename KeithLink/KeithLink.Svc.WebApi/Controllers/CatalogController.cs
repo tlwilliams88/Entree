@@ -44,8 +44,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// </summary>
 		/// <returns>List of Categories</returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/categories")]
-        public CategoriesReturn GetCategories()
+        [ApiKeyedRoute("catalog/{catalogType}/categories")]
+        public CategoriesReturn GetCategories(string catalogType)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
             return _catalogLogic.GetCategories(0, 2000);
@@ -111,11 +111,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="id">Product Id (itemnumber)</param>
 		/// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/product/{id}")]
-        public Product GetProductById(string id)
+        [ApiKeyedRoute("catalog/{catalogType}/product/{id}")]
+        public Product GetProductById(string catalogType, string id)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            Product prod = _catalogLogic.GetProductById(this.SelectedUserContext, id, this.AuthenticatedUser);
+           
+            Product prod = _catalogLogic.GetProductById(this.SelectedUserContext, id, this.AuthenticatedUser, catalogType);
 
             if (prod == null)
                 return new Product();
@@ -144,9 +145,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="searchModel"></param>
 		/// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/search/{searchTerms}/products")]
-		public ProductsReturn GetProductsSearch(string searchTerms, [FromUri] SearchInputModel searchModel)
+        [ApiKeyedRoute("catalog/{catalogType}/search/{searchTerms}/products")]
+		public ProductsReturn GetProductsSearch(string catalogType, string searchTerms, [FromUri] SearchInputModel searchModel)
         {
+            searchModel.CatalogType = catalogType;
             ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
             return prods;
         }

@@ -35,6 +35,8 @@ angular.module('bekApp')
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
+  $scope.specialCatalogOpen = false;
+  $scope.showSpecialtyCatalogs = true;
  
   if (AccessService.isOrderEntryCustomer()) {
 
@@ -225,6 +227,24 @@ angular.module('bekApp')
     LocalStorage.setTempContext(selectedUserContext);
     refreshPage();
   };
+          
+  //Submenu for specialty catalogs
+  $scope.toggleSpecialCatalogSubmenu = function() {
+    if ($scope.$state !== undefined) {
+        if ($scope.$state.params.catalogType !== undefined) {
+            if ($scope.$state.params.catalogType !== 'UNFI'/* or other third parties $scope.$state.params.catalogType !== 'B&E'*/) {
+                $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
+            } else {
+                $scope.specialCatalogOpen = true;
+            }
+        } else { 
+            $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
+        }
+    }
+  };
+  $scope.toggleSpecialCatalogSubmenu(); //call to expand if it is in special catlog
+          
+  //
   
   /**********
   MENU BUTTON CLICK HANDLERS
@@ -266,7 +286,7 @@ angular.module('bekApp')
   };
 
   // PHONEGAP Feature
-  $scope.scanBarcode = function() {
+  $scope.scanBarcode = function() { // TODO: should this work with UNFI?
     cordova.plugins.barcodeScanner.scan(
       function (result) {
         var scannedText = result.text;

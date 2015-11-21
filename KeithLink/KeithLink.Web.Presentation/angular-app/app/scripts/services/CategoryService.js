@@ -13,9 +13,9 @@ angular.module('bekApp')
     var categories;
  
     var Service = {
-      getCategories: function() {
+      getCategories: function(catalogType) {
         if (!categories) {
-           categories = $http.get('/catalog/categories').then(function (response) {
+           categories = $http.get('/catalog/' + catalogType + '/categories').then(function (response) {
               return response.data;
           });
         }

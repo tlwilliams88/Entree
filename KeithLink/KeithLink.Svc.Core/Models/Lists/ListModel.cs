@@ -124,6 +124,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 						CategoryName = item.CategoryName,
 						ItemClass = item.ItemClass,
                         ItemStatistics = item.ItemStatistics,
+                        CatalogId = item.CatalogId,
                         CatchWeight = item.CatchWeight,
                         AverageWeight = item.AverageWeight,
                         ChildNutrition = item.ChildNutrition,

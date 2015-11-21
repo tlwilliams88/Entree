@@ -322,20 +322,19 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
-            var productList = String.Join(" OR ", ids);
-            var query = @"{
+			var productList = String.Join(" OR ", ids);
+			var query = @"{
 						""from"" : 0, ""size"" : 5000,
 						""query"":{
 						""query_string"" : {
-						""fields"" : [""itemnumber""],
+						""fields"" : [""itemnumber"",""mfritemnumber""],
 							""query"" : """ + productList + @""",
 						""use_dis_max"" : true
 							}
 						}}";
 
-            return GetProductsFromElasticSearch(branch, query);
+			return GetProductsFromElasticSearch(branch, query);
         }
-
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
@@ -353,12 +352,16 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
-            return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", termSearchExpression);
+
+            string branch = catalogInfo.BranchId.ToLower();
+             
+
+            return GetProductsFromElasticSearch(branch, "", termSearchExpression);
         }
         
         private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody, object searchBodyD = null) {
             ElasticsearchResponse<DynamicDictionary> res = null;
-
+            
             if (searchBodyD == null)
                 res = _client.Search(branch.ToLower(), "product", searchBody);
             else
@@ -435,8 +438,15 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CatchWeight = oProd._source.catchweight;
 			p.IsProprietary = oProd._source.isproprietary;
             p.AverageWeight = oProd._source.averageweight;
-            Nutritional nutritional = new Nutritional();
+            p.CatalogId = oProd._index;
+            if (p.CatalogId.ToLower().StartsWith("unfi"))
+            {
+                //make vendor into description
+                p.Description = oProd._source.vendor;
+            }
+          
             if (oProd._source.nutritional != null) {
+                Nutritional nutritional = new Nutritional();
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;
                 nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
                 nutritional.GrossWeight = oProd._source.nutritional.grossweight;
@@ -503,8 +513,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         nutritional.DietInfo.Add(d);
                     }
                 }
+                p.Nutritional = nutritional;
             }
-            p.Nutritional = nutritional;
+            
             return p;
         }
         #endregion

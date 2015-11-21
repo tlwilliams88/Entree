@@ -17,6 +17,11 @@ angular.module('bekApp')
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
+    if ($state.params.catalogType == "BEK") {
+        $scope.pageTitle = "Product Catalog";
+    } else {
+        $scope.pageTitle = "Specialty Catalog";
+    }
 
     ProductService.getRecentlyViewedItems().then(function(items) {
       $scope.loadingRecentlyViewedItems = false;
@@ -28,7 +33,7 @@ angular.module('bekApp')
       $scope.recommendedItems = items;
     });
 
-    CategoryService.getCategories().then(function(data) {
+    CategoryService.getCategories($state.params.catalogType).then(function(data) {
       $scope.loadingCategories = false;
       $scope.categories = data.categories;
     });
