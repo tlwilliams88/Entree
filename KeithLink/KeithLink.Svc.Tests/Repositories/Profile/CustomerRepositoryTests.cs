@@ -39,7 +39,6 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #endregion
 
         #region Methods
-
         [TestMethod]
         public void GetCustomersByNameOrNumber()
         {
@@ -48,6 +47,10 @@ namespace KeithLink.Svc.Test.Repositories.Profile
             Assert.IsTrue(customerList.Count > 0);
         }
 
+        [TestMethod]
+        public void SuccessfullySetCanViewPricing() {
+            _repo.UpdateCustomerCanViewPricing(new Guid("{1e9f895a-760d-4e16-a346-8e004ca47144}"), false);
+        }
         #endregion
     }
 }

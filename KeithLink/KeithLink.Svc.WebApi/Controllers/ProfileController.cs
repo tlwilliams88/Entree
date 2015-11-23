@@ -14,6 +14,7 @@ using KeithLink.Svc.Core.Models.ModelExport;
 
 using KeithLink.Svc.WebApi.Models;
 // using KeithLink.Svc.WebApi.Attribute;
+using KeithLink.Svc.WebApi.com.benekeith.ProfileService;
 
 using System;
 using System.Collections.Generic;
@@ -37,7 +38,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IDsrAliasService _dsrAliasService;
 		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
-        private readonly com.benekeith.ProfileService.IProfileService _profileService;
+        private readonly IProfileService _profileService;
 		
 		#endregion
 
@@ -1086,7 +1087,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
 		}
 
-
         /// <summary>
         /// Get a list of settings for a user
         /// </summary>
@@ -1148,6 +1148,20 @@ namespace KeithLink.Svc.WebApi.Controllers
 	        return returnValue;
 	    }
 
+        [HttpPost]
+        [ApiKeyedRoute("profile/customer/viewpricing")]
+        public OperationReturnModel<bool> UpdateCustomerCanViewPricing(Customer customer) {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try {
+                _profileService.UpdateCustomerCanViewPricing(customer.CustomerId, customer.CanViewPricing);
+                retVal.SuccessResponse = true;
+            } catch {
+                retVal.SuccessResponse = false;
+            }
+
+            return retVal;
+        }
         #endregion
 	}
 }
