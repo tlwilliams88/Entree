@@ -946,33 +946,11 @@
   <ItemGroup>
     <EmbeddedResource Include="Reports\CartReport.rdlc" />
     <EmbeddedResource Include="Reports\CartReport_Landscape.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_Landscape_Par.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_Landscape_Par_Notes.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_Landscape_Par_NoGroup.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_Landscape_Par_Notes_NoGroup.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_Landscape_Notes_NoGroup.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_Landscape_Notes.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Reports\ListReport_Landscape_NoGroup.rdlc">
+    <EmbeddedResource Include="Reports\ListReport.rdlc">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_Landscape.rdlc">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>
