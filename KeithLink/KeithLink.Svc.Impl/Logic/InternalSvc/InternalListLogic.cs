@@ -1102,7 +1102,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             Stream rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST);
             rv.LocalReport.LoadReportDefinition(rdlcStream);
             Customer customer = customerRepository.GetCustomersByNameOrNumber(userContext.CustomerId).FirstOrDefault();
-            rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, customer.CustomerName));
+            rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, customer));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile);
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
             // HACK to put extra row with charts in the cells to provide for dynamically changing the widths for parameters
@@ -1111,10 +1111,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return stream;
         }
 
-        private ReportParameter[] MakeReportOptionsForPrintListReport(PrintListModel options, string listName, string customerName)
+        private ReportParameter[] MakeReportOptionsForPrintListReport(PrintListModel options, string listName, Customer customer)
         {
             ReportParameter[] parameters = new ReportParameter[5];
-            parameters[0] = new ReportParameter("ListName", customerName + ", " + listName);
+            parameters[0] = new ReportParameter("ListName", customer.CustomerName + ", " + listName);
             parameters[1] = new ReportParameter("ShowNotes", options.ShowNotes.ToString());
             parameters[2] = new ReportParameter("ShowPar", options.ShowParValues.ToString());
             bool groupbylabel = false;
@@ -1124,7 +1124,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 groupbylabel = true;
             }
             parameters[3] = new ReportParameter("GroupByLabel", (groupbylabel).ToString());
-            parameters[4] = new ReportParameter("ShowPrices", false.ToString());
+            parameters[4] = new ReportParameter("ShowPrices", customer.CanViewPricing.ToString());
             return parameters;
         }
 
@@ -1172,52 +1172,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     item.AvgUse = AVG8WK;
                 }
             }
-        }
-
-        private Stream ChooseReportToPrint(PrintListModel options)
-        {
-            Stream rdlcStream = null;
-            Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
-            // Put decision outside of report services to make transparent to our review process
-            if ((options.Paging != null) && (options.Paging.Sort != null) && (options.Paging.Sort.Count > 0) && (options.Paging.Sort[0].Field.Equals("label")))
-            {
-                if ((options.ShowNotes) && (options.ShowParValues))
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPAR_NOTESANDGROUPING);
-                }
-                else if ((options.ShowNotes) && (options.ShowParValues == false))
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHNOTESANDGROUPING);
-                }
-                else if ((options.ShowNotes == false) && (options.ShowParValues))
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPARANDGROUPING);
-                }
-                else
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_GROUPING);
-                }
-            }
-            else
-            {
-                if ((options.ShowNotes) && (options.ShowParValues))
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPAR_NOTESANDNOGROUPING);
-                }
-                else if ((options.ShowNotes) && (options.ShowParValues == false))
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHNOTESANDNOGROUPING);
-                }
-                else if ((options.ShowNotes == false) && (options.ShowParValues))
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_WITHPARANDNOGROUPING);
-                }
-                else
-                {
-                    rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_LANDSCAPE_NOGROUPING);
-                }
-            }
-            return rdlcStream;
         }
         #endregion
 
