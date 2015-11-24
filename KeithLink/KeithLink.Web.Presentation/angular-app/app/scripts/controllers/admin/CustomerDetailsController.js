@@ -10,7 +10,7 @@ angular.module('bekApp')
   $scope.errorMessage = '';
 
   CustomerService.getCustomerDetails($stateParams.customerNumber, $stateParams.branchNumber).then(function(customer) {
-    
+    $scope.showPrices = customer.canViewPricing;
     $scope.customer = customer;
 
     MessagePreferenceService.getPreferencesForCustomer(customer.customerNumber, customer.customerBranch).then(function (customerPreferences) {
@@ -28,12 +28,13 @@ angular.module('bekApp')
   });
 
   $scope.savePreferences = function (preferences, customerNumber, customerBranch) {
-    MessagePreferenceService.updatePreferences(preferences, customerNumber, customerBranch).then(function (success) {
-      
-      $scope.preferencesForm.$setPristine();
-      $scope.canEditNotifications = false;
-
-    });
+    $scope.customer.canViewPricing = $scope.showPrices;
+    CustomerService.saveAccountingSettings($scope.customer).then(function(){
+      MessagePreferenceService.updatePreferences(preferences, customerNumber, customerBranch).then(function (success) {      
+        $scope.preferencesForm.$setPristine();
+        $scope.canEditNotifications = false;
+      });
+    })
   };
 
   $scope.restoreDefaults = function (customerNumber, branchId) {

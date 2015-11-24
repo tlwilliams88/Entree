@@ -85,6 +85,12 @@
   <wsdl:message name="IProfileService_SetDefaultApplicationSettings_OutputMessage">
     <wsdl:part name="parameters" element="tns:SetDefaultApplicationSettingsResponse" />
   </wsdl:message>
+  <wsdl:message name="IProfileService_UpdateCustomerCanViewPricing_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCustomerCanViewPricing" />
+  </wsdl:message>
+  <wsdl:message name="IProfileService_UpdateCustomerCanViewPricing_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCustomerCanViewPricingResponse" />
+  </wsdl:message>
   <wsdl:portType name="IProfileService">
     <wsdl:operation name="CreateDsrAlias">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/CreateDsrAlias" message="tns:IProfileService_CreateDsrAlias_InputMessage" />
@@ -137,6 +143,10 @@
     <wsdl:operation name="SetDefaultApplicationSettings">
       <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/SetDefaultApplicationSettings" message="tns:IProfileService_SetDefaultApplicationSettings_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/SetDefaultApplicationSettingsResponse" message="tns:IProfileService_SetDefaultApplicationSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomerCanViewPricing">
+      <wsdl:input wsaw:Action="http://tempuri.org/IProfileService/UpdateCustomerCanViewPricing" message="tns:IProfileService_UpdateCustomerCanViewPricing_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IProfileService/UpdateCustomerCanViewPricingResponse" message="tns:IProfileService_UpdateCustomerCanViewPricing_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IProfileService" type="tns:IProfileService">
@@ -251,6 +261,15 @@
     </wsdl:operation>
     <wsdl:operation name="SetDefaultApplicationSettings">
       <soap:operation soapAction="http://tempuri.org/IProfileService/SetDefaultApplicationSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCustomerCanViewPricing">
+      <soap:operation soapAction="http://tempuri.org/IProfileService/UpdateCustomerCanViewPricing" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

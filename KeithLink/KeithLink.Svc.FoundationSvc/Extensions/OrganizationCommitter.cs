@@ -23,6 +23,10 @@ namespace KeithLink.Svc.FoundationSvc.Extensions {
         public override void ExecuteCreate(CommerceCreateOperation createOperation, OperationCacheDictionary operationCache, CommerceCreateOperationResponse response) {
             base.ExecuteCreate(createOperation, operationCache, response);
         }
+
+        public override void ExecuteUpdate(CommerceUpdateOperation updateOperation, OperationCacheDictionary operationCache, CommerceUpdateOperationResponse response) {
+            base.ExecuteUpdate(updateOperation, operationCache, response);
+        }
         #endregion
 
         #region properties

@@ -245,23 +245,24 @@ angular.module('bekApp')
 
   };
 
-  $scope.setCurrentPageAfterRedirect = function(pageToSet){
+$scope.setCurrentPageAfterRedirect = function(pageToSet){
     var visited = [];
     if(!pageToSet && $stateParams.currentPage){
-        var page = $stateParams.currentPage;
+    var page = $stateParams.currentPage;
       }
        else{
         $stateParams.currentPage = '';
         var page = pageToSet || 1;
-        if($scope.visitedPages[0]){
+       }
+       
+      if($scope.visitedPages[0]){
         visited = $filter('filter')($scope.visitedPages, {page: page});
       }
-       }
-       var selectedPage = {
-        currentPage: page   
-       };
-       $scope.pageChanged(selectedPage, visited);
-  }
+   var selectedPage = {
+      currentPage: page   
+     };
+     $scope.pageChanged(selectedPage, visited);
+}
 
   $scope.setRange = function(){
     $scope.endPoint = $scope.endPoint;

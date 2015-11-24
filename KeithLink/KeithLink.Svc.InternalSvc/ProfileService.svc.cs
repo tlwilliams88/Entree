@@ -19,6 +19,7 @@ namespace KeithLink.Svc.InternalSvc
 	// NOTE: In order to launch WCF Test Client for testing this service, please select ProfileService.svc or ProfileService.svc.cs at the Solution Explorer and start debugging.
 	public class ProfileService : IProfileService {
         #region attribuites
+        private readonly ICustomerRepository _customerRepo;
         private readonly IUserProfileLogic _profileLogic;
         private readonly IEventLogRepository _eventLog;
         private readonly IInternalPasswordResetLogic _passwordResetLogic;
@@ -29,10 +30,9 @@ namespace KeithLink.Svc.InternalSvc
         #endregion
 
         #region ctor
-        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic, 
-            IInternalMarketingPreferenceLogic marketingPrefLogic, ISettingsLogicImpl settingsLogic,
-            IUserProfileLogic profileLogic, IEventLogRepository eventLog, 
-            IUserMessagingPreferenceRepository userMessagingPreferenceRepository)
+        public ProfileService(IInternalPasswordResetLogic passwordResetLogic, IDsrAliasLogic dsrAliasLogic, IInternalMarketingPreferenceLogic marketingPrefLogic, 
+                              ISettingsLogicImpl settingsLogic, IUserProfileLogic profileLogic, IEventLogRepository eventLog, 
+                              IUserMessagingPreferenceRepository userMessagingPreferenceRepository, ICustomerRepository customerRepository)
 		{
 			_passwordResetLogic = passwordResetLogic;
             _aliasLogic = dsrAliasLogic;
@@ -41,6 +41,7 @@ namespace KeithLink.Svc.InternalSvc
             _profileLogic = profileLogic;
             _eventLog = eventLog;
             _userMessagingPreferenceRepository = userMessagingPreferenceRepository;
+            _customerRepo = customerRepository;
 		}
         #endregion
 
@@ -138,6 +139,10 @@ namespace KeithLink.Svc.InternalSvc
                 NotificationType = notifyType
             };
             _userMessagingPreferenceRepository.Create(pref);
+        }
+
+        public void UpdateCustomerCanViewPricing(Guid customerId, bool canView) {
+            _customerRepo.UpdateCustomerCanViewPricing(customerId, canView);
         }
 
         #endregion

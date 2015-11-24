@@ -330,6 +330,7 @@ angular.module('bekApp')
     $scope.canViewCustomerGroups = AccessService.canViewCustomerGroups();
     $scope.canViewCustomerGroupDashboard = AccessService.canViewCustomerGroupDashboard();
     $scope.canEditUsers = AccessService.canEditUsers();
+    $scope.canEditInternalUsers = AccessService.canEditInternalUsers();
     $scope.canGrantAccessToOtherServices = AccessService.canGrantAccessToOtherServices();
     $scope.canMoveUserToAnotherGroup = AccessService.canMoveUserToAnotherGroup();
     $scope.canViewMarketing = AccessService.canViewMarketing();

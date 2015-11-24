@@ -235,13 +235,6 @@ namespace KeithLink.Svc.Core
 
         // reportnames
         public const string SET_REPORT_SIZE_LANDSCAPE = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
-        public const string REPORT_PRINTLIST_LANDSCAPE_GROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape.rdlc";
-        public const string REPORT_PRINTLIST_LANDSCAPE_NOGROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape_NoGroup.rdlc";
-        public const string REPORT_PRINTLIST_LANDSCAPE_WITHNOTESANDGROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape_Notes.rdlc";
-        public const string REPORT_PRINTLIST_LANDSCAPE_WITHNOTESANDNOGROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape_Notes_NoGroup.rdlc";
-        public const string REPORT_PRINTLIST_LANDSCAPE_WITHPARANDGROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape_Par.rdlc";
-        public const string REPORT_PRINTLIST_LANDSCAPE_WITHPARANDNOGROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape_Par_NoGroup.rdlc";
-        public const string REPORT_PRINTLIST_LANDSCAPE_WITHPAR_NOTESANDGROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape_Par_Notes.rdlc";
-        public const string REPORT_PRINTLIST_LANDSCAPE_WITHPAR_NOTESANDNOGROUPING = "KeithLink.Svc.Impl.Reports.ListReport_Landscape_Par_Notes_NoGroup.rdlc";
+        public const string REPORT_PRINTLIST = "KeithLink.Svc.Impl.Reports.ListReport.rdlc";
     }
 }

@@ -39,15 +39,18 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         #endregion
 
         #region Methods
-
         [TestMethod]
         public void GetCustomersByNameOrNumber()
         {
-            List<Customer> customerList = _repo.GetCustomersByNameOrNumber("024418");
+            List<Customer> customerList = _repo.GetCustomersByNameOrNumber("010001");
 
             Assert.IsTrue(customerList.Count > 0);
         }
 
+        [TestMethod]
+        public void SuccessfullySetCanViewPricing() {
+            _repo.UpdateCustomerCanViewPricing(new Guid("{1e9f895a-760d-4e16-a346-8e004ca47144}"), false);
+        }
         #endregion
     }
 }

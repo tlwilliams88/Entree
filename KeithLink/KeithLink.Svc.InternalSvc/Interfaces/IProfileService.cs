@@ -52,5 +52,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         void SetDefaultApplicationSettings(string email);
+
+        [OperationContract]
+        void UpdateCustomerCanViewPricing(Guid customerId, bool canView);
     }
 }
