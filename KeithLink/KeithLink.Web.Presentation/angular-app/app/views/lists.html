@@ -657,6 +657,8 @@
               </td>
               <td class="hidden-sm hidden-xs" >                
               <td class="hidden-mobile-visible-print">
+<!--                  loading-->
+              <a ng-if="::item.is_specialty_catalog === true"><span class="text-regular icon-exclaimation-splat"></span></a>
               <a ng-if="::item.inhistory === true"><span class="text-regular icon-history"></span></a>            
               <a ng-if="::item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>
               <a ng-if="::item.replaceditem > 0"><span class="text-green icon-cycle"></span></a>            

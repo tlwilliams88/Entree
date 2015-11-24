@@ -48,7 +48,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public CategoriesReturn GetCategories(string catalogType)
         {
             IEnumerable<KeyValuePair<string, string>> pairs = Request.GetQueryNameValuePairs();
-            return _catalogLogic.GetCategories(0, 2000);
+            return _catalogLogic.GetCategories(0, 2000, catalogType);
         }
 
 		/// <summary>
@@ -61,7 +61,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("catalog/category/{id}/categories")]
         public CategoriesReturn GetSubCategoriesByParentId(string id, [FromUri] SearchInputModel searchModel)
         {
-            return _catalogLogic.GetCategories(searchModel.From, searchModel.Size);
+            return _catalogLogic.GetCategories(searchModel.From, searchModel.Size, "BEK");
         }
 
 		/// <summary>
@@ -102,7 +102,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		public CategoriesReturn GetCategoriesById(string id, [FromUri] SearchInputModel searchModel)
         {
 			//TODO: This is not actually getting a category by ID (ID is never used).
-			return _catalogLogic.GetCategories(searchModel.From, searchModel.Size);
+			return _catalogLogic.GetCategories(searchModel.From, searchModel.Size, "BEK");
         }
 
 		/// <summary>
