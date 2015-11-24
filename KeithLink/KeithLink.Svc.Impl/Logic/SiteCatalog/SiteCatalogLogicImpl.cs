@@ -222,7 +222,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
             }
 
-            ret.IsSpecialCatalog = !catalogType.ToLower().Equals("bek");
+            ret.IsSpecialCatalog = IsSpecialtyCatalog(catalogType);
 
             return ret;
         }
@@ -301,6 +301,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 totalProcessed += 500;
             }
 
+            foreach (var prod in products.Products)
+            {
+                prod.IsSpecialCatalog = IsSpecialtyCatalog(null, branch);
+            }
+
             return products;
         }
 
@@ -375,9 +380,22 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             {
                 return bekBranchId;
             }
-
         }
 
+        private bool IsSpecialtyCatalog(string catalogType, string branchId = null)
+        {
+            if (catalogType != null)
+                return !catalogType.ToLower().Equals("bek");
+            else
+            {
+                //look up branch and see if it is BEK
+                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
+                    .Where(x => branchId.ToLower() == x.BekBranchId.ToString().ToLower()).ToList();
+
+                return !(externalCatalog.Count > 0);
+
+            }
+        }
         #endregion
 	}
 }

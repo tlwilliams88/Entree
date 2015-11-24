@@ -202,8 +202,6 @@ namespace KeithLink.Svc.Impl.Logic
                 products.AddRange(tempProducts);
                 pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products));
             }
-            //var products = catalogLogic.GetProductsByIds(cart.BranchId, cart.Items.Select(i => i.ItemNumber).Distinct().ToList());
-            //var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
 			var priceHash = pricing.Prices.ToDictionary(p => p.ItemNumber);
@@ -233,6 +231,7 @@ namespace KeithLink.Svc.Impl.Logic
                     item.TempZone = prod.TempZone;
                     item.AverageWeight = prod.AverageWeight;
 					item.ItemClass = prod.ItemClass;
+                    item.IsSpecialCatalog = prod.IsSpecialCatalog;
 				}
 				if (price != null)
 				{
