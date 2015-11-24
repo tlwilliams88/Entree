@@ -74,6 +74,16 @@ namespace KeithLink.Svc.Impl.ETL
 			return PopulateDataTable("[ETL].[ReadParentCategories]");
 		}
 
+		public DataTable ReadUnfiCategories()
+		{
+			return PopulateDataTable("[ETL].[ReadUNFICategories]");
+		}
+
+		public DataTable ReadUnfiSubCategories()
+		{
+			return PopulateDataTable("[ETL].[ReadUNFISubCategories]");
+		}
+
 		public DataTable ReadFullItemForElasticSearch()
 		{
 			return PopulateDataTable("[ETL].[ReadFullItemData]");
