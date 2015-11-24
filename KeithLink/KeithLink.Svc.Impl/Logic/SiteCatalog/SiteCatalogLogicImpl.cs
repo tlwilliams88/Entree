@@ -156,8 +156,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        public CategoriesReturn GetCategories(int from, int size) {
+        public CategoriesReturn GetCategories(int from, int size, string catalogType)
+        {
             CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size));
+            categoriesReturn = null;
             if (categoriesReturn == null) {
                 categoriesReturn = _catalogRepository.GetCategories(from, size);
                 AddCategoryImages(categoriesReturn);
@@ -198,7 +200,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         }
 
         public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType) {
-            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);
+            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);  
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 
             if (ret == null)
@@ -219,6 +221,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret.PackagePriceNumeric = price.PackagePrice;
                 ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
             }
+
+            ret.IsSpecialCatalog = !catalogType.ToLower().Equals("bek");
 
             return ret;
         }
@@ -266,7 +270,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             string categoryName = category;
 
             // enable category search on either category id or search name
-            Category catFromSearchName = this.GetCategories(0, 2000).Categories.Where(x => x.SearchName == category).FirstOrDefault();
+            Category catFromSearchName = this.GetCategories(0, 2000,"BEK").Categories.Where(x => x.SearchName == category).FirstOrDefault();
             if (catFromSearchName != null)
                 categoryName = catFromSearchName.Name;
 

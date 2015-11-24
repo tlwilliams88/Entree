@@ -194,5 +194,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "catalog_id", EmitDefaultValue = false)]
         [Description("Catalog Id - index from elastic search")]
         public string CatalogId { get; set; }
+
+        [DataMember(Name = "is_special_catalog", EmitDefaultValue = false)]
+        [Description("Is Special Catalog bool")]
+        public bool IsSpecialCatalog { get; set; }
     }
 }

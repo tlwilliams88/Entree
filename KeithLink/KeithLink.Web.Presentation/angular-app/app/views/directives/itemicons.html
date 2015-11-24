@@ -1,3 +1,9 @@
+<!-- Special Catalog -->
+<span style="white-space:nowrap;">
+<a ng-if="::item.is_special_catalog === true">
+  <span tooltip="This is a special catalog item. Will not ship immediately." class="text-regular icon-exclaimation-splat"></span>
+</a>
+    
 <!-- History -->
 <span style="white-space:nowrap;">
 <a ng-if="::item.inhistory === true">

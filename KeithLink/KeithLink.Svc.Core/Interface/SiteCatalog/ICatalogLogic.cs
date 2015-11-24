@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface ICatalogLogic
     {
-        CategoriesReturn GetCategories(int from, int size);
+        CategoriesReturn GetCategories(int from, int size, string catalogType);
         
 		List<Division> GetDivisions();
         
