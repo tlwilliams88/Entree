@@ -352,6 +352,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
+
+            foreach (var product in ret.Products)
+            {
+                product.IsSpecialtyCatalog = IsSpecialtyCatalog(searchModel.CatalogType);
+            }
+
             return ret;
         }
 
