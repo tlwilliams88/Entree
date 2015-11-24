@@ -213,7 +213,7 @@
             </td>
             <td>
               <span><a ng-if="item.isvalid" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a></span>
-              <span><a ng-if="!item.isvalid" tooltip="Contact your DSR for more info." ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+              <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
             </td>
             <td>
               <span ng-if="item.isvalid">{{::item.name}}</span>
@@ -460,12 +460,13 @@
         ng-class="{ odd : $odd, even: $even }">
 
         <td>
-          <a ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
+          <span><a ng-if="item.isvalid" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a></span>
+          <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
           <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
         </td>
         <td>              
-        <span ng-if="item.isvalid">{{::item.name}}</span>
-        <span ng-if="!item.isvalid">Invalid item</span>
+          <span ng-if="item.isvalid">{{::item.name}}</span>
+          <span ng-if="!item.isvalid">Invalid item</span>
         </td>
         <td class="hidden-mobile-visible-print">{{item.brand}}</td>
         <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
