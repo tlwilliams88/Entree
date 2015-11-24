@@ -222,7 +222,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
             }
 
-            ret.IsSpecialCatalog = IsSpecialtyCatalog(catalogType);
+            ret.IsSpecialtyCatalog = IsSpecialtyCatalog(catalogType);
 
             return ret;
         }
@@ -303,7 +303,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             foreach (var prod in products.Products)
             {
-                prod.IsSpecialCatalog = IsSpecialtyCatalog(null, branch);
+                prod.IsSpecialtyCatalog = IsSpecialtyCatalog(null, branch);
             }
 
             return products;

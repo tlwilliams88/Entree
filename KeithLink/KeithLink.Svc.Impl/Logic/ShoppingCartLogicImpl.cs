@@ -231,7 +231,7 @@ namespace KeithLink.Svc.Impl.Logic
                     item.TempZone = prod.TempZone;
                     item.AverageWeight = prod.AverageWeight;
 					item.ItemClass = prod.ItemClass;
-                    item.IsSpecialCatalog = prod.IsSpecialCatalog;
+                    item.IsSpecialtyCatalog = prod.IsSpecialtyCatalog;
 				}
 				if (price != null)
 				{
