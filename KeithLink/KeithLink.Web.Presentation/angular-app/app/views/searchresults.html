@@ -221,10 +221,10 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 </div>
 </div>
-      <div calls="col-sm-12"
-           ng-show="showSpecialtyFacet">
-          <h3>Specialty Catalogs</h3>
-          <a ng-click="unfiCheckboxClick()">Natural and Organic (107)</a>
+      <div calls="col-sm-12">
+          <h3>Catalogs</h3>
+          <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK'">Ben E Keith (107)</a>
+          <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI'">Natural and Organic (107)</a>
 <!--
           <input
              type="checkbox"

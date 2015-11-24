@@ -402,6 +402,15 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             }
         }
+
+        private Dictionary<string,int> GetHitsForCatalogsWithBranch(string search, string baseCatalgType, string bekBranchId) {
+
+            List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
+            var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
+
+
+            return null;
+        }
         #endregion
 	}
 }
