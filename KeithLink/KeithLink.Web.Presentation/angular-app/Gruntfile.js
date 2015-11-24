@@ -539,6 +539,21 @@ module.exports = function (grunt) {
                   }
               }
           },
+		  beta: {
+              constants: {
+                  ENV: {
+                    name: '<%= config.environment.beta.name %>',
+                    apiKey: '<%= config.environment.beta.apiKey %>',
+                    apiEndpoint: '<%= config.environment.beta.apiEndpoint %>',
+                    loggingEnabled: config.environment.beta.loggingEnabled,
+                    googleAnalytics: '<%= config.environment.beta.googleAnalytics.web %>',
+                    cognosUrl: '<%= config.environment.beta.cognosUrl %>',
+                    mobileApp: false,
+                    lastListStorageTimeout: 48,
+                    enableDebugInfo: false
+                  }
+              }
+          },
           stage: {
               constants: {
                   ENV: {
@@ -620,6 +635,23 @@ module.exports = function (grunt) {
     'clean:dist',
     // 'includeSource:dist',
     'ngconstant:test',
+    'useminPrepare',
+    'concurrent:dist',
+    'autoprefixer',
+    'concat',
+    'ngmin',
+    'copy:dist',
+    'cssmin',
+    'uglify',
+    'filerev',
+    'usemin',
+    'htmlmin'
+  ]);
+  
+  grunt.registerTask('build-for-beta', [
+   'clean:dist',
+    // 'includeSource:dist',
+    'ngconstant:beta',
     'useminPrepare',
     'concurrent:dist',
     'autoprefixer',

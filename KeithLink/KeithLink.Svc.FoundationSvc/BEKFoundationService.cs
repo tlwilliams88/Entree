@@ -168,6 +168,10 @@ namespace KeithLink.Svc.FoundationSvc {
 
                 }
 
+                if (po.Status.StartsWith("confirmed", StringComparison.InvariantCultureIgnoreCase)) {
+                    po.Status = "Confirmed with un-submitted changes";
+                }
+
                 PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
                 pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
 

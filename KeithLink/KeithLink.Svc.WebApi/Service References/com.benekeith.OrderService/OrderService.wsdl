@@ -43,6 +43,12 @@
   <wsdl:message name="IOrderService_GetOrderHeaderInDateRange_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetOrderHeaderInDateRangeResponse" />
   </wsdl:message>
+  <wsdl:message name="IOrderService_GetOrderTotalByMonth_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderTotalByMonth" />
+  </wsdl:message>
+  <wsdl:message name="IOrderService_GetOrderTotalByMonth_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetOrderTotalByMonthResponse" />
+  </wsdl:message>
   <wsdl:message name="IOrderService_GetUserActiveCart_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserActiveCart" />
   </wsdl:message>
@@ -99,6 +105,10 @@
     <wsdl:operation name="GetOrderHeaderInDateRange">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" message="tns:IOrderService_GetOrderHeaderInDateRange_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetOrderHeaderInDateRangeResponse" message="tns:IOrderService_GetOrderHeaderInDateRange_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderTotalByMonth">
+      <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetOrderTotalByMonth" message="tns:IOrderService_GetOrderTotalByMonth_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IOrderService/GetOrderTotalByMonthResponse" message="tns:IOrderService_GetOrderTotalByMonth_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetUserActiveCart">
       <wsdl:input wsaw:Action="http://tempuri.org/IOrderService/GetUserActiveCart" message="tns:IOrderService_GetUserActiveCart_InputMessage" />
@@ -165,6 +175,15 @@
     </wsdl:operation>
     <wsdl:operation name="GetOrderHeaderInDateRange">
       <soap:operation soapAction="http://tempuri.org/IOrderService/GetOrderHeaderInDateRange" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetOrderTotalByMonth">
+      <soap:operation soapAction="http://tempuri.org/IOrderService/GetOrderTotalByMonth" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

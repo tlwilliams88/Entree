@@ -7,8 +7,8 @@
 
   <form>
       <div class="row">
-        <div class="col-xs-4 nowrap" ng-repeat="(key, value) in item.orderhistory">
-          {{key}} - {{value}}
+        <div class="col-xs-4 nowrap" ng-repeat="month in orderHistory">
+          {{month.date}} - {{month.number}}
         </div>
       </div>
       <div ng-if="item.orderHistoryKeys.length === 0">

@@ -57,6 +57,15 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+    <OutputPath>bin\Beta\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -119,6 +128,7 @@
     <Compile Include="Logic\InternalSrv\InternalMarketingPreferenceLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalOnlinePaymentLogicTests.cs" />
     <Compile Include="Logic\NoCacheRepositoryImpl.cs" />
+    <Compile Include="Logic\Order\InternalOrderHistoryLogicTests.cs" />
     <Compile Include="Logic\Order\OrderHistoryLogicImplTests.cs" />
     <Compile Include="Extensions\ConfirmationHeaderExtensionsTests.cs" />
     <Compile Include="Extensions\ConfirmationDetailExtensionsTests.cs" />

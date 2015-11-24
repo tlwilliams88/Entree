@@ -38,6 +38,10 @@ angular.module('bekApp')
           from: startDate,
           to: endDate
         }).$promise;
+      },      
+
+      getMonthTotals: function(numberOfMonths) {
+       return $http.get('/order/totalbymonth/'+ numberOfMonths);
       },
 
       /*************

@@ -18,8 +18,8 @@ angular.module('bekApp')
 
   // get order summary data
   $scope.loadingOrderGraph = true;
-  OrderService.getOrdersByDate(fromString, toString).then(function(orders) {
-    // get array of month values in form [8, 9, 10, 11, 12, 1]
+  OrderService.getMonthTotals(6).then(function(monthTotals) {   
+    // get array of month values in form [8, 9, 10, 11, 12, 1] 
     var months = [],
       tempDate = from;
     for (var i = 0; i < 6; i++) {
@@ -27,20 +27,11 @@ angular.module('bekApp')
       tempDate.add(1, 'month');
     }
 
-    // calculate order totals for each month
-    var monthTotals = [0, 0, 0, 0, 0, 0];
-    orders.forEach(function(order) {
-      var orderDate = moment(order.createddate);
-      var month = orderDate.format('MM');
-      var idx = months.indexOf(month);
-      monthTotals[idx] += order.ordertotal ? order.ordertotal : 0;
-    });
-
     var barData = [],
       lineData = [],
       monthData = months;
 
-    monthTotals.forEach(function(total) {
+    monthTotals.data.totals.forEach(function(total) {
       barData.push(total);
       lineData.push(total);
     });
@@ -57,8 +48,6 @@ angular.module('bekApp')
     monthData.unshift('x');
     barData.unshift('bar');
     lineData.unshift('line');
-
-
 
     // see c3js.org/reference.html website for list of options
     var chart = c3.generate({

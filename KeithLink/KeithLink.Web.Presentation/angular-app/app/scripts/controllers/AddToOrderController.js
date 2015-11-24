@@ -9,6 +9,8 @@ angular.module('bekApp')
        var basketId;
     if ($stateParams.cartId !== 'New') {
       basketId = selectedCart.id || selectedCart.ordernumber;
+      selectedCart.items = $filter('filter')(selectedCart.items , {changeorderstatus: '!deleted'});
+  
       $scope.origItemCount = selectedCart.items.length;
 
       if($stateParams.continueToCart){
@@ -43,6 +45,8 @@ angular.module('bekApp')
         item.extPrice = PricingService.getPriceForItem(item);
       }  
     }
+
+    
 
     var watches = [];
     $scope.addItemWatches = function(startingIndex, endingIndex) {
@@ -247,6 +251,7 @@ angular.module('bekApp')
 
     function setSelectedCart(cart) {
       $scope.selectedCart = cart;
+
       $scope.addCartWatches();
     }
     function setSelectedList(list) {

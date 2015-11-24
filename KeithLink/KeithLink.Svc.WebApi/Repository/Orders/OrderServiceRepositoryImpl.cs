@@ -43,6 +43,10 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetOrderHeaderInDateRange(customerInfo, startDate, endDate).ToList();
         }
 
+        public OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths ) {
+            return serviceClient.GetOrderTotalByMonth( customerInfo, numberOfMonths );
+        }
+
         public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
             return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }

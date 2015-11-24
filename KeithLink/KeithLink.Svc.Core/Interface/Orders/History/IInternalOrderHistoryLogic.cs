@@ -13,6 +13,8 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
 		List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
 
+        OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
+
         void SaveOrder(OrderHistoryFile historyFile);
 
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
