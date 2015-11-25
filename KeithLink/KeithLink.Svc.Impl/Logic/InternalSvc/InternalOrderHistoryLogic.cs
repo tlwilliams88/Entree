@@ -390,7 +390,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
                         // Check if the purchase order exists and grab it for additional information if it does
                         if (POs != null) {
-                            PurchaseOrder currentPo = POs.Where( x => x.Properties["TrackingNumber"].Equals( h.ControlNumber ) ).FirstOrDefault<PurchaseOrder>();
+                            PurchaseOrder currentPo = POs.Where( x => x.Properties["OrderNumber"].Equals( h.ControlNumber ) ).FirstOrDefault<PurchaseOrder>();
 
                             if (currentPo != null) {
                                 returnOrder.Status = currentPo.Status;
