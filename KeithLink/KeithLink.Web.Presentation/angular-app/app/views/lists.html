@@ -3,13 +3,13 @@
     <div ng-if="!selectedList.isRenaming">
       <div class="list-name">{{selectedList.name}}</div>
 
-      <div style="display:inline-block;">
+      <div class="block-display">
         <span ng-if="selectedList.issharing" class="large-icon icon-user-add" tooltip="You are sharing this list."></span>
         <span ng-if="selectedList.isshared" class="large-icon icon-users" tooltip="This list is shared with you."></span>
       </div>
 
       <div 
-        style="display:inline-block;" 
+        class="block-display"
         ng-if="selectedList" 
         ng-if="::selectedList.permissions.canDeleteList || selectedList.permissions.canRenameList">
         
@@ -470,7 +470,7 @@
               </td>
               <!-- Label -->
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="::(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
-                <div ng-hide="item.isEditing" class="bek-no-drag label-width" style="margin-right:10px;">
+                <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in ::labels track by label" class="label-width">
                     <option value="">Select A Label </option>
                   </select>
@@ -498,7 +498,7 @@
               <td class="visible-print label-col" ng-if="::(selectedList.permissions.canSeeLabels)">
                 {{::item.label}}
               </td>
-              <td class="input-col hidden-mobile-visible-print" ng-if="::(!selectedList.read_only)"  style="max-width:20px; display:inline-block;">
+              <td class="input-col hidden-mobile-visible-print max-width-20 block-display" ng-if="::(!selectedList.read_only)">
                   <ng-form name="eachForm" ng-if="::(item.hasPackagePrice)">
                     <input type="checkbox" class="mousetrap" ng-checked = "::(!item.hasCasePrice || item.each)" ng-disabled = "::(!item.hasCasePrice)" ng-model="item.each" id="each" name="each" />
                     <label for="each"></label>
@@ -548,9 +548,9 @@
                     <col width="75%" />
                   </colgroup>
                   <tbody>
-                    <tr>
+                    <tr >
                       <td>Notes</td>
-                      <td>{{::item.notes}}</td>
+                      <td class="notes-col">{{::item.notes}}</td>
                     </tr>
                     <tr>
                       <td>Brand</td>
@@ -706,7 +706,7 @@
               <td
               ng-if="::selectedList.permissions.canEditLabels" 
               class="input-col nowrap hidden-sm hidden-xs">
-               <div class=" label-width" style="margin-right:10px;">
+               <div class=" label-width right-margin-10">
                   <select ng-if="!item.label  && selectedList.permissions.canEditLabels"  class="label-width"><option>Select A Label </option></select>
                   <select ng-if="item.label && selectedList.permissions.canEditLabels" class="label-width"><option>{{item.label}}</option></select>
                   <a class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
@@ -720,7 +720,7 @@
                 {{::item.label}}
               </td>
               </span>
-              <td class="input-col hidden-mobile-visible-print" ng-if="!selectedList.read_only" style="max-width:20px;">
+              <td class="input-col hidden-mobile-visible-print max-width-20" ng-if="!selectedList.read_only">
               <ng-form ng-if="item.hasPackagePrice">
                 <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" />
                 <label for="each"></label>
