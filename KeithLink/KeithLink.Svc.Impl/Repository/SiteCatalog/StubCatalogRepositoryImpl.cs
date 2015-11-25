@@ -96,5 +96,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+
+        public int GetHitsForSearchInIndex(string searchTerm, string index)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

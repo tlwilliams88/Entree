@@ -335,6 +335,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
 			return GetProductsFromElasticSearch(branch, query);
         }
+
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
@@ -377,7 +378,31 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
-        
+
+        public int GetHitsForSearchInIndex(string searchTerm, string index)
+        {
+            string searchBody = @"{
+						""query"":{
+						""term"" : { ""name"" : """ + searchTerm + @""" }
+						}}";
+
+            ElasticsearchResponse<DynamicDictionary> res = _client.Count(index.ToLower(), searchBody);
+
+
+            if (res.Response != null)
+            {
+                return res.Response["count"];
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+
+        private delegate TResult Func<in T, out TResult>(
+   
+);
         private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 

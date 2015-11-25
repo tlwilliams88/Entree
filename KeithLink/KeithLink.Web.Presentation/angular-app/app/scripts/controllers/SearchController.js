@@ -233,6 +233,9 @@ angular.module('bekApp')
       return getData().then(function(data) {
         $scope.totalItems = data.totalcount;
         // append results to existing data (for infinite scroll)
+        $scope.bekItemCount = data.catalogCounts.bek;
+        $scope.unfiItemCount = data.catalogCounts.unfi;
+        
         if (appendResults) {
           $scope.products.push.apply($scope.products, data.products);
         // replace existing data (for sort, filter)

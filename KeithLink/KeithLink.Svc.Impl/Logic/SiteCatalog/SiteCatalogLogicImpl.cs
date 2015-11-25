@@ -332,7 +332,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
-
+            var catalogCounts = GetHitsForCatalogs(search, searchModel.CatalogType, catalogInfo.BranchId);
             catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
 
             // special handling for price sorting
@@ -352,6 +352,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
+            ret.CatalogCounts = catalogCounts;
 
             foreach (var product in ret.Products)
             {
@@ -403,13 +404,23 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private Dictionary<string,int> GetHitsForCatalogsWithBranch(string search, string baseCatalgType, string bekBranchId) {
+        private Dictionary<string,int> GetHitsForCatalogs(string search, string baseCatalgType, string bekBranchId) {
 
             List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
             var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
+            listOfCatalogs.Add("BEK");
 
+            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(baseCatalgType);
+            if (baseCatalogTypeIndex != -1)
+                listOfCatalogs.RemoveAt(baseCatalogTypeIndex);
 
-            return null;
+            var returnDict = new Dictionary<string,int>();
+            foreach (var catalog in listOfCatalogs)
+            {
+                returnDict.Add(catalog.ToLower(), _catalogRepository.GetHitsForSearchInIndex(search, GetBranchId(bekBranchId, catalog)));
+            }
+
+            return returnDict;
         }
         #endregion
 	}
