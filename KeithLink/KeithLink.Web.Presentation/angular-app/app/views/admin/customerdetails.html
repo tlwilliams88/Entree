@@ -13,11 +13,12 @@
     {{errorMessage}}
   </div>
   <div class="col-xs-12" ng-show="customer && !loadingCustomer">
-    <h2 class="no-margin-top">#{{customer.customerNumber}}: {{customer.customerName}}</h2>
+    <h2 class="no-margin-top">#{{customer.customerNumber}}: {{customer.customerName}}</h2>     
+  <hr>
     <div class="row">
       <div class="col-lg-6 col-md-6">
         <div class="col-md-12 form-group">
-          <label class="control-label">Phone:</label> {{customer.phone || 'N/A' | phoneNumber}}
+          <label class="control-label">Phone:</label> {{customer.phone || 'N/A' | phoneNumber}}         
         </div>
       </div>
     </div>
@@ -30,10 +31,11 @@
         </div>
       </div>
     </div>
-
+  <form name="preferencesForm" ng-submit="savePreferences(defaultPreferences, customer.customerNumber, customer.customerBranch)" class="form-horizontal">
+  <span ng-show="canEditInternalUsers"><input type ="checkbox" ng-model="showPrices"></input><label style="margin-top:20px;">&nbsp;&nbsp;Prices visible for users with Accounting role.</label></span>
     <div ng-show="preferencesFound">
       <h2>Customer Notification Preferences &nbsp;&nbsp;&nbsp;<a class="smallerHeaderLinkText" ng-init="canEditNotifications = false" ng-click="canEditNotifications = !canEditNotifications"><span class="glyphicon glyphicon-pencil"></span> Edit Notifications</a></h2>
-      <form name="preferencesForm" ng-submit="savePreferences(defaultPreferences, customer.customerNumber, customer.customerBranch)" class="form-horizontal">
+      <hr>    
         <table class="preferencesTable">
           <thead>
             <tr>
