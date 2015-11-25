@@ -332,8 +332,55 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             _headerRepo.CreateOrUpdate(header);
         }
 
-        private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers) {
+        //private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers) {
+        //    var customerOrders = new BlockingCollection<Order>();
+        //    foreach (var h in headers) {
+        //        try {
+        //            Order returnOrder = null;
+
+        //            returnOrder = h.ToOrder();
+
+        //            if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
+        //                var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+        //                if (po != null) {
+        //                    returnOrder.Status = po.Status;
+        //                    returnOrder.OrderNumber = h.ControlNumber;
+        //                    returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
+        //                }
+
+        //            }
+
+        //            var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
+        //            if (invoice != null) {
+        //                returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+        //            }
+
+        //            if (returnOrder.ActualDeliveryTime != null) {
+        //                returnOrder.Status = "Delivered";
+        //            }
+
+        //            //LookupProductDetails(h.BranchId, returnOrder);
+        //            if (returnOrder.Items != null) {
+        //                returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+        //            }
+
+        //            customerOrders.Add(returnOrder);
+        //        } catch (Exception ex) {
+        //            _log.WriteErrorLog("Error proceesing order history for order: " + h.InvoiceNumber + ".  " + ex.StackTrace);
+        //        }
+
+        //    }
+
+        //    return customerOrders.ToList();
+        //}
+
+        private List<Order> LookupControlNumberAndStatus( UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers ) {
             var customerOrders = new BlockingCollection<Order>();
+
+            // Get the customer GUID to retrieve all purchase orders from commerce server
+            var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
+            var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId);
+
             foreach (var h in headers) {
                 try {
                     Order returnOrder = null;
@@ -341,13 +388,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     returnOrder = h.ToOrder();
 
                     if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
-                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
-                        if (po != null) {
-                            returnOrder.Status = po.Status;
-                            returnOrder.OrderNumber = h.ControlNumber;
-                            returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
-                        }
+                        // Check if the purchase order exists and grab it for additional information if it does
+                        if (POs != null) {
+                            PurchaseOrder currentPo = POs.Where( x => x.Properties["TrackingNumber"].Equals( h.ControlNumber ) ).FirstOrDefault<PurchaseOrder>();
 
+                            if (currentPo != null) {
+                                returnOrder.Status = currentPo.Status;
+                                returnOrder.OrderNumber = h.ControlNumber;
+                                returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith( "Confirmed" )));
+                            }
+                        }
                     }
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
