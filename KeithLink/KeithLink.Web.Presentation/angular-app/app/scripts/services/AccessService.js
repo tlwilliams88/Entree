@@ -123,7 +123,7 @@ angular.module('bekApp')
     },
 
     canSeePrices: function() {
-      return ( Service.isInternalAccountAdminUser() || isOwner() || (isAccounting() && LocalStorage.getCurrentCustomer().customer.canViewPricing) || isApprover() || isBuyer() );
+      return ( Service.isInternalAccountAdminUser() || ((isOwner() || isAccounting() || isApprover() || isBuyer() )  && LocalStorage.getCurrentCustomer().customer.canViewPricing) );
     },
 
     canManageLists: function() {
