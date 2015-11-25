@@ -49,7 +49,7 @@
           <div class="order-item-value-2">{{order.ponumber}}</div>
         </div>        
         <hr ng-if="order.ischangeorderallowed && canCreateOrders">
-        <ul ng-if="order.ischangeorderallowed && canCreateOrders" style="list-style:none; padding-left:0px;">
+        <ul ng-if="order.ischangeorderallowed && canCreateOrders" class="change-order-links">
           <li ui-sref="menu.cart.items({ cartId: order.ordernumber })"><a>View and Edit Change Order</a>
           </li>
           <li ui-sref="menu.cart.items({ cartId: order.ordernumber })"
