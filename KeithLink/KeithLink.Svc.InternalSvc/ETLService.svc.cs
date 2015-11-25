@@ -126,8 +126,10 @@ namespace KeithLink.Svc.InternalSvc
 		public bool ProcessUNFIElasticSearchData()
 		{
 			Task.Factory.StartNew(() => _esItemImportLogic.ImportUNFIItems()).ContinueWith((t) =>
-			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);           
+			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 
+			Task.Factory.StartNew(() => _esCategoriesImportLogic.ImportUnfiCategories()).ContinueWith((t) =>
+			{ (new ErrorHandler()).HandleError(t.Exception); }, TaskContinuationOptions.OnlyOnFaulted);
 			return true;
 		}
 

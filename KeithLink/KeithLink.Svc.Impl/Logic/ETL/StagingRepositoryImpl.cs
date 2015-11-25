@@ -379,6 +379,7 @@ namespace KeithLink.Svc.Impl.ETL
 			return PopulateDataTable("[ETL].[ReadProprietaryItems]");
 		}
 
+
         /// <summary>
         /// Read sub categories
         /// </summary>
@@ -387,6 +388,24 @@ namespace KeithLink.Svc.Impl.ETL
         {
             return PopulateDataTable("[ETL].[ReadSubCategories]");
         }
+
+		/// <summary>
+		/// Read parent categories
+		/// </summary>
+		/// <returns></returns>
+		public DataTable ReadUnfiCategories()
+		{
+			return PopulateDataTable("[ETL].[ReadUNFICategories]");
+		}
+
+		/// <summary>
+		/// Read proprietary items
+		/// </summary>
+		/// <returns></returns>
+		public DataTable ReadUnfiSubCategories()
+		{
+			return PopulateDataTable("[ETL].[ReadUNFISubCategories]");
+		}
 
         /// <summary>
         /// Read worksheet items
