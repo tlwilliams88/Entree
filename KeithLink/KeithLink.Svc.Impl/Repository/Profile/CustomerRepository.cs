@@ -35,9 +35,6 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         private readonly IDsrServiceRepository _dsrService;
 		private readonly IAuditLogRepository _auditLogRepository;
 		private readonly IInvoiceServiceRepository _invoiceServiceRepository;
-
-		
-
         #endregion
 
         #region ctor
@@ -706,6 +703,12 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             update.Model.CanViewPricing = canView;
             
             CommerceUpdateOperationResponse res = FoundationService.ExecuteRequest(update.ToRequest()).OperationResponses[0] as CommerceUpdateOperationResponse;
+
+            if(res.CommerceEntities.Count > 0){
+                Organization org = new Organization(res.CommerceEntities[0]);
+
+                _customerCacheRepository.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Join("-", org.CustomerNumber, org.BranchNumber)));
+            }
         }
 		#endregion
 				
