@@ -218,6 +218,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 PurchaseOrder = notification.OrderChange.OrderName,
                 OrderConfirmationItems = originalOrderInfo.ToString()
             });
+            message.BodyIsHtml = template.IsBodyHtml;
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerName = customer.CustomerName;
             message.BranchId = customer.CustomerBranch;
