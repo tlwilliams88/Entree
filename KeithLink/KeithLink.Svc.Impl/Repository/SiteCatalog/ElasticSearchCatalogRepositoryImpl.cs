@@ -333,6 +333,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 							}
 						}}";
 
+
 			return GetProductsFromElasticSearch(branch, query);
         }
 

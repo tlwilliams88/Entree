@@ -466,16 +466,22 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return;
 			int totalProcessed = 0;
 			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
+ 
+            var catalogs = list.Items.Select(x => x.CatalogId).Distinct().ToList();
+            foreach (var catalog in catalogs)
+            {
+                while (totalProcessed < list.Items.Count)
+                {
+                    var thisCatalogsItems = list.Items.Where(x => x.CatalogId.Equals(catalog)).ToList();
+                    var batch = thisCatalogsItems.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
+
+                    var tempProducts = catalogLogic.GetProductsByIds(catalog, batch);
+
+                    products.Products.AddRange(tempProducts.Products);
+                    totalProcessed += 50;
+                }
+            }
 			
-			while (totalProcessed < list.Items.Count)
-			{
-				var batch = list.Items.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
-
-				var tempProducts = catalogLogic.GetProductsByIds(list.BranchId, batch);
-
-				products.Products.AddRange(tempProducts.Products);
-				totalProcessed += 50;
-			}
 
 			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
             List<ItemHistory> itemStatistics = _itemHistoryRepository.Read( f => f.BranchId.Equals( catalogInfo.BranchId ) && f.CustomerNumber.Equals( catalogInfo.CustomerId ) ).ToList();
