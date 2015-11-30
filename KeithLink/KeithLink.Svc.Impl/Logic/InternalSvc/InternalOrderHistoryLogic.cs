@@ -404,6 +404,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             Parallel.ForEach(order.Items, item => {
                 var prod = productDict.ContainsKey(item.ItemNumber) ? productDict[item.ItemNumber] : null;
                 if (prod != null) {
+                    item.IsValid = true;
                     item.Name = prod.Name;
                     item.Description = prod.Description;
                     item.Pack = prod.Pack;
