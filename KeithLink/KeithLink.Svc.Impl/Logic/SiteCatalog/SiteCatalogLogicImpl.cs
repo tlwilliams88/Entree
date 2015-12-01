@@ -161,7 +161,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size));
             categoriesReturn = null;
             if (categoriesReturn == null) {
-                categoriesReturn = _catalogRepository.GetCategories(from, size);
+                categoriesReturn = _catalogRepository.GetCategories(from, size, catalogType);
                 AddCategoryImages(categoriesReturn);
                 AddCategorySearchName(categoriesReturn);
                 _catalogCacheRepository.AddItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size), TimeSpan.FromHours(2), categoriesReturn);
@@ -265,14 +265,16 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
-        public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile) {
+        public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile, string catalogType) {
             ProductsReturn ret;
             string categoryName = category;
 
             // enable category search on either category id or search name
-            Category catFromSearchName = this.GetCategories(0, 2000,"BEK").Categories.Where(x => x.SearchName == category).FirstOrDefault();
+            Category catFromSearchName = this.GetCategories(0, 2000, catalogType).Categories.Where(x => x.SearchName == category).FirstOrDefault();
             if (catFromSearchName != null)
                 categoryName = catFromSearchName.Name;
+
+            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice")

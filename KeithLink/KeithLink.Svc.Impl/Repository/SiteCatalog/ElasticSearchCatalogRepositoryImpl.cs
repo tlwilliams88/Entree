@@ -239,12 +239,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return fieldFilterTerms;
         }
 
-        public CategoriesReturn GetCategories(int from, int size) {
+        public CategoriesReturn GetCategories(int from, int size, string catagoryType) {
+            var index = "";
+            switch (catagoryType.ToLower())
+            {
+                case "unfi":
+                    index = Constants.ES_UNFI_INDEX_CATEGORIES;
+                    break;
+                default:
+                    index = Constants.ES_INDEX_CATEGORIES;
+                    break;
+            }
             var response = _eshelper.Client.Search<Category>(s => s
                 .From(from)
                 .Size(GetCategoryPagingSize(size))
                 .Type(Constants.ES_TYPE_CATEGORY)
-                .Index(Constants.ES_INDEX_CATEGORIES)
+                .Index(index)
                 );
 
             var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();

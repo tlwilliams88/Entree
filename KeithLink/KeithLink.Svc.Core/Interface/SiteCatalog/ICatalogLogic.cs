@@ -20,7 +20,7 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         
 		Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile);
         
-        ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile);
+        ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile, string catalogType);
 
         ProductsReturn GetProductsByIds(string branch, List<string> ids);
 

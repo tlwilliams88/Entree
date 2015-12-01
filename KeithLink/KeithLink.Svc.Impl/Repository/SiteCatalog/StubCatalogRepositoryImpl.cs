@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
         }
 
 
-        public CategoriesReturn GetCategories(int from = 0, int size = 2000)
+        public CategoriesReturn GetCategories(int from = 0, int size = 2000, string catalogType = "BEK")
         {
             throw new NotImplementedException();
         }

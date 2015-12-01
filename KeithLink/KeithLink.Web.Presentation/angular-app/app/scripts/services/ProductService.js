@@ -86,7 +86,7 @@ angular.module('bekApp')
           var url = '/catalog/' + catalogType +'/search/' + id + '/products'; // default to search url
 
           if (type === 'category') {
-            url = '/catalog/search/category/' + id + '/products';
+            url = '/catalog/search/category/' + catalogType + "/" + id + '/products';
           } else if (type === 'brand') {
             url = '/catalog/search/brands/house/' + id;
           }

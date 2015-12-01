@@ -71,10 +71,10 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="searchModel"></param>
 		/// <returns></returns>
         [HttpGet]
-        [ApiKeyedRoute("catalog/search/category/{categoryId}/products")]
-        public ProductsReturn GetProductsByCategoryId(string categoryId, [FromUri] SearchInputModel searchModel)
+        [ApiKeyedRoute("catalog/search/category/{catalogType}/{categoryId}/products")]
+        public ProductsReturn GetProductsByCategoryId(string catalogType, string categoryId, [FromUri] SearchInputModel searchModel)
         {
-			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
+			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser, catalogType);
             return prods;
         }
 
@@ -211,7 +211,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			searchModel.Size = 500;
 
-			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
+			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser, "BEK");
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 			return ExportModel<Product>(prods.Products, exportRequest);	
