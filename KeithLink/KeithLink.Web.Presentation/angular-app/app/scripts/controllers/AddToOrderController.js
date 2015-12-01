@@ -845,6 +845,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           }
         }
       }
+      else{
+        return false;
+      }
     };
 
     function refreshSubtotal(cartItems, listItems) {
