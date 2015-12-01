@@ -231,7 +231,6 @@ angular.module('bekApp')
       $scope.loadingResults = true;
 
       return getData().then(function(data) {
-          debugger;
         $scope.totalItems = data.totalcount;
         if (data.catalogCounts != null) {
             $scope.bekItemCount = data.catalogCounts.bek;

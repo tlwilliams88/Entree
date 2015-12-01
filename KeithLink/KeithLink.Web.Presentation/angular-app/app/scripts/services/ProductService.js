@@ -102,7 +102,6 @@ angular.module('bekApp')
           };
 
           return $http.get(url, config).then(function(response) {
-              debugger;
             var data = response.data;
 
             // convert nonstock data structure to match other itemspecs

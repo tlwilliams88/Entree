@@ -241,7 +241,6 @@ angular.module('bekApp')
             params: params
           };
           return $http.get('/list/' + listId, data).then(function(response) {
-              debugger;
             var list = response.data;
             if (!list) {
               return $q.reject('No list found.');
