@@ -42,9 +42,7 @@ angular.module('bekApp')
     $scope.hideMobileFilters = true;
     if ($state.params.catalogType == "BEK") {
         $scope.pageTitle = "Product Catalog";
-        $scope.showSpecialtyFacet = true;
     } else {
-        $scope.showSpecialtyFacet = false;
         if ($state.params.catalogType == "UNFI"){
             $scope.pageTitle = "Natural and Organic";
         } else {
@@ -234,6 +232,14 @@ angular.module('bekApp')
 
       return getData().then(function(data) {
         $scope.totalItems = data.totalcount;
+        if (data.catalogCounts != null) {
+            $scope.bekItemCount = data.catalogCounts.bek;
+            $scope.unfiItemCount = data.catalogCounts.unfi;
+        } else {
+            $scope.bekItemCount = 0;
+            $scope.unfiItemCount = 0;
+        }
+       
         // append results to existing data (for infinite scroll)
         if (appendResults) {
           $scope.products.push.apply($scope.products, data.products);
@@ -406,7 +412,12 @@ angular.module('bekApp')
       });
     };
 
-    $scope.unfiCheckboxClick = function () {
+    $scope.bekCatalogSwitch = function () {
+        //change state to unfi
+        $state.go($state.current,{catalogType: "BEK"}, {reload: true});
+    }
+    
+    $scope.unfiCatalogSwitch = function () {
         //change state to unfi
         $state.go($state.current,{catalogType: "UNFI"}, {reload: true});
     }

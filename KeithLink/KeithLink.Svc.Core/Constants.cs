@@ -153,6 +153,7 @@ namespace KeithLink.Svc.Core
 
         // Elastic Search : Indexes
         public const string ES_INDEX_CATEGORIES = "categories";
+        public const string ES_UNFI_INDEX_CATEGORIES = "unfi_categories";
         public const string ES_INDEX_BRANDS = "brands";
 
         // Elastic Search : Types

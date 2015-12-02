@@ -239,12 +239,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return fieldFilterTerms;
         }
 
-        public CategoriesReturn GetCategories(int from, int size) {
+        public CategoriesReturn GetCategories(int from, int size, string catagoryType) {
+            var index = "";
+            switch (catagoryType.ToLower())
+            {
+                case "unfi":
+                    index = Constants.ES_UNFI_INDEX_CATEGORIES;
+                    break;
+                default:
+                    index = Constants.ES_INDEX_CATEGORIES;
+                    break;
+            }
             var response = _eshelper.Client.Search<Category>(s => s
                 .From(from)
                 .Size(GetCategoryPagingSize(size))
                 .Type(Constants.ES_TYPE_CATEGORY)
-                .Index(Constants.ES_INDEX_CATEGORIES)
+                .Index(index)
                 );
 
             var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
@@ -333,8 +343,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 							}
 						}}";
 
+
 			return GetProductsFromElasticSearch(branch, query);
         }
+
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
             int size = GetProductPagingSize(searchModel.Size);
             ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
@@ -377,7 +389,31 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
-        
+
+        public int GetHitsForSearchInIndex(string searchTerm, string index)
+        {
+            string searchBody = @"{
+						""query"":{
+						""term"" : { ""name"" : """ + searchTerm + @""" }
+						}}";
+
+            ElasticsearchResponse<DynamicDictionary> res = _client.Count(index.ToLower(), searchBody);
+
+
+            if (res.Response != null)
+            {
+                return res.Response["count"];
+            }
+            else
+            {
+                return 0;
+            }
+            
+        }
+
+        private delegate TResult Func<in T, out TResult>(
+   
+);
         private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 
