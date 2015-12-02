@@ -40,11 +40,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			// next, call create after converting OrderFile to RequestHeader
 			_specialOrderDbContext.RequestHeaders.Add(new RequestHeader()
 			{
-				// map in all possible fields here
 				RequestHeaderId = idToUse.ToString(),
 				BranchId = header.Header.Branch,
-				CategoryId = 0, // need to get the category id
-				DsrNumber = "", // need to feed the dsr number forward?  or look it up?
+				CategoryId = 9, // need to get the category id
+				DsrNumber = "", // do we need to feed the dsr number forward?  or look it up?
 				CustomerNumber = header.Header.CustomerNumber,
 				// do we need address info????
 				// do we need a 'contact'????
@@ -57,7 +56,6 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			{
 				_specialOrderDbContext.RequestItems.Add(new RequestItem()
 				{
-					// map in all possible fields here
 					RequestHeaderId = idToUse.ToString(),
 					BranchId = header.Header.Branch,
 					LineNumber = (byte)detail.LineNumber,
