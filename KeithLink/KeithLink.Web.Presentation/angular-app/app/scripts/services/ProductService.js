@@ -70,8 +70,7 @@ angular.module('bekApp')
             from: index || defaultStartingIndex,
             facets: facets,
             sfield: sortField,
-            sdir: sortDirection,
-            catalogType: catalogType 
+            sdir: sortDirection 
           };
           if (!params.facets) {
             delete params.facets;

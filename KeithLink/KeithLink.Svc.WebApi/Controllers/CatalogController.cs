@@ -185,16 +185,17 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <summary>
 		/// Export Catalog using provided search term
 		/// </summary>
+        /// <param name="catalogType">Catalog Type</param>
 		/// <param name="searchTerms">Search term</param>
 		/// <param name="searchModel"></param>
 		/// <param name="exportRequest">Export options</param>
 		/// <returns></returns>
 		[HttpPost]
-		[ApiKeyedRoute("catalog/export/{searchTerms}/products")]
-		public HttpResponseMessage ProductSearchExport(string searchTerms, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
+		[ApiKeyedRoute("catalog/{catalogType}/export/{searchTerms}/products")]
+		public HttpResponseMessage ProductSearchExport(string catalogType, string searchTerms, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
 		{
 			searchModel.Size = 500;
-
+            searchModel.CatalogType = catalogType;
 			ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
