@@ -160,7 +160,8 @@
               </tbody>
             </table>
         </tab>
-        <tab heading="Dietary Specifications">
+        <tab heading="Dietary Specifications"
+             ng-show = "item.nutritional != null">
           <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
             <table class="table item-details__table table-striped-rows no-margin">
               <colgroup>
@@ -198,7 +199,8 @@
               </tbody>
             </table>
         </tab>
-        <tab heading="Nutrition">
+        <tab heading="Nutrition"
+             ng-show = "item.nutritional != null">
           <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Nutrition</h3>
             <table class="table item-details__table table-striped-rows no-margin">
               <colgroup>

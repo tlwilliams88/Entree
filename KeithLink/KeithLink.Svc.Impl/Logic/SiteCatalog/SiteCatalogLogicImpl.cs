@@ -15,6 +15,9 @@ using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.ModelExport;
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -33,12 +36,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 		protected string CACHE_GROUPNAME { get { return "Catalog"; } }
 		protected string CACHE_NAME { get { return "Catalog"; } }
 		protected string CACHE_PREFIX { get { return "Default"; } }
+        private IExternalCatalogServiceRepository _externalServiceRepository;
         #endregion
 
-        #region ctor
+        #region constructor
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository,
                                                  ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic,
-                                                 IOrderServiceRepository orderServiceRepository) {
+                                                 IOrderServiceRepository orderServiceRepository, IExternalCatalogServiceRepository externalServiceRepository)
+        {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
             _imgRepository = imgRepository;
@@ -47,6 +52,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _catalogCacheRepository = catalogCacheRepository;
             _divisionLogic = divisionLogic;
             _orderServiceRepository = orderServiceRepository;
+            _externalServiceRepository = externalServiceRepository;
         }
         #endregion
 
@@ -93,16 +99,19 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         private void AddPricingInfo(ProductsReturn prods, UserSelectedContext context, SearchInputModel searchModel) {
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
-
+            //Substring branchID 
             PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
+               
                 prod.CasePrice = p.CasePrice.ToString();
                 prod.CasePriceNumeric = p.CasePrice;
                 prod.PackagePrice = p.PackagePrice.ToString();
                 prod.PackagePriceNumeric = p.PackagePrice;
                 prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                
+                
             }
 
             if ((searchModel.SField == "caseprice" || searchModel.SField == "unitprice") && prods.TotalCount <= Configuration.MaxSortByPriceItemCount) // sort pricing info first
@@ -138,19 +147,20 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        public CategoriesReturn GetCategories(int from, int size) {
-            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size));
+        public CategoriesReturn GetCategories(int from, int size, string catalogType)
+        {
+            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size, catalogType));
             if (categoriesReturn == null) {
-                categoriesReturn = _catalogRepository.GetCategories(from, size);
+                categoriesReturn = _catalogRepository.GetCategories(from, size, catalogType);
                 AddCategoryImages(categoriesReturn);
                 AddCategorySearchName(categoriesReturn);
-                _catalogCacheRepository.AddItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size), TimeSpan.FromHours(2), categoriesReturn);
+                _catalogCacheRepository.AddItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size, catalogType), TimeSpan.FromHours(2), categoriesReturn);
             }
             return categoriesReturn;
         }
 
-        private static string GetCategoriesCacheKey(int from, int size) {
-            return String.Format("CategoriesReturn_{0}_{1}", from, size);
+        private static string GetCategoriesCacheKey(int from, int size, string catalogType) {
+            return String.Format("CategoriesReturn_{0}_{1}_{2}", from, size, catalogType);
         }
 
         private string GetCategorySearchName(string categoryName) {
@@ -179,7 +189,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return returnValue;
         }
 
-        public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile) {
+        public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType) {
+            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);  
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 
             if (ret == null)
@@ -200,6 +211,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 ret.PackagePriceNumeric = price.PackagePrice;
                 ret.DeviatedCost = price.DeviatedCost ? "Y" : "N";
             }
+
+            ret.IsSpecialtyCatalog = IsSpecialtyCatalog(catalogType);
 
             return ret;
         }
@@ -242,14 +255,19 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             return ret;
         }
 
-        public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile) {
+        public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile, string catalogType) {
             ProductsReturn ret;
             string categoryName = category;
-
+           
             // enable category search on either category id or search name
-            Category catFromSearchName = this.GetCategories(0, 2000).Categories.Where(x => x.SearchName == category).FirstOrDefault();
+            Category catFromSearchName = this.GetCategories(0, 2000, catalogType).Categories.Where(x => x.SearchName == category).FirstOrDefault();
             if (catFromSearchName != null)
                 categoryName = catFromSearchName.Name;
+
+            if (catalogType.Equals("UNFI"))
+                categoryName = categoryName.ToUpper();
+
+            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
@@ -278,6 +296,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 totalProcessed += 500;
             }
 
+            foreach (var prod in products.Products)
+            {
+                prod.IsSpecialtyCatalog = IsSpecialtyCatalog(null, branch);
+            }
+
             return products;
         }
 
@@ -304,6 +327,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
+            var catalogCounts = GetHitsForCatalogs(catalogInfo, search, searchModel);
+            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
@@ -313,7 +338,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                                                                 Facets = searchModel.Facets, 
                                                                 From = searchModel.From, 
                                                                 Size = Configuration.MaxSortByPriceItemCount,
-                                                                Dept = searchModel.Dept
+                                                                Dept = searchModel.Dept, 
+																CatalogType = searchModel.CatalogType
                                                                 }
                                                             );
             else
@@ -321,9 +347,88 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
+            ret.CatalogCounts = catalogCounts;
+
+            foreach (var product in ret.Products)
+            {
+                product.IsSpecialtyCatalog = IsSpecialtyCatalog(searchModel.CatalogType);
+            }
+
             return ret;
         }
 
+        private string GetBranchId(string bekBranchId, string catalogType)
+        {
+            if (catalogType.ToLower() != "bek")
+            {
+                //Go get the code for this branch, hard code for now
+                //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
+                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
+                    .Where(x => catalogType.ToLower() == x.Type.ToString().ToLower()).ToList();
+
+                List<ExportExternalCatalog> filteredList = externalCatalog.Where(x => bekBranchId.ToLower().Equals(x.BekBranchId.Trim().ToLower())).ToList();
+
+
+                if (filteredList.Count > 0)
+                {
+                    return filteredList[0].CatalogId;
+                }
+                else
+                {
+                    return bekBranchId;
+                }
+            }
+            else
+            {
+                return bekBranchId;
+            }
+        }
+
+        private bool IsSpecialtyCatalog(string catalogType, string branchId = null)
+        {
+            if (catalogType != null)
+                return !catalogType.ToLower().Equals("bek");
+            else
+            {
+                //look up branch and see if it is BEK
+                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
+                    .Where(x => branchId.ToLower() == x.BekBranchId.ToString().ToLower()).ToList();
+
+                return !(externalCatalog.Count > 0);
+
+            }
+        }
+
+        private Dictionary<string,int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
+
+            var newSearchModel = new SearchInputModel();
+            newSearchModel.CatalogType = searchModel.CatalogType;
+            newSearchModel.Dept = searchModel.Dept;
+            newSearchModel.Facets = searchModel.Facets;
+            newSearchModel.From = searchModel.From;
+            newSearchModel.SDir = searchModel.SDir;
+            newSearchModel.SField = searchModel.SField;
+            newSearchModel.Size = 1; //This will minimize number returned from elastic search to minimize processing for only count
+
+            List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
+            var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
+            listOfCatalogs.Add("BEK");
+
+            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(newSearchModel.CatalogType);
+            if (baseCatalogTypeIndex != -1)
+                listOfCatalogs.RemoveAt(baseCatalogTypeIndex);
+
+            var returnDict = new Dictionary<string,int>();
+            foreach (var catalog in listOfCatalogs)
+            {
+                var catalogTempInfo = new UserSelectedContext();
+                catalogTempInfo.CustomerId = catalogInfo.CustomerId;
+                catalogTempInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalog);
+                returnDict.Add(catalog.ToLower(), _catalogRepository.GetHitsForSearchInIndex(catalogTempInfo, search, newSearchModel));
+            }
+
+            return returnDict;
+        }
         #endregion
 	}
 }

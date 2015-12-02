@@ -53,7 +53,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 					decimal casePrice = 0;
 					decimal servingPerPack = 0;
 					decimal.TryParse(this.CasePrice, out casePrice);
-					decimal.TryParse(this.Nutritional.ServingsPerPack, out servingPerPack);
+					decimal.TryParse(this.Nutritional == null ? "" : this.Nutritional.ServingsPerPack, out servingPerPack);
 
 
 					if (casePrice == 0)
@@ -190,5 +190,13 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "average_weight", EmitDefaultValue = false)]
         [Description("Average Weight")]
         public double AverageWeight { get; set; }
+
+        [DataMember(Name = "catalog_id", EmitDefaultValue = false)]
+        [Description("Catalog Id - index from elastic search")]
+        public string CatalogId { get; set; }
+
+        [DataMember(Name = "is_specialty_catalog", EmitDefaultValue = false)]
+        [Description("Is Specialty Catalog bool")]
+        public bool IsSpecialtyCatalog { get; set; }
     }
 }

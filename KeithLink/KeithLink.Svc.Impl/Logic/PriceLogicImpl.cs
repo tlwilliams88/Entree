@@ -29,6 +29,34 @@ namespace KeithLink.Svc.Impl.Logic
         #endregion
 
         #region methods
+ 
+        public Core.Models.SiteCatalog.PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Core.Models.SiteCatalog.Product> products)
+        {
+            List<Price> cachedPriceList = null;
+            List<Product> uncachedProductList = null;
+
+            BuildCachedPriceList(BranchId, customerNumber, products, out cachedPriceList, out uncachedProductList);
+
+            PriceReturn retVal = new PriceReturn();
+
+            retVal.Prices.AddRange(cachedPriceList);
+            if (uncachedProductList.Count > 0)
+            {
+                List<Price> uncachedPrices = _priceRepository.GetPrices(BranchId, customerNumber, shipDate, uncachedProductList);
+                foreach (Price p in uncachedPrices)
+                {
+					_priceCacheRepository.AddItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(p.BranchId, p.CustomerNumber, p.ItemNumber), TimeSpan.FromHours(2), p);
+                }
+                retVal.Prices.AddRange(uncachedPrices);
+            }
+            return retVal;
+        }
+
+		private string GetCacheKey(string branchId, string customerNumber, string itemNumber)
+		{
+			return string.Format("{0}-{1}-{2}", branchId, customerNumber, itemNumber);
+		}
+        
         /// <summary>
         /// separate items that are cached from non-cached items
         /// </summary>  
@@ -56,9 +84,6 @@ namespace KeithLink.Svc.Impl.Logic
             }
         }
 
-        private string GetCacheKey(string branchId, string customerNumber, string itemNumber) {
-            return string.Format("{0}-{1}-{2}", branchId, customerNumber, itemNumber);
-        }
 
         public PriceReturn GetNonBekItemPrices(string branchId, string customerNumber, string source, DateTime shipDate, List<Product> products) {
             List<Price> cachedPriceList = null;
@@ -83,27 +108,6 @@ namespace KeithLink.Svc.Impl.Logic
             return retVal;
         }
 
-        public PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Product> products) {
-            List<Price> cachedPriceList = null;
-            List<Product> uncachedProductList = null;
-
-            BuildCachedPriceList(BranchId, customerNumber, products, out cachedPriceList, out uncachedProductList);
-
-            PriceReturn retVal = new PriceReturn();
-
-            retVal.Prices.AddRange(cachedPriceList);
-
-            if (uncachedProductList.Count > 0) {
-                List<Price> uncachedPrices = _priceRepository.GetPrices(BranchId, customerNumber, shipDate, uncachedProductList);
-            
-                foreach (Price p in uncachedPrices) {
-                    _priceCacheRepository.AddItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, 
-                                                  GetCacheKey(p.BranchId, p.CustomerNumber, p.ItemNumber), TimeSpan.FromHours(2), p);
-                }
-                retVal.Prices.AddRange(uncachedPrices);
-            }
-            return retVal;
-        }
-        #endregion
+       #endregion
     }
 }

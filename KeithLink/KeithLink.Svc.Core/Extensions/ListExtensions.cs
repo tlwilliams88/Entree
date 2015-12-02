@@ -79,7 +79,8 @@ namespace KeithLink.Svc.Core.Extensions {
                         FromDate = i.FromDate,
                         ToDate = i.ToDate,
                         Each = i.Each ?? false,
-                        Quantity = i.Quantity
+                        Quantity = i.Quantity,
+                        CatalogId = i.CatalogId
                     }).ToList()
             };
         }
@@ -139,7 +140,6 @@ namespace KeithLink.Svc.Core.Extensions {
 
                 items.Add( item );
             }
-
 
             return items;
         }

@@ -95,12 +95,24 @@ angular.module('bekApp')
     **********/
     .state('menu.catalog', {
       abstract: true,
-      url: '/catalog/',
-      template: '<div ui-view=""></div>'
+      url: '/catalog/:catalogType/',
+      template: '<div ui-view=""></div>',
+      params: {
+        catalogType: {
+          value: 'BEK',
+          squash: false
+        }
+      }
     })
     .state('menu.catalog.home', {
       url: '',
-      templateUrl: 'views/catalog.html',
+      templateUrl: function($stateParams) {
+          if ($stateParams.catalogType == "UNFI") {
+              return 'views/unfi-catalog.html';
+          } else {
+              return 'views/catalog.html';
+          }
+      },
       controller: 'CatalogController',
       data: {
         authorize: 'canBrowseCatalog'
@@ -128,7 +140,7 @@ angular.module('bekApp')
       },
       resolve: {
         item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
-          return ProductService.getProductDetails($stateParams.itemNumber);
+          return ProductService.getProductDetails($stateParams.itemNumber, $stateParams.catalogType);
         }]
       }
     })

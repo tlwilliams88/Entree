@@ -26,6 +26,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ConfigurationService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IConfigurationService/SaveUserExportSettings", ReplyAction="http://tempuri.org/IConfigurationService/SaveUserExportSettingsResponse")]
         System.Threading.Tasks.Task SaveUserExportSettingsAsync(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration, string exportFormat);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IConfigurationService/ReadExternalCatalogs", ReplyAction="http://tempuri.org/IConfigurationService/ReadExternalCatalogsResponse")]
+        KeithLink.Svc.Core.Models.ModelExport.ExportExternalCatalog[] ReadExternalCatalogs();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IConfigurationService/ReadExternalCatalogs", ReplyAction="http://tempuri.org/IConfigurationService/ReadExternalCatalogsResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ModelExport.ExportExternalCatalog[]> ReadExternalCatalogsAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -69,6 +75,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ConfigurationService {
         
         public System.Threading.Tasks.Task SaveUserExportSettingsAsync(System.Guid userId, KeithLink.Svc.Core.Models.Configuration.EF.ExportType type, KeithLink.Svc.Core.Enumerations.List.ListType listType, KeithLink.Svc.Core.Models.ModelExport.ExportModelConfiguration[] configuration, string exportFormat) {
             return base.Channel.SaveUserExportSettingsAsync(userId, type, listType, configuration, exportFormat);
+        }
+        
+        public KeithLink.Svc.Core.Models.ModelExport.ExportExternalCatalog[] ReadExternalCatalogs() {
+            return base.Channel.ReadExternalCatalogs();
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.ModelExport.ExportExternalCatalog[]> ReadExternalCatalogsAsync() {
+            return base.Channel.ReadExternalCatalogsAsync();
         }
     }
 }

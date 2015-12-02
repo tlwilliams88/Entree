@@ -1,9 +1,10 @@
-﻿using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.Orders;
-using System.Collections.Generic;
-using System;
+﻿using KeithLink.Svc.Core.Models.Orders;
+using KeithLink.Svc.Core.Models.Orders.History;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
+using System;
+using System.Collections.Generic;
 
 namespace KeithLink.Svc.Core.Interface.Orders.History {
     public interface IInternalOrderHistoryLogic {
@@ -13,12 +14,13 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
 		List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
 
+		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
+        
         void SaveOrder(OrderHistoryFile historyFile);
 
-		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
+		void StopListening();
 
 		void ListenForQueueMessages();
 
-		void StopListening();
     }
 }

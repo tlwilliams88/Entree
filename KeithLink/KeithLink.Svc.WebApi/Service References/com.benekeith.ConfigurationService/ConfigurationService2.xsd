@@ -24,4 +24,18 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ExportModelConfiguration" nillable="true" type="tns:ExportModelConfiguration" />
+  <xs:complexType name="ArrayOfExportExternalCatalog">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ExportExternalCatalog" nillable="true" type="tns:ExportExternalCatalog" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfExportExternalCatalog" nillable="true" type="tns:ArrayOfExportExternalCatalog" />
+  <xs:complexType name="ExportExternalCatalog">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="BekBranchId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExternalBranchId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ExportExternalCatalog" nillable="true" type="tns:ExportExternalCatalog" />
 </xs:schema>

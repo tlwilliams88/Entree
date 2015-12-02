@@ -70,7 +70,8 @@ namespace KeithLink.Svc.Test.Logic
 
             OrderQueueLogicImpl orderLogic = new OrderQueueLogicImpl(new EventLogRepositoryImpl(Configuration.ApplicationName),
                                                queue,
-                                               new OrderSocketConnectionRepositoryImpl());
+                                               new OrderSocketConnectionRepositoryImpl(),
+											   null);
 
             orderLogic.ProcessOrders();
         }

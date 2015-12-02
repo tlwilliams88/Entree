@@ -1,6 +1,6 @@
 <div page-header-bar>
   <div header-message>
-    Product Catalog
+    {{pageTitle}}
     <a target="_tab" ng-click="openExternalLink('/Assets/help/Glossary.pdf')" title="Glossary of Abbreviations" class="large-icon icon-book"></a> 
   </div>
 
@@ -110,6 +110,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 </div>
 </accordion-group>
+          
 </accordion>
 
 </div>
@@ -118,6 +119,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
 <div class="row">
 
   <!-- Filters -->
+  
   <div class="col-sm-3 hidden-xs hidden-sm search-results__filters">
     <div class="row">
       <div class="col-sm-12">
@@ -219,6 +221,18 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
   </div>
 </div>
 </div>
+      <div calls="col-sm-12" ng-show="(bekItemCount + unfiItemCount - totalcount) > 0">
+          <h3>Catalogs</h3>
+          <a ng-click="bekCatalogSwitch()" ng-show="$state.params.catalogType != 'BEK' && bekItemCount > 0">Ben E Keith ({{bekItemCount}})</a>
+          <a ng-click="unfiCatalogSwitch()" ng-show="$state.params.catalogType != 'UNFI' && unfiItemCount > 0">Natural and Organic ({{unfiItemCount}})</a>
+<!--
+          <input
+             type="checkbox"
+             id="unfi-checkbox"
+             ng-click="unfiCheckboxClick()">
+             <label for="unfi-checkbox">Natural and Organic (100)</label>
+-->
+      </div>
 </div>
 
 <!-- Search Results -->

@@ -1,5 +1,10 @@
-<!-- History -->
+<!-- Specialty Catalog -->
 <span style="white-space:nowrap;">
+<a ng-if="::item.is_specialty_catalog === true">
+  <span tooltip="This is a specialty catalog item. This product will not ship immediately." class="text-regular icon-exclaimation-splat"></span>
+</a>
+    
+<!-- History -->
 <a ng-if="::item.inhistory === true">
   <span tooltip="Previously ordered" class="text-regular icon-history"></span>
 </a>

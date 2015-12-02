@@ -22,5 +22,20 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 
         [DataMember(Name = "facets")]
         public ExpandoObject Facets { get; set; }
+
+        [DataMember(Name = "catalogCounts")]
+        public Dictionary<string,int> CatalogCounts { get; set; }
+
+        public ProductsReturn AddRange(ProductsReturn products)
+        {
+            this.Count += products.Count;
+            this.TotalCount += products.TotalCount;
+            this.Products.AddRange(products.Products);
+            //this.Facets
+
+
+            return this;
+        }
+
     }
 }

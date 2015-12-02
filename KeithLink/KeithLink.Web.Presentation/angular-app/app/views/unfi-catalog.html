@@ -1,0 +1,206 @@
+<div page-header-bar>
+  <div header-message>
+    Natural and Organic
+    <a target="_tab" ng-click="openExternalLink('/Assets/help/Glossary.pdf')" title="Glossary of Abbreviations" class="large-icon icon-book"></a> 
+  </div>
+
+  <div header-buttons></div>
+</div>
+
+<div class="page-content">
+  <!-- Search -->
+  <div class="row hidden-sm hidden-xs">
+  	<div class="col-sm-12">
+  		<form name="catalogSearchForm" novalidate class="catalog-search">
+  			<div class="input-group">
+  				<input required ng-minlength="3" ng-model="catalogSearchTerm" type="text" class="form-control" placeholder="Search by keyword, item number, brand or manufacturer number">
+  				<span class="input-group-btn">
+  				<button 
+            ui-sref="menu.catalog.products.list({ type: 'search', id: catalogSearchTerm })" 
+            ng-disabled="catalogSearchForm.$invalid" 
+            class="btn btn-primary btn-lg" 
+            type="submit">
+            <span class="icon-search"></span> SEARCH
+          </button>
+  				</span>
+  			</div>
+  		</form>
+  	</div>
+</div>
+  <!-- Categories -->
+<!--
+  <div class="row">
+  	<div class="col-sm-12">
+  		<h2>Select A Category</h2>
+      <div loading-spinner="loadingCategories" ng-show="loadingCategories"></div>
+
+      <div ng-show="!loadingCategories && categories.length > 0">
+    		<ul class="horizontal-slide hidden-xs hidden-sm">
+    			<li ng-repeat="category in categories | orderBy: ['name']" class="item-holder">
+    				<div class="featured-item text-center">
+    					<img class="hand" ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" ng-src="{{category.category_image.url}}" alt="image">
+    					<div class="featured-item__detail">
+    						{{category.name}}
+    						<a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })" class="text-uppercase">view category</a>
+    					</div>
+    				</div>
+    			</li>
+    		</ul>
+    		
+    		<div featured-item-carousel="categories" template="{{'views/featuredItemTemplates/category.html'}}"></div>
+      </div>
+  	</div>
+  </div>  end Categories 
+-->
+    <!-- Catagories -->
+    <div class="row topPadded">
+    <div class="col-sm-12">
+      <accordion close-others="oneAtATime">
+          <!-- "facets.categories.available.length -->
+        <accordion-group is-open="true" ng-show="true">
+        <accordion-heading>
+        Categories<i class="pull-right" ng-class="{'icon-arrow-up6': ture, 'icon-arrow-down7': !status.openCategories}"></i>
+      </accordion-heading>
+      <div ng-repeat="category in categories | orderBy: ['name']" class="panel panel-default">
+        <div class="panel-body">
+          <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })">{{category.name}}</a>
+        </div>
+      </div>
+    </accordion-group>
+        </accordion>
+      </div>
+    <!-- Search Results -->
+<!--
+<div class="col-md-9 col-xs-12">
+  <div class="row">
+    <h2 class="col-xs-7">Natural and Organic Items</h2>
+    <span style="margin-top: 25px;" class="col-xs-5 text-right">{{totalItems}} results</span>
+  </div>
+  <table class="table table-striped-rows table-border table-products" infinite-scroll="infiniteScrollLoadMore()" context-menu favorite-item-click-handlers >
+    <thead>
+      <tr fsm-sticky-header scroll-body="'.table-products'" scroll-stop="0" scroll-offset="184">
+        <th ng-if="isOrderEntryCustomer"></th>
+        <th class="sort-col-header" ng-click="sortTable('itemnumber')">
+          Item 
+          <span># <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span></span>
+        </th>
+        <th class="sort-col-header" ng-click="sortTable('name_not_analyzed')">
+          <span>Name <span sort-icons field="'name_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
+        </th>
+        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('brand_description_not_analyzed')">
+          <span>Brand <span sort-icons field="'brand_description_not_analyzed'" sortorder="sortReverse" sortby="sortField"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print">
+          Pack/Size
+        </th>
+        <th class="hidden-mobile-visible-print"></th>
+        <th class="sort-col-header hidden-mobile-visible-print" ng-if="canSeePrices" ng-click="sortBy='each';sortOrder=!sortOrder;">
+          <span>Each<span sort-icons field="'each'" sortorder="sortOrder" sortby="sortBy"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('unitprice')">
+          <span>Portion Cost <span ng-show="totalItems <= maxSortCount" sort-icons field="'unitprice'" sortorder="sortReverse" sortby="sortField"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print" ng-if="canSeePrices" ng-class="{'sort-col-header': totalItems <= maxSortCount}" ng-click="sortTable('caseprice')">
+          <span>Price <span ng-show="totalItems <= maxSortCount" sort-icons field="'caseprice'" sortorder="sortReverse" sortby="sortField"></span></span>
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat-start="item in products" ng-class="{ odd : $odd, even: $even }">
+        <td ng-if="isOrderEntryCustomer" class="large-icon icon-col">
+          <span favorite-icons></span>
+        </td>
+        <td>
+          <a ng-click="goToItemDetails(item)">{{::item.itemnumber}}</a>
+        </td>
+        <td>
+          {{::item.name}}
+        </td>
+        <td class="hidden-mobile-visible-print">
+          {{::item.brand_extended_description}}
+        </td>
+        <td class="hidden-mobile-visible-print">
+          {{::item.packsize}}
+        </td>
+        <td class="nowrap hidden-mobile-visible-print text-right" item-icons>
+        </td>
+        <td class="input-col hidden-mobile-visible-print" ng-if="canSeePrices">
+          <ng-form name="eachForm" ng-if="hasPackagePrice(item)">
+            <input type="checkbox" ng-model="item.each" id="each" name="each" />
+            <label for="each"></label>
+          </ng-form>
+        </td>
+      <td class="hidden-mobile-visible-print" ng-if="canSeePrices">
+        <span ng-if="hasPrice(item.unitprice)">{{item.unitprice | currency}}</span>
+      </td>
+      <td class="hidden-mobile-visible-print" ng-if="canSeePrices">
+        <span ng-if="hasCasePrice(item)">{{(item.each ? item.packageprice : item.caseprice) | currency}}</span>
+        <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+      </td>
+      <td class="large-icon icon-col nowrap">
+        <div 
+        ng-if="(canManageLists || canCreateOrders || canSubmitOrders) && canOrderItem(item)" 
+        context-menu-template
+        class="context-menu-template context-menu__in-list hidden-print"
+        >
+        <a class="icon-plus2"></a>
+      </div>
+
+      <a class="hidden-print" ng-click="showDetails = !showDetails;"><span class="text-light visible-xs-inline visible-sm-inline icon-ellipsis"></span></a>
+    </td>
+  </tr>
+  <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row">
+    <td colspan="4">
+      <table>
+        <colgroup>
+        <col width="25%" />
+        <col width="75%" />
+      </colgroup>
+      <tbody>
+        <tr>
+          <td>Pack/Size</td>
+          <td>{{::item.pack | number}} / {{::item.size}}</td>
+        </tr>
+        <tr>
+          <td>Brand</td>
+          <td>{{::item.brand_extended_description}}</td>
+        </tr>
+        <tr>
+          <td colspan="2" item-icons></td>
+        </tr>
+        <tr ng-show="canSeePrices" ng-if="hasPrice(item.unitprice)">
+          <td>Portion Cost</td>
+          <td>{{item.unitprice | currency}}</td>
+        </tr>
+        <tr ng-if="hasCasePrice(item)" ng-show="canSeePrices">
+          <td>Price</td>
+          <td>{{(item.each ? item.packageprice : item.caseprice) | currency}}</td>
+        </tr>
+        <tr ng-if="hasPackagePrice(item)">
+          <td>Each</td>
+          <td>
+            <ng-form name="eachForm_mobile">
+            <input type="checkbox" ng-model="item.each" id="each" name="each" />
+          </ng-form>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</td>
+</tr>
+</tbody>
+<tfoot>
+  <tr ng-show="!searchMessage && products.length === 0 && !loadingResults">
+    <td colspan="9">No products found.</td>
+  </tr>
+</tfoot>
+</table>
+
+<div class="text-red" ng-show="searchMessage">{{searchMessage}}</div>
+
+<div class="text-center" loading-spinner="loadingResults"></div>
+</div>
+-->
+</div>
+</div>

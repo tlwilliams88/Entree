@@ -64,13 +64,13 @@ angular.module('bekApp')
           return facets;
         },
 
-        getSearchParams: function(pageSize, index, sortField, sortDirection, facets) {
+        getSearchParams: function(pageSize, index, sortField, sortDirection, facets, catalogType) {
           var params = {
             size: pageSize  || defaultPageSize,
             from: index || defaultStartingIndex,
             facets: facets,
             sfield: sortField,
-            sdir: sortDirection
+            sdir: sortDirection 
           };
           if (!params.facets) {
             delete params.facets;
@@ -81,20 +81,20 @@ angular.module('bekApp')
           return params;  
         },
 
-        getSearchUrl: function(type, id) {
-          var url = '/catalog/search/' + id + '/products'; // default to search url
+        getSearchUrl: function(type, id, catalogType) {
+          var url = '/catalog/' + catalogType +'/search/' + id + '/products'; // default to search url
 
           if (type === 'category') {
-            url = '/catalog/search/category/' + id + '/products';
+            url = '/catalog/search/category/' + catalogType + "/" + id + '/products';
           } else if (type === 'brand') {
             url = '/catalog/search/brands/house/' + id;
           }
           return url;
         },
 
-        searchCatalog: function(type, id, params) {
+        searchCatalog: function(type, id, catalogType,params) {
           
-          var url = Service.getSearchUrl(type, id);
+          var url = Service.getSearchUrl(type, id, catalogType);
           
           var config = {
             params: params
@@ -119,10 +119,10 @@ angular.module('bekApp')
           });
         },
 
-        getProductDetails: function(itemNumber) {
+        getProductDetails: function(itemNumber, catalogType) {
           var returnProduct;
           if (!Service.selectedProduct.name) {
-            returnProduct = $http.get('/catalog/product/' + itemNumber).then(function(response) {
+            returnProduct = $http.get('/catalog/' + catalogType + '/product/' + itemNumber).then(function(response) {
               return response.data;
             });
           } else {

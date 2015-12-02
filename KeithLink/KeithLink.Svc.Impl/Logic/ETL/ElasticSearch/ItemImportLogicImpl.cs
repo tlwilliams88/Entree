@@ -506,6 +506,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 				Name = row.GetString("Description"),
 				Brand = row.GetString("Brand"),
 				BrandNotAnalyzed = row.GetString("Brand"),
+				BrandDescription = row.GetString("Brand"),
 				BranchId = "unfi",
 				CLength = row.GetNullableDouble("CLength"),
 				CWidth = row.GetNullableDouble("CWidth"),
