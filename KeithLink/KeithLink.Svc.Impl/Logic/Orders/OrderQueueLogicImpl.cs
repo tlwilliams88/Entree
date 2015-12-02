@@ -6,6 +6,7 @@ using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.SpecialOrders;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
 using CS = KeithLink.Svc.Core.Models.Generated;
@@ -26,14 +27,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private IEventLogRepository _log;
         private IOrderSocketConnectionRepository _mfConnection;
         private IGenericQueueRepository _orderQueue;
+		private ISpecialOrderRepository _specialOrder;
         #endregion
 
         #region ctor
-		public OrderQueueLogicImpl(IEventLogRepository eventLog, IGenericQueueRepository orderQueue, IOrderSocketConnectionRepository mfCon)
+		public OrderQueueLogicImpl(IEventLogRepository eventLog, IGenericQueueRepository orderQueue, IOrderSocketConnectionRepository mfCon, ISpecialOrderRepository specialOrder)
         {
             _log = eventLog;
             _mfConnection = mfCon;
             _orderQueue = orderQueue;
+			_specialOrder = specialOrder;
 
             AllowOrderProcessing = true;
         }
@@ -169,22 +172,30 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private void SendToHost(OrderFile order)
         {
-            // open connection and call program
-            _mfConnection.Connect();
+			if (order.Header.OrderType == OrderType.SpecialOrder) // KSOS
+			{
+				// Insert to KSOS - RH then RI
+				_specialOrder.Create(order);
+			}
+			else // direct to main frame
+			{
+				// open connection and call program
+				_mfConnection.Connect();
 
-            SendStartTransaction(order.Header.ControlNumber.ToString());
+				SendStartTransaction(order.Header.ControlNumber.ToString());
 
-            // start the order transmission to the mainframe
-            _mfConnection.Send("OTX");
+				// start the order transmission to the mainframe
+				_mfConnection.Send("OTX");
 
-            SendHeaderRecordToHost(order.Header);
-            SendDetailRecordsToHost(order.Details, order.Header.ControlNumber);
-            SendEndOfRecordToHost();
-            
-            // stop order transmission to the mainframe
-            _mfConnection.Send("STOP");
+				SendHeaderRecordToHost(order.Header);
+				SendDetailRecordsToHost(order.Details, order.Header.ControlNumber);
+				SendEndOfRecordToHost();
 
-            _mfConnection.Close();
+				// stop order transmission to the mainframe
+				_mfConnection.Send("STOP");
+
+				_mfConnection.Close();
+			}
         }
 		
         private void WorkOrderQueue(OrderQueueLocation queue) {

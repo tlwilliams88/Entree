@@ -638,6 +638,7 @@
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
+    <Compile Include="Repository\EF\Operational\SpecialOrderDBContext.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\ImagingRepositoryImpl.cs" />
@@ -665,6 +666,7 @@
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\CustomerTopicRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\SpecialOrderRepository.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />
     <Compile Include="Repository\Network\SocketListenerRepositoryImpl.cs" />

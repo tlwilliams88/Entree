@@ -228,6 +228,7 @@
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
     <Compile Include="Interface\OnlinePayments\Log\IKPayLogRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
+    <Compile Include="Interface\Orders\ISpecialOrderRepository.cs" />
     <Compile Include="Interface\Orders\History\IInternalOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
@@ -261,6 +262,7 @@
     <Compile Include="Interface\SingleSignOn\IAccessRequestLogic.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
+    <Compile Include="Interface\SpecialOrders\ISpecialOrderDBContext.cs" />
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExternalCatalog.cs" />
@@ -550,6 +552,9 @@
     <Compile Include="Interface\Profile\IUserProfileRepository.cs" />
     <Compile Include="Models\Profile\UserProfile.cs" />
     <Compile Include="Models\Profile\UserProfileReturn.cs" />
+    <Compile Include="Models\SpecialOrders\EF\RequestHeaderId.cs" />
+    <Compile Include="Models\SpecialOrders\EF\RequestHeader.cs" />
+    <Compile Include="Models\SpecialOrders\EF\RequestItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Lists\ListModel.cs" />
   </ItemGroup>
