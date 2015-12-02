@@ -492,7 +492,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             {
                 var batch = list.Items.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
 
-                var tempProducts = catalogLogic.GetProductsByIds(list.BranchId, batch);
+                var tempProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
                 products.Products.AddRange(tempProducts.Products);
                 totalProcessed += 50;
