@@ -11,9 +11,10 @@ angular.module('bekApp')
         
       link: function( $scope, element, attributes ) {
           
-    element.bind('focus', function () {
+    element.bind('focus', function (event) {
             $('.ATOrowHighlight').removeClass('ATOrowHighlight');
-            angular.element(attributes.$$element[0].closest('tr')).addClass('ATOrowHighlight');
+            //angular.element(attributes.$$element[0].closest('tr')).addClass('ATOrowHighlight');
+            $(event.target).parents("tr").addClass('ATOrowHighlight');
         })
       }
     }
