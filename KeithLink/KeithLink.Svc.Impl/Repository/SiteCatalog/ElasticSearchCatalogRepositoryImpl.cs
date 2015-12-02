@@ -390,8 +390,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
 
-        public int GetHitsForSearchInIndex(string searchTerm, string index)
+        public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
+            /*
+            //searching count func
             string searchBody = @"{
 						""query"":{
 						""term"" : { ""name"" : """ + searchTerm + @""" }
@@ -407,8 +409,33 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             else
             {
                 return 0;
+            }*/
+
+            int size = GetProductPagingSize(searchModel.Size);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
+
+            string termSearch = searchTerm;
+            List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
+            System.Text.RegularExpressions.Regex matchOnlyDigits = new System.Text.RegularExpressions.Regex(@"^\d+$");
+
+            // results in a search string like '1234 OR upc:*1234 OR gtin:*1234 OR itemnumber:*1234'
+            if (matchOnlyDigits.IsMatch(searchTerm))
+            {
+                List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + searchTerm + "*"))).ToList();
+                digitSearchTerms.Insert(0, searchTerm);
+                termSearch = String.Join(" OR ", digitSearchTerms);
             }
-            
+
+            dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
+            var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
+
+            string branch = catalogInfo.BranchId.ToLower();
+
+            var res = _client.Search(branch.ToLower(), "product", termSearchExpression);
+            if (res.Response["hits"]["total"] != null) 
+                return Convert.ToInt32(res.Response["hits"]["total"].Value);
+            else 
+                return 0;
         }
 
         private delegate TResult Func<in T, out TResult>(

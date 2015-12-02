@@ -98,7 +98,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 		}
 
 
-        public int GetHitsForSearchInIndex(string searchTerm, string index)
+        public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
         {
             throw new NotImplementedException();
         }

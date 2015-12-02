@@ -336,7 +336,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
-            var catalogCounts = GetHitsForCatalogs(search, searchModel.CatalogType, catalogInfo.BranchId);
+            var catalogCounts = GetHitsForCatalogs(catalogInfo, search, searchModel);
             catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
 
             // special handling for price sorting
@@ -408,20 +408,24 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private Dictionary<string,int> GetHitsForCatalogs(string search, string baseCatalgType, string bekBranchId) {
+        private Dictionary<string,int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
 
+            searchModel.Size = 1;
             List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
             var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
             listOfCatalogs.Add("BEK");
 
-            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(baseCatalgType);
+            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(searchModel.CatalogType);
             if (baseCatalogTypeIndex != -1)
                 listOfCatalogs.RemoveAt(baseCatalogTypeIndex);
 
             var returnDict = new Dictionary<string,int>();
             foreach (var catalog in listOfCatalogs)
             {
-                returnDict.Add(catalog.ToLower(), _catalogRepository.GetHitsForSearchInIndex(search, GetBranchId(bekBranchId, catalog)));
+                var catalogTempInfo = new UserSelectedContext();
+                catalogTempInfo.CustomerId = catalogInfo.CustomerId;
+                catalogTempInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalog);
+                returnDict.Add(catalog.ToLower(), _catalogRepository.GetHitsForSearchInIndex(catalogTempInfo, search, searchModel));
             }
 
             return returnDict;
