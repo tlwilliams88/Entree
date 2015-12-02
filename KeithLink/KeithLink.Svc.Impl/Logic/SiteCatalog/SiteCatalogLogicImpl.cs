@@ -267,11 +267,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile, string catalogType) {
             ProductsReturn ret;
             string categoryName = category;
-
+           
             // enable category search on either category id or search name
             Category catFromSearchName = this.GetCategories(0, 2000, catalogType).Categories.Where(x => x.SearchName == category).FirstOrDefault();
             if (catFromSearchName != null)
                 categoryName = catFromSearchName.Name;
+
+            if (catalogType.Equals("UNFI"))
+                categoryName = categoryName.ToUpper();
 
             catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);
 

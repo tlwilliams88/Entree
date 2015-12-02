@@ -206,12 +206,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="exportRequest">Export options</param>
 		/// <returns></returns>
 		[HttpPost]
-		[ApiKeyedRoute("catalog/export/category/{categoryId}/products")]
-		public HttpResponseMessage GetProductsByCategoryIdExport(string categoryId, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
+		[ApiKeyedRoute("catalog/export/category/{catalogType}/{categoryId}/products")]
+		public HttpResponseMessage GetProductsByCategoryIdExport(string catalogType, string categoryId, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
 		{
 			searchModel.Size = 500;
 
-			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser, "BEK");
+			ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser, catalogType);
 			if (exportRequest.Fields != null)
 				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Products, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 			return ExportModel<Product>(prods.Products, exportRequest);	
