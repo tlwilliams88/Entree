@@ -410,12 +410,20 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         private Dictionary<string,int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
 
-            searchModel.Size = 1;
+            var newSearchModel = new SearchInputModel();
+            newSearchModel.CatalogType = searchModel.CatalogType;
+            newSearchModel.Dept = searchModel.Dept;
+            newSearchModel.Facets = searchModel.Facets;
+            newSearchModel.From = searchModel.From;
+            newSearchModel.SDir = searchModel.SDir;
+            newSearchModel.SField = searchModel.SField;
+            newSearchModel.Size = 1; //This will minimize number returned from elastic search to minimize processing for only count
+
             List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
             var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
             listOfCatalogs.Add("BEK");
 
-            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(searchModel.CatalogType);
+            var baseCatalogTypeIndex = listOfCatalogs.IndexOf(newSearchModel.CatalogType);
             if (baseCatalogTypeIndex != -1)
                 listOfCatalogs.RemoveAt(baseCatalogTypeIndex);
 
@@ -425,7 +433,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 var catalogTempInfo = new UserSelectedContext();
                 catalogTempInfo.CustomerId = catalogInfo.CustomerId;
                 catalogTempInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalog);
-                returnDict.Add(catalog.ToLower(), _catalogRepository.GetHitsForSearchInIndex(catalogTempInfo, search, searchModel));
+                returnDict.Add(catalog.ToLower(), _catalogRepository.GetHitsForSearchInIndex(catalogTempInfo, search, newSearchModel));
             }
 
             return returnDict;
