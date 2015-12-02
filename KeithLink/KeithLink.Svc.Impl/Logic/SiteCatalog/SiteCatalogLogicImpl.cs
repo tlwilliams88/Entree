@@ -149,18 +149,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public CategoriesReturn GetCategories(int from, int size, string catalogType)
         {
-            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, catalogType, CACHE_NAME, GetCategoriesCacheKey(from, size));
+            CategoriesReturn categoriesReturn = _catalogCacheRepository.GetItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size, catalogType));
             if (categoriesReturn == null) {
                 categoriesReturn = _catalogRepository.GetCategories(from, size, catalogType);
                 AddCategoryImages(categoriesReturn);
                 AddCategorySearchName(categoriesReturn);
-                _catalogCacheRepository.AddItem<CategoriesReturn>(CACHE_GROUPNAME, catalogType, CACHE_NAME, GetCategoriesCacheKey(from, size), TimeSpan.FromHours(2), categoriesReturn);
+                _catalogCacheRepository.AddItem<CategoriesReturn>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCategoriesCacheKey(from, size, catalogType), TimeSpan.FromHours(2), categoriesReturn);
             }
             return categoriesReturn;
         }
 
-        private static string GetCategoriesCacheKey(int from, int size) {
-            return String.Format("CategoriesReturn_{0}_{1}", from, size);
+        private static string GetCategoriesCacheKey(int from, int size, string catalogType) {
+            return String.Format("CategoriesReturn_{0}_{1}_{2}", from, size, catalogType);
         }
 
         private string GetCategorySearchName(string categoryName) {
