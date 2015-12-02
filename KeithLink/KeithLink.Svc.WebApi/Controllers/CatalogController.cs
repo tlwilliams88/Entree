@@ -42,6 +42,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <summary>
 		/// Retrieve all product categories
 		/// </summary>
+        /// <param name="catalogType">Catalog Type</param>
 		/// <returns>List of Categories</returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/{catalogType}/categories")]
@@ -67,6 +68,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <summary>
 		/// Retrieve Products for a Category
 		/// </summary>
+        /// <param name="catalogType">Catalog Type</param>
 		/// <param name="categoryId">Category Id</param>
 		/// <param name="searchModel"></param>
 		/// <returns></returns>
@@ -108,6 +110,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <summary>
 		/// Get Product by Id
 		/// </summary>
+        /// <param name="catalogType">Catalog Type</param>
 		/// <param name="id">Product Id (itemnumber)</param>
 		/// <returns></returns>
         [HttpGet]
@@ -141,6 +144,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <summary>
 		/// Search products
 		/// </summary>
+        /// <param name="catalogType">Catalog Type</param>
 		/// <param name="searchTerms">Product Search term</param>
 		/// <param name="searchModel"></param>
 		/// <returns></returns>
@@ -201,12 +205,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <summary>
 		/// Export products for a Category
 		/// </summary>
+        /// <param name="catalogType">Catalog Type</param>
 		/// <param name="categoryId">Category Id</param>
 		/// <param name="searchModel"></param>
 		/// <param name="exportRequest">Export options</param>
 		/// <returns></returns>
 		[HttpPost]
-		[ApiKeyedRoute("catalog/export/category/{catalogType}/{categoryId}/products")]
+        [ApiKeyedRoute("catalog/export/category/{catalogType}/{categoryId}/products")]
 		public HttpResponseMessage GetProductsByCategoryIdExport(string catalogType, string categoryId, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest)
 		{
 			searchModel.Size = 500;
