@@ -100,26 +100,17 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
             //Substring branchID 
-            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId.Substring(0,3), context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
+            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
-                if (prod.CatalogId.StartsWith("unfi"))
-                {
-                    prod.CasePrice = "3.33";
-                    prod.CasePriceNumeric = 3;
-                    prod.PackagePrice = "6.66";
-                    prod.PackagePriceNumeric = 6;
-                    prod.DeviatedCost = "Y";
-                }
-                else
-                {
-                    prod.CasePrice = p.CasePrice.ToString();
-                    prod.CasePriceNumeric = p.CasePrice;
-                    prod.PackagePrice = p.PackagePrice.ToString();
-                    prod.PackagePriceNumeric = p.PackagePrice;
-                    prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
-                }
+               
+                prod.CasePrice = p.CasePrice.ToString();
+                prod.CasePriceNumeric = p.CasePrice;
+                prod.PackagePrice = p.PackagePrice.ToString();
+                prod.PackagePriceNumeric = p.PackagePrice;
+                prod.DeviatedCost = p.DeviatedCost ? "Y" : "N";
+                
                 
             }
 
