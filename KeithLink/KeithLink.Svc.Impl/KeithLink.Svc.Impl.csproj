@@ -674,6 +674,7 @@
     <Compile Include="Repository\Lists\ListRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserTopicSubscriptionRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\CustomerTopicRepositoryImpl.cs" />
+    <Compile Include="Repository\Orders\NoSpecialOrderRepository.cs" />
     <Compile Include="Repository\Orders\SpecialOrderRepository.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoryDetailRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\EF\OrderHistoyrHeaderRepositoryImpl.cs" />

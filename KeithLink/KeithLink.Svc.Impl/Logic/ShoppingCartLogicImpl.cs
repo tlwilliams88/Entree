@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.Configuration;
 
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Lists;
@@ -26,6 +27,7 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ShoppingCart;
 using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Core.Models.ModelExport;
 
 // Core
 using System;
@@ -52,13 +54,14 @@ namespace KeithLink.Svc.Impl.Logic
         private readonly IOrderQueueLogic orderQueueLogic;
 		private readonly IOrderServiceRepository orderServiceRepository;
 		private readonly IAuditLogRepository auditLogRepository;
+        private IExternalCatalogServiceRepository externalServiceRepository;
 		#endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
 									 IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, ICustomerRepository customerRepository,
-									IAuditLogRepository auditLogRepository)
+                                    IAuditLogRepository auditLogRepository, IExternalCatalogServiceRepository externalServiceRepository)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
@@ -71,6 +74,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.orderServiceRepository = orderServiceRepository;
 			this.customerRepository = customerRepository;
 			this.auditLogRepository = auditLogRepository;
+            this.externalServiceRepository = externalServiceRepository;
 		}
         #endregion
 
@@ -200,7 +204,14 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 var tempProducts = catalogLogic.GetProductsByIds(catalogId, cart.Items.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
                 products.AddRange(tempProducts);
-                pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products));
+                if (IsCatalogIdBEK(catalogId)) {
+                    pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products));
+                }
+                else {
+                    var source = GetCatalogTypeFromCatalogId(catalogId);
+                    pricing.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),tempProducts.Products));
+                }
+                    
             }
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
@@ -387,34 +398,34 @@ namespace KeithLink.Svc.Impl.Logic
             //make list of baskets
             foreach (var catalogId in catalogList)
             {
-                var shoppingCart = new ShoppingCart()
-                {
-                    CartId = basket.Id.ToGuid(),
-                    Name = basket.DisplayName,
-                    BranchId = catalogId,
-                    RequestedShipDate = basket.RequestedShipDate,
-                    Active = false,
-                    PONumber = basket.PONumber,
-                    CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    Items = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => new ShoppingCartItem()
-                    {
-                        ItemNumber = l.ProductId,
-                        CartItemId = l.Id.ToGuid(),
-                        Notes = l.Notes,
-                        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
-                        Each = l.Each.HasValue ? l.Each.Value : false,
-                        CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
-                        CatalogId = l.CatalogName
+                //var shoppingCart = new ShoppingCart()
+                //{
+                //    CartId = basket.Id.ToGuid(),
+                //    Name = basket.DisplayName,
+                //    BranchId = catalogId,
+                //    RequestedShipDate = basket.RequestedShipDate,
+                //    Active = false,
+                //    PONumber = basket.PONumber,
+                //    CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
+                //    Items = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => new ShoppingCartItem()
+                //    {
+                //        ItemNumber = l.ProductId,
+                //        CartItemId = l.Id.ToGuid(),
+                //        Notes = l.Notes,
+                //        Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
+                //        Each = l.Each.HasValue ? l.Each.Value : false,
+                //        CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                //        CatalogId = l.CatalogName
 
-                    }).ToList()
-                };
-                tempCatalogInfo.BranchId = catalogId;
-                var newCartId = CreateCart(user, tempCatalogInfo, shoppingCart);
-                orderNumbers.Add(client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId));//need new cart per loop
+                //    }).ToList()
+                //};
+                //tempCatalogInfo.BranchId = catalogId;
+                //var newCartId = CreateCart(user, tempCatalogInfo, shoppingCart);
+                orderNumbers.Add(client.SaveCartAsOrder(basket.UserId.ToGuid(), basket.Id.ToGuid()));//need new cart per loop
             }
 
             // delete original cart
-            DeleteCart(user, catalogInfo, cartId);
+            //DeleteCart(user, catalogInfo, cartId);
 
             foreach (var orderNumber in orderNumbers) 
             {
@@ -423,7 +434,7 @@ namespace KeithLink.Svc.Impl.Logic
                 orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
 
                 //if bek items
-                if (true)
+                if (false)
                 {
                     orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue - mainframe only for BEK
                 }
@@ -591,6 +602,35 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return results;
 		}
+
+        private bool IsCatalogIdBEK(string catalogId)
+        {
+            List<string> bekBranchIds = externalServiceRepository.ReadExternalCatalogs().Select(x => x.BekBranchId).Distinct().ToList();
+
+            return bekBranchIds.Contains(catalogId.ToUpper());
+        }
+
+        private string GetCatalogTypeFromCatalogId(string catalogId)
+        {
+            //Go get the code for this branch, hard code for now
+            //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
+            List<ExportExternalCatalog> externalCatalog = externalServiceRepository.ReadExternalCatalogs()
+                .Where(x => catalogId.ToLower() == x.CatalogId.ToString().ToLower()).ToList();
+
+
+            if (externalCatalog.Count > 0)
+            {
+                return externalCatalog[0].Type;
+            }
+            else
+            {
+                return catalogId;
+            }
+            
+               
+            
+           
+        }
 
         #endregion
 	}

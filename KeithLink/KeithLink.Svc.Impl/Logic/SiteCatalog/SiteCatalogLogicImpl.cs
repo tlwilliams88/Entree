@@ -100,7 +100,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
             //Substring branchID 
-            PriceReturn pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
+            PriceReturn pricingInfo = null;
+            if (searchModel.CatalogType.Equals("BEK"))
+                pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
+            else
+                pricingInfo = _priceLogic.GetNonBekItemPrices(context.BranchId, context.CustomerId, searchModel.CatalogType, DateTime.Now.AddDays(1), prods.Products);
 
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
@@ -328,11 +332,13 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile) {
             ProductsReturn ret;
             var catalogCounts = GetHitsForCatalogs(catalogInfo, search, searchModel);
-            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
+            var tempCatalogInfo = new UserSelectedContext();
+            tempCatalogInfo.CustomerId = catalogInfo.CustomerId;
+            tempCatalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, searchModel.CatalogType);
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice" || searchModel.SField == "unitprice")
-                ret = _catalogRepository.GetProductsBySearch(catalogInfo, 
+                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, 
                                                              search, 
                                                              new SearchInputModel() { 
                                                                 Facets = searchModel.Facets, 
@@ -343,7 +349,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                                                                 }
                                                             );
             else
-                ret = _catalogRepository.GetProductsBySearch(catalogInfo, search, searchModel);
+                ret = _catalogRepository.GetProductsBySearch(tempCatalogInfo, search, searchModel);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
