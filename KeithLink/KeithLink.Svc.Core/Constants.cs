@@ -82,15 +82,15 @@ namespace KeithLink.Svc.Core
         public const string ROLE_INTERNAL_POWERUSER_GOF = "FFGO-LS-SYS-AC-Entree_PowerUsers";
 
 
-		public const string ROLE_INTERNAL_MARKETING_FAQ = "FABQ-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_FAM = "FAMA-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_FDF = "FDFW-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_FHS = "FHST-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_FLR = "FLRK-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_FAR = "FLAR-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_FSA = "FSAN-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_FOK = "FOKC-LS-SYS-AC-Entree_Marketing";
-		public const string ROLE_INTERNAL_MARKETING_GOF = "FFGO-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FAQ = "FABQ-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FAM = "FAMA-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FDF = "FDFW-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FHS = "FHST-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FLR = "FLRK-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FAR = "FLAR-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FSA = "FSAN-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_FOK = "FOKC-LS-SYS-AC-Entree_Marketing";
+        public const string ROLE_INTERNAL_MARKETING_GOF = "FFGO-LS-SYS-AC-Entree_Marketing";
 
         public const string ROLE_NAME_BRANCHIS = "branchismanager";
         public const string ROLE_NAME_DSM = "dsm";
@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Core
         public const string ROLE_NAME_KBITADMIN = "kbitadmin";
         public const string ROLE_NAME_POWERUSER = "poweruser";
         public const string ROLE_NAME_SYSADMIN = "beksysadmin";
-		public const string ROLE_NAME_MARKETING = "marketing";
+        public const string ROLE_NAME_MARKETING = "marketing";
 
         //public static readonly List<string> INTERNAL_USER_ROLES = new List<string>() { 
         //    ROLE_CORPORATE_ADMIN, ROLE_CORPORATE_SECURITY, 
@@ -145,7 +145,7 @@ namespace KeithLink.Svc.Core
             ROLE_INTERNAL_POWERUSER_GOF
         };
 
-		public static readonly List<string> MARKETING_ROLES = new List<string>(){
+        public static readonly List<string> MARKETING_ROLES = new List<string>(){
             ROLE_INTERNAL_MARKETING_FAQ, ROLE_INTERNAL_MARKETING_FAM, ROLE_INTERNAL_MARKETING_FDF,
 			ROLE_INTERNAL_MARKETING_FHS,ROLE_INTERNAL_MARKETING_FLR,ROLE_INTERNAL_MARKETING_FAR,
 			ROLE_INTERNAL_MARKETING_FSA,ROLE_INTERNAL_MARKETING_FOK,ROLE_INTERNAL_MARKETING_GOF
@@ -185,7 +185,7 @@ namespace KeithLink.Svc.Core
         public const string CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS = "Partially Shipped, Item Replaced";
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_CODE = "S";
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS = "Item Subbed";
-		public const string ITEM_DELETED_STATUS = "Deleted";
+        public const string ITEM_DELETED_STATUS = "Deleted";
 
         public const string CONFIRMATION_HEADER_IN_PROCESS_CODE = "P";
         public const string CONFIRMATION_HEADER_IN_PROCESS_STATUS = "In Process";
@@ -221,6 +221,13 @@ namespace KeithLink.Svc.Core
         public const string CONTENTMGMT_BRANCHNAME_FOK = "Oklahoma";
         public const string CONTENTMGMT_BRANCHNAME_FSA = "San Antonio";
         public const string CONTENTMGMT_BRANCHNAME_GOF = "General Office";
+
+        // content management
+        public const string INVOICETYPE_INITIALINVOICE = "IN ";
+
+        // application defaults
+        public const string APPDEFAULT_PAGELOADSIZE_KEY = "pageLoadSize";
+        public const string APPDEFAULT_SORTPREFERENCES_KEY = "sortPreferences";
 
         // invoice transaction types and requests
         public const string INVOICETRANSACTIONTYPE_INITIALINVOICE = "IN ";

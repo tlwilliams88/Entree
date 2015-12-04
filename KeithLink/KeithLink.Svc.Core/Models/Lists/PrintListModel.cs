@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Lists
 {
-	[DataContract]
-	public class PrintListModel
-	{
-		[DataMember(Name="landscape")]
-		public bool Landscape { get; set; }
-		[DataMember(Name = "paging")]
-		public PagingModel Paging { get; set; }
+    [DataContract]
+    public class PrintListModel
+    {
+        [DataMember(Name = "landscape")]
+        public bool Landscape { get; set; }
+        [DataMember(Name = "paging")]
+        public PagingModel Paging { get; set; }
         [DataMember(Name = "showparvalues")]
         public bool ShowParValues { get; set; }
         [DataMember(Name = "shownotes")]

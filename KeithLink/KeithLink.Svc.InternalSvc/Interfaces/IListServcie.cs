@@ -13,10 +13,10 @@ using System.Text;
 
 namespace KeithLink.Svc.InternalSvc.Interfaces
 {
-	// NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IListServcie" in both code and config file together.
-	[ServiceContract]
-	public interface IListServcie
-	{
+    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the interface name "IListServcie" in both code and config file together.
+    [ServiceContract]
+    public interface IListServcie
+    {
         [OperationContract]
         ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
 
@@ -30,7 +30,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
 
         [OperationContract]
-		long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
+        long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 
         [OperationContract]
         void DeleteItem(long Id);
@@ -45,19 +45,19 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 
         [OperationContract]
-		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
+        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
 
         [OperationContract]
-		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
+        List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
 
         [OperationContract]
-		List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
+        List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
 
         [OperationContract]
         List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
 
         [OperationContract]
-		List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
+        List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
         [OperationContract]
         List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo);
@@ -71,26 +71,26 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         void UpdateList(ListModel userList);
 
-		[OperationContract]
-		List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
+        [OperationContract]
+        List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
 
-		[OperationContract]
-		void ShareList(ListCopyShareModel shareListModel);
+        [OperationContract]
+        void ShareList(ListCopyShareModel shareListModel);
 
-		[OperationContract]
-		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
+        [OperationContract]
+        List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
-		[OperationContract]
-		List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+        [OperationContract]
+        List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 
-		[OperationContract]
-		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
+        [OperationContract]
+        PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
 
-		[OperationContract]
-		void DeleteItemNumberFromList(long Id, string itemNumber);
+        [OperationContract]
+        void DeleteItemNumberFromList(long Id, string itemNumber);
 
-		[OperationContract]
-		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
+        [OperationContract]
+        List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 
         [OperationContract]
         System.IO.Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile);

@@ -16,81 +16,85 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.WebApi.Repository.Lists
 {
-	public class ListServiceRepositoryImpl: IListServiceRepository {
+    public class ListServiceRepositoryImpl : IListServiceRepository
+    {
         #region attributes
         private com.benekeith.ListService.IListServcie serviceClient;
         #endregion
 
         #region ctor
         public ListServiceRepositoryImpl(com.benekeith.ListService.IListServcie serviceClient)
-		{
-			this.serviceClient = serviceClient;
+        {
+            this.serviceClient = serviceClient;
         }
         #endregion
 
         #region methods
-		public long? AddItem(long listId, ListItemModel item)
-		{
-			return serviceClient.AddItem(listId, item);
-		}
+        public long? AddItem(long listId, ListItemModel item)
+        {
+            return serviceClient.AddItem(listId, item);
+        }
 
-		public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
-		{
-			return serviceClient.AddItems(user, catalogInfo, listId, items.ToArray());
-		}
+        public ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items)
+        {
+            return serviceClient.AddItems(user, catalogInfo, listId, items.ToArray());
+        }
 
-		public void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote)
-		{
-			serviceClient.AddNote(user, catalogInfo, newNote);
-		}
-        
-		public void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
-		{
-			serviceClient.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
-		}
+        public void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote)
+        {
+            serviceClient.AddNote(user, catalogInfo, newNote);
+        }
 
-        public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel) {
+        public void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber)
+        {
+            serviceClient.AddRecentlyViewedItem(user, catalogInfo, itemNumber);
+        }
+
+        public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
+        {
             var result = serviceClient.CopyList(copyListModel);
             return result == null ? new List<ListCopyResultModel>() : result.ToList();
         }
-        
-        public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
-		{
-			return serviceClient.CreateList(userId, catalogInfo, list, type);
-		}
-		
-		public void DeleteItem(long Id)
-		{
-			serviceClient.DeleteItem(Id);
-		}
 
-        public void DeleteItemNumberFromList(long Id, string itemNumber) {
+        public long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type)
+        {
+            return serviceClient.CreateList(userId, catalogInfo, list, type);
+        }
+
+        public void DeleteItem(long Id)
+        {
+            serviceClient.DeleteItem(Id);
+        }
+
+        public void DeleteItemNumberFromList(long Id, string itemNumber)
+        {
             serviceClient.DeleteItemNumberFromList(Id, itemNumber);
         }
-        
+
         public void DeleteItems(List<long> itemIds)
-		{
-			foreach (var Id in itemIds)
-				serviceClient.DeleteItem(Id);
-		}
+        {
+            foreach (var Id in itemIds)
+                serviceClient.DeleteItem(Id);
+        }
 
         public void DeleteList(long Id)
-		{
-			serviceClient.DeleteList(Id);
-		}
-        
-		public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
-		{
-			serviceClient.DeleteNote(user, catalogInfo, ItemNumber);
-		}
-		
-        public void DeleteLists(List<long> listIds)
-		{
-			foreach (var Id in listIds)
-				serviceClient.DeleteList(Id);
-		}
+        {
+            serviceClient.DeleteList(Id);
+        }
 
-        public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id) {
+        public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
+        {
+            serviceClient.DeleteNote(user, catalogInfo, ItemNumber);
+        }
+
+        public void DeleteLists(List<long> listIds)
+        {
+            foreach (var Id in listIds)
+                serviceClient.DeleteList(Id);
+        }
+
+        public List<Core.Models.Reports.ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id)
+        {
             var list = serviceClient.GetBarcodeForList(user, catalogInfo, Id);
 
             if (list == null)
@@ -98,78 +102,83 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
             return list.ToList();
         }
 
-        public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers) {
+        public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
+        {
             var list = serviceClient.ItemsInHistoryList(catalogInfo, itemNumbers.ToArray());
 
             if (list == null)
                 return new List<InHistoryReturnModel>();
             return list.ToList();
         }
-        
+
         public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
-		{
-			return serviceClient.ReadFavorites(user, catalogInfo).ToList();
-		}
+        {
+            return serviceClient.ReadFavorites(user, catalogInfo).ToList();
+        }
 
-		public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
-		{
-			return serviceClient.ReadList(user, catalogInfo, Id, includePrice);
-		}
+        public ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true)
+        {
+            return serviceClient.ReadList(user, catalogInfo, Id, includePrice);
+        }
 
-		public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
-		{
-			return serviceClient.ReadListByType(user, catalogInfo, type, headerOnly).ToList();
-		}
-		
+        public List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false)
+        {
+            return serviceClient.ReadListByType(user, catalogInfo, type, headerOnly).ToList();
+        }
+
         public List<string> ReadListLabels(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo)
-		{
-			return serviceClient.ReadListLabels(user, catalogInfo).ToList();
-		}
-        
-		public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
-		{
-			return serviceClient.ReadNotes(user, catalogInfo).ToList();
-		}
+        {
+            return serviceClient.ReadListLabels(user, catalogInfo).ToList();
+        }
 
-        public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging) {
+        public List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            return serviceClient.ReadNotes(user, catalogInfo).ToList();
+        }
+
+        public PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging)
+        {
             return serviceClient.ReadPagedList(user, catalogInfo, Id, paging);
         }
-		
-        public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
-		{
-			return serviceClient.ReadRecent(user, catalogInfo).ToList();
-		}
 
-        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo) {
+        public List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo)
+        {
+            return serviceClient.ReadRecent(user, catalogInfo).ToList();
+        }
+
+        public List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo)
+        {
             return serviceClient.ReadRecommendedItemsList(catalogInfo).ToList();
         }
 
-        public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo) {
+        public List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo)
+        {
             return serviceClient.ReadReminders(user, catalogInfo).ToList();
         }
 
         public List<ListModel> ReadUserList(Core.Models.Profile.UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false)
-		{
-			var list = serviceClient.ReadUserList(user, catalogInfo, headerOnly);
+        {
+            var list = serviceClient.ReadUserList(user, catalogInfo, headerOnly);
 
-			if (list == null)
-				return null;
-			return list.ToList();
-		}
+            if (list == null)
+                return null;
+            return list.ToList();
+        }
 
-        public void ShareList(ListCopyShareModel shareListModel) {
+        public void ShareList(ListCopyShareModel shareListModel)
+        {
             serviceClient.ShareList(shareListModel);
-        } 
+        }
 
-		public void UpdateItem(ListItemModel item)
-		{
-			serviceClient.UpdateItem(item);
-		}
+        public void UpdateItem(ListItemModel item)
+        {
+            serviceClient.UpdateItem(item);
+        }
 
-		public void UpdateList(ListModel userList)
-		{
-			serviceClient.UpdateList(userList);
-		}
+        public void UpdateList(ListModel userList)
+        {
+            serviceClient.UpdateList(userList);
+        }
 
         public Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
         {
