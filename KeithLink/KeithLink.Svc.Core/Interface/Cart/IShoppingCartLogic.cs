@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 {
 	public interface IShoppingCartLogic
 	{
-		Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart);
+		Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, string catalogId = null);
 		Guid? AddItem(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, ShoppingCartItem newItem);
 		
 		void UpdateItem(UserProfile user,  UserSelectedContext catalogInfo,  Guid cartId, ShoppingCartItem updatedItem);

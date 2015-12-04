@@ -227,6 +227,7 @@
   <ItemGroup>
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="Component\TokenValuesCollection.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />

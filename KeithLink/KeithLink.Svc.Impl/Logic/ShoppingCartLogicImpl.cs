@@ -103,7 +103,7 @@ namespace KeithLink.Svc.Impl.Logic
 			return string.Format("s{0}_{1}_{2}", catalogInfo.BranchId.ToLower(), catalogInfo.CustomerId, Regex.Replace(name, @"\s+", ""));
 		}
         
-        public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart)
+        public Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, string catalogId = null)
 		{
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
@@ -118,8 +118,10 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.TempSubTotal = cart.SubTotal;
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
-            
-			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, catalogInfo.BranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
+            var cartBranchId = catalogInfo.BranchId;
+            if (catalogId != null)
+                cartBranchId = catalogId;
+			return basketRepository.CreateOrUpdateBasket(customer.CustomerId, cartBranchId.ToLower(), newBasket, cart.Items.Select(l => l.ToLineItem()).ToList());
 		}
 
         public QuickAddReturnModel CreateQuickAddCart(UserProfile user, UserSelectedContext catalogInfo, List<QuickAddItemModel> items)
@@ -393,7 +395,6 @@ namespace KeithLink.Svc.Impl.Logic
             var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
             var returnOrders = new List<NewOrderReturn>();
             var orderNumbers = new List<string>();
-            var tempCatalogInfo = new UserSelectedContext() {CustomerId = catalogInfo.CustomerId, BranchId = catalogInfo.BranchId }; 
 
             //make list of baskets
             foreach (var catalogId in catalogList)
@@ -419,22 +420,16 @@ namespace KeithLink.Svc.Impl.Logic
 
                 //    }).ToList()
                 //};
-                //tempCatalogInfo.BranchId = catalogId;
-                //var newCartId = CreateCart(user, tempCatalogInfo, shoppingCart);
-                orderNumbers.Add(client.SaveCartAsOrder(basket.UserId.ToGuid(), basket.Id.ToGuid()));//need new cart per loop
-            }
+              
+                //var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId);
+                var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), basket.Id.ToGuid());//need new cart per loop
 
-            // delete original cart
-            //DeleteCart(user, catalogInfo, cartId);
-
-            foreach (var orderNumber in orderNumbers) 
-            {
                 var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
 
                 orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
 
                 //if bek items
-                if (false)
+                if (IsCatalogIdBEK(catalogId))
                 {
                     orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder); // send to queue - mainframe only for BEK
                 }
@@ -447,6 +442,9 @@ namespace KeithLink.Svc.Impl.Logic
 
                 returnOrders.Add(new NewOrderReturn() { OrderNumber = orderNumber });
             }
+
+            // delete original cart
+            DeleteCart(user, catalogInfo, cartId);
 
 			return returnOrders; //Return actual order number
 		}

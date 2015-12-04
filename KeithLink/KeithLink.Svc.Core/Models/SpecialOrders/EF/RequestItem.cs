@@ -5,9 +5,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace KeithLink.Svc.Core.Models.SpecialOrders.EF {
     public class RequestItem {
+        [Key, Column(Order = 0), Required]
 		public string BranchId { get; set; } // CHAR(3),
+        [Key, Column(Order=1), Required]
 		public string RequestHeaderId  { get; set; } // CHAR(7),
+        [Key, Column(Order = 2), Required]
 		public byte LineNumber { get; set; } // SMALLINT,
+        [Key, Column(Order = 3), Required]
 		public string OrderStatusId  { get; set; } // CHAR(2),
 		public string ManufacturerNumber  { get; set; } // VARCHAR(20) = NULL,
 		public string GtinUpc	 { get; set; } // VARCHAR(14) = NULL,

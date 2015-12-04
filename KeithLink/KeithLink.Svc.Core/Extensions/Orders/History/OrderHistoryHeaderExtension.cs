@@ -257,11 +257,16 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             return retVal;
         }
 
-        public static OrderHistoryHeader ToOrderHistoryHeader(this CS.PurchaseOrder value, UserSelectedContext customerInfo) {
+        public static OrderHistoryHeader ToOrderHistoryHeader(this CS.PurchaseOrder value, UserSelectedContext customerInfo, string specialCatalogId = null) {
             OrderHistoryHeader retVal = new OrderHistoryHeader();
 
             retVal.OrderSystem = OrderSource.Entree;
-            retVal.BranchId = customerInfo.BranchId;
+
+            //if (specialCatalogId == null) // TODO: What to do about branch for unfi?
+                retVal.BranchId = customerInfo.BranchId;
+            //else
+            //    retVal.BranchId = specialCatalogId;
+
             retVal.CustomerNumber = customerInfo.CustomerId;
             retVal.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Processing" : value.Properties["MasterNumber"].ToString();
             retVal.DeliveryDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"];

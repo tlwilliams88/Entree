@@ -79,10 +79,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             return detail;
         }
 
-        public static OrderHistoryFile ToOrderHistoryFile(this CS.PurchaseOrder value, UserSelectedContext customerInfo) {
+        public static OrderHistoryFile ToOrderHistoryFile(this CS.PurchaseOrder value, UserSelectedContext customerInfo, string specialCatalogId = null)
+        {
             OrderHistoryFile retVal = new OrderHistoryFile();
 
-            retVal.Header = value.ToOrderHistoryHeader(customerInfo);
+            retVal.Header = value.ToOrderHistoryHeader(customerInfo, specialCatalogId);
             if (value.Properties["LineItems"] != null) {
                 retVal.Details = ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"])
                                    .Select(l => ToOrderHistoryDetail((CS.LineItem)l.Target, customerInfo.BranchId, retVal.Header.InvoiceNumber)).ToList();

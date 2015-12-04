@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             modelBuilder.Entity<RequestHeader>()
                 .ToTable("RequestHeader")
                 .MapToStoredProcedures(s => {
-                    s.Insert(i => i.HasName("procInsertUser")
+                    s.Insert(i => i.HasName("spSaveRequestHeader")
 								   .Parameter(p => p.RequestHeaderId, "RequestHeaderId")
 								   .Parameter(p => p.BranchId, "BranchId")
 								   .Parameter(p => p.CategoryId, "CategoryId")
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             modelBuilder.Entity<RequestItem>()
                 .ToTable("RequestItem")
                 .MapToStoredProcedures(s => {
-                    s.Insert(i => i.HasName("procInsertCustomerBankAccount")
+                    s.Insert(i => i.HasName("spSaveRequestItem")
 								   .Parameter(p => p.BranchId, "BranchId")
 								   .Parameter(p => p.RequestHeaderId, "RequestHeaderId")
 								   .Parameter(p => p.LineNumber, "LineNumber")
