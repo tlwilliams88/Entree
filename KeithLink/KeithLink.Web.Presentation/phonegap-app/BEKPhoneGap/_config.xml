@@ -19,8 +19,13 @@
     <preference name="StatusBarBackgroundColor" value="#f3f1eb"      />
     <preference name="StatusBarStyle"           value="default"      />
     <preference name="BackupWebStorage"         value="local"        />
+    <preference name="android-minSdkVersion"    value="15"           />
+    <preference name="android-targetSdkVersion" value="19"           />
 
     <access origin="*" />
+
+    <!--Push Plugin -->
+    <gap:plugin name="phonegap-plugin-push" source="npm" />
 
     <!-- Used http://ticons.fokkezb.nl/ to generate icons and splash screens -->
 
