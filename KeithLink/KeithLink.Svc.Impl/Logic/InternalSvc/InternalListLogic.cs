@@ -1095,20 +1095,41 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         }
         public Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
         {
+            Customer customer = customerRepository.GetCustomersByNameOrNumber(userContext.CustomerId).FirstOrDefault();
             ReportViewer rv = new ReportViewer();
             rv.ProcessingMode = ProcessingMode.Local;
             string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
             Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
-            Stream rdlcStream = assembly.GetManifestResourceStream(KeithLink.Svc.Core.Constants.REPORT_PRINTLIST);
+            // HACK for dynamically changing column widths doesn't work in run-time reportviewer.  choosing from multiple reports.
+            Stream rdlcStream = assembly.GetManifestResourceStream(ChooseReportFromOptions(options, customer));
             rv.LocalReport.LoadReportDefinition(rdlcStream);
-            Customer customer = customerRepository.GetCustomersByNameOrNumber(userContext.CustomerId).FirstOrDefault();
             rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, customer));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile);
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
-            // HACK to put extra row with charts in the cells to provide for dynamically changing the widths for parameters
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
             Stream stream = new MemoryStream(bytes);
             return stream;
+        }
+
+        private string ChooseReportFromOptions(PrintListModel options, Customer customer)
+        { // Choose different Report for different columns ; grouping doesn't change column widths so no different name
+            if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
+            else if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
+            else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
+            else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
+            else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
+            else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
+            else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
+            else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
+            return null;
         }
 
         private ReportParameter[] MakeReportOptionsForPrintListReport(PrintListModel options, string listName, Customer customer)
