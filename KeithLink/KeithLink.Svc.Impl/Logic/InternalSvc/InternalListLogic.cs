@@ -1113,23 +1113,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         private string ChooseReportFromOptions(PrintListModel options, Customer customer)
         { // Choose different Report for different columns ; grouping doesn't change column widths so no different name
-            if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
-            else if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
-            else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
-            else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
-            return null;
+            //if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
+            //else if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes == false))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
+            //else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
+            //else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
+            //else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
+            //else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes == false))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
+            //else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
+            //else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+            //    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
+            return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST;
         }
 
         private ReportParameter[] MakeReportOptionsForPrintListReport(PrintListModel options, string listName, Customer customer)
