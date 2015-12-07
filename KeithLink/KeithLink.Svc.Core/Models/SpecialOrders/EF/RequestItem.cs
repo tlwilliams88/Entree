@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders.EF {
 		public string ManufacturerNumber  { get; set; } // VARCHAR(20) = NULL,
 		public string GtinUpc	 { get; set; } // VARCHAR(14) = NULL,
 		public string Description  { get; set; } // VARCHAR(100) = NULL,
-		public byte? Quantity { get; set; } //SMALLINT = NULL,
+		public Int16? Quantity { get; set; } //SMALLINT = NULL,
 		public string UnitOfMeasure	 { get; set; } // VARCHAR(20) = NULL,
 		public string BekItemNumber	 { get; set; } // CHAR(6) = NULL,
 		public string BekInvoiceNumber  { get; set; } // CHAR(8) = NULL,

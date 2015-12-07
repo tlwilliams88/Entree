@@ -42,6 +42,12 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name = "ItemStatus")]
         public string ItemStatus { get; set; }
 
+        [DataMember(Name = "Description")]
+        public string Description { get; set; }
+
+        [DataMember(Name = "ManufacturerName")]
+        public string ManufacturerName { get; set; }
+
         #endregion
     }
 }

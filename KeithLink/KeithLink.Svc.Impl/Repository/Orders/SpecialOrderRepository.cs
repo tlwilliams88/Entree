@@ -2,6 +2,7 @@
 using KeithLink.Svc.Core.Models.SpecialOrders.EF;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.SpecialOrders;
+using KeithLink.Svc.Core.Interface.Profile;
 
 using System;
 using System.IO;
@@ -18,7 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         #endregion
 
         #region ctor
-		public SpecialOrderRepositoryImpl(ISpecialOrderDBContext specialOrderDbContext)
+        public SpecialOrderRepositoryImpl(ISpecialOrderDBContext specialOrderDbContext)
         {
 			_specialOrderDbContext = specialOrderDbContext;
         }
@@ -33,7 +34,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		{
 			var query = _specialOrderDbContext.RequestHeaderIds
                 .SqlQuery("dbo.spGetNextRequestHeaderId");
-            long idToUse = query.FirstAsync().Result.CurrentId;		
+            long idToUse = query.FirstAsync().Result.CurrentId;
 
 			// next, call create after converting OrderFile to RequestHeader
 			_specialOrderDbContext.RequestHeaders.Add(new RequestHeader()
@@ -41,14 +42,18 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 				RequestHeaderId = idToUse.ToString().PadLeft(7, '0'),
 				BranchId = header.Header.Branch,
 				CategoryId = 9, // need to get the category id
-				DsrNumber = "", // do we need to feed the dsr number forward?  or look it up?
 				CustomerNumber = header.Header.CustomerNumber,
-				Address = "", City="", State="", Zip="",// do we need address info????
+                DsrNumber = header.Header.DsrNumber, // do we need to feed the dsr number forward?  or look it up?
+				Address = header.Header.AddressStreet, 
+                City= header.Header.AddressCity, 
+                State= header.Header.AddressRegionCode, 
+                Zip= header.Header.AddressPostalCode,// do we need address info????
 				// do we need a 'contact'????
 				ManufacturerName = "UNFI", // just use UNFI????
 				OrderStatusId = "00", // New
 				ShipMethodId = 3, // Drop Ship
-				UpdatedBy = "Entree" // how to get this user????
+				UpdatedBy = "Entree", // how to get this user????
+                Source = header.Header.CatalogType
 			});
             _specialOrderDbContext.Context.SaveChanges();
 			foreach (var detail in header.Details)
@@ -59,10 +64,13 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 					BranchId = header.Header.Branch,
 					LineNumber = (byte)detail.LineNumber,
 					OrderStatusId = "00", // New,
-					ShipMethodId = 3, // Drop Ship
+					ShipMethodId = 0, // Auto Release Sep Inv
 					ManufacturerNumber = detail.ItemNumber,
 					Price = (float)detail.SellPrice,
-					PONumber = header.Header.PONumber
+					PONumber = header.Header.PONumber,
+                    Quantity = (Byte) detail.OrderedQuantity,
+                    Description = detail.Description,
+                    Comments = detail.ManufacturerName
 				});
 			}
 

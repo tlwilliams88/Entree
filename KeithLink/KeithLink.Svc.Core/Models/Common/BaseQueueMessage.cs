@@ -39,6 +39,7 @@ namespace KeithLink.Svc.Core.Models.Common {
 
         [DataMember(Name = "ErrorStack")]
         public string ErrorStack { get; set; }
+
         #endregion
     }
 }

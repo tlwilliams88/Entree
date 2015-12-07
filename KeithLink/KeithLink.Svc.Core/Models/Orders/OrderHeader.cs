@@ -17,6 +17,16 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "CustomerNumber")]
         public string CustomerNumber { get; set; }
+        [DataMember(Name = "DsrNumber")]
+        public string DsrNumber { get; set; }
+        [DataMember(Name = "AddressStreet")]
+        public string AddressStreet { get; set; }
+        [DataMember(Name = "AddressCity")]
+        public string AddressCity { get; set; }
+        [DataMember(Name = "AddressRegionCode")]
+        public string AddressRegionCode { get; set; }
+        [DataMember(Name = "AddressPostalCode")]
+        public string AddressPostalCode { get; set; }
 
         [DataMember(Name = "DeliveryDate")]
         public DateTime DeliveryDate { get; set; }
@@ -50,6 +60,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "FutureOrder")]
         public bool FutureOrder { get; set; }
+
+        [DataMember(Name = "CatalogType")]
+        public string CatalogType { get; set; }
         #endregion
     }
 }

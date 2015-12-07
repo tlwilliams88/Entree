@@ -29,5 +29,6 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders.EF
         public DateTime? StatusDate { get; set; } // DATETIME = NULL,
         public DateTime? SubmitDate { get; set; } // DATETIME = NULL,
         public string UpdatedBy { get; set; } // VARCHAR(50)
+        public string Source { get; set; } //Char(3)
     }
 }

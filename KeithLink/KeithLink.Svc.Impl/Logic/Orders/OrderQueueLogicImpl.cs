@@ -230,7 +230,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             } 
         }
 
-        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType) {
+        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType, string catalogType, string dsrNumber,
+            string addressStreet, string addressCity, string addressState, string addressZip) {
             var newOrderFile = new OrderFile() {
                 SenderApplicationName = Configuration.ApplicationName,
                 SenderProcessName = "Send order to queue",
@@ -239,6 +240,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     OrderingSystem = OrderSource.Entree,
                     Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
                     CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
+                    DsrNumber = dsrNumber,
+                    AddressStreet = addressStreet,
+                    AddressCity = addressCity,
+                    AddressRegionCode = addressState,
+                    AddressPostalCode = addressZip,
                     DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
                     PONumber = newPurchaseOrder.Properties["PONumber"] == null ? string.Empty : newPurchaseOrder.Properties["PONumber"].ToString(),
                     Specialinstructions = string.Empty,
@@ -249,7 +255,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     OrderSendDateTime = DateTime.Now,
                     UserId = orderingUserEmail.ToUpper(),
                     OrderFilled = false,
-                    FutureOrder = false
+                    FutureOrder = false,
+                    CatalogType = catalogType
                 },
                 Details = new List<OrderDetail>()
             };
@@ -268,7 +275,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     Catchweight = (bool)item.CatchWeight,
                     LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
                     SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty
+                    ReplacedOriginalItemNumber = string.Empty,
+                    Description = item.DisplayName,
+                    ManufacturerName = item.ModelName
                 };
 
                 if (orderType == OrderType.ChangeOrder) {

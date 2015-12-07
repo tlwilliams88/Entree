@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.CancelPurchaseOrder(customer.CustomerId, commerceId);
             CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
-            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder);
+            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder, null);
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
@@ -169,7 +169,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, controlNumberMainFrameFormat);
             string originalOrderNumber = order.Properties["OriginalOrderNumber"].ToString();
             OrderType type = originalOrderNumber == controlNumberMainFrameFormat ? OrderType.NormalOrder : OrderType.ChangeOrder;
-            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, controlNumberMainFrameFormat, order, type); // TODO, logic to compare original order number and control number
+            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, controlNumberMainFrameFormat, order, type, null); // TODO, logic to compare original order number and control number
             return true;
         }
 
@@ -188,7 +188,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
-            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder);
+            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder, null);
 
             client.CleanUpChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
