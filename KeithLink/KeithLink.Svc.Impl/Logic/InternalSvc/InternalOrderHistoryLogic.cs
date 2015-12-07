@@ -360,6 +360,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                     returnOrder = h.ToOrder();
 
+                    LookupProductDetails(h.BranchId, returnOrder);
+
                     if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
                         var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
                         if (po != null) {
