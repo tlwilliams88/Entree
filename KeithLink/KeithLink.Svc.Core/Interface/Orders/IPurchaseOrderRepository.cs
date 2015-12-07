@@ -13,6 +13,8 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
         PurchaseOrder ReadPurchaseOrderByTrackingNumber(string confirmationNumber);
 
+        List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId);
+
 		List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false);
         
         string UpdatePurchaseOrder(PurchaseOrder order);
