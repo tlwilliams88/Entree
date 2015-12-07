@@ -2,17 +2,17 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Tablix Name="tblx">
+      <Tablix Name="tblx2">
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
               <Width>0.463in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.32178in</Width>
+              <Width>1.72803in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.22679in</Width>
+              <Width>1.81012in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.73553in</Width>
@@ -36,7 +36,7 @@
               <Width>0.67304in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.98958in</Width>
+              <Width>2.27382in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -770,7 +770,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox9">
+                    <Textbox Name="Textbox10">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -819,7 +819,7 @@
               <TablixCells>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="ItemNumber">
+                    <Textbox Name="ItemNumber2">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -863,7 +863,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="txtName">
+                    <Textbox Name="txtName2">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -906,7 +906,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Brand">
+                    <Textbox Name="Brand2">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -950,7 +950,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="PackSize">
+                    <Textbox Name="PackSize2">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -994,7 +994,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox12">
+                    <Textbox Name="Textbox14">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -1082,7 +1082,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Each">
+                    <Textbox Name="Each2">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -1269,7 +1269,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox10">
+                    <Textbox Name="Textbox15">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -1324,7 +1324,7 @@
             <TablixMember />
             <TablixMember>
               <Visibility>
-                <Hidden>=IIf(Parameters!ShowPar.Value, False, True)</Hidden>
+                <Hidden>=Microsoft.VisualBasic.Interaction.IIf(Parameters!ShowPar.Value, False, True)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember />
@@ -1334,7 +1334,7 @@
             <TablixMember />
             <TablixMember>
               <Visibility>
-                <Hidden>=IIf(Parameters!ShowNotes.Value, False, True)</Hidden>
+                <Hidden>=Microsoft.VisualBasic.Interaction.IIf(Parameters!ShowNotes.Value, False, True)</Hidden>
               </Visibility>
             </TablixMember>
           </TablixMembers>
@@ -1356,12 +1356,12 @@
               <TablixMembers>
                 <TablixMember>
                   <Visibility>
-                    <Hidden>=(Parameters!GroupByLabel.Value=False)</Hidden>
+                    <Hidden>=(Parameters!GroupByLabel.Value = False)</Hidden>
                   </Visibility>
                   <KeepWithGroup>After</KeepWithGroup>
                 </TablixMember>
                 <TablixMember>
-                  <Group Name="Details" />
+                  <Group Name="Details2" />
                 </TablixMember>
               </TablixMembers>
             </TablixMember>
@@ -1373,9 +1373,10 @@
         <FixedRowHeaders>true</FixedRowHeaders>
         <KeepTogether>true</KeepTogether>
         <DataSetName>ListItems</DataSetName>
-        <Top>0.02209in</Top>
+        <Top>0.03819in</Top>
+        <Left>0.00917in</Left>
         <Height>0.97791in</Height>
-        <Width>9.23787in</Width>
+        <Width>10.51169in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1383,20 +1384,31 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>1.33333in</Height>
+    <Height>1.18749in</Height>
     <Style>
       <Border>
         <Style>None</Style>
       </Border>
     </Style>
   </Body>
-  <Width>10in</Width>
+  <Width>10.52086in</Width>
   <Page>
     <PageHeader>
-      <Height>0.35069in</Height>
+      <Height>0.3425in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
+        <Line Name="Line1">
+          <Top>0.31125in</Top>
+          <Left>0.00917in</Left>
+          <Height>0in</Height>
+          <Width>10.51167in</Width>
+          <Style>
+            <Border>
+              <Style>Solid</Style>
+            </Border>
+          </Style>
+        </Line>
         <Textbox Name="ListName">
           <CanGrow>true</CanGrow>
           <KeepTogether>true</KeepTogether>
@@ -1431,10 +1443,11 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>ListName</rd:DefaultName>
-          <Top>0.03125in</Top>
+          <Top>0.01958in</Top>
           <Left>0.00917in</Left>
           <Height>0.25in</Height>
           <Width>8.00874in</Width>
+          <ZIndex>1</ZIndex>
           <Style>
             <Border>
               <Style>None</Style>
@@ -1445,18 +1458,6 @@
             <PaddingBottom>2pt</PaddingBottom>
           </Style>
         </Textbox>
-        <Line Name="Line1">
-          <Top>0.31944in</Top>
-          <Left>0.00917in</Left>
-          <Height>0in</Height>
-          <Width>9.2287in</Width>
-          <ZIndex>1</ZIndex>
-          <Style>
-            <Border>
-              <Style>Solid</Style>
-            </Border>
-          </Style>
-        </Line>
       </ReportItems>
       <Style>
         <Border>
@@ -1487,7 +1488,7 @@
           </Paragraphs>
           <rd:DefaultName>Textbox3</rd:DefaultName>
           <Top>0.26041in</Top>
-          <Left>8.47579in</Left>
+          <Left>9.52084in</Left>
           <Height>0.25in</Height>
           <Width>1in</Width>
           <Style>
@@ -1539,51 +1540,26 @@
     </PageFooter>
     <PageHeight>8.5in</PageHeight>
     <PageWidth>11in</PageWidth>
-    <LeftMargin>0.5in</LeftMargin>
-    <RightMargin>0.5in</RightMargin>
+    <LeftMargin>0.2in</LeftMargin>
+    <RightMargin>0.2in</RightMargin>
     <TopMargin>0.25in</TopMargin>
     <BottomMargin>0.25in</BottomMargin>
-    <Style>
-      <Border>
-        <Style>None</Style>
-      </Border>
-    </Style>
+    <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="ConsoleApplication5">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>f132ad00-6262-45a7-9e07-a3464aba84b5</rd:DataSourceID>
-    </DataSource>
     <DataSource Name="KeithLinkSvcCoreModelsLists">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>29eb0009-705a-462a-b552-65353c12a054</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="KeithLinkSvcCoreModelsSiteCatalog">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>fa4c912c-ef61-42d5-b847-d9ca915f8c30</rd:DataSourceID>
-    </DataSource>
-    <DataSource Name="KeithLinkSvcCoreModelsLists1">
-      <ConnectionProperties>
-        <DataProvider>System.Data.DataSet</DataProvider>
-        <ConnectString>/* Local Connection */</ConnectString>
-      </ConnectionProperties>
-      <rd:DataSourceID>561dfdec-6c6c-4b49-b720-ebcb5e36b8f9</rd:DataSourceID>
+      <rd:DataSourceID>ba0554d8-febd-41fe-acf6-f2dd16394e64</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="ListItems">
       <Query>
-        <DataSourceName>KeithLinkSvcCoreModelsLists1</DataSourceName>
+        <DataSourceName>KeithLinkSvcCoreModelsLists</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
@@ -1645,19 +1621,19 @@
       <DataType>String</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="ShowNotes">
-      <DataType>Boolean</DataType>
-      <Prompt>ReportParameter1</Prompt>
-    </ReportParameter>
     <ReportParameter Name="ShowPar">
       <DataType>Boolean</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="GroupByLabel">
+    <ReportParameter Name="ShowPrices">
       <DataType>Boolean</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
-    <ReportParameter Name="ShowPrices">
+    <ReportParameter Name="ShowNotes">
+      <DataType>Boolean</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="GroupByLabel">
       <DataType>Boolean</DataType>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
