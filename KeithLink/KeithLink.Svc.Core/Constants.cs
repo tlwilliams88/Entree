@@ -242,7 +242,7 @@ namespace KeithLink.Svc.Core
 
         // reportnames
         public const string SET_REPORT_SIZE_LANDSCAPE = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
-        public const string REPORT_PRINTLIST = "KeithLink.Svc.Impl.Reports.ListReport_v.rdlc";
+        public const string REPORT_PRINTLIST = "KeithLink.Svc.Impl.Reports.ListReport.rdlc";
         public const string REPORT_PRINTLIST_YesParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_YesParYesPriceYesNotes.rdlc";
         public const string REPORT_PRINTLIST_YesParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_YesParYesPriceNoNotes.rdlc";
         public const string REPORT_PRINTLIST_YesParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_YesParNoPriceYesNotes.rdlc";

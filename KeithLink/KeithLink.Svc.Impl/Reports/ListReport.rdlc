@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
-    <Height>2.06249in</Height>
-    <Style>
-      <Border>
-        <Style>None</Style>
-      </Border>
-    </Style>
+    <Height>1.05208in</Height>
+    <Style />
   </Body>
-  <Width>10.52086in</Width>
+  <Width>6.95833in</Width>
   <Page>
     <PageHeader>
-      <Height>0.3425in</Height>
+      <Height>0.78125in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
-        <Line Name="Line1">
-          <Top>0.31125in</Top>
-          <Left>0.00917in</Left>
-          <Height>0in</Height>
-          <Width>10.51167in</Width>
+        <Textbox Name="Textbox39">
+          <CanGrow>true</CanGrow>
+          <KeepTogether>true</KeepTogether>
+          <Paragraphs>
+            <Paragraph>
+              <TextRuns>
+                <TextRun>
+                  <Value>Inventory Valuation Report</Value>
+                  <Style>
+                    <FontSize>16pt</FontSize>
+                  </Style>
+                </TextRun>
+              </TextRuns>
+              <Style>
+                <TextAlign>Center</TextAlign>
+              </Style>
+            </Paragraph>
+          </Paragraphs>
+          <rd:DefaultName>Textbox39</rd:DefaultName>
+          <Top>0.19667in</Top>
+          <Height>0.35417in</Height>
+          <Width>6.95833in</Width>
           <Style>
             <Border>
-              <Style>Solid</Style>
+              <Style>None</Style>
             </Border>
+            <PaddingLeft>2pt</PaddingLeft>
+            <PaddingRight>2pt</PaddingRight>
+            <PaddingTop>2pt</PaddingTop>
+            <PaddingBottom>2pt</PaddingBottom>
           </Style>
-        </Line>
+        </Textbox>
       </ReportItems>
       <Style>
         <Border>
@@ -34,7 +51,7 @@
       </Style>
     </PageHeader>
     <PageFooter>
-      <Height>0.58333in</Height>
+      <Height>0.75in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>
@@ -55,8 +72,8 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox3</rd:DefaultName>
-          <Top>0.26041in</Top>
-          <Left>9.52084in</Left>
+          <Top>0.40625in</Top>
+          <Left>5.5in</Left>
           <Height>0.25in</Height>
           <Width>1in</Width>
           <Style>
@@ -84,8 +101,7 @@
             </Paragraph>
           </Paragraphs>
           <rd:DefaultName>Textbox4</rd:DefaultName>
-          <Top>0.26041in</Top>
-          <Left>0.00917in</Left>
+          <Top>0.40625in</Top>
           <Height>0.25in</Height>
           <Width>1in</Width>
           <ZIndex>1</ZIndex>
@@ -106,12 +122,10 @@
         </Border>
       </Style>
     </PageFooter>
-    <PageHeight>8.5in</PageHeight>
-    <PageWidth>11in</PageWidth>
-    <LeftMargin>0.2in</LeftMargin>
-    <RightMargin>0.2in</RightMargin>
-    <TopMargin>0.25in</TopMargin>
-    <BottomMargin>0.25in</BottomMargin>
+    <LeftMargin>0.5in</LeftMargin>
+    <RightMargin>0.5in</RightMargin>
+    <TopMargin>0.5in</TopMargin>
+    <BottomMargin>0.5in</BottomMargin>
     <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>
@@ -121,7 +135,7 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>bbc9e47b-bb9a-4adb-ba00-80da9f13b0a9</rd:DataSourceID>
+      <rd:DataSourceID>aa11f957-c552-4ffe-a384-4123126a7c34</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
@@ -207,5 +221,5 @@
     </ReportParameter>
   </ReportParameters>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>92aa0903-5ea1-474b-a510-b8bf0b97dfff</rd:ReportID>
+  <rd:ReportID>73337131-5e94-4e49-8a2c-cfa639534a3d</rd:ReportID>
 </Report>

@@ -950,7 +950,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Reports\CartReport.rdlc" />
     <EmbeddedResource Include="Reports\CartReport_Landscape.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_v.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport.rdlc" />
     <EmbeddedResource Include="Reports\ListReport_YesParYesPriceYesNotes.rdlc" />
     <EmbeddedResource Include="Reports\ListReport_YesParYesPriceNoNotes.rdlc" />
     <EmbeddedResource Include="Reports\ListReport_YesParNoPriceYesNotes.rdlc" />
