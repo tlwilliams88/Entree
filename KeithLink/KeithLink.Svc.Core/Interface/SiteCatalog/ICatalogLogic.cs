@@ -27,6 +27,21 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
         ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids);
 
         ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
-		
+
+
+        //Catalog Methods
+        string GetBranchId(string bekBranchId, string catalogType);
+        
+
+        bool IsSpecialtyCatalog(string catalogType, string branchId = null);
+        
+
+        bool IsCatalogIdBEK(string catalogId);
+       
+
+        string GetCatalogTypeFromCatalogId(string catalogId);
+
+
+        Dictionary<string, int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
     }
 }

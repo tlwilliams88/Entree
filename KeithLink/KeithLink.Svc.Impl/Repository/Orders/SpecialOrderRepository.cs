@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 				// do we need a 'contact'????
 				ManufacturerName = "UNFI", // just use UNFI????
 				OrderStatusId = "00", // New
-				ShipMethodId = 3, // Drop Ship
+                ShipMethodId = 0, // Auto Release
 				UpdatedBy = "Entree", // how to get this user????
                 Source = header.Header.CatalogType
 			});

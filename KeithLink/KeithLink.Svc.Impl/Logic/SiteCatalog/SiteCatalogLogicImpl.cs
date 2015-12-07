@@ -362,8 +362,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             return ret;
         }
+    #endregion
 
-        private string GetBranchId(string bekBranchId, string catalogType)
+        #region CatalogMethods
+
+
+        public string GetBranchId(string bekBranchId, string catalogType)
         {
             if (catalogType.ToLower() != "bek")
             {
@@ -390,7 +394,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private bool IsSpecialtyCatalog(string catalogType, string branchId = null)
+        public bool IsSpecialtyCatalog(string catalogType, string branchId = null)
         {
             if (catalogType != null)
                 return !catalogType.ToLower().Equals("bek");
@@ -405,7 +409,32 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        private Dictionary<string,int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
+        public bool IsCatalogIdBEK(string catalogId)
+        {
+            List<string> bekBranchIds = _externalServiceRepository.ReadExternalCatalogs().Select(x => x.BekBranchId).Distinct().ToList();
+
+            return bekBranchIds.Contains(catalogId.ToUpper());
+        }
+
+        public string GetCatalogTypeFromCatalogId(string catalogId)
+        {
+            //Go get the code for this branch, hard code for now
+            //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
+            List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
+                .Where(x => catalogId.ToLower() == x.CatalogId.ToString().ToLower()).ToList();
+
+
+            if (externalCatalog.Count > 0)
+            {
+                return externalCatalog[0].Type;
+            }
+            else
+            {
+                return catalogId;
+            }
+        }
+
+        public Dictionary<string,int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
 
             var newSearchModel = new SearchInputModel();
             newSearchModel.CatalogType = searchModel.CatalogType;
@@ -435,6 +464,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             return returnDict;
         }
+
         #endregion
 	}
 }

@@ -208,11 +208,12 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 var tempProducts = catalogLogic.GetProductsByIds(catalogId, cart.Items.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
                 products.AddRange(tempProducts);
-                if (IsCatalogIdBEK(catalogId)) {
-                    pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products));
+                if (!catalogLogic.IsSpecialtyCatalog(null, catalogId))
+                {
+                    pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products)); //BEK
                 }
                 else {
-                    var source = GetCatalogTypeFromCatalogId(catalogId);
+                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
                     pricing.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),tempProducts.Products));
                 }
                     
@@ -429,18 +430,30 @@ namespace KeithLink.Svc.Impl.Logic
                 var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), basket.Id.ToGuid());
 
 
-                var newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
+                CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
+
+                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
+                {
+                    var item = (CS.LineItem)lineItem.Target;
+                    var products = catalogLogic.GetProductsByIds(catalogId, new List<string>() {item.ProductId});
+
+                    if (products.Products.Where(x => x.ItemNumber == item.ProductId).ToList().Count > 0)
+                        item.Notes = products.Products.Where(x => x.ItemNumber == item.ProductId).ToList()[0].Brand;
+                    else
+                        item.Notes = "mfname not found";
+                }
+                
 
                 orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
 
                 //if bek items
-                if (IsCatalogIdBEK(catalogId))
+                if (catalogLogic.IsSpecialtyCatalog(null, catalogId))
                 {
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, "BEK"); // send to queue - mainframe only for BEK
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, "UNF", customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
                 }
                 else
                 {
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder,"UNF", customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, "BEK"); // send to queue - mainframe only for BEK
                 }
 
                 auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
@@ -605,35 +618,6 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return results;
 		}
-
-        private bool IsCatalogIdBEK(string catalogId)
-        {
-            List<string> bekBranchIds = externalServiceRepository.ReadExternalCatalogs().Select(x => x.BekBranchId).Distinct().ToList();
-
-            return bekBranchIds.Contains(catalogId.ToUpper());
-        }
-
-        private string GetCatalogTypeFromCatalogId(string catalogId)
-        {
-            //Go get the code for this branch, hard code for now
-            //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-            List<ExportExternalCatalog> externalCatalog = externalServiceRepository.ReadExternalCatalogs()
-                .Where(x => catalogId.ToLower() == x.CatalogId.ToString().ToLower()).ToList();
-
-
-            if (externalCatalog.Count > 0)
-            {
-                return externalCatalog[0].Type;
-            }
-            else
-            {
-                return catalogId;
-            }
-            
-               
-            
-           
-        }
 
         #endregion
 	}
