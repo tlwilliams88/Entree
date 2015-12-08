@@ -17,6 +17,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Autofac;
+using KeithLink.Svc.Core.Models.Customers.EF;
 
 namespace KeithLink.Svc.WebApi.Repository.Lists
 {
@@ -229,6 +231,7 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
             Stream rdlcStream = assembly.GetManifestResourceStream(ChooseReportFromOptions(options, userContext));
             rv.LocalReport.LoadReportDefinition(rdlcStream);
             rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, userContext));
+            GatherInfoAboutItems(listId, options, printModel, userContext, userProfile);
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
             Stream stream = new MemoryStream(bytes);
@@ -275,51 +278,53 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
             return parameters;
         }
 
-        //private void GatherInfoAboutItems(long listId, PrintListModel options, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
-        //{
-        //    var listModel = ReadList(userProfile, userContext, listId, true);
-        //    var itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
-        //    List<ItemHistory> itemStatistics = _itemHistoryRepository
-        //                                           .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
-        //                                           .Where(f => itemHash.Keys.Contains(f.ItemNumber))
-        //                                           .ToList();
-        //    foreach (ListItemReportModel item in printModel.Items)
-        //    {
-        //        StringBuilder priceInfo = new StringBuilder();
-        //        var itemInfo = itemHash[item.ItemNumber];
-        //        if (itemInfo.PackagePrice.Equals("0.00") == false)
-        //        {
-        //            priceInfo.Append("$");
-        //            priceInfo.Append(itemInfo.PackagePrice);
-        //            priceInfo.Append("/Pack");
-        //            priceInfo.Append(" - ");
-        //        }
-        //        priceInfo.Append("$");
-        //        priceInfo.Append(itemInfo.CasePrice);
-        //        priceInfo.Append("/Case");
-        //        item.Price = priceInfo.ToString();
-        //        // HACK to make the option not to sort by label not reorder the items
-        //        if ((options.Paging != null) && (options.Paging.Sort != null) && (options.Paging.Sort.Count > 0) &&
-        //            (options.Paging.Sort[0].Field.Equals("label", StringComparison.CurrentCultureIgnoreCase)))
-        //        {
-        //            item.Label = itemInfo.Label;
-        //        }
-        //        else
-        //        {
-        //            item.Label = null;
-        //        }
-        //        ItemHistory itemStats = itemStatistics.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
-        //        if (itemStats != null)
-        //        {
-        //            string AVG8WK = "";
-        //            AVG8WK += itemStats.AverageUse;
-        //            if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
-        //            else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
-        //            if ((itemStats.AverageUse > 1) | (itemStats.AverageUse == 0)) AVG8WK += "s";
-        //            item.AvgUse = AVG8WK;
-        //        }
-        //    }
-        //}
+        private void GatherInfoAboutItems(long listId, PrintListModel options, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
+        {
+            var listModel = ReadList(userProfile, userContext, listId, true);
+            var itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
+            var container = DependencyMap.GetContainer();
+            IItemHistoryRepository _itemHistoryRepository = container.Resolve<IItemHistoryRepository>();
+            List<ItemHistory> itemStatistics = _itemHistoryRepository
+                                                   .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
+                                                   .Where(f => itemHash.Keys.Contains(f.ItemNumber))
+                                                   .ToList();
+            foreach (ListItemReportModel item in printModel.Items)
+            {
+                StringBuilder priceInfo = new StringBuilder();
+                var itemInfo = itemHash[item.ItemNumber];
+                if (itemInfo.PackagePrice.Equals("0.00") == false)
+                {
+                    priceInfo.Append("$");
+                    priceInfo.Append(itemInfo.PackagePrice);
+                    priceInfo.Append("/Pack");
+                    priceInfo.Append(" - ");
+                }
+                priceInfo.Append("$");
+                priceInfo.Append(itemInfo.CasePrice);
+                priceInfo.Append("/Case");
+                item.Price = priceInfo.ToString();
+                // HACK to make the option not to sort by label not reorder the items
+                if ((options.Paging != null) && (options.Paging.Sort != null) && (options.Paging.Sort.Count > 0) &&
+                    (options.Paging.Sort[0].Field.Equals("label", StringComparison.CurrentCultureIgnoreCase)))
+                {
+                    item.Label = itemInfo.Label;
+                }
+                else
+                {
+                    item.Label = null;
+                }
+                ItemHistory itemStats = itemStatistics.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
+                if (itemStats != null)
+                {
+                    string AVG8WK = "";
+                    AVG8WK += itemStats.AverageUse;
+                    if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
+                    else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
+                    if ((itemStats.AverageUse > 1) | (itemStats.AverageUse == 0)) AVG8WK += "s";
+                    item.AvgUse = AVG8WK;
+                }
+            }
+        }
         #endregion
     }
 }
