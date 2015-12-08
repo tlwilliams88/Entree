@@ -32,7 +32,7 @@
       </div>
     </div>
   <form name="preferencesForm" ng-submit="savePreferences(defaultPreferences, customer.customerNumber, customer.customerBranch)" class="form-horizontal">
-  <span ng-show="canEditInternalUsers"><input type ="checkbox" ng-model="showPrices"></input><label style="margin-top:20px;">&nbsp;&nbsp;Prices visible for users with Accounting role.</label></span>
+  <span ng-show="canEditInternalUsers"><input type ="checkbox" ng-model="showPrices"></input><label style="margin-top:20px;">&nbsp;&nbsp;Item prices visible for users of this account.</label></span>
     <div ng-show="preferencesFound">
       <h2>Customer Notification Preferences &nbsp;&nbsp;&nbsp;<a class="smallerHeaderLinkText" ng-init="canEditNotifications = false" ng-click="canEditNotifications = !canEditNotifications"><span class="glyphicon glyphicon-pencil"></span> Edit Notifications</a></h2>
       <hr>    
