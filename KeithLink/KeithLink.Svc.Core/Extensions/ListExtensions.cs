@@ -97,13 +97,12 @@ namespace KeithLink.Svc.Core.Extensions
         /// </summary>
         /// <param name="list">PagedListModel</param>
         /// <returns>ListReportModel</returns>
-        public static ListReportModel ToReportModel(this PagedListModel list)
+        public static ListReportModel ToReportModel(this ListModel list)
         {
             return new ListReportModel()
             {
                 Name = list.Name,
-                Items = list.Items == null || list.Items.Results == null ? null :
-                    list.Items.Results.Select(i => new ListItemReportModel()
+                Items = list.Items.Select(i => new ListItemReportModel()
                     {
                         Brand = i.BrandExtendedDescription,
                         ItemNumber = i.ItemNumber,

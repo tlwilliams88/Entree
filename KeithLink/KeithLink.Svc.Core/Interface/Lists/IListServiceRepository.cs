@@ -69,6 +69,6 @@ namespace KeithLink.Svc.Core.Interface.Lists
 
         List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 
-        Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile);
+        Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext, UserProfile userProfile);
     }
 }

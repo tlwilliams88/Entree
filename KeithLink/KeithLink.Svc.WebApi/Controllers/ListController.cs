@@ -403,44 +403,14 @@ namespace KeithLink.Svc.WebApi.Controllers
         {
             try
             {
-                if (!string.IsNullOrEmpty(options.Paging.Terms))
-                {
-                    //Build filter
-                    options.Paging.Filter = new FilterInfo()
-                    {
-                        Field = "ItemNumber",
-                        FilterType = "contains",
-                        Value = options.Paging.Terms,
-                        Condition = "||",
-                        Filters = new List<FilterInfo>() { new FilterInfo() { Condition = "||", Field = "Label", Value = options.Paging.Terms, FilterType = "contains" }, new FilterInfo() { Condition = "||", Field = "Name", Value = options.Paging.Terms, FilterType = "contains" } }
-                    };
-                }
+                Stream stream = listServiceRepository.BuildReportFromList(options, listId, this.SelectedUserContext, this.AuthenticatedUser);
 
-                options.Paging.Size = int.MaxValue;
-                options.Paging.From = 0;
-
-                if (options.Paging.Sort.Count == 1 && options.Paging.Sort[0].Field == null)
-                {
-                    options.Paging.Sort = new List<SortInfo>();
-                }
-
-                var list = listServiceRepository.ReadPagedList(this.AuthenticatedUser, this.SelectedUserContext, listId, options.Paging);
-
-                if (list == null)
+                if (stream == null)
                     return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };
-
-                var printModel = list.ToReportModel();
-
-                var customer = _profileLogic.GetCustomerByCustomerNumber(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
-
-                elRepo.WriteInformationLog("list/print get stream");
-                Stream stream = listServiceRepository.BuildReportFromList(options, listId, printModel, this.SelectedUserContext, this.AuthenticatedUser);
 
                 HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
                 result.Content = new StreamContent(stream);
                 result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-
-
                 result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
 
                 return result;
