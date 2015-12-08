@@ -397,37 +397,35 @@ namespace KeithLink.Svc.Impl.Logic
             //split into multiple orders
             var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
             var returnOrders = new List<NewOrderReturn>();
-            var orderNumbers = new List<string>();
 
             //make list of baskets
             foreach (var catalogId in catalogList)
             {
-                /*var shoppingCart = new ShoppingCart()
+                var shoppingCart = new ShoppingCart()
                 {
-                    CartId = basket.Id.ToGuid(),
-                    Name = basket.DisplayName,
-                    BranchId = catalogId,
+                    //CartId = basket.Id.ToGuid(),
+                    Name = "Split " + catalogId,
+                    //BranchId = catalogInfo.BranchId,
                     RequestedShipDate = basket.RequestedShipDate,
                     Active = false,
                     PONumber = basket.PONumber,
-                    CreatedDate = basket.Properties["DateCreated"].ToString().ToDateTime().Value,
+                    CreatedDate = new DateTime(),
                     Items = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => new ShoppingCartItem()
                     {
+                        
                         ItemNumber = l.ProductId,
-                        CartItemId = l.Id.ToGuid(),
+                        //sCartItemId = l.Id.ToGuid(),
                         Notes = l.Notes,
                         Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
                         Each = l.Each.HasValue ? l.Each.Value : false,
-                        CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value,
+                        CreatedDate = new DateTime(),
                         CatalogId = l.CatalogName
-                        
                     }).ToList()
                 };
-                shoppingCart.ItemCount = shoppingCart.Items.Count;
               
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId);
-                 * var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);//need new cart per loop*/
-                var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), basket.Id.ToGuid());
+                var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);//need new cart per loop
+                //var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), basket.Id.ToGuid());
 
 
                 CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
@@ -439,8 +437,6 @@ namespace KeithLink.Svc.Impl.Logic
 
                     if (products.Products.Where(x => x.ItemNumber == item.ProductId).ToList().Count > 0)
                         item.Notes = products.Products.Where(x => x.ItemNumber == item.ProductId).ToList()[0].Brand;
-                    else
-                        item.Notes = "mfname not found";
                 }
                 
 

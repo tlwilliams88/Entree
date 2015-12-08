@@ -304,6 +304,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 			_orderQueue.PublishToQueue(JsonConvert.SerializeObject(newOrderFile), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Normal));
       
+            //set order status ID to 5
+            
         }
         #endregion
 

@@ -37,25 +37,28 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             long idToUse = query.FirstAsync().Result.CurrentId;
 
 			// next, call create after converting OrderFile to RequestHeader
-			_specialOrderDbContext.RequestHeaders.Add(new RequestHeader()
-			{
-				RequestHeaderId = idToUse.ToString().PadLeft(7, '0'),
-				BranchId = header.Header.Branch,
-				CategoryId = 9, // need to get the category id
-				CustomerNumber = header.Header.CustomerNumber,
+            var requestHeader = new RequestHeader()
+            {
+                RequestHeaderId = idToUse.ToString().PadLeft(7, '0'),
+                BranchId = header.Header.Branch,
+                CategoryId = 9, // need to get the category id
+                CustomerNumber = header.Header.CustomerNumber,
                 DsrNumber = header.Header.DsrNumber, // do we need to feed the dsr number forward?  or look it up?
-				Address = header.Header.AddressStreet, 
-                City= header.Header.AddressCity, 
-                State= header.Header.AddressRegionCode, 
-                Zip= header.Header.AddressPostalCode,// do we need address info????
-				// do we need a 'contact'????
-				ManufacturerName = "UNFI", // just use UNFI????
-				OrderStatusId = "00", // New
+                Address = header.Header.AddressStreet,
+                City = header.Header.AddressCity,
+                State = header.Header.AddressRegionCode,
+                Zip = header.Header.AddressPostalCode,// do we need address info????
+                // do we need a 'contact'????
+                ManufacturerName = "UNFI", // just use UNFI????
+                OrderStatusId = "00", // New
                 ShipMethodId = 0, // Auto Release
-				UpdatedBy = "Entree", // how to get this user????
+                UpdatedBy = "Entree", // how to get this user????
                 Source = header.Header.CatalogType
-			});
+            };
+			_specialOrderDbContext.RequestHeaders.Add(requestHeader);
+
             _specialOrderDbContext.Context.SaveChanges();
+
 			foreach (var detail in header.Details)
 			{
 				_specialOrderDbContext.RequestItems.Add(new RequestItem()
@@ -75,6 +78,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 			}
 
 			_specialOrderDbContext.Context.SaveChanges();
+
+            requestHeader.OrderStatusId = "05";
+
+            _specialOrderDbContext.Context.SaveChanges();
 		}
 	}
 }
