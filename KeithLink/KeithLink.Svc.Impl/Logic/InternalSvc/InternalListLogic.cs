@@ -1095,18 +1095,26 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         }
         public Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
         {
+            eventLogRepository.WriteInformationLog("BuildReportFromList");
             Customer customer = customerRepository.GetCustomersByNameOrNumber(userContext.CustomerId).FirstOrDefault();
+            eventLogRepository.WriteInformationLog("BuildReportFromList get reportviewer");
             ReportViewer rv = new ReportViewer();
             rv.ProcessingMode = ProcessingMode.Local;
             string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
+            eventLogRepository.WriteInformationLog("BuildReportFromList get assembly");
             Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
             // HACK for dynamically changing column widths doesn't work in run-time reportviewer.  choosing from multiple reports.
+            eventLogRepository.WriteInformationLog("BuildReportFromList get resource stream");
             Stream rdlcStream = assembly.GetManifestResourceStream(ChooseReportFromOptions(options, customer));
+            eventLogRepository.WriteInformationLog("BuildReportFromList load rpt defn");
             rv.LocalReport.LoadReportDefinition(rdlcStream);
+            eventLogRepository.WriteInformationLog("BuildReportFromList set parms");
             rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, customer));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile);
             rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", printModel.Items));
+            eventLogRepository.WriteInformationLog("BuildReportFromList prerender");
             byte[] bytes = rv.LocalReport.Render("PDF", deviceInfo);
+            eventLogRepository.WriteInformationLog("BuildReportFromList postrender");
             Stream stream = new MemoryStream(bytes);
             return stream;
         }
