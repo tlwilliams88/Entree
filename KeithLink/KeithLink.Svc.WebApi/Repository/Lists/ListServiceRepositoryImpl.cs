@@ -282,12 +282,12 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
         {
             var listModel = ReadList(userProfile, userContext, listId, true);
             var itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
-            //var container = DependencyMap.GetContainer();
-            //IItemHistoryRepository _itemHistoryRepository = container.Resolve<IItemHistoryRepository>();
-            //List<ItemHistory> itemStatistics = _itemHistoryRepository
-            //                                       .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
-            //                                       .Where(f => itemHash.Keys.Contains(f.ItemNumber))
-            //                                       .ToList();
+            var container = DependencyMap.GetContainer();
+            IItemHistoryRepository _itemHistoryRepository = container.Resolve<IItemHistoryRepository>();
+            List<ItemHistory> itemStatistics = _itemHistoryRepository
+                                                   .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
+                                                   .Where(f => itemHash.Keys.Contains(f.ItemNumber))
+                                                   .ToList();
             foreach (ListItemReportModel item in printModel.Items)
             {
                 StringBuilder priceInfo = new StringBuilder();
@@ -313,16 +313,16 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
                 {
                     item.Label = null;
                 }
-                //ItemHistory itemStats = itemStatistics.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
-                //if (itemStats != null)
-                //{
-                //    string AVG8WK = "";
-                //    AVG8WK += itemStats.AverageUse;
-                //    if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
-                //    else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
-                //    if ((itemStats.AverageUse > 1) | (itemStats.AverageUse == 0)) AVG8WK += "s";
-                //    item.AvgUse = AVG8WK;
-                //}
+                ItemHistory itemStats = itemStatistics.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
+                if (itemStats != null)
+                {
+                    string AVG8WK = "";
+                    AVG8WK += itemStats.AverageUse;
+                    if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
+                    else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
+                    if ((itemStats.AverageUse > 1) | (itemStats.AverageUse == 0)) AVG8WK += "s";
+                    item.AvgUse = AVG8WK;
+                }
             }
         }
         #endregion
