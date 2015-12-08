@@ -110,9 +110,9 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             }
 
             if (record.Length >= DETAIL_STARTPOS_SOURCE + DETAIL_LENGTH_SOURCE) { value.Source = record.Substring(DETAIL_STARTPOS_SOURCE, DETAIL_LENGTH_SOURCE); }
-            if (record.Length >= DETAIL_STARTPOS_MFGID + DETAIL_LENGTH_MFGID) { value.Source = record.Substring(DETAIL_STARTPOS_MFGID, DETAIL_LENGTH_MFGID); }
-            if (record.Length >= DETAIL_STARTPOS_REQID + DETAIL_LENGTH_REQID) { value.Source = record.Substring(DETAIL_STARTPOS_REQID, DETAIL_LENGTH_REQID); }
-            if (record.Length >= DETAIL_STARTPOS_REQLINNUM + DETAIL_LENGTH_REQLINNUM) { value.Source = record.Substring(DETAIL_STARTPOS_REQLINNUM, DETAIL_LENGTH_REQLINNUM); }
+            if (record.Length >= DETAIL_STARTPOS_MFGID + DETAIL_LENGTH_MFGID) { value.ManufacturerId = record.Substring(DETAIL_STARTPOS_MFGID, DETAIL_LENGTH_MFGID).Trim(); }
+            if (record.Length >= DETAIL_STARTPOS_REQID + DETAIL_LENGTH_REQID) { value.SpecialOrderHeaderId = record.Substring(DETAIL_STARTPOS_REQID, DETAIL_LENGTH_REQID); }
+            if (record.Length >= DETAIL_STARTPOS_REQLINNUM + DETAIL_LENGTH_REQLINNUM) { value.SpecialOrderLineNumber = record.Substring(DETAIL_STARTPOS_REQLINNUM, DETAIL_LENGTH_REQLINNUM); }
         }
 
         public static EF.OrderHistoryDetail ToEntityFrameworkModel(this OrderHistoryDetail value) {

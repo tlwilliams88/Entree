@@ -28,6 +28,7 @@ using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.Cache;
@@ -37,6 +38,7 @@ using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
+using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.OnlinePayments;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
@@ -89,6 +91,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+            builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
 
 			//*******************************************
 			//Repositories
@@ -122,6 +125,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+            builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
             
 
             //Orders
