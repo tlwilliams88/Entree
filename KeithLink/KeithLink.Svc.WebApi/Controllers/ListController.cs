@@ -431,6 +431,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 var printModel = list.ToReportModel();
 
+                elRepo.WriteInformationLog("list/print get stream");
                 Stream stream = listServiceRepository.BuildReportFromList(options, listId, printModel, this.SelectedUserContext, this.AuthenticatedUser);
 
                 HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
