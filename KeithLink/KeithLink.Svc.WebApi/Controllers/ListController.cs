@@ -431,6 +431,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 var printModel = list.ToReportModel();
 
+                var customer = _profileLogic.GetCustomerByCustomerNumber(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
+
                 elRepo.WriteInformationLog("list/print get stream");
                 Stream stream = listServiceRepository.BuildReportFromList(options, listId, printModel, this.SelectedUserContext, this.AuthenticatedUser);
 

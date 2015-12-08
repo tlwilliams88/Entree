@@ -31,7 +31,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 	public class BaseController : ApiController
     {
         #region attributes
-        private IUserProfileLogic   _profileLogic;
+        protected IUserProfileLogic   _profileLogic;
         private UserProfile         _user;
         #endregion
 
