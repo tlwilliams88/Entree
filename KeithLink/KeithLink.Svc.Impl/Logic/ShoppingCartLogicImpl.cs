@@ -423,8 +423,18 @@ namespace KeithLink.Svc.Impl.Logic
                 };
               
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId);
-                var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);//need new cart per loop
-                //var orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), basket.Id.ToGuid());
+                string orderNumber = null;
+                try
+                {
+                    orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);
+                    if (catalogId == "unfi_7")
+                        throw new Exception();
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+                
 
 
                 CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
@@ -455,10 +465,19 @@ namespace KeithLink.Svc.Impl.Logic
                 auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
                 returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type });
+
+                var itemsToDelete = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => l.Id).ToList();
+                foreach(var toDelete in itemsToDelete) {
+                    DeleteItem(user, catalogInfo, cartId, toDelete.ToGuid());
+                }
             }
 
-            // delete original cart
-            DeleteCart(user, catalogInfo, cartId);
+            // delete original cart if all orders succeed
+            if (returnOrders.NumberOfOrders == returnOrders.OrdersReturned.Count)
+            {
+                DeleteCart(user, catalogInfo, cartId);
+            }
+            
 
 			return returnOrders; //Return actual order number
 		}

@@ -185,7 +185,6 @@ angular.module('bekApp')
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
-            debugger;
             var orderNumber = -1;
             var index;
             for (index in data.ordersReturned) { 
