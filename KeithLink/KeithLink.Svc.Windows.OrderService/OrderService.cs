@@ -269,7 +269,6 @@ namespace KeithLink.Svc.Windows.OrderService
             InitializeHistoryResponseThread();
             InitializeOrderUpdateTimer();
             InitializeQueueTimer();
-            InitializeCheckLostOrdersTimer();
         }
 
         protected override void OnStop()
@@ -277,7 +276,6 @@ namespace KeithLink.Svc.Windows.OrderService
             TerminateHistoryRequestTimer();
             TerminateOrderUpdateTimer();
             TerminateQueueTimer();
-            TerminateCheckLostOrdersTimer();
 
             _log.WriteInformationLog("Service stopping");
         }
