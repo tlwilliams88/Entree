@@ -198,7 +198,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("order/{cartId}")]
-        public List<NewOrderReturn> SaveOrder(Guid cartId) {
+        public SaveOrderReturn SaveOrder(Guid cartId) {
             return _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
         }
 

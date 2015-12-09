@@ -12,5 +12,8 @@ namespace KeithLink.Svc.Core.Models.Orders
 	{
 		[DataMember(Name = "ordernumber")]
 		public string OrderNumber { get; set; }
+
+        [DataMember(Name = "catalogType")]
+        public string CatalogType { get; set; }
 	}
 }

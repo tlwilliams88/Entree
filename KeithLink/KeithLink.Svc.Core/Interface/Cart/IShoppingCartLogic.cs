@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
         ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext catalogInfo, Guid cartId, long listId, Core.Models.Lists.PrintListModel options );
 
-		List<NewOrderReturn> SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
+		SaveOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
 
 		void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 

@@ -379,8 +379,8 @@ namespace KeithLink.Svc.Impl.Logic
 
             return new ShoppingCartReportModel() { CartName = cart.Name, ListName = list.Name, CartItems = cartReportItems, ListItems = listReportItems };
         }
-        
-        public List<NewOrderReturn> SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId)
+
+        public SaveOrderReturn SaveAsOrder(UserProfile user, UserSelectedContext catalogInfo, Guid cartId)
 		{
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 			//Check that RequestedShipDate
@@ -396,7 +396,9 @@ namespace KeithLink.Svc.Impl.Logic
 
             //split into multiple orders
             var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
-            var returnOrders = new List<NewOrderReturn>();
+            var returnOrders = new SaveOrderReturn();
+            returnOrders.NumberOfOrders = catalogList.Count();
+            returnOrders.OrdersReturned = new List<NewOrderReturn>();
 
             //make list of baskets
             foreach (var catalogId in catalogList)
@@ -439,19 +441,20 @@ namespace KeithLink.Svc.Impl.Logic
 
                 orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
 
-                //if bek items
+                var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
+
                 if (catalogLogic.IsSpecialtyCatalog(null, catalogId))
                 {
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, "UNF", customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, type, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
                 }
                 else
                 {
-                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, "BEK"); // send to queue - mainframe only for BEK
+                    orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.NormalOrder, type); // send to queue - mainframe only for BEK
                 }
 
                 auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
-                returnOrders.Add(new NewOrderReturn() { OrderNumber = orderNumber });
+                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type });
             }
 
             // delete original cart
