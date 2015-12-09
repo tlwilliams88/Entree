@@ -12,8 +12,6 @@
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Customers" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Reports" />
       <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd9" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Customers.EF" />
-      <xsd:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IListServcie_AddItems_InputMessage">
@@ -166,12 +164,6 @@
   <wsdl:message name="IListServcie_ItemsInHistoryList_OutputMessage">
     <wsdl:part name="parameters" element="tns:ItemsInHistoryListResponse" />
   </wsdl:message>
-  <wsdl:message name="IListServcie_GetItemsHistoryList_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetItemsHistoryList" />
-  </wsdl:message>
-  <wsdl:message name="IListServcie_GetItemsHistoryList_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetItemsHistoryListResponse" />
-  </wsdl:message>
   <wsdl:portType name="IListServcie">
     <wsdl:operation name="AddItems">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/AddItems" message="tns:IListServcie_AddItems_InputMessage" />
@@ -272,10 +264,6 @@
     <wsdl:operation name="ItemsInHistoryList">
       <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/ItemsInHistoryList" message="tns:IListServcie_ItemsInHistoryList_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/ItemsInHistoryListResponse" message="tns:IListServcie_ItemsInHistoryList_OutputMessage" />
-    </wsdl:operation>
-    <wsdl:operation name="GetItemsHistoryList">
-      <wsdl:input wsaw:Action="http://tempuri.org/IListServcie/GetItemsHistoryList" message="tns:IListServcie_GetItemsHistoryList_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IListServcie/GetItemsHistoryListResponse" message="tns:IListServcie_GetItemsHistoryList_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IListServcie" type="tns:IListServcie">
@@ -498,15 +486,6 @@
     </wsdl:operation>
     <wsdl:operation name="ItemsInHistoryList">
       <soap:operation soapAction="http://tempuri.org/IListServcie/ItemsInHistoryList" style="document" />
-      <wsdl:input>
-        <soap:body use="literal" />
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal" />
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="GetItemsHistoryList">
-      <soap:operation soapAction="http://tempuri.org/IListServcie/GetItemsHistoryList" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
