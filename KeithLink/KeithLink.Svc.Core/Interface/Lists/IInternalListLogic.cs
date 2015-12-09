@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Paging;
@@ -38,6 +39,8 @@ namespace KeithLink.Svc.Core.Interface.Lists
         List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 
         List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
+
+        ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers);
 
         List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 

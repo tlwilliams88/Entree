@@ -429,6 +429,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             return returnModel.ToList();
         }
 
+        public ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers)
+        {
+            ItemHistory[] itemStatistics = _itemHistoryRepository
+                                                   .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
+                                                   .Where(f => itemNumbers.Contains(f.ItemNumber))
+                                                   .ToArray();
+            return itemStatistics;
+        }
+
         private void LookupNameAndPackSize(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
         {
             if (list.Items == null || list.Items.Count == 0)

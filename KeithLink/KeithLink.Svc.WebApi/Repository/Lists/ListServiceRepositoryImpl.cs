@@ -280,14 +280,9 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 
         private void GatherInfoAboutItems(long listId, PrintListModel options, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
         {
-            var listModel = ReadList(userProfile, userContext, listId, true);
-            var itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
-            //var container = DependencyMap.GetContainer();
-            //IItemHistoryRepository _itemHistoryRepository = container.Resolve<IItemHistoryRepository>();
-            //List<ItemHistory> itemStatistics = _itemHistoryRepository
-            //                                       .Read(f => f.BranchId.Equals(userContext.BranchId) && f.CustomerNumber.Equals(userContext.CustomerId))
-            //                                       .Where(f => itemHash.Keys.Contains(f.ItemNumber))
-            //                                       .ToList();
+            ListModel listModel = ReadList(userProfile, userContext, listId, true);
+            Dictionary<string, ListItemModel> itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
+            var itemHistories = serviceClient.GetItemsHistoryList(userContext, itemHash.Keys.ToArray());
             foreach (ListItemReportModel item in printModel.Items)
             {
                 StringBuilder priceInfo = new StringBuilder();
@@ -303,7 +298,7 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
                 priceInfo.Append(itemInfo.CasePrice);
                 priceInfo.Append("/Case");
                 item.Price = priceInfo.ToString();
-                // HACK to make the option not to sort by label not reorder the items
+                // to make the option not to sort by label not reorder the items we null the label
                 if ((options.Paging != null) && (options.Paging.Sort != null) && (options.Paging.Sort.Count > 0) &&
                     (options.Paging.Sort[0].Field.Equals("label", StringComparison.CurrentCultureIgnoreCase)))
                 {
@@ -313,16 +308,16 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
                 {
                     item.Label = null;
                 }
-                //ItemHistory itemStats = itemStatistics.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
-                //if (itemStats != null)
-                //{
-                //    string AVG8WK = "";
-                //    AVG8WK += itemStats.AverageUse;
-                //    if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
-                //    else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
-                //    if ((itemStats.AverageUse > 1) | (itemStats.AverageUse == 0)) AVG8WK += "s";
-                //    item.AvgUse = AVG8WK;
-                //}
+                ItemHistory itemStats = itemHistories.Where(f => f.ItemNumber == item.ItemNumber).FirstOrDefault();
+                if (itemStats != null)
+                {
+                    string AVG8WK = "";
+                    AVG8WK += itemStats.AverageUse;
+                    if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
+                    else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
+                    if ((itemStats.AverageUse > 1) | (itemStats.AverageUse == 0)) AVG8WK += "s";
+                    item.AvgUse = AVG8WK;
+                }
             }
         }
         #endregion

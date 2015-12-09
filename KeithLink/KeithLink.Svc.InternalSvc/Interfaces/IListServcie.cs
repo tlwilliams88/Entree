@@ -1,4 +1,5 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
@@ -91,5 +92,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
+
+        [OperationContract]
+        ItemHistory[] GetItemsHistoryList(UserSelectedContext catalogInfo, string[] itemNumbers);
     }
 }

@@ -164,6 +164,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/ItemsInHistoryList", ReplyAction="http://tempuri.org/IListServcie/ItemsInHistoryListResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[]> ItemsInHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/GetItemsHistoryList", ReplyAction="http://tempuri.org/IListServcie/GetItemsHistoryListResponse")]
+        KeithLink.Svc.Core.Models.Customers.EF.ItemHistory[] GetItemsHistoryList(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IListServcie/GetItemsHistoryList", ReplyAction="http://tempuri.org/IListServcie/GetItemsHistoryListResponse")]
+        System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Customers.EF.ItemHistory[]> GetItemsHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -391,6 +397,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ListService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel[]> ItemsInHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers) {
             return base.Channel.ItemsInHistoryListAsync(catalogInfo, itemNumbers);
+        }
+        
+        public KeithLink.Svc.Core.Models.Customers.EF.ItemHistory[] GetItemsHistoryList(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers) {
+            return base.Channel.GetItemsHistoryList(catalogInfo, itemNumbers);
+        }
+        
+        public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Customers.EF.ItemHistory[]> GetItemsHistoryListAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string[] itemNumbers) {
+            return base.Channel.GetItemsHistoryListAsync(catalogInfo, itemNumbers);
         }
     }
 }
