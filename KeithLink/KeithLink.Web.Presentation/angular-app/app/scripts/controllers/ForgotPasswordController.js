@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('ForgotPasswordController', ['$scope', 'UserProfileService', '$state', 'validToken', '$stateParams', 'toaster', 'userprofile',
+  .controller('ForgotPasswordController', ['$scope', 'UserProfileService', '$state', 'validToken', '$stateParams', 'toaster', 'userProfile',
     function ($scope, UserProfileService, $state, validToken, $stateParams, toaster, userProfile) {
 
     $scope.isTokenValid = validToken.data;
