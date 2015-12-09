@@ -33,7 +33,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId);
 
         [OperationContract]
-		bool IsTokenValid(string token);
+		string IsTokenValid(string token);
 
         [OperationContract]
         List<MarketingPreferenceModel> ReadMarketingPreferences(DateTime from, DateTime to);

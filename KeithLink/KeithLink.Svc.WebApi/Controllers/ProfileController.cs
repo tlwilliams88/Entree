@@ -916,7 +916,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[ApiKeyedRoute("profile/forgotpassword/validatetoken")]
-		public bool ValidateToken(ValidateTokenModel tokenModel)
+		public string ValidateToken(ValidateTokenModel tokenModel)
 		{
 			return _passwordResetService.IsTokenValid(tokenModel.Token);
 		}

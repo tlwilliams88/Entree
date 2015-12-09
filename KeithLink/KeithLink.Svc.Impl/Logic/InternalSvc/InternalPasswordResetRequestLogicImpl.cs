@@ -86,9 +86,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 		}
 		
-		public bool IsTokenValid(string token)
+		public string IsTokenValid(string token)
 		{
-			return passwordResetRequestRepository.Read(p => p.Token.Equals(token) && !p.Processed && p.Expiration > DateTime.UtcNow).Any();
+            var passwordRequest = passwordResetRequestRepository.Read(p => p.Token.Equals(token) && !p.Processed && p.Expiration > DateTime.UtcNow).FirstOrDefault();
+
+            if(passwordRequest == null){
+                return null;
+            } else {
+                var profile = userProfileLogic.GetUserProfile(passwordRequest.UserId);
+
+                if (profile == null && profile.UserProfiles.Count > 0){
+                    return null;
+                } else {
+                    return profile.UserProfiles[0].EmailAddress;
+                }
+            }
 		}
 
 		public bool ResetPassword(ResetPasswordModel resetPassword)

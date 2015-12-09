@@ -19,7 +19,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile.PasswordReset
 			throw new NotImplementedException();
 		}
 
-		public bool IsTokenValid(string token)
+		public string IsTokenValid(string token)
 		{
 			throw new NotImplementedException();
 		}
