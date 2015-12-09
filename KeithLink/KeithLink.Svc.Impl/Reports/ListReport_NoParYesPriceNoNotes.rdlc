@@ -1679,9 +1679,8 @@
         <RepeatRowHeaders>true</RepeatRowHeaders>
         <FixedColumnHeaders>true</FixedColumnHeaders>
         <FixedRowHeaders>true</FixedRowHeaders>
-        <KeepTogether>true</KeepTogether>
         <DataSetName>ListItems</DataSetName>
-        <Top>0.01104in</Top>
+        <Top>0.04229in</Top>
         <Height>0.97791in</Height>
         <Width>10.52084in</Width>
         <Style>
@@ -1691,7 +1690,7 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>1.18749in</Height>
+    <Height>1.06249in</Height>
     <Style>
       <Border>
         <Style>None</Style>
@@ -1701,7 +1700,7 @@
   <Width>10.52086in</Width>
   <Page>
     <PageHeader>
-      <Height>0.3425in</Height>
+      <Height>0.35292in</Height>
       <PrintOnFirstPage>true</PrintOnFirstPage>
       <PrintOnLastPage>true</PrintOnLastPage>
       <ReportItems>

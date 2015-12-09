@@ -282,7 +282,7 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
         {
             ListModel listModel = ReadList(userProfile, userContext, listId, true);
             Dictionary<string, ListItemModel> itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
-            var itemHistories = serviceClient.GetItemsHistoryList(userContext, itemHash.Keys.ToArray());
+            ItemHistory[] itemHistories = serviceClient.GetItemsHistoryList(userContext, itemHash.Keys.ToArray());
             foreach (ListItemReportModel item in printModel.Items)
             {
                 StringBuilder priceInfo = new StringBuilder();
