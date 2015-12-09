@@ -93,7 +93,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 
-        //[OperationContract]
-        //ItemHistory[] GetItemsHistoryList(UserSelectedContext catalogInfo, string[] itemNumbers);
+        [OperationContract]
+        ItemHistory[] GetItemsHistoryList(UserSelectedContext catalogInfo, string[] itemNumbers);
     }
 }

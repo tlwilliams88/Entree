@@ -333,6 +333,12 @@
     <None Include="Service References\com.benekeith.ListService\ListServcie8.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie91.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>

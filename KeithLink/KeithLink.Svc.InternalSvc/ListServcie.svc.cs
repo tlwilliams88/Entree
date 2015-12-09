@@ -93,10 +93,10 @@ namespace KeithLink.Svc.InternalSvc
             return listLogic.ItemsInHistoryList(catalogInfo, itemNumbers);
         }
 
-        //public ItemHistory[] GetItemsHistoryList(UserSelectedContext catalogInfo, string[] itemNumbers)
-        //{
-        //    return listLogic.GetItemsHistoryList(catalogInfo, itemNumbers);
-        //}
+        public ItemHistory[] GetItemsHistoryList(UserSelectedContext catalogInfo, string[] itemNumbers)
+        {
+            return listLogic.GetItemsHistoryList(catalogInfo, itemNumbers);
+        }
 
         public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
         {

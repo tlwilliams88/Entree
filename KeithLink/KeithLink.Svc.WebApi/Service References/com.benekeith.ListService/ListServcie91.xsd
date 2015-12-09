@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Customers.EF" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Customers.EF" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost:1317/ListServcie.svc?xsd=xsd11" namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" />
+  <xs:complexType name="ArrayOfItemHistory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemHistory" nillable="true" type="tns:ItemHistory" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItemHistory" nillable="true" type="tns:ArrayOfItemHistory" />
+  <xs:complexType name="ItemHistory">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.EF" base="q1:BaseEFModel">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AverageUse" type="xs:int" />
+          <xs:element minOccurs="0" name="BranchId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CustomerNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ItemNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="UnitOfMeasure" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ItemHistory" nillable="true" type="tns:ItemHistory" />
+</xs:schema>
