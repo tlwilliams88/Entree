@@ -430,7 +430,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
             else
             {
-                return catalogId;
+                return "BEK";
             }
         }
 

@@ -185,8 +185,48 @@ angular.module('bekApp')
         $scope.saveCart(cart)
           .then(CartService.submitOrder)
           .then(function(data) {
-            $state.go('menu.orderitems', { invoiceNumber: data.ordernumber });
-            $scope.displayMessage('success', 'Successfully submitted order.');
+            debugger;
+            var orderNumber = -1;
+            var index;
+            for (index in data.ordersReturned) { 
+                if (data.ordersReturned[index].catalogType == "BEK")
+                {
+                    orderNumber = data.ordersReturned[index].ordernumber;
+                }
+            }
+            
+            var status = '';
+            var message  = '';
+            
+            if(orderNumber == -1 ) {
+                //no BEK items bought
+                if (data.ordersReturned.length != data.numberOfOrders) {
+                    status = 'error';
+                    message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
+                } else {
+                    status = 'success';
+                    message  = 'Successfully submitted order.';
+                }
+                
+                if (data.ordersReturned[0] != null) {
+                    orderNumber = data.ordersReturned[0].ordernumber;
+                } else {
+                    orderNumber = null;
+                }
+            } else {
+                //BEK oderNumber exists
+                if (data.ordersReturned.length != data.numberOfOrders) {
+                    status = 'error';
+                    message = 'We are unable to fulfill your special order items. Please contact your DSR representative for assistance';
+                } else {
+                    status = 'success';
+                    message  = 'Successfully submitted order.';
+                }
+            }
+            
+            
+            $state.go('menu.orderitems', { invoiceNumber: orderNumber });
+            $scope.displayMessage(status, message);
           }, function(error) {
             $scope.displayMessage('error', 'Error submitting order.');
           }).finally(function() {
