@@ -618,9 +618,6 @@ angular.module('bekApp')
         resolve: {
         validToken: ['$stateParams', 'UserProfileService', function($stateParams, UserProfileService) {
          return UserProfileService.validateToken($stateParams.t);
-        }],
-        userProfile: ['UserProfileService', function(UserProfileService) {
-          return UserProfileService.getCurrentUserProfile();
         }]
       }
     })
