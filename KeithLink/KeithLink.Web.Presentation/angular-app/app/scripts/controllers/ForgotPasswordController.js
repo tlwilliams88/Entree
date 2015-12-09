@@ -5,7 +5,6 @@ angular.module('bekApp')
     function ($scope, UserProfileService, $state, validToken, $stateParams, toaster) {
 
     $scope.isTokenValid = validToken.data;
-    $scope.userProfile =  UserProfileService.getCurrentUserProfile();
 
     $scope.resetPassword = function(passwordData) {
                $scope.changePasswordErrorMessage = '';
