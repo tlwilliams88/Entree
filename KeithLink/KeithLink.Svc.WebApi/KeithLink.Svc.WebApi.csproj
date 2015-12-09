@@ -241,6 +241,7 @@
     <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModelReturn.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Customers.EF.ItemHistory.datasource" />
     <None Include="Properties\PublishProfiles\Beta.pubxml" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
@@ -330,6 +331,12 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\com.benekeith.ListService\ListServcie91.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.ListService\Reference.svcmap">

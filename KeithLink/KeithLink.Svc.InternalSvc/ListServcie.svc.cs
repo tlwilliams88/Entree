@@ -1,5 +1,6 @@
 ﻿using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Profile;
@@ -90,6 +91,11 @@ namespace KeithLink.Svc.InternalSvc
         public List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers)
         {
             return listLogic.ItemsInHistoryList(catalogInfo, itemNumbers);
+        }
+
+        public ItemHistory[] GetItemsHistoryList(UserSelectedContext catalogInfo, string[] itemNumbers)
+        {
+            return listLogic.GetItemsHistoryList(catalogInfo, itemNumbers);
         }
 
         public List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo)
