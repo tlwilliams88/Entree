@@ -403,9 +403,7 @@ namespace KeithLink.Svc.Impl.Logic
             {
                 var shoppingCart = new ShoppingCart()
                 {
-                    //CartId = basket.Id.ToGuid(),
                     Name = "Split " + catalogId,
-                    //BranchId = catalogInfo.BranchId,
                     RequestedShipDate = basket.RequestedShipDate,
                     Active = false,
                     PONumber = basket.PONumber,
@@ -414,7 +412,6 @@ namespace KeithLink.Svc.Impl.Logic
                     {
                         
                         ItemNumber = l.ProductId,
-                        //sCartItemId = l.Id.ToGuid(),
                         Notes = l.Notes,
                         Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
                         Each = l.Each.HasValue ? l.Each.Value : false,

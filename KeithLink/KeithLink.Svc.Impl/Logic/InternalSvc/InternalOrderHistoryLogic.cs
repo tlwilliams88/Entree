@@ -130,6 +130,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             _headerRepo.CreateOrUpdate(header);
+
+            // this is where we need to pull things off of order B
         }
 
         public Order GetOrder(string branchId, string invoiceNumber) {

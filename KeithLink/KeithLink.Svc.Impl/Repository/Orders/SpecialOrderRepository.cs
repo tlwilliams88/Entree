@@ -1,6 +1,7 @@
 ﻿using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Models.SpecialOrders.EF;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.SpecialOrders;
 using KeithLink.Svc.Core.Interface.Profile;
 
@@ -8,6 +9,7 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Linq;
 
 
 namespace KeithLink.Svc.Impl.Repository.Orders
@@ -16,12 +18,16 @@ namespace KeithLink.Svc.Impl.Repository.Orders
     {
         #region attributes
         private ISpecialOrderDBContext _specialOrderDbContext;
+        private IOrderHistoryHeaderRepsitory _orderHistory;
+        private IOrderHistoryDetailRepository _orderHistoryDetailRepo;
         #endregion
 
         #region ctor
-        public SpecialOrderRepositoryImpl(ISpecialOrderDBContext specialOrderDbContext)
+        public SpecialOrderRepositoryImpl(ISpecialOrderDBContext specialOrderDbContext, IOrderHistoryHeaderRepsitory orderHistory, IOrderHistoryDetailRepository orderHistoryDetailRepo)
         {
 			_specialOrderDbContext = specialOrderDbContext;
+            _orderHistory = orderHistory;
+            _orderHistoryDetailRepo = orderHistoryDetailRepo;
         }
         #endregion
 
@@ -59,9 +65,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
             _specialOrderDbContext.Context.SaveChanges();
 
+            
 			foreach (var detail in header.Details)
 			{
-				_specialOrderDbContext.RequestItems.Add(new RequestItem()
+                var item = new RequestItem()
 				{
 					RequestHeaderId = idToUse.ToString().PadLeft(7, '0'),
 					BranchId = header.Header.Branch,
@@ -74,10 +81,38 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                     Quantity = (Byte) detail.OrderedQuantity,
                     Description = detail.Description,
                     Comments = detail.ManufacturerName
-				});
+				};
+				_specialOrderDbContext.RequestItems.Add(item);
+
+                
+                
 			}
 
 			_specialOrderDbContext.Context.SaveChanges();
+
+
+            //// add idToUse to order history
+            //var orderHistory = _orderHistory.ReadByConfirmationNumber(header.Header.ControlNumber.ToString().PadLeft(7, '0'), "B"); // TODO, use constant for source
+            ////details
+            //var orderItems = _orderHistoryDetailRepo.Read(x => x.OrderHistoryHeader.Id == orderHistory.First().Id);
+            //foreach (var orderItem in orderItems)
+            //{
+            //    var detailItems = header.Details.Where(x => x.ItemNumber == orderItem.ItemNumber).ToList();
+            //    foreach (var detailItem in detailItems)
+            //    {
+            //        orderItem.ManufacturerId = detailItem.ManufacturerName;//todo
+            //        orderItem.SpecialOrderLineNumber = detailItem.LineNumber.ToString();
+            //        orderItem.SpecialOrderHeaderId = idToUse.ToString().PadLeft(7, '0');
+            //        _orderHistoryDetailRepo.Update(orderItem);
+
+            //    }
+
+            //}
+
+            //// need to save order history items at this point
+
+            ////fill special order id header
+            
 
             requestHeader.OrderStatusId = "05";
 
