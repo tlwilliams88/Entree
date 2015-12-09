@@ -36,10 +36,22 @@ var app = {
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
+
     onDeviceReady: function() {
         console.log("Device Ready!");
         app.receivedEvent('deviceready');
     },
+
+    //Android/Windows/FireOS callback
+    successHandler: function (success) {
+      console.log('successHandler: ' + success);
+    },
+
+    //error for both android and iOS
+    errorHandler: function (error) {
+      console.log('errorHandler: ' + error);
+    },
+
     // Update DOM on a Received Event
     receivedEvent: function(id) {
         var parentElement = document.getElementById(id);
@@ -51,10 +63,12 @@ var app = {
 
         console.log('Received Event: ' + id);
     },
+
     onOnline: function(){
         console.log("BACK ONLINE!");
-        var listService = angular.element(jQuery('body')).injector().get('ListService');
-        var cartService = angular.element(jQuery('body')).injector().get('CartService');
+        app.receivedEvent('online');
+        var cartService = angular.element(document.body).injector().get('CartService')
+        var listService = angular.element(document.body).injector().get('ListService')
         var toaster = angular.element(jQuery('body')).injector().get('toaster');
         toaster.pop('success', null, "You are now connected to the server.");
         //merge local with server data
@@ -67,7 +81,6 @@ var app = {
         console.log("Taken Offline");
         var toaster = angular.element(jQuery('body')).injector().get('toaster');
         toaster.pop('warning', null, "You are now offline.");
-
         var cartService = angular.element(jQuery('body')).injector().get('CartService'); 
         cartService.updateNetworkStatus();
     },

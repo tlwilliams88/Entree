@@ -7,32 +7,34 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.Lists
 {
-	[DataContract]
-	public class ListItemReportModel {
+    [DataContract]
+    public class ListItemReportModel
+    {
         #region attributes
 
         private string _notes;
 
         #endregion
 
-        public ListItemReportModel() {
+        public ListItemReportModel()
+        {
             _notes = String.Empty;
         }
 
         #region properties
 
         [DataMember]
-		public string ItemNumber { get; set; }
+        public string ItemNumber { get; set; }
         [DataMember]
         public string Label { get; set; }
         [DataMember]
-		public string Name { get; set; }
-		[DataMember]
-		public string PackSize { get; set; }
-		[DataMember]
-		public int InCart { get; set; }
-		[DataMember]
-		public string Brand { get; set; }
+        public string Name { get; set; }
+        [DataMember]
+        public string PackSize { get; set; }
+        [DataMember]
+        public int InCart { get; set; }
+        [DataMember]
+        public string Brand { get; set; }
         [DataMember]
         public string Price { get; set; }
         [DataMember]
@@ -46,14 +48,20 @@ namespace KeithLink.Svc.Core.Models.Lists
         /// Report should only show 15 characters and if longer needs to mark it as a continuation.
         /// </summary>
         [DataMember]
-        public string Notes {
+        public string Notes
+        {
             get { return this._notes; }
-            set {
-                if (value != null) {
-                    if (value.Length < 15) {
+            set
+            {
+                if (value != null)
+                {
+                    if (value.Length < 15)
+                    {
                         this._notes = value;
-                    } else {
-                        this._notes = String.Format( "{0}...", value.Substring( 0, 12 ) );
+                    }
+                    else
+                    {
+                        this._notes = String.Format("{0}...", value.Substring(0, 12));
                     }
                 }
             }

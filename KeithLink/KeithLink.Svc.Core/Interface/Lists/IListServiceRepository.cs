@@ -13,62 +13,62 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Lists
 {
-	public interface IListServiceRepository
-	{
-		long? AddItem(long listId, ListItemModel item);
-		
-		ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
-		
-		void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote);
+    public interface IListServiceRepository
+    {
+        long? AddItem(long listId, ListItemModel item);
 
-		void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
-        
+        ListModel AddItems(UserProfile user, UserSelectedContext catalogInfo, long listId, List<ListItemModel> items);
+
+        void AddNote(UserProfile user, UserSelectedContext catalogInfo, ItemNote newNote);
+
+        void AddRecentlyViewedItem(UserProfile user, UserSelectedContext catalogInfo, string itemNumber);
+
         long CreateList(Guid? userId, UserSelectedContext catalogInfo, ListModel list, ListType type);
 
-		void DeleteItem(long Id);
-		
-		void DeleteItems(List<long> itemIds);
+        void DeleteItem(long Id);
 
-		void DeleteList(long Id);
-        
-		void DeleteLists(List<long> listIds);
-		
+        void DeleteItems(List<long> itemIds);
+
+        void DeleteList(long Id);
+
+        void DeleteLists(List<long> listIds);
+
         void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber);
-        
-		List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 
-		ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
+        List<string> ReadFavorites(UserProfile user, UserSelectedContext catalogInfo);
 
-		List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
-		
+        ListModel ReadList(UserProfile user, UserSelectedContext catalogInfo, long Id, bool includePrice = true);
+
+        List<ListModel> ReadListByType(UserProfile user, UserSelectedContext catalogInfo, ListType type, bool headerOnly = false);
+
         List<string> ReadListLabels(UserProfile user, UserSelectedContext catalogInfo);
-        
-		List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
-		
+
+        List<ListItemModel> ReadNotes(UserProfile user, UserSelectedContext catalogInfo);
+
         List<RecentItem> ReadRecent(UserProfile user, UserSelectedContext catalogInfo);
 
         List<ListModel> ReadReminders(UserProfile user, UserSelectedContext catalogInfo);
 
         List<ListModel> ReadUserList(UserProfile user, UserSelectedContext catalogInfo, bool headerOnly = false);
 
-		void UpdateItem(ListItemModel item);
+        void UpdateItem(ListItemModel item);
 
-		void UpdateList(ListModel userList);
+        void UpdateList(ListModel userList);
 
-		List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
+        List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel);
 
-		void ShareList(ListCopyShareModel shareListModel);
+        void ShareList(ListCopyShareModel shareListModel);
 
-		List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
+        List<RecommendedItemModel> ReadRecommendedItemsList(UserSelectedContext catalogInfo);
 
-		List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
+        List<ItemBarcodeModel> GetBarcodeForList(UserProfile user, UserSelectedContext catalogInfo, long Id);
 
-		PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
+        PagedListModel ReadPagedList(UserProfile user, UserSelectedContext catalogInfo, long Id, Core.Models.Paging.PagingModel paging);
 
-		void DeleteItemNumberFromList(long Id, string itemNumber);
+        void DeleteItemNumberFromList(long Id, string itemNumber);
 
-		List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
+        List<InHistoryReturnModel> ItemsInHistoryList(UserSelectedContext catalogInfo, List<string> itemNumbers);
 
-        Stream BuildReportFromList(PrintListModel options, long listId, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile);
-	}
+        Stream BuildReportFromList(PrintListModel options, long listId, UserSelectedContext userContext, UserProfile userProfile);
+    }
 }
