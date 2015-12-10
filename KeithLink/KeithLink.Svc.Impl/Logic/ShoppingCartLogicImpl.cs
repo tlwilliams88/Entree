@@ -429,7 +429,7 @@ namespace KeithLink.Svc.Impl.Logic
                 {
                     orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);
                     //if (catalogId == "unfi_7")
-                    //    throw new Exception();
+                    //    throw new Exception();// for testing
                 }
                 catch (Exception e)
                 {

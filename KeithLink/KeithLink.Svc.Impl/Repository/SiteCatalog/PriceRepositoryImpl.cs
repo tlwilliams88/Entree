@@ -54,9 +54,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     itemPrice.CasePrice = (double)priceRows[0].NetCase;
                     itemPrice.PackagePrice = (double)priceRows[0].NetEach;
 
-                    // will need to NOT CHECK THIS IN
-                    if (itemPrice.CasePrice < 0.01 || itemPrice.PackagePrice < 0.01)
-                        itemPrice.CasePrice = itemPrice.PackagePrice = 22.22;
                     prices.Add(itemPrice);
                 }
             }
@@ -143,8 +140,6 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                     itemPrice.CasePrice = (double)priceRows[0].NetCase;
                     itemPrice.PackagePrice = (double)priceRows[0].NetEach;
 
-                    if (itemPrice.CasePrice < 0.01 || itemPrice.PackagePrice < 0.01)
-                        itemPrice.CasePrice = itemPrice.PackagePrice = 22.22;
                     prices.Add(itemPrice);
                 }           
             }
