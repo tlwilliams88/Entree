@@ -39,9 +39,9 @@ angular
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', 'googleAnalyticsCordovaProvider',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, googleAnalyticsCordovaProvider) {
  
-  googleAnalyticsCordovaProvider.trackingId = ENV.googleAnalytics;
-  googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
-  googleAnalyticsCordovaProvider.debug = true; // default: false
+  // googleAnalyticsCordovaProvider.trackingId = 'UA-62498504-2';
+  // googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
+  // googleAnalyticsCordovaProvider.debug = true; // default: false
 
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
@@ -60,7 +60,7 @@ angular
   $httpProvider.useApplyAsync(true);
  
   // Enable Angular debug information for everything but prod and QA
-  $compileProvider.debugInfoEnabled(ENV.enableDebugInfo);
+  $compileProvider.debugInfoEnabled(false);
 
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});

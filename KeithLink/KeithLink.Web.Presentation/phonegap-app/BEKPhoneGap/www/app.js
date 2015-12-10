@@ -39,9 +39,9 @@ angular
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', 'googleAnalyticsCordovaProvider',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, googleAnalyticsCordovaProvider) {
  
-  // googleAnalyticsCordovaProvider.trackingId = 'UA-62498504-2';
-  // googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
-  // googleAnalyticsCordovaProvider.debug = true; // default: false
+  googleAnalyticsCordovaProvider.trackingId = ENV.googleAnalytics;
+  googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
+  googleAnalyticsCordovaProvider.debug = true; // default: false
 
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
@@ -58,8 +58,9 @@ angular
  
   // group multiple aysnc methods together to only run through one digest cycle
   $httpProvider.useApplyAsync(true);
- 
-  $compileProvider.debugInfoEnabled(false);
+  
+  // Enable Angular debug information for everything but prod and QA
+  $compileProvider.debugInfoEnabled(ENV.enableDebugInfo);
  
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
@@ -141,7 +142,7 @@ angular
 
     event.preventDefault();
 
-    // Validate teh state the user is trying to access
+    // Validate the state the user is trying to access
     
     if (AccessService.isLoggedIn()) {
       $log.debug('user logged in');
