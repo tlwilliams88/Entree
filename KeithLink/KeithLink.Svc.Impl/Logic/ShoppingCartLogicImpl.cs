@@ -418,7 +418,8 @@ namespace KeithLink.Svc.Impl.Logic
                         Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
                         Each = l.Each.HasValue ? l.Each.Value : false,
                         CreatedDate = new DateTime(),
-                        CatalogId = l.CatalogName
+                        CatalogId = l.CatalogName,
+                       
                     }).ToList()
                 };
               
@@ -427,8 +428,8 @@ namespace KeithLink.Svc.Impl.Logic
                 try
                 {
                     orderNumber = client.SaveCartAsOrder(basket.UserId.ToGuid(), newCartId);
-                    if (catalogId == "unfi_7")
-                        throw new Exception();
+                    //if (catalogId == "unfi_7")
+                    //    throw new Exception();
                 }
                 catch (Exception e)
                 {

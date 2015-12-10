@@ -44,6 +44,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 
         private readonly IOrderHistoryHeaderRepsitory _headerRepo;
+        private readonly IOrderHistoryDetailRepository _detailRepo;
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly IKPayInvoiceRepository _kpayInvoiceRepository;
         private readonly ICatalogLogic _catalogLogic;
@@ -59,9 +60,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         #region ctor
         public InternalOrderHistoryLogic(IOrderHistoryHeaderRepsitory headerRepo,
-            IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic,
+            IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic, IOrderHistoryDetailRepository detailRepo,
             IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, ICustomerRepository customerRepository) {
             _headerRepo = headerRepo;
+            _detailRepo = detailRepo;
             _poRepo = poRepo;
             _kpayInvoiceRepository = kpayInvoiceRepository;
             _catalogLogic = catalogLogic;
@@ -131,7 +133,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             _headerRepo.CreateOrUpdate(header);
 
-            // this is where we need to pull things off of order B
+            // clean up any previous orders where the special order item existed
+            var specialOrderItemHeaderIds = currentFile.Details.Where(currentDetail => !String.IsNullOrEmpty(currentDetail.SpecialOrderHeaderId)).Select(d => d.SpecialOrderHeaderId).Distinct();
+            var existingDetails = _detailRepo.Read(existingDetail =>
+                                        specialOrderItemHeaderIds.Contains(existingDetail.SpecialOrderHeaderId)
+                                        && existingDetail.OrderHistoryHeader.Id != header.Id);
+            // TODO: gs - delete each of the existing details; should we just set a status; something like filled in a later order
+            foreach (var detail in existingDetails)
+                _detailRepo.Delete(detail);
+            _unitOfWork.SaveChangesAndClearContext();
         }
 
         public Order GetOrder(string branchId, string invoiceNumber) {

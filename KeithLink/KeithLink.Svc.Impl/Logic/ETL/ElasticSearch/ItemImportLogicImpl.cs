@@ -543,7 +543,9 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 				Flag3 = row.GetString("Flag3"),
 				Flag4 = row.GetString("Flag4"),
 				OnHandQty = row.GetNullableInt("OnHandQty"),
-				Vendor1 = row.GetString("Vendor")
+				Vendor1 = row.GetString("Vendor"),
+                CasePrice = row.GetDecimal("CasePrice"),
+                PackagePrice = row.GetDecimal("EachPrice")
 			};
 
 			RootData index = new RootData();

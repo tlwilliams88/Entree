@@ -204,6 +204,7 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<InternalExportSettingsLogicImpl>().As<IInternalExportSettingLogic>();
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
+            builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
 			builder.RegisterType<ReportRepository>().As<IReportRepository>();
 			builder.RegisterType<InternalReportLogic>().As<IInternalReportLogic>();
@@ -226,6 +227,7 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
             builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<NoExternalCatalogRepositoryImpl>().As<IExternalCatalogServiceRepository>();
 
             //profile
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();

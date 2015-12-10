@@ -222,6 +222,10 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
 		public string Flag4 { get; set; }
 		[JsonProperty("onhandqty")]
 		public int? OnHandQty { get; set; }
+        [JsonProperty("caseprice")]
+        public decimal? CasePrice { get; set; }
+        [JsonProperty("packageprice")]
+        public decimal? PackagePrice { get; set; }
 
     }
 
