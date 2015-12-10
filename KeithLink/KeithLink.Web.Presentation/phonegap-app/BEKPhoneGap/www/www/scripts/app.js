@@ -173,25 +173,8 @@ angular
 
     $log.debug('state change success');
 
-    // Pull Mandatory notifications for header bar
-       var notificationParams = {     
-    size: 50,
-    from: 0,
-        filter: {
-        field: 'mandatory',
-        value: 'true',
-        filter:[
-        {
-        field: 'messageread',
-        value: 'null'
-        }
-        ]
-      }
-    };
-
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
-      NotificationService.getMessages(notificationParams);
       NotificationService.getUnreadMessageCount();
     }
  
