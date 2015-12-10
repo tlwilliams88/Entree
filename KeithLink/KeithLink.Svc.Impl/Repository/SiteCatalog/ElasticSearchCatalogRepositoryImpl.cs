@@ -510,6 +510,10 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             {
                 //make vendor into description
                 p.Description = oProd._source.vendor;
+                p.Pack = oProd._source.casequantity.ToString();
+                p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
+                p.IsSpecialtyCatalog = true;
+                p.Cases = oProd._source.onhandqty.ToString();
             }
           
             if (oProd._source.nutritional != null) {
