@@ -497,7 +497,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
 					listItem.Description = prod.Description;
 					listItem.Brand = prod.BrandExtendedDescription;
-					listItem.StorageTemp = prod.Nutritional.StorageTemp;
 					listItem.ReplacedItem = prod.ReplacedItem;
 					listItem.ReplacementItem = prod.ReplacementItem;
 					listItem.NonStock = prod.NonStock;
@@ -515,16 +514,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 					listItem.ManufacturerNumber = prod.ManufacturerNumber;
 					listItem.AverageWeight = prod.AverageWeight;
                     listItem.TempZone = prod.TempZone;
-					listItem.Nutritional = new Nutritional()
-					{
-						CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
-						GrossWeight = prod.Nutritional.GrossWeight,
-						HandlingInstructions = prod.Nutritional.HandlingInstructions,
-						Height = prod.Nutritional.Height,
-						Length = prod.Nutritional.Length,
-						Ingredients = prod.Nutritional.Ingredients,
-						Width = prod.Nutritional.Width
-					};
+                    if (prod.Nutritional != null) {
+                        listItem.Nutritional = new Nutritional()
+                        {
+                            CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                            GrossWeight = prod.Nutritional.GrossWeight,
+                            HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                            Height = prod.Nutritional.Height,
+                            Length = prod.Nutritional.Length,
+                            Ingredients = prod.Nutritional.Ingredients,
+                            Width = prod.Nutritional.Width,
+                            
+                        };
+                        listItem.StorageTemp = prod.Nutritional.StorageTemp;
+                    }
+					
                     listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel() {
                         CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("C")).Select(p => p.AverageUse).FirstOrDefault(),
                         PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("P")).Select(p => p.AverageUse).FirstOrDefault()
@@ -625,6 +629,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
+            
             if (list == null)
                 return null;
 

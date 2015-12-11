@@ -101,7 +101,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
                 return;
             //Substring branchID 
             PriceReturn pricingInfo = null;
-            if (searchModel.CatalogType.Equals("BEK"))
+            if (!IsSpecialtyCatalog(searchModel.CatalogType))
                 pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
             else
                 pricingInfo = _priceLogic.GetNonBekItemPrices(context.BranchId, context.CustomerId, searchModel.CatalogType, DateTime.Now.AddDays(1), prods.Products);
@@ -194,6 +194,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         }
 
         public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType) {
+            var bekBranchId = catalogInfo.BranchId;
             catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);  
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 
@@ -205,7 +206,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
 
-            PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            PriceReturn pricingInfo = null;
+            if (!IsSpecialtyCatalog(catalogType))
+                pricingInfo = _priceLogic.GetPrices(bekBranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            else
+                pricingInfo = _priceLogic.GetNonBekItemPrices(bekBranchId, catalogInfo.CustomerId, catalogType, DateTime.Now.AddDays(1), new List<Product>() { ret });
 
             if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any()) {
                 var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
@@ -245,7 +250,12 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
 
-            PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            //PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            PriceReturn pricingInfo = null;
+            if (!IsSpecialtyCatalog(null,ret.CatalogId))
+                pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            else
+                pricingInfo = _priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, GetCatalogTypeFromCatalogId(ret.CatalogId), DateTime.Now.AddDays(1), new List<Product>() { ret });
 
             if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any()) {
                 var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
