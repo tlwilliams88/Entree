@@ -45,6 +45,18 @@ namespace KeithLink.Svc.Windows.QueueService {
             _confirmationLogic.ListenForQueueMessages();
         }
 
+        private void InitializeNotificationsThread()
+        {
+            externalNotificationScope = container.BeginLifetimeScope();
+
+            _externalNotificationQueueConsumer = externalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _externalNotificationQueueConsumer.ListenForExternalNotificationMessagesOnQueue();
+
+            internalNotificationScope = container.BeginLifetimeScope();
+            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _internalNotificationQueueConsumer.ListenForInternalNotificationMessagesOnQueue();
+        }
+
         private void InitializeOrderUpdateThread() {
             orderHistoryScope = container.BeginLifetimeScope();
             _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
@@ -72,33 +84,6 @@ namespace KeithLink.Svc.Windows.QueueService {
 
             if (orderHistoryScope != null)
                 orderHistoryScope.Dispose();
-        }
-
-        private void InitializeConfirmationMoverThread()
-        {
-            confirmationScope = container.BeginLifetimeScope();
-
-            _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
-            _confirmationLogic.ListenForQueueMessages();
-        }
-
-        private void InitializeNotificationsThread()
-        {
-            externalNotificationScope = container.BeginLifetimeScope();
-
-            _externalNotificationQueueConsumer = externalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
-            _externalNotificationQueueConsumer.ListenForExternalNotificationMessagesOnQueue();
-
-            internalNotificationScope = container.BeginLifetimeScope();
-            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
-            _internalNotificationQueueConsumer.ListenForInternalNotificationMessagesOnQueue();
-        }
-
-        private void InitializeOrderUpdateThread()
-        {
-            orderHistoryScope = container.BeginLifetimeScope();
-            _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
-            _orderHistoryLogic.ListenForQueueMessages();
         }
 
         private void TerminateNotificationsThread()

@@ -319,13 +319,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             return returnValue;
         }
-
-        public void SaveOrder(OrderHistoryFile historyFile) {
-            Create(historyFile);
-
-            _unitOfWork.SaveChanges();
-        }
-
+        
         public void ListenForQueueMessages() {
             _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
         }
