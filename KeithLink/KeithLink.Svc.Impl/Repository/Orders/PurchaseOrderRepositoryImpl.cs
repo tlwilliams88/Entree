@@ -90,6 +90,24 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
+        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId) {
+                var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+
+                queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToString( "B" );
+                queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
+                
+                queryBaskets.QueryOptions.RefreshBasket = false;
+
+                var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+
+                if (response.OperationResponses.Count == 0)
+                    return null;
+
+                CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+
+                return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder) p).ToList();
+        }
+
 		public List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
