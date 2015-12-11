@@ -28,6 +28,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces {
         void MarkAsReadUserMessages(List<UserMessageModel> userMessages);
 
         [OperationContract]
+        void MarkAllReadByUser( UserProfile user );
+
+        [OperationContract]
         List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId);
 
         [OperationContract]

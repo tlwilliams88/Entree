@@ -17,6 +17,7 @@ using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
@@ -66,6 +67,13 @@ namespace KeithLink.Svc.Test
 {
     internal static class DependencyMap
     {
+        public static ContainerBuilder Init()
+        {
+            // Create the container builder.
+            ContainerBuilder builder = new ContainerBuilder();
+
+            return builder;
+        }
         public static IContainer Build()
         {
             // Create the container builder.
@@ -74,7 +82,8 @@ namespace KeithLink.Svc.Test
 			//*******************************************
 			//Mock Items
 			//*******************************************
-			builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope(); ;
+            //builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            builder.RegisterType<UnitOfWorkMock>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
 			//*******************************************
             //Logic Classes
@@ -92,11 +101,14 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
+            builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
+            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
 
 			//*******************************************
 			//Repositories
 			//*******************************************
 			//EF
+            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
 			builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
 			builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 			builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
@@ -117,7 +129,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
 
 			//Etc
-			builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
 			builder.Register(c => new EventLogRepositoryImpl("Entree Test")).As<IEventLogRepository>();
 			builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
@@ -126,10 +137,11 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            
 
             //Orders
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
+            builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
             
             //Profile
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
@@ -152,7 +164,85 @@ namespace KeithLink.Svc.Test
 
             // Build the container.
             return builder.Build();
+        }
+        public static void RegisterStandard(this ContainerBuilder builder)
+        {
+            //*******************************************
+            //Logic Classes
+            //*******************************************
+            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
+            builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
+            builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
+            builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<InternalListLogic>().As<IInternalListLogic>();
+            builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
+            builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+            builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
+            builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
+            builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+            builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
+            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
 
+            //*******************************************
+            //Repositories
+            //*******************************************
+            //EF
+            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
+            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
+            builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
+            builder.RegisterType<ListShareRepositoryImpl>().As<IListShareRepository>();
+            builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
+            builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
+
+            // Bill Pay
+            builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
+            builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
+            builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
+            builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
+
+            //Catalog
+            builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>();
+            builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
+            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
+            builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
+
+            //Etc
+            builder.Register(c => new EventLogRepositoryImpl("Entree Test")).As<IEventLogRepository>();
+            builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
+            builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
+            builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
+            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+            builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
+            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+            builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
+
+            //Orders
+            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
+            builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
+
+            //Profile
+            builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
+            builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
+            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
+            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+            builder.RegisterType<MarketingPreferencesRepositoryImpl>().As<IMarketingPreferencesRepository>();
+            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
+            builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
+
+            //Replace
+            builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
+            builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
+            builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
+            builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
+            builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
+            builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
+            builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
         }
     }
 }

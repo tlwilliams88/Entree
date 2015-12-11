@@ -8,10 +8,11 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', 'ProductService', 'CategoryService', 'Constants', 'PricingService',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', 'ProductService', 'CategoryService', 'Constants', 'PricingService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
+      $analytics, //google analytics
       ProductService, CategoryService, Constants, PricingService // bek custom services
     ) {
     
@@ -88,6 +89,7 @@ angular.module('bekApp')
 
       // top level breadcrumb based on the type of search
       var displayText;
+
       if ($scope.paramType === 'category') {
         CategoryService.getCategories($state.params.catalogType).then(function(data) {
           angular.forEach(data.categories, function(item, index) {
@@ -111,6 +113,7 @@ angular.module('bekApp')
             displayText = brand.name;
           }
         });
+
         $scope.featuredBreadcrumb = {
           click: clearFacets,
           clickData: null,
@@ -198,12 +201,20 @@ angular.module('bekApp')
 
       // search term
       if ($scope.paramType === 'search') {
+       $scope.featuredBreadcrumb = {
+          click: clearFacets,
+          clickData: null,
+          displayText: $stateParams.deptName
+        };
+        breadcrumbs.unshift($scope.featuredBreadcrumb);
+        $analytics.eventTrack('Search Department', {  category: 'Department', label: $stateParams.deptName });
+        
         $scope.featuredBreadcrumb = {
           click: clearFacets,
           clickData: '',
           displayText: '"' + $scope.paramId + '"'
         };
-        breadcrumbs.push($scope.featuredBreadcrumb);  
+        breadcrumbs.push($scope.featuredBreadcrumb);
       }
 
       $scope.breadcrumbs = breadcrumbs;
@@ -223,7 +234,7 @@ angular.module('bekApp')
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
       console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
-      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
+      var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
     }
 
@@ -405,8 +416,13 @@ angular.module('bekApp')
               $scope.facets.dietary.selected, 
               $scope.facets.itemspecs.selected 
             );
+<<<<<<< HEAD
             var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets);
             return ProductService.getSearchUrl($scope.paramType, $scope.paramId, $scope.$state.params.catalogType) + '?' + jQuery.param(params); // search query string param
+=======
+            var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
+            return ProductService.getSearchUrl($scope.paramType, $scope.paramId) + '?' + jQuery.param(params); // search query string param
+>>>>>>> origin/v1.4.0
           }
         }
       });

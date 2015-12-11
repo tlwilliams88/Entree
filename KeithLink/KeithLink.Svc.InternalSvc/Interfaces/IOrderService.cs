@@ -28,6 +28,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
+
+        [OperationContract]
+        OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
         
 		[OperationContract]
 		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);

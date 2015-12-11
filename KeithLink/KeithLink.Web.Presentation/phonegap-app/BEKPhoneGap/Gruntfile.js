@@ -13,15 +13,16 @@ module.exports = function(grunt) {
       config: {
         plugins: [
           'https://github.com/apache/cordova-plugin-network-information.git',
-          'https://github.com/phonegap-build/PushPlugin.git',
-          'org.apache.cordova.device',
-          'org.apache.cordova.dialogs',
-          'org.apache.cordova.vibration',
-          'org.apache.cordova.statusbar',
-          'org.apache.cordova.console',
-          'org.apache.cordova.inappbrowser',
+          'https://github.com/phonegap/phonegap-plugin-push.git',
+          'cordova-plugin-device',
+          'cordova-plugin-dialogs',
+          'cordova-plugin-vibration',
+          'cordova-plugin-statusbar',
+          'cordova-plugin-console',
+          'cordova-plugin-inappbrowser',
           'https://github.com/wildabeast/BarcodeScanner.git',
-          'https://github.com/phonegap-build/GAPlugin.git'
+          'https://github.com/phonegap-build/GAPlugin.git',
+          'https://github.com/apache/cordova-plugin-whitelist.git'
           // ,'https://github.com/brodysoft/Cordova-SQLitePlugin.git'
         ],
         maxBuffer: 500,

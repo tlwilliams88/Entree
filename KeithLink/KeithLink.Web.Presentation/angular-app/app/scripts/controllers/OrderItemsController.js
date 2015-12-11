@@ -1,14 +1,20 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('OrderItemsController', ['$scope', '$modal', 'order', 'OrderService', 'ListService',
-  function ($scope, $modal, order, OrderService, ListService) {
+.controller('OrderItemsController', ['$scope', '$modal', '$filter', 'order', 'OrderService', 'ListService',
+  function ($scope, $modal, $filter, order, OrderService, ListService) {
 
-  $scope.order = order;
+
+  $scope.filterDeletedItems = function(order){ 
+    order.items =  OrderService.filterDeletedOrderItems(order);
+    return order;
+  };
+
+  $scope.order = $scope.filterDeletedItems(order);
 
   $scope.getOrder = function(orderNumber) {
     OrderService.getOrderDetails(orderNumber).then(function(order) {
-      $scope.order = order;
+      $scope.order = $scope.filterDeletedItems(order);
       $scope.displayMessage('success', 'Successfully retrieved latest info for order.');
     });
   };

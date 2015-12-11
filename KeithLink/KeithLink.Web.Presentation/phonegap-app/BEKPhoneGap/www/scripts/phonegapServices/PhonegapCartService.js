@@ -93,7 +93,7 @@ angular.module('bekApp')
             item.cartitemid = generateId();
             item.isNew = true;
           });
-          newCart.name = name;
+          //newCart.name = name;
           PhonegapDbService.setItem(db_table_name_carts, newCart.id, newCart);
           Service.cartHeaders.push(newCart);
 
@@ -232,22 +232,22 @@ angular.module('bekApp')
 
             if (cart.isNew) { // create carts
               
-              var newItems = [];
-              cart.items.forEach(function(item) {
-                if (item.itemnumber) {
-                  newItems.push({
-                    itemnumber: item.itemnumber,
-                    quantity: item.quantity,
-                    each: item.each
-                  });
-                }
-              });
-              var newCart = {
-                name: cart.name,
-                requestedshipdate: cart.requestedshipdate,
-                items: newItems
-              };
-              promises.push(Service.createCartFromLocal(newCart));
+              // var newItems = [];
+              // cart.items.forEach(function(item) {
+              //   if (item.itemnumber) {
+              //     newItems.push({
+              //       itemnumber: item.itemnumber,
+              //       quantity: item.quantity,
+              //       each: item.each
+              //     });
+              //   }
+              // });
+              // var newCart = {
+              //   name: cart.name,
+              //   requestedshipdate: cart.requestedshipdate,
+              //   items: cart.items
+              // };
+              promises.push(Service.createCartFromLocal(cart));
             } else if (cart.isChanged) { // update carts
               delete cart.isChanged;
               cart.items.forEach(function(item) {

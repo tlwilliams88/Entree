@@ -64,10 +64,11 @@ angular.module('bekApp')
           return facets;
         },
 
-        getSearchParams: function(pageSize, index, sortField, sortDirection, facets, catalogType) {
+        getSearchParams: function(pageSize, index, sortField, sortDirection, facets, department) {
           var params = {
             size: pageSize  || defaultPageSize,
             from: index || defaultStartingIndex,
+            dept: department,
             facets: facets,
             sfield: sortField,
             sdir: sortDirection 
@@ -92,7 +93,7 @@ angular.module('bekApp')
           return url;
         },
 
-        searchCatalog: function(type, id, catalogType,params) {
+        searchCatalog: function(type, id, catalogType, params) {
           
           var url = Service.getSearchUrl(type, id, catalogType);
           

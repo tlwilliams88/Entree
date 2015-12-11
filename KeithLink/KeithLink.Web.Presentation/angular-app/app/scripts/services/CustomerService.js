@@ -41,6 +41,12 @@ angular.module('bekApp')
         return UtilityService.resolvePromise(promise);
       },
 
+      saveAccountingSettings: function(profile) {
+        return $http.post('/profile/customer/viewpricing/', profile).then(function(response) {
+          return response.data;
+        });
+      },
+
       getAccountBalanceInfo: function() {
         return $http.get('/profile/customer/balance').then(function(response) {
           return response.data;

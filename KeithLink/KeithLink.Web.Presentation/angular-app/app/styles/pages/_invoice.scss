@@ -15,10 +15,7 @@
     &.highlight-text {
       color: $color-green;
     }
-
-    
   }
-
 }
 
 .hiding-icon{
@@ -93,10 +90,6 @@ margin-top:20px;
   margin-right:30px;
 }
 
-  .update-btn {
-    margin-top:10px;
-  }
-
 .tooltip-inner{
   width:100px;
   word-wrap:break-word;
@@ -106,3 +99,18 @@ margin-top:20px;
   margin-top:15px;
 }
 
+.invoice-error{
+  float:left; 
+  margin-left:15px;
+}
+
+.invoice-counter{
+  float:right; 
+  margin-right:15px; 
+  padding-top:15px !important;
+}
+
+.credit-memo-toggle{
+  float:left; 
+  padding-top:10px;
+}

@@ -182,7 +182,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             }
             lineItem.MainFrameStatus = value.ItemStatus;
             lineItem.Each = value.UnitOfMeasure.Equals(UnitOfMeasure.Package.ToShortString()) ? true : false;
-
+            if (lineItem.Status.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS,
+                        StringComparison.CurrentCultureIgnoreCase))
+            {
+                lineItem.IsOutOfStock = true;
+            }
             return lineItem;
         }
 

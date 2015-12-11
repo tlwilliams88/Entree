@@ -2,24 +2,27 @@
 
 /**
  * @ngdoc function
- * @name bekApp.directive:allowOnePositiveDecimal
+ * @name bekApp.directive:numericValidation
  * @description
- * Form validation where the input can have only one decimal place and must be positive. 
+ * Form validation to set number of allowable decimals and pull out invalid values
  * Used for list parlevel
  */
 angular.module('bekApp')
-.directive('allowOnePositiveDecimal',function(){
+.directive('numericValidation',function(){
   var directive = {
     require: 'ngModel', 
     restrict: 'A', 
     link: function(scope, elm, attrs, ctrl) {
       function checkValidity(viewValue) {
         if(!viewValue){
-        ctrl.$setValidity('allowOnePositiveDecimal', true);
-        return true;
+        ctrl.$setValidity('numericValidation', true);
+        return 0;
         }
         // add a leading zero if value starts with a decimal
-        if (typeof viewValue === 'string') {
+        if (typeof viewValue !== 'string') {
+          viewValue = viewValue.toString();
+        }
+    
           if(viewValue.indexOf('.') === 0){
             viewValue = '0' + viewValue; 
             ctrl.$setViewValue(viewValue);   
@@ -28,17 +31,10 @@ angular.module('bekApp')
           //Allow '0.' as an option, but keep it invalid
           if(viewValue ==='0.'){
             ctrl.$render();
-           ctrl.$setValidity('allowOnePositiveDecimal', false);
+           ctrl.$setValidity('numericValidation', false);
           return parseFloat(viewValue);
           }
-          //remove leading zeroes
-          if (viewValue.length > 1 && viewValue.match(/^0+/) != null) {
-              viewValue = viewValue.replace(/^0+/, '');
-              ctrl.$setViewValue(viewValue);
-              ctrl.$render();
-          }
-        }
-    
+
         var truncatedVal ='';
         if (attrs.id === 'inventoryRep' || attrs.id==="parlevel"  || attrs.id==="onHand") {
           //allows for 2 decimal places
@@ -50,10 +46,10 @@ angular.module('bekApp')
         }
         //set validity
         if (!truncatedVal || scope.checkRegex ) {
-          ctrl.$setValidity('allowOnePositiveDecimal', true);
+          ctrl.$setValidity('numericValidation', true);
           return parseFloat(truncatedVal);
         } else {
-          ctrl.$setValidity('allowOnePositiveDecimal', false);
+          ctrl.$setValidity('numericValidation', false);
           return undefined;
         }
       }
@@ -61,7 +57,7 @@ angular.module('bekApp')
       function truncateViewValue(limit,viewVal){
         //filter out special/alpha characters and remove leading 0s
            if(typeof viewVal === 'string'){
-            if(viewVal.length>1 && viewVal.indexOf(0) === 0){
+            if(viewVal.length>1 && viewVal.indexOf(0) === 0 && viewVal[1] !== '.'){
               viewVal = viewVal.slice(1,viewVal.length);
                 ctrl.$setViewValue(viewVal);   
                 ctrl.$render(); 
@@ -80,7 +76,10 @@ angular.module('bekApp')
             viewVal = viewVal.slice(0,(viewVal.indexOf('.') + limit + 1)); 
              ctrl.$setViewValue(viewVal);   
              ctrl.$render();         
-          }   
+          }
+        if(!viewVal.length || viewVal === '0.0' || viewVal === '0.00'){
+          viewVal = '0';
+        }
         return viewVal;
       }
 

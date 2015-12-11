@@ -33,7 +33,10 @@ namespace KeithLink.Svc.Core.Models.Invoices
 		[DataMember(Name = "invoicedate")]
 		public DateTime? InvoiceDate { get; set; }
 
-		[DataMember(Name = "orderdate")]
+        [DataMember(Name = "invoiceamount")]
+        public decimal InvoiceAmount { get; set; }
+
+        [DataMember(Name = "orderdate")]
 		public DateTime? OrderDate { get; set; }
 
 		[DataMember(Name = "duedate")]
@@ -69,7 +72,10 @@ namespace KeithLink.Svc.Core.Models.Invoices
         [DataMember(Name="ispayable")]
         public bool IsPayable { get; set; }
 
-		[DataMember(Name = "invoicelink")]
+        [DataMember(Name = "hascreditmemos")]
+        public bool HasCreditMemos { get; set; }
+
+        [DataMember(Name = "invoicelink")]
 		public Uri InvoiceLink { get; set; }
 
 		[DataMember(Name = "transactions")]

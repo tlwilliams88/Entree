@@ -36,7 +36,7 @@ angular.module('bekApp')
 
 
     $scope.rowChanged = function(index){
-      $scope.indexOfSDestroyedRow = index + 1;
+      $scope.indexOfSDestroyedRow = index;
     }
 
     $scope.initPagingValues = function(){
@@ -424,30 +424,34 @@ angular.module('bekApp')
 
       // saves new item indexes in cached editPosition field after sorting or ordering the list items
      function updateItemPositions() {
-       var deletedItemCount = 0;
-       var currentPageDeletes = 0;
-       var currentPageDeletedCount = 0;
-       $scope.itemCountOffset = 0;
-       $scope.visitedPages.forEach(function(page){
-        if($scope.currentPage > page.page){
-          deletedItemCount += page.deletedCount;
-        }
-        if($scope.currentPage === page.page){
-          currentPageDeletedCount = page.deletedCount
-        }
-        $scope.itemCountOffset += page.deletedCount;
-       })
 
-       $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
-       $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
-       var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
-       angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
-        if(!item.isdeleted){
-           item.position = newPosition;
-           item.editPosition = newPosition;
-           newPosition += 1;
-        }
-       });
+      if($scope.selectedList.read_only){
+        return;
+      }
+      var deletedItemCount = 0;
+      var currentPageDeletes = 0;
+      var currentPageDeletedCount = 0;
+      $scope.itemCountOffset = 0;
+      $scope.visitedPages.forEach(function(page){
+      if($scope.currentPage > page.page){
+        deletedItemCount += page.deletedCount;
+      }
+      if($scope.currentPage === page.page){
+        currentPageDeletedCount = page.deletedCount
+      }
+      $scope.itemCountOffset += page.deletedCount;
+      })
+
+      $scope.rangeStartOffset = ($scope.currentPage === 1) ? 0 : deletedItemCount;
+      $scope.rangeEndOffset = deletedItemCount + currentPageDeletedCount;
+      var newPosition = (($scope.pagingPageSize*($scope.currentPage - 1)) + 1) - deletedItemCount;
+      angular.forEach($scope.selectedList.items.slice($scope.startingPoint, $scope.endPoint), function(item, index) {
+      if(!item.isdeleted){
+          item.position = newPosition;
+          item.editPosition = newPosition;
+          newPosition += 1;
+      }
+      });
      }
 
     /**********
@@ -687,8 +691,8 @@ angular.module('bekApp')
 
     $scope.initParLvl = function(item) {  
       if(!item.parlevel){   
-        item.parlevel=0;
-      }   
+        item.parlevel='0';
+      }
     };
 
     $scope.openPrintOptionsModal = function(list) {

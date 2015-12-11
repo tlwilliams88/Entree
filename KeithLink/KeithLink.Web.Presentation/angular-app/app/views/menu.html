@@ -145,7 +145,7 @@
           <button
             class="btn-no-style"
             type="button"
-            ng-disabled="::!canRunReports"
+            ng-disabled="::!canRunReports || !canSeePrices"
             ui-sref="menu.reports"
             ng-class="{'is-selected': $state.includes('menu.reports')}" >
             <li>
@@ -153,7 +153,7 @@
               Reports
             </li>
           </button>
-            <a ng-if="::!canRunReports" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
+            <span ng-if="::!canRunReports || !canSeePrices" tooltip="Item Usage report and & KBIT access. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -165,7 +165,7 @@
               Invoices
             </li>
           </button>
-            <a ng-if="::!canPayInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
+            <span ng-if="::!canPayInvoices" tooltip="View and pay invoices. Contact your DSR for more information."class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -177,7 +177,7 @@
               My Lists
             </li>
           </button>
-            <a ng-if="::!canManageLists" tooltip="Create custom lists of items. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></a>
+            <span ng-if="::!canManageLists" tooltip="Create custom lists of items. Contact your DSR for more information." class="glyphicon glyphicon-info-sign pull-right btn-info-sidebar"></span>
           <button
             class="btn-no-style"
             type="button"
@@ -277,6 +277,10 @@
                     <strong>{{cart.name}}</strong>
                     <br>
                     Ship Date: {{cart.requestedshipdate | formatDate:'ddd, MMMM DD, YYYY'}}
+                    <br>            
+                    Item Count: {{(cart.itemcount || 0) + (cart.itemcount === 1 ? ' Item' : ' Items')+ '/'+(cart.piececount || 0) + (cart.piececount === 1 ? ' Piece ' : ' Pieces')}}
+                    <br>            
+                    Cart Total: {{cart.subtotal | currency}}
                     <br>
                     <a class="btn btn-default" ui-sref="menu.cart.items({ cartId: cart.id })">View Cart</a>
                     <a class="btn btn-default" ui-sref="menu.addtoorder.items({ cartId: cart.id })">Continue Shopping</a>
@@ -321,12 +325,19 @@
           </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-5">
           <form name="universalSearchForm" novalidate ng-if="::canBrowseCatalog">
             <div class="input-group input-group-lg">
+               <div dropdown is-open="openScope" class="input-group-btn">
+                  <button type="button" class="btn btn-default dropdown-toggle">{{department[0].text}}<span style="margin-left:5px;" class="caret" ></span></button>
+                  <ul class="dropdown-menu" role="menu">
+                    <li ng-repeat="department in departments" ><a ng-click="selectDepartment(department.value)">{{department.text}}</a></li>
+                  </ul>
+                </div><!-- /btn-group -->
+
               <input required ng-minlength="3" ng-model="userBar.universalSearchTerm" type="text" class="form-control" placeholder="Search by keyword">
               <span class="input-group-btn">
-                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
+                <button ui-sref="menu.catalog.products.list({ type: 'search', id: userBar.universalSearchTerm, dept: departmentNum, deptName: department[0].text })" ng-disabled="universalSearchForm.$invalid" class="btn-default btn" type="submit"><span class="icon-search"></span></button>
                 <button ng-if="::isMobileApp" class="btn btn-default" type="button" ng-click="scanBarcode()"><span class="icon-camera"></span></button>
               </span>
             </div>

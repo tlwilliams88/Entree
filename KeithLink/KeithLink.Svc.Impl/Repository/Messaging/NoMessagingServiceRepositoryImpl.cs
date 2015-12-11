@@ -35,6 +35,10 @@ namespace KeithLink.Svc.Impl.Repository.Messaging
             throw new NotImplementedException();
         }
 
+        public void MarkAllReadByUser( UserProfile userId ) {
+            throw new NotImplementedException();
+        }
+
         public Core.Models.Configuration.MessageTemplateModel ReadMessageTemplateForKey(string key) {
             throw new NotImplementedException();
         }

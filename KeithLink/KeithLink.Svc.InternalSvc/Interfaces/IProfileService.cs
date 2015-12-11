@@ -50,5 +50,10 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         [OperationContract]
         void DeleteProfileSetting( SettingsModel settings );
 
-	}
+        [OperationContract]
+        void SetDefaultApplicationSettings(string email);
+
+        [OperationContract]
+        void UpdateCustomerCanViewPricing(Guid customerId, bool canView);
+    }
 }

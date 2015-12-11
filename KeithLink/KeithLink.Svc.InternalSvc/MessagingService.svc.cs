@@ -50,6 +50,10 @@ namespace KeithLink.Svc.InternalSvc
             messagingLogic.MarkAsReadUserMessages(userMessages);
         }
 
+        public void MarkAllReadByUser( UserProfile user ) {
+            messagingLogic.MarkAllReadByUser( user );
+        }
+
         public List<UserMessagingPreferenceModel> ReadMessagingPreferences(Guid userId) {
             return messagingLogic.ReadMessagingPreferences(userId);
         }

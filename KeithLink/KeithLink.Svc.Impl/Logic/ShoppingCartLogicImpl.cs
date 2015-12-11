@@ -233,7 +233,9 @@ namespace KeithLink.Svc.Impl.Logic
 				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
 				if (prod != null)
 				{
+                    item.IsValid = true;
 					item.Name = prod.Name;
+                    item.Pack = prod.Pack;
 					item.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
 					item.StorageTemp = prod.Nutritional == null ? "" : prod.Nutritional.StorageTemp;
 					item.Brand = prod.Brand;
@@ -294,6 +296,7 @@ namespace KeithLink.Svc.Impl.Logic
 					PONumber = l.PONumber,
 					SubTotal = l.TempSubTotal.HasValue ? l.TempSubTotal.Value : 0, 
 					ItemCount = l.LineItems != null ?  l.LineItems.Count() : 0,
+                    PieceCount = l.LineItems != null ? (int)l.LineItems.Sum(i => i.Quantity) : 0,
 					RequestedShipDate = l.RequestedShipDate,
                     CreatedDate = l.Properties["DateCreated"].ToString().ToDateTime().Value
 				}).ToList();
@@ -307,13 +310,11 @@ namespace KeithLink.Svc.Impl.Logic
 					LookupProductDetails(user, catalogInfo, list, notes);
 
                     list.ItemCount = list.Items.Count;
+                    list.PieceCount = (int)list.Items.Sum(i => i.Quantity);
 
                     foreach (var item in list.Items) {
                         int qty = (int)item.Quantity;
-                        int pack = 1;
-                        int.TryParse(item.Pack, out pack);
-
-                        list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
+                        list.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, item.Pack.ToInt(1));
                     }
 				});
 				return returnCart;
@@ -332,11 +333,12 @@ namespace KeithLink.Svc.Impl.Logic
 			LookupProductDetails(user, catalogInfo, cart, notes);
 
             cart.ItemCount = cart.Items.Count;
+            cart.PieceCount = (int)cart.Items.Sum(i => i.Quantity);
 
             foreach (var item in cart.Items) {
                 int qty = (int)item.Quantity;
-                int pack = 1;
-                int.TryParse(item.Pack, out pack);
+                int pack;
+                if (!int.TryParse(item.Pack, out pack)) { pack = 1; }
 
                 cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
             }

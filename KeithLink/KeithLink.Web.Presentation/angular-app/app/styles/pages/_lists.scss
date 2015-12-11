@@ -156,6 +156,10 @@
   top:25px;
 }
 
+.right-margin-10 {
+  margin-right:10px;
+}
+
 @media (max-width: $screen-sm-max) {
   .items {
     width: 100%;
@@ -169,8 +173,27 @@
   }
 }
 
-@media (min-width: 1400px) {
-.full-width-mobile{
+@media (max-width: 1135px) {
+.drop-column{ 
+  display:none !important;
+}
+}
+
+.label-col {
+  max-width:100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.label-width {
+  width:100px;
   max-width:100px;
 }
+
+.max-width-20 {
+  max-width:20px;
+}
+
+.block-display {
+  display:inline-block;
 }

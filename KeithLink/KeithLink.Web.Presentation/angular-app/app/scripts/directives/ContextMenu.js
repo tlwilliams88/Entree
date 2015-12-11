@@ -76,7 +76,6 @@ angular.module('bekApp')
         var newItem = angular.copy(item);
         CartService.addItemToCart(cartId, newItem).then(function(data) {
           closeModal();
-          item.quantityincart += 1;
           $scope.displayMessage('success', 'Successfully added item to cart.');
         }, function() {
           $scope.displayMessage('error', 'Error adding item to cart.');

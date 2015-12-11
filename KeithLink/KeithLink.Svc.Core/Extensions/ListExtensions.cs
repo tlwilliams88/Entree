@@ -15,20 +15,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Extensions {
-	public static class ListExtensions {
+namespace KeithLink.Svc.Core.Extensions
+{
+    public static class ListExtensions
+    {
         #region methods
         /// <summary>
         /// convert the ListModel to a List object
         /// </summary>
         /// <param name="list">the list model</param>
         /// <returns>List database model</returns>
-        public static List ToEFList(this ListModel list) {
-            return new KeithLink.Svc.Core.Models.EF.List() {
+        public static List ToEFList(this ListModel list)
+        {
+            return new KeithLink.Svc.Core.Models.EF.List()
+            {
                 DisplayName = list.Name,
                 Type = ListType.Custom,
                 ReadOnly = list.ReadOnly,
-                Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem() {
+                Items = list.Items == null ? null : list.Items.Select(i => new KeithLink.Svc.Core.Models.EF.ListItem()
+                {
                     Category = i.Category,
                     ItemNumber = i.ItemNumber,
                     Label = i.Label,
@@ -47,8 +52,10 @@ namespace KeithLink.Svc.Core.Extensions {
         /// <param name="list">the database model</param>
         /// <param name="catalogInfo">the customer information</param>
         /// <returns>ListModel object</returns>
-        public static ListModel ToListModel(this List list, UserSelectedContext catalogInfo) {
-            return new ListModel() {
+        public static ListModel ToListModel(this List list, UserSelectedContext catalogInfo)
+        {
+            return new ListModel()
+            {
                 BranchId = list.BranchId,
                 IsContractList = list.Type == ListType.Contract,
                 IsFavorite = list.Type == ListType.Favorite,
@@ -61,12 +68,13 @@ namespace KeithLink.Svc.Core.Extensions {
                 ListId = list.Id,
                 Name = list.DisplayName,
                 ReadOnly = list.ReadOnly,
-                IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) && 
-                                                   list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase)) 
+                IsSharing = list.Shares != null ? (list.Shares.Any() && list.CustomerId.Equals(catalogInfo.CustomerId) &&
+                                                   list.BranchId.Equals(catalogInfo.BranchId, StringComparison.CurrentCultureIgnoreCase))
                                                 : false,
                 IsShared = !list.CustomerId.Equals(catalogInfo.CustomerId),
                 Items = list.Items == null ? null :
-                    list.Items.Select(i => new ListItemModel() {
+                    list.Items.Select(i => new ListItemModel()
+                    {
                         Category = i.Category,
                         Type = list.Type,
                         ItemNumber = i.ItemNumber,
@@ -90,15 +98,18 @@ namespace KeithLink.Svc.Core.Extensions {
         /// </summary>
         /// <param name="list">PagedListModel</param>
         /// <returns>ListReportModel</returns>
-        public static ListReportModel ToReportModel(this PagedListModel list) {
-            return new ListReportModel() {
+        public static ListReportModel ToReportModel(this ListModel list)
+        {
+            return new ListReportModel()
+            {
                 Name = list.Name,
-                Items = list.Items == null || list.Items.Results == null ? null :
-                    list.Items.Results.Select(i => new ListItemReportModel() {
+                Items = list.Items.Select(i => new ListItemReportModel()
+                    {
                         Brand = i.BrandExtendedDescription,
                         ItemNumber = i.ItemNumber,
                         Name = i.Name,
                         PackSize = i.PackSize,
+                        Each = (i.Each != null) ? ((i.Each == true) ? "Y" : null) : null,
                         ParLevel = i.ParLevel,
                         Notes = i.Notes
                     }).ToList()
@@ -110,10 +121,12 @@ namespace KeithLink.Svc.Core.Extensions {
         /// </summary>
         /// <param name="list"></param>
         /// <returns></returns>
-        public static List<ShoppingCartItemReportModel> ToShoppingCartItemReportList( this PagedListModel list ) {
+        public static List<ShoppingCartItemReportModel> ToShoppingCartItemReportList(this PagedListModel list)
+        {
             List<ShoppingCartItemReportModel> items = new List<ShoppingCartItemReportModel>();
 
-            foreach (ListItemModel i in list.Items.Results) {
+            foreach (ListItemModel i in list.Items.Results)
+            {
                 ShoppingCartItemReportModel item = new ShoppingCartItemReportModel();
 
                 item.ItemNumber = i.ItemNumber;
@@ -121,7 +134,8 @@ namespace KeithLink.Svc.Core.Extensions {
                 item.Brand = i.BrandExtendedDescription;
                 item.Category = i.Category;
                 item.PackSize = i.PackSize;
-                if (i.Notes != null) {
+                if (i.Notes != null)
+                {
                     item.Notes = i.Notes;
                 }
                 item.Label = i.Label;
@@ -131,14 +145,11 @@ namespace KeithLink.Svc.Core.Extensions {
                 item.CasePrice = i.CasePrice.ToDouble().Value;
                 item.PackagePrice = i.PackagePrice.ToDouble().Value;
 
-                int pack = 0;
-                int.TryParse(i.Pack, out pack);
-
                 item.ExtPrice = PricingHelper.GetPrice((int)i.Quantity, i.CasePriceNumeric, i.PackagePriceNumeric,
                                                        (i.Each ?? false), i.CatchWeight, i.AverageWeight,
-                                                       pack);
+                                                       i.Pack.ToInt(1));
 
-                items.Add( item );
+                items.Add(item);
             }
 
             return items;

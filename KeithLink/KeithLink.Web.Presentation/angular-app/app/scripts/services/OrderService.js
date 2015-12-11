@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('OrderService', ['$http', '$q', 'UtilityService', 'ExportService', 'PricingService', 'Order', 
-    function ($http, $q, UtilityService, ExportService, PricingService, Order) {
+  .factory('OrderService', ['$http', '$q', '$filter', 'UtilityService', 'ExportService', 'PricingService', 'Order', 
+    function ($http, $q, $filter, UtilityService, ExportService, PricingService, Order) {
     
     var Service = {
 
@@ -38,6 +38,10 @@ angular.module('bekApp')
           from: startDate,
           to: endDate
         }).$promise;
+      },      
+
+      getMonthTotals: function(numberOfMonths) {
+       return $http.get('/order/totalbymonth/'+ numberOfMonths);
       },
 
       /*************
@@ -92,6 +96,10 @@ angular.module('bekApp')
           var idx = Service.changeOrderHeaders.indexOf(deletedChangeOrder);
           Service.changeOrderHeaders.splice(idx, 1);
         });
+      },
+
+      filterDeletedOrderItems: function(order) {
+        return $filter('filter')(order.items , {changeorderstatus: '!deleted'}); 
       },
 
       /*************

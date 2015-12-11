@@ -46,6 +46,8 @@
         <DtsPackage FormatVersion="6">
           <Name>UNFIETLProcess_RELEASE.dtsx</Name>
           <FullPath>UNFIETLProcess_RELEASE.dtsx</FullPath>
+          <Name>ETLProcess_BETA.dtsx</Name>
+          <FullPath>ETLProcess_BETA.dtsx</FullPath>
           <References />
         </DtsPackage>
       </DTSPackages>
@@ -77,6 +79,17 @@
     </Configuration>
     <Configuration>
       <Name>Demo</Name>
+      <Options>
+        <OutputPath>bin</OutputPath>
+        <ConnectionMappings />
+        <ConnectionProviderMappings />
+        <ConnectionSecurityMappings />
+        <DatabaseStorageLocations />
+        <ParameterConfigurationValues />
+      </Options>
+    </Configuration>
+    <Configuration>
+      <Name>Beta</Name>
       <Options>
         <OutputPath>bin</OutputPath>
         <ConnectionMappings />

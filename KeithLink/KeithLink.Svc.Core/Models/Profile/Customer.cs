@@ -100,6 +100,8 @@ namespace KeithLink.Svc.Core.Models.Profile
 		[DataMember(Name = "canmessage")]
 		public bool CanMessage { get; set; }
 
+        [DataMember(Name="canViewPricing")]
+        public bool CanViewPricing { get; set; }
     }
 
 }

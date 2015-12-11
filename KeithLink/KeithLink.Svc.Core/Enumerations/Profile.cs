@@ -10,4 +10,14 @@ namespace KeithLink.Svc.Core.Enumerations.Profile {
         NationalAccount,
         RegionalAccount
     }
+    public class SettingKeys
+    {
+        public static string PageLoadSize = "pageLoadSize";
+        public static string Sort = "sortPreferences";
+    }
+    public class DefaultSetting
+    {
+        public static string PageLoadSize = "50";
+        public static string Sort = "lis4n2nato4n2n";
+    }
 }

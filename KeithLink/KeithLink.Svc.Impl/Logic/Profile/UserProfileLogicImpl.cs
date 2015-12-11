@@ -26,8 +26,6 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.PowerMenu;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
-using KeithLink.Svc.Core.Models.PowerMenu;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.SingleSignOn;
 
@@ -40,9 +38,6 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
-
-using System.Threading.Tasks;
-
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -80,7 +75,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
                                     IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, 
                                     IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog,
-									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService, 
+									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService,
                                     ISettingsLogicImpl settingsLogic)
 		{
             _cache = profileCache;
@@ -408,7 +403,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// jwames - 10/3/2014 - documented
         /// jwames - 4/1/2015 - change AD structure
         /// </remarks>
-        public UserProfileReturn CreateGuestUserAndProfile(UserProfile actiingUser, string emailAddress, string password, string branchId) {
+        public UserProfileReturn CreateGuestUserAndProfile(UserProfile actingUser, string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
@@ -423,7 +418,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                               Configuration.RoleNameGuest
                               );
 
-            _csProfile.CreateUserProfile(actiingUser.EmailAddress,
+            _csProfile.CreateUserProfile(actingUser.EmailAddress,
 										 emailAddress,
                                          Core.Constants.AD_GUEST_FIRSTNAME,
                                          Core.Constants.AD_GUEST_LASTNAME,
@@ -596,78 +591,58 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             bool isPowerMenuCustomer = false;
             bool isPowerMenuAdmin = false;
 
-			try
-			{
-				if (isInternalUser)
-				{
-					adUser = _intAd.GetUser(csProfile.Email);
-					DirectoryEntry directoryEntry = (DirectoryEntry)adUser.GetUnderlyingObject();
-					List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Configuration.InternalUserRoles);
+            try {
+                if (isInternalUser) {
+                    adUser = _intAd.GetUser(csProfile.Email);
+                    // if the user is not found in AD return null
+                    if (adUser == null) { return null; }
 
-					userBranch = GetBranchFromOU(adUser.GetOrganizationalunit());
+                    DirectoryEntry directoryEntry = (DirectoryEntry)adUser.GetUnderlyingObject();
+                    List<string> internalUserRoles = _intAd.GetAllGroupsUserBelongsTo(adUser, Configuration.InternalUserRoles);
 
-					if (internalUserRoles.Intersect(Configuration.BekSysAdminRoles).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_SYSADMIN;
-						isPowerMenuAdmin = true;
-					}
-					else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_BRANCHIS;
-						isPowerMenuAdmin = true;
-						//userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-					}
-					else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_POWERUSER;
-						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-					}
-					else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0)
-					{
-						userRole = Constants.ROLE_NAME_MARKETING;
-						//userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
-					}
-					else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0)
-					{
-						dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
-						userRole = Constants.ROLE_NAME_DSM;
-						//userBranch = dsmRole.Substring(0, 3);
-						//dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
-						if (adUser.Description.Length == 3)
-						{
-							dsmNumber = adUser.Description.Substring(1, 2);
-						}
-						else if (adUser.Description.Length == 2)
-						{
-							dsmNumber = adUser.Description;
-						}
-					}
-					else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0)
-					{
-						dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
-						userRole = Constants.ROLE_NAME_DSR;
-						dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
-						//userBranch = dsrRole.Substring(0, 3);
-					}
-					else
-					{
-						userRole = Constants.ROLE_NAME_GUEST;
-					}
-				}
-				else
-				{
-					adUser = _extAd.GetUser(csProfile.Email);
+                    userBranch = GetBranchFromOU(adUser.GetOrganizationalunit());
 
-					if (_extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitAdmin))
-					{
-						userRole = Constants.ROLE_NAME_KBITADMIN;
-						isKbitCustomer = true;
-					}
-					else
-					{
-						userRole = GetUserRole(csProfile.Email);
-						isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
-					}
+                    if (internalUserRoles.Intersect(Configuration.BekSysAdminRoles).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_SYSADMIN;
+                        isPowerMenuAdmin = true;
+                    } else if (internalUserRoles.Intersect(Constants.MIS_ROLES).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_BRANCHIS;
+                        isPowerMenuAdmin = true;
+                        //userBranch = internalUserRoles.Intersect(Constants.MIS_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    } else if (internalUserRoles.Intersect(Constants.POWERUSER_ROLES).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_POWERUSER;
+                        //userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    } else if (internalUserRoles.Intersect(Constants.MARKETING_ROLES).Count() > 0) {
+                        userRole = Constants.ROLE_NAME_MARKETING;
+                        //userBranch = internalUserRoles.Intersect(Constants.POWERUSER_ROLES).FirstOrDefault().ToString().Substring(0, 3);
+                    } else if (internalUserRoles.Intersect(Constants.DSM_ROLES).Count() > 0) {
+                        dsmRole = internalUserRoles.Intersect(Constants.DSM_ROLES).FirstOrDefault().ToString();
+                        userRole = Constants.ROLE_NAME_DSM;
+                        //userBranch = dsmRole.Substring(0, 3);
+                        //dsmNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                        if (adUser.Description.Length == 3) {
+                            dsmNumber = adUser.Description.Substring(1, 2);
+                        } else if (adUser.Description.Length == 2) {
+                            dsmNumber = adUser.Description;
+                        }
+                    } else if (internalUserRoles.Intersect(Constants.DSR_ROLES).Count() > 0) {
+                        dsrRole = internalUserRoles.Intersect(Constants.DSR_ROLES).FirstOrDefault().ToString();
+                        userRole = Constants.ROLE_NAME_DSR;
+                        dsrNumber = StringExtensions.ToInt(adUser.Description) != null ? adUser.Description : string.Empty;
+                        //userBranch = dsrRole.Substring(0, 3);
+                    } else {
+                        userRole = Constants.ROLE_NAME_GUEST;
+                    }
+                } else {
+                    adUser = _extAd.GetUser(csProfile.Email);
+
+                    if (_extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitAdmin)) {
+                        userRole = Constants.ROLE_NAME_KBITADMIN;
+                        isKbitCustomer = true;
+                    } else {
+                        userRole = GetUserRole(csProfile.Email);
+                        isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
+                    }
 
                     userBranch = csProfile.DefaultBranch;
                     isKbitCustomer = _extAd.HasAccess(csProfile.Email, Configuration.AccessGroupKbitCustomer);
@@ -1562,7 +1537,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 4/2/2015 - change AD structure
         /// </remarks>
-		public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId)
+		public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actingUser, string emailAddress, string branchId)
 		{
             if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             string generatedPassword = GenerateTemporaryPassword(); //This generated password is no longer being sent to the user, but it's still needed to create the account in AD
@@ -1579,7 +1554,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 );
 
             _csProfile.CreateUserProfile(
-				actiingUser.EmailAddress,
+				actingUser.EmailAddress,
                 emailAddress,
                 Core.Constants.AD_GUEST_FIRSTNAME,
                 Core.Constants.AD_GUEST_LASTNAME,
@@ -1730,6 +1705,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         {
             _settingsLogic.DeleteSettings( model );
         }
+
 
         #endregion
 	}

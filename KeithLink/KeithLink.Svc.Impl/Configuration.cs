@@ -73,6 +73,7 @@ namespace KeithLink.Svc.Impl {
 
         // Mainframe Keys
         private const string KEY_MF_ADDRESS = "MfAddress";
+        private const string KEY_MF_COLLECTOR_TYPE = "EntreeCollectorType";
         private const string KEY_MF_CONFRIMATION_PORT = "MfConfirmationPort";
         private const string KEY_MF_ORDERHISTORY_PORT = "MFOrderHistoryPort";
         private const string KEY_MF_PORT = "MfPort";
@@ -140,6 +141,7 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_URL_WEBNOW = "WebNowUrl";
         private const string KEY_ENVIRONMENT_DEMO = "IsDemoEnvironment";
 		private const string KEY_ENTREE_SITE_URL = "EntreeSiteURL";
+        private const string KEY_CUTOFFTIME_BILLPAY = "BillPayCutOffTime";
 
 		//Email
 		private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
@@ -383,6 +385,18 @@ namespace KeithLink.Svc.Impl {
             get { return GetValue(KEY_BASE_CATALOG, string.Empty); }
         }
 
+        public static TimeSpan BillPayCutOffTime {
+            get {
+                TimeSpan retVal = new TimeSpan();
+
+                if (!TimeSpan.TryParse(GetValue(KEY_CUTOFFTIME_BILLPAY, string.Empty), out retVal)) {
+                    retVal = new TimeSpan(14, 0, 0);
+                }
+
+                return retVal;
+            }
+        }
+
         public static string BranchContactEmail(string branchId) {
             return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
 
@@ -536,9 +550,9 @@ namespace KeithLink.Svc.Impl {
             }
         }
 
-        public static string MainframeIPAddress {
+        public static string MainframeCollectorType {
             get {
-                return GetValue(KEY_MF_ADDRESS, "192.168.20.12");
+                return GetValue(KEY_MF_COLLECTOR_TYPE, "B");
             }
         }
 
@@ -563,6 +577,12 @@ namespace KeithLink.Svc.Impl {
         public static string MainframeHistoryTransactionId {
             get {
                 return GetValue(KEY_MF_TRANS_HISTORY, string.Empty);
+            }
+        }
+
+        public static string MainframeIPAddress {
+            get {
+                return GetValue(KEY_MF_ADDRESS, "192.168.20.12");
             }
         }
 

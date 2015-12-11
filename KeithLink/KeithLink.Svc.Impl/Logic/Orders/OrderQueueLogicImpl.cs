@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         private void SendHeaderRecordToHost(OrderHeader header) {
-            _mfConnection.Send(header.ToMainframeFormat());
+            _mfConnection.Send(header.ToMainframeFormat(Configuration.MainframeCollectorType));
 
             // wait for a response from the mainframe
             bool waiting = true;
@@ -136,6 +136,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					return Configuration.RabbitMQExchangeOrdersHistory;
 				case OrderQueueLocation.Error:
 					return Configuration.RabbitMQExchangeOrdersError;
+                case OrderQueueLocation.Reprocess:
+                    return Configuration.RabbitMQExchangeOrdersReprocess;
 				default:
 					return Configuration.RabbitMQExchangeOrdersCreated;
 			}
@@ -151,6 +153,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 					return Configuration.RabbitMQQueueOrderHistory;
 				case OrderQueueLocation.Error:
 					return Configuration.RabbitMQQueueOrderError;
+                case OrderQueueLocation.Reprocess:
+                    return Configuration.RabbitMQQueueOrderReprocess;
 				default:
 					return Configuration.RabbitMQQueueOrderCreated;
 			}

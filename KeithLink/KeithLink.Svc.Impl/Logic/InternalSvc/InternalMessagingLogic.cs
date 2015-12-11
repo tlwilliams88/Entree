@@ -76,6 +76,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             unitOfWork.SaveChanges();
         }
 
+        public void MarkAllReadByUser( UserProfile user ) {
+            List<UserMessage> unreadMessages = this.userMessageRepository.ReadUnreadMessagesByUser( user ).ToList();
+
+            foreach (UserMessage u in unreadMessages) {
+                u.MessageReadUtc = DateTime.UtcNow;
+            }
+
+            unitOfWork.SaveChanges();
+        }
+
         public UserMessagingPreferenceModel ReadUserMessagingPreference(long userMessagingPreferenceId)
         {
             var currentUserMessagingPreference = userMessagingPreferenceRepository.Read(u => u.Id.Equals(userMessagingPreferenceId)).FirstOrDefault();

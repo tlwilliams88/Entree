@@ -103,6 +103,7 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="favorite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isvalid" type="xs:boolean" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="kosher" nillable="true" type="xs:string">
         <xs:annotation>

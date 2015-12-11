@@ -47,6 +47,9 @@ angular.module('bekApp')
     getPriceForItem: function(item) {
       var price = 0;
       if (item) {
+        if(item.hasPackagePrice && !item.hasCasePrice){
+          item.each = true;
+        }
         if (item.catchweight) {
           price = calculateCatchWeightPrice(item);     
         } else {
@@ -58,8 +61,8 @@ angular.module('bekApp')
 
     getSubtotalForItems: function(items) {
       var subtotal = 0;
-      angular.forEach(items, function(item, index) {
-        subtotal += Service.getPriceForItem(item);
+      angular.forEach(items, function(item, index) {    
+          subtotal += Service.getPriceForItem(item);                
       });
       return subtotal;
     },

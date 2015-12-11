@@ -124,7 +124,7 @@ angular.module('bekApp')
       template: '<div ui-view=""></div>'
     })
     .state('menu.catalog.products.list', {
-      url: ':type/:id/?brands',
+      url: ':type/:id/:dept/:deptName/?brands',
       templateUrl: 'views/searchresults.html',
       controller: 'SearchController',
       data: {
@@ -208,7 +208,7 @@ angular.module('bekApp')
 
           var listHeader = $filter('filter')(lists, {listid: listIdtoBeUsed})[0];
 
-         if(listHeader && (listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory)){
+         if(listHeader && (listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory)){
              ListService.getParamsObject(params, 'lists').then(function(storedParams){
              $stateParams.sortingParams = storedParams;
              params = storedParams;
@@ -341,11 +341,6 @@ angular.module('bekApp')
         }],
         selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
              
-          // if(!CartService.shipDates || CartService.shipDates.length === 0){
-          //   alert('An error has occurred retrieving available shipping dates. Please contact your DSR for more information.');
-          //   $state.go('menu.home');
-          // }
-
              var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
              var params = {size: pageSize, from: 0, sort: []};
 
@@ -375,7 +370,7 @@ angular.module('bekApp')
           } 
           var listHeader = $filter('filter')(lists, {listid: validListId})[0];
 
-            if(listHeader.name === 'History' || listHeader.is_contract_list || listHeader.isrecommended || listHeader.ismandatory){
+            if(listHeader.read_only || listHeader.isrecommended || listHeader.ismandatory){
               ListService.getParamsObject(params, 'addToOrder').then(function(storedParams){
                 $stateParams.sortingParams = storedParams; 
                 params = storedParams;

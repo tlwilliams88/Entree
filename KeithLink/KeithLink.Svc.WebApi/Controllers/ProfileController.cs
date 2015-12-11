@@ -1,17 +1,20 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 
+using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Enumerations.Profile;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
+using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ModelExport;
-using KeithLink.Svc.Core.Interface.Configuration;
 
 using KeithLink.Svc.WebApi.Models;
 // using KeithLink.Svc.WebApi.Attribute;
+using KeithLink.Svc.WebApi.com.benekeith.ProfileService;
 
 using System;
 using System.Collections.Generic;
@@ -35,7 +38,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IDsrAliasService _dsrAliasService;
 		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
 		private readonly IExportSettingServiceRepository _exportSettingRepository;
-        private readonly com.benekeith.ProfileService.IProfileService _profileService;
+        private readonly IProfileService _profileService;
 		
 		#endregion
 
@@ -48,7 +51,8 @@ namespace KeithLink.Svc.WebApi.Controllers
                                 IPasswordResetService passwordResetService,
                                 IDsrAliasService dsrAliasService,
                                 IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
-                                IExportSettingServiceRepository exportSettingRepository, com.benekeith.ProfileService.IProfileService profileService )
+                                IExportSettingServiceRepository exportSettingRepository,
+                                com.benekeith.ProfileService.IProfileService profileService )
 			: base(profileLogic)
 		{
 			_custRepo = customerRepo;
@@ -61,7 +65,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
 			_exportSettingRepository = exportSettingRepository;
             _profileService = profileService;
-		}
+        }
 		#endregion
 
 		#region methods
@@ -81,7 +85,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 				retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(this.AuthenticatedUser, userInfo.CustomerName, userInfo.Email, userInfo.Password,
 																			userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
 																			userInfo.Role, userInfo.BranchId);
-			}
+            }
 			catch (ApplicationException axe)
 			{
 				retVal.ErrorMessage = axe.Message;
@@ -130,7 +134,10 @@ namespace KeithLink.Svc.WebApi.Controllers
                 };
 
                 _marketingPreferencesServicesRepository.CreateMarketingPref(model);
-            } catch (ApplicationException axe) {
+                _profileService.SetDefaultApplicationSettings(guestInfo.Email);
+            }
+            catch (ApplicationException axe)
+            {
                 retVal.ErrorMessage = axe.Message;
 
                 _log.WriteErrorLog("Application exception", axe);
@@ -158,7 +165,8 @@ namespace KeithLink.Svc.WebApi.Controllers
 			try
 			{
 				returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword(this.AuthenticatedUser, guestInfo.Email, guestInfo.BranchId);
-			}
+                _profileService.SetDefaultApplicationSettings(guestInfo.Email);
+            }
 			catch (ApplicationException ex)
 			{
 				returnValue.ErrorMessage = ex.Message;
@@ -310,7 +318,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 			try
 			{
 				retVal.SuccessResponse = _profileLogic.CreateAccount(this.AuthenticatedUser, account.Name);
-			}
+            }
 			catch (ApplicationException axe)
 			{
 				retVal.ErrorMessage = axe.Message;
@@ -1081,7 +1089,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
 		}
 
-
         /// <summary>
         /// Get a list of settings for a user
         /// </summary>
@@ -1152,6 +1159,21 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 	        return returnValue;
 	    }
-	    #endregion
+
+        [HttpPost]
+        [ApiKeyedRoute("profile/customer/viewpricing")]
+        public OperationReturnModel<bool> UpdateCustomerCanViewPricing(Customer customer) {
+            OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
+
+            try {
+                _profileService.UpdateCustomerCanViewPricing(customer.CustomerId, customer.CanViewPricing);
+                retVal.SuccessResponse = true;
+            } catch {
+                retVal.SuccessResponse = false;
+            }
+
+            return retVal;
+        }
+        #endregion
 	}
 }

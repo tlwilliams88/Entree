@@ -20,12 +20,14 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IContainer container;
         private IConfirmationLogic _confirmationLogic;
         private IInternalOrderHistoryLogic _orderHistoryLogic;
-        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _notificationQueueConsumer;
+        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _externalNotificationQueueConsumer;
+        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _internalNotificationQueueConsumer;
         private IEventLogRepository _log;
 
         private ILifetimeScope confirmationScope;
         private ILifetimeScope orderHistoryScope;
-        private ILifetimeScope notificationScope;
+        private ILifetimeScope externalNotificationScope;
+        private ILifetimeScope internalNotificationScope;
         #endregion
 
         #region ctor
@@ -43,27 +45,10 @@ namespace KeithLink.Svc.Windows.QueueService {
             _confirmationLogic.ListenForQueueMessages();
         }
 
-        private void InitializeNotificationsThread() {
-            notificationScope = container.BeginLifetimeScope();
-
-            _notificationQueueConsumer = notificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
-            _notificationQueueConsumer.ListenForNotificationMessagesOnQueue();
-        }
-
         private void InitializeOrderUpdateThread() {
             orderHistoryScope = container.BeginLifetimeScope();
             _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
             _orderHistoryLogic.ListenForQueueMessages();
-        }
-
-        protected override void OnStart(string[] args) {
-            _log = container.Resolve<IEventLogRepository>();
-            _log.WriteInformationLog("Service starting");
-
-
-            InitializeNotificationsThread();
-            InitializeConfirmationMoverThread();
-            InitializeOrderUpdateThread();
         }
 
         protected override void OnStop() {
@@ -89,13 +74,48 @@ namespace KeithLink.Svc.Windows.QueueService {
                 orderHistoryScope.Dispose();
         }
 
-        private void TerminateNotificationsThread() {
-            if (_notificationQueueConsumer != null)
-                _notificationQueueConsumer.Stop();
+        private void InitializeConfirmationMoverThread()
+        {
+            confirmationScope = container.BeginLifetimeScope();
 
-            if (notificationScope != null)
-                notificationScope.Dispose();
+            _confirmationLogic = confirmationScope.Resolve<IConfirmationLogic>();
+            _confirmationLogic.ListenForQueueMessages();
+        }
+
+        private void InitializeNotificationsThread()
+        {
+            externalNotificationScope = container.BeginLifetimeScope();
+
+            _externalNotificationQueueConsumer = externalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _externalNotificationQueueConsumer.ListenForExternalNotificationMessagesOnQueue();
+
+            internalNotificationScope = container.BeginLifetimeScope();
+            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _internalNotificationQueueConsumer.ListenForInternalNotificationMessagesOnQueue();
+        }
+
+        private void InitializeOrderUpdateThread()
+        {
+            orderHistoryScope = container.BeginLifetimeScope();
+            _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
+            _orderHistoryLogic.ListenForQueueMessages();
+        }
+
+        private void TerminateNotificationsThread()
+        {
+            if (_externalNotificationQueueConsumer != null)
+                _externalNotificationQueueConsumer.Stop();
+
+            if (externalNotificationScope != null)
+                externalNotificationScope.Dispose();
+
+            if (_internalNotificationQueueConsumer != null)
+                _internalNotificationQueueConsumer.Stop();
+
+            if (internalNotificationScope != null)
+                internalNotificationScope.Dispose();
         }
         #endregion
+
     }
 }

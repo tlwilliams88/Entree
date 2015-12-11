@@ -37,6 +37,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 	public class InternalOnlinePaymentLogicImpl: IOnlinePaymentsLogic {
@@ -221,15 +222,49 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 					var payment = _paymentTransactionRepository.ReadAll().Where(p => p.Division.Equals(DivisionHelper.GetDivisionFromBranchId(invoice.BranchId)) && p.CustomerNumber.Equals(invoice.CustomerNumber) && p.InvoiceNumber.Equals(invoice.InvoiceNumber)).FirstOrDefault();
 
 					if (payment != null) {
-						invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault());
+						invoice.PendingTransaction = payment.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(invoice.CustomerNumber)).FirstOrDefault(), 
+                                                                                                                            Configuration.BillPayCutOffTime);
 					}
 				}
 
-				var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
+                //Get transactions
+                var transactions = _invoiceRepo.GetInvoiceTransactoin(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, invoice.InvoiceNumber);
+                invoice.InvoiceAmount = transactions
+                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_INITIALINVOICE)
+                    .Select(x => x.AmountDue).FirstOrDefault();
+
+                if (transactions
+                    .Where(x => x.InvoiceType == KeithLink.Svc.Core.Constants.INVOICETRANSACTIONTYPE_CREDITMEMO)
+                    .Count() > 0)
+                {
+                    invoice.HasCreditMemos = true;
+                }
+                else
+                {
+                    invoice.HasCreditMemos = false;
+                }
+
+                var orderHistory = _orderHistoryRepo.ReadForInvoice(invoice.BranchId, invoice.InvoiceNumber).FirstOrDefault();
 				if (orderHistory != null){
 					invoice.PONumber = orderHistory.PONumber;
 				}
 			}
+
+            if ((paging != null) && (paging.Filter != null) && (paging.Filter.Filters != null)
+                && (paging.Filter.Filters.Count > 0) 
+                && (paging.Filter.Filters.Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).Count() > 0))
+            {
+                var filter = paging.Filter.Filters
+                    .Where(f => f.Field == Constants.INVOICEREQUESTFILTER_CREDITMEMO_FIELDKEY).FirstOrDefault();
+                if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUECMONLY, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos).ToList();
+                }
+                else if (filter.Value.Equals(Constants.INVOICEREQUESTFILTER_CREDITMEMO_VALUENOTCM, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    pagedInvoices.Results = pagedInvoices.Results.Where(i => i.HasCreditMemos == false).ToList();
+                }
+            }
 			
             return new InvoiceHeaderReturnModel() {
                 HasPayableInvoices = customers.Any(i => i.KPayCustomer) && kpayInvoices.Count > 0,
@@ -340,7 +375,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             var transactions = _paymentTransactionRepository.ReadAll().AsQueryable().Filter(customerFilter, null);
 
-            var transactionResults = transactions.ToList().Select(t => t.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(t.CustomerNumber)).First())).AsQueryable().GetPage(paging);
+            var transactionResults = transactions.ToList()
+                                                                 .Select(t => t.ToPaymentTransactionModel(customers.Where(c => c.CustomerNumber.Equals(t.CustomerNumber)).First(), 
+                                                                                                                                Configuration.BillPayCutOffTime
+                                                                                                                                )
+                                                                 )
+                                                                 .AsQueryable()
+                                                                 .GetPage(paging);
 
             return transactionResults;
         }
@@ -350,7 +391,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             var transaction = _paymentTransactionRepository.ReadAllByCustomer(customer.CustomerId, divisionId);
 
-            var transactionModels = transaction.Select(t => t.ToPaymentTransactionModel(currentCustomer));
+            var transactionModels = transaction.Select(t => t.ToPaymentTransactionModel(currentCustomer, Configuration.BillPayCutOffTime));
 
             var retVal = transactionModels.AsQueryable().GetPage(paging);
 

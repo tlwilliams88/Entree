@@ -17,7 +17,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[Description("Item")]
 		public string ItemNumber { get; set; }
 
-		[DataMember(Name = "description", EmitDefaultValue = false)]
+        [DataMember(Name = "isvalid")]
+        public bool IsValid { get; set; }
+
+        [DataMember(Name = "description", EmitDefaultValue = false)]
 		public string Description { get; set; }
 
 		[DataMember(Name = "nonstock", EmitDefaultValue = false)]

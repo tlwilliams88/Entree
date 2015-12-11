@@ -56,6 +56,10 @@ namespace KeithLink.Svc.InternalSvc {
             return _historyLogic.GetOrderHeaderInDateRange(customerInfo, startDate, endDate);
         }
 
+        public OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths ) {
+            return _historyLogic.GetOrderTotalByMonth( customerInfo, numberOfMonths );
+        }
+
 		public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId)
 		{
 			return _orderLogic.GetUserActiveCart(catalogInfo, userId);

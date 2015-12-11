@@ -89,6 +89,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[Description("# Shipped")]
         public int QantityShipped { get; set; }
 
+        [DataMember(Name = "isoutofstock")]
+        public bool IsOutOfStock { get; set; }
+
         [DataMember(Name = "status")]
         public string Status { 
             get {

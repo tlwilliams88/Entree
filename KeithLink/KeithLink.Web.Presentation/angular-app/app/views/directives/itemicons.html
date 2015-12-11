@@ -1,17 +1,24 @@
-<!-- Specialty Catalog -->
 <span style="white-space:nowrap;">
+
+<!-- Specialty Catalog -->
 <a ng-if="::item.is_specialty_catalog === true">
   <span tooltip="This is a specialty catalog item. This product will not ship immediately." class="text-regular icon-exclaimation-splat"></span>
 </a>
     
 <!-- History -->
 <a ng-if="::item.inhistory === true">
-  <span tooltip="Previously ordered" class="text-regular icon-history"></span>
+<span tooltip="Previously ordered" class="text-regular icon-history"></span>
+</a>
+
+<!-- Note -->
+<a ng-if="::item.notes">
+<span tooltip="{{item.notes}}" class="icon-docs text-regular"></span> 
 </a>
 
 <!-- Replacement Item -->
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replacementitem })" ng-if="::item.replacementitem > 0">
-  <span tooltip="Item is being replaced by item # {{item.replacementitem}}" class="text-red icon-cycle"></span>
+<span tooltip="Item is being replaced by item # {{item.replacementitem}}" class="text-red icon-cycle"></span>
+
 </a>
 <a ui-sref="menu.catalog.products.details({ itemNumber: item.replaceditem })" ng-if="::item.replaceditem > 0">
   <span tooltip="Item is replacing item # {{item.replaceditem}}" class="text-green icon-cycle"></span>

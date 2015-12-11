@@ -47,11 +47,12 @@ angular.module('bekApp')
         });
       },
 
-      printOrder: function(listId, cartId, landscape, showparvalues, options) {
+      printOrder: function(listId, cartId, landscape, showparvalues, options, shownotes) {
 
           var printparams = {
             landscape: landscape,
             showparvalues: showparvalues,
+            shownotes: shownotes,
             paging: options
           };
 
@@ -97,7 +98,7 @@ angular.module('bekApp')
     
         if (!items) { // if null
           newCart.items = [];
-        } else if (Array.isArray(items)) { // if multiple items
+        } else if (Array.isArray(items))  { // if multiple items
           newCart.items = items;
         } else if (typeof items === 'object') { // if one item
           newCart.items = [items];
@@ -122,7 +123,9 @@ angular.module('bekApp')
         if (!newCart.requestedshipdate && Service.shipDates.length > 0) {
           newCart.requestedshipdate = Service.shipDates[0].shipdate;
         }
-        newCart.subtotal = PricingService.getSubtotalForItems(newCart.items);
+        if (!newCart.subtotal) {
+          newCart.subtotal = PricingService.getSubtotalForItems(newCart.items);
+        }
 
         return newCart;
       },

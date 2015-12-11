@@ -160,6 +160,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() {
                     ItemNumber = (string)newItem.ProductId,
                     ItemDescription = newItem.DisplayName,
+                    OriginalStatus = (string)origItem["MainFrameStatus"],
                     SubstitutedItemNumber = newItem["SubstitutedItemNumber"] == null ? string.Empty : (string)newItem["SubstitutedItemNumber"],
                     QuantityOrdered = newItem["QuantityOrdered"] == null ? (int)newItem.Quantity : (int)newItem["QuantityOrdered"],
                     QuantityShipped = newItem["QuantityShipped"] == null ? 0 : (int)newItem["QuantityShipped"],
@@ -170,12 +171,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             return orderChange;
         }
 
-        /// <summary>
-        /// Deserialize the confirmation
-        /// </summary>
-        /// <param name="rawConfirmation"></param>
-        /// <returns></returns>
-       
         private static PurchaseOrder GetCsPurchaseOrderByNumber(string poNum) {
             System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
             SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
@@ -463,8 +458,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             foreach(LineItem orderFormLineItem in lineItems){
                 bool brokenCase = (bool)orderFormLineItem["Each"];
 
-                ConfirmationDetail detail = confirmation.Detail.Where(x => x.ItemNumber == orderFormLineItem.ProductId &&
-                                                                                                     x.BrokenCase.Equals("y", StringComparison.InvariantCultureIgnoreCase) == brokenCase).FirstOrDefault();
+                ConfirmationDetail detail = confirmation.Detail.Where(x => (x.ItemNumber == orderFormLineItem.ProductId ||
+                                                                            x.ConfirmationMessage.EndsWith(orderFormLineItem.ProductId)) &&
+                                                                           x.BrokenCase.Equals("y", StringComparison.InvariantCultureIgnoreCase) == brokenCase).FirstOrDefault();
+
                 if (detail == null) {
                     // this adds the orderFormLineItem by reference and the ProcessMissingItems method updates the item and ultimately updates the original entry in the array
                     missingLineItems.Add(orderFormLineItem);

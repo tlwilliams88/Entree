@@ -39,9 +39,9 @@ angular
 .config(['$compileProvider', '$tooltipProvider', '$httpProvider', '$logProvider', 'localStorageServiceProvider', 'cfpLoadingBarProvider', 'ENV', 'blockUIConfig', 'googleAnalyticsCordovaProvider',
   function($compileProvider, $tooltipProvider, $httpProvider, $logProvider, localStorageServiceProvider, cfpLoadingBarProvider, ENV, blockUIConfig, googleAnalyticsCordovaProvider) {
  
-  // googleAnalyticsCordovaProvider.trackingId = 'UA-62498504-2';
-  // googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
-  // googleAnalyticsCordovaProvider.debug = true; // default: false
+  googleAnalyticsCordovaProvider.trackingId = ENV.googleAnalytics;
+  googleAnalyticsCordovaProvider.period = 20; // default: 10 (in seconds)
+  googleAnalyticsCordovaProvider.debug = true; // default: false
 
   // configure loading bar
   cfpLoadingBarProvider.includeSpinner = false;
@@ -59,8 +59,9 @@ angular
   // group multiple aysnc methods together to only run through one digest cycle
   $httpProvider.useApplyAsync(true);
  
-  $compileProvider.debugInfoEnabled(false);
- 
+  // Enable Angular debug information for everything but prod and QA
+  $compileProvider.debugInfoEnabled(ENV.enableDebugInfo);
+
   // fix for ngAnimate and ui-bootstrap tooltips
   $tooltipProvider.options({animation: false});
 
@@ -69,9 +70,9 @@ angular
       return config.data.message;
     } else if (config.data && typeof config.data === 'string' && config.data.indexOf('message')) { // authen
       return config.data.substr(config.data.indexOf('message')+8);
-    } else if (config.url === '/invoice/payment' && config.method === 'POST') {
+    } else if (config.url === '/invoice/payment' && config.method === 'POST') { // submit payments
       return 'Submitting payments...';
-    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) {
+    } else if (config.method === 'PUT' && config.url.indexOf('/active') === -1) { // show overlay for all PUT requests except for active cart 
       return 'Saving...';
     } else if (config.method === 'DELETE') {
       return 'Deleting...';
@@ -141,7 +142,7 @@ angular
 
     event.preventDefault();
 
-    // Validate teh state the user is trying to access
+    // Validate the state the user is trying to access
     
     if (AccessService.isLoggedIn()) {
       $log.debug('user logged in');
@@ -154,6 +155,7 @@ angular
 
     } else { // no token, no profile
       if (isStateRestricted(toState.data)) {
+        AccessService.clearLocalStorage();
         $log.debug('user NOT logged in, redirecting to register page');
         $state.go('register');
       } else {
@@ -171,8 +173,25 @@ angular
 
     $log.debug('state change success');
 
+    // Pull Mandatory notifications for header bar
+       var notificationParams = {     
+    size: 50,
+    from: 0,
+        filter: {
+        field: 'mandatory',
+        value: 'true',
+        filter:[
+        {
+        field: 'messageread',
+        value: 'null'
+        }
+        ]
+      }
+    };
+
     // updates unread message count in header bar
     if (AccessService.isOrderEntryCustomer()) {
+      NotificationService.getMessages(notificationParams);
       NotificationService.getUnreadMessageCount();
     }
  
