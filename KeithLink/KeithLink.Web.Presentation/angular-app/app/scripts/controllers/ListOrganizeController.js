@@ -16,7 +16,7 @@ angular.module('bekApp')
   function initItemPositions() {
     $scope.list.items.forEach(function(item, index){
       //index 0 is assigned to the dummy row used for drag-to-reorder functionality
-      item.position = index;
+      item.position = item.editPosition = index;
     })
   };
 
@@ -36,7 +36,8 @@ angular.module('bekApp')
   initItemPositions();
   function updateItemPositions(listItemId, oldPosition, newPosition) {
     var isMovingUp = oldPosition > newPosition;
-    $scope.list.items.forEach(function(item, index) {
+    if($filter('filter')($scope.list.items, {position: newPosition}).length > 1){
+          $scope.list.items.forEach(function(item, index) {
       if (item.listitemid !== listItemId) {
         if (isMovingUp) {
 
@@ -52,6 +53,8 @@ angular.module('bekApp')
         }
       }
     });
+    }
+
   }
 
   $scope.stopReorder = function (e, ui) {
@@ -79,6 +82,16 @@ angular.module('bekApp')
 
     updateItemPositions(listItemId, oldPosition, newPosition);
   };
+
+  $scope.deleteItem = function(deletedItem){ 
+    deletedItem.isdeleted = true;
+    $scope.list.items.forEach(function(item){
+      if(item.position && item.position > deletedItem.position){
+        item.position--;
+        item.editPosition = item.position;
+      }
+    })
+  }
 
   $scope.changePosition = function(items, movedItem, removeNullValue) {
     if(movedItem.position === '0' || !movedItem.position){
@@ -114,7 +127,7 @@ angular.module('bekApp')
    }
 
     $scope.list.items.forEach(function(item, index) {
-      item.editPosition = item.position = index ;     
+      item.editPosition = item.position = index;     
     });
 
     $scope.organizeListForm.$setDirty();
@@ -151,7 +164,6 @@ angular.module('bekApp')
 
     //   $scope.list.items = orderedItems;
     // //   list.items = orderedItems;
-
       ListService.updateList(list, true).then(function(updatedList) {
         $scope.organizeListForm.$setPristine();
         setList(updatedList);
