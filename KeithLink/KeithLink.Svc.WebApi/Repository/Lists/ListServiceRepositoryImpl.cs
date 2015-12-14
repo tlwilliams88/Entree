@@ -290,23 +290,27 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
         private void GatherInfoAboutItems(long listId, PrintListModel options, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
         {
             ListModel listModel = ReadList(userProfile, userContext, listId, true);
-            Dictionary<string, ListItemModel> itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
-            ItemHistory[] itemHistories = serviceClient.GetItemsHistoryList(userContext, itemHash.Keys.ToArray());
+            List<ListItemModel> itemHash = listModel.Items.ToList();
+            string[] itemkeys = itemHash.Select(i => i.ItemNumber).ToArray();
+            ItemHistory[] itemHistories = serviceClient.GetItemsHistoryList(userContext, itemkeys);
             foreach (ListItemReportModel item in printModel.Items)
             {
                 StringBuilder priceInfo = new StringBuilder();
-                var itemInfo = itemHash[item.ItemNumber];
-                if (itemInfo.PackagePrice.Equals("0.00") == false)
+                var itemInfo = itemHash.Where(i => i.ItemNumber == item.ItemNumber).FirstOrDefault();
+                if (itemInfo != null)
                 {
+                    if (itemInfo.PackagePrice.Equals("0.00") == false)
+                    {
+                        priceInfo.Append("$");
+                        priceInfo.Append(itemInfo.PackagePrice);
+                        priceInfo.Append("/Pack");
+                        priceInfo.Append(" - ");
+                    }
                     priceInfo.Append("$");
-                    priceInfo.Append(itemInfo.PackagePrice);
-                    priceInfo.Append("/Pack");
-                    priceInfo.Append(" - ");
+                    priceInfo.Append(itemInfo.CasePrice);
+                    priceInfo.Append("/Case");
+                    item.Price = priceInfo.ToString();
                 }
-                priceInfo.Append("$");
-                priceInfo.Append(itemInfo.CasePrice);
-                priceInfo.Append("/Case");
-                item.Price = priceInfo.ToString();
                 // to make the option not to sort by label not reorder the items we null the label
                 if ((options.Paging != null) && (options.Paging.Sort != null) && (options.Paging.Sort.Count > 0) &&
                     (options.Paging.Sort[0].Field.Equals("label", StringComparison.CurrentCultureIgnoreCase)))
