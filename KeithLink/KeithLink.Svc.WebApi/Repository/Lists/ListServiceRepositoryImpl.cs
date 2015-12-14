@@ -1,9 +1,11 @@
 ﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Paging;
@@ -18,7 +20,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using KeithLink.Svc.Core.Models.Customers.EF;
 
 namespace KeithLink.Svc.WebApi.Repository.Lists
 {
@@ -27,13 +28,15 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
         #region attributes
         private com.benekeith.ListService.IListServcie serviceClient;
         protected IUserProfileLogic _profileLogic;
+        private IEventLogRepository _log;
         #endregion
 
         #region ctor
-        public ListServiceRepositoryImpl(com.benekeith.ListService.IListServcie serviceClient, IUserProfileLogic UserProfileLogic)
+        public ListServiceRepositoryImpl(com.benekeith.ListService.IListServcie serviceClient, IUserProfileLogic UserProfileLogic, IEventLogRepository log)
         {
             this.serviceClient = serviceClient;
             _profileLogic = UserProfileLogic;
+            _log = log;
         }
         #endregion
 
@@ -228,7 +231,10 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
             string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
             Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
             // HACK for dynamically changing column widths doesn't work in run-time reportviewer.  choosing from multiple reports.
-            Stream rdlcStream = assembly.GetManifestResourceStream(ChooseReportFromOptions(options, userContext));
+            string rptName = ChooseReportFromOptions(options, userContext);
+            _log.WriteInformationLog("ListServiceRepositoryImpl.BuildReportFromList rptName=" + rptName);
+            Stream rdlcStream = assembly.GetManifestResourceStream(rptName);
+            _log.WriteInformationLog("ListServiceRepositoryImpl.BuildReportFromList rdlcStream=" + rdlcStream.ToString());
             rv.LocalReport.LoadReportDefinition(rdlcStream);
             rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, userContext));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile);
