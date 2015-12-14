@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Core.Extensions
                     Note = i.Notes,
                     Each = i.Each ?? false,
                     Quantity = i.Quantity
-                }).ToArray()
+                }).OrderBy(l => l.Position).ToArray()
             };
         }
 

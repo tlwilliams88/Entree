@@ -951,14 +951,30 @@
     <EmbeddedResource Include="Reports\CartReport.rdlc" />
     <EmbeddedResource Include="Reports\CartReport_Landscape.rdlc" />
     <EmbeddedResource Include="Reports\ListReport.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_YesParYesPriceYesNotes.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_YesParYesPriceNoNotes.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_YesParNoPriceYesNotes.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_YesParNoPriceNoNotes.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_NoParYesPriceYesNotes.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_NoParYesPriceNoNotes.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_NoParNoPriceYesNotes.rdlc" />
-    <EmbeddedResource Include="Reports\ListReport_NoParNoPriceNoNotes.rdlc" />
+    <EmbeddedResource Include="Reports\ListReport_YesParYesPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_YesParYesPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_YesParNoPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_YesParNoPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_NoParYesPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_NoParYesPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_NoParNoPriceYesNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\ListReport_NoParNoPriceNoNotes.rdlc">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
     <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">

@@ -241,23 +241,26 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
         private string ChooseReportFromOptions(PrintListModel options, UserSelectedContext userContext)
         { // Choose different Report for different columns ; grouping doesn't change column widths so no different name
             Customer customer = _profileLogic.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
-            if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
-            else if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
-            else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
-            else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
-            else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
-                return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
-            return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST;
+            if (customer != null)
+            {
+                if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceYesNotes;
+                else if ((options.ShowParValues) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParYesPriceNoNotes;
+                else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceYesNotes;
+                else if ((options.ShowParValues) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_YesParNoPriceNoNotes;
+                else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceYesNotes;
+                else if ((options.ShowParValues == false) & (customer.CanViewPricing) & (options.ShowNotes == false))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParYesPriceNoNotes;
+                else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceYesNotes;
+                else if ((options.ShowParValues == false) & (customer.CanViewPricing == false) & (options.ShowNotes == false))
+                    return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
+            }
+            return KeithLink.Svc.Core.Constants.REPORT_PRINTLIST_NoParNoPriceNoNotes;
         }
 
         private ReportParameter[] MakeReportOptionsForPrintListReport(PrintListModel options, string listName, UserSelectedContext userContext)
