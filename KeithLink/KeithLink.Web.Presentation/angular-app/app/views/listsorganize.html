@@ -77,7 +77,7 @@
           </th>
           <th></th> 
           <th></th> 
-          <th></th>
+          <th ng-if="list.permissions.canDeleteItems" ></th>
         </tr>
       </thead>
       <tbody ng-repeat="item in list.items | filter:{listitemid: '!!', isdeleted:'!true'} " class="item_{{item.listitemid}}">
