@@ -18,42 +18,42 @@ VALUES ('OrderConfirmation', 'Ben E. Keith: {OrderStatus} for {CustomerNumber}-{
 INSERT INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
 VALUES ('OrderConfirmationItems', '', 1, '<table style="width: 100%;">
 	<tr style="border-bottom:1px solid gray;">
-		<th style="text-align:right;">Item # </th>
-		<th style="text-align:right;">Confirmed Items </th>
-		<th style="text-align:right;">Ordered </th>
-		<th style="text-align:right;">Price </th>
-		<th style="text-align:right;">Status</th>
+		<th style="text-align:left;">Item # </th>
+		<th style="text-align:left;">Confirmed Items </th>
+		<th style="text-align:left;">Ordered </th>
+		<th style="text-align:left;">Price </th>
+		<th style="text-align:left;">Status</th>
 	</tr>
 {OrderConfirmationItemDetail}
 </table>', '2015-11-06', '2015-11-06', 0)
 INSERT INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
 VALUES ('OrderConfirmationItemDetail', '', 1, '    <tr>
-		<td style="text-align:right;">{ProductNumber} </td>
-		<td style="text-align:right;">{ProductDescription} </td>
-		<td style="text-align:right;">{Quantity} </td>
-		<td style="text-align:right;">{Price} </td>
-		<td style="text-align:right;">{Status}</td>
+		<td style="text-align:left;">{ProductNumber} </td>
+		<td style="text-align:left;">{ProductDescription} </td>
+		<td style="text-align:left;">{Quantity} </td>
+		<td style="text-align:left;">{Price} </td>
+		<td style="text-align:left;">{Status}</td>
 	</tr>', '2015-11-06', '2015-11-06', 0)
 INSERT INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
 VALUES ('OrderConfirmationItemsOOS', '', 1, '<table style="width: 100%;">
 	<tr style="border-bottom:1px solid maroon;">
-		<th style="text-align:right;color:maroon;">Item # </th>
-		<th style="text-align:right;color:maroon;">Exception Items </th>
-		<th style="text-align:right;color:maroon;">Ordered </th>
-		<th style="text-align:right;color:maroon;">Confirmed </th>
-		<th style="text-align:right;color:maroon;">Price </th>
-		<th style="color:maroon;">Status</th>
+		<th style="text-align:left;color:maroon;">Item # </th>
+		<th style="text-align:left;color:maroon;">Exception Items </th>
+		<th style="text-align:left;color:maroon;">Ordered </th>
+		<th style="text-align:left;color:maroon;">Confirmed </th>
+		<th style="text-align:left;color:maroon;">Price </th>
+		<th style="text-align:left;color:maroon;">Status</th>
 	</tr>
 {OrderConfirmationItemOOSDetail}
 </table><p></p>', '2015-11-06', '2015-11-06', 0)
 INSERT INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
 VALUES ('OrderConfirmationItemOOSDetail', '', 1, '    <tr>
-		<td style="text-align:right;color:maroon;">{ProductNumber} </td>
-		<td style="text-align:right;color:maroon;">{ProductDescription} </td>
-		<td style="text-align:right;color:maroon;">{Quantity} </td>
-		<td style="text-align:right;color:maroon;">{Sent} </td>
-		<td style="text-align:right;color:maroon;">{Price} </td>
-		<td style="text-align:right;color:maroon;">{Status}</td>
+		<td style="text-align:left;color:maroon;">{ProductNumber} </td>
+		<td style="text-align:left;color:maroon;">{ProductDescription} </td>
+		<td style="text-align:left;color:maroon;">{Quantity} </td>
+		<td style="text-align:left;color:maroon;">{Sent} </td>
+		<td style="text-align:left;color:maroon;">{Price} </td>
+		<td style="text-align:left;color:maroon;">{Status}</td>
 	</tr>', '2015-11-06', '2015-11-06', 0)
 INSERT INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
 VALUES ('OrderSuccessful', '', 1, 'Order updated from status: {OriginalStatus} to {CurrentStatus}', '2015-11-06', '2015-11-06', 0)
