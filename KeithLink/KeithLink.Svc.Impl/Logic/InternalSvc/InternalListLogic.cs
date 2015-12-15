@@ -384,7 +384,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
         {
             var list = listRepository.ReadListForCustomer(catalogInfo, true).Where(l => l.Type == ListType.Notes).FirstOrDefault();
-            if (list == null)
+            if (list != null)
             {
                 listItemRepository.Delete(list.Items.Where(i => i.ItemNumber.Equals(ItemNumber)).FirstOrDefault());
                 unitOfWork.SaveChanges();
