@@ -108,7 +108,6 @@
                       </Style>
                     </Textbox>
                     <ColSpan>18</ColSpan>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
@@ -917,7 +916,7 @@
       </Border>
     </Style>
   </Body>
-  <Width>11.20537in</Width>
+  <Width>10.54912in</Width>
   <Page>
     <PageHeader>
       <Height>0.86333in</Height>

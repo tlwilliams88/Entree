@@ -885,11 +885,7 @@
             <TablixMember />
             <TablixMember />
             <TablixMember />
-            <TablixMember>
-              <Visibility>
-                <Hidden>=Microsoft.VisualBasic.Interaction.IIf(Parameters!ShowPrices.Value, False, True)</Hidden>
-              </Visibility>
-            </TablixMember>
+            <TablixMember />
             <TablixMember />
             <TablixMember />
             <TablixMember />
