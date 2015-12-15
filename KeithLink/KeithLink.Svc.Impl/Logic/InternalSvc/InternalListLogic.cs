@@ -498,20 +498,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				return;
 			int totalProcessed = 0;
 			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
- 
-            var catalogs = list.Items.Select(x => x.CatalogId).Distinct().ToList();
-            foreach (var catalog in catalogs)
+
+            while (totalProcessed < list.Items.Count)
             {
-                while (totalProcessed < list.Items.Count)
-                {
-                    var thisCatalogsItems = list.Items.Where(x => x.CatalogId.Equals(catalog)).ToList();
-                    var batch = thisCatalogsItems.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
+                var batch = list.Items.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
 
-                    var tempProducts = catalogLogic.GetProductsByIds(catalog, batch);
+                var tempProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
-                    products.Products.AddRange(tempProducts.Products);
-                    totalProcessed += 50;
-                }
+                products.Products.AddRange(tempProducts.Products);
+                totalProcessed += 50;
             }
 			
 
@@ -531,7 +526,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
                     listItem.Description = prod.Description;
                     listItem.Brand = prod.BrandExtendedDescription;
-                    listItem.StorageTemp = prod.Nutritional.StorageTemp;
                     listItem.ReplacedItem = prod.ReplacedItem;
                     listItem.ReplacementItem = prod.ReplacementItem;
                     listItem.NonStock = prod.NonStock;

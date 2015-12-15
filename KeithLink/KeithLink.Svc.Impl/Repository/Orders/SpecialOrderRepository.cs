@@ -11,6 +11,7 @@ using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Linq;
+using System.Data.SqlClient;
 
 
 namespace KeithLink.Svc.Impl.Repository.Orders
@@ -43,9 +44,10 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 
 		public void Create(Core.Models.Orders.OrderFile header)
 		{
+
 			var query = _specialOrderDbContext.RequestHeaderIds
-                .SqlQuery("dbo.spGetNextRequestHeaderId");
-            long idToUse = query.FirstAsync().Result.CurrentId;
+                .SqlQuery("dbo.spGetNextRequestHeaderId @branchId", new SqlParameter("branchId", header.Header.Branch));
+            string idToUse = query.FirstAsync().Result.CurrentId;
 
 			// next, call create after converting OrderFile to RequestHeader
             var requestHeader = new RequestHeader()

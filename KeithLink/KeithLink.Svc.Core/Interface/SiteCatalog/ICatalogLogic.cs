@@ -31,7 +31,8 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 
         //Catalog Methods
         string GetBranchId(string bekBranchId, string catalogType);
-        
+
+        List<String> GetExternalBranchIds(string bekBranchId);
 
         bool IsSpecialtyCatalog(string catalogType, string branchId = null);
         

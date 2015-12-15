@@ -418,7 +418,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     item.Description = prod.Description;
                     item.Pack = prod.Pack;
                     item.Size = prod.Size;
-                    item.StorageTemp = prod.Nutritional.StorageTemp;
                     item.Brand = prod.Brand;
                     item.BrandExtendedDescription = prod.BrandExtendedDescription;
                     item.ReplacedItem = prod.ReplacedItem;
@@ -439,6 +438,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     item.AverageWeight = prod.AverageWeight;
                     if (prod.Nutritional != null)
                     {
+                        item.StorageTemp = prod.Nutritional.StorageTemp;
                         item.Nutritional = new Nutritional()
                         {
                             CountryOfOrigin = prod.Nutritional.CountryOfOrigin,

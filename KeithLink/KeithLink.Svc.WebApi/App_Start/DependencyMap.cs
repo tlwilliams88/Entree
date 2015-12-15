@@ -127,6 +127,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
             builder.RegisterType<ImagingRepositoryImpl>().As<IImagingRepository>();
             builder.RegisterType<ImagingLogicImpl>().As<IImagingLogic>();
+            builder.RegisterType<Svc.Impl.Repository.Configurations.ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
             builder.RegisterType<Repository.ContentManagement.ContentManagementServiceRepositoryImpl>().As<IContentManagementServiceRepository>();
             builder.RegisterType<com.benekeith.DivisionService.DivisionServiceClient>().As<com.benekeith.DivisionService.IDivisionService>();

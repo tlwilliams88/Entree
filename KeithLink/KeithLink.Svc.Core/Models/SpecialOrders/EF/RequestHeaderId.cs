@@ -9,6 +9,6 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders.EF
 	public class RequestHeaderId
 	{
         [Key, Required]
-        public long CurrentId { get; set; }
+        public string CurrentId { get; set; }
     }
 }

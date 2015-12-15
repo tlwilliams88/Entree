@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
 				new NoCacheRepositoryImpl(),
 				new DivisionLogicImpl(new DivisionRepositoryImpl(), new NoDivisionServiceRepositoryImpl()),
                 new Impl.Repository.Orders.NoOrderServiceRepositoryImpl(),
-                new KeithLink.Svc.Impl.Repository.Configurations.NoExternalCatalogRepositoryImpl()
+                new Impl.Repository.Configurations.NoExternalCatalogRepositoryImpl() // may need to revisit
                 );
         }
         #endregion

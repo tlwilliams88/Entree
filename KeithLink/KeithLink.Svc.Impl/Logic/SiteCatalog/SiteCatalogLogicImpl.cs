@@ -36,13 +36,13 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 		protected string CACHE_GROUPNAME { get { return "Catalog"; } }
 		protected string CACHE_NAME { get { return "Catalog"; } }
 		protected string CACHE_PREFIX { get { return "Default"; } }
-        private IExternalCatalogServiceRepository _externalServiceRepository;
+        private IExternalCatalogServiceRepository _externalCatalogRepository;
         #endregion
 
         #region constructor
         public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository,
                                                  ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic,
-                                                 IOrderServiceRepository orderServiceRepository, IExternalCatalogServiceRepository externalServiceRepository)
+                                                 IOrderServiceRepository orderServiceRepository, IExternalCatalogServiceRepository externalCatalogRepository)
         {
             _catalogRepository = catalogRepository;
             _priceLogic = priceLogic;
@@ -52,7 +52,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             _catalogCacheRepository = catalogCacheRepository;
             _divisionLogic = divisionLogic;
             _orderServiceRepository = orderServiceRepository;
-            _externalServiceRepository = externalServiceRepository;
+            _externalCatalogRepository = externalCatalogRepository;
         }
         #endregion
 
@@ -281,13 +281,13 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (catalogType.Equals("UNFI"))
                 categoryName = categoryName.ToUpper();
 
-            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);
+            var newCatalog = new UserSelectedContext() { CustomerId = catalogInfo.CustomerId, BranchId = GetBranchId(catalogInfo.BranchId, catalogType) };
 
             // special handling for price sorting
             if (searchModel.SField == "caseprice")
-                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
+                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, new SearchInputModel() { Facets = searchModel.Facets, From = searchModel.From, Size = Configuration.MaxSortByPriceItemCount });
             else
-                ret = _catalogRepository.GetProductsByCategory(catalogInfo, categoryName, searchModel);
+                ret = _catalogRepository.GetProductsByCategory(newCatalog, categoryName, searchModel);
 
             AddPricingInfo(ret, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, ret, catalogInfo);
@@ -295,25 +295,38 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
-            int totalProcessed = 0;
             var products = new ProductsReturn() { Products = new List<Product>() };
 
-            while (totalProcessed < ids.Count) {
-                var tempProducts = _catalogRepository.GetProductsByIds(branch, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
+            var branches = GetExternalBranchIds(branch);
+            branches.Insert(0, branch.ToLower());
 
-                if (tempProducts != null && tempProducts.Products != null) {
-                    products.Count += tempProducts.Count;
-                    products.TotalCount += tempProducts.TotalCount;
-                    products.Products.AddRange(tempProducts.Products);
+            foreach (var catalogId in branches)
+            {
+                int totalProcessed = 0;
+                while (totalProcessed < ids.Count)
+                {
+                    var tempProducts = _catalogRepository.GetProductsByIds(catalogId, ids.Skip(totalProcessed).Take(500).Distinct().ToList());
+
+                    if (tempProducts != null && tempProducts.Products != null)
+                    {
+                        products.Count += tempProducts.Count;
+                        products.TotalCount += tempProducts.TotalCount;
+                        products.Products.AddRange(tempProducts.Products);
+                    }
+
+                    totalProcessed += 500;
                 }
 
-                totalProcessed += 500;
-            }
+                
 
-            foreach (var prod in products.Products)
-            {
-                prod.IsSpecialtyCatalog = IsSpecialtyCatalog(null, branch);
+                foreach (var prod in products.Products)
+                {
+                    prod.IsSpecialtyCatalog = IsSpecialtyCatalog(null, catalogId);
+                    prod.CatalogId = catalogId;
+                    ids.Remove(prod.ItemNumber);
+                }
             }
+            
 
             return products;
         }
@@ -383,8 +396,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             {
                 //Go get the code for this branch, hard code for now
                 //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
-                    .Where(x => catalogType.ToLower() == x.Type.ToString().ToLower()).ToList();
+                List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs().Where(x => catalogType.ToLower() == x.Type.ToString().ToLower()).ToList();
 
                 List<ExportExternalCatalog> filteredList = externalCatalog.Where(x => bekBranchId.ToLower().Equals(x.BekBranchId.Trim().ToLower())).ToList();
 
@@ -404,6 +416,15 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
+        public List<String> GetExternalBranchIds(string bekBranchId)
+        {
+            List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs().ToList();
+            var catalogRows = externalCatalog.Where(x => bekBranchId.ToLower().Equals(x.BekBranchId.ToString().ToLower())).ToList();
+            var strings = catalogRows.Select(x => x.CatalogId).ToList();
+
+            return strings;
+        }
+
         public bool IsSpecialtyCatalog(string catalogType, string branchId = null)
         {
             if (catalogType != null)
@@ -411,7 +432,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             else
             {
                 //look up branch and see if it is BEK
-                List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
+                List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs()
                     .Where(x => branchId.ToLower() == x.BekBranchId.ToString().ToLower()).ToList();
 
                 return !(externalCatalog.Count > 0);
@@ -421,7 +442,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public bool IsCatalogIdBEK(string catalogId)
         {
-            List<string> bekBranchIds = _externalServiceRepository.ReadExternalCatalogs().Select(x => x.BekBranchId).Distinct().ToList();
+            List<string> bekBranchIds = _externalCatalogRepository.ReadExternalCatalogs().Select(x => x.BekBranchId).Distinct().ToList();
 
             return bekBranchIds.Contains(catalogId.ToUpper());
         }
@@ -430,13 +451,13 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         {
             //Go get the code for this branch, hard code for now
             //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
-            List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs()
-                .Where(x => catalogId.ToLower() == x.CatalogId.ToString().ToLower()).ToList();
+            List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs()
+                .Where(x => catalogId.ToLower() == x.BekBranchId.ToString().ToLower()).ToList();
 
 
             if (externalCatalog.Count > 0)
             {
-                return externalCatalog[0].Type;
+                return externalCatalog[0].Type.ToString();
             }
             else
             {
@@ -455,8 +476,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             newSearchModel.SField = searchModel.SField;
             newSearchModel.Size = 1; //This will minimize number returned from elastic search to minimize processing for only count
 
-            List<ExportExternalCatalog> externalCatalog = _externalServiceRepository.ReadExternalCatalogs();
-            var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
+            List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs().ToList();
+            var listOfCatalogs = externalCatalog.Select(x => x.Type.ToString()).Distinct().ToList();
             listOfCatalogs.Add("BEK");
 
             var baseCatalogTypeIndex = listOfCatalogs.IndexOf(newSearchModel.CatalogType);
