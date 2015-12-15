@@ -250,6 +250,6 @@ namespace KeithLink.Svc.Core
         public const string REPORT_PRINTLIST_NoParYesPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParYesPriceYesNotes.rdlc";
         public const string REPORT_PRINTLIST_NoParYesPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParYesPriceNoNotes.rdlc";
         public const string REPORT_PRINTLIST_NoParNoPriceYesNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceYesNotes.rdlc";
-        public const string REPORT_PRINTLIST_NoParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_v11_NoParNoPriceNoNotes.rdlc";
+        public const string REPORT_PRINTLIST_NoParNoPriceNoNotes = "KeithLink.Svc.Impl.Reports.ListReport_NoParNoPriceNoNotes.rdlc";
     }
 }
