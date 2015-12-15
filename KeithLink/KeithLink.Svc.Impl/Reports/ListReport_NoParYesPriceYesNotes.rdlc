@@ -447,9 +447,14 @@
                       <rd:DefaultName>Textbox1</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>Silver</Color>
-                          <Style>Solid</Style>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
                         </Border>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                          <Width>1.5pt</Width>
+                        </RightBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -483,8 +488,8 @@
                       <rd:DefaultName>Textbox2</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>Silver</Color>
-                          <Style>Solid</Style>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -522,6 +527,22 @@
                           <Color>Silver</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <TopBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
+                        </BottomBorder>
+                        <LeftBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
+                        </LeftBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Width>1.5pt</Width>
+                        </RightBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -555,8 +576,8 @@
                       <rd:DefaultName>Textbox6</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>Silver</Color>
-                          <Style>Solid</Style>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
@@ -594,6 +615,22 @@
                           <Color>Silver</Color>
                           <Style>Solid</Style>
                         </Border>
+                        <TopBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
+                        </BottomBorder>
+                        <LeftBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
+                        </LeftBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Width>1.5pt</Width>
+                        </RightBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -601,6 +638,7 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -627,8 +665,8 @@
                       <rd:DefaultName>Textbox11</rd:DefaultName>
                       <Style>
                         <Border>
-                          <Color>Silver</Color>
-                          <Style>Solid</Style>
+                          <Color>LightGrey</Color>
+                          <Style>Dotted</Style>
                         </Border>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
