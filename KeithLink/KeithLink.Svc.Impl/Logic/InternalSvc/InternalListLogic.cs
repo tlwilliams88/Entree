@@ -471,7 +471,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             stopWatch.Start();
 
-            var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), listItems.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).Distinct().ToList());
+            var catalogList = listItems.Select(i => i.CatalogId).Distinct().ToList();
+            var prices = new PriceReturn() { Prices = new List<Price>() };
+            foreach (var catalogId in catalogList)
+            {
+                if (!catalogLogic.IsSpecialtyCatalog(null, catalogId))
+                {
+                    prices.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
+                        listItems.Where(item => item.CatalogId == catalogId).GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).Distinct().ToList())); //BEK
+                }
+                else
+                {
+                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
+                    prices.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),
+                        listItems.Where(item => item.CatalogId == catalogId).GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber, CatchWeight = i.First().CatchWeight, PackagePriceNumeric = i.First().PackagePriceNumeric, CasePriceNumeric = i.First().CasePriceNumeric, CategoryName = i.First().CategoryName }).Distinct().ToList()));
+                }
+            }
+
             stopWatch.Stop();
             var priceTime = stopWatch.ElapsedMilliseconds;
 
@@ -530,6 +546,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.ReplacementItem = prod.ReplacementItem;
                     listItem.NonStock = prod.NonStock;
                     listItem.ChildNutrition = prod.ChildNutrition;
+                    listItem.CatchWeight = prod.CatchWeight;
+                    listItem.PackagePriceNumeric = prod.PackagePriceNumeric;
+                    listItem.CasePriceNumeric = prod.CasePriceNumeric;
+                    listItem.CategoryName = prod.CategoryName;
 
                     if (prod.Nutritional != null) {
                         listItem.Nutritional = new Nutritional()

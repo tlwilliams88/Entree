@@ -452,7 +452,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             //Go get the code for this branch, hard code for now
             //filteredList= listOfThings.Where(x => x.BranchId == "FOK");
             List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs()
-                .Where(x => catalogId.ToLower() == x.BekBranchId.ToString().ToLower()).ToList();
+                .Where(x => catalogId.ToLower() == x.CatalogId.ToLower()).ToList();
 
 
             if (externalCatalog.Count > 0)
@@ -477,7 +477,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             newSearchModel.Size = 1; //This will minimize number returned from elastic search to minimize processing for only count
 
             List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs().ToList();
-            var listOfCatalogs = externalCatalog.Select(x => x.Type.ToString()).Distinct().ToList();
+            var listOfCatalogs = externalCatalog.Select(x => x.Type).Distinct().ToList();
             listOfCatalogs.Add("BEK");
 
             var baseCatalogTypeIndex = listOfCatalogs.IndexOf(newSearchModel.CatalogType);
