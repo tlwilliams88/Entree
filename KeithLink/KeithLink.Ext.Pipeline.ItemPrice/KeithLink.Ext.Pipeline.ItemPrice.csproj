@@ -122,17 +122,17 @@
     <None Include="Service References\PipelineService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PipelineService\PipelineService1.wsdl" />
-    <None Include="Service References\PipelineService\PipelineService4.xsd">
+    <None Include="Service References\PipelineService\PipelineService.wsdl" />
+    <None Include="Service References\PipelineService\PipelineService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PipelineService\PipelineService41.xsd">
+    <None Include="Service References\PipelineService\PipelineService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PipelineService\PipelineService42.xsd">
+    <None Include="Service References\PipelineService\PipelineService2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PipelineService\PipelineService43.xsd">
+    <None Include="Service References\PipelineService\PipelineService3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\PipelineService\Reference.svcmap">
@@ -141,7 +141,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PipelineService\PipelineService1.disco" />
+    <None Include="Service References\PipelineService\PipelineService.disco" />
     <Content Include="SetupInstructions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

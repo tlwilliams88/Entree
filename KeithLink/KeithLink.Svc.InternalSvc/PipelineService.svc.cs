@@ -15,14 +15,31 @@ namespace KeithLink.Svc.InternalSvc
 	public class PipelineService : IPipelineService
 	{
 		private readonly IPriceLogic priceLogic;
+        private readonly ICatalogLogic catalogLogic;
 
-		public PipelineService(IPriceLogic priceLogic)
+		public PipelineService(IPriceLogic priceLogic, ICatalogLogic catalogLogic)
 		{
 			this.priceLogic = priceLogic;
+            this.catalogLogic = catalogLogic;
 		}
 
 		public Core.Models.SiteCatalog.PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Core.Models.SiteCatalog.Product> products)
 		{
+            var catalogList = products.Select(i => i.CatalogId).Distinct().ToList();
+            var pricing = new Core.Models.SiteCatalog.PriceReturn() { Prices = new List<Core.Models.SiteCatalog.Price>() };
+            foreach (var catalogId in catalogList)
+            {
+                var tempProducts = catalogLogic.GetProductsByIds(catalogId, products.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
+                if (!catalogLogic.IsSpecialtyCatalog(null, catalogId))
+                {
+                    pricing.AddRange(priceLogic.GetPrices(catalogId, customerNumber, shipDate, tempProducts.Products)); //BEK
+                }
+                else {
+                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
+                    pricing.AddRange(priceLogic.GetNonBekItemPrices(BranchId, customerNumber, source, shipDate, tempProducts.Products));
+                }                    
+            }
+            // need to split for bek/non-bek
 			return priceLogic.GetPrices(BranchId, customerNumber, shipDate, products);
 		}
 	}
