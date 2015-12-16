@@ -477,6 +477,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -554,6 +557,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -631,6 +637,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -708,6 +717,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -785,6 +797,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -876,6 +891,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>

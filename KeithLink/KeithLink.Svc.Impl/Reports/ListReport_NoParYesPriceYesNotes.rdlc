@@ -491,6 +491,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -579,6 +582,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -638,7 +644,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -668,6 +673,9 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
