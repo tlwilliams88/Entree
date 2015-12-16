@@ -16,14 +16,16 @@ angular.module('bekApp')
   function initItemPositions() {
     $scope.list.items.forEach(function(item, index){
       //index 0 is assigned to the dummy row used for drag-to-reorder functionality
-      item.position = item.editPosition = index;
+      item.editPosition = index;
+      item.position = index;
     })
   };
 
   function setList(list) {
     $scope.list = list;    
     $scope.list.items.forEach(function(item) {
-      item.positionStarting = item.editPosition = item.position;      
+      item.editPosition = item.position;
+      item.positionStarting = item.editPosition;
     });
     $scope.list.items.unshift({ position: 0 });
 
@@ -36,19 +38,25 @@ angular.module('bekApp')
   initItemPositions();
   function updateItemPositions(listItemId, oldPosition, newPosition) {
     var isMovingUp = oldPosition > newPosition;
-    if($filter('filter')($scope.list.items, {position: newPosition}).length > 1){
+    var duplicatePositionItems = $filter('filter')($scope.list.items, function(item){ 
+      return item.position === newPosition;
+    });
+
+    if(duplicatePositionItems.length > 1){
           $scope.list.items.forEach(function(item, index) {
       if (item.listitemid !== listItemId) {
         if (isMovingUp) {
 
           // items above the new position move down
           if (item.editPosition < oldPosition && item.editPosition >= newPosition) {
-            item.editPosition = item.position = item.editPosition + 1;
+            item.position = item.editPosition + 1;
+            item.editPosition = item.position;
           }
          } else { // moving down
           // item below the new position move up
           if (item.editPosition > oldPosition && item.editPosition <= newPosition) {
-            item.editPosition = item.position = item.editPosition - 1;
+            item.position = item.editPosition - 1;
+            item.editPosition = item.position;
           }
         }
       }
@@ -127,7 +135,8 @@ angular.module('bekApp')
    }
 
     $scope.list.items.forEach(function(item, index) {
-      item.editPosition = item.position = index;     
+      item.position = index;
+      item.editPosition = item.position;
     });
 
     $scope.organizeListForm.$setDirty();
@@ -137,33 +146,12 @@ angular.module('bekApp')
   $scope.saveList = function(list) {
     if (!processingSaveList) {
       processingSaveList = true;
-
-      // // set item positions
-      // var orderedItems = orderBy(list.items, [function(item) {
-      //   return item.position;
-      // }, function(item) {
-      //   if (!item.updatedate) {
-      //     return 0;
-      //   }
-      //   var comparison = item.updatedate.getTime();
-      //   if (item.positionStarting > item.position) { // moved item up
-      //     return comparison * -1;
-      //   } else { // moved item down
-      //     return comparison;
-      //   }
-      // }], false);
-
+      
       // remove empty item that is used for ui sortable 
       if (list.items.length && !list.items[0].listitemid) {
         list.items.splice(0, 1);
       }
- 
-    //   orderedItems.forEach(function(item, index) {
-    //     item.position = index + 1;
-    //   });
 
-    //   $scope.list.items = orderedItems;
-    // //   list.items = orderedItems;
       ListService.updateList(list, true).then(function(updatedList) {
         $scope.organizeListForm.$setPristine();
         setList(updatedList);
