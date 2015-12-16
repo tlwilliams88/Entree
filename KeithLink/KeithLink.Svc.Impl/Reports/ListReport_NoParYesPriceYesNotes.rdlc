@@ -450,6 +450,16 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <TopBorder>
+                          <Style>None</Style>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <LeftBorder>
+                          <Style>None</Style>
+                        </LeftBorder>
                         <RightBorder>
                           <Color>Black</Color>
                           <Style>Solid</Style>
@@ -491,9 +501,19 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <TopBorder>
+                          <Style>None</Style>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
                         <LeftBorder>
                           <Style>None</Style>
                         </LeftBorder>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -531,16 +551,14 @@
                           <Style>Solid</Style>
                         </Border>
                         <TopBorder>
-                          <Color>LightGrey</Color>
-                          <Style>Dotted</Style>
+                          <Style>None</Style>
                         </TopBorder>
                         <BottomBorder>
                           <Color>LightGrey</Color>
-                          <Style>Dotted</Style>
+                          <Width>1pt</Width>
                         </BottomBorder>
                         <LeftBorder>
-                          <Color>LightGrey</Color>
-                          <Style>Dotted</Style>
+                          <Style>None</Style>
                         </LeftBorder>
                         <RightBorder>
                           <Color>Black</Color>
@@ -582,9 +600,19 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <TopBorder>
+                          <Style>None</Style>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
                         <LeftBorder>
                           <Style>None</Style>
                         </LeftBorder>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
@@ -622,16 +650,14 @@
                           <Style>Solid</Style>
                         </Border>
                         <TopBorder>
-                          <Color>LightGrey</Color>
-                          <Style>Dotted</Style>
+                          <Style>None</Style>
                         </TopBorder>
                         <BottomBorder>
                           <Color>LightGrey</Color>
-                          <Style>Dotted</Style>
+                          <Width>1pt</Width>
                         </BottomBorder>
                         <LeftBorder>
-                          <Color>LightGrey</Color>
-                          <Style>Dotted</Style>
+                          <Style>None</Style>
                         </LeftBorder>
                         <RightBorder>
                           <Color>Black</Color>
@@ -673,9 +699,19 @@
                           <Color>LightGrey</Color>
                           <Style>Dotted</Style>
                         </Border>
+                        <TopBorder>
+                          <Style>None</Style>
+                        </TopBorder>
+                        <BottomBorder>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
                         <LeftBorder>
                           <Style>None</Style>
                         </LeftBorder>
+                        <RightBorder>
+                          <Style>None</Style>
+                        </RightBorder>
                         <VerticalAlign>Middle</VerticalAlign>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
