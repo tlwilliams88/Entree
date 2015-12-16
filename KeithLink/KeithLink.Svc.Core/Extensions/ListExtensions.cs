@@ -102,7 +102,7 @@ namespace KeithLink.Svc.Core.Extensions
             return new ListReportModel()
             {
                 Name = list.Name,
-                Items = list.Items.Select(i => new ListItemReportModel()
+                Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemReportModel()
                     {
                         Brand = i.BrandExtendedDescription,
                         ItemNumber = i.ItemNumber,

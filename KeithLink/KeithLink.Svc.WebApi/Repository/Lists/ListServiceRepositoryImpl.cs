@@ -1,9 +1,11 @@
 ﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations.List;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Paging;
@@ -18,7 +20,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using KeithLink.Svc.Core.Models.Customers.EF;
 
 namespace KeithLink.Svc.WebApi.Repository.Lists
 {
@@ -27,13 +28,15 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
         #region attributes
         private com.benekeith.ListService.IListServcie serviceClient;
         protected IUserProfileLogic _profileLogic;
+        private IEventLogRepository _log;
         #endregion
 
         #region ctor
-        public ListServiceRepositoryImpl(com.benekeith.ListService.IListServcie serviceClient, IUserProfileLogic UserProfileLogic)
+        public ListServiceRepositoryImpl(com.benekeith.ListService.IListServcie serviceClient, IUserProfileLogic UserProfileLogic, IEventLogRepository log)
         {
             this.serviceClient = serviceClient;
             _profileLogic = UserProfileLogic;
+            _log = log;
         }
         #endregion
 
@@ -228,7 +231,10 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
             string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
             Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
             // HACK for dynamically changing column widths doesn't work in run-time reportviewer.  choosing from multiple reports.
-            Stream rdlcStream = assembly.GetManifestResourceStream(ChooseReportFromOptions(options, userContext));
+            string rptName = ChooseReportFromOptions(options, userContext);
+            _log.WriteInformationLog("ListServiceRepositoryImpl.BuildReportFromList rptName=" + rptName);
+            Stream rdlcStream = assembly.GetManifestResourceStream(rptName);
+            _log.WriteInformationLog("ListServiceRepositoryImpl.BuildReportFromList rdlcStream=" + rdlcStream.ToString());
             rv.LocalReport.LoadReportDefinition(rdlcStream);
             rv.LocalReport.SetParameters(MakeReportOptionsForPrintListReport(options, printModel.Name, userContext));
             GatherInfoAboutItems(listId, options, printModel, userContext, userProfile);
@@ -283,24 +289,36 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
 
         private void GatherInfoAboutItems(long listId, PrintListModel options, ListReportModel printModel, UserSelectedContext userContext, UserProfile userProfile)
         {
+            Customer customer = _profileLogic.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
             ListModel listModel = ReadList(userProfile, userContext, listId, true);
-            Dictionary<string, ListItemModel> itemHash = listModel.Items.ToDictionary(p => p.ItemNumber);
-            ItemHistory[] itemHistories = serviceClient.GetItemsHistoryList(userContext, itemHash.Keys.ToArray());
+            List<ListItemModel> itemHash = listModel.Items.ToList();
+            string[] itemkeys = itemHash.Select(i => i.ItemNumber).ToArray();
+            ItemHistory[] itemHistories = serviceClient.GetItemsHistoryList(userContext, itemkeys);
             foreach (ListItemReportModel item in printModel.Items)
             {
-                StringBuilder priceInfo = new StringBuilder();
-                var itemInfo = itemHash[item.ItemNumber];
-                if (itemInfo.PackagePrice.Equals("0.00") == false)
+                var itemInfo = itemHash.Where(i => i.ItemNumber == item.ItemNumber).FirstOrDefault();
+                if ((customer != null) && (customer.CanViewPricing))
                 {
-                    priceInfo.Append("$");
-                    priceInfo.Append(itemInfo.PackagePrice);
-                    priceInfo.Append("/Pack");
-                    priceInfo.Append(" - ");
+                    StringBuilder priceInfo = new StringBuilder();
+                    if (itemInfo != null)
+                    {
+                        if ((itemInfo.PackagePrice != null) && (itemInfo.PackagePrice.Equals("0.00") == false))
+                        {
+                            priceInfo.Append("$");
+                            priceInfo.Append(itemInfo.PackagePrice);
+                            priceInfo.Append("/Pack");
+                            item.Price = priceInfo.ToString();
+                            priceInfo.Append(" - ");
+                        }
+                        if (itemInfo.CasePrice != null)
+                        {
+                            priceInfo.Append("$");
+                            priceInfo.Append(itemInfo.CasePrice);
+                            priceInfo.Append("/Case");
+                            item.Price = priceInfo.ToString();
+                        }
+                    }
                 }
-                priceInfo.Append("$");
-                priceInfo.Append(itemInfo.CasePrice);
-                priceInfo.Append("/Case");
-                item.Price = priceInfo.ToString();
                 // to make the option not to sort by label not reorder the items we null the label
                 if ((options.Paging != null) && (options.Paging.Sort != null) && (options.Paging.Sort.Count > 0) &&
                     (options.Paging.Sort[0].Field.Equals("label", StringComparison.CurrentCultureIgnoreCase)))
