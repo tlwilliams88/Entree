@@ -188,13 +188,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 return MakeRejectedMessage(notification, customer);
             }
-            StringBuilder orderLineChanges = new StringBuilder();
-            if ((notification.OrderChange.ItemChanges != null) && (notification.OrderChange.ItemChanges.Count > 0))
-            {
-                BuildNotificationChanges(notification, orderLineChanges);
-            }
             StringBuilder originalOrderInfo = new StringBuilder();
-            decimal totalAmount = BuildOrderTables(notification, customer, orderLineChanges, originalOrderInfo);
+            decimal totalAmount = BuildOrderTable(notification, customer, originalOrderInfo);
             return MakeConfirmationMessage(notification, customer, originalOrderInfo, totalAmount);
         }
 
@@ -226,12 +221,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             return message;
         }
 
-        private decimal BuildOrderTables(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder orderLineChanges, StringBuilder originalOrderInfo)
+        private decimal BuildOrderTable(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder originalOrderInfo)
         {
             StringBuilder itemOrderInfo = new StringBuilder();
             StringBuilder itemOrderInfoOOS = new StringBuilder();
-            MessageTemplateModel itemsTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMS);
-            MessageTemplateModel itemsOOSTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMSOOS);
             decimal totalAmount = 0;
             ProductsReturn products = _catRepo.GetProductsByIds(customer.CustomerBranch, notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
             foreach (var line in notification.OrderChange.Items)
@@ -249,28 +242,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     BuildExceptionItemDetail(itemOrderInfoOOS, line, priceInfo);
                 }
             }
-            if (itemOrderInfoOOS.Length > 0)
-            {
-                originalOrderInfo.Append(itemsOOSTemplate.Body.Inject(new
-                {
-                    OrderConfirmationItemOOSDetail = itemOrderInfoOOS.ToString()
-                }));
-            }
-            if (orderLineChanges.Length > 0)
-            {
-                MessageTemplateModel changeTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCHANGE);
-                originalOrderInfo.Append(changeTemplate.Body.Inject(new
-                {
-                    OrderChangeLines = orderLineChanges.ToString()
-                }));
-            }
-            if (itemOrderInfo.Length > 0)
-            {
-                originalOrderInfo.Append(itemsTemplate.Body.Inject(new
-                {
-                    OrderConfirmationItemDetail = itemOrderInfo.ToString()
-                }));
-            }
+            originalOrderInfo.Append(itemOrderInfoOOS);
+            originalOrderInfo.Append(itemOrderInfo);
+
             return totalAmount;
         }
 
@@ -296,6 +270,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 ProductNumber = line.ItemNumber,
                 ProductDescription = line.ItemDescription,
                 Quantity = line.QuantityOrdered.ToString(),
+                Sent = line.QuantityShipped.ToString(),
                 Price = priceInfo,
                 Status = line.OriginalStatus
             }));
@@ -316,34 +291,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 else priceInfo += " per case";
             }
             return priceInfo;
-        }
-
-        private void BuildNotificationChanges(OrderConfirmationNotification notification, StringBuilder orderLineChanges)
-        {
-            MessageTemplateModel changeDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCHANGEDETAIL);
-            foreach (var line in notification.OrderChange.ItemChanges)
-            {
-                //orderLineChanges += orderLineChanges + "Item: " + line.ItemNumber +
-                //    (String.IsNullOrEmpty(line.SubstitutedItemNumber) ? string.Empty : ("replace by: " + line.SubstitutedItemNumber)) +
-                //    "  Status: " + line.NewStatus + (line.NewStatus == line.OriginalStatus || string.IsNullOrEmpty(line.OriginalStatus)
-                //                                        ? string.Empty : (" change from: " + line.OriginalStatus)) + System.Environment.NewLine;
-                string number = line.ItemNumber;
-                if (String.IsNullOrEmpty(line.SubstitutedItemNumber) == false)
-                {
-                    number += " replace by: " + line.SubstitutedItemNumber;
-                }
-                string status = line.NewStatus;
-                if (String.IsNullOrEmpty(line.OriginalStatus) == false)
-                {
-                    status += " change from : " + line.OriginalStatus;
-                }
-                orderLineChanges.Append(changeDetailTemplate.Body.Inject(new
-                {
-                    Number = number,
-                    Status = status
-                }));
-
-            }
         }
 
         private Message MakeRejectedMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
