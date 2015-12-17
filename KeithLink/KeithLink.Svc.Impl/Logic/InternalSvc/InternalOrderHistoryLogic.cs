@@ -361,7 +361,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers) {
             var customerOrders = new BlockingCollection<Order>();
-            foreach (var h in headers) {
+            var listOfHeaders = headers.ToList();
+            foreach (var h in listOfHeaders) {
                 try {
                     Order returnOrder = null;
 
