@@ -230,7 +230,6 @@ namespace KeithLink.Svc.Impl.Logic
 			{
 				var prod = productHash.ContainsKey(item.ItemNumber) ? productHash[item.ItemNumber] : null;
 				var price = priceHash.ContainsKey(item.ItemNumber) ? priceHash[item.ItemNumber] : null;
-				var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
 				if (prod != null)
 				{
                     item.IsValid = true;
@@ -421,11 +420,11 @@ namespace KeithLink.Svc.Impl.Logic
                         Quantity = l.Quantity.HasValue ? l.Quantity.Value : 0,
                         Each = l.Each.HasValue ? l.Each.Value : false,
                         CreatedDate = new DateTime(),
-                        CatalogId = l.CatalogName,
-                       
+                        CatalogId = l.CatalogName                       
                     }).ToList()
                 };
-              
+                LookupProductDetails(user, catalogInfo, shoppingCart);
+
                 var newCartId = CreateCart(user, catalogInfo, shoppingCart, catalogId);
                 string orderNumber = null;
                 try
