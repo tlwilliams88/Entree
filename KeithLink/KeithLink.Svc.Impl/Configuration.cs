@@ -178,7 +178,7 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_MARKETINGCONTENT_URL = "MarketingContentUrl";
 
         // Queue Service Functions
-        private const string KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS = "CheckLostOrders";        #endregion
+        private const string KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS = "CheckLostOrders";       
         #endregion
 
         #region methods
