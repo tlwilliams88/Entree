@@ -10,12 +10,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace KeithLink.Svc.Windows.QueueService
 {
     partial class QueueService : ServiceBase
     {
+        #region attributes
         private IContainer container;
         private IConfirmationLogic _confirmationLogic;
         private IInternalOrderHistoryLogic _orderHistoryLogic;
@@ -28,10 +31,29 @@ namespace KeithLink.Svc.Windows.QueueService
         private ILifetimeScope externalNotificationScope;
         private ILifetimeScope internalNotificationScope;
 
+        private ILifetimeScope _checkLostOrdersScope;
+        private static bool _checkLostOrdersProcessing;
+        private System.Threading.Timer _checkLostOrdersTimer;
+
+        const int TIMER_DURATION_TICK = 2000;
+        const int TIMER_DURATION_TICKMINUTE = 60000;
+        const int TIMER_DURATION_START = 1000;
+        const int TIMER_DURATION_STOP = -1;
+        const int TIMER_DURATION_IMMEDIATE = 1;
+        #endregion
+
         public QueueService(IContainer container)
         {
             this.container = container;
             InitializeComponent();
+        }
+
+        private void InitializeCheckLostOrdersTimer()
+        {
+            AutoResetEvent auto = new AutoResetEvent(false);
+            TimerCallback cb = new TimerCallback(ProcessCheckLostOrdersMinuteTick);
+
+            _checkLostOrdersTimer = new System.Threading.Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE);
         }
 
         protected override void OnStart(string[] args)
@@ -43,6 +65,7 @@ namespace KeithLink.Svc.Windows.QueueService
             InitializeNotificationsThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
+            InitializeCheckLostOrdersTimer();
         }
 
         protected override void OnStop()
@@ -50,6 +73,7 @@ namespace KeithLink.Svc.Windows.QueueService
             TerminateConfirmationThread();
             TerminateOrderHistoryThread();
             TerminateNotificationsThread();
+            TerminateCheckLostOrdersTimer();
 
             _log.WriteInformationLog("Service stopped");
         }
@@ -112,5 +136,67 @@ namespace KeithLink.Svc.Windows.QueueService
             if (internalNotificationScope != null)
                 internalNotificationScope.Dispose();
         }
+
+        private void TerminateCheckLostOrdersTimer()
+        {
+            if (_checkLostOrdersTimer != null)
+            {
+                _checkLostOrdersTimer.Change(TIMER_DURATION_IMMEDIATE, TIMER_DURATION_STOP);
+            }
+        }
+
+        private void ProcessCheckLostOrdersMinuteTick(object state)
+        {
+
+            if (!_checkLostOrdersProcessing)
+            {
+                _checkLostOrdersProcessing = true;
+
+                // do not process between 1 and 5
+                if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5)
+                {
+                    _log.WriteInformationLog("Script stopped for processing window");
+
+                    while (DateTime.Now.Hour < 5)
+                    {
+                        System.Threading.Thread.Sleep(60000);
+                    }
+
+                    _log.WriteInformationLog("Script started after processing window");
+                }
+
+                // only process at the top of the hour
+                if (DateTime.Now.Minute > 0)
+                {
+                    _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
+                    try
+                    {
+                        FoundationService.BEKFoundationServiceClient client = new FoundationService.BEKFoundationServiceClient();
+                        string subject;
+                        string body;
+
+                        subject = client.CheckForLostOrders(out body);
+
+                        KeithLink.Svc.Impl.Repository.Profile.CustomerRepository customerRepo = new Impl.Repository.Profile.CustomerRepository(_log, null, null, null, null);
+                        StringBuilder sbMsgBody = new StringBuilder();
+                        sbMsgBody.Append(body);
+
+                        if ((subject != null) && (subject.Length > 0) && (body != null) && (body.Length > 0))
+                        {
+                            _log.WriteErrorLog(subject + " " + body);
+                            KeithLink.Common.Core.Email.ExceptionEmail.Send(new Exception(subject), body, "BEK: " + subject);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _log.WriteErrorLog("Error in ProcessCheckLostOrdersMinuteTick", ex);
+                        KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
+                    }
+                }
+
+                _checkLostOrdersProcessing = false;
+            }
+        }
+
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KeithLink.Svc.Windows.OrderService.FoundationService {
+namespace KeithLink.Svc.Windows.QueueService.FoundationService {
     
     
     /// <remarks/>
@@ -4115,16 +4115,16 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Proc" +
             "essRequest", ReplyAction="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Proc" +
             "essRequestResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.ValidationFault), Action="http://schemas.commerceserver.net/2013/01/faults/ValidationExceptionFault", Name="ValidationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.OptimisticLockFault), Action="http://schemas.commerceserver.net/2013/01/faults/OptimisticLockFault", Name="OptimisticLockFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.CatalogRemoveFault), Action="http://schemas.commerceserver.net/2013/01/faults/CatalogRemoveFault", Name="CatalogRemoveFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.ItemAlreadyExistsFault), Action="http://schemas.commerceserver.net/2013/01/faults/ItemAlreadyExistsFault", Name="ItemAlreadyExistsFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceNoSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceNoSessionFault", Name="CommerceNoSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceExpiredSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceExpiredSessionFault", Name="CommerceExpiredSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizationFault), Action="http://schemas.commerceserver.net/2013/01/faults/AuthorizationFault", Name="AuthorizationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.GeneralOperationFault), Action="http://schemas.commerceserver.net/2013/01/faults/GeneralOperationFault", Name="GeneralOperationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.ItemDoesNotExistFault), Action="http://schemas.commerceserver.net/2013/01/faults/ItemDoesNotExistFault", Name="ItemDoesNotExistFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.InvalidSearchQueryFault), Action="http://schemas.commerceserver.net/2013/01/faults/InvalidSearchQueryFault", Name="InvalidSearchQueryFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.ValidationFault), Action="http://schemas.commerceserver.net/2013/01/faults/ValidationExceptionFault", Name="ValidationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.OptimisticLockFault), Action="http://schemas.commerceserver.net/2013/01/faults/OptimisticLockFault", Name="OptimisticLockFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.CatalogRemoveFault), Action="http://schemas.commerceserver.net/2013/01/faults/CatalogRemoveFault", Name="CatalogRemoveFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.ItemAlreadyExistsFault), Action="http://schemas.commerceserver.net/2013/01/faults/ItemAlreadyExistsFault", Name="ItemAlreadyExistsFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceNoSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceNoSessionFault", Name="CommerceNoSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceExpiredSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceExpiredSessionFault", Name="CommerceExpiredSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizationFault), Action="http://schemas.commerceserver.net/2013/01/faults/AuthorizationFault", Name="AuthorizationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.GeneralOperationFault), Action="http://schemas.commerceserver.net/2013/01/faults/GeneralOperationFault", Name="GeneralOperationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.ItemDoesNotExistFault), Action="http://schemas.commerceserver.net/2013/01/faults/ItemDoesNotExistFault", Name="ItemDoesNotExistFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.InvalidSearchQueryFault), Action="http://schemas.commerceserver.net/2013/01/faults/InvalidSearchQueryFault", Name="InvalidSearchQueryFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(DBNull))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceOptions[]))]
@@ -4243,24 +4243,24 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestResponse ProcessRequest(KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestResponse ProcessRequest(KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Proc" +
             "essRequest", ReplyAction="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Proc" +
             "essRequestResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestResponse> ProcessRequestAsync(KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestResponse> ProcessRequestAsync(KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest request);
         
         // CODEGEN: Generating message contract since the wrapper namespace (http://schemas.commerceserver.net/2013/01/Foundation/Types) of message AuthorizeRequestRequest does not match the default value (http://tempuri.org/)
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Auth" +
             "orizeRequest", ReplyAction="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Auth" +
             "orizeRequestResponse")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.ValidationFault), Action="http://schemas.commerceserver.net/2013/01/faults/ValidationExceptionFault", Name="ValidationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.GeneralOperationFault), Action="http://schemas.commerceserver.net/2013/01/faults/GeneralOperationFault", Name="GeneralOperationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceNoSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceNoSessionFault", Name="CommerceNoSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceExpiredSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceExpiredSessionFault", Name="CommerceExpiredSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
-        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizationFault), Action="http://schemas.commerceserver.net/2013/01/faults/AuthorizationFault", Name="AuthorizationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.ValidationFault), Action="http://schemas.commerceserver.net/2013/01/faults/ValidationExceptionFault", Name="ValidationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.GeneralOperationFault), Action="http://schemas.commerceserver.net/2013/01/faults/GeneralOperationFault", Name="GeneralOperationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceNoSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceNoSessionFault", Name="CommerceNoSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceExpiredSessionFault), Action="http://schemas.commerceserver.net/2013/01/faults/CommerceExpiredSessionFault", Name="CommerceExpiredSessionFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
+        [System.ServiceModel.FaultContractAttribute(typeof(KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizationFault), Action="http://schemas.commerceserver.net/2013/01/faults/AuthorizationFault", Name="AuthorizationFault", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(DBNull))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceOptions[]))]
@@ -4379,14 +4379,14 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestResponse AuthorizeRequest(KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestResponse AuthorizeRequest(KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Auth" +
             "orizeRequest", ReplyAction="http://schemas.commerceserver.net/2013/01/Foundation/Types/IOperationService/Auth" +
             "orizeRequestResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestResponse> AuthorizeRequestAsync(KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestResponse> AuthorizeRequestAsync(KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest request);
         
         // CODEGEN: Parameter 'SaveCartAsOrderResult' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/SaveCartAsOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/SaveCartAsOrderResponse")]
@@ -4508,12 +4508,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderResponse SaveCartAsOrder(KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderResponse SaveCartAsOrder(KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/SaveCartAsOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/SaveCartAsOrderResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderResponse> SaveCartAsOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderResponse> SaveCartAsOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest request);
         
         // CODEGEN: Parameter 'SaveOrderAsChangeOrderResult' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrderResponse")]
@@ -4635,12 +4635,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderResponse SaveOrderAsChangeOrder(KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderResponse SaveOrderAsChangeOrder(KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/SaveOrderAsChangeOrderResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderResponse> SaveOrderAsChangeOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderResponse> SaveOrderAsChangeOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CheckForLostOrders", ReplyAction="http://tempuri.org/IBEKFoundationService/CheckForLostOrdersResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -4761,13 +4761,13 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersResponse CheckForLostOrders(KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersResponse CheckForLostOrders(KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CheckForLostOrders", ReplyAction="http://tempuri.org/IBEKFoundationService/CheckForLostOrdersResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersResponse> CheckForLostOrdersAsync(KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersResponse> CheckForLostOrdersAsync(KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CleanUpChangeOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/CleanUpChangeOrderResponse")]
         [System.ServiceModel.XmlSerializerFormatAttribute(SupportFaults=true)]
@@ -4888,8 +4888,8 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         void CleanUpChangeOrder(string userId, string cartId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CleanUpChangeOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/CleanUpChangeOrderResponse")]
@@ -5015,12 +5015,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderResponse UpdatePurchaseOrder(KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderResponse UpdatePurchaseOrder(KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderResponse> UpdatePurchaseOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderResponse> UpdatePurchaseOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest request);
         
         // CODEGEN: Parameter 'CancelPurchaseOrderResult' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrderResponse")]
@@ -5142,12 +5142,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderResponse CancelPurchaseOrder(KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderResponse CancelPurchaseOrder(KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/CancelPurchaseOrderResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderResponse> CancelPurchaseOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderResponse> CancelPurchaseOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest request);
         
         // CODEGEN: Parameter 'GetUnconfirmatedOrdersResult' requires additional schema information that cannot be captured using the parameter mode. The specific attribute is 'System.Xml.Serialization.XmlElementAttribute'.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrders", ReplyAction="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrdersResponse")]
@@ -5269,12 +5269,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(CommerceValidateOperation[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
-        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
         [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
-        KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersResponse GetUnconfirmatedOrders(KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest request);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(PurchaseOrderLineItemUpdate[]))]
+        KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersResponse GetUnconfirmatedOrders(KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest request);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrders", ReplyAction="http://tempuri.org/IBEKFoundationService/GetUnconfirmatedOrdersResponse")]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersResponse> GetUnconfirmatedOrdersAsync(KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest request);
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersResponse> GetUnconfirmatedOrdersAsync(KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -5285,12 +5285,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request;
+        public KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request;
         
         public ProcessRequestRequest() {
         }
         
-        public ProcessRequestRequest(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request) {
+        public ProcessRequestRequest(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request) {
             this.request = request;
         }
     }
@@ -5303,12 +5303,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public KeithLink.Svc.Windows.OrderService.FoundationService.CommerceResponse ProcessRequestResult;
+        public KeithLink.Svc.Windows.QueueService.FoundationService.CommerceResponse ProcessRequestResult;
         
         public ProcessRequestResponse() {
         }
         
-        public ProcessRequestResponse(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceResponse ProcessRequestResult) {
+        public ProcessRequestResponse(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceResponse ProcessRequestResult) {
             this.ProcessRequestResult = ProcessRequestResult;
         }
     }
@@ -5321,12 +5321,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request;
+        public KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request;
         
         public AuthorizeRequestRequest() {
         }
         
-        public AuthorizeRequestRequest(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request) {
+        public AuthorizeRequestRequest(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request) {
             this.request = request;
         }
     }
@@ -5339,12 +5339,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types", Order=0)]
         [System.Xml.Serialization.XmlElementAttribute(IsNullable=true)]
-        public KeithLink.Svc.Windows.OrderService.FoundationService.CommerceResponse AuthorizeRequestResult;
+        public KeithLink.Svc.Windows.QueueService.FoundationService.CommerceResponse AuthorizeRequestResult;
         
         public AuthorizeRequestResponse() {
         }
         
-        public AuthorizeRequestResponse(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceResponse AuthorizeRequestResult) {
+        public AuthorizeRequestResponse(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceResponse AuthorizeRequestResult) {
             this.AuthorizeRequestResult = AuthorizeRequestResult;
         }
     }
@@ -5476,12 +5476,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=3)]
         [System.Xml.Serialization.XmlArrayAttribute(IsNullable=true)]
         [System.Xml.Serialization.XmlArrayItemAttribute(Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.FoundationSvc.Interface")]
-        public KeithLink.Svc.Windows.OrderService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates;
+        public KeithLink.Svc.Windows.QueueService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates;
         
         public UpdatePurchaseOrderRequest() {
         }
         
-        public UpdatePurchaseOrderRequest(string userId, string orderId, System.DateTime requestedShipDate, KeithLink.Svc.Windows.OrderService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+        public UpdatePurchaseOrderRequest(string userId, string orderId, System.DateTime requestedShipDate, KeithLink.Svc.Windows.QueueService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
             this.userId = userId;
             this.orderId = orderId;
             this.requestedShipDate = requestedShipDate;
@@ -5575,12 +5575,12 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface IBEKFoundationServiceChannel : KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService, System.ServiceModel.IClientChannel {
+    public interface IBEKFoundationServiceChannel : KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class BEKFoundationServiceClient : System.ServiceModel.ClientBase<KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService>, KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService {
+    public partial class BEKFoundationServiceClient : System.ServiceModel.ClientBase<KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService>, KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService {
         
         public BEKFoundationServiceClient() {
         }
@@ -5602,114 +5602,114 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.ProcessRequest(KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.ProcessRequest(KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest request) {
             return base.Channel.ProcessRequest(request);
         }
         
-        public KeithLink.Svc.Windows.OrderService.FoundationService.CommerceResponse ProcessRequest(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest();
+        public KeithLink.Svc.Windows.QueueService.FoundationService.CommerceResponse ProcessRequest(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest();
             inValue.request = request;
-            KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).ProcessRequest(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).ProcessRequest(inValue);
             return retVal.ProcessRequestResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestResponse> KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.ProcessRequestAsync(KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest request) {
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestResponse> KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.ProcessRequestAsync(KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest request) {
             return base.Channel.ProcessRequestAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestResponse> ProcessRequestAsync(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestRequest();
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestResponse> ProcessRequestAsync(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestRequest();
             inValue.request = request;
-            return ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).ProcessRequestAsync(inValue);
+            return ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).ProcessRequestAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.AuthorizeRequest(KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.AuthorizeRequest(KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest request) {
             return base.Channel.AuthorizeRequest(request);
         }
         
-        public KeithLink.Svc.Windows.OrderService.FoundationService.CommerceResponse AuthorizeRequest(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest();
+        public KeithLink.Svc.Windows.QueueService.FoundationService.CommerceResponse AuthorizeRequest(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest();
             inValue.request = request;
-            KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).AuthorizeRequest(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).AuthorizeRequest(inValue);
             return retVal.AuthorizeRequestResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestResponse> KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.AuthorizeRequestAsync(KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest request) {
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestResponse> KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.AuthorizeRequestAsync(KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest request) {
             return base.Channel.AuthorizeRequestAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestResponse> AuthorizeRequestAsync(KeithLink.Svc.Windows.OrderService.FoundationService.CommerceRequest request) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestRequest();
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestResponse> AuthorizeRequestAsync(KeithLink.Svc.Windows.QueueService.FoundationService.CommerceRequest request) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestRequest();
             inValue.request = request;
-            return ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).AuthorizeRequestAsync(inValue);
+            return ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).AuthorizeRequestAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.SaveCartAsOrder(KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.SaveCartAsOrder(KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest request) {
             return base.Channel.SaveCartAsOrder(request);
         }
         
         public string SaveCartAsOrder(string userId, string cartId) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest();
+            KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest();
             inValue.userId = userId;
             inValue.cartId = cartId;
-            KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).SaveCartAsOrder(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).SaveCartAsOrder(inValue);
             return retVal.SaveCartAsOrderResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderResponse> KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.SaveCartAsOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest request) {
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderResponse> KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.SaveCartAsOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest request) {
             return base.Channel.SaveCartAsOrderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderResponse> SaveCartAsOrderAsync(string userId, string cartId) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderRequest();
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderResponse> SaveCartAsOrderAsync(string userId, string cartId) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderRequest();
             inValue.userId = userId;
             inValue.cartId = cartId;
-            return ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).SaveCartAsOrderAsync(inValue);
+            return ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).SaveCartAsOrderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.SaveOrderAsChangeOrder(KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.SaveOrderAsChangeOrder(KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest request) {
             return base.Channel.SaveOrderAsChangeOrder(request);
         }
         
         public string SaveOrderAsChangeOrder(string userId, string cartId) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest();
+            KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest();
             inValue.userId = userId;
             inValue.cartId = cartId;
-            KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).SaveOrderAsChangeOrder(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).SaveOrderAsChangeOrder(inValue);
             return retVal.SaveOrderAsChangeOrderResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderResponse> KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.SaveOrderAsChangeOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest request) {
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderResponse> KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.SaveOrderAsChangeOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest request) {
             return base.Channel.SaveOrderAsChangeOrderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderResponse> SaveOrderAsChangeOrderAsync(string userId, string cartId) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderRequest();
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderResponse> SaveOrderAsChangeOrderAsync(string userId, string cartId) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderRequest();
             inValue.userId = userId;
             inValue.cartId = cartId;
-            return ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).SaveOrderAsChangeOrderAsync(inValue);
+            return ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).SaveOrderAsChangeOrderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.CheckForLostOrders(KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.CheckForLostOrders(KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersRequest request) {
             return base.Channel.CheckForLostOrders(request);
         }
         
         public string CheckForLostOrders(out string msgBody) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersRequest();
-            KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).CheckForLostOrders(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersRequest();
+            KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).CheckForLostOrders(inValue);
             msgBody = retVal.msgBody;
             return retVal.CheckForLostOrdersResult;
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersResponse> CheckForLostOrdersAsync(KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersRequest request) {
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersResponse> CheckForLostOrdersAsync(KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersRequest request) {
             return base.Channel.CheckForLostOrdersAsync(request);
         }
         
@@ -5722,78 +5722,78 @@ namespace KeithLink.Svc.Windows.OrderService.FoundationService {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.UpdatePurchaseOrder(KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.UpdatePurchaseOrder(KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest request) {
             return base.Channel.UpdatePurchaseOrder(request);
         }
         
-        public string UpdatePurchaseOrder(string userId, string orderId, System.DateTime requestedShipDate, KeithLink.Svc.Windows.OrderService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest();
+        public string UpdatePurchaseOrder(string userId, string orderId, System.DateTime requestedShipDate, KeithLink.Svc.Windows.QueueService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest();
             inValue.userId = userId;
             inValue.orderId = orderId;
             inValue.requestedShipDate = requestedShipDate;
             inValue.itemUpdates = itemUpdates;
-            KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).UpdatePurchaseOrder(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).UpdatePurchaseOrder(inValue);
             return retVal.UpdatePurchaseOrderResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderResponse> KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.UpdatePurchaseOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest request) {
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderResponse> KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.UpdatePurchaseOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest request) {
             return base.Channel.UpdatePurchaseOrderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderResponse> UpdatePurchaseOrderAsync(string userId, string orderId, System.DateTime requestedShipDate, KeithLink.Svc.Windows.OrderService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderRequest();
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderResponse> UpdatePurchaseOrderAsync(string userId, string orderId, System.DateTime requestedShipDate, KeithLink.Svc.Windows.QueueService.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderRequest();
             inValue.userId = userId;
             inValue.orderId = orderId;
             inValue.requestedShipDate = requestedShipDate;
             inValue.itemUpdates = itemUpdates;
-            return ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).UpdatePurchaseOrderAsync(inValue);
+            return ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).UpdatePurchaseOrderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.CancelPurchaseOrder(KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.CancelPurchaseOrder(KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest request) {
             return base.Channel.CancelPurchaseOrder(request);
         }
         
         public string CancelPurchaseOrder(string userId, string orderId) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest();
+            KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest();
             inValue.userId = userId;
             inValue.orderId = orderId;
-            KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).CancelPurchaseOrder(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).CancelPurchaseOrder(inValue);
             return retVal.CancelPurchaseOrderResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderResponse> KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.CancelPurchaseOrderAsync(KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest request) {
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderResponse> KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.CancelPurchaseOrderAsync(KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest request) {
             return base.Channel.CancelPurchaseOrderAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderResponse> CancelPurchaseOrderAsync(string userId, string orderId) {
-            KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderRequest();
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderResponse> CancelPurchaseOrderAsync(string userId, string orderId) {
+            KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderRequest();
             inValue.userId = userId;
             inValue.orderId = orderId;
-            return ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).CancelPurchaseOrderAsync(inValue);
+            return ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).CancelPurchaseOrderAsync(inValue);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersResponse KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.GetUnconfirmatedOrders(KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest request) {
+        KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersResponse KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.GetUnconfirmatedOrders(KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest request) {
             return base.Channel.GetUnconfirmatedOrders(request);
         }
         
         public System.Xml.XmlElement GetUnconfirmatedOrders() {
-            KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest();
-            KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersResponse retVal = ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).GetUnconfirmatedOrders(inValue);
+            KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest();
+            KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersResponse retVal = ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).GetUnconfirmatedOrders(inValue);
             return retVal.GetUnconfirmatedOrdersResult;
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersResponse> KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService.GetUnconfirmatedOrdersAsync(KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest request) {
+        System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersResponse> KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService.GetUnconfirmatedOrdersAsync(KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest request) {
             return base.Channel.GetUnconfirmatedOrdersAsync(request);
         }
         
-        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersResponse> GetUnconfirmatedOrdersAsync() {
-            KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest inValue = new KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersRequest();
-            return ((KeithLink.Svc.Windows.OrderService.FoundationService.IBEKFoundationService)(this)).GetUnconfirmatedOrdersAsync(inValue);
+        public System.Threading.Tasks.Task<KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersResponse> GetUnconfirmatedOrdersAsync() {
+            KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest inValue = new KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersRequest();
+            return ((KeithLink.Svc.Windows.QueueService.FoundationService.IBEKFoundationService)(this)).GetUnconfirmatedOrdersAsync(inValue);
         }
     }
 }

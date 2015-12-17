@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="Fe+z/RhKF3Au/29Ol0IalQS3Wb4=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="lqmYnRasoo0A9zJh3/NlHPrDEvY=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="wsHttpBinding" name="WsHttpOperationService">
       <properties>
@@ -127,7 +127,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WsHttpOperationService" contract="FoundationService.IBEKFoundationService" bindingType="wsHttpBinding" address="http://corpmisdev2h.bekco.com:1000/Foundation/FoundationService.svc" bindingConfiguration="WsHttpOperationService">
+    <endpoint name="WsHttpOperationService1" contract="FoundationService.IBEKFoundationService" bindingType="wsHttpBinding" address="http://corpmisdev2h.bekco.com:1000/Foundation/FoundationService.svc" bindingConfiguration="WsHttpOperationService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://corpmisdev2h.bekco.com:1000/Foundation/FoundationService.svc</serializedValue>
@@ -202,7 +202,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WsHttpOperationService</serializedValue>
+          <serializedValue>WsHttpOperationService1</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

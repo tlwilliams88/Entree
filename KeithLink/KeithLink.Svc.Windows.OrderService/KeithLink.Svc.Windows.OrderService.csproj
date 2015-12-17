@@ -135,11 +135,6 @@
       <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service References\FoundationService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\IS_OrderService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -147,40 +142,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.AuthorizeRequestResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.CancelPurchaseOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.CheckForLostOrdersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.CommerceResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.GetUnconfirmatedOrdersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.ProcessRequestResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.SaveCartAsOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.SaveOrderAsChangeOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.OrderService.FoundationService.UpdatePurchaseOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\FoundationService\configuration.svcinfo" />
-    <None Include="Service References\FoundationService\configuration91.svcinfo" />
-    <None Include="Service References\FoundationService\FoundationService.disco" />
     <None Include="App.config">
       <SubType>Designer</SubType>
     </None>
@@ -188,25 +149,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />
-    <None Include="Service References\FoundationService\BEKFoundationService.wsdl" />
-    <None Include="Service References\FoundationService\FoundationService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\IS_OrderService\OrderService.wsdl" />
     <None Include="Service References\IS_OrderService\OrderService.xsd">
       <SubType>Designer</SubType>
@@ -249,7 +191,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\FoundationService\" />
     <WCFMetadataStorage Include="Service References\IS_OrderService\" />
   </ItemGroup>
   <ItemGroup>
