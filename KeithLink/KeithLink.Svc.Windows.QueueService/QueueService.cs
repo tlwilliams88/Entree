@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Common.Impl;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
@@ -50,10 +51,14 @@ namespace KeithLink.Svc.Windows.QueueService
 
         private void InitializeCheckLostOrdersTimer()
         {
+
             AutoResetEvent auto = new AutoResetEvent(false);
             TimerCallback cb = new TimerCallback(ProcessCheckLostOrdersMinuteTick);
 
-            _checkLostOrdersTimer = new System.Threading.Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE);
+            if (Configuration.CheckLostOrders.Equals("true", StringComparison.CurrentCultureIgnoreCase))
+            {
+                _checkLostOrdersTimer = new System.Threading.Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE);
+            }
         }
 
         protected override void OnStart(string[] args)
@@ -166,7 +171,7 @@ namespace KeithLink.Svc.Windows.QueueService
                 }
 
                 // only process at the top of the hour
-                if (DateTime.Now.Minute > 0)
+                if (DateTime.Now.Minute == 0)
                 {
                     _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
                     try

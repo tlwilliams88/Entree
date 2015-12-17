@@ -176,9 +176,21 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_MARKETINGCONTENT_BRANCHITEMCOUNT = "MarketingBranchItemCount";
         private const string KEY_MARKETINGCONTENT_TOTALITEMCOUNT = "MarketingTotalItemCount";
         private const string KEY_MARKETINGCONTENT_URL = "MarketingContentUrl";
+
+        // Queue Service Functions
+        private const string KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS = "CheckLostOrders";        #endregion
         #endregion
 
         #region methods
+
+        public static string CheckLostOrders
+        {
+            get
+            {
+                return GetValue(KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS, string.Empty);
+            }
+        }
+
         public static readonly List<string> BekSysAdminRoles = new List<string>() {
            RoleNameCorporateAdmin, Constants.ROLE_CORPORATE_SECURITY 
         };
