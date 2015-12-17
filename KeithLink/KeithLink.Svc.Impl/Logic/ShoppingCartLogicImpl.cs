@@ -343,6 +343,7 @@ namespace KeithLink.Svc.Impl.Logic
                 cart.SubTotal += (decimal)PricingHelper.GetPrice(qty, item.CasePriceNumeric, item.PackagePriceNumeric, item.Each, item.CatchWeight, item.AverageWeight, pack);
             }
 
+            cart.ContainsSpecialItems = cart.Items.Any(i => i.IsSpecialtyCatalog);
 			return cart;
 		}
 

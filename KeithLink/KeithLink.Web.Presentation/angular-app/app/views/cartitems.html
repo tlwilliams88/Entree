@@ -182,6 +182,9 @@
           <div class="col-xs-12">
             <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
           </div>
+            <div class="col-xs-12">
+            <p class="text-red" ng-if="currentCart.containsspecialitems">This cart includes special order items that will ship separately at a later date.</p>
+          </div>
         </div>
 
       </div>
@@ -308,6 +311,13 @@
               Item
               <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
+            <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder">
+              Name
+              <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
+            </th> 
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
+              <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
+            </th>
              <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='class';sortOrder=!sortOrder">
               <span>Class <span sort-icons field="'class'" sortorder="sortOrder" sortby="sortBy"></span></span>
             </th>
@@ -317,13 +327,6 @@
             <th class="hidden-mobile-visible-print">
               Pack/Size
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy='brand';sortOrder=!sortOrder">
-              <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder" sortby="sortBy"></span></span>
-            </th>
-            <th class="sort-col-header" ng-click="sortBy='name';sortOrder=!sortOrder">
-              Name
-              <span sort-icons field="'name'" sortorder="sortOrder" sortby="sortBy"></span>
-            </th> 
             <th class="hidden-mobile-visible-print"></th>
             <th class="sort-col-header" ng-click="sortBy='quantity';sortOrder=!sortOrder">
               <span>Qty <span sort-icons field="'quantity'" sortorder="sortOrder" sortby="sortBy"></span></span>
@@ -347,6 +350,12 @@
           <!-- Filter row -->
           <tr class="filter-row hidden-print" ng-show="showFilter">
             <td></td>            
+            <td class="input-col">
+              <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
+            </td>
+            <td class="hidden-xs hidden-sm input-col">
+              <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
+            </td>
             <td class="hidden-xs hidden-sm input-col">
               <input name="filterClass" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.class">
             </td>
@@ -354,12 +363,6 @@
               <input name="filterNotes" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.notes">
             </td>
             <td class="hidden-xs hidden-sm"></td>
-            <td class="hidden-xs hidden-sm input-col">
-              <input name="filterBrands" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.brand">
-            </td>
-            <td class="input-col">
-              <input name="filterName" no-dirty-check type="text" placeholder="Filter..." ng-model="filterFields.name">
-            </td>
             <td class="hidden-xs hidden-sm"></td>
             <td class="hidden-xs hidden-sm"></td>
             <td></td>             
@@ -379,7 +382,12 @@
               <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
 			</td>
             <td>
-              {{item.name}}
+              <span ng-if="item.isvalid">
+                {{::item.name}}
+              </span>
+              <span ng-if="!item.isvalid">
+                Invalid item
+              </span>
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.brand}}
@@ -392,17 +400,6 @@
             </td>
             <td class="hidden-mobile-visible-print ">
               {{item.packsize}}
-            </td>
-            <td class="hidden-mobile-visible-print ">
-              {{item.brand}}
-            </td>
-            <td>
-              <span ng-if="item.isvalid">
-                {{::item.name}}
-              </span>
-              <span ng-if="!item.isvalid">
-                Invalid item
-              </span>
             </td>
             <td class="hidden-mobile-visible-print " item-icons>
             </td>

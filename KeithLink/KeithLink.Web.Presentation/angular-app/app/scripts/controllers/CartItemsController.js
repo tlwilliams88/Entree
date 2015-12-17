@@ -48,6 +48,7 @@ angular.module('bekApp')
     $scope.sortOrder = false;
     CartService.updateNetworkStatus();
     $scope.isOffline = CartService.isOffline;
+        $scope.cartContainsSpecialItems = false;
     $scope.carts = CartService.cartHeaders;
     $scope.shipDates = CartService.shipDates;
     $scope.changeOrders = OrderService.changeOrderHeaders;

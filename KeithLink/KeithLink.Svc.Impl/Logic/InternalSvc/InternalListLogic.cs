@@ -786,7 +786,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return cachedPagedList;
             }
 
-            var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault();
+            var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault(); // Not returned catalog ID here
 
 
             if (list == null)

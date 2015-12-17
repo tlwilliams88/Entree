@@ -41,7 +41,8 @@ namespace KeithLink.Svc.Core.Extensions
                     Position = i.Position,
                     Note = i.Notes,
                     Each = i.Each ?? false,
-                    Quantity = i.Quantity
+                    Quantity = i.Quantity,
+                    CatalogId = i.CatalogId
                 }).ToArray()
             };
         }

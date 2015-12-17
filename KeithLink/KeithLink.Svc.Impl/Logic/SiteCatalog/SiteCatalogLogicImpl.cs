@@ -319,7 +319,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
                 
 
-                foreach (var prod in products.Products)
+                foreach (var prod in products.Products.Where(p => p.CatalogId == catalogId))
                 {
                     prod.IsSpecialtyCatalog = IsSpecialtyCatalog(null, catalogId);
                     prod.CatalogId = catalogId;
@@ -427,17 +427,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public bool IsSpecialtyCatalog(string catalogType, string branchId = null)
         {
-            if (catalogType != null)
+            if (!String.IsNullOrEmpty(catalogType))
                 return !catalogType.ToLower().Equals("bek");
-            else
+            else if (!String.IsNullOrEmpty(branchId))
             {
                 //look up branch and see if it is BEK
                 List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs()
-                    .Where(x => branchId.ToLower() == x.BekBranchId.ToString().ToLower()).ToList();
+                    .Where(x => branchId.ToLower() == x.CatalogId.ToString().ToLower()).ToList();
 
-                return !(externalCatalog.Count > 0);
-
+                return (externalCatalog.Count > 0);
             }
+            else
+                return false;
         }
 
         public bool IsCatalogIdBEK(string catalogId)

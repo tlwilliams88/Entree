@@ -52,6 +52,9 @@ namespace KeithLink.Svc.Core.Models.ShoppingCart
 		[DataMember(Name = "createddate")]
 		public DateTime CreatedDate { get; set; }
 
+        [DataMember(Name = "containsspecialitems")]
+        public bool ContainsSpecialItems { get; set; }
+
 		[DataMember(Name="items")]
 		public List<ShoppingCartItem> Items { get; set; }
 	}

@@ -181,7 +181,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("list/{listId}/item")]
         public NewListItem AddItem(long listId, ListItemModel newItem)
         {
-            return new NewListItem() { Id = listServiceRepository.AddItem(listId, newItem) };
+            return new NewListItem() { Id = listServiceRepository.AddItem(listId, newItem) }; // Getting Catalog ID here
         }
 
         /// <summary>

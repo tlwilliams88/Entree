@@ -216,37 +216,26 @@
               <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
             </td>
             <td>
-              {{::item.name}}
+              {{::item.categoryname}}
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::item.brand_extended_description}}
+                {{::item.notes}}
+              
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::item.class}}
-            </td>
-            <td class="hidden-mobile-visible-print notes-col">
-              {{::item.notes}}
-            </td>
-            <td class="hidden-mobile-visible-print label-col">
               {{::item.label}}
             </td>
-            <td class="hidden-mobile-visible-print">
+            <td class="hidden-mobile-visible-print notes-col">
               {{::item.packsize}}
             </td>
-            <td class="hidden-mobile-visible-print">
+            <td class="hidden-mobile-visible-print label-col">
               {{::item.brand_extended_description}}
             </td>
-            <td>
-              <span ng-if="item.isvalid">{{::item.name}}</span>
-              <span ng-if="!item.isvalid">Invalid item</span>
-            </td>
-            <td class="hidden-mobile-visible-print" item-icons>
-            </td>
-
-
-            <td ng-if="useParlevel" class="hidden-mobile">
-              {{::item.parlevel}}
-            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.name}}
+              </td>
+              <td>
+              </td>
             <td ng-if="useParlevel" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
               <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder">
               <!--  ON HAND AMOUNT -->
