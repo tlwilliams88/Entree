@@ -144,7 +144,7 @@
               </th>
             </tr>
           </thead>
-          <tbody ng-if="invoices.length > 0">
+          <tbody ng-if="invoices.length > 0 || showFilter">
           <!-- Filter Row -->
           <tr class="filter-row" ng-show="showFilter">
             <td ng-if="!viewingAllCustomers" class="input-col">
@@ -165,18 +165,20 @@
             <td class="input-col hidden-mobile-visible-print">
               <input type="text" placeholder="Filter..." ng-model="filterRowFields.statusdescription" no-dirty-check>
             </td>
-            <td></td>
-            <td></td>
+            <td class="hidden-mobile-visible-print"></td>
+            <td class="hidden-mobile-visible-print"></td>
             <td class="hidden-mobile-visible-print"></td>
             <td class="hidden-mobile-visible-print"></td>
             <td ng-show="!viewingAllCustomers"></td>
             <td ng-show="!viewingAllCustomers"></td>
             <td ng-show="!viewingAllCustomers" class="hidden-mobile-visible-print">       
-            </td>
+            </td>            
+            <td class="hidden-mobile-visible-print"></td>
             <td class="input-col nowrap">
               <button type="button" class="btn btn-primary btn-sm" ng-click="filterInvoices(filterRowFields)">Filter</button>
               <button type="button" class="btn btn-default btn-sm" ng-click="clearFilters(filterRowFields)">Clear</button>
             </td>
+            <td></td>
           </tr> <!-- end Filter Row -->
 
           <tr ng-repeat-start="invoice in invoices" ng-hide="invoiceFilter && !invoice.hascreditmemos" ng-class="{ odd : $odd, even: $even, 'item-selected': (invoice.isSelected && !errorMessage.length), 'invalid-item': invoice.failedBatchValidation, 'invoice__late':  invoice.status === 2}">
@@ -301,7 +303,7 @@
           </tr>
 
           <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
-            <td colspan="5">
+            <td colspan="6">
               <table>
                 <colgroup>
                   <col width="25%" />
@@ -407,7 +409,7 @@
 
         <tfoot ng-show="invoices.length === 0 && !loadingResults">
           <tr>
-            <td colspan="13">There are no invoices to display.</td>
+            <td colspan="14">There are no invoices to display.</td>
           </tr>
         </tfoot>
       </table>
