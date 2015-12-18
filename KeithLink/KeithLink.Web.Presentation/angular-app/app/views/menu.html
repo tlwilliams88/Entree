@@ -113,6 +113,14 @@
               eMenu Manage
             </li>
           </a>
+          <a
+            ng-if="userProfile.iskbitcustomer"
+            ng-click="openExternalLink(cognosUrl)">
+            <li>
+              <span class="icon-graph sidebar-nav__icon"></span>
+              KBIT
+            </li>
+          </a>
           <button
             class="btn-no-style"
             type="button"
