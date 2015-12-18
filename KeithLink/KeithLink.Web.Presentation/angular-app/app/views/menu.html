@@ -105,12 +105,20 @@
             </li>
           </button>
           <a
-            ng-if="::userProfile.ispowermenucustomer"
+            ng-if="userProfile.ispowermenucustomer"
             ng-href="{{userProfile.powermenuloginurl}}"
             target="_blank" >
             <li>
               <span class="icon-food sidebar-nav__icon"></span>
               eMenu Manage
+            </li>
+          </a>
+          <a
+            ng-if="userProfile.iskbitcustomer"
+            ng-click="openExternalLink(cognosUrl)">
+            <li>
+              <span class="icon-graph sidebar-nav__icon"></span>
+              KBIT
             </li>
           </a>
           <button

@@ -26,7 +26,7 @@ angular.module('bekApp')
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
-  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf"; 
+  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -35,6 +35,11 @@ angular.module('bekApp')
 
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
+
+  // KBIT ACCESS
+  var usernameToken = $scope.userProfile.usernametoken;
+  $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
+  
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
  
   if (AccessService.isOrderEntryCustomer()) {
