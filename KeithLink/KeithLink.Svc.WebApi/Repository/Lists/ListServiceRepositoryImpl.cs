@@ -336,12 +336,12 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
                     AVG8WK += itemStats.AverageUse;
                     if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_PACKAGE)) AVG8WK += " Pack";
                     else if (itemStats.UnitOfMeasure.Equals(KeithLink.Svc.Core.Constants.ITEMHISTORY_AVERAGEUSE_CASE)) AVG8WK += " Case";
-                    if ((itemStats.AverageUse > 1) && (itemStats.AverageUse != 0)) AVG8WK += "s";
+                    if ((itemStats.AverageUse > 1) | (itemStats.AverageUse == 0)) AVG8WK += "s";
                     item.AvgUse = AVG8WK;
                 }
                 else
                 {
-                    item.AvgUse = "0 Case";
+                    item.AvgUse = "0 Cases";
                 }
             }
         }
