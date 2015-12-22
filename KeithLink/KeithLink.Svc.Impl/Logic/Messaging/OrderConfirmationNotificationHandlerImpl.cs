@@ -231,7 +231,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
                 string priceInfo = BuildPriceInfo(line, currentProduct);
-                if (line.OriginalStatus.Equals("filled", StringComparison.CurrentCultureIgnoreCase))
+                if (!String.IsNullOrEmpty(line.OriginalStatus) && line.OriginalStatus.Equals("filled", StringComparison.CurrentCultureIgnoreCase))
                 {
                     totalAmount += (line.QuantityOrdered * line.ItemPrice);
                     BuildItemDetail(itemOrderInfo, line, priceInfo);
