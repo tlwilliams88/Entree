@@ -534,7 +534,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         private void CheckForLostOrdersByStatus(StringBuilder sbMsgSubject, StringBuilder sbMsgBody, string qStatus)
         {
-            List<System.Xml.XmlElement> Pos;
+            List<DataSet> Pos;
             GetPurchaseOrdersByStatus(qStatus, out Pos);
             StringBuilder sbAppendSubject;
             StringBuilder sbAppendBody;
@@ -549,7 +549,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
         }
 
-        private void GetPurchaseOrdersByStatus(string queryStatus, out List<System.Xml.XmlElement> Pos)
+        private void GetPurchaseOrdersByStatus(string queryStatus, out List<DataSet> Pos)
         {
             var manager = CommerceServerCore.GetPoManager();
             System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
@@ -562,7 +562,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             int c = results.Tables.Count;
 
-            Pos = new List<System.Xml.XmlElement>();
+            Pos = new List<DataSet>();
             List<Guid> poIds = new List<Guid>();
             foreach (DataRow row in results.Tables[0].Rows)
             {
@@ -573,27 +573,22 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             {
                 foreach (var poid in poIds)
                 {
-                    List<Guid> single = new List<Guid>();
-                    single.Add(poid);
-                    var xml = manager.GetPurchaseOrdersAsXml(single.ToArray());
-                    Pos.Add(xml);
+                    var po = manager.GetPurchaseOrderAsDataSet(poid);
+                    Pos.Add(po);
                 }
             }
         }
 
-        private void BuildAlertStringsForLostPurchaseOrders(out StringBuilder sbSubject, out StringBuilder sbBody, List<System.Xml.XmlElement> Pos, string qStatus)
+        private void BuildAlertStringsForLostPurchaseOrders(out StringBuilder sbSubject, out StringBuilder sbBody, List<DataSet> Pos, string qStatus)
         {
             sbSubject = new StringBuilder();
             sbBody = new StringBuilder();
             if ((Pos != null) && (Pos.Count > 0))
             {
-                foreach (var xml in Pos)
+                foreach (var po in Pos)
                 {
-                    XmlDocument doc = new XmlDocument();
-                    doc.LoadXml(xml.InnerXml);
-                    //var nRoot = doc.GetElementsByTagName("PurchaseOrder")[0];
                     DateTime lastModified;
-                    DateTime.TryParse(doc.DocumentElement.Attributes.GetNamedItem("LastModified").Value, out lastModified);
+                    DateTime.TryParse(po.Tables["PurchaseOrder"].Rows[0]["LastModified"].ToString(), out lastModified);
                     // only if they've been created more than 10 minutes ago in the query status
                     if (lastModified < DateTime.Now.AddMinutes(-10))
                     {
@@ -601,38 +596,26 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         sbSubject.Append("PO in a " + qStatus + " status for more than 10 minutes.");
                         sbBody.Append("* PO");
                         sbBody.Append(" for ");
-                        XmlNodeList childs = doc.DocumentElement.GetElementsByTagName("WeaklyTypedProperties");
-                        XmlDocument elem = new XmlDocument();
-                        elem.LoadXml("<Info>" + childs[childs.Count - 1].InnerXml + "</Info>");
+                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
                         {
-                            foreach (XmlElement child in elem.DocumentElement.GetElementsByTagName("WeaklyTypedProperty"))
-                            {
-                                if (child.Attributes["Name"].Value.Equals("customerid", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    sbBody.Append(child.Attributes["Value"].Value);
-                                }
-                            }
+                            if(row["WeaklyTypedProperty.Name"].ToString().Equals("customerid", StringComparison.CurrentCultureIgnoreCase))
+                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString());
                         }
-                        //sbBody.Append((doc.DocumentElement.GetElementsByTagName("WeaklyTypedProperties")[0]).g);
                         sbBody.Append("-");
+                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
                         {
-                            foreach (XmlElement child in elem.DocumentElement.GetElementsByTagName("WeaklyTypedProperty"))
-                            {
-                                if (child.Attributes["Name"].Value.Equals("branchid", StringComparison.CurrentCultureIgnoreCase))
-                                {
-                                    sbBody.Append(child.Attributes["Value"].Value.ToUpper());
-                                }
-                            }
+                            if (row["WeaklyTypedProperty.Name"].ToString().Equals("branchid", StringComparison.CurrentCultureIgnoreCase))
+                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString().ToUpper());
                         }
                         sbBody.Append(" with cart ");
                         {
-                            sbBody.Append(doc.DocumentElement.Attributes["Name"].Value);
+                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["Name"].ToString());
                         }
                         sbBody.Append(" and tracking ");
                         {
-                            sbBody.Append(doc.DocumentElement.Attributes["TrackingNumber"].Value);
+                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["TrackingNumber"].ToString());
                         }
-                        sbBody.Append(" last modified " + lastModified.ToShortDateString());
+                        sbBody.Append(" last modified");
                         sbBody.Append(" at " + lastModified.ToShortTimeString());
                         sbBody.Append(" in status " + qStatus);
                         sbBody.Append(".\n");
