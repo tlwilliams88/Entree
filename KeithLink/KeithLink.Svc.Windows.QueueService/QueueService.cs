@@ -70,7 +70,7 @@ namespace KeithLink.Svc.Windows.QueueService
             InitializeNotificationsThread();
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
-            InitializeCheckLostOrdersTimer();
+            //InitializeCheckLostOrdersTimer();
         }
 
         protected override void OnStop()
