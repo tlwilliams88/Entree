@@ -131,11 +131,6 @@
     <Compile Include="QueueService.Designer.cs">
       <DependentUpon>QueueService.cs</DependentUpon>
     </Compile>
-    <Compile Include="Service References\FoundationService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -144,52 +139,6 @@
     </None>
     <None Include="packages.config" />
     <None Include="Properties\DataSources\System.Xml.XmlElement.datasource" />
-    <None Include="Service References\FoundationService\BEKFoundationService.wsdl" />
-    <None Include="Service References\FoundationService\FoundationService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\FoundationService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.AuthorizeRequestResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.CancelPurchaseOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.CheckForLostOrdersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.CommerceResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.GetUnconfirmatedOrdersResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.ProcessRequestResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.SaveCartAsOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.SaveOrderAsChangeOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\FoundationService\KeithLink.Svc.Windows.QueueService.FoundationService.UpdatePurchaseOrderResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
@@ -223,24 +172,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\FoundationService\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FoundationService\FoundationService.disco" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FoundationService\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FoundationService\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\FoundationService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

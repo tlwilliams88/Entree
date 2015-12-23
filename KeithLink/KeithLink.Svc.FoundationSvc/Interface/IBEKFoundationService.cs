@@ -18,9 +18,6 @@ namespace KeithLink.Svc.FoundationSvc.Interface
         string SaveOrderAsChangeOrder(Guid userId, Guid cartId);
 
         [OperationContract]
-        string CheckForLostOrders(out string msgBody);
-
-        [OperationContract]
         void CleanUpChangeOrder(Guid userId, Guid cartId);
 
         [OperationContract]
