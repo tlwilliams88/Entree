@@ -32,7 +32,6 @@ namespace KeithLink.Svc.Windows.QueueService
         private ILifetimeScope externalNotificationScope;
         private ILifetimeScope internalNotificationScope;
 
-        private ILifetimeScope _checkLostOrdersScope;
         private static bool _checkLostOrdersProcessing;
         private System.Threading.Timer _checkLostOrdersTimer;
 
@@ -171,16 +170,18 @@ namespace KeithLink.Svc.Windows.QueueService
                 }
 
                 // only process at the top of the hour
-                if (DateTime.Now.Minute == 0)
-                {
+                //if (DateTime.Now.Minute == 0)
+                //{
                     _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
                     try
                     {
-                        FoundationService.BEKFoundationServiceClient client = new FoundationService.BEKFoundationServiceClient();
                         string subject;
                         string body;
 
-                        subject = client.CheckForLostOrders(out body);
+                        orderHistoryScope = container.BeginLifetimeScope();
+                        _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
+                        //_orderHistoryLogic.ListenForQueueMessages();
+                        subject = _orderHistoryLogic.CheckForLostOrders(out body);
 
                         KeithLink.Svc.Impl.Repository.Profile.CustomerRepository customerRepo = new Impl.Repository.Profile.CustomerRepository(_log, null, null, null, null);
                         StringBuilder sbMsgBody = new StringBuilder();
@@ -197,7 +198,7 @@ namespace KeithLink.Svc.Windows.QueueService
                         _log.WriteErrorLog("Error in ProcessCheckLostOrdersMinuteTick", ex);
                         KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
                     }
-                }
+                //}
 
                 _checkLostOrdersProcessing = false;
             }
