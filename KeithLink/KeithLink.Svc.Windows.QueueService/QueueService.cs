@@ -170,8 +170,8 @@ namespace KeithLink.Svc.Windows.QueueService
                 }
 
                 // only process at the top of the hour
-                //if (DateTime.Now.Minute == 0)
-                //{
+                if (DateTime.Now.Minute == 0)
+                {
                     _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
                     try
                     {
@@ -180,10 +180,8 @@ namespace KeithLink.Svc.Windows.QueueService
 
                         orderHistoryScope = container.BeginLifetimeScope();
                         _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
-                        //_orderHistoryLogic.ListenForQueueMessages();
                         subject = _orderHistoryLogic.CheckForLostOrders(out body);
 
-                        KeithLink.Svc.Impl.Repository.Profile.CustomerRepository customerRepo = new Impl.Repository.Profile.CustomerRepository(_log, null, null, null, null);
                         StringBuilder sbMsgBody = new StringBuilder();
                         sbMsgBody.Append(body);
 
@@ -198,7 +196,7 @@ namespace KeithLink.Svc.Windows.QueueService
                         _log.WriteErrorLog("Error in ProcessCheckLostOrdersMinuteTick", ex);
                         KeithLink.Common.Core.Email.ExceptionEmail.Send(ex);
                     }
-                //}
+                }
 
                 _checkLostOrdersProcessing = false;
             }
