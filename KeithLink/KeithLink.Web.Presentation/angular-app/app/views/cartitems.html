@@ -404,12 +404,15 @@
                 <div counter ng-model="item.quantity" min="0" length="5" ></div>
               </ng-form>
             </td>
-            <td class="hidden-mobile-visible-print input-col">
+            <td class="hidden-mobile-visible-print input-col" ng-if="!isChangeOrder">
               <ng-form name="eachForm" ng-if="item.hasPackagePrice">
                 <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
             </td>
+            <td ng-if="isChangeOrder" class="hidden-mobile-visible-print"> 
+              {{item.eachyn}} 
+            </td> 
             <td ng-if="!isChangeOrder" class="hidden-mobile-visible-print ">
               {{item.each ? item.packageprice : item.caseprice | currency}}
               <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
@@ -454,10 +457,13 @@
                 <tr>
                   <td item-icons></td>
                 </tr>
-                <tr ng-if="::item.hasPackagePrice">
+                <tr ng-if="::item.hasPackagePrice || isChangeOrder">
                   <td>Each</td>
-                  <td>
+                  <td ng-if="::!isChangeOrder">
                     <input type="checkbox" value="" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" name="each" id="each" ng-model="item.each">
+                  </td>
+                   <td ng-if="::isChangeOrder"> 
+                    {{item.eachyn}} 
                   </td>
                 </tr>                
                 <tr>
