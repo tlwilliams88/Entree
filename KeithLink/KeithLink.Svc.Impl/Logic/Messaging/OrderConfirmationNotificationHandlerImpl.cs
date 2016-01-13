@@ -4,12 +4,14 @@ using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.Configuration;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
@@ -40,6 +42,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         Func<Channel, IMessageProvider> messageProviderFactory;
 		private readonly IDsrServiceRepository dsrServiceRepository;
+        private IInternalOrderHistoryLogic _orderHistoryLogic;
         #endregion
 
         #region ctor
@@ -48,7 +51,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                                                         IMessageTemplateLogic messageTemplateLogic, ICustomerRepository customerRepository, 
                                                         IUserMessagingPreferenceRepository userMessagingPreferenceRepository, 
                                                         Func<Channel, IMessageProvider> messageProviderFactory, 
-                                                        IDsrServiceRepository dsrServiceRepository, ICatalogRepository catalogRepository )
+                                                        IDsrServiceRepository dsrServiceRepository, ICatalogRepository catalogRepository,
+                                                        IInternalOrderHistoryLogic orderHistoryLogic)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository,
                      userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, 
                      dsrServiceRepository)
@@ -61,6 +65,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             _messageTemplateLogic = messageTemplateLogic;
             this.messageProviderFactory = messageProviderFactory;
+            this._orderHistoryLogic = orderHistoryLogic;
         }
         #endregion
 
@@ -195,6 +200,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private Message MakeConfirmationMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder originalOrderInfo, decimal totalAmount)
         {
+            string invoiceNumber = GetInvoiceNumber(notification, customer);
             Message message = new Message();
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCONFIRMATION);
             message.MessageSubject = template.Subject.Inject(new
@@ -202,11 +208,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 OrderStatus = "Order Confirmation",
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName,
+                InvoiceNumber = invoiceNumber
             });
             message.MessageBody = template.Body.Inject(new
             {
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName,
+                InvoiceNumber = invoiceNumber,
                 ShipDate = notification.OrderChange.ShipDate.ToShortDateString(),
                 Count = notification.OrderChange.Items.Count,
                 Total = totalAmount.ToString("f2"),
@@ -219,6 +227,28 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             message.BranchId = customer.CustomerBranch;
             message.NotificationType = NotificationType.OrderConfirmation;
             return message;
+        }
+
+        private string GetInvoiceNumber(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
+        {
+            string invoiceNumber = null;
+            if (notification.InvoiceNumber != null)
+            {
+                invoiceNumber = notification.InvoiceNumber;
+            }
+            else
+            {
+                UserSelectedContext usc = new UserSelectedContext();
+                usc.CustomerId = customer.CustomerNumber;
+                usc.BranchId = customer.CustomerBranch;
+                DateTime today = DateTime.Parse(DateTime.Now.ToShortDateString());
+                List<string> notifItems = notification.OrderChange.Items.Select(x => x.ItemNumber).ToList();
+                List<Order> orders = _orderHistoryLogic.GetOrderHeaderInDateRange(usc, today, today.AddDays(1))
+                                        .ToList();
+                if ((orders != null) && (orders.Count > 0))
+                    invoiceNumber = orders[0].InvoiceNumber;
+            }
+            return invoiceNumber;
         }
 
         private decimal BuildOrderTable(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder originalOrderInfo)

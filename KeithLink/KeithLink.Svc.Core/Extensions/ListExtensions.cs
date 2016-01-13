@@ -88,7 +88,7 @@ namespace KeithLink.Svc.Core.Extensions
                         ToDate = i.ToDate,
                         Each = i.Each ?? false,
                         Quantity = i.Quantity
-                    }).ToList()
+                    }).OrderBy(l => l.Position).ToList()
             };
         }
 
