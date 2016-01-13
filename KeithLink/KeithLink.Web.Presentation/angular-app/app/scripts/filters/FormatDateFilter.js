@@ -6,7 +6,7 @@
  */
 angular.module('bekApp')
   .filter('formatDate', [function() {
- 
+
     function getFormattedDateTime(dateTime, formatString) {
      // Don't do anything if it's null
      if (!dateTime) {
@@ -23,7 +23,7 @@ angular.module('bekApp')
         }
         else{
           var date = dateTime;
-        } 
+        }
       // convert datetime to local timezone
       date.tz(jstz.determine().name());
 
@@ -58,6 +58,6 @@ angular.module('bekApp')
         formatString = 'ddd, MMM D, YYYY h:mma z';
       }
 
-      return $filter('formatDate')(date, formatString);
+      return $filter('formatDate')(date._d, formatString);
     };
   }]);
