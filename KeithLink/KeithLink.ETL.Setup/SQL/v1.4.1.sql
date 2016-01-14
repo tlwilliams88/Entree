@@ -40,8 +40,8 @@ update [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
         <td style="text-align:left;">{ProductNumber} </td>
         <td style="text-align:left;">{ProductDescription} </td>
         <td style="text-align:left;">{Quantity} </td>
-        <td style="text-align:left;">{Price} </td>
         <td style="text-align:left;">{Sent} </td>
+        <td style="text-align:left;">{Price} </td>
         <td style="text-align:left;">{Status}</td>
     </tr>'
    , ModifiedUtc = '2016-01-12'
