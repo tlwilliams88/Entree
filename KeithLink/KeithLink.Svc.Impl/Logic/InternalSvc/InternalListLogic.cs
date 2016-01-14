@@ -453,6 +453,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
                 if (prod != null)
                 {
+                    listItem.IsValid = true;
                     listItem.Name = prod.Name;
                     listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
                 }
