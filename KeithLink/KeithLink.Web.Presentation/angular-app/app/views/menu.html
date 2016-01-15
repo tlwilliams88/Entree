@@ -112,7 +112,7 @@
             type="button"
             ng-disabled="::!canBrowseCatalog"
             ng-click="toggleSpecialCatalogSubmenu()">
-              <span class="icon-exclaimation-splat sidebar-nav__icon"></span>
+              <span class="sidebar-nav__icon"><span class="new-badge">New</span></span>
               Specialty Catalogs
               <span ng-class="{'icon-angle-up sidebar-nav__collapse-arrow': !specialCatalogOpen, 'icon-angle-down sidebar-nav__collapse-arrow': specialCatalogOpen}"></span>
           </button>
@@ -124,13 +124,13 @@
                     ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'UNFI'}">
                     <li>Natural and Organic</li>
                 </button>
-                <button
+<!--                 <button
                         class="btn-no-style sub-btn"
                         type="button"
                         ui-sref="menu.catalog.home({catalogType: 'E&S'})"
                         ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'E&S'}">
                     <li>Equipment and Supply</li>
-                </button>
+                </button> -->
             </ul>
           </li>
           <a

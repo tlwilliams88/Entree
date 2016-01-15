@@ -36,7 +36,7 @@ angular.module('bekApp')
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
-  $scope.specialCatalogOpen = false;
+  $scope.specialCatalogOpen = true;
   $scope.showSpecialtyCatalogs = true;
  
   if (AccessService.isOrderEntryCustomer()) {
@@ -255,7 +255,7 @@ angular.module('bekApp')
             if ($scope.$state.params.catalogType !== 'UNFI'/* or other third parties $scope.$state.params.catalogType !== 'B&E'*/) {
                 $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
             } else {
-                $scope.specialCatalogOpen = true;
+                $scope.specialCatalogOpen = false;
             }
         } else { 
             $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
