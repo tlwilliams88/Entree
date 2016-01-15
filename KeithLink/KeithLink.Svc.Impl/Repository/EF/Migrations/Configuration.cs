@@ -414,7 +414,7 @@ namespace KeithLink.Svc.Impl.Migrations
                 new MessageTemplate
                 {
                     TemplateKey = "OrderRejected",
-                    Subject = "",
+                    Subject = "<h3>{CustomerName}</h3><h3>Customer # {CustomerNumber}</h3><h3 style=\"color:maroon;\">{SpecialInstructions}</h3>",
                     IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
                     Body = orderRejectedMessage.ToString()

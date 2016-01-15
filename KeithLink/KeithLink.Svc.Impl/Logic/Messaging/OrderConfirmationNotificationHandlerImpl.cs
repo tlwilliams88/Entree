@@ -326,7 +326,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private Message MakeRejectedMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
         {
             string invoiceNumber = GetInvoiceNumber(notification, customer);
-            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCONFIRMATION);
+            MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERREJECTED);
             Message message = new Message();
 
             message.MessageSubject = template.Subject.Inject(new
@@ -343,16 +343,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 SpecialInstructions = notification.OrderChange.SpecialInstructions
             }));
-            message.MessageBody = template.Body.Inject(new
-            {
-                CustomerNumber = customer.CustomerNumber,
-                CustomerName = customer.CustomerName,
-                ShipDate = "None",
-                Count = "0",
-                Total = "0.00",
-                OrderConfirmationItems = rejectedString.ToString()
-            });
-            message.BodyIsHtml = template.IsBodyHtml;
+            message.BodyIsHtml = rejectTemplate.IsBodyHtml;
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerName = customer.CustomerName;
             message.BranchId = customer.CustomerBranch;

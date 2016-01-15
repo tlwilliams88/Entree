@@ -59,4 +59,11 @@ update [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
    , ModifiedUtc = '2016-01-12'
   where TemplateKey = 'OrderConfirmationItemOOSDetail'
 
+INSERT INTO [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
+VALUES ('OrderRejected', '', 1, '<h3 style="color:maroon;">{SpecialInstructions}</h3>', '2015-11-06', '2015-11-06', 0)
+update [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
+  set  Subject = 'Ben E. Keith: Order Rejected for {CustomerNumber}-{CustomerName}'
+   , Body = '<h3>{CustomerName}</h3><h3>Customer # {CustomerNumber}</h3><h3 style="color:maroon;">{SpecialInstructions}</h3>'
+   , ModifiedUtc = '2016-01-12'
+  where TemplateKey = 'OrderRejected'
 
