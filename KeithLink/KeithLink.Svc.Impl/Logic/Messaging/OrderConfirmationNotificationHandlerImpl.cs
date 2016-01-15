@@ -264,12 +264,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 if (!String.IsNullOrEmpty(line.OriginalStatus) && line.OriginalStatus.Equals("filled", StringComparison.CurrentCultureIgnoreCase))
                 {
                     totalAmount += (line.QuantityOrdered * line.ItemPrice);
-                    BuildItemDetail(itemOrderInfo, line, priceInfo);
+                    BuildItemDetail(itemOrderInfo, line, priceInfo, currentProduct);
                 }
                 else
                 {
                     totalAmount += (line.QuantityShipped * line.ItemPrice);
-                    BuildExceptionItemDetail(itemOrderInfoOOS, line, priceInfo);
+                    BuildExceptionItemDetail(itemOrderInfoOOS, line, priceInfo, currentProduct);
                 }
             }
             originalOrderInfo.Append(itemOrderInfoOOS);
@@ -278,13 +278,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             return totalAmount;
         }
 
-        private void BuildExceptionItemDetail(StringBuilder itemOrderInfoOOS, OrderLineChange line, string priceInfo)
+        private void BuildExceptionItemDetail(StringBuilder itemOrderInfoOOS, OrderLineChange line, string priceInfo, Product currentProduct)
         {
             MessageTemplateModel itemOOSDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL);
             itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new
             {
                 ProductNumber = line.ItemNumber,
-                ProductDescription = line.ItemDescription,
+                ProductDescription = currentProduct.Name,
                 Quantity = line.QuantityOrdered.ToString(),
                 Sent = line.QuantityShipped.ToString(),
                 Price = priceInfo,
@@ -292,13 +292,13 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             }));
         }
 
-        private void BuildItemDetail(StringBuilder itemOrderInfo, OrderLineChange line, string priceInfo)
+        private void BuildItemDetail(StringBuilder itemOrderInfo, OrderLineChange line, string priceInfo, Product currentProduct)
         {
             MessageTemplateModel itemDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMDETAIL);
             itemOrderInfo.Append(itemDetailTemplate.Body.Inject(new
             {
                 ProductNumber = line.ItemNumber,
-                ProductDescription = line.ItemDescription,
+                ProductDescription = currentProduct.Name,
                 Quantity = line.QuantityOrdered.ToString(),
                 Sent = line.QuantityShipped.ToString(),
                 Price = priceInfo,
@@ -325,6 +325,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private Message MakeRejectedMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
         {
+            string invoiceNumber = GetInvoiceNumber(notification, customer);
             MessageTemplateModel template = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERCONFIRMATION);
             Message message = new Message();
 
@@ -333,6 +334,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 OrderStatus = "Order Rejected",
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName,
+                InvoiceNumber = invoiceNumber
             });
 
             StringBuilder rejectedString = new StringBuilder();
@@ -350,6 +352,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 Total = "0.00",
                 OrderConfirmationItems = rejectedString.ToString()
             });
+            message.BodyIsHtml = template.IsBodyHtml;
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerName = customer.CustomerName;
             message.BranchId = customer.CustomerBranch;

@@ -369,8 +369,8 @@ namespace KeithLink.Svc.Impl.Migrations
             orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{ProductNumber} </td>");
             orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{ProductDescription} </td>");
             orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Quantity} </td>");
-            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Price} </td>");
             orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Sent} </td>");
+            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Price} </td>");
             orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Status}</td>");
             orderConfirmationItemsDetailMessage.AppendLine("    </tr>");
 
