@@ -430,7 +430,7 @@
                 id="listsTableRows">                
            
             <tr ng-if="item.showBody" ng-class="::{ odd : $odd, even: $even}">
-              <td class="hidden-drag bek-drag-handle large-icon icon-col">
+              <td class="hidden-drag bek-drag-handle">
                 <input type="checkbox" class="hidden-print bek-no-drag hand" ng-model-options="{ debounce: 1000 }" ng-model="item.isSelected" no-dirty-check>
                 <span style="font-size:11px;">
                   {{item.position}}
@@ -650,7 +650,7 @@
             </tr>
 
             <tr ng-if="!item.showBody" ng-class="{ odd : $odd, even: $even}" ng-mouseenter="item.showBody = true">
-              <td class=" large-icon icon-col">
+              <td>
                 <input type="checkbox" ng-checked = "item.isSelected" class="hidden-print ">
                 <span style="font-size:11px;">
                   {{item.position}}
