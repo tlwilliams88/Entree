@@ -128,7 +128,7 @@
             <div class="btn-group" dropdown is-open="showShipDates">
               <p class="form-control-static">
                 {{currentCart.requestedshipdate | formatDate}}
-                <button type="button" class="btn-no-style dropdown-toggle hidden-print"> <span class="text-blue icon-calendar"></span></button>
+                <button type="button" class="btn-no-style dropdown-toggle hidden-print"> <span class="text-blue icon-calendar"></span></button><span ng-if="currentCart.containsspecialitems" class="text-black glyphicon-asterisk"></span>
                 <div class="dropdown-menu">
                   <table class="table no-margin">
                     <tr>
@@ -183,7 +183,7 @@
             <p class="text-red" ng-if="isOffline">Order Submission Disabled: Not connected to network</p>
           </div>
             <div class="col-xs-12">
-            <p class="text-red" ng-if="currentCart.containsspecialitems">This cart includes special order items that will ship separately at a later date.</p>
+            <p class="text-red" ng-if="currentCart.containsspecialitems" ><span class="text-black glyphicon-asterisk"></span> This cart includes special order items that will ship separately at a later date.</p>
           </div>
         </div>
 
