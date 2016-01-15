@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using Autofac;
 using Autofac.Features.Indexed;
@@ -96,8 +96,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
             builder.RegisterType<ContentManagementService>();
-			builder.RegisterType<ConfigurationService>();
-            builder.RegisterType<ReportService>();
+			builder.RegisterType<ReportService>();
 			builder.RegisterType<CacheService>();
             builder.RegisterType<DsrService>();
 			builder.RegisterType<ProfileService>();
@@ -228,7 +227,6 @@ namespace KeithLink.Svc.InternalSvc
 
 			builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 
-			builder.RegisterType<InternalExportSettingsLogicImpl>().As<IInternalExportSettingLogic>();
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 

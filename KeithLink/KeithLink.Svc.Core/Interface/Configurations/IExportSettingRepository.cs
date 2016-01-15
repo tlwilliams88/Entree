@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KeithLink.Svc.Core.Interface.Configuration
+namespace KeithLink.Svc.Core.Interface.Configurations
 {
 	public interface IExportSettingRepository : IBaseEFREpository<ExportSetting>
 	{

@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Core.Interface.Configuration;
+﻿using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System;

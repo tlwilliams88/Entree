@@ -160,6 +160,7 @@
     <Compile Include="Helpers\PagingHelper.cs" />
     <Compile Include="Helpers\PricingHelper.cs" />
     <Compile Include="Extensions\SettingsExtensions.cs" />
+    <Compile Include="Interface\Configurations\IExportSettingLogic.cs" />
     <Compile Include="Interface\ETL\ICustomerLogic.cs" />
     <Compile Include="Enumerations\Order.cs" />
     <Compile Include="Exceptions\Orders\CancelledTransactionException.cs" />
@@ -194,9 +195,7 @@
     <Compile Include="Extensions\Paging.cs" />
     <Compile Include="Interface\Cache\ICacheRefreshRepository.cs" />
     <Compile Include="Interface\Cache\ICacheRepository.cs" />
-    <Compile Include="Interface\Configuration\IExportSettingServiceRepository.cs" />
-    <Compile Include="Interface\Configuration\IInternalExportSettingLogic.cs" />
-    <Compile Include="Interface\Configuration\IExportSettingRepository.cs" />
+    <Compile Include="Interface\Configurations\IExportSettingRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementExternalRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementLogic.cs" />
     <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />

@@ -251,25 +251,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.wsdl" />
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.disco" />
     <None Include="Service References\com.benekeith.ContentManagementService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ContentManagementService\configuration.svcinfo" />
@@ -410,13 +391,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\com.benekeith.ConfigurationService\ConfigurationService.disco" />
-    <None Include="Service References\com.benekeith.ConfigurationService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ConfigurationService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ConfigurationService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\com.benekeith.DsrService\DsrService.disco" />
     <None Include="Service References\com.benekeith.DsrService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.DsrService\configuration.svcinfo" />
@@ -500,7 +474,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Repository\Configurations\ExportSettingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
@@ -513,11 +486,6 @@
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
     <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
-    <Compile Include="Service References\com.benekeith.ConfigurationService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.ContentManagementService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -720,6 +688,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Repository\Configurations\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
@@ -746,7 +715,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.ConfigurationService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ContentManagementService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.DsrService\" />

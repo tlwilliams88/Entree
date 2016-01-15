@@ -232,6 +232,7 @@
     <Compile Include="CommerceFoundationServiceAgent.cs" />
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
     <Compile Include="Logic\ETL\ListImportLogicImpl.cs" />
@@ -252,7 +253,6 @@
     <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalExportSettingsLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
