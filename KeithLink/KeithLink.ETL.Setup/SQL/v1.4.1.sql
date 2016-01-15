@@ -58,3 +58,5 @@ update [BEK_Commerce_AppData].[Configuration].[MessageTemplates]
 </tr>'
    , ModifiedUtc = '2016-01-12'
   where TemplateKey = 'OrderConfirmationItemOOSDetail'
+
+
