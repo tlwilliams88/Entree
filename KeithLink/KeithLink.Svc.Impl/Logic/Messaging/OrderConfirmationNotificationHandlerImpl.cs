@@ -338,12 +338,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             });
 
             StringBuilder rejectedString = new StringBuilder();
-            MessageTemplateModel rejectTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERREJECTED);
-            rejectedString.Append(rejectTemplate.Body.Inject(new
+            rejectedString.Append(template.Body.Inject(new
             {
                 SpecialInstructions = notification.OrderChange.SpecialInstructions
             }));
-            message.BodyIsHtml = rejectTemplate.IsBodyHtml;
+            message.BodyIsHtml = template.IsBodyHtml;
             message.CustomerNumber = customer.CustomerNumber;
             message.CustomerName = customer.CustomerName;
             message.BranchId = customer.CustomerBranch;
