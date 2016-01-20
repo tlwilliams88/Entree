@@ -265,7 +265,7 @@ angular.module('bekApp')
             
             if(orderNumber == -1 ) {
                 //no BEK items bought
-                if (data.ordersReturned.length != data.numberOfOrders) {
+                if (data.ordersReturned.length && data.ordersReturned.length != data.numberOfOrders) {
                     status = 'error';
                     message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
                 } else {
