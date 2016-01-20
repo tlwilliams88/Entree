@@ -427,7 +427,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     returnOrder = h.ToOrder();
 
                     if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
-                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
+                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.InvoiceNumber);
                         if (po != null) {
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
@@ -461,7 +461,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         }
                     }
 
-                    LookupProductDetails(returnOrder.CatalogId, returnOrder);
+                    LookupProductDetails(h.BranchId, returnOrder);
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
                     if (invoice != null) {
