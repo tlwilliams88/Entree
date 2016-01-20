@@ -162,9 +162,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             if (myOrder == null) {
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
+                _log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() invoiceNumber=" + invoiceNumber);
                 returnOrder = po.ToOrder();
                 if (po != null)
                 {
+                    _log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() LineItems=" + ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
                     foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
                     {
                         var item = (CS.LineItem)lineItem.Target;
@@ -173,6 +175,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         {
                             oitem.CatalogId = item.CatalogName;
                             oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                            _log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() item.CatalogName=" + item.CatalogName);
                         }
                     }
                     var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
@@ -426,20 +429,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                     returnOrder = h.ToOrder();
 
-                    if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
-                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.InvoiceNumber);
-                        if (po != null) {
-                            returnOrder.Status = po.Status;
-                            returnOrder.OrderNumber = h.ControlNumber;
-                            returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
+                    if (h.OrderSystem.Trim().Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+                    {
+                        _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber.Trim());
+                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber.Trim());
+                        if (po != null)
+                        {
+                            _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() LineItems=" + 
+                                ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
                             foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
                             {
                                 var item = (CS.LineItem)lineItem.Target;
-                                var oitem = returnOrder.Items.Where(i => i.ItemNumber == item.ProductId).FirstOrDefault();
+                                var oitem = returnOrder.Items.Where(i => i.ItemNumber.Trim() == item.ProductId).FirstOrDefault();
                                 if (oitem != null)
                                 {
                                     oitem.CatalogId = item.CatalogName;
                                     oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                                    _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
                                 }
                             }
                             var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
@@ -458,6 +464,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                                 if (catalog != null) sbCatalogT.Append(catalog.ToString());
                             }
                             returnOrder.CatalogType = sbCatalogT.ToString();
+                            returnOrder.Status = po.Status;
+                            returnOrder.OrderNumber = h.ControlNumber;
+                            returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
+                        }
+                        else
+                        {
+                            _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber + " po not looked up");
                         }
                     }
 
