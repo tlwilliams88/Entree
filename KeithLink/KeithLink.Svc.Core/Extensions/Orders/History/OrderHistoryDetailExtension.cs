@@ -164,7 +164,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 
         public static OrderLine ToOrderLine(this EF.OrderHistoryDetail value, string orderStatus) {
             OrderLine lineItem = new OrderLine();
-
             lineItem.LineNumber = value.LineNumber;
             lineItem.ItemNumber = value.ItemNumber;
             lineItem.Quantity = (short)value.ShippedQuantity;

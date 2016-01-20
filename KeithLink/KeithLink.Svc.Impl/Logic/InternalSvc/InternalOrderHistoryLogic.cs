@@ -19,6 +19,7 @@ using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
@@ -162,13 +163,70 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             if (myOrder == null) {
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
                 returnOrder = po.ToOrder();
-            } else {
+                if (po != null)
+                {
+                    foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+                    {
+                        var item = (CS.LineItem)lineItem.Target;
+                        var oitem = returnOrder.Items.Where(i => i.ItemNumber == item.ProductId).FirstOrDefault();
+                        if (oitem != null)
+                        {
+                            oitem.CatalogId = item.CatalogName;
+                            oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                        }
+                    }
+                    var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
+                    StringBuilder sbCatalogI = new StringBuilder();
+                    foreach (var catalog in catalogIds)
+                    {
+                        if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
+                        if (catalog != null) sbCatalogI.Append(catalog.ToString());
+                    }
+                    returnOrder.CatalogId = sbCatalogI.ToString();
+                    var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
+                    StringBuilder sbCatalogT = new StringBuilder();
+                    foreach (var catalog in catalogTypes)
+                    {
+                        if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
+                        if (catalog != null) sbCatalogT.Append(catalog.ToString());
+                    }
+                    returnOrder.CatalogType = sbCatalogT.ToString();
+                }
+            }
+            else
+            {
                 returnOrder = myOrder.ToOrder();
 
                 if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0) {
                     po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
                     if (po != null) {
                         returnOrder.Status = po.Status;
+                        foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+                        {
+                            var item = (CS.LineItem)lineItem.Target;
+                            var oitem = returnOrder.Items.Where(i => i.ItemNumber == item.ProductId).FirstOrDefault();
+                            if (oitem != null)
+                            {
+                                oitem.CatalogId = item.CatalogName;
+                                oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                            }
+                        }
+                        var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
+                        StringBuilder sbCatalogI = new StringBuilder();
+                        foreach (var catalog in catalogIds)
+                        {
+                            if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
+                            if (catalog != null) sbCatalogI.Append(catalog.ToString());
+                        }
+                        returnOrder.CatalogId = sbCatalogI.ToString();
+                        var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
+                        StringBuilder sbCatalogT = new StringBuilder();
+                        foreach (var catalog in catalogTypes)
+                        {
+                            if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
+                            if (catalog != null) sbCatalogT.Append(catalog.ToString());
+                        }
+                        returnOrder.CatalogType = sbCatalogT.ToString();
                     }
                 }
             }
@@ -189,8 +247,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                 }
             }
-            
-			LookupProductDetails(branchId, returnOrder);
+
+            LookupProductDetails(returnOrder.CatalogId, returnOrder);
 
             if (po != null) {
                 returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
@@ -368,17 +426,42 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                     returnOrder = h.ToOrder();
 
-                    LookupProductDetails(h.BranchId, returnOrder);
-
                     if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
                         var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
                         if (po != null) {
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
                             returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
+                            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+                            {
+                                var item = (CS.LineItem)lineItem.Target;
+                                var oitem = returnOrder.Items.Where(i => i.ItemNumber == item.ProductId).FirstOrDefault();
+                                if (oitem != null)
+                                {
+                                    oitem.CatalogId = item.CatalogName;
+                                    oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                                }
+                            }
+                            var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
+                            StringBuilder sbCatalogI = new StringBuilder();
+                            foreach (var catalog in catalogIds)
+                            {
+                                if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
+                                if (catalog != null) sbCatalogI.Append(catalog.ToString());
+                            }
+                            returnOrder.CatalogId = sbCatalogI.ToString();
+                            var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
+                            StringBuilder sbCatalogT = new StringBuilder();
+                            foreach (var catalog in catalogTypes)
+                            {
+                                if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
+                                if (catalog != null) sbCatalogT.Append(catalog.ToString());
+                            }
+                            returnOrder.CatalogType = sbCatalogT.ToString();
                         }
-
                     }
+
+                    LookupProductDetails(h.BranchId, returnOrder);
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
                     if (invoice != null) {

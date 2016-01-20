@@ -16,6 +16,12 @@ namespace KeithLink.Svc.Core.Models.Orders
 {
 	[DataContract(Name = "OrderLine")]
 	public class OrderLine : BaseProductInfo, IExportableModel {
+        [DataMember(Name = "catalogtype")]
+        public string CatalogType { get; set; }
+
+        [DataMember(Name = "catalog_id")]
+        public string CatalogId { get; set; }
+
         [DataMember(Name = "linenumber")]
         public int LineNumber { get; set; }
 

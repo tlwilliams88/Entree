@@ -458,7 +458,14 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             if (externalCatalog.Count > 0)
             {
-                return externalCatalog[0].Type.ToString();
+                if (externalCatalog[0].Type != null)
+                {
+                    return externalCatalog[0].Type.ToString();
+                }
+                else
+                {
+                    return catalogId;
+                }
             }
             else
             {
