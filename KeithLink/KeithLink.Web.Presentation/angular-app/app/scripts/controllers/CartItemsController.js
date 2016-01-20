@@ -218,9 +218,8 @@ angular.module('bekApp')
           processingSaveCart = false;
         });
       }
-    };
+    };   
    
-   var invalidItemFound = false;
    var processingSubmitOrder = false;
 
     $scope.submitOrder = function(cart) {
