@@ -474,7 +474,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         }
                     }
 
-                    LookupProductDetails(h.BranchId, returnOrder);
+                    LookupProductDetails(returnOrder.CatalogId, returnOrder);
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
                     if (invoice != null) {
@@ -503,12 +503,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         private void LookupProductDetails(string branchId, Order order) {
             if (order.Items == null) { return; }
 
-            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber).ToList());
+            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber.Trim()).ToList());
 
             var productDict = products.Products.ToDictionary(p => p.ItemNumber);
 
             Parallel.ForEach(order.Items, item => {
-                var prod = productDict.ContainsKey(item.ItemNumber) ? productDict[item.ItemNumber] : null;
+                var prod = productDict.ContainsKey(item.ItemNumber.Trim()) ? productDict[item.ItemNumber.Trim()] : null;
                 if (prod != null) {
                     item.IsValid = true;
                     item.Name = prod.Name;
