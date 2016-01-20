@@ -461,7 +461,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         }
                     }
 
-                    LookupProductDetails(h.BranchId, returnOrder);
+                    LookupProductDetails(returnOrder.CatalogId, returnOrder);
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
                     if (invoice != null) {
