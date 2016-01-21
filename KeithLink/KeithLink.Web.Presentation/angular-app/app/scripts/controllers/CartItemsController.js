@@ -178,7 +178,7 @@ angular.module('bekApp')
       items.forEach(function(item){
         if (!item.extPrice && !(item.extPrice > 0)){
           invalidItemFound = true;
-          $scope.displayMessage('error', 'Please enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
+          $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
         }
       })
       return invalidItemFound;
