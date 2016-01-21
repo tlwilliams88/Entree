@@ -166,34 +166,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 returnOrder = po.ToOrder();
                 if (po != null)
                 {
-                    _log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() LineItems=" + ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
-                    foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
-                    {
-                        var item = (CS.LineItem)lineItem.Target;
-                        var oitem = returnOrder.Items.Where(i => i.ItemNumber == item.ProductId).FirstOrDefault();
-                        if (oitem != null)
-                        {
-                            oitem.CatalogId = item.CatalogName;
-                            oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
-                            _log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() item.CatalogName=" + item.CatalogName);
-                        }
-                    }
-                    var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
-                    StringBuilder sbCatalogI = new StringBuilder();
-                    foreach (var catalog in catalogIds)
-                    {
-                        if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
-                        if (catalog != null) sbCatalogI.Append(catalog.ToString());
-                    }
-                    returnOrder.CatalogId = sbCatalogI.ToString();
-                    var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
-                    StringBuilder sbCatalogT = new StringBuilder();
-                    foreach (var catalog in catalogTypes)
-                    {
-                        if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
-                        if (catalog != null) sbCatalogT.Append(catalog.ToString());
-                    }
-                    returnOrder.CatalogType = sbCatalogT.ToString();
+                    PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
                 }
             }
             else
@@ -204,32 +177,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
                     if (po != null) {
                         returnOrder.Status = po.Status;
-                        foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
-                        {
-                            var item = (CS.LineItem)lineItem.Target;
-                            var oitem = returnOrder.Items.Where(i => i.ItemNumber == item.ProductId).FirstOrDefault();
-                            if (oitem != null)
-                            {
-                                oitem.CatalogId = item.CatalogName;
-                                oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
-                            }
-                        }
-                        var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
-                        StringBuilder sbCatalogI = new StringBuilder();
-                        foreach (var catalog in catalogIds)
-                        {
-                            if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
-                            if (catalog != null) sbCatalogI.Append(catalog.ToString());
-                        }
-                        returnOrder.CatalogId = sbCatalogI.ToString();
-                        var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
-                        StringBuilder sbCatalogT = new StringBuilder();
-                        foreach (var catalog in catalogTypes)
-                        {
-                            if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
-                            if (catalog != null) sbCatalogT.Append(catalog.ToString());
-                        }
-                        returnOrder.CatalogType = sbCatalogT.ToString();
+                        PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
                     }
                 }
             }
@@ -435,35 +383,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber.Trim());
                         if (po != null)
                         {
-                            _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() LineItems=" + 
-                                ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
-                            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
-                            {
-                                var item = (CS.LineItem)lineItem.Target;
-                                var oitem = returnOrder.Items.Where(i => i.ItemNumber.Trim() == item.ProductId).FirstOrDefault();
-                                if (oitem != null)
-                                {
-                                    oitem.CatalogId = item.CatalogName;
-                                    oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
-                                    _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
-                                }
-                            }
-                            var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
-                            StringBuilder sbCatalogI = new StringBuilder();
-                            foreach (var catalog in catalogIds)
-                            {
-                                if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
-                                if (catalog != null) sbCatalogI.Append(catalog.ToString());
-                            }
-                            returnOrder.CatalogId = sbCatalogI.ToString();
-                            var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
-                            StringBuilder sbCatalogT = new StringBuilder();
-                            foreach (var catalog in catalogTypes)
-                            {
-                                if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
-                                if (catalog != null) sbCatalogT.Append(catalog.ToString());
-                            }
-                            returnOrder.CatalogType = sbCatalogT.ToString();
+                            PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
                             returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
@@ -498,6 +418,45 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             return customerOrders.ToList();
+        }
+
+        /// <summary>
+        /// Pulls catalogname from purchase order lineitems and sets the catalogid and catalogname on order items, then bubbles those up to set them on the overall order
+        /// </summary>
+        /// <param name="po">The purchase order that the items are stored in</param>
+        /// <param name="returnOrder">The order that the items are being set on</param>
+        /// <returns></returns>
+        private void PullCatalogFromPurchaseOrderItemsToOrder(PurchaseOrder po, Order returnOrder)
+        {
+            _log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
+                ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+            {
+                var item = (CS.LineItem)lineItem.Target;
+                var oitem = returnOrder.Items.Where(i => i.ItemNumber.Trim() == item.ProductId).FirstOrDefault();
+                if (oitem != null)
+                {
+                    oitem.CatalogId = item.CatalogName;
+                    oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                    _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
+                }
+            }
+            var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
+            StringBuilder sbCatalogI = new StringBuilder();
+            foreach (var catalog in catalogIds)
+            {
+                if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
+                if (catalog != null) sbCatalogI.Append(catalog.ToString());
+            }
+            returnOrder.CatalogId = sbCatalogI.ToString();
+            var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
+            StringBuilder sbCatalogT = new StringBuilder();
+            foreach (var catalog in catalogTypes)
+            {
+                if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
+                if (catalog != null) sbCatalogT.Append(catalog.ToString());
+            }
+            returnOrder.CatalogType = sbCatalogT.ToString();
         }
 
         private void LookupProductDetails(string branchId, Order order) {
