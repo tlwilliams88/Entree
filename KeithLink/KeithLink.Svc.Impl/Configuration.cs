@@ -176,6 +176,11 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_MARKETINGCONTENT_BRANCHITEMCOUNT = "MarketingBranchItemCount";
         private const string KEY_MARKETINGCONTENT_TOTALITEMCOUNT = "MarketingTotalItemCount";
         private const string KEY_MARKETINGCONTENT_URL = "MarketingContentUrl";
+
+        // UNFI Whitelisting configurations - these are temporary entries
+        private const string KEY_UNFI_WHITELIST_DSRS = "UNFIWhitelistDSRs";
+        private const string KEY_UNFI_WHITELIST_CUSTOMERS = "UNFIWhitelistCustomers";
+        private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
         #endregion
 
         #region methods
@@ -1010,6 +1015,31 @@ namespace KeithLink.Svc.Impl {
                 } catch {
                     return true;
                 }
+            }
+        }
+
+        // UNFI Whitelisting configurations - these are temporary entries
+        public static List<string> WhiteListedUNFIDSRs
+        {
+            get {
+                string val = GetValue(KEY_UNFI_WHITELIST_DSRS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        public static List<string> WhiteListedUNFICustomers
+        {
+            get
+            {
+                string val = GetValue(KEY_UNFI_WHITELIST_CUSTOMERS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        public static List<string> WhiteListedUNFIBEKUsers
+        {
+            get
+            {
+                string val = GetValue(KEY_UNFI_WHITELIST_BEKUSERS, string.Empty);
+                return GetCommaSeparatedValues(val);
             }
         }
         #endregion

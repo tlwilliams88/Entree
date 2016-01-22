@@ -90,5 +90,15 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         List<SettingsModelReturn> GetProfileSettings( Guid userId );
 
         void SaveProfileSettings( SettingsModel settings );
+
+        /// <summary>
+        /// UNFI Whitelisting configurations - these are temporary entries
+        /// </summary>
+        /// <param name="user">the userprofile of who's logged in</param>
+        /// <remarks>
+        /// bakillins - 1/22/2016
+        /// </remarks>
+        /// <returns>a bool that's true if they are on the whitelists</returns>
+        bool CheckCanViewUNFI(UserProfile user);
     }
 }

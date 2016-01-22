@@ -204,6 +204,15 @@ namespace KeithLink.Svc.WebApi.Controllers
                     retVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
                 }
 
+                // UNFI Whitelisting configurations - these are temporary entries
+                // if user can view unfi, we want to say this right away
+                if ((retVal.UserProfiles != null) &&
+                    (retVal.UserProfiles.Count == 1) &&
+                    (retVal.UserProfiles[0].DefaultCustomer != null))
+                {
+                        retVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser);
+                }
+
                 return retVal;
 			}
 			else
@@ -576,7 +585,9 @@ namespace KeithLink.Svc.WebApi.Controllers
                 typeVal = 1;
             }
 
-			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType) typeVal);
+			PagedResults<Customer> retVal = _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType) typeVal);
+
+            return retVal;
 		}
 
 		/// <summary>
@@ -609,7 +620,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 				_log.WriteErrorLog("Unhandled exception", ex);
 			}
 
-			return retVal;
+            // UNFI Whitelisting configurations - these are temporary entries
+            // if we can view unfi with this customer, we need to verify
+            retVal.SuccessResponse.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser);
+
+            return retVal;
 		}
 
 		/// <summary>

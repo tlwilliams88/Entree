@@ -1706,7 +1706,30 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _settingsLogic.DeleteSettings( model );
         }
 
-
+        /// <summary>
+        /// UNFI Whitelisting configurations - these are temporary entries
+        /// </summary>
+        /// <param name="user">the userprofile of who's logged in</param>
+        /// <remarks>
+        /// bakillins - 1/22/2016
+        /// </remarks>
+        /// <returns>a bool that's true if they are on the whitelists</returns>
+        public bool CheckCanViewUNFI(UserProfile user)
+        {
+            if ((user != null) &&
+                (user.IsInternalUser) &&
+                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIBEKUsers.Contains(user.UserName)))
+                return true;
+            if ((user != null) &&
+                (user.RoleName.Equals("dsr", StringComparison.CurrentCultureIgnoreCase)) &&
+                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIDSRs.Contains(user.UserName)))
+                return true;
+            if ((user != null) &&
+                (user.CustomerNumber != null) &&
+                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFICustomers.Contains(user.CustomerNumber)))
+                return true;
+            return false;
+        }
         #endregion
 	}
 }
