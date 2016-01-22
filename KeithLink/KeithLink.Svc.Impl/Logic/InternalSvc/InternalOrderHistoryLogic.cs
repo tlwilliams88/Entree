@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KeithLink.Svc.Core.Models.Profile;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
     public class InternalOrderHistoryLogic : IInternalOrderHistoryLogic {
@@ -162,11 +163,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             if (myOrder == null) {
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
-                _log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() invoiceNumber=" + invoiceNumber);
+                //_log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() invoiceNumber=" + invoiceNumber);
                 returnOrder = po.ToOrder();
                 if (po != null)
                 {
                     PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
+                    FindOrdersRelatedToPurchaseOrder(po, returnOrder, null);
                 }
             }
             else
@@ -178,6 +180,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (po != null) {
                         returnOrder.Status = po.Status;
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
+                        FindOrdersRelatedToPurchaseOrder(po, returnOrder, null);
                     }
                 }
             }
@@ -214,6 +217,48 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
 
             return returnOrder;
+        }
+
+        /// <summary>
+        /// Pulls orderhistory orders for that same customer within a few minutes (either before or after) and calls those related (stores the order number and invoice number) in the order
+        /// </summary>
+        /// <param name="po">The purchase order that the items are stored in</param>
+        /// <param name="returnOrder">The order that the items are being set on</param>
+        /// <param name="headers">The reference to order history headers if we have it</param>
+        /// <returns></returns>
+        private void FindOrdersRelatedToPurchaseOrder(PurchaseOrder po, Order returnOrder, IEnumerable<EF.OrderHistoryHeader> headers)
+        {
+            string customerNumber = po.Properties["CustomerId"].ToString();
+            string branchId = po.Properties["BranchId"].ToString();
+            string orderNumber = po.Properties["OrderNumber"].ToString();
+            EF.OrderHistoryHeader thisOrder;
+            if (headers == null) thisOrder = _headerRepo.Read(h => h.ControlNumber == orderNumber).FirstOrDefault();
+            else thisOrder = headers.Where(h => h.ControlNumber == orderNumber).FirstOrDefault();
+            DateTime startDT = thisOrder.CreatedUtc.AddMinutes(-3);
+            DateTime endDT = thisOrder.CreatedUtc.AddMinutes(3);
+            Dictionary<string, string> relates;
+            if (headers == null) relates = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                h.CustomerNumber.Equals(customerNumber) &&
+                                                h.CreatedUtc > startDT &&
+                                                h.CreatedUtc < endDT).ToDictionary(h => h.ControlNumber, h => h.InvoiceNumber);
+            else relates = headers.Where(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                h.CustomerNumber.Equals(customerNumber) &&
+                                                h.CreatedUtc > startDT &&
+                                                h.CreatedUtc < endDT).ToDictionary(h => h.ControlNumber, h => h.InvoiceNumber);
+            StringBuilder sbRelatedOrders = new StringBuilder();
+            StringBuilder sbRelatedInvoices = new StringBuilder();
+            foreach (string relate in relates.Keys)
+            {
+                if (relate.Equals(orderNumber) == false)
+                {
+                    if (sbRelatedOrders.Length > 0) sbRelatedOrders.Append(",");
+                    if (sbRelatedInvoices.Length > 0) sbRelatedInvoices.Append(",");
+                    sbRelatedOrders.Append(relate);
+                    sbRelatedInvoices.Append(relates[relate]);
+                }
+            }
+            returnOrder.RelatedOrderNumbers = sbRelatedOrders.ToString();
+            returnOrder.RelatedInvoiceNumbers = sbRelatedInvoices.ToString();
         }
 
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
@@ -374,16 +419,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             foreach (var h in listOfHeaders) {
                 try {
                     Order returnOrder = null;
-
+                    
                     returnOrder = h.ToOrder();
 
                     if (h.OrderSystem.Trim().Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
                     {
-                        _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber.Trim());
+                        //_log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber.Trim());
                         var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber.Trim());
                         if (po != null)
                         {
                             PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
+                            FindOrdersRelatedToPurchaseOrder(po, returnOrder, headers);
                             returnOrder.Status = po.Status;
                             returnOrder.OrderNumber = h.ControlNumber;
                             returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
@@ -394,7 +440,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         }
                     }
 
-                    LookupProductDetails(returnOrder.CatalogId, returnOrder);
+                    if ((returnOrder.CatalogId != null) && (returnOrder.CatalogId.Length > 0)) LookupProductDetails(returnOrder.CatalogId, returnOrder);
+                    else LookupProductDetails(userContext.BranchId, returnOrder);
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
                     if (invoice != null) {
@@ -428,8 +475,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <returns></returns>
         private void PullCatalogFromPurchaseOrderItemsToOrder(PurchaseOrder po, Order returnOrder)
         {
-            _log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
-                ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
+            //_log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
+            //    ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
             foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
             {
                 var item = (CS.LineItem)lineItem.Target;
@@ -438,7 +485,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 {
                     oitem.CatalogId = item.CatalogName;
                     oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
-                    _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
+                    //_log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
                 }
             }
             var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
