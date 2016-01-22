@@ -166,32 +166,30 @@ angular.module('bekApp')
       }
  
     $scope.sortByPrice = function(item) {
-      // if (item.price) {
-      //   return item.price;
-      // } else {
+       if (item.price) {
+         return item.price;
+       } else {
         return item.each ? item.packageprice : item.caseprice;
-      // }
+       }
     };
- 
-    var invalidItemFound = false;
+
+    function invalidItemCheck(items) {
+      var invalidItemFound = false;
+      items.forEach(function(item){
+        if (!item.extPrice && !(item.extPrice > 0)){
+          invalidItemFound = true;
+          $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
+        }
+      })
+      return invalidItemFound;
+   }
+
     var processingSaveCart = false;
 
     $scope.saveCart = function(cart) {
 
-        $scope.currentCart.items.forEach(function(item){
-          if (!item.extPrice && !(item.extPrice > 0)){
-            invalidItemFound = true;
-            $scope.displayMessage('error', 'Cannot save cart. Item ' + item.itemnumber +' is invalid.  Please contact DSR for more information.');
-          }
-        })
-
-        if (invalidItemFound){
-          var deferred = $q.defer();
-          deferred.resolve(invalidItemFound);
-          return deferred.promise;
-        }
-
-      if (!processingSaveCart) {
+     var invalidItemFound =  invalidItemCheck(cart.items);
+     if (!processingSaveCart && !invalidItemFound) {
         processingSaveCart = true;
         var updatedCart = angular.copy(cart);
         
@@ -220,27 +218,14 @@ angular.module('bekApp')
           processingSaveCart = false;
         });
       }
-    };
+    };   
    
-   var invalidItemFound = false;
    var processingSubmitOrder = false;
 
     $scope.submitOrder = function(cart) {
 
-        $scope.currentCart.items.forEach(function(item){
-          if (!item.extPrice && !(item.extPrice > 0)){
-            invalidItemFound = true;
-            $scope.displayMessage('error', 'Cannot save cart. Item ' + item.itemnumber +' is invalid.  Please contact DSR for more information.');
-          }
-        })
-
-        if (invalidItemFound){
-          var deferred = $q.defer();
-          deferred.resolve(invalidItemFound);
-          return deferred.promise;
-        }
-
-      if (!processingSubmitOrder) {
+     var invalidItemFound =  invalidItemCheck(cart.items);
+     if (!processingSaveCart && !invalidItemFound) {
         processingSubmitOrder = true;        
 
         if($scope.validateShipDate($scope.selectedShipDate)){
@@ -306,7 +291,8 @@ angular.module('bekApp')
  
     var processingSaveChangeOrder = false;
     $scope.saveChangeOrder = function(order) {
-      if (!processingSaveChangeOrder) {
+      var invalidItemFound =  invalidItemCheck(order.items);
+      if (!processingSaveChangeOrder && !invalidItemFound) {
         processingSaveChangeOrder = true;
  
         var changeOrder = angular.copy(order);
@@ -343,7 +329,8 @@ angular.module('bekApp')
  
     var processingResubmitOrder = false;
     $scope.resubmitOrder = function(order) {
-      if (!processingResubmitOrder) {
+      var invalidItemFound =  invalidItemCheck(order.items);
+      if (!processingSaveChangeOrder && !invalidItemFound) {
         processingResubmitOrder = true;
 
         if($scope.validateShipDate($scope.selectedShipDate)){

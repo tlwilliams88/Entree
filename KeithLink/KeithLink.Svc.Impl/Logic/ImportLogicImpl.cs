@@ -262,7 +262,11 @@ namespace KeithLink.Svc.Impl.Logic {
             }
 
             returnModel.ErrorMessage = _errors.ToString();
-            returnModel.WarningMessage = _warnings.ToString();
+
+            StringBuilder warningMsg = new StringBuilder();
+            if (returnModel.Success) warningMsg.Append("Import successful.  Please check the items in your cart.");
+            else warningMsg.Append(_warnings.ToString());
+            returnModel.WarningMessage = warningMsg.ToString();
             return returnModel;
         }
 

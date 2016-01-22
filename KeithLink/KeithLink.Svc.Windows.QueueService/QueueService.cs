@@ -37,6 +37,7 @@ namespace KeithLink.Svc.Windows.QueueService
 
         const int TIMER_DURATION_TICK = 2000;
         const int TIMER_DURATION_TICKMINUTE = 60000;
+        const int TIMER_DURATION_TICKTWOMINUTES = 120000;
         const int TIMER_DURATION_START = 1000;
         const int TIMER_DURATION_STOP = -1;
         const int TIMER_DURATION_IMMEDIATE = 1;
@@ -56,7 +57,7 @@ namespace KeithLink.Svc.Windows.QueueService
 
             if (Configuration.CheckLostOrders.Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
-                _checkLostOrdersTimer = new System.Threading.Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE);
+                _checkLostOrdersTimer = new System.Threading.Timer(cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKTWOMINUTES);
             }
         }
 

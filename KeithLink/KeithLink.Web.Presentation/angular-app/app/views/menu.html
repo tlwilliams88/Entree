@@ -56,6 +56,7 @@
             ng-click="isSidebarOpen = false; openTechnicalSupportModal()">
             <li>Technical Support</li>
           </button>
+         <a style="color:inherit; text-styling:none;" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><li>Send Feedback</li></a> 
           <button
             class="btn-no-style"
             ng-click="openExternalLink(userGuideUrl)">
@@ -338,7 +339,8 @@
                 <div class="user-info__menu btn-group-vertical" ng-show="displayUserMenu">
                   <button class="btn btn-lg btn-default" ui-sref="menu.userprofile">Profile Settings</button>
                   <button class="btn btn-lg btn-default" ui-sref="menu.applicationsettings">Application Settings</button>
-                  <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>
+                  <button class="btn btn-lg btn-default" ng-click="openTechnicalSupportModal()">Technical Support</button>               
+                  <a class="feedback-link" href="mailto:entreefeedback@benekeith.com?subject=Entree Feedback"><button class="btn btn-lg btn-default feedback-btn">Send Feedback</button> </a>
                   <button class="btn btn-lg btn-default" ng-click="openExternalLink(userGuideUrl)">Users Guide</button>
                   <button class="btn btn-lg btn-default" ng-click="logout()">Sign Out</button>
                 </div>

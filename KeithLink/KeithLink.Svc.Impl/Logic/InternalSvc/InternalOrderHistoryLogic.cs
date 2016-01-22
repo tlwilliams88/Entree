@@ -268,10 +268,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             // Need to get the last day of the current month
             DateTime end = new DateTime( DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth( DateTime.Today.Year, DateTime.Today.Month ) );
-            // Need to get the first day from six months ago, create a new datetime object
+            // Need to get the first day from six months ago, create a new datetime object at the first of the current month
             // Subtract the numberOfMonths but add 1 as the current month is intended as one of the results
-            // Set the day to 1 for the start of the month
-            DateTime start = new DateTime(DateTime.Today.Year, DateTime.Today.AddMonths(-numberOfMonths + 1).Month, 1);
+            DateTime start = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            start = start.AddMonths( -numberOfMonths + 1 );
 
             try {
                 List<Order> orders = GetShallowOrderDetailInDateRange( customerInfo, start, end );

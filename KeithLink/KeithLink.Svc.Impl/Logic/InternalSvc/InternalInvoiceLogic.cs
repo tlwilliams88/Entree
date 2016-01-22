@@ -84,6 +84,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             Parallel.ForEach(invoice.Items, invoiceItem => {
                 var prod = products.Products.Where(p => p.ItemNumber.Equals(invoiceItem.ItemNumber)).FirstOrDefault();
                 if (prod != null) {
+                    invoiceItem.IsValid = true;
                     invoiceItem.Name = prod.Name;
                     invoiceItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
                     invoiceItem.Brand = prod.BrandExtendedDescription;

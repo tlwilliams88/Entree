@@ -356,6 +356,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     orderConfNotification.OrderChange = orderChange;
                     orderConfNotification.CustomerNumber = (string)po["CustomerId"];
                     orderConfNotification.BranchId = (string)po["BranchId"];
+                    orderConfNotification.InvoiceNumber = confirmation.Header.InvoiceNumber;
 					
                     genericeQueueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
                         Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
