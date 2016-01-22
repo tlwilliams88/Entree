@@ -29,14 +29,12 @@ using System.Net.Http;
 using System.Reflection;
 using System.Web.Http;
 
-namespace KeithLink.Svc.WebApi.Controllers
-{
+namespace KeithLink.Svc.WebApi.Controllers {
     /// <summary>
     /// User Lists
     /// </summary>
     [Authorize]
-    public class ListController : BaseController
-    {
+    public class ListController : BaseController {
         #region attributes
         private readonly IListServiceRepository _listServiceRepository;
         private readonly IExportSettingLogic _exportLogic;
@@ -44,8 +42,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         #endregion
 
         #region ctor
-        public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository, IExportSettingLogic exportSettingsLogic, 
-                              IEventLogRepository elRepo) : base(profileLogic) {
+        public ListController(IUserProfileLogic profileLogic, IListServiceRepository listServiceRepository, IExportSettingLogic exportSettingsLogic,
+                              IEventLogRepository elRepo)
+            : base(profileLogic) {
             this._listServiceRepository = listServiceRepository;
             this._exportLogic = exportSettingsLogic;
             this._elRepo = elRepo;
