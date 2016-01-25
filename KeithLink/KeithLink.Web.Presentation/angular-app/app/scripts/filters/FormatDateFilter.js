@@ -58,6 +58,6 @@ angular.module('bekApp')
         formatString = 'ddd, MMM D, YYYY h:mma z';
       }
 
-      return $filter('formatDate')(date._d, formatString);
+      return $filter('formatDate')(date, formatString);
     };
   }]);
