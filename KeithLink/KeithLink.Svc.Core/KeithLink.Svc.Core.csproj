@@ -198,9 +198,6 @@
     <Compile Include="Interface\Configurations\IExportSettingRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementExternalRepository.cs" />
     <Compile Include="Interface\ContentManagement\IContentManagementLogic.cs" />
-    <Compile Include="Interface\ContentManagement\IInternalContentManagementLogic.cs" />
-    <Compile Include="Interface\ContentManagement\IContentManagementItemRepository.cs" />
-    <Compile Include="Interface\ContentManagement\IContentManagementServiceRepository.cs" />
     <Compile Include="Interface\ETL\ElasticSearch\ICategoriesImport.cs" />
     <Compile Include="Interface\ETL\ElasticSearch\IHouseBrandsImport.cs" />
     <Compile Include="Interface\ETL\ElasticSearch\IItemImport.cs" />
@@ -261,10 +258,8 @@
     <Compile Include="Models\Authentication\AuthenticationModel.cs" />
     <Compile Include="Models\Common\BaseQueueMessage.cs" />
     <Compile Include="Models\Configuration\EF\ExportSetting.cs" />
-    <Compile Include="Models\ContentManagement\ContentItemPostModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemViewModel.cs" />
     <Compile Include="Models\ContentManagement\ContentItemModelBase.cs" />
-    <Compile Include="Models\ContentManagement\EF\ContentItem.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\AdditionalData.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\ContentItem.cs" />
     <Compile Include="Models\ContentManagement\ExpressEngine\Product.cs" />

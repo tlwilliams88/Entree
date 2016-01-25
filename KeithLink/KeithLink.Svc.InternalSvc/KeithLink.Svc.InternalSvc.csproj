@@ -141,7 +141,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="CacheService.svc" />
-    <Content Include="ContentManagementService.svc" />
     <Content Include="DsrService.svc" />
     <Content Include="ProfileService.svc" />
     <Content Include="ReportService.svc" />
@@ -164,9 +163,6 @@
     <Compile Include="CacheService.svc.cs">
       <DependentUpon>CacheService.svc</DependentUpon>
     </Compile>
-    <Compile Include="ContentManagementService.svc.cs">
-      <DependentUpon>ContentManagementService.svc</DependentUpon>
-    </Compile>
     <Compile Include="DsrService.svc.cs">
       <DependentUpon>DsrService.svc</DependentUpon>
     </Compile>
@@ -184,8 +180,6 @@
     <Compile Include="DivisionService.svc.cs">
       <DependentUpon>DivisionService.svc</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\IConfigurationService.cs" />
-    <Compile Include="Interfaces\IContentManagementService.cs" />
     <Compile Include="Interfaces\IDivisionService.cs" />
     <Compile Include="Interfaces\IOnlinePaymentService.cs" />
     <Compile Include="MessagingService.svc.cs">

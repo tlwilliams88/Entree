@@ -590,6 +590,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             bool isKbitCustomer = false;
             bool isPowerMenuCustomer = false;
             bool isPowerMenuAdmin = false;
+            UserProfile retVal = new UserProfile();
 
             try {
                 if (isInternalUser) {
@@ -653,7 +654,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 byte[] tokenBytes = System.Text.Encoding.UTF8.GetBytes(userNameToken);
                 string tokenBase64 = Convert.ToBase64String(tokenBytes);
 
-                UserProfile retVal = new UserProfile();
 
                 retVal.UserId = Guid.Parse(csProfile.Id);
                 retVal.IsInternalUser = IsInternalAddress(csProfile.Email);
@@ -681,8 +681,12 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		    retVal.IsDemo = true;
 #endif
                 if (isInternalUser) {
-                    retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
-                    if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAliasModel() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
+                    try {
+                        retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
+                        if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAliasModel() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
+                    } catch {
+
+                    }
                 }
 
                 return retVal;

@@ -60,7 +60,7 @@ using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using Autofac.Features.Indexed;
-using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using KeithLink.Common.Core.AuditLog;
 using KeithLink.Common.Impl.AuditLog;
@@ -119,8 +119,8 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
 			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
 			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
-			builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
-			builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
+			//builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
+			//builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
 
 			builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
 			builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
@@ -201,7 +201,6 @@ namespace KeithLink.Svc.Windows.QueueService
 
 			builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 
-			builder.RegisterType<InternalExportSettingsLogicImpl>().As<IInternalExportSettingLogic>();
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 

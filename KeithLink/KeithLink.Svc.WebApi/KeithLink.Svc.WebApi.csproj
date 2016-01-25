@@ -209,7 +209,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Global.asax" />
-    <Content Include="KeithLink.Svc.Core.Models.ContentManagement.ContentItemViewModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.TermModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
@@ -222,7 +221,6 @@
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportOptionsModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Configuration.MessageTemplateModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.Order.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
@@ -251,27 +249,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.disco" />
-    <None Include="Service References\com.benekeith.ContentManagementService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ContentManagementService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ContentManagementService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
     <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap" />
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.wsdl" />
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ContentManagementService\ContentManagementService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
     <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
@@ -474,7 +455,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Repository\ContentManagement\ContentManagementServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
@@ -486,11 +466,6 @@
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
     <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
-    <Compile Include="Service References\com.benekeith.ContentManagementService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.DivisionService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -688,7 +663,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Repository\Configurations\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KeithLink.Common.Core\KeithLink.Common.Core.csproj">
@@ -715,7 +689,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.ContentManagementService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.DsrService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />

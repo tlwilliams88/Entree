@@ -198,14 +198,12 @@ namespace KeithLink.Svc.WebApi {
             builder.RegisterType<Repository.Reports.ReportServiceRepositoryImpl>().As<IReportServiceRepository>();
             builder.RegisterType<Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
 
-            builder.RegisterType<Repository.ContentManagement.ContentManagementServiceRepositoryImpl>().As<IContentManagementServiceRepository>();
             builder.RegisterType<com.benekeith.DivisionService.DivisionServiceClient>().As<com.benekeith.DivisionService.IDivisionService>();
             builder.RegisterType<com.benekeith.InvoiceService.InvoiceServiceClient>().As<com.benekeith.InvoiceService.IInvoiceService>();
             builder.RegisterType<com.benekeith.ListService.ListServcieClient>().As<com.benekeith.ListService.IListServcie>();
             builder.RegisterType<com.benekeith.MessagingService.MessagingServiceClient>().As<com.benekeith.MessagingService.IMessagingService>();
             builder.RegisterType<com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
             builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
-            builder.RegisterType<com.benekeith.ContentManagementService.ContentManagementServiceClient>().As<com.benekeith.ContentManagementService.IContentManagementService>();
             builder.RegisterType<com.benekeith.ReportService.ReportServiceClient>().As<com.benekeith.ReportService.IReportService>();
             builder.RegisterType<com.benekeith.DsrService.DsrServiceClient>().As<com.benekeith.DsrService.IDsrService>();
             builder.RegisterType<com.benekeith.ProfileService.ProfileServiceClient>().As<com.benekeith.ProfileService.IProfileService>();

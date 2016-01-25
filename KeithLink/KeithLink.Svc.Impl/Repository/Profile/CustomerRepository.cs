@@ -631,19 +631,23 @@ namespace KeithLink.Svc.Impl.Repository.Profile
             //The number of dsrs is pretty small, so this solution can stay like this, or it can be modified to look up a specific set of dsrs
             //But with it being cached, and the small number, this is likely better performance once the initial load occurs
 
-            var cachedallDsrInfo = _customerCacheRepository.GetItem<List<Dsr>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("dsrInfo"));
-            if (cachedallDsrInfo != null)
-                return cachedallDsrInfo;
+            try {
+                var cachedallDsrInfo = _customerCacheRepository.GetItem<List<Dsr>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("dsrInfo"));
+                if (cachedallDsrInfo != null)
+                    return cachedallDsrInfo;
 
-            var dsrInfo = _dsrService.GetAllDsrInfo();
-            //Cache the dsrs
-            _customerCacheRepository.AddItem<List<Dsr>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("dsrInfo"), TimeSpan.FromHours(4), dsrInfo);
+                var dsrInfo = _dsrService.GetAllDsrInfo();
+                //Cache the dsrs
+                _customerCacheRepository.AddItem<List<Dsr>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("dsrInfo"), TimeSpan.FromHours(4), dsrInfo);
 
-            if (dsrInfo == null || dsrInfo.Count == 0) {
-                _logger.WriteErrorLog("No DSRs returned from RetrieveDsrList in CustomerRepository, is BranchSupport.Dsrs populated?");
+                if (dsrInfo == null || dsrInfo.Count == 0) {
+                    _logger.WriteErrorLog("No DSRs returned from RetrieveDsrList in CustomerRepository, is BranchSupport.Dsrs populated?");
+                }
+
+                return dsrInfo;
+            } catch {
+                throw;
             }
-
-            return dsrInfo;
         }
 
         /// <summary>

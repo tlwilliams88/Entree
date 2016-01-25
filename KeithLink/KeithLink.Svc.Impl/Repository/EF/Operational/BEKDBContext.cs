@@ -1,7 +1,6 @@
 ﻿using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Core.Models.ContentManagement.EF;
 using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Orders.EF;
@@ -40,9 +39,6 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         // Configuration
         public DbSet<ExportSetting> ExportSettings { get; set; }
         public DbSet<MessageTemplate> MessageTemplates { get; set; }
-
-        // ContentManagement
-        public DbSet<ContentItem> ContentItems { get; set; }
 
         // Customers
         public DbSet<ItemHistory> ItemHistory { get; set; }
@@ -105,9 +101,6 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             // Configuration
             modelBuilder.Entity<MessageTemplate>().ToTable( "MessageTemplates", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ExportSetting>().ToTable( "ExportSettings", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
-
-            // ContentManagement
-            modelBuilder.Entity<ContentItem>().ToTable( "ContentItems", schemaName: "ContentManagement" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
 
             // Profile
             modelBuilder.Entity<MarketingPreference>().ToTable("MarketingPreferences", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);

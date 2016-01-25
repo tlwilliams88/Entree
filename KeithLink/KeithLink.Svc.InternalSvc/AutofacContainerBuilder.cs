@@ -95,7 +95,6 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<MessagingService>();
             builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
-            builder.RegisterType<ContentManagementService>();
 			builder.RegisterType<ReportService>();
 			builder.RegisterType<CacheService>();
             builder.RegisterType<DsrService>();
@@ -144,8 +143,8 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
             builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
             builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
-            builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
-            builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
+            //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
+            //builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
 
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();

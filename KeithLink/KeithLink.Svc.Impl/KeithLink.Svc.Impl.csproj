@@ -250,7 +250,6 @@
     <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalContentManagementLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
@@ -298,7 +297,6 @@
     <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementExternalRepositoryImpl.cs" />
-    <Compile Include="Repository\ContentManagement\ContentManagementRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.cs" />
     <Compile Include="Repository\EF\Migrations\201410230149117_Initial List creation.Designer.cs">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
@@ -598,6 +596,10 @@
     <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs" />
     <Compile Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.Designer.cs">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201601222158104_Remove content managment tables.cs" />
+    <Compile Include="Repository\EF\Migrations\201601222158104_Remove content managment tables.Designer.cs">
+      <DependentUpon>201601222158104_Remove content managment tables.cs</DependentUpon>
     </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
@@ -1201,6 +1203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.resx">
       <DependentUpon>201508181925151_emptyMigrationForMerge__v1_2__with__v1_3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201601222158104_Remove content managment tables.resx">
+      <DependentUpon>201601222158104_Remove content managment tables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
