@@ -104,9 +104,9 @@ angular.module('bekApp')
         var duplicateItem = UtilityService.findObjectByField(newCartItems, 'itemnumber', item.itemnumber);
         item.quantity = parseInt(item.quantity, 10);
         if (duplicateItem) {
-          duplicateItem.each = item.each;
           if(item.quantity){
             duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
+            duplicateItem.each = item.each;
             if(item.quantity > 0){
               duplicateItem.iscombinedquantity = true;
             }
