@@ -32,7 +32,6 @@ angular.module('bekApp')
   // TODO: Global messaging backend?
   $scope.messageText = 'Hello world!';
   $scope.displayGlobalMessage = true;
-
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;

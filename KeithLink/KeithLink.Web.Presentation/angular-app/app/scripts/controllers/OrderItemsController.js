@@ -10,14 +10,30 @@ angular.module('bekApp')
     return order;
   };
 
-  $scope.order = $scope.filterDeletedItems(order);
 
   $scope.getOrder = function(orderNumber) {
     OrderService.getOrderDetails(orderNumber).then(function(order) {
-      $scope.order = $scope.filterDeletedItems(order);
+      $scope.setOrder(order);
       $scope.displayMessage('success', 'Successfully retrieved latest info for order.');
     });
   };
+
+  $scope.setOrder = function(order){
+      if(order.catalogtype === 'UNFI,' || order.catalogtype === 'UNFI'){
+      $scope.UNFIOrder = $scope.filterDeletedItems(order);
+    }
+    else{
+      $scope.order = $scope.filterDeletedItems(order);
+    }
+    if(order.relatedordernumbers && $scope.getRelatedOrder){
+      $scope.getOrder(order.relatedordernumbers)      
+      $scope.getRelatedOrder = false;
+    }
+  }
+
+  $scope.getRelatedOrder = true;
+  $scope.setOrder(order);
+
 
   $scope.openExportModal = function() {
     var modalInstance = $modal.open({

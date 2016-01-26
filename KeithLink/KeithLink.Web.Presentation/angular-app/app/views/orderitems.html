@@ -3,14 +3,250 @@
     Order Details
   </div>
   <div header-buttons>
-    <a title="Check Status" class="btn-lg btn btn-success" ng-click="getOrder(order.ordernumber)" ng-if="order.status === 'Submitted'">Check Status</a>
+    <a title="Check Status" class="btn-lg btn btn-success" ng-click="getRelatedOrder = true; getOrder(order.ordernumber)" ng-if="order.status === 'Submitted' || (UNFIOrder && UNFIOrder.status === 'Submitted')">Check Status</a>
     <a title="Save As List" class="btn btn-icon btn-default" ng-click="saveAsList()"><span class="icon-text2"></span></a>
     <a title="Print" class="btn btn-icon btn-default" ng-click="print()"><span class="icon-printer"></span></a>
     <a title="Export" class="btn btn-icon btn-default" ng-click="openExportModal()"><span class="icon-export"></span></a>
   </div>
 </div>
 
+
+<!-- Special Item Order Section-->
+<span ng-show="UNFIOrder && UNFIOrder.items.length > 0">
 <div class="page-content">
+  <div class="row">
+    <div class="col-sm-12 col-md-9 col-lg-8">
+      <div class="info-box">
+        <h3 class="no-margin">SPECIAL ITEM ORDER INFORMATION<small><i> (System: {{UNFIOrder.ordersystem}})</i></small></h3>
+        <div class="order-item">
+          <div class="order-item-title">Invoice #</div>
+          <div class="order-item-value-1">{{UNFIOrder.invoicenumber || 'N/A'}}</div>
+          <div class="order-item-title">Order Status</div>
+          <div class="order-item-value-2">{{UNFIOrder.status}}</div>
+        </div>
+        <div class="order-item">
+          <div class="order-item-title">Order Date</div>
+          <div class="order-item-value-1">{{UNFIOrder.createddate | formatDate}}</div>
+          <div class="order-item-title">Requested Ship Date</div>
+          <div class="order-item-value-2">{{UNFIOrder.requestedshipdate | formatDate}}</div>
+        </div>
+        <div class="order-item">
+          <div class="order-item-title">Delivery Date</div>
+          <div class="order-item-value-1">{{UNFIOrder.deliverydate || 'N/A' | formatDate}}</div>
+          <div class="order-item-title">Delivered</div>
+          <div class="order-item-value-2" ng-if="UNFIOrder.estimateddeliverytime == null && UNFIOrder.actualdeliverytime == null && UNFIOrder.scheduleddeliverytime == null">N/A</div>
+          <div class="order-item-value-2" ng-if="UNFIOrder.estimateddeliverytime != null && UNFIOrder.actualdeliverytime == null">ETA: {{UNFIOrder.estimateddeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
+          <div class="order-item-value-2" ng-if="UNFIOrder.actualdeliverytime != null">{{UNFIOrder.actualdeliverytime | formatDateWithTimezone:'h:mma z'}}</div>
+          <div class="order-item-value-2" ng-if="UNFIOrder.deliveryoutofsequence == true || (UNFIOrder.scheduleddeliverytime != null && UNFIOrder.estimateddeliverytime == null)">N/A</div>
+        </div>
+        <div class="order-item">
+          <div class="order-item-title">Total Cost</div>
+          <div class="order-item-value-1">{{UNFIOrder.ordertotal | currency}}</div>
+          <div class="order-item-title">Items</div>
+          <div class="order-item-value-2">{{UNFIOrder.itemcount}}</div>
+        </div>
+        <div class="order-item">
+          <div class="order-item-title">Invoice Status</div>
+          <div class="order-item-value-1">{{UNFIOrder.invoicestatus || 'N/A'}}</div>
+          <div class="order-item-title">PO Number</div>
+          <div class="order-item-value-2">{{UNFIOrder.ponumber}}</div>
+        </div>        
+        <hr ng-if="UNFIOrder.ischangeorderallowed && canCreateOrders">
+        <ul ng-if="UNFIOrder.ischangeorderallowed && canCreateOrders" class="change-order-links">
+          <li ui-sref="menu.cart.items({ cartId: UNFIOrder.ordernumber })"><a>View and Edit Change Order</a>
+          </li>
+          <li ui-sref="menu.cart.items({ cartId: UNFIOrder.ordernumber })"
+             ng-if="UNFIOrder.status === 'Confirmed with un-submitted changes'">
+            <a class="text-red">This order has pending changes. It must be resubmitted for those changes to be applied.</a>
+          </li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row sub-content">
+    <div class="col-xs-12 text-right">
+      Showing {{unfifilteredItems.length}} of {{UNFIOrder.items.length}} Items
+    </div>
+  </div>
+
+  <table class="table table-border table-striped-rows table-unfiorder-items">
+    <thead>
+      <tr fsm-sticky-header scroll-body="'.table-unfiorder-items'" scroll-stop="0">
+        <th class="sort-col-header" ng-click="sortBy1='itemnumber';sortOrder1=!sortOrder1;">
+          Item
+          <span># <span sort-icons field="'itemnumber'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="sort-col-header" ng-click="sortBy1='name';sortOrder1=!sortOrder1;">
+          <span>Name <span sort-icons field="'name'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='brand';sortOrder1=!sortOrder1;">
+          <span>Brand <span sort-icons field="'brand'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='class';sortOrder1=!sortOrder1;">
+          <span>Class <span sort-icons field="'class'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print">
+          Pack/Size
+        </th>
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='notes';sortOrder1=!sortOrder1;">
+          <span>Notes <span sort-icons field="'notes'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="hidden-xs hidden-sm"></th>
+        <th class="hidden-mobile-visible-print"></th>
+        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='quantityordered';sortOrder1=!sortOrder1;">
+          #
+          <span>Ordered <span sort-icons field="'quantityordered'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='quantityshipped';sortOrder1=!sortOrder1;">
+          #
+          <span>Confirmed<span sort-icons field="'quantityshipped'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortBy1='each';sortOrder1=!sortOrder1;">
+          <span>Each <span sort-icons field="'each'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy1='price';sortOrder1=!sortOrder1;">
+          <span>Price <span sort-icons field="'price'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="hidden-mobile-visible-print sort-col-header text-right" ng-click="sortBy1='linetotal';sortOrder1=!sortOrder1;">
+          Ext
+          <span>Price <span sort-icons field="'linetotal'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortBy1='status';sortOrder1=!sortOrder1;">
+          <span>Status <span sort-icons field="'status'" sortorder="sortOrder1" sortby="sortBy1"></span></span>
+        </th>
+        <th class="large-icon icon-col">
+          <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Filter Row -->
+      <tr class="filter-row" ng-show="showFilter">
+        <td></td>
+        <td class="input-col">
+          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.name">
+        </td>
+        <td class="hidden-mobile-visible-print input-col">
+          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.brand">
+        </td>
+         <td class="hidden-mobile-visible-print input-col">
+          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.class">
+        </td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print input-col">
+          <input type="text" placeholder="Filter..." ng-model="unfifilterFields.notes">
+        </td>
+        <td class="hidden-xs hidden-sm"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="hidden-mobile-visible-print"></td>
+        <td class="large-icon icon-col">
+          <a class="hidden-print" ng-click="unfifilterFields = {}"><span class="text-light icon-cross3"></span></a>
+        </td>
+      </tr> <!-- end Filter Row -->
+
+      <tr ng-repeat-start="item in (unfifilteredItems = (UNFIOrder.items | filter:unfifilterFields | orderBy:sortBy1:sortOrder1))" ng-class="{ odd : $odd, even: $even }">
+        <td ng-class="{ 'red-border': item.substituteditemnumber }">
+          <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
+          <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{item.itemnumber}}</a>
+        </td>
+        <td>{{item.name}}</td>
+        <td class="hidden-mobile-visible-print">{{item.brand}}</td>
+        <td class="hidden-mobile-visible-print">{{item.class}}</td>
+        <td class="hidden-mobile-visible-print">{{item.packsize}}</td>
+        <td class="hidden-mobile-visible-print notes-col">{{item.notes}}</td>
+        <td class="hidden-xs hidden-sm">
+          <span tooltip="{{item.notes}}" ng-if="item.notes" class="icon-docs"></span> 
+        </td>
+        <td class="hidden-mobile-visible-print" item-icons></td>
+        <td class="hidden-mobile-visible-print">{{item.quantityordered}}</td>
+        <td class="hidden-mobile-visible-print">{{item.quantityshipped}}</td>
+        <td class="hidden-mobile-visible-print">
+          {{item.each ? 'Y' : 'N'}}
+        </td>
+        <td class="hidden-mobile-visible-print text-right">{{item.price | currency}} <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span></td>
+         
+        <td class="hidden-mobile-visible-print text-right">{{item.linetotal | currency}}</td>
+        <td class="hidden-mobile-visible-print">{{item.status}}</td>
+        <td class="large-icon icon-col">
+          <a class="visible-xs visible-sm"><span class="hidden-print text-light icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
+        </td>
+      </tr>
+
+      <tr ng-repeat-end ng-show="showDetails" ng-class="{ odd : $odd, even: $even }" class="mobile-details-row hidden-md hidden-lg">
+        <td colspan="4">
+          <table>
+            <colgroup>
+              <col width="25%" />
+              <col width="75%" />
+            </colgroup>
+            <tr>
+              <td>Notes</td>
+              <td>{{item.notes}}</td>
+            </tr>
+            <tr>
+              <td>Pack/Size</td>
+              <td>{{item.packsize}}</td>
+            </tr>
+            <tr>
+              <td>Brand</td>
+              <td>{{item.brand}}</td>
+            </tr>
+            <tr>
+              <td>Qty Ordered</td>
+              <td>{{item.quantityordered}}</td>
+            </tr>
+            <tr>
+              <td>Qty Confirmed</td>
+              <td>{{item.quantityshipped}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{item.status}}</td>
+            </tr>
+            <tr>
+              <td item-icons></td>
+            </tr>
+            <tr>
+              <td>Each</td>
+              <td>
+                {{item.each ? 'Y' : 'N'}}
+              </td>
+            </tr>
+            <tr>
+              <td>Price</td>
+              <td>{{item.price | currency}}
+                <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Ext Price</td>
+              <td>{{item.linetotal | currency}}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot ng-show="(UNFIOrder.items.length === 0 || !UNFIOrder.items || unfifilteredItems.length === 0) && UNFIOrder">
+      <tr>
+        <td colspan="14">
+          There are no products to display.
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</span>
+
+
+<!-- Normal Item Order-->
+<span ng-show="order && order.items.length > 0">
+  <div class="page-content">
   <div class="row">
     <div class="col-sm-12 col-md-9 col-lg-8">
       <div class="info-box">
@@ -56,6 +292,7 @@
              ng-if="order.status === 'Confirmed with un-submitted changes'">
             <a class="text-red">This order has pending changes. It must be resubmitted for those changes to be applied.</a>
           </li>
+        </ul>
         </div>
       </div>
     </div>
@@ -113,13 +350,13 @@
           <span>Status <span sort-icons field="'status'" sortorder="sortOrder" sortby="sortBy"></span></span>
         </th>
         <th class="large-icon icon-col">
-          <a class="hidden-print" ng-click="showFilter = !showFilter;"><span class="icon-filter"></span></a>
+          <a class="hidden-print" ng-click="showFilter2 = !showFilter2;"><span class="icon-filter"></span></a>
         </th>
       </tr>
     </thead>
     <tbody>
       <!-- Filter Row -->
-      <tr class="filter-row" ng-show="showFilter">
+      <tr class="filter-row" ng-show="showFilter2">
         <td></td>
         <td class="input-col">
           <input type="text" placeholder="Filter..." ng-model="filterFields.name">
