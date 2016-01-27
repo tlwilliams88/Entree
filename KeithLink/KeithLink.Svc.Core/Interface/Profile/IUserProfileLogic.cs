@@ -4,7 +4,7 @@ using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Profile.EF;
-
+using KeithLink.Svc.Core.Models.SiteCatalog;
 using System;
 using System.Collections.Generic;
 
@@ -99,6 +99,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
         /// bakillins - 1/22/2016
         /// </remarks>
         /// <returns>a bool that's true if they are on the whitelists</returns>
-        bool CheckCanViewUNFI(UserProfile user);
+        bool CheckCanViewUNFI(UserProfile user, string customernumber);
     }
 }

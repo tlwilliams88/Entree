@@ -190,7 +190,15 @@ namespace KeithLink.Svc.Impl {
 
         private static List<string> GetCommaSeparatedValues(string val) {
             if (!String.IsNullOrEmpty(val))
-                return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList();
+            {
+                List<string> list = new List<string>();
+                List<string> tlist = (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList();
+                foreach (string s in tlist)
+                {
+                    list.Add(s.ToLower());
+                }
+                return list;
+            }
             return new List<string>();
         }
 
