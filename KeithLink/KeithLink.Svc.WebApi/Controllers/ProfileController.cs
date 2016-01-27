@@ -210,7 +210,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     (retVal.UserProfiles.Count == 1) &&
                     (retVal.UserProfiles[0].DefaultCustomer != null))
                 {
-                        retVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser);
+                    retVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, retVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
                 }
 
                 return retVal;
@@ -587,6 +587,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 
 			PagedResults<Customer> retVal = _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType) typeVal);
 
+            // UNFI Whitelisting configurations - these are temporary entries
+            // if we can view unfi with this customer, we need to verify
+            foreach (Customer cust in retVal.Results)
+            {
+                cust.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, cust.CustomerNumber);
+            }
+
             return retVal;
 		}
 
@@ -622,7 +629,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             // UNFI Whitelisting configurations - these are temporary entries
             // if we can view unfi with this customer, we need to verify
-            retVal.SuccessResponse.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser);
+            retVal.SuccessResponse.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, retVal.SuccessResponse.CustomerNumber);
 
             return retVal;
 		}
