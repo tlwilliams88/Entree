@@ -38,11 +38,8 @@
   }
 }
 
-@media (orientation:landscape){
-    .showLandscape {
-        display:block;
-        padding-top: 15px !important;
-    }
+.padding-top-15 {
+    padding-top: 15px !important;
 }
 
 @media (orientation:portrait){

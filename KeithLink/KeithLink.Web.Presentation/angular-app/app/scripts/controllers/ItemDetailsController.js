@@ -8,10 +8,11 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'PricingService',
-    function ($scope, $modal, item, ProductService, PricingService) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'PricingService', 'ENV',
+    function ($scope, $modal, item, ProductService, PricingService, ENV) {
     
     var originalItemNotes = item.notes;
+    $scope.isMobileApp = ENV.mobileApp;
 
     $scope.item = item;
     $scope.item.quantity = 1;
