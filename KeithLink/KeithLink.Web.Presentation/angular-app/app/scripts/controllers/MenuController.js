@@ -26,7 +26,7 @@ angular.module('bekApp')
   $scope.userBar = {};
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
-  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf"; 
+  $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -37,7 +37,7 @@ angular.module('bekApp')
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
- 
+
   if (AccessService.isOrderEntryCustomer()) {
 
     $scope.cartHeaders = CartService.cartHeaders;
@@ -51,7 +51,7 @@ angular.module('bekApp')
         function(carts) {
           $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
           $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
-        }, 
+        },
         function() {
           $scope.cartMessage = 'Error loading carts.';
         })
@@ -90,12 +90,12 @@ angular.module('bekApp')
       ListService.getAllListsForOffline(),
       CartService.getAllCartsForOffline()
     ]).then(function() {
-      console.log('Downloaded data for offline use.');
+      // console.log('Downloaded data for offline use.');
     });
   }
 
   if (ENV.mobileApp && AccessService.isOrderEntryCustomer() && AccessService.canCreateOrders()) {
-    console.log('downloading data');  
+    // console.log('downloading data');
     downloadDataForOfflineStorage();
   }
 
@@ -140,10 +140,10 @@ angular.module('bekApp')
 
   // list of state names where a user has the possibility of viewing info from multiple customers
   var statesWithViewingAllCustomers = ['menu.invoice', 'menu.transaction'];
-  
+
   // listens for state change event to restore selectedUserContext
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-  
+
     // if users is viewing all customers
     // change selected user context back to the one stored in LocalStorage here
     if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && !$scope.selectedUserContext.id) {
@@ -162,8 +162,8 @@ angular.module('bekApp')
       query.callback(firstPageCustomers);
     } else {
       CustomerService.getCustomers(
-        query.term, 
-        $scope.customerInfiniteScroll.size, 
+        query.term,
+        $scope.customerInfiniteScroll.size,
         $scope.customerInfiniteScroll.from
       ).then(function(data) {
         // convert data to match select2 data object
@@ -224,7 +224,7 @@ angular.module('bekApp')
     // internal bek admin user
     if ($scope.canViewCustomerGroups) {
       $state.go('menu.admin.customergroup');
-      
+
     // external owner admin
     } else {
       $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
@@ -246,7 +246,7 @@ angular.module('bekApp')
     LocalStorage.setTempContext(selectedUserContext);
     refreshPage();
   };
-          
+
   //Submenu for specialty catalogs
   $scope.toggleSpecialCatalogSubmenu = function() {
     if ($scope.$state !== undefined) {
@@ -256,7 +256,7 @@ angular.module('bekApp')
             } else {
                 $scope.specialCatalogOpen = true;
             }
-        } else { 
+        } else {
             $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
         }
     }
@@ -264,7 +264,7 @@ angular.module('bekApp')
   // $scope.toggleSpecialCatalogSubmenu(); //call to expand if it is in special catlog
 
   //
-  
+
   /**********
   MENU BUTTON CLICK HANDLERS
   **********/

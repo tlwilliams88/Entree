@@ -15,7 +15,7 @@ angular.module('bekApp')
       $analytics, //google analytics
       ProductService, CategoryService, Constants, PricingService // bek custom services
     ) {
-    
+
     // clear keyword search term at top of the page
     if ($scope.userBar) {
       $scope.userBar.universalSearchTerm = '';
@@ -36,7 +36,7 @@ angular.module('bekApp')
 
     $scope.itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemIndex = 0;
-    
+
     $scope.numberFacetsToShow = 4;  // determines when to show the 'Show More' link for each facet
     $scope.maxSortCount = 200;      // max number of items that can be sorted by price
 
@@ -48,7 +48,7 @@ angular.module('bekApp')
             $scope.pageTitle = "Natural and Organic";
         } else {
             $scope.pageTitle = "Specialty Catalog";
-        } 
+        }
     }
 
     $scope.products = [];
@@ -208,7 +208,7 @@ angular.module('bekApp')
         };
         breadcrumbs.unshift($scope.featuredBreadcrumb);
         $analytics.eventTrack('Search Department', {  category: 'Department', label: $stateParams.deptName });
-        
+
         $scope.featuredBreadcrumb = {
           click: clearFacets,
           clickData: '',
@@ -226,14 +226,14 @@ angular.module('bekApp')
     *************/
     function getData() {
       var facets = ProductService.getFacets(
-        $scope.facets.categories.selected, 
+        $scope.facets.categories.selected,
         $scope.facets.brands.selected,
         $scope.facets.mfrname.selected,
-        $scope.facets.dietary.selected, 
+        $scope.facets.dietary.selected,
         $scope.facets.itemspecs.selected
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
-      console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
+      // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
     }
@@ -250,7 +250,7 @@ angular.module('bekApp')
             $scope.bekItemCount = 0;
             $scope.unfiItemCount = 0;
         }
-       
+
         // append results to existing data (for infinite scroll)
         if (appendResults) {
           $scope.products.push.apply($scope.products, data.products);
@@ -262,7 +262,7 @@ angular.module('bekApp')
         setBreadcrumbs(data);
 
         delete $scope.searchMessage;
-        
+
         return data.facets;
       }, function(error) {
         $scope.searchMessage = 'Error loading products.';
@@ -270,7 +270,7 @@ angular.module('bekApp')
         $scope.loadingResults = false;
       });
     }
-        
+
 
     /*************
     FACETS
@@ -285,7 +285,7 @@ angular.module('bekApp')
     }
 
     function refreshFacets(facets) {
-      // set the $scope.facets object using the response data 
+      // set the $scope.facets object using the response data
       $scope.facets.categories.available = facets.categories;
       $scope.facets.brands.available = facets.brands;
       $scope.facets.mfrname.available = facets.mfrname;
@@ -410,11 +410,11 @@ angular.module('bekApp')
             // return search url with params
             var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
             var facets = ProductService.getFacets(
-              $scope.facets.categories.selected, 
+              $scope.facets.categories.selected,
               $scope.facets.brands.selected,
               $scope.facets.mfrname.selected,
-              $scope.facets.dietary.selected, 
-              $scope.facets.itemspecs.selected 
+              $scope.facets.dietary.selected,
+              $scope.facets.itemspecs.selected
             );
 
             var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
@@ -428,7 +428,7 @@ angular.module('bekApp')
         //change state to unfi
         $state.go($state.current,{catalogType: "BEK"}, {reload: true});
     }
-    
+
     $scope.unfiCatalogSwitch = function () {
         //change state to unfi
         $state.go($state.current,{catalogType: "UNFI"}, {reload: true});
