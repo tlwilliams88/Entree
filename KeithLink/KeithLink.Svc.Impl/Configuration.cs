@@ -181,9 +181,21 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_UNFI_WHITELIST_DSRS = "UNFIWhitelistDSRs";
         private const string KEY_UNFI_WHITELIST_CUSTOMERS = "UNFIWhitelistCustomers";
         private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
+
+        // Queue Service Functions
+        private const string KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS = "CheckLostOrders";       
         #endregion
 
         #region methods
+
+        public static string CheckLostOrders
+        {
+            get
+            {
+                return GetValue(KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS, string.Empty);
+            }
+        }
+
         public static readonly List<string> BekSysAdminRoles = new List<string>() {
            RoleNameCorporateAdmin, Constants.ROLE_CORPORATE_SECURITY 
         };

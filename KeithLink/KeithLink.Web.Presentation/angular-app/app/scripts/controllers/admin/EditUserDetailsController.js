@@ -9,14 +9,14 @@ angular.module('bekApp')
   function checkIfUserExistsOnAnotherGroup() {
     // add check if userCustomers are in a different customer group
     // throw warning to user that assigning different customers will change the customer group
-    var userIsOnAnotherCustomerGroup = false;
+    $scope.userIsOnAnotherCustomerGroup = false;
     userCustomers.forEach(function(customer) {
       if (customer.accountId !== $scope.groupId) {
-        userIsOnAnotherCustomerGroup = true;
+        $scope.userIsOnAnotherCustomerGroup = true;
       }
     });
 
-    if (userIsOnAnotherCustomerGroup) {
+    if ($scope.userIsOnAnotherCustomerGroup) {
       var r = confirm('This user has access to a different customer group than the one selected. Assigning customers will remove the user from the previous customer group. Are you sure you want to continue?');
       if (r === true) {
 
@@ -37,7 +37,9 @@ angular.module('bekApp')
     // rename role <----- NEEDS FIX ON RESPONSE TYPE
     newProfile.role = newProfile.rolename;
     delete newProfile.rolename;
-
+    if($scope.userIsOnAnotherCustomerGroup){
+      userCustomers = [];
+    }
     $scope.profile = newProfile;
     $scope.profile.customers = userCustomers;
   };
@@ -46,8 +48,9 @@ angular.module('bekApp')
   // TODO: get available roles <----NEEDS ENDPOINT
   $scope.roles =  [{ "value": "owner", "text": "owner" }, { "value": "accounting", "text": "accounting" },{ "value": "approver", "text": "buyer" }, { "value": "buyer", "text": "shopper" }, { "value": "guest", "text": "guest" }];
 
-  processProfile(userProfile);
   checkIfUserExistsOnAnotherGroup();
+  processProfile(userProfile);
+
 
   /**********
   FORM EVENTS

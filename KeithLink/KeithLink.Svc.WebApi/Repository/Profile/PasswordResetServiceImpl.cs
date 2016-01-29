@@ -24,7 +24,7 @@ namespace KeithLink.Svc.WebApi.Repository.Profile
 			_client.GeneratePasswordResetRequest(email);
 		}
 
-		public bool IsTokenValid(string token)
+		public string IsTokenValid(string token)
 		{
 			return _client.IsTokenValid(token);
 		}

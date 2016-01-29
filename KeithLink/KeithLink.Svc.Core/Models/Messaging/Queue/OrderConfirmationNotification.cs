@@ -16,6 +16,9 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
             this.NotificationType = NotificationType.OrderConfirmation;
         }
 
+        [DataMember(Name = "invoicenumber")]
+        public string InvoiceNumber { get; set; }
+
         [DataMember(Name = "orderchange")]
         public OrderChange OrderChange { get; set; }
     }

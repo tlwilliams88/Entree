@@ -209,10 +209,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AuthorizationStores\CatalogAuthorizationStore.xml" />
-    <None Include="AuthorizationStores\CommerceEntityAuthorizationStore.xml" />
-    <None Include="AuthorizationStores\OrdersAuthorizationStore.xml" />
-    <None Include="AuthorizationStores\ProfilesAuthorizationStore.xml" />
+    <Content Include="AuthorizationStores\CatalogAuthorizationStore.xml" />
+    <Content Include="AuthorizationStores\CommerceEntityAuthorizationStore.xml" />
+    <Content Include="AuthorizationStores\OrdersAuthorizationStore.xml" />
+    <Content Include="AuthorizationStores\ProfilesAuthorizationStore.xml" />
     <None Include="lib\bin\en-us\CommerceMessageManager.resources.dll" />
     <Content Include="favicon.ico" />
     <Content Include="FoundationService.svc" />

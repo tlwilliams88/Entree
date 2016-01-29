@@ -33,3 +33,17 @@
     background-color: $background;
   }
 }
+
+.feedback-link{
+  color:inherit; 
+  text-styling:none; 
+  width:100%;
+}
+
+.feedback-btn{
+  width:100%;width:100%; 
+  -moz-border-radius: 0px; 
+  -webkit-border-radius: 0px; 
+  border-radius: 0px; 
+  border-width: 0px 1px 0px 1px;
+}

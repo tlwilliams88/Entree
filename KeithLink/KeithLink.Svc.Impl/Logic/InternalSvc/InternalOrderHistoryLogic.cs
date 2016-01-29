@@ -21,19 +21,26 @@ using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
+using CommerceServer.Foundation;
+using CommerceServer.Core;
+
 using Newtonsoft.Json;
 using System;
+using System.Data;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Models.Profile;
+using System.Xml;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
     public class InternalOrderHistoryLogic : IInternalOrderHistoryLogic {
@@ -335,10 +342,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             // Need to get the last day of the current month
             DateTime end = new DateTime( DateTime.Today.Year, DateTime.Today.Month, DateTime.DaysInMonth( DateTime.Today.Year, DateTime.Today.Month ) );
-            // Need to get the first day from six months ago, create a new datetime object
+            // Need to get the first day from six months ago, create a new datetime object at the first of the current month
             // Subtract the numberOfMonths but add 1 as the current month is intended as one of the results
-            // Set the day to 1 for the start of the month
-            DateTime start = new DateTime(DateTime.Today.Year, DateTime.Today.AddMonths(-numberOfMonths + 1).Month, 1);
+            DateTime start = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            start = start.AddMonths( -numberOfMonths + 1 );
 
             try {
                 List<Order> orders = GetShallowOrderDetailInDateRange( customerInfo, start, end );
@@ -413,30 +420,39 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
         }
 
-        private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers) {
+        private List<Order> LookupControlNumberAndStatus( UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers ) {
             var customerOrders = new BlockingCollection<Order>();
+
+            // Get the customer GUID to retrieve all purchase orders from commerce server
+            var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
+            var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId);
+
             var listOfHeaders = headers.ToList();
-            foreach (var h in listOfHeaders) {
+
+            foreach (var h in headers) {
                 try {
                     Order returnOrder = null;
                     
                     returnOrder = h.ToOrder();
 
+                    LookupProductDetails(h.BranchId, returnOrder);
                     if (h.OrderSystem.Trim().Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
                     {
-                        //_log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber.Trim());
-                        var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber.Trim());
-                        if (po != null)
-                        {
-                            PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
-                            FindOrdersRelatedToPurchaseOrder(po, returnOrder, headers);
-                            returnOrder.Status = po.Status;
-                            returnOrder.OrderNumber = h.ControlNumber;
-                            returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
-                        }
-                        else
-                        {
-                            _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber + " po not looked up");
+                        // Check if the purchase order exists and grab it for additional information if it does
+                        if (POs != null) {
+                            PurchaseOrder currentPo = POs.Where( x => x.Properties["OrderNumber"].Equals( h.ControlNumber ) ).FirstOrDefault<PurchaseOrder>();
+
+                            if (currentPo != null) {
+                                PullCatalogFromPurchaseOrderItemsToOrder(currentPo, returnOrder);
+                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, headers);
+                                returnOrder.Status = currentPo.Status;
+                                returnOrder.OrderNumber = h.ControlNumber;
+                                returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith( "Confirmed" )));
+                            }
+                            else
+                            {
+                                _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber + " po not looked up");
+                            }
                         }
                     }
 
@@ -596,6 +612,239 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 _queueTask.Wait();
             }
         }
+
+        public string CheckForLostOrders(out string sBody)
+        {
+            StringBuilder sbMsgSubject = new StringBuilder();
+            StringBuilder sbMsgBody = new StringBuilder();
+
+            CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, "Pending");
+            CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, "Submitted");
+
+            sBody = sbMsgBody.ToString();
+            return sbMsgSubject.ToString();
+        }
+
+        private void CheckForLostOrdersByStatus(StringBuilder sbMsgSubject, StringBuilder sbMsgBody, string qStatus)
+        {
+            List<DataSet> Pos;
+            GetPurchaseOrdersByStatus(qStatus, out Pos);
+            StringBuilder sbAppendSubject;
+            StringBuilder sbAppendBody;
+            BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
+            if (sbAppendSubject.Length > 0)
+            {
+                sbMsgSubject.Append(sbAppendSubject.ToString());
+            }
+            if (sbAppendBody.Length > 0)
+            {
+                sbMsgBody.Append(sbAppendBody.ToString());
+            }
+        }
+
+        // TODO(mdjoiner): Check to see if this should be in a repository and not a logic class. 
+        private void GetPurchaseOrdersByStatus(string queryStatus, out List<DataSet> Pos)
+        {
+            var manager = CommerceServerCore.GetPoManager();
+            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            // set what to search
+            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            // set what field/value to search for
+            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", queryStatus);
+            // set what fields to return
+            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
+
+            int c = results.Tables.Count;
+
+            Pos = new List<DataSet>();
+            List<Guid> poIds = new List<Guid>();
+            foreach (DataRow row in results.Tables[0].Rows)
+            {
+                poIds.Add(new Guid(row["OrderGroupId"].ToString()));
+            }
+            // Get the XML representation of the purchase orders.
+            if (poIds.Count > 0)
+            {
+                foreach (var poid in poIds)
+                {
+                    var po = manager.GetPurchaseOrderAsDataSet(poid);
+                    Pos.Add(po);
+                }
+            }
+        }
+
+        private void BuildAlertStringsForLostPurchaseOrders(out StringBuilder sbSubject, out StringBuilder sbBody, List<DataSet> Pos, string qStatus)
+        {
+            sbSubject = new StringBuilder();
+            sbBody = new StringBuilder();
+            if ((Pos != null) && (Pos.Count > 0))
+            {
+                foreach (var po in Pos)
+                {
+                    DateTime lastModified;
+                    DateTime.TryParse(po.Tables["PurchaseOrder"].Rows[0]["LastModified"].ToString(), out lastModified);
+                    // only if they've been created more than 10 minutes ago in the query status
+                    if (lastModified < DateTime.Now.AddMinutes(-10))
+                    {
+                        sbSubject.Clear();
+                        sbSubject.Append("PO in a " + qStatus + " status for more than 10 minutes.");
+                        sbBody.Append("* PO");
+                        sbBody.Append(" for ");
+                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
+                        {
+                            if(row["WeaklyTypedProperty.Name"].ToString().Equals("customerid", StringComparison.CurrentCultureIgnoreCase))
+                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString());
+                        }
+                        sbBody.Append("-");
+                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
+                        {
+                            if (row["WeaklyTypedProperty.Name"].ToString().Equals("branchid", StringComparison.CurrentCultureIgnoreCase))
+                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString().ToUpper());
+                        }
+                        sbBody.Append(" with cart ");
+                        {
+                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["Name"].ToString());
+                        }
+                        sbBody.Append(" and tracking ");
+                        {
+                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["TrackingNumber"].ToString());
+                        }
+                        sbBody.Append(" last modified");
+                        sbBody.Append(" at " + lastModified.ToShortTimeString());
+                        sbBody.Append(" in status " + qStatus);
+                        sbBody.Append(".\n");
+                    }
+                }
+            }
+        }
         #endregion
     }
 }
+
+// An example of each purchase order xml
+//<PurchaseOrder BillingCurrency="" Status="Submitted" SoldToId="39f1ac2d-494a-4a65-bf83-68c020e3f815" TaxTotal="0.0000" 
+//    LastModified="2015-11-17T13:01:04.887-06:00" Created="2015-11-17T13:01:04.887-06:00" StatusCode="PurchaseOrder" SoldToName="" 
+//    TrackingNumber="0001083" SubTotal="130.8700" IsDirty="false" LineItemCount="4" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" 
+//    HandlingTotal="0.0000" BasketId="655811bf-b90d-4804-894b-5aebf6425cc1" ShippingTotal="0.0000" ModifiedBy="" Total="130.8700" 
+//    Name="sfdf_726971_NewCart0">
+//    <OrderForms>
+//        <OrderForm Status="InProcess" TaxTotal="0.0000" LastModified="2015-11-17T13:01:04.82-06:00" Created="2015-11-17T13:00:50.793-06:00" 
+//            PromoUserIdentity="" SubTotal="130.8700" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" HandlingTotal="0.0000" 
+//            ShippingTotal="0.0000" ModifiedBy="" BillingAddressId="" Total="130.8700" OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" 
+//            Name="Default">
+//            <PromoCodeRecords />
+//            <Shipments />
+//            <PromoCodes />
+//            <Payments />
+//            <LineItems>
+//                <LineItem ShippingMethodName="" ProductId="630420" PlacedPrice="50.2000" Description="" InventoryCondition="InStock" 
+//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" AllowBackordersAndPreorders="true" 
+//                    LastModified="2015-11-17T13:01:04.82-06:00" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="50.2000" 
+//                    Quantity="1.0000" DisplayName="Drink Mix Fruit Punch" ModifiedBy="" ProductCatalog="fdf" 
+//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.847-06:00" 
+//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
+//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
+//                    LineItemId="72c4ea80-dd99-482a-970a-f1079520379e">
+//                    <ItemLevelDiscountsApplied />
+//                    <OrderLevelDiscountsApplied />
+//                    <WeaklyTypedProperties>
+//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="Notes" Value="test note" Type="String" />
+//                        <WeaklyTypedProperty Name="Each" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
+//                        <WeaklyTypedProperty Name="LinePosition" Value="1" Type="Int32" />
+//                        <WeaklyTypedProperty Name="Label" Value="cat 1" Type="String" />
+//                    </WeaklyTypedProperties>
+//                </LineItem>
+//                <LineItem ShippingMethodName="" ProductId="102968" PlacedPrice="19.8500" Description="" InventoryCondition="InStock" 
+//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" AllowBackordersAndPreorders="true" 
+//                    LastModified="2015-11-17T13:01:04.82-06:00" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="19.8500" 
+//                    Quantity="1.0000" DisplayName="Juice Cranberry Cocktail 10%" ModifiedBy="" ProductCatalog="fdf" 
+//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.86-06:00" 
+//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
+//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
+//                    LineItemId="744a1c39-bf4b-4a6d-befa-14f1246b1dcc">
+//                    <ItemLevelDiscountsApplied />
+//                    <OrderLevelDiscountsApplied />
+//                    <WeaklyTypedProperties>
+//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="Each" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
+//                        <WeaklyTypedProperty Name="LinePosition" Value="2" Type="Int32" />
+//                        <WeaklyTypedProperty Name="Label" Value="cat 1" Type="String" />
+//                    </WeaklyTypedProperties>
+//                </LineItem>
+//                <LineItem ShippingMethodName="" ProductId="630613" PlacedPrice="53.1500" Description="" InventoryCondition="InStock" 
+//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" 
+//                    AllowBackordersAndPreorders="true" LastModified="2015-11-17T13:01:04.82-06:00" 
+//                    OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="53.1500" Quantity="1.0000" 
+//                    DisplayName="Gatorade Fierce Grape" ModifiedBy="" ProductCatalog="fdf" 
+//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.863-06:00" 
+//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
+//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
+//                    LineItemId="0d2ccad1-ef11-400f-b699-a89f204b4ac5"><ItemLevelDiscountsApplied />
+//                    <OrderLevelDiscountsApplied />
+//                    <WeaklyTypedProperties>
+//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="Each" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
+//                        <WeaklyTypedProperty Name="LinePosition" Value="3" Type="Int32" />
+//                        <WeaklyTypedProperty Name="Label" Value="cat 1" Type="String" />
+//                    </WeaklyTypedProperties>
+//                </LineItem>
+//                <LineItem ShippingMethodName="" ProductId="098073" PlacedPrice="7.6700" Description="" InventoryCondition="InStock" 
+//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" AllowBackordersAndPreorders="true" 
+//                    LastModified="2015-11-17T13:01:04.82-06:00" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="7.6700" 
+//                    Quantity="1.0000" DisplayName="Carrot Match Stick" ModifiedBy="" ProductCatalog="fdf" 
+//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.863-06:00" 
+//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
+//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
+//                    LineItemId="f12f38bb-1249-4c01-9062-c691b7cb4f34">
+//                    <ItemLevelDiscountsApplied />
+//                    <OrderLevelDiscountsApplied />
+//                    <WeaklyTypedProperties>
+//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="Each" Value="true" Type="Boolean" />
+//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
+//                        <WeaklyTypedProperty Name="LinePosition" Value="4" Type="Int32" />
+//                        <WeaklyTypedProperty Name="Label" Value="cat 2" Type="String" />
+//                    </WeaklyTypedProperties>
+//                </LineItem>
+//            </LineItems>
+//            <WeaklyTypedProperties>
+//                <WeaklyTypedProperty Name="BranchId" Value="fdf" Type="String" />
+//                <WeaklyTypedProperty Name="Shared" Value="true" Type="Boolean" />
+//                <WeaklyTypedProperty Name="ListType" Value="3" Type="Int32" />
+//                <WeaklyTypedProperty Name="BasketLevelDiscountsTotal" Value="0" Type="Decimal" />
+//                <WeaklyTypedProperty Name="DiscountsTotal" Value="0" Type="Decimal" />
+//                <WeaklyTypedProperty Name="CustomerId" Value="726971" Type="String" />
+//                <WeaklyTypedProperty Name="ShippingDiscountsTotal" Value="0" Type="Decimal" />
+//                <WeaklyTypedProperty Name="TempSubTotal" Value="130.87" Type="Decimal" />
+//                <WeaklyTypedProperty Name="RequestedShipDate" Value="2015-11-18T00:00:00-06:00" Type="DateTime" />
+//                <WeaklyTypedProperty Name="LineItemDiscountsTotal" Value="0" Type="Decimal" />
+//                <WeaklyTypedProperty Name="DisplayName" Value="New Cart 0" Type="String" />
+//                <WeaklyTypedProperty Name="BasketType" Value="0" Type="Int32" />
+//            </WeaklyTypedProperties>
+//        </OrderForm>
+//    </OrderForms>
+//    <Addresses />
+//    <WeaklyTypedProperties>
+//        <WeaklyTypedProperty Name="OriginalOrderNumber" Value="0001083" Type="String" />
+//        <WeaklyTypedProperty Name="DiscountsTotal" Value="0" Type="Decimal" />
+//        <WeaklyTypedProperty Name="ListType" Value="3" Type="Int32" />
+//        <WeaklyTypedProperty Name="BasketLevelDiscountsTotal" Value="0" Type="Decimal" />
+//        <WeaklyTypedProperty Name="BranchId" Value="fdf" Type="String" />
+//        <WeaklyTypedProperty Name="RequestedShipDate" Value="2015-11-18T00:00:00-06:00" Type="DateTime" />
+//        <WeaklyTypedProperty Name="ShippingDiscountsTotal" Value="0" Type="Decimal" />
+//        <WeaklyTypedProperty Name="LineItemDiscountsTotal" Value="0" Type="Decimal" />
+//        <WeaklyTypedProperty Name="TempSubTotal" Value="130.87" Type="Decimal" />
+//        <WeaklyTypedProperty Name="DisplayName" Value="New Cart 0" Type="String" />
+//        <WeaklyTypedProperty Name="Shared" Value="true" Type="Boolean" />
+//        <WeaklyTypedProperty Name="CustomerId" Value="726971" Type="String" />
+//        <WeaklyTypedProperty Name="BasketType" Value="0" Type="Int32" />
+//    </WeaklyTypedProperties>
+//</PurchaseOrder>

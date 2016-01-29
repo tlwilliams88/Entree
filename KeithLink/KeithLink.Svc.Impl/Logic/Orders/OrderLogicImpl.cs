@@ -79,6 +79,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 var price = pricing.Prices.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
                 var note = notes.Where(n => n.ItemNumber.Equals(item.ItemNumber));
                 if (prod != null) {
+                    item.IsValid = true;
                     item.Name = prod.Name;
                     item.Description = prod.Description;
                     item.Pack = prod.Pack;

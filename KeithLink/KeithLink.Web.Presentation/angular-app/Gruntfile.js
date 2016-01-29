@@ -649,8 +649,7 @@ module.exports = function (grunt) {
   ]);
   
   grunt.registerTask('build-for-beta', [
-    /*
-	'clean:dist',
+   'clean:dist',
     // 'includeSource:dist',
     'ngconstant:beta',
     'useminPrepare',
@@ -664,14 +663,6 @@ module.exports = function (grunt) {
     'filerev',
     'usemin',
     'htmlmin'
-	*/
-	// 'npm-install',
-    'clean:dev',
-    'ngconstant:beta',
-    // 'includeSource:dev',
-    'compass:server',
-    'copy:dev',
-    //'karma'
   ]);
   
   grunt.registerTask('build-for-demo', [

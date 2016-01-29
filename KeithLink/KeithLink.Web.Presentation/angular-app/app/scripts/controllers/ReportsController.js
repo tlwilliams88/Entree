@@ -15,9 +15,4 @@ angular.module('bekApp')
     // if (!$scope.userProfile.iskbitcustomer) {
     //   $state.go('menu.itemusagereport');
     // }
-
-    // KBIT ACCESS
-    var usernameToken = $scope.userProfile.usernametoken;
-    $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
-
 }]);

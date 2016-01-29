@@ -68,11 +68,14 @@ angular.module('bekApp')
           packsize: item.packsize,
           label: item.label,
           quantity: item.quantity,
-          each: false,
+          each: item.each,
           packageprice: item.packageprice,
           caseprice: item.caseprice,
           catchweight: item.catchweight,
-          hasPackagePrice: PricingService.hasPackagePrice(item)
+          hasPackagePrice: PricingService.hasPackagePrice(item),
+          hasCasePrice: PricingService.hasCasePrice(item),
+          average_weight: item.average_weight,
+          pack: item.pack
         };
         if (useListItemId === true) {
           reportItem.listitemid = item.listitemid;

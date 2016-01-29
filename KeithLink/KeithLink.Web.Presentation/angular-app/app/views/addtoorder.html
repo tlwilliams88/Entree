@@ -237,7 +237,7 @@
               <td>
               </td>
             <td ng-if="useParlevel" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
-              <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder">
+              <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder && item.isvalid">
               <!--  ON HAND AMOUNT -->
               <button type="button" class="btn btn-warning icon-minus3 hidden-lg"  ng-click="item.onhand = item.onhand -1; onItemOnHandAmountChanged(item)"></button>
               <input 
@@ -261,7 +261,7 @@
             <td class="input-col nowrap">
               <!--  QUANTITY -->
               <span class="hidden-mobile visible-print">{{::item.quantity}}</span>
-              <ng-form class="hidden-print" name="quantityForm">
+              <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid">
                 <div counter ng-model="item.quantity" min="0" length="5" ng-hide="!item.canOrder"  ng-if="!useParlevel && item.canOrder"></div>
                 <span  class="counter-container"  >
                  <button type="button" class="btn btn-warning icon-minus3 hidden-lg show-mobile" ng-disabled = "item.quantity === 0" ng-if="useParlevel && item.canOrder"  ng-click="item.quantity = item.quantity -1;"></button>
@@ -281,7 +281,7 @@
               </ng-form>
             </td>
             <td class="input-col hidden-mobile-visible-print">
-              <ng-form name="eachForm" ng-if="item.hasPackagePrice">
+              <ng-form name="eachForm" ng-if="item.hasPackagePrice && item.isvalid">
                 <input type="checkbox" class="mousetrap" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each"/>
                 <label for="each"></label>
               </ng-form>
@@ -356,7 +356,7 @@
                   <td>PAR Level</td>
                   <td>{{::item.parlevel}}</td>
                 </tr>
-                <tr ng-show="useParlevel && item.canOrder">
+                <tr ng-show="useParlevel && item.canOrder && item.isvalid">
                   <td>On Hand Amount</td>
                   <td class="input-col">
                     <ng-form name="parlevelForm_mobile">
@@ -369,7 +369,7 @@
                     </ng-form>
                   </td>
                 </tr>
-                <tr ng-show="item.hasPackagePrice">
+                <tr ng-show="item.hasPackagePrice && item.isvalid">
                   <td>Each</td>
                   <td>
                     <ng-form name="eachForm_mobile">

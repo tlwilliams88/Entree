@@ -52,10 +52,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
         System.Threading.Tasks.Task<System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.DsrAliasModel>> GetAllDsrAliasesByUserIdAsync(System.Guid userId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/IsTokenValid", ReplyAction="http://tempuri.org/IProfileService/IsTokenValidResponse")]
-        bool IsTokenValid(string token);
+        string IsTokenValid(string token);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/IsTokenValid", ReplyAction="http://tempuri.org/IProfileService/IsTokenValidResponse")]
-        System.Threading.Tasks.Task<bool> IsTokenValidAsync(string token);
+        System.Threading.Tasks.Task<string> IsTokenValidAsync(string token);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IProfileService/ReadMarketingPreferences", ReplyAction="http://tempuri.org/IProfileService/ReadMarketingPreferencesResponse")]
         System.Collections.Generic.List<KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel> ReadMarketingPreferences(System.DateTime from, System.DateTime to);
@@ -175,11 +175,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.ProfileService {
             return base.Channel.GetAllDsrAliasesByUserIdAsync(userId);
         }
         
-        public bool IsTokenValid(string token) {
+        public string IsTokenValid(string token) {
             return base.Channel.IsTokenValid(token);
         }
         
-        public System.Threading.Tasks.Task<bool> IsTokenValidAsync(string token) {
+        public System.Threading.Tasks.Task<string> IsTokenValidAsync(string token) {
             return base.Channel.IsTokenValidAsync(token);
         }
         

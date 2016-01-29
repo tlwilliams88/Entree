@@ -34,6 +34,11 @@ angular.module('bekApp')
   $scope.displayGlobalMessage = true;
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
+
+  // KBIT ACCESS
+  var usernameToken = $scope.userProfile.usernametoken;
+  $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
+  
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
