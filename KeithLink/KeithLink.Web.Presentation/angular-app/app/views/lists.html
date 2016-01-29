@@ -361,7 +361,7 @@
           navigate-table="lists" 
           class="custom-lists__table table table-border table-striped-rows">
           <thead>
-            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163">
+            <tr fsm-sticky-header scroll-body="'.custom-lists__table'" scroll-stop="0" scroll-offset="163" current-page="currentPage">
               <th class="nowrap input-col">
                 <input class="hidden-print" type="checkbox" ng-model-options="{ debounce: 1000 }" ng-model="selectedList.allSelected" ng-click="changeAllSelectedItems(selectedList.allSelected)" id="selectAllCheckbox" no-dirty-check>
                 <span class="sort-col-header" ng-click="sortList('position',sort[0].order)"> 

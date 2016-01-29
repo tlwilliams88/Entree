@@ -149,7 +149,7 @@
         class="table table-striped-rows table-border" 
         navigate-table="lists">
         <thead>
-          <tr fsm-sticky-header scroll-body="'.table-addtoorder'" scroll-stop="0">
+          <tr fsm-sticky-header scroll-body="'.table-addtoorder'" scroll-stop="0" current-page="currentPage">
             <th class="sort-col-header" ng-click="sortList('position',sort[0].order)">
               <span># <span sort-icons field="'position'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>
