@@ -23,6 +23,14 @@ fsm.directive('fsmStickyHeader', function(){
                 scrollableContainer = $(window);
             }
 
+            scope.$watch('currentPage', function(){ 
+                if(scope.currentPage > 0){
+                    if(clonedHeader && header){
+                        determineVisibility();                      
+                    }
+                }
+            });
+
             function createClone(){
                 /*
                  * switch place with cloned element, to keep binding intact
