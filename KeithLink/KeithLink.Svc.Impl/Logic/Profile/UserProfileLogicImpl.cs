@@ -1718,11 +1718,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         {
             if ((user != null) &&
                 (user.IsInternalUser) &&
-                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIBEKUsers.Contains(user.UserName.ToLower())))
+                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIBEKUsers.Contains(user.UserName, StringComparer.CurrentCultureIgnoreCase)))
                 return true;
             if ((user != null) &&
                 (user.RoleName.Equals("dsr", StringComparison.CurrentCultureIgnoreCase)) &&
-                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIDSRs.Contains(user.UserName.ToLower())))
+                (KeithLink.Svc.Impl.Configuration.WhiteListedUNFIDSRs.Contains(user.UserName, StringComparer.CurrentCultureIgnoreCase)))
                 return true;
             if ((customernumber != null) &&
                 (KeithLink.Svc.Impl.Configuration.WhiteListedUNFICustomers.Contains(customernumber)))
