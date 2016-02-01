@@ -157,8 +157,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                 }
 
                 // only process at the top of the hour
-                //if (DateTime.Now.Minute == 0) {
-                if (true)
+                if (DateTime.Now.Minute == 0) 
                 {
                     _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
                     try {
