@@ -627,8 +627,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         private void CheckForLostOrdersByStatus(StringBuilder sbMsgSubject, StringBuilder sbMsgBody, string qStatus)
         {
-            List<DataSet> Pos;
-            GetPurchaseOrdersByStatus(qStatus, out Pos);
+            List<PurchaseOrder> Pos = _poRepo.GetPurchaseOrdersByStatus(qStatus);
             StringBuilder sbAppendSubject;
             StringBuilder sbAppendBody;
             BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
@@ -642,75 +641,33 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
         }
 
-        // TODO(mdjoiner): Check to see if this should be in a repository and not a logic class. 
-        private void GetPurchaseOrdersByStatus(string queryStatus, out List<DataSet> Pos)
-        {
-            var manager = CommerceServerCore.GetPoManager();
-            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
-            // set what to search
-            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
-            // set what field/value to search for
-            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", queryStatus);
-            // set what fields to return
-            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
-
-            int c = results.Tables.Count;
-
-            Pos = new List<DataSet>();
-            List<Guid> poIds = new List<Guid>();
-            foreach (DataRow row in results.Tables[0].Rows)
-            {
-                poIds.Add(new Guid(row["OrderGroupId"].ToString()));
-            }
-            // Get the XML representation of the purchase orders.
-            if (poIds.Count > 0)
-            {
-                foreach (var poid in poIds)
-                {
-                    var po = manager.GetPurchaseOrderAsDataSet(poid);
-                    Pos.Add(po);
-                }
-            }
-        }
-
-        private void BuildAlertStringsForLostPurchaseOrders(out StringBuilder sbSubject, out StringBuilder sbBody, List<DataSet> Pos, string qStatus)
+        private void BuildAlertStringsForLostPurchaseOrders(out StringBuilder sbSubject, out StringBuilder sbBody, List<PurchaseOrder> Pos, string qStatus)
         {
             sbSubject = new StringBuilder();
             sbBody = new StringBuilder();
             if ((Pos != null) && (Pos.Count > 0))
             {
-                foreach (var po in Pos)
+                sbSubject.Clear();
+                sbSubject.Append("POs in a " + qStatus + " status for more than 10 minutes.");
+                sbBody.Append("Purchase Order Details:\n");
+                foreach (PurchaseOrder po in Pos)
                 {
-                    DateTime lastModified;
-                    DateTime.TryParse(po.Tables["PurchaseOrder"].Rows[0]["LastModified"].ToString(), out lastModified);
-                    // only if they've been created more than 10 minutes ago in the query status
+                    DateTime lastModified = DateTime.Parse(po.Properties["DateModified"].ToString());
+                    //// only if they've been created more than 10 minutes ago in the query status
                     if (lastModified < DateTime.Now.AddMinutes(-10))
                     {
-                        sbSubject.Clear();
-                        sbSubject.Append("PO in a " + qStatus + " status for more than 10 minutes.");
                         sbBody.Append("* PO");
                         sbBody.Append(" for ");
-                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
-                        {
-                            if(row["WeaklyTypedProperty.Name"].ToString().Equals("customerid", StringComparison.CurrentCultureIgnoreCase))
-                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString());
-                        }
+                        sbBody.Append(po.Properties["CustomerId"].ToString());
                         sbBody.Append("-");
-                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
-                        {
-                            if (row["WeaklyTypedProperty.Name"].ToString().Equals("branchid", StringComparison.CurrentCultureIgnoreCase))
-                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString().ToUpper());
-                        }
+                        sbBody.Append(po.Properties["BranchId"].ToString().ToUpper());
                         sbBody.Append(" with cart ");
-                        {
-                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["Name"].ToString());
-                        }
+                        sbBody.Append(po.Properties["Name"].ToString());
                         sbBody.Append(" and tracking ");
-                        {
-                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["TrackingNumber"].ToString());
-                        }
+                        sbBody.Append(po.Properties["OrderNumber"].ToString());
                         sbBody.Append(" last modified");
-                        sbBody.Append(" at " + lastModified.ToShortTimeString());
+                        sbBody.Append(" on " + lastModified.ToShortDateString());
+                        sbBody.Append(" " + lastModified.ToShortTimeString());
                         sbBody.Append(" in status " + qStatus);
                         sbBody.Append(".\n");
                     }

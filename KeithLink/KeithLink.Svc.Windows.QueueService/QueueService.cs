@@ -37,9 +37,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private static bool _checkLostOrdersProcessing;
         private System.Threading.Timer _checkLostOrdersTimer;
 
-        const int TIMER_DURATION_TICK = 2000;
         const int TIMER_DURATION_TICKMINUTE = 60000;
-        const int TIMER_DURATION_TICKTWOMINUTES = 120000;
         const int TIMER_DURATION_START = 1000;
         const int TIMER_DURATION_STOP = -1;
         const int TIMER_DURATION_IMMEDIATE = 1;
@@ -59,7 +57,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TimerCallback cb = new TimerCallback( ProcessCheckLostOrdersMinuteTick );
 
             if (Configuration.CheckLostOrders.Equals( "true", StringComparison.CurrentCultureIgnoreCase )) {
-                _checkLostOrdersTimer = new System.Threading.Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKTWOMINUTES );
+                _checkLostOrdersTimer = new System.Threading.Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE );
             }
         }
 
@@ -159,8 +157,10 @@ namespace KeithLink.Svc.Windows.QueueService {
                 }
 
                 // only process at the top of the hour
-                if (DateTime.Now.Minute == 0) {
-                    _log.WriteInformationLog( "ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString( "h:mm:ss tt" ) );
+                //if (DateTime.Now.Minute == 0) {
+                if (true)
+                {
+                    _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
                     try {
                         string subject;
                         string body;
@@ -174,7 +174,7 @@ namespace KeithLink.Svc.Windows.QueueService {
 
                         if ((subject != null) && (subject.Length > 0) && (body != null) && (body.Length > 0)) {
                             _log.WriteErrorLog( subject + " " + body );
-                            KeithLink.Common.Core.Email.ExceptionEmail.Send( new Exception( subject ), body, "BEK: " + subject );
+                            KeithLink.Common.Core.Email.ExceptionEmail.Send( new Exception( body ), "BEK: " + subject );
                         }
                     } catch (Exception ex) {
                         _log.WriteErrorLog( "Error in ProcessCheckLostOrdersMinuteTick", ex );
