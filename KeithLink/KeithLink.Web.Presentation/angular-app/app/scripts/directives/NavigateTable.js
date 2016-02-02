@@ -7,7 +7,7 @@
  * default -- behaves like a regular table with no extra rows
  * "lists" attr (navigate-table="lists") -- tbody tags can be used as rows, see lists.html page
  * "mobile" attr -- allows for .mobile-details-row, see searchresults.html page
- * 
+ *
  */
 
 angular.module('bekApp')
@@ -60,7 +60,7 @@ angular.module('bekApp')
 
           case key.left: {
             if (input.type === 'checkbox' || input.selectionStart === 0) {
-              moveTo = moveLeft(td, row); 
+              moveTo = moveLeft(td, row);
             }
             break;
           }
@@ -110,7 +110,7 @@ angular.module('bekApp')
     }
 
     scope.$on('$destroy',function() {
-      console.log('done!');
+      // console.log('done!');
       angular.element( window ).off( 'resize.Viewport' );
     });
   };
