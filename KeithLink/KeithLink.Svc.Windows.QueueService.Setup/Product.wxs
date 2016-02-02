@@ -7,7 +7,7 @@
 	<?define AppDescription="Polls Rabbit MQ for notificaitons, order updates, and confirmations" ?>
 
 
-	<Product Id="*" Name="$(var.AppName)" Language="1033" Version="1.0.0.0" Manufacturer="$(var.MfgName)" UpgradeCode="7bc0ff18-339a-4939-a70f-d8c6ce9d6627">
+	<Product Id="*" Name="$(var.AppName)" Language="1033" Version="1.5.0.3" Manufacturer="$(var.MfgName)" UpgradeCode="7bc0ff18-339a-4939-a70f-d8c6ce9d6627">
 		
 		<Package Id="*" Keywords="Installer" Description="$(var.AppName) Installer"
             Manufacturer="$(var.MfgName)" Comments="$(var.AppDescription)"

@@ -6,7 +6,7 @@
   <?define SourcePath="..\KeithLink.Svc.Windows.OrderService\bin\$(var.Configuration)"?>
   <?define AppDescription="Polls Rabbit MQ for orders from KeithLink to send to the mainframe" ?>
 
-  <Product Id="*" Name="$(var.AppName)" Language="1033" Version="1.5.0.2" Manufacturer="$(var.MfgName)" UpgradeCode="DC9BE621-078E-40C8-8CDB-584E133476AA">
+  <Product Id="*" Name="$(var.AppName)" Language="1033" Version="1.5.0.3" Manufacturer="$(var.MfgName)" UpgradeCode="DC9BE621-078E-40C8-8CDB-584E133476AA">
 
     <Package Id="*" Keywords="Installer" Description="$(var.AppName) Installer"
             Manufacturer="$(var.MfgName)" Comments="$(var.AppDescription)"
