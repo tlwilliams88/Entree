@@ -514,6 +514,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
                 p.IsSpecialtyCatalog = true;
                 p.Cases = oProd._source.onhandqty.ToString();
+                p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
             }
           
             if (oProd._source.nutritional != null) {

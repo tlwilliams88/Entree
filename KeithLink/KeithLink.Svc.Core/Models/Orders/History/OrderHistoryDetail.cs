@@ -22,6 +22,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         [DataMember()]
+        public decimal UnitCost { get; set; }
+
+        [DataMember()]
         public double SellPrice { get; set; }
 
         [DataMember()]

@@ -281,7 +281,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     SubOriginalItemNumber = string.Empty,
                     ReplacedOriginalItemNumber = string.Empty,
                     Description = item.DisplayName,
-                    ManufacturerName = item.Notes
+                    ManufacturerName = item.Notes,
+                    UnitCost = (decimal)item.ListPrice
                 };
 
                 if (orderType == OrderType.ChangeOrder) {

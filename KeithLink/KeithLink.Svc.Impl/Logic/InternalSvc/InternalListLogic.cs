@@ -463,49 +463,70 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         }
 
-        private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
-        {
+        private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo) {
             if (listItems == null || listItems.Count == 0 || user == null)
                 return;
-            var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
+            //var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
 
-            stopWatch.Start();
+            //stopWatch.Start();
 
-            var catalogList = listItems.Select(i => i.CatalogId).Distinct().ToList();
             var prices = new PriceReturn() { Prices = new List<Price>() };
-            foreach (var catalogId in catalogList)
-            {
-                if (!catalogLogic.IsSpecialtyCatalog(null, catalogId))
-                {
-                    prices.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
-                        listItems.Where(item => item.CatalogId == catalogId).GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).Distinct().ToList())); //BEK
-                }
-                else
-                {
-                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
-                    prices.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),
-                        listItems.Where(item => item.CatalogId == catalogId).GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber, CatchWeight = i.First().CatchWeight, PackagePriceNumeric = i.First().PackagePriceNumeric, CasePriceNumeric = i.First().CasePriceNumeric, CategoryName = i.First().CategoryName }).Distinct().ToList()));
+            var catalogList = listItems.Select(i => i.CatalogId).Distinct().ToList();
+            
+            if (catalogList[0] == null) {
+                prices.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), 
+                                                     listItems.GroupBy(g => g.ItemNumber)
+                                                             .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
+                                                             .Distinct()
+                                                             .ToList()
+                                                     )
+                                );
+            } else {
+                foreach (var catalogId in catalogList) {
+                    if (catalogLogic.IsSpecialtyCatalog(null, catalogId)) {
+                        var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
+                        prices.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),
+                                                                       listItems.Where(item => item.CatalogId == catalogId)
+                                                                                .GroupBy(g => g.ItemNumber)
+                                                                                .Select(i => new Product() {
+                                                                                    ItemNumber = i.First().ItemNumber,
+                                                                                    CatchWeight = i.First().CatchWeight,
+                                                                                    PackagePriceNumeric = i.First().PackagePriceNumeric,
+                                                                                    CasePriceNumeric = i.First().CasePriceNumeric,
+                                                                                    CategoryName = i.First().CategoryName
+                                                                                })
+                                                                                .Distinct()
+                                                                                .ToList()
+                                                                      )
+                                        );
+                    } else {
+                        prices.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
+                                                             listItems.Where(item => item.CatalogId == catalogId)
+                                                                      .GroupBy(g => g.ItemNumber)
+                                                                      .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
+                                                                      .Distinct()
+                                                                      .ToList()
+                                                             )
+                                        ); //BEK
+                    }
                 }
             }
 
-            stopWatch.Stop();
-            var priceTime = stopWatch.ElapsedMilliseconds;
+            //stopWatch.Stop();
+            //var priceTime = stopWatch.ElapsedMilliseconds;
 
-            var priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
+            Dictionary<string, Price> priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
 
-            Parallel.ForEach(listItems, listItem =>
-            {
+            Parallel.ForEach(listItems, listItem => {
                 var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
-                if (price != null)
-                {
+                if (price != null) {
                     listItem.PackagePrice = price.PackagePrice.ToString();
                     listItem.CasePrice = price.CasePrice.ToString();
                     listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
                 }
             });
 
-            eventLogRepository.WriteInformationLog(string.Format("Lookup Prices for {0} Items. Price Time: {1}ms", listItems.Count, priceTime));
-
+            //eventLogRepository.WriteInformationLog(string.Format("Lookup Prices for {0} Items. Price Time: {1}ms", listItems.Count, priceTime));
         }
 
         private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)

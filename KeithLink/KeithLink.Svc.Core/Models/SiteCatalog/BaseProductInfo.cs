@@ -204,5 +204,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "is_specialty_catalog", EmitDefaultValue = false)]
         [Description("Is Specialty Catalog bool")]
         public bool IsSpecialtyCatalog { get; set; }
+
+        [DataMember(Name = "specialtyitemcost")]
+        public decimal SpecialtyItemCost { get; set; }
     }
 }

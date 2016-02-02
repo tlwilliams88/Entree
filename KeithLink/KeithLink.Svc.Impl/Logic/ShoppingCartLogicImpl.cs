@@ -204,19 +204,16 @@ namespace KeithLink.Svc.Impl.Logic
             var catalogList = cart.Items.Select(i => i.CatalogId).Distinct().ToList();
             var products = new ProductsReturn() { Products = new List<Product>() };
             var pricing = new PriceReturn() { Prices = new List<Price>() };
-            foreach (var catalogId in catalogList)
-            {
+
+            foreach (var catalogId in catalogList) {
                 var tempProducts = catalogLogic.GetProductsByIds(catalogId, cart.Items.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
                 products.AddRange(tempProducts);
-                if (!catalogLogic.IsSpecialtyCatalog(null, catalogId))
-                {
+                if (catalogLogic.IsSpecialtyCatalog(null, catalogId)) {
+                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
+                    pricing.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1), tempProducts.Products));
+                } else {
                     pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products)); //BEK
                 }
-                else {
-                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
-                    pricing.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),tempProducts.Products));
-                }
-                    
             }
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
@@ -252,6 +249,7 @@ namespace KeithLink.Svc.Impl.Logic
 				}
 				if (price != null)
 				{
+                    item.SpecialtyItemCost = prod.SpecialtyItemCost;
 					item.PackagePrice = price.PackagePrice.ToString();
 					item.CasePrice = price.CasePrice.ToString();
 
@@ -446,9 +444,17 @@ namespace KeithLink.Svc.Impl.Logic
                 {
                     var item = (CS.LineItem)lineItem.Target;
                     var products = catalogLogic.GetProductsByIds(catalogId, new List<string>() {item.ProductId});
+                    var filteredProducts = products.Products.Where(x => x.ItemNumber == item.ProductId).ToList();
 
-                    if (products.Products.Where(x => x.ItemNumber == item.ProductId).ToList().Count > 0)
-                        item.Notes = products.Products.Where(x => x.ItemNumber == item.ProductId).ToList()[0].Brand;
+                    if (filteredProducts.Count > 0) {
+                        item.Notes = filteredProducts[0].Brand;
+
+                        if(item.Each ?? false){
+                            item.ListPrice = (decimal)filteredProducts[0].PackagePriceNumeric;
+                        } else {
+                            item.ListPrice = (decimal)filteredProducts[0].CasePriceNumeric;
+                        }
+                    }
                 }
                 
 

@@ -17,5 +17,16 @@ namespace KeithLink.Svc.Core.Extensions.Enumerations {
                     return string.Empty;
             }
         }
+
+        public static string ToLongString(this UnitOfMeasure value) {
+            switch (value) {
+                case UnitOfMeasure.Case:
+                    return "Case";
+                case UnitOfMeasure.Package:
+                    return "Each";
+                default:
+                    return string.Empty;
+            }
+        }
     }
 }

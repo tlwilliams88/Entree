@@ -71,6 +71,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             detail.UnitOfMeasure = (bool)lineItem.Properties["Each"] ? UnitOfMeasure.Package : UnitOfMeasure.Case;
             detail.CatchWeight = (bool)lineItem.Properties["CatchWeight"];
             //detail.ItemDeleted =
+            detail.UnitCost = lineItem.ListPrice ?? 0;
             detail.SellPrice = (double)lineItem.PlacedPrice;
             detail.SubbedOriginalItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"];
             //detail.ReplacedOriginalItemNumber =
