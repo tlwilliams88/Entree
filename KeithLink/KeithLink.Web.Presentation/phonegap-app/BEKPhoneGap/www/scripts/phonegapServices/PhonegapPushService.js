@@ -19,31 +19,44 @@ angular.module('bekApp')
     }
 
     Service.register = function () {
-      if ( device.platform == 'android' || device.platform == 'Android' || device.platform == "amazon-fireos" ){
-        window.plugins.pushNotification.register(
-          successHandler,
-          errorHandler,
-          {
-            "senderID":"1013977805145",
-            "ecb":"onNotification"
-          });
-      } else {                    
-        window.plugins.pushNotification.register(
-          tokenHandler,
-          errorHandler,
-          {
-            "badge":"true",
-            "sound":"true",
-            "alert":"true",
-            "ecb":"onNotificationAPN"
-          });
-      }
+
+       var push = PushNotification.init({
+            "android": {
+                "senderID": "1013977805145"
+            },
+            "ios": {"alert": "true", "badge": "true", "sound": "true"}, 
+            "windows": {} 
+        });
+        
+        push.on('registration', function(data) {
+           if( device.platform !== 'android' && device.platform !== 'Android' && device.platform !== "amazon-fireos" ){ 
+            $window.tokenHandler(data.registrationId, 1)
+           }
+           else{
+            $window.tokenHandler(data.registrationId, 2)
+           }
+        });
+
+        push.on('notification', function(data) {
+          if( device.platform !== 'android' && device.platform !== 'Android' && device.platform !== "amazon-fireos" ){ 
+          $window.onNotificationAPN(data);
+          }
+          else{
+          $window.onNotification(data);
+          }
+        });
+      
+
+        push.on('error', function(e) {
+            $log.debug("push error");
+        });
+    
     };
 
     //iOS token handler callback
-    $window.tokenHandler = function(token) {
+    $window.tokenHandler = function(token, deviceos) {
       var object = {
-        deviceos: 1,
+        deviceos: deviceos,
         deviceid: device.uuid,
         providertoken: token
       };
@@ -51,7 +64,7 @@ angular.module('bekApp')
     };
 
     //Android/Windows/FireOS callback
-    $window.successHandler = function (success) {
+    $window.successHandler = function(success)  {
       $log.debug('successHandler: ' + success);
     };
 
@@ -79,18 +92,7 @@ angular.module('bekApp')
 
       switch( e.event ) {
         case 'registered':
-          if ( e.regid.length > 0 ) {
-            $log.debug('token registered');
-            // Your GCM push server needs to know the regID before it can push to this device
-            // here is where you might want to send it the regID for later use.
-            $log.debug("regID = " + e.regid);
-            var object = {
-              deviceos: 2,
-              deviceid: device.uuid,
-              providertoken: e.regid
-            };
-            registerDevice(object);
-          }
+
           break;
 
         case 'message':

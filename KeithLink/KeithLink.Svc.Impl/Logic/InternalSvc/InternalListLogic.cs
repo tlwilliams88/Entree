@@ -386,7 +386,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public void DeleteNote(UserProfile user, UserSelectedContext catalogInfo, string ItemNumber)
         {
             var list = listRepository.ReadListForCustomer(catalogInfo, true).Where(l => l.Type == ListType.Notes).FirstOrDefault();
-            if (list == null)
+            if (list != null)
             {
                 listItemRepository.Delete(list.Items.Where(i => i.ItemNumber.Equals(ItemNumber)).FirstOrDefault());
                 unitOfWork.SaveChanges();
@@ -455,6 +455,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
                 if (prod != null)
                 {
+                    listItem.IsValid = true;
                     listItem.Name = prod.Name;
                     listItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);
                 }

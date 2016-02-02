@@ -73,7 +73,7 @@ namespace KeithLink.Svc.InternalSvc
             return _aliasLogic.GetAllDsrAliasesByUserId(userId);
         }
 
-        public bool IsTokenValid(string token) {
+        public string IsTokenValid(string token) {
 			return _passwordResetLogic.IsTokenValid(token);
 		}
 

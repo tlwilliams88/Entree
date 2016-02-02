@@ -336,64 +336,56 @@ namespace KeithLink.Svc.Impl.Migrations
 
             System.Text.StringBuilder orderConfirmationMessage = new System.Text.StringBuilder();
             orderConfirmationMessage.AppendLine("<table style=\"width: 100%;\">");
-            orderConfirmationMessage.AppendLine("   <tr>");
-            orderConfirmationMessage.AppendLine("       <td><h3>Thank you for your order.</h3></td>");
-            orderConfirmationMessage.AppendLine("       <td style=\"text-align:right;\"><h3>{CustomerName}</h3></td>");
-            orderConfirmationMessage.AppendLine("   </tr>");
-            orderConfirmationMessage.AppendLine("   <tr>");
-            orderConfirmationMessage.AppendLine("       <td>Delivery Date: {ShipDate}</td>");
-            orderConfirmationMessage.AppendLine("       <td style=\"text-align:right;\">Customer # {CustomerNumber}</td>");
-            orderConfirmationMessage.AppendLine("   </tr>");
-            orderConfirmationMessage.AppendLine("   <tr>");
-            orderConfirmationMessage.AppendLine("       <td>Items: {Count}</td>");
-            orderConfirmationMessage.AppendLine("       <td style=\"text-align:right;\">Invoice Total: ${Total}</td>");
-            orderConfirmationMessage.AppendLine("   </tr>");
+            orderConfirmationMessage.AppendLine("    <tr>");
+            orderConfirmationMessage.AppendLine("        <td><h3>Thank you for your order.</h3></td>");
+            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\"><h3>{CustomerName}</h3></td>");
+            orderConfirmationMessage.AppendLine("    </tr>");
+            orderConfirmationMessage.AppendLine("    <tr>");
+            orderConfirmationMessage.AppendLine("        <td>Delivery Date: {ShipDate}</td>");
+            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\">Customer # {CustomerNumber}</td>");
+            orderConfirmationMessage.AppendLine("    </tr>");
+            orderConfirmationMessage.AppendLine("    <tr>");
+            orderConfirmationMessage.AppendLine("        <td>Items: {Count}</td>");
+            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\">Invoice Number: {InvoiceNumber}</td>");
+            orderConfirmationMessage.AppendLine("    </tr>");
+            orderConfirmationMessage.AppendLine("    <tr>");
+            orderConfirmationMessage.AppendLine("        <td></td>");
+            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\">Invoice Total: ${Total}</td>");
+            orderConfirmationMessage.AppendLine("    </tr>");
             orderConfirmationMessage.AppendLine("</table>");
             orderConfirmationMessage.AppendLine("<hr/>");
+            orderConfirmationMessage.AppendLine("<table style=\"width: 100%;\">");
+            orderConfirmationMessage.AppendLine("	<tr>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Item # </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Confirmed Items </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Ordered </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Confirmed </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Price </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Status</th>");
+            orderConfirmationMessage.AppendLine("	</tr>");
             orderConfirmationMessage.AppendLine("{OrderConfirmationItems}");
+            orderConfirmationMessage.AppendLine("</table>");
 
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
                 new MessageTemplate
                 {
                     TemplateKey = "OrderConfirmation",
-                    Subject = "Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName}",
+                    Subject = "Ben E. Keith: {OrderStatus} for {CustomerNumber}-{CustomerName};{InvoiceNumber}",
                     IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
                     Body = orderConfirmationMessage.ToString()
                 });
 
-            System.Text.StringBuilder orderConfirmationItemsMessage = new System.Text.StringBuilder();
-            orderConfirmationItemsMessage.AppendLine("<table style=\"width: 100%;\">");
-            orderConfirmationItemsMessage.AppendLine("   <tr style=\"border-bottom:1px solid gray;\">");
-            orderConfirmationItemsMessage.AppendLine("       <th>Item # </th>");
-            orderConfirmationItemsMessage.AppendLine("       <th>Confirmed Items </th>");
-            orderConfirmationItemsMessage.AppendLine("       <th>Ordered </th>");
-            orderConfirmationItemsMessage.AppendLine("       <th>Price </th>");
-            orderConfirmationItemsMessage.AppendLine("       <th>Status</th>");
-            orderConfirmationItemsMessage.AppendLine("   </tr>");
-            orderConfirmationItemsMessage.AppendLine("   {OrderConfirmationItemDetail}");
-            orderConfirmationItemsMessage.AppendLine("</table>");
-
-            context.MessageTemplates.AddOrUpdate(
-                t => t.TemplateKey,
-                new MessageTemplate
-                {
-                    TemplateKey = "OrderConfirmationItems",
-                    Subject = "",
-                    IsBodyHtml = true,
-                    Type = MessageTemplateType.Email,
-                    Body = orderConfirmationItemsMessage.ToString()
-                });
-
-            System.Text.StringBuilder orderConfirmationItemDetailMessage = new System.Text.StringBuilder();
-            orderConfirmationItemDetailMessage.AppendLine("    <tr>");
-            orderConfirmationItemDetailMessage.AppendLine("        <td>{ProductNumber} </td>");
-            orderConfirmationItemDetailMessage.AppendLine("        <td>{ProductDescription} </td>");
-            orderConfirmationItemDetailMessage.AppendLine("        <td>{Quantity} </td>");
-            orderConfirmationItemDetailMessage.AppendLine("        <td>{Price} </td>");
-            orderConfirmationItemDetailMessage.AppendLine("        <td>{Status}</td>");
-            orderConfirmationItemDetailMessage.AppendLine("    </tr>");
+            System.Text.StringBuilder orderConfirmationItemsDetailMessage = new System.Text.StringBuilder();
+            orderConfirmationItemsDetailMessage.AppendLine("    <tr>");
+            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{ProductNumber} </td>");
+            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{ProductDescription} </td>");
+            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Quantity} </td>");
+            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Sent} </td>");
+            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Price} </td>");
+            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Status}</td>");
+            orderConfirmationItemsDetailMessage.AppendLine("    </tr>");
 
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
@@ -403,41 +395,17 @@ namespace KeithLink.Svc.Impl.Migrations
                     Subject = "",
                     IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
-                    Body = orderConfirmationItemDetailMessage.ToString()
-                });
-
-            System.Text.StringBuilder orderConfirmationItemsOOSMessage = new System.Text.StringBuilder();
-            orderConfirmationItemsOOSMessage.AppendLine("<table style=\"width: 100%;\">");
-            orderConfirmationItemsOOSMessage.AppendLine("	<tr style=\"border-bottom:1px solid red;\">");
-            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Item # </th>");
-            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Exception Items </th>");
-            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Ordered </th>");
-            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Confirmed </th>");
-            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Price </th>");
-            orderConfirmationItemsOOSMessage.AppendLine("		<th style=\"color:red;\">Status</th>");
-            orderConfirmationItemsOOSMessage.AppendLine("	</tr>");
-            orderConfirmationItemsOOSMessage.AppendLine("   {OrderConfirmationItemOOSDetail}");
-            orderConfirmationItemsOOSMessage.AppendLine("</table><p></p>");
-
-            context.MessageTemplates.AddOrUpdate(
-                t => t.TemplateKey,
-                new MessageTemplate
-                {
-                    TemplateKey = "OrderConfirmationItemsOOS",
-                    Subject = "",
-                    IsBodyHtml = true,
-                    Type = MessageTemplateType.Email,
-                    Body = orderConfirmationItemsOOSMessage.ToString()
+                    Body = orderConfirmationItemsDetailMessage.ToString()
                 });
 
             System.Text.StringBuilder orderConfirmationItemOOSDetailMessage = new System.Text.StringBuilder();
             orderConfirmationItemOOSDetailMessage.AppendLine("<tr>");
-            orderConfirmationItemOOSDetailMessage.AppendLine("      <td style=\"color:red;\">{ProductNumber} </td>");
-            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"color:red;\">{ProductDescription} </td>");
-            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"color:red;\">{Quantity} </td>");
-            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"color:red;\">{Sent} </td>");
-            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"color:red;\">{Price} </td>");
-            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"color:red;\">{Status}</td>");
+            orderConfirmationItemOOSDetailMessage.AppendLine("      <td style=\"text-align:left;color:maroon;\">{ProductNumber} </td>");
+            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"text-align:left;color:maroon;\">{ProductDescription} </td>");
+            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"text-align:left;color:maroon;\">{Quantity} </td>");
+            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"text-align:left;color:maroon;\">{Sent} </td>");
+            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"text-align:left;color:maroon;\">{Price} </td>");
+            orderConfirmationItemOOSDetailMessage.AppendLine("		<td style=\"text-align:left;color:maroon;\">{Status}</td>");
             orderConfirmationItemOOSDetailMessage.AppendLine("</tr>");
 
             context.MessageTemplates.AddOrUpdate(
@@ -451,20 +419,6 @@ namespace KeithLink.Svc.Impl.Migrations
                     Body = orderConfirmationItemOOSDetailMessage.ToString()
                 });
 
-            System.Text.StringBuilder orderConfirmationSuccessMessage = new System.Text.StringBuilder();
-            orderConfirmationSuccessMessage.AppendLine("Order updated from status: {OriginalStatus} to {CurrentStatus}<br/>");
-
-            context.MessageTemplates.AddOrUpdate(
-                t => t.TemplateKey,
-                new MessageTemplate
-                {
-                    TemplateKey = "OrderSuccessful",
-                    Subject = "",
-                    IsBodyHtml = true,
-                    Type = MessageTemplateType.Email,
-                    Body = orderConfirmationSuccessMessage.ToString()
-                });
-
             System.Text.StringBuilder orderRejectedMessage = new System.Text.StringBuilder();
             orderRejectedMessage.AppendLine("Order Rejected: {SpecialInstructions}<br/>");
 
@@ -473,49 +427,11 @@ namespace KeithLink.Svc.Impl.Migrations
                 new MessageTemplate
                 {
                     TemplateKey = "OrderRejected",
-                    Subject = "",
+                    Subject = "<h3>{CustomerName}</h3><h3>Customer # {CustomerNumber}</h3><h3 style=\"color:maroon;\">{SpecialInstructions}</h3>",
                     IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
                     Body = orderRejectedMessage.ToString()
                 });
-
-            System.Text.StringBuilder orderChangeMessage = new System.Text.StringBuilder();
-            orderChangeMessage.AppendLine("<table style=\"width: 100%;\">");
-            orderChangeMessage.AppendLine("    <tr>");
-            orderChangeMessage.AppendLine("        <th>Item # </th>");
-            orderChangeMessage.AppendLine("        <th>Status</th>");
-            orderChangeMessage.AppendLine("    </tr>");
-            orderChangeMessage.AppendLine("    {OrderChangeLines}");
-            orderChangeMessage.AppendLine("</table><p></p>");
-
-            context.MessageTemplates.AddOrUpdate(
-                t => t.TemplateKey,
-                new MessageTemplate
-                {
-                    TemplateKey = "OrderChange",
-                    Subject = "",
-                    IsBodyHtml = true,
-                    Type = MessageTemplateType.Email,
-                    Body = orderChangeMessage.ToString()
-                });
-
-            System.Text.StringBuilder orderChangeDetailMessage = new System.Text.StringBuilder();
-            orderChangeDetailMessage.AppendLine("<tr>");
-            orderChangeDetailMessage.AppendLine("    <td>{Number} </td>");
-            orderChangeDetailMessage.AppendLine("    <td>{Status}</td>");
-            orderChangeDetailMessage.AppendLine("</tr>");
-
-            context.MessageTemplates.AddOrUpdate(
-                t => t.TemplateKey,
-                new MessageTemplate
-                {
-                    TemplateKey = "OrderChangeDetail",
-                    Subject = "",
-                    IsBodyHtml = true,
-                    Type = MessageTemplateType.Email,
-                    Body = orderChangeDetailMessage.ToString()
-                });
-
         }
     }
 

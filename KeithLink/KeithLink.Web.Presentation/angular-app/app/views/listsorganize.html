@@ -75,10 +75,12 @@
             ng-click="sort('par', sortDescending)">
             <span>PAR <span sort-icons field="'par'" sortorder="sortDescending" sortby="sortField"></span></span>
           </th>
-          <th></th> <th></th>
+          <th></th> 
+          <th></th> 
+          <th ng-if="list.permissions.canDeleteItems" ></th>
         </tr>
       </thead>
-      <tbody ng-repeat="item in list.items | filter:{listitemid: '!!'} " class="item_{{item.listitemid}}">
+      <tbody ng-repeat="item in list.items | filter:{listitemid: '!!', isdeleted:'!true'} " class="item_{{item.listitemid}}">
         <tr class="ui-draggable-handle" ng-class="{ odd : $odd, even: $even}">
           <td class="input-col">
             <ng-form>
@@ -125,8 +127,11 @@
           <span         
             class="hidden-xs hidden-sm icon-list2 large-icon" 
             tooltip="Click and drag to reorder list."
-            style="cursor:move; margin-right:40px;">
+            style="cursor:move;">
           </span>
+          </td>
+          <td ng-if="list.permissions.canDeleteItems" class="nowrap large-icon icon-col"> 
+            <a ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
           </td>
         </tr>
         <tr ng-if="showDetails" class="mobile-details-row hidden-md hidden-lg" ng-class="{ odd : $odd, even: $even }">

@@ -91,7 +91,7 @@
   <xs:element name="IsTokenValidResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="IsTokenValidResult" type="xs:boolean" />
+        <xs:element minOccurs="0" name="IsTokenValidResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

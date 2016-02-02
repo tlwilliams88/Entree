@@ -285,6 +285,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 				var prod = products.Products.Where(p => p.ItemNumber.Equals(invoiceDetailItem.ItemNumber)).FirstOrDefault();
 				if (prod != null)
 				{
+                    invoiceDetailItem.IsValid = true;
 					invoiceDetailItem.Name = prod.Name;
 					invoiceDetailItem.Description = prod.Description;
 					invoiceDetailItem.PackSize = string.Format("{0} / {1}", prod.Pack, prod.Size);

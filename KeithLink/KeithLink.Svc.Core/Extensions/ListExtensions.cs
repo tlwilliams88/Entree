@@ -43,7 +43,7 @@ namespace KeithLink.Svc.Core.Extensions
                     Each = i.Each ?? false,
                     Quantity = i.Quantity,
                     CatalogId = i.CatalogId
-                }).ToArray()
+                }).OrderBy(l => l.Position).ToArray()
             };
         }
 
@@ -90,7 +90,7 @@ namespace KeithLink.Svc.Core.Extensions
                         Each = i.Each ?? false,
                         Quantity = i.Quantity,
                         CatalogId = i.CatalogId
-                    }).ToList()
+                    } ).OrderBy( l => l.Position ).ToList()
             };
         }
 
@@ -104,7 +104,7 @@ namespace KeithLink.Svc.Core.Extensions
             return new ListReportModel()
             {
                 Name = list.Name,
-                Items = list.Items.Select(i => new ListItemReportModel()
+                Items = list.Items.OrderBy(m => m.Position).Select(i => new ListItemReportModel()
                     {
                         Brand = i.BrandExtendedDescription,
                         ItemNumber = i.ItemNumber,

@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data;
+using System.Globalization;
 
 namespace KeithLink.Svc.Impl.Repository.Orders
 {
@@ -90,6 +92,24 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             }
         }
 
+        public List<PurchaseOrder> ReadPurchaseOrderHeadersByCustomerId(Guid customerId) {
+                var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
+
+                queryBaskets.SearchCriteria.Model.Properties["UserId"] = customerId.ToString( "B" );
+                queryBaskets.SearchCriteria.Model.Properties["BasketType"] = 1;
+                
+                queryBaskets.QueryOptions.RefreshBasket = false;
+
+                var response = FoundationService.ExecuteRequest(queryBaskets.ToRequest());
+
+                if (response.OperationResponses.Count == 0)
+                    return null;
+
+                CommerceQueryOperationResponse basketResponse = response.OperationResponses[0] as CommerceQueryOperationResponse;
+
+                return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder) p).ToList();
+        }
+
 		public List<PurchaseOrder> ReadPurchaseOrders(Guid customerId, string customerNumber, bool header = false)
 		{
 			var queryBaskets = new CommerceQuery<CommerceEntity, CommerceModelSearch<CommerceEntity>, CommerceBasketQueryOptionsBuilder>("Basket");
@@ -117,6 +137,45 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                                                                                 ).Select(p => (PurchaseOrder)p).ToList();
             //return basketResponse.CommerceEntities.Cast<CommerceEntity>().Select(p => (PurchaseOrder)p).ToList();
 		}
+
+        public List<PurchaseOrder> GetPurchaseOrdersByStatus(string queryStatus)
+        {
+            var manager = CommerceServerCore.GetPoManager();
+            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            // set what to search
+            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            // Get a list of the returnable properties - debug only
+            //DataSet ret = manager.GetReturnableProperties("EN");
+            //StringBuilder props = new StringBuilder();
+            //foreach (DataRow row in ret.Tables[0].Rows)
+            //{
+            //    if (props.Length > 0) props.Append(",");
+            //    props.Append(row.ItemArray[0].ToString());
+            //}
+            // set what field/value to search for
+            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", queryStatus);
+            // set what fields to return
+            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,TrackingNumber" });
+
+            int c = results.Tables.Count;
+
+            List<PurchaseOrder> Pos = new List<PurchaseOrder>();
+            List<string> poTNs = new List<string>();
+            foreach (DataRow row in results.Tables[0].Rows)
+            {
+                poTNs.Add(row["TrackingNumber"].ToString());
+            }
+            // Get the XML representation of the purchase orders.
+            if (poTNs.Count > 0)
+            {
+                foreach (string trackingNumber in poTNs)
+                {
+                    PurchaseOrder po = ReadPurchaseOrderByTrackingNumber(trackingNumber);
+                    Pos.Add(po);
+                }
+            }
+            return Pos;
+        }
 
 
 		public List<PurchaseOrder> ReadPurchaseOrderHeadersInDateRange(Guid customerId, string customerNumber, DateTime startDate, DateTime endDate)

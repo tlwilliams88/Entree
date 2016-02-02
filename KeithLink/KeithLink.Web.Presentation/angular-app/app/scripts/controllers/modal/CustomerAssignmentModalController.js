@@ -77,7 +77,9 @@ angular.module('bekApp')
   }
   function stopLoading() {
     $scope.loadingCustomers = false;
-    if($scope.customers.length <30){$scope.infiniteScrollLoadMore();}
+    if($scope.customers.length <30 && ($scope.totalCustomers - selectedCustomers.length) > 30){
+      $scope.infiniteScrollLoadMore();
+    }
   }
 
   $scope.selectedCount = 0;

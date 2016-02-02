@@ -123,6 +123,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 				var prod = productHash.ContainsKey(orderLine.ItemNumber) ? productHash[orderLine.ItemNumber] : null;
 				if (prod != null)
 				{
+                    orderLine.IsValid = true;
 					orderLine.Name = prod.Name;
 					orderLine.Pack = prod.Pack;
 					orderLine.Size = prod.Size;
@@ -144,6 +145,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             Product prod = products.Where(x => x.ItemNumber == reportItem.ItemNumber).FirstOrDefault();
             if (prod != null)
             {
+                reportItem.IsValid = true;
                 reportItem.Name = prod.Name;
                 reportItem.PackSize = prod.PackSize;
 				reportItem.Brand = prod.BrandExtendedDescription;
