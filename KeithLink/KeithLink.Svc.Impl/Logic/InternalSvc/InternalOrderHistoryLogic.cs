@@ -429,7 +429,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             var listOfHeaders = headers.ToList();
 
-            foreach (var h in headers) {
+            foreach (var h in listOfHeaders) {
                 try {
                     Order returnOrder = null;
                     
