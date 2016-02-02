@@ -218,11 +218,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         }
 
         public List<String> GetExternalBranchIds(string bekBranchId) {
-            List<ExportExternalCatalog> externalCatalog = _externalCatalogRepository.ReadExternalCatalogs().ToList();
-            var catalogRows = externalCatalog.Where(x => bekBranchId.Equals(x.BekBranchId, StringComparison.InvariantCultureIgnoreCase)).ToList();
-            var strings = catalogRows.Select(x => x.CatalogId).ToList();
-
-            return strings;
+            return _externalCatalogRepository.ReadExternalCatalogs()
+                                             .Where(x => bekBranchId.Equals(x.BekBranchId, StringComparison.InvariantCultureIgnoreCase))
+                                             .Select(c => c.CatalogId)
+                                             .ToList();
         }
 
         public Dictionary<string, int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
