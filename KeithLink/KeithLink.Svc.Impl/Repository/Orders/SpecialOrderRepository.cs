@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core;
 
 using KeithLink.Svc.Core.Extensions.Enumerations;
 
@@ -25,6 +26,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
     public class SpecialOrderRepositoryImpl : ISpecialOrderRepository
     {
         #region attributes
+        private IEventLogRepository _log;
         private ISpecialOrderDBContext _specialOrderDbContext;
         private IOrderHistoryHeaderRepsitory _orderHistory;
         private IOrderHistoryDetailRepository _orderHistoryDetailRepo;
@@ -42,13 +44,14 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         #endregion
 
         #region ctor
-        public SpecialOrderRepositoryImpl(ISpecialOrderDBContext specialOrderDbContext, IOrderHistoryHeaderRepsitory orderHistory, 
-            IOrderHistoryDetailRepository orderHistoryDetailRepo, IUnitOfWork unitOfWork)
+        public SpecialOrderRepositoryImpl(ISpecialOrderDBContext specialOrderDbContext, IOrderHistoryHeaderRepsitory orderHistory, IOrderHistoryDetailRepository orderHistoryDetailRepo, 
+                                        IUnitOfWork unitOfWork, IEventLogRepository logRepository)
         {
 			_specialOrderDbContext = specialOrderDbContext;
             _orderHistory = orderHistory;
             _orderHistoryDetailRepo = orderHistoryDetailRepo;
             _unitOfWork = unitOfWork;
+            _log = logRepository;
         }
         #endregion
 
@@ -116,18 +119,28 @@ namespace KeithLink.Svc.Impl.Repository.Orders
             _specialOrderDbContext.Context.SaveChanges();
 
             // add idToUse to order history
-            var orderHistory = _orderHistory.ReadByConfirmationNumber(file.Header.ControlNumber.ToString().PadLeft(CONFNUMBER_LENGTH, CONFNUMBER_PADDINGCHAR), "B").First();
+            var orderHistory = _orderHistory.ReadByConfirmationNumber(file.Header.ControlNumber.ToString().PadLeft(CONFNUMBER_LENGTH, CONFNUMBER_PADDINGCHAR), "B").FirstOrDefault();
 
-            //details
-            foreach (var orderItem in orderHistory.OrderDetails) {
-                var detailItems = file.Details.Where(x => x.ItemNumber == orderItem.ItemNumber).ToList();
-                foreach (var detailItem in detailItems) {
-                    orderItem.ManufacturerId = detailItem.ManufacturerName;//todo
-                    orderItem.SpecialOrderLineNumber = detailItem.LineNumber.ToString();
-                    orderItem.SpecialOrderHeaderId = headerId;
+            if (orderHistory == null) {
+                // this could only happen if the order was created in Dev and it is being processed in QA
+                StringBuilder warningMessage = new StringBuilder();
+                warningMessage.Append("Order not found in order history. This should only happen when created in one environment and processed in another(e.g. Local and Dev). ");
+                warningMessage.Append("Affected order number is ");
+                warningMessage.Append(file.Header.ControlNumber);
+
+                _log.WriteWarningLog(warningMessage.ToString());
+            } else {
+                //details
+                foreach (var orderItem in orderHistory.OrderDetails) {
+                    var detailItems = file.Details.Where(x => x.ItemNumber == orderItem.ItemNumber).ToList();
+                    foreach (var detailItem in detailItems) {
+                        orderItem.ManufacturerId = detailItem.ManufacturerName;//todo
+                        orderItem.SpecialOrderLineNumber = detailItem.LineNumber.ToString();
+                        orderItem.SpecialOrderHeaderId = headerId;
+                    }
                 }
+                _unitOfWork.SaveChangesAndClearContext();
             }
-            _unitOfWork.SaveChangesAndClearContext();
 
             requestHeader.OrderStatusId = KSOS_STATUS_SEND;
             _specialOrderDbContext.Context.SaveChanges();
