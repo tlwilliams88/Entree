@@ -621,6 +621,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             foreach(string status in statuses)
                 CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, status);
             sBody = sbMsgBody.ToString();
+            if (sbMsgSubject.Length > 0) sbMsgSubject.Insert(0, "QSvc on " + Environment.MachineName + "; ");
             return sbMsgSubject.ToString();
         }
 
@@ -632,10 +633,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
             if (sbAppendSubject.Length > 0)
             {
+                if (sbMsgSubject.Length > 0) sbMsgSubject.Append(", ");
                 sbMsgSubject.Append(sbAppendSubject.ToString());
             }
             if (sbAppendBody.Length > 0)
             {
+                if (sbMsgBody.Length > 0) sbMsgBody.Append("\n\n");
                 sbMsgBody.Append(sbAppendBody.ToString());
             }
         }
