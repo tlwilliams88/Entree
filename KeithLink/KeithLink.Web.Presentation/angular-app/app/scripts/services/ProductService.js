@@ -146,10 +146,11 @@ angular.module('bekApp')
         /****************
         ITEM NOTES
         ****************/
-        updateItemNote: function(itemNumber, note) {
+        updateItemNote: function(itemNumber, note, catalogid) {
           var itemNote = {
             itemnumber: itemNumber,
-            note: note
+            note: note,
+            catalog_id: catalogid
           };
           return ItemNotes.save(null, itemNote).$promise;
         },

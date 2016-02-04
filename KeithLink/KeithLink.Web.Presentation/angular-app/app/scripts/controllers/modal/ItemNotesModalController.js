@@ -11,7 +11,7 @@ angular.module('bekApp')
   };
 
   $scope.saveNote = function(item) {
-    ProductService.updateItemNote(item.itemnumber, item.notes).then(function() {
+    ProductService.updateItemNote(item.itemnumber, item.notes, item.catalog_id).then(function() {
       $modalInstance.close(item);
       $scope.displayMessage('success', 'Successfully updated note.');
     }, function() {

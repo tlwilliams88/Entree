@@ -152,6 +152,7 @@ angular.module('bekApp')
           Service.cartHeaders.push(newCart);
           return newCart;
         });
+         document.location.reload(true);
       },
  
       importCart: function(file, options) {
