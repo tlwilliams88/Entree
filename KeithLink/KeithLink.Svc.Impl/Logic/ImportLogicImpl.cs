@@ -324,7 +324,8 @@ namespace KeithLink.Svc.Impl.Logic {
                         .Select( l => new ShoppingCartItem() {
 							ItemNumber = DetermineItemNumber(l[itemNumberColumn].Replace("\"", string.Empty), file.Options, user, catalogInfo),
 							Quantity = DetermineQuantity(l[itemNumberColumn].Replace("\"", string.Empty), l[quantityColumn].Replace("\"", string.Empty), file.Options, parList),
-							Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem(l[eachColumn], file.Options) : false
+							Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem(l[eachColumn], file.Options) : false,
+                            CatalogId = catalogInfo.BranchId
                             } )
                         .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
 
