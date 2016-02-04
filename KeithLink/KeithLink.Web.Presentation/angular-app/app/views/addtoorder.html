@@ -175,7 +175,7 @@
             <th class="sort-col-header" ng-click="sortList('name',sort[0].order)">
               <span>Name<span sort-icons field="'name'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>       
-            <th class="hidden-xs hidden-sm"></th>
+      
             <th class="hidden-mobile" ng-if="useParlevel">
               PAR
             </th>
@@ -215,27 +215,28 @@
               <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
               <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
             </td>
-            <td>
-              {{::item.categoryname}}
-            </td>
             <td class="hidden-mobile-visible-print">
-                {{::item.notes}}
-              
-            </td>
-            <td class="hidden-mobile-visible-print">
-              {{::item.label}}
+              {{::item.class}}
             </td>
             <td class="hidden-mobile-visible-print notes-col">
-              {{::item.packsize}}
+                {{::item.notes}}              
             </td>
             <td class="hidden-mobile-visible-print label-col">
-              {{::item.brand_extended_description}}
+              {{::item.label}}
             </td>
             <td class="hidden-mobile-visible-print">
-              {{::item.name}}
-              </td>
-              <td>
-              </td>
+              {{::item.packsize}}
+            </td>
+            <td class="hidden-mobile-visible-print">
+              {{::item.brand_extended_description}}
+            </td>
+            <td>                
+             <span ng-if="item.isvalid">{{::item.name}}</span>   
+             <span ng-if="!item.isvalid">Invalid item</span>
+            </td>
+            <td ng-if="useParlevel" class="hidden-mobile">   
+              {{::item.parlevel}}   
+            </td>
             <td ng-if="useParlevel" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
               <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder && item.isvalid">
               <!--  ON HAND AMOUNT -->
