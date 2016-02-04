@@ -103,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="InstallScript.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="keyFile.snk" />
     <None Include="PipelineRegistration.reg" />
     <None Include="Service References\PipelineService\KeithLink.Ext.Pipeline.ItemPrice.PipelineService.PriceReturn.datasource">

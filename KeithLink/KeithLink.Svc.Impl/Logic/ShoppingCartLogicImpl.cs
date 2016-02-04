@@ -152,7 +152,8 @@ namespace KeithLink.Svc.Impl.Logic
                     {
                         ItemNumber = item.ItemNumber,
                         Each = item.Each,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        CatalogId = catalogInfo.BranchId
                     }
                     );
                 }
