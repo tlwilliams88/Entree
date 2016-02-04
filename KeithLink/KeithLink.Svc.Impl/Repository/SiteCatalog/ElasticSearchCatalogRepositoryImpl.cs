@@ -328,6 +328,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
+            var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+
             return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
         }
 
@@ -438,9 +440,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return 0;
         }
 
-        private delegate TResult Func<in T, out TResult>(
-   
-);
+        //private delegate TResult Func<in T, out TResult>();
+
         private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 
