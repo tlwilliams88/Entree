@@ -106,6 +106,8 @@ angular.module('bekApp')
         if (duplicateItem) {
           if(item.quantity){
             duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
+            duplicateItem.extPrice = (duplicateItem.quantity === item.quantity) ? item.extPrice : PricingService.getPriceForItem(duplicateItem);
+            duplicateItem.each = item.each;
             if(item.quantity > 0){
               duplicateItem.iscombinedquantity = true;
             }
@@ -233,6 +235,7 @@ angular.module('bekApp')
               $scope.startingPoint = index;
               $scope.endPoint = angular.copy($scope.startingPoint + parseInt($scope.pagingPageSize));
               foundStartPoint = true;
+              $scope.addItemWatches($scope.startingPoint, $scope.endPoint)
               $scope.setCartItemsDisplayFlag();
             }
           })

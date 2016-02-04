@@ -405,13 +405,13 @@
             </td>
             <td class="input-col nowrap">
               <span class="visible-print">{{item.quantity}}</span>
-              <ng-form class="hidden-print" name="quantityForm">
+              <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid">
                 <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
                 <div counter ng-model="item.quantity" min="0" length="5" ></div>
               </ng-form>
             </td>
             <td class="hidden-mobile-visible-print input-col" ng-if="!isChangeOrder">
-              <ng-form name="eachForm" ng-if="item.hasPackagePrice">
+              <ng-form name="eachForm" ng-if="item.hasPackagePrice && item.isvalid">
                 <input type="checkbox" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" ng-model="item.each" id="each" name="each" />
                 <label for="each"></label>
               </ng-form>
@@ -463,7 +463,7 @@
                 <tr>
                   <td item-icons></td>
                 </tr>
-                <tr ng-if="::item.hasPackagePrice || isChangeOrder">
+                <tr ng-if="(item.hasPackagePrice || isChangeOrder) && item.isvalid">
                   <td>Each</td>
                   <td ng-if="::!isChangeOrder">
                     <input type="checkbox" value="" ng-checked = "!item.hasCasePrice || item.each" ng-disabled = "!item.hasCasePrice" name="each" id="each" ng-model="item.each">
