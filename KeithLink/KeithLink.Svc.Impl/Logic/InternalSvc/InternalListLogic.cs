@@ -555,8 +555,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			{
 				var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
-				if (prod != null)
-				{
+				if (prod != null) {
                     listItem.IsValid = true;
                     listItem.Name = prod.Name;
                     listItem.Pack = prod.Pack;
@@ -564,29 +563,33 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
                     listItem.Description = prod.Description;
                     listItem.Brand = prod.BrandExtendedDescription;
+                    listItem.StorageTemp = prod.Nutritional.StorageTemp;
                     listItem.ReplacedItem = prod.ReplacedItem;
                     listItem.ReplacementItem = prod.ReplacementItem;
                     listItem.NonStock = prod.NonStock;
                     listItem.ChildNutrition = prod.ChildNutrition;
+                    listItem.SellSheet = prod.SellSheet;
                     listItem.CatchWeight = prod.CatchWeight;
-                    listItem.PackagePriceNumeric = prod.PackagePriceNumeric;
-                    listItem.CasePriceNumeric = prod.CasePriceNumeric;
+                    listItem.ItemClass = prod.ItemClass;
+                    listItem.CategoryId = prod.CategoryId;
                     listItem.CategoryName = prod.CategoryName;
-
-                    if (prod.Nutritional != null) {
-                        listItem.Nutritional = new Nutritional()
-                        {
-                            CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
-                            GrossWeight = prod.Nutritional.GrossWeight,
-                            HandlingInstructions = prod.Nutritional.HandlingInstructions,
-                            Height = prod.Nutritional.Height,
-                            Length = prod.Nutritional.Length,
-                            Ingredients = prod.Nutritional.Ingredients,
-                            Width = prod.Nutritional.Width,
-                        };
-                        listItem.StorageTemp = prod.Nutritional.StorageTemp;
-                    }
-					
+                    listItem.UPC = prod.UPC;
+                    listItem.VendorItemNumber = prod.VendorItemNumber;
+                    listItem.Cases = prod.Cases;
+                    listItem.Kosher = prod.Kosher;
+                    listItem.ManufacturerName = prod.ManufacturerName;
+                    listItem.ManufacturerNumber = prod.ManufacturerNumber;
+                    listItem.AverageWeight = prod.AverageWeight;
+                    listItem.TempZone = prod.TempZone;
+                    listItem.Nutritional = new Nutritional() {
+                        CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                        GrossWeight = prod.Nutritional.GrossWeight,
+                        HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                        Height = prod.Nutritional.Height,
+                        Length = prod.Nutritional.Length,
+                        Ingredients = prod.Nutritional.Ingredients,
+                        Width = prod.Nutritional.Width
+                    };
                     listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel() {
                         CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("C")).Select(p => p.AverageUse).FirstOrDefault(),
                         PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("P")).Select(p => p.AverageUse).FirstOrDefault()
