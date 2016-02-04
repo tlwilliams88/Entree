@@ -1,23 +1,30 @@
-﻿using System;
+﻿// KeithLink
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+
+using KeithLink.Svc.Core.Models.Configuration.EF;
+using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Models.Orders.History;
+using KeithLink.Svc.Core.Models.Profile;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
+using KeithLink.Svc.Impl.Repository.Orders;
+using KeithLink.Svc.Impl.Repository.Orders.History;
+
+using KeithLink.Svc.Core.Extensions;
+
+// Core
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Impl.Repository.Orders.History;
-using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Core.Models.Lists;
-using KeithLink.Svc.Core.Extensions;
-using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Core.Interface.Orders;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Core.Interface.Configuration;
-using KeithLink.Svc.Core.Models.Configuration.EF;
-using KeithLink.Svc.Core.Models.ModelExport;
+
 
 namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 {
@@ -32,11 +39,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 		private IListServiceRepository _listServiceRepository;
 		private IDivisionLogic _divisionLogic;
         private IOrderServiceRepository _orderServiceRepository;
-
-		protected string CACHE_GROUPNAME { get { return "Catalog"; } }
-		protected string CACHE_NAME { get { return "Catalog"; } }
-		protected string CACHE_PREFIX { get { return "Default"; } }
         private IExternalCatalogServiceRepository _externalCatalogRepository;
+
+        protected string CACHE_GROUPNAME { get { return "Catalog"; } }
+        protected string CACHE_NAME { get { return "Catalog"; } }
+		protected string CACHE_PREFIX { get { return "Default"; } }
         #endregion
 
         #region constructor

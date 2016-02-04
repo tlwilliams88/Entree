@@ -211,7 +211,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 {
                     Type = ListType.Notes,
                     CustomerId = catalogInfo.CustomerId,
-                    BranchId = catalogInfo.BranchId,
+                    BranchId = newNote.CatalogId,
                     DisplayName = "Notes",
                     ReadOnly = false,
                     UserId = user.UserId,
