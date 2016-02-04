@@ -277,13 +277,16 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         public Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType) {
             var bekBranchId = catalogInfo.BranchId;
-            catalogInfo.BranchId = GetBranchId(catalogInfo.BranchId, catalogType);  
+            string catalogId = GetBranchId( catalogInfo.BranchId, catalogType );
+            catalogInfo.BranchId = catalogId;  
             Product ret = _catalogRepository.GetProductById(catalogInfo.BranchId, id);
 
             if (ret == null)
                 return null;
 
+            catalogInfo.BranchId = bekBranchId;
             GetAdditionalProductInfo(profile, new ProductsReturn() { Count = 1, Products = new List<Product>() { ret } }, catalogInfo);
+            catalogInfo.BranchId = catalogId;
             //AddFavoriteProductInfo(profile, ret, catalogInfo);
             AddProductImageInfo(ret);
             AddItemHistoryToProduct(ret, catalogInfo);
