@@ -149,7 +149,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 		{
 			Order retVal = new Order();
 
-			retVal.OrderNumber = value.InvoiceNumber;
+			//retVal.OrderNumber = value.InvoiceNumber;
+            retVal.OrderNumber = value.ControlNumber;
 
 			switch (value.OrderStatus.Trim())
 			{
