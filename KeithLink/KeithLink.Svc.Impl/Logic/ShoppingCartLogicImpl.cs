@@ -459,11 +459,14 @@ namespace KeithLink.Svc.Impl.Logic
                 }
                 
 
-                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
-
                 var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
 
-                if (catalogLogic.IsSpecialtyCatalog(null, catalogId))
+
+                bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
+
+                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
+
+                if (isSpecialOrder)
                 {
                     orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, type, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
                 }
