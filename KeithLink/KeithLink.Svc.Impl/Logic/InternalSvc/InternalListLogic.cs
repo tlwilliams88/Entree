@@ -215,7 +215,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     DisplayName = "Notes",
                     ReadOnly = false,
                     UserId = user.UserId,
-                    Items = new List<ListItem>() { new ListItem() { ItemNumber = newNote.ItemNumber, Note = newNote.Note } }
+                    Items = new List<ListItem>() { new ListItem() { ItemNumber = newNote.ItemNumber, Note = newNote.Note, CatalogId = newNote.CatalogId } }
 
                 };
                 listRepository.Create(newNotes);
@@ -227,11 +227,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 if (existingItem != null)
                 {
                     existingItem.Note = newNote.Note;
+                    existingItem.CatalogId = newNote.CatalogId;
                     listItemRepository.Update(existingItem);
                 }
                 else
                 {
-                    var createNote = new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber, ParentList = list };
+                    var createNote = new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber, ParentList = list, CatalogId = newNote.CatalogId };
                     listItemRepository.Create(createNote);
                 }
             }

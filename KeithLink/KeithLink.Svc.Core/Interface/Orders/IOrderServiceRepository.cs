@@ -25,8 +25,8 @@ namespace KeithLink.Svc.Core.Interface.Orders
         OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
         
 		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
-		
-        void SaveOrderHistory(OrderHistoryFile historyFile);
+
+        void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder);
 		
         void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);
 

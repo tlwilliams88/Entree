@@ -14,5 +14,7 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		public string ItemNumber { get; set; }
 		[DataMember(Name = "note")]
 		public string Note { get; set; }
+        [DataMember( Name = "catalog_id" )]
+        public string CatalogId { get; set; }
 	}
 }
