@@ -157,11 +157,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
-            var headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                              h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                            d => d.OrderDetails);
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
+                                                                    && h.CustomerNumber.Equals( customerInfo.CustomerId ), 
+                                                                    d => d.OrderDetails ).ToList();
 
-            return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
+            return LookupControlNumberAndStatus( customerInfo, headers ).AsQueryable().GetPage( paging );
         }
 
         public Order GetOrder(string branchId, string invoiceNumber) {
@@ -267,15 +267,17 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
+                                                                               && h.CustomerNumber.Equals( customerInfo.CustomerId ) 
+                                                                               && h.DeliveryDate >= startDate 
+                                                                               && h.DeliveryDate <= endDate, i => i.OrderDetails ).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
         private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                          d => d.OrderDetails);
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)
+                                                                          && h.CustomerNumber.Equals( customerInfo.CustomerId ),
+                                                                          d => d.OrderDetails).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
@@ -418,16 +420,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
         }
 
-        private List<Order> LookupControlNumberAndStatus( UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers ) {
+        private List<Order> LookupControlNumberAndStatus( UserSelectedContext userContext, List<EF.OrderHistoryHeader> headers ) {
             var customerOrders = new BlockingCollection<Order>();
 
             // Get the customer GUID to retrieve all purchase orders from commerce server
             var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
             var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId).ToList();
 
-            var listOfHeaders = headers.ToList();
-
-            foreach (var h in listOfHeaders) {
+            foreach (var h in headers) {
                 try {
                     Order returnOrder = null;
                     
@@ -444,7 +444,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                             if (currentPo != null)
                             {
-                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, h, listOfHeaders);
+                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, h, headers);
                                 returnOrder.Status = currentPo.Status;
                                 returnOrder.OrderNumber = h.ControlNumber;
                                 returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith("Confirmed")));
