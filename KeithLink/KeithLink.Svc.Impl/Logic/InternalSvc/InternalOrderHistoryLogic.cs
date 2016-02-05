@@ -445,7 +445,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                             if (currentPo != null)
                             {
-                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, h, listOfHeaders);
+                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, h, headers);
                                 returnOrder.Status = currentPo.Status;
                                 returnOrder.OrderNumber = h.ControlNumber;
                                 returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith("Confirmed")));
