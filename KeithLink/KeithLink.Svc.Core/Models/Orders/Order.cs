@@ -87,6 +87,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[DataMember(Name = "ordersystem")]
 		public string OrderSystem { get; set; }
 
+        [DataMember( Name = "isspecialorder" )]
+        public bool IsSpecialOrder { get; set; }
+
 		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();

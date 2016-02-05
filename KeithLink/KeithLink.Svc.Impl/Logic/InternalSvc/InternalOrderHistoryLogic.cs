@@ -167,7 +167,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         public Order GetOrder(string branchId, string invoiceNumber) {
             EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                  h.InvoiceNumber.Equals(invoiceNumber),
+                                                                  (h.InvoiceNumber.Equals(invoiceNumber) || h.ControlNumber.Equals(invoiceNumber)),
                                                              d => d.OrderDetails).FirstOrDefault();
             PurchaseOrder po = null;
 
@@ -213,6 +213,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     _log.WriteErrorLog("Error looking up invoice when trying to get order:  " + ex.Message + ex.StackTrace);
 
                 }
+            }
+
+            if ( returnOrder.CatalogId == null ) {
+                returnOrder.CatalogId = branchId;
             }
 
             LookupProductDetails(returnOrder.CatalogId, returnOrder);
@@ -495,7 +499,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         {
             //_log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
             //    ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
-            if (po.Properties["LineItems"] != null)
+            if (po != null && po.Properties["LineItems"] != null)
             {
                 foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
                 {

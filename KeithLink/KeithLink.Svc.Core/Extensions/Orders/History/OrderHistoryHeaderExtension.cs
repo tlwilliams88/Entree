@@ -179,6 +179,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.CommerceId = Guid.Empty;
             FillEtaInformation(value, retVal);
 			retVal.PONumber = value.PONumber;
+            retVal.IsSpecialOrder = value.IsSpecialOrder;
+            
 
             retVal.OrderSystem = new OrderSource().Parse(value.OrderSystem).ToString(); 
 
