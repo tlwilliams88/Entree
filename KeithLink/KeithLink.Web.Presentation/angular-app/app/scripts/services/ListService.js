@@ -589,7 +589,8 @@ angular.module('bekApp')
           items.forEach(function(item) {
             newItems.push({
               itemnumber: item.itemnumber,
-              each: item.each
+              each: item.each,
+              catalog_id: item.catalog_id
             });
           });
 
