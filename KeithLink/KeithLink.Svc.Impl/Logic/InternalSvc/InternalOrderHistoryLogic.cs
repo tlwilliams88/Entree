@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #endregion
 
         #region methods
-        private void Create(OrderHistoryFile currentFile)
+        private void Create(OrderHistoryFile currentFile, bool isSpecialOrder)
         {
             // first attempt to find the order, look by confirmation number
             EF.OrderHistoryHeader header = null;
@@ -110,10 +110,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             currentFile.Header.MergeWithEntity(ref header);
 
-            // For special orders, must determine that and set on header
-            PurchaseOrder currentPo = null;
-            currentPo = _poRepo.ReadPurchaseOrderByTrackingNumber(currentFile.Header.ControlNumber);
-            DetermineCatalogNotesSpecialOrder(currentPo, ref header);
+            // set isSpecialOrder if that is true; but don't set otherwise (used from two places)
+            if (isSpecialOrder) 
+                header.IsSpecialOrder = true;
 
             if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
 
@@ -404,7 +403,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                         _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
 
-                        Create(historyFile);
+                        Create(historyFile, false);
                         _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
                         _unitOfWork.SaveChangesAndClearContext();
@@ -629,8 +628,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                                            Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
         }
 
-        public void SaveOrder(OrderHistoryFile historyFile) {
-            Create(historyFile);
+        public void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder) {
+            Create(historyFile, isSpecialOrder);
 
             _unitOfWork.SaveChanges();
         }
