@@ -47,8 +47,9 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId) {
             throw new NotImplementedException();
         }
-		
-        public void SaveOrderHistory(OrderHistoryFile historyFile) {
+
+        public void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder)
+        {
             throw new NotImplementedException();
         }
 

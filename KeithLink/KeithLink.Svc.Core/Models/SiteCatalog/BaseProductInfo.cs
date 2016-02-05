@@ -197,11 +197,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [Description("Average Weight")]
         public double AverageWeight { get; set; }
 
-        [DataMember(Name = "catalog_id", EmitDefaultValue = false)]
+        [DataMember(Name = "catalog_id")]
         [Description("Catalog Id - index from elastic search")]
         public string CatalogId { get; set; }
 
-        [DataMember(Name = "is_specialty_catalog", EmitDefaultValue = false)]
+        [DataMember(Name = "is_specialty_catalog")]
         [Description("Is Specialty Catalog bool")]
         public bool IsSpecialtyCatalog { get; set; }
 

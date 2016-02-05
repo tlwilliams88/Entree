@@ -47,6 +47,8 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		[MaxLength(3)]
 		[Column(TypeName = "char")]
 		public string StopNumber { get; set; }
+        [Column]
+        public bool IsSpecialOrder { get; set; }
         public DateTime? ScheduledDeliveryTime { get; set; }
         public DateTime? EstimatedDeliveryTime { get; set; }
         public DateTime? ActualDeliveryTime { get; set; }

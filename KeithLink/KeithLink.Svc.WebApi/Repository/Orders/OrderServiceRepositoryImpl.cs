@@ -56,8 +56,9 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             serviceClient.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
 
-        public void SaveOrderHistory(OrderHistoryFile historyFile) {
-            serviceClient.SaveOrderHistory(historyFile);
+        public void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder)
+        {
+            serviceClient.SaveOrderHistory(historyFile, isSpecialOrder);
         }
 
         public List<OrderHeader> GetSubmittedUnconfirmedOrders()

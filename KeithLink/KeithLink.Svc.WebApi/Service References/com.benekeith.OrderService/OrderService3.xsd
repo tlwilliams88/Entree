@@ -128,6 +128,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" minOccurs="0" name="historyFile" nillable="true" type="q18:OrderHistoryFile" />
+        <xs:element minOccurs="0" name="isSpecialOrder" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

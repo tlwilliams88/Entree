@@ -23,6 +23,7 @@ using System.IO;
 
 namespace KeithLink.Svc.Impl.Logic {
     public class ImportLogicImpl : IImportLogic {
+        #region attributes
         private IListServiceRepository listServiceRepository;
         private ICatalogLogic catalogLogic;
         private IEventLogRepository eventLogRepository;
@@ -38,7 +39,9 @@ namespace KeithLink.Svc.Impl.Logic {
 
         private const int ITEM_NUMBER_INDEX = 0;
         private const int ITEM_QUANTITY_INDEX = 1;
+        #endregion
 
+        #region ctor
         public ImportLogicImpl( IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic ) {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
@@ -49,7 +52,9 @@ namespace KeithLink.Svc.Impl.Logic {
             _errors = new StringBuilder();
             _warnings = new StringBuilder();
         }
-        
+        #endregion
+
+        #region methods
         public ListImportModel ImportList(UserProfile user, UserSelectedContext catalogInfo, ListImportFileModel file)
 		{
 			try
@@ -383,7 +388,7 @@ namespace KeithLink.Svc.Impl.Logic {
                         if (itemNumber.Length > 6) { // It is a UPC - lookup the item number
                             returnValue = GetItemNumberFromUPC( itemNumber, options, user, catalogInfo );
                         } else {
-                            returnValue = itemNumber;
+                            returnValue = itemNumber.PadLeft(6, '0');
                         }
                         break;
                     case ItemNumberType.UPC:
@@ -391,7 +396,7 @@ namespace KeithLink.Svc.Impl.Logic {
                         break;
                     default: //ItemNumber
                         //Just return value
-                        returnValue = itemNumber;
+                        returnValue = itemNumber.PadLeft(6, '0');;
                         break;
                 }
             }
@@ -460,5 +465,6 @@ namespace KeithLink.Svc.Impl.Logic {
         private void Warning( string warning ) {
             _warnings.AppendLine( warning );
         }
+        #endregion
     }
 }
