@@ -581,6 +581,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.ManufacturerNumber = prod.ManufacturerNumber;
                     listItem.AverageWeight = prod.AverageWeight;
                     listItem.TempZone = prod.TempZone;
+                    listItem.IsSpecialtyCatalog = prod.CatalogId.StartsWith("UNFI", StringComparison.InvariantCultureIgnoreCase);
                     listItem.Nutritional = new Nutritional() {
                         CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
                         GrossWeight = prod.Nutritional.GrossWeight,
