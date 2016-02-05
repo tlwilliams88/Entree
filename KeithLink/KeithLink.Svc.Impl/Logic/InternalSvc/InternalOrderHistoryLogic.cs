@@ -247,25 +247,25 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             string customerNumber = po.Properties["CustomerId"].ToString();
             string branchId = po.Properties["BranchId"].ToString();
             string orderNumber = po.Properties["OrderNumber"].ToString();
-            DateTime startDT = thisOrder.CreatedUtc.AddMinutes(-3);
-            DateTime endDT = thisOrder.CreatedUtc.AddMinutes(3);
+            string controlNumber = po.Properties["TrackingNumber"].ToString();
+            
             if (headers == null)
                 headers = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
-                     h.CustomerNumber.Equals(customerNumber) &&
-                     h.CreatedUtc > startDT &&
-                     h.CreatedUtc < endDT).ToList();
+                                                 h.CustomerNumber.Equals(customerNumber) &&
+                                                 h.RelatedControlNumber == controlNumber).ToList();
+
             StringBuilder sbRelatedOrders = new StringBuilder();
             StringBuilder sbRelatedInvoices = new StringBuilder();
+            
             foreach (var item in headers)
             {
-                if (item.CreatedUtc < startDT && item.CreatedUtc < endDT)
-                {
-                    if (sbRelatedOrders.Length > 0) sbRelatedOrders.Append(",");
-                    if (sbRelatedInvoices.Length > 0) sbRelatedInvoices.Append(",");
-                    sbRelatedOrders.Append(item.ControlNumber);
-                    sbRelatedInvoices.Append(item.InvoiceNumber);
-                }
+                if (sbRelatedOrders.Length > 0) sbRelatedOrders.Append(",");
+                if (sbRelatedInvoices.Length > 0) sbRelatedInvoices.Append(",");
+
+                sbRelatedOrders.Append(item.ControlNumber);
+                sbRelatedInvoices.Append(item.InvoiceNumber);
             }
+
             returnOrder.RelatedOrderNumbers = sbRelatedOrders.ToString();
             returnOrder.RelatedInvoiceNumbers = sbRelatedInvoices.ToString();
         }
