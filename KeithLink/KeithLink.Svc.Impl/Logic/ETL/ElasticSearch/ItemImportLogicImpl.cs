@@ -503,10 +503,13 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 			var data = new AdditionalData()
 			{
 				WarehouseNumber = row.GetString("WarehouseNumber"),
+                ItemNumber = row.GetString("ProductNumber"),
 				Name = row.GetString("Description"),
+                NameNotAnalyzed = row.GetString("Description"),
 				Brand = row.GetString("Brand"),
 				BrandNotAnalyzed = row.GetString("Brand"),
 				BrandDescription = row.GetString("Brand"),
+                BrandDescriptionNotAnalyzed = row.GetString("Brand"),
 				BranchId = "unfi",
 				CLength = row.GetNullableDouble("CLength"),
 				CWidth = row.GetNullableDouble("CWidth"),

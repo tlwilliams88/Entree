@@ -53,6 +53,13 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="catalog_id" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="catchweight" type="xs:boolean">
         <xs:annotation>
           <xs:appinfo>
@@ -103,6 +110,14 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="favorite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="is_specialty_catalog" type="xs:boolean">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="isvalid" type="xs:boolean" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="kosher" nillable="true" type="xs:string">
         <xs:annotation>
@@ -190,6 +205,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="specialtyitemcost" type="xs:decimal" />
       <xs:element minOccurs="0" name="temp_zone" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="unitprice" type="xs:decimal" />
       <xs:element minOccurs="0" name="upc" nillable="true" type="xs:string">

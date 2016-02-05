@@ -328,6 +328,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
+            var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+
             return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
         }
 
@@ -438,9 +440,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return 0;
         }
 
-        private delegate TResult Func<in T, out TResult>(
-   
-);
+        //private delegate TResult Func<in T, out TResult>();
+
         private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 
@@ -493,7 +494,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CategoryName = oProd._source.categoryname;
             p.VendorItemNumber = oProd._source.vendor1;
 			p.ItemClass = oProd._source.parentcategoryname;
-            p.CaseCube = oProd._source.icube;
+            try {
+                p.CaseCube = oProd._source.icube;
+            } catch (Exception e) {
+                p.CaseCube = "";
+            }
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
@@ -509,7 +514,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (p.CatalogId.ToLower().StartsWith("unfi"))
             {
                 //make vendor into description
-                p.Description = oProd._source.vendor;
+                p.Description = oProd._source.vendor1;
                 p.Pack = oProd._source.casequantity.ToString();
                 p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
                 p.IsSpecialtyCatalog = true;
