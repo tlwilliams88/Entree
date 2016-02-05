@@ -175,7 +175,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 if (po != null)
                 {
                     PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
-                    FindOrdersRelatedToPurchaseOrder(po, returnOrder, null);
+
+                    FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
                 }
             }
             else
@@ -187,7 +188,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (po != null) {
                         returnOrder.Status = po.Status;
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
-                        FindOrdersRelatedToPurchaseOrder(po, returnOrder, null);
+                        FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
                     }
                 }
             }
@@ -233,35 +234,28 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <param name="returnOrder">The order that the items are being set on</param>
         /// <param name="headers">The reference to order history headers if we have it</param>
         /// <returns></returns>
-        private void FindOrdersRelatedToPurchaseOrder(PurchaseOrder po, Order returnOrder, IEnumerable<EF.OrderHistoryHeader> headers)
+        private void FindOrdersRelatedToPurchaseOrder(PurchaseOrder po, Order returnOrder, EF.OrderHistoryHeader thisOrder, List<EF.OrderHistoryHeader> headers)
         {
             string customerNumber = po.Properties["CustomerId"].ToString();
             string branchId = po.Properties["BranchId"].ToString();
             string orderNumber = po.Properties["OrderNumber"].ToString();
-            EF.OrderHistoryHeader thisOrder;
-            if (headers == null) thisOrder = _headerRepo.Read(h => h.ControlNumber == orderNumber).FirstOrDefault();
-            else thisOrder = headers.Where(h => h.ControlNumber == orderNumber).FirstOrDefault();
             DateTime startDT = thisOrder.CreatedUtc.AddMinutes(-3);
             DateTime endDT = thisOrder.CreatedUtc.AddMinutes(3);
-            Dictionary<string, string> relates;
-            if (headers == null) relates = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                h.CustomerNumber.Equals(customerNumber) &&
-                                                h.CreatedUtc > startDT &&
-                                                h.CreatedUtc < endDT).ToDictionary(h => h.ControlNumber, h => h.InvoiceNumber);
-            else relates = headers.Where(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                h.CustomerNumber.Equals(customerNumber) &&
-                                                h.CreatedUtc > startDT &&
-                                                h.CreatedUtc < endDT).ToDictionary(h => h.ControlNumber, h => h.InvoiceNumber);
+            if (headers == null)
+                headers = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+                     h.CustomerNumber.Equals(customerNumber) &&
+                     h.CreatedUtc > startDT &&
+                     h.CreatedUtc < endDT).ToList();
             StringBuilder sbRelatedOrders = new StringBuilder();
             StringBuilder sbRelatedInvoices = new StringBuilder();
-            foreach (string relate in relates.Keys)
+            foreach (var item in headers)
             {
-                if (relate.Equals(orderNumber) == false)
+                if (item.CreatedUtc < startDT && item.CreatedUtc < endDT)
                 {
                     if (sbRelatedOrders.Length > 0) sbRelatedOrders.Append(",");
                     if (sbRelatedInvoices.Length > 0) sbRelatedInvoices.Append(",");
-                    sbRelatedOrders.Append(relate);
-                    sbRelatedInvoices.Append(relates[relate]);
+                    sbRelatedOrders.Append(item.ControlNumber);
+                    sbRelatedInvoices.Append(item.InvoiceNumber);
                 }
             }
             returnOrder.RelatedOrderNumbers = sbRelatedOrders.ToString();
@@ -427,7 +421,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             // Get the customer GUID to retrieve all purchase orders from commerce server
             var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
-            var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId);
+            var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId).ToList();
 
             foreach (var h in headers) {
                 try {
@@ -439,21 +433,25 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (h.OrderSystem.Trim().Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
                     {
                         // Check if the purchase order exists and grab it for additional information if it does
-                        if (POs != null) {
-                            PurchaseOrder currentPo = POs.Where( x => x.Properties["OrderNumber"].Equals( h.ControlNumber ) ).FirstOrDefault<PurchaseOrder>();
+                        if (POs != null)
+                        {
+                            PurchaseOrder currentPo = null;
+                            currentPo = POs.Where(p => p.Properties["OrderNumber"].ToString() == h.ControlNumber).FirstOrDefault();
 
-                            if (currentPo != null) {
+                            if (currentPo != null)
+                            {
                                 PullCatalogFromPurchaseOrderItemsToOrder(currentPo, returnOrder);
-                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, headers);
+                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, h, listOfHeaders);
                                 returnOrder.Status = currentPo.Status;
                                 returnOrder.OrderNumber = h.ControlNumber;
-                                returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith( "Confirmed" )));
-                            }
-                            else
-                            {
-                                _log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() h.ControlNumber=" + h.ControlNumber + " po not looked up");
+                                returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith("Confirmed")));
                             }
                         }
+                    }
+                    else
+                    {
+                        returnOrder.CatalogType = h.BranchId;
+                        returnOrder.CatalogId = h.BranchId;
                     }
 
                     if ((returnOrder.CatalogId != null) && (returnOrder.CatalogId.Length > 0)) LookupProductDetails(returnOrder.CatalogId, returnOrder);
@@ -493,15 +491,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         {
             //_log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
             //    ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
-            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+            if (po.Properties["LineItems"] != null)
             {
-                var item = (CS.LineItem)lineItem.Target;
-                var oitem = returnOrder.Items.Where(i => i.ItemNumber.Trim() == item.ProductId).FirstOrDefault();
-                if (oitem != null)
+                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
                 {
-                    oitem.CatalogId = item.CatalogName;
-                    oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
-                    //_log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
+                    var item = (CS.LineItem)lineItem.Target;
+                    var oitem = returnOrder.Items.Where(i => i.ItemNumber.Trim() == item.ProductId).FirstOrDefault();
+                    if (oitem != null)
+                    {
+                        oitem.CatalogId = item.CatalogName;
+                        oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                        //_log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
+                    }
                 }
             }
             var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
