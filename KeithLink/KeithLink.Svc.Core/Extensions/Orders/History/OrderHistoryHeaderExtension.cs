@@ -96,6 +96,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.ErrorStatus = value.ErrorStatus;
             entity.RouteNumber = value.RouteNumber;
             entity.StopNumber = value.StopNumber;
+            //entity.IsSpecialOrder = 
 
             if (string.IsNullOrEmpty(entity.ControlNumber)) {
                 entity.ControlNumber = value.ControlNumber.Trim();

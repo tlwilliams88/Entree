@@ -110,6 +110,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             currentFile.Header.MergeWithEntity(ref header);
 
+            // For special orders, must determine that and set on header
+            PurchaseOrder currentPo = null;
+            currentPo = _poRepo.ReadPurchaseOrderByTrackingNumber(currentFile.Header.ControlNumber);
+            DetermineCatalogNotesSpecialOrder(currentPo, ref header);
+
             if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
 
             foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
@@ -440,7 +445,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                             if (currentPo != null)
                             {
-                                PullCatalogFromPurchaseOrderItemsToOrder(currentPo, returnOrder);
                                 FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, h, listOfHeaders);
                                 returnOrder.Status = currentPo.Status;
                                 returnOrder.OrderNumber = h.ControlNumber;
@@ -523,7 +527,28 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             returnOrder.CatalogType = sbCatalogT.ToString();
         }
 
-        private void LookupProductDetails(string branchId, Order order) {
+        private void DetermineCatalogNotesSpecialOrder(PurchaseOrder po, ref EF.OrderHistoryHeader header)
+        {
+            //_log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
+            //    ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
+            string catalogId = null;
+            string catalogType;
+            if (po.Properties["LineItems"] != null)
+            {
+                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+                {
+                    var item = (CS.LineItem)lineItem.Target;
+                        catalogId = item.CatalogName;
+                        catalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                }
+            }
+            // Look for certain catalogs names or at least the start to be one of the special catalogs
+            if(catalogId.IndexOf("unfi")>-1)
+                header.IsSpecialOrder = true;
+        }
+
+        private void LookupProductDetails(string branchId, Order order)
+        {
             if (order.Items == null) { return; }
 
             var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber.Trim()).ToList());

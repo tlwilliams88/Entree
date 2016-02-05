@@ -630,6 +630,10 @@
     <Compile Include="Repository\EF\Migrations\201512030739583_2015-12-03_gsSyncMigrations.Designer.cs">
       <DependentUpon>201512030739583_2015-12-03_gsSyncMigrations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201602042227402_Add Special Order Flag to Order History Header.cs" />
+    <Compile Include="Repository\EF\Migrations\201602042227402_Add Special Order Flag to Order History Header.Designer.cs">
+      <DependentUpon>201602042227402_Add Special Order Flag to Order History Header.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1255,6 +1259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201512030739583_2015-12-03_gsSyncMigrations.resx">
       <DependentUpon>201512030739583_2015-12-03_gsSyncMigrations.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201602042227402_Add Special Order Flag to Order History Header.resx">
+      <DependentUpon>201602042227402_Add Special Order Flag to Order History Header.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
