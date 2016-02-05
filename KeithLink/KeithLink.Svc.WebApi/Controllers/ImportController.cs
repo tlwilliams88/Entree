@@ -14,18 +14,21 @@ using System.Web.Http;
 namespace KeithLink.Svc.WebApi.Controllers
 {
 	[Authorize]
-    public class ImportController : BaseController
-    {
+    public class ImportController : BaseController {
+        #region attributes
+        private readonly IImportLogic importLogic;
+        #endregion
 
-		private readonly IImportLogic importLogic;
-
-		public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic)
+        #region ctor
+        public ImportController(IUserProfileLogic profileLogic, IImportLogic importLogic)
 			: base(profileLogic)
 		{
 			this.importLogic = importLogic;
         }
-		
-		/// <summary>
+        #endregion
+
+        #region methods
+        /// <summary>
 		/// Import a user List
 		/// </summary>
 		/// <returns></returns>
@@ -114,6 +117,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 				return new OrderImportModel() { Success = false, ErrorMessage = "Invalid request" };
 
 			return importLogic.ImportOrder(this.AuthenticatedUser, this.SelectedUserContext, fileModel);
-		}
+        }
+        #endregion
     }
 }
