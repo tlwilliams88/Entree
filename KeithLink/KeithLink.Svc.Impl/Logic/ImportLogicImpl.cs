@@ -202,11 +202,8 @@ namespace KeithLink.Svc.Impl.Logic {
 						itemNumberColumn = i;
 					else if (rdr.GetString(i).Equals("label", StringComparison.CurrentCultureIgnoreCase))
 						labelColumn = i;
-
 				}
-            }
-
-			
+            }			
 
             while (rdr.Read()) {
                 returnValue.Add( new ListItemModel() {
@@ -322,17 +319,43 @@ namespace KeithLink.Svc.Impl.Logic {
 
 
             var rows = file.Contents.Split( new string[] { Environment.NewLine, "\n" }, StringSplitOptions.None );
-            returnValue = rows
-                        .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
-                        .Where( line => !String.IsNullOrWhiteSpace(line) )
-                        .Select( i => i.Split( Delimiter ) )
-                        .Select( l => new ShoppingCartItem() {
-							ItemNumber = DetermineItemNumber(l[itemNumberColumn].Replace("\"", string.Empty), file.Options, user, catalogInfo),
-							Quantity = DetermineQuantity(l[itemNumberColumn].Replace("\"", string.Empty), l[quantityColumn].Replace("\"", string.Empty), file.Options, parList),
-							Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem(l[eachColumn], file.Options) : false,
-                            CatalogId = catalogInfo.BranchId
-                            } )
-                        .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
+            //returnValue = rows
+            //            .Skip( file.Options.IgnoreFirstLine ? 1 : 0 )
+            //            .Where( line => !String.IsNullOrWhiteSpace(line) )
+            //            .Select( i => i.Split( Delimiter ) )
+            //            .Select( l => new ShoppingCartItem() {
+            //                ItemNumber = DetermineItemNumber(l[itemNumberColumn].Replace("\"", string.Empty), file.Options, user, catalogInfo),
+            //                Quantity = file.Options.Contents.Equals(FileContentType.ItemQty) ? 
+            //                    DetermineQuantity(l[itemNumberColumn].Replace("\"", string.Empty), l[quantityColumn].Replace("\"", string.Empty), file.Options, parList) : 1,
+            //                Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem(l[eachColumn], file.Options) : false,
+            //                CatalogId = catalogInfo.BranchId
+            //                } )
+            //            .Where( x => !string.IsNullOrEmpty( x.ItemNumber ) ).ToList();
+            foreach (var row in rows)
+            {
+                if (row.Length > 0)
+                {
+                    string[] vals = row.Split(Delimiter);
+                    string itmNum = DetermineItemNumber(vals[itemNumberColumn].PadLeft(6, '0'), file.Options, user, catalogInfo);
+                    decimal qty = 1;
+                    if (file.Options.Contents.Equals(FileContentType.ItemQty))
+                    {
+                        qty = DetermineQuantity(vals[itemNumberColumn].PadLeft(6, '0'), vals[quantityColumn], file.Options, parList);
+                    }
+                    bool each = false;
+                    if (file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase))
+                    {
+                        each = DetermineBrokenCaseItem(vals[eachColumn], file.Options);
+                    }
+                    returnValue.Add(new ShoppingCartItem()
+                    {
+                        ItemNumber = itmNum,
+                        CatalogId = catalogInfo.BranchId,
+                        Quantity = qty,
+                        Each = each
+                    });
+                }
+            }
 
           return returnValue;
         }
@@ -366,12 +389,33 @@ namespace KeithLink.Svc.Impl.Logic {
 				}
             }
 
-            while (rdr.Read()) {
-                returnValue.Add(new ShoppingCartItem() {
-                    ItemNumber = DetermineItemNumber(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), file.Options, user, catalogInfo),
-                    Quantity = DetermineQuantity(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), rdr.GetString(quantityColumn), file.Options, parList),
-                    Each = file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase) ? DetermineBrokenCaseItem( rdr.GetString(eachColumn), file.Options ):false
-                });
+            try
+            {
+                while (rdr.Read())
+                {
+                    string itmNum = DetermineItemNumber(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), file.Options, user, catalogInfo);
+                    decimal qty = 1;
+                    if (file.Options.Contents.Equals(FileContentType.ItemQty))
+                    {
+                        qty = DetermineQuantity(rdr.GetString(itemNumberColumn).PadLeft(6, '0'), rdr.GetString(quantityColumn), file.Options, parList);
+                    }
+                    bool each = false;
+                    if (file.Options.Contents.Equals(FileContentType.ItemQtyBrokenCase))
+                    {
+                        each = DetermineBrokenCaseItem(rdr.GetString(eachColumn), file.Options); 
+                    }
+                    returnValue.Add(new ShoppingCartItem()
+                    {
+                        ItemNumber = itmNum, 
+                        CatalogId = catalogInfo.BranchId,
+                        Quantity = qty,
+                        Each = each
+                    });
+                }
+            }
+            catch(Exception ex)
+            {
+                eventLogRepository.WriteErrorLog("Bad parse of file", ex);
             }
 
             return returnValue;
