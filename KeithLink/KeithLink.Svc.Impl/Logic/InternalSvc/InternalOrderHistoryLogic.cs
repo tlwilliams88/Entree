@@ -247,12 +247,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             string customerNumber = po.Properties["CustomerId"].ToString();
             string branchId = po.Properties["BranchId"].ToString();
             string orderNumber = po.Properties["OrderNumber"].ToString();
-            string controlNumber = po.Properties["TrackingNumber"].ToString();
+            //string controlNumber = po.Properties["OrderNumber"].ToString();
             
             if (headers == null)
                 headers = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
                                                  h.CustomerNumber.Equals(customerNumber) &&
-                                                 h.RelatedControlNumber == controlNumber).ToList();
+                                                 h.RelatedControlNumber == orderNumber).ToList();
 
             StringBuilder sbRelatedOrders = new StringBuilder();
             StringBuilder sbRelatedInvoices = new StringBuilder();
@@ -704,6 +704,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 }
             }
         }
+
+
+        public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
+            var header = _headerRepo.ReadByConfirmationNumber(childOrderNumber, "B").FirstOrDefault();
+
+            if(header != null){
+                header.RelatedControlNumber = parentOrderNumber;
+
+                _headerRepo.Update(header);
+
+                _unitOfWork.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }

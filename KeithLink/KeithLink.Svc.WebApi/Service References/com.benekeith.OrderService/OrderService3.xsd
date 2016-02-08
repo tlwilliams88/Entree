@@ -179,4 +179,17 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="UpdateRelatedControlNumber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="childOrderNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="parentOrderNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRelatedControlNumberResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

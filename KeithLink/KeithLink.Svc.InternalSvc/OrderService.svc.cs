@@ -90,6 +90,12 @@ namespace KeithLink.Svc.InternalSvc {
 		{
 			return _historyLogic.GetPagedOrders(userId, customerInfo, paging);
 		}
-		#endregion
-	}		
+
+
+        public void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber) {
+            _historyLogic.UpdateRelatedOrderNumber(childOrderNumber, parentOrderNumber);
+        }
+
+        #endregion
+    }		
 }
