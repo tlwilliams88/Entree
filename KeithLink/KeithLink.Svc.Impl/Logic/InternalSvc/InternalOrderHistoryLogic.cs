@@ -696,12 +696,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         sbBody.Append(po.Properties["CustomerId"].ToString());
                         sbBody.Append("-");
                         sbBody.Append(po.Properties["BranchId"].ToString().ToUpper());
-                        sbBody.Append(" with cart ");
-                        sbBody.Append(po.Properties["Name"].ToString());
-                        sbBody.Append(" and tracking ");
+                        //sbBody.Append(" with cart ");
+                        //sbBody.Append(po.Properties["Name"].ToString());
+                        sbBody.Append(" with tracking ");
                         sbBody.Append(po.Properties["OrderNumber"].ToString());
                         sbBody.Append(" last modified");
-                        sbBody.Append(" on " + lastModified.ToString("MM-dd-yyyy hh(z):mm tt"));
+                        sbBody.Append(" on " + lastModified.ToString("MM-dd-yyyy hh:mm tt"));
                         sbBody.Append(" in status " + po.Properties["Status"].ToString());
                         sbBody.Append(".\n");
                     }
