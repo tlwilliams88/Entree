@@ -3,7 +3,10 @@
 angular.module('bekApp')
   .controller('AddToOrderController', ['$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
     function ($scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
-        
+    
+    CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
 
     $scope.calculatePieces = function(items){
       //total piece count for cart info box
@@ -733,6 +736,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       if (!processingSaveCart) {
         var processingSaveCart = true;
         return CartService.createCart(items, shipDate, name).then(function(cart) {
+            CartService.getCartHeaders().finally(function(cartHeaders) {
+              $scope.loadingCarts = false;
+              $scope.carts = CartService.cartHeaders;
+            });
           $scope.addToOrderForm.$setPristine();
           $scope.retainedPage = $scope.currentPage;
           $scope.displayMessage('success', 'Successfully added ' + items.length + ' Items to New Cart.');
@@ -799,6 +806,10 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.continueToCart = true;
       $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
         $scope.isRedirecting(resp);
+      CartService.getCartHeaders().finally(function(cartHeaders) {
+        $scope.loadingCarts = false;
+        $scope.carts = CartService.cartHeaders;
+        });
       })
     }
 

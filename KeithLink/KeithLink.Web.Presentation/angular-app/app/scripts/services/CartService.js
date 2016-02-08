@@ -149,11 +149,10 @@ angular.module('bekApp')
           newCart.createddate = new Date();
           newCart.itemcount = newCart.items.length;
           newCart.items = [];
-          // Service.cartHeaders.push(newCart);
+          Service.cartHeaders.push(newCart);
           Service.getCartHeaders();
           return newCart;
         });
-         
       },
  
       importCart: function(file, options) {
@@ -186,13 +185,12 @@ angular.module('bekApp')
             deferred.reject(data.errormsg);
           }
         });
-        Service.getCartHeaders();
+ 
         return deferred.promise;
       },
  
       validateQuickAdd: function(items) {
         return $http.post('/cart/quickadd/validate', items).then(function(response) {
-          Service.getCartHeaders();
           return response.data;
         });
       },
@@ -250,7 +248,6 @@ angular.module('bekApp')
           var deletedCart = Service.findCartById(cartId);
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
-          Service.getCartHeaders();
           
           return response;
         });
@@ -270,7 +267,7 @@ angular.module('bekApp')
             }
           });
           angular.copy(cartsKept, Service.cartHeaders);
-          Service.getCartHeaders();
+ 
           return;
         });
       },
