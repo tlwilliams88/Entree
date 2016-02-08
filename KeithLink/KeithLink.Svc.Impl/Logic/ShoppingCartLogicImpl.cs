@@ -477,11 +477,21 @@ namespace KeithLink.Svc.Impl.Logic
 
                 auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
-                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type });
+                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type, IsSpecialOrder = isSpecialOrder });
 
                 var itemsToDelete = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => l.Id).ToList();
                 foreach(var toDelete in itemsToDelete) {
                     DeleteItem(user, catalogInfo, cartId, toDelete.ToGuid());
+                }
+            }
+
+            if (returnOrders.OrdersReturned.Count > 1) {
+                string parentOrderId = returnOrders.OrdersReturned.Where(o => o.IsSpecialOrder == false).Select(ro => ro.OrderNumber).FirstOrDefault();
+
+                List<string> childOrderIds = returnOrders.OrdersReturned.Where(o => o.IsSpecialOrder).Select(ro => ro.OrderNumber).ToList();
+
+                foreach (string orderId in childOrderIds) {
+                    orderServiceRepository.UpdateRelatedOrderNumber(orderId, parentOrderId);
                 }
             }
 

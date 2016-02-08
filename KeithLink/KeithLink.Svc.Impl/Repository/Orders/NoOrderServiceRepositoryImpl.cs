@@ -75,5 +75,14 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        #region IOrderServiceRepository Members
+
+
+        public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+    }
 }

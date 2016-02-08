@@ -15,5 +15,8 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "catalogType")]
         public string CatalogType { get; set; }
+
+        [DataMember(Name = "isspecialorder")]
+        public bool IsSpecialOrder { get; set; }
 	}
 }

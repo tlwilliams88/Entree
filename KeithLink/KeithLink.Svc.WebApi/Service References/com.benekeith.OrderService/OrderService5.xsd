@@ -23,6 +23,7 @@
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="invoicestatus" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ischangeorderallowed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isspecialorder" type="xs:boolean" />
       <xs:element minOccurs="0" name="itemcount" type="xs:int" />
       <xs:element minOccurs="0" name="items" nillable="true" type="tns:ArrayOfOrderLine" />
       <xs:element minOccurs="0" name="ordernumber" nillable="true" type="xs:string" />

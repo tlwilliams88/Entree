@@ -86,6 +86,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetPagedOrders", ReplyAction="http://tempuri.org/IOrderService/GetPagedOrdersResponse")]
         System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Orders.Order>> GetPagedOrdersAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, KeithLink.Svc.Core.Models.Paging.PagingModel paging);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/UpdateRelatedControlNumber", ReplyAction="http://tempuri.org/IOrderService/UpdateRelatedControlNumberResponse")]
+        void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/UpdateRelatedControlNumber", ReplyAction="http://tempuri.org/IOrderService/UpdateRelatedControlNumberResponse")]
+        System.Threading.Tasks.Task UpdateRelatedControlNumberAsync(string childOrderNumber, string parentOrderNumber);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -209,6 +215,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         public System.Threading.Tasks.Task<KeithLink.Svc.Core.Models.Paging.PagedResults<KeithLink.Svc.Core.Models.Orders.Order>> GetPagedOrdersAsync(System.Guid userId, KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext customerInfo, KeithLink.Svc.Core.Models.Paging.PagingModel paging) {
             return base.Channel.GetPagedOrdersAsync(userId, customerInfo, paging);
+        }
+        
+        public void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber) {
+            base.Channel.UpdateRelatedControlNumber(childOrderNumber, parentOrderNumber);
+        }
+        
+        public System.Threading.Tasks.Task UpdateRelatedControlNumberAsync(string childOrderNumber, string parentOrderNumber) {
+            return base.Channel.UpdateRelatedControlNumberAsync(childOrderNumber, parentOrderNumber);
         }
     }
 }

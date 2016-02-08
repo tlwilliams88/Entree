@@ -50,5 +50,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		[OperationContract]
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
 
+        [OperationContract]
+        void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber);
 	}
 }
