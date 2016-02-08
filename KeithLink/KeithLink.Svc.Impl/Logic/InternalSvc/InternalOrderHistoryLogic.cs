@@ -191,7 +191,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (po != null) {
                         returnOrder.Status = po.Status;
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
-                        returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
+
+                        if (myOrder.RelatedControlNumber == null) {
+                            FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
+                        } else {
+                            returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
+                        }
                     }
                 }
             }
