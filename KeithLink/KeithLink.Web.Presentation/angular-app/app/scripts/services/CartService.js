@@ -150,9 +150,9 @@ angular.module('bekApp')
           newCart.itemcount = newCart.items.length;
           newCart.items = [];
           Service.cartHeaders.push(newCart);
+          Service.getCartHeaders();
           return newCart;
         });
-         document.location.reload(true);
       },
  
       importCart: function(file, options) {

@@ -179,7 +179,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 if (po != null)
                 {
                     PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
-
                     FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
                 }
             }
@@ -192,7 +191,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (po != null) {
                         returnOrder.Status = po.Status;
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
-                        FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
+                        returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
                     }
                 }
             }
@@ -448,7 +447,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                             if (currentPo != null)
                             {
-                                FindOrdersRelatedToPurchaseOrder(currentPo, returnOrder, h, headers);
+                                returnOrder.RelatedOrderNumbers = h.RelatedControlNumber;
                                 returnOrder.Status = currentPo.Status;
                                 returnOrder.OrderNumber = h.ControlNumber;
                                 returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith("Confirmed")));
