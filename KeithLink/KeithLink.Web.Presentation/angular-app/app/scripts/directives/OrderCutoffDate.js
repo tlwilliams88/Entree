@@ -12,8 +12,8 @@ angular.module('bekApp')
       function checkValidity(viewValue) {
         if(scope.$modelValue || scope.$modelValue === undefined){
 
-          var cutoffDate = moment(viewValue),
-            now = moment();
+             var cutoffDate = moment(viewValue).format();
+             var now = moment().tz("America/Chicago").format();
 
           if (now < cutoffDate) {
             

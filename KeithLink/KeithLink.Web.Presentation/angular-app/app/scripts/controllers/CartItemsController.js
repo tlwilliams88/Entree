@@ -129,10 +129,10 @@ angular.module('bekApp')
     };
 
     $scope.validateShipDate = function(shipDate){
-      var cutoffDate = moment(shipDate.cutoffdatetime);
-      var now = moment();
+      var cutoffDate = moment(shipDate.cutoffdatetime).format();
+      var now = moment().tz("America/Chicago").format();
       $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
-      if($scope.invalidShipDate){
+      if($scope.invalidSelectedDate){
         CartService.getShipDates().then(function(result){
           $scope.shipDates = result;
         })
@@ -251,7 +251,7 @@ angular.module('bekApp')
 
             if(orderNumber == -1 ) {
                 //no BEK items bought
-                if (data.ordersReturned.length && data.ordersReturned.length != data.numberOfOrders) {
+                if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length != data.numberOfOrders) {
                     status = 'error';
                     message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
                 } else {
