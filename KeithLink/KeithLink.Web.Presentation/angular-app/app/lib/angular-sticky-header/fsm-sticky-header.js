@@ -24,10 +24,8 @@ fsm.directive('fsmStickyHeader', function(){
             }
 
             scope.$watch('currentPage', function(){ 
-                if(scope.currentPage > 0){
-                    if(clonedHeader && header){
-                        determineVisibility();                      
-                    }
+                if(scope.currentPage > 0 && clonedHeader && header){                    
+                    determineVisibility();                    
                 }
             });
 
