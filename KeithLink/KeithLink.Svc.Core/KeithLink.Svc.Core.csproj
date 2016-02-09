@@ -162,6 +162,7 @@
     <Compile Include="Events\EventArgs\ReceivedFileEventArgs.cs" />
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
+    <Compile Include="Extensions\LinqSortHelpers.cs" />
     <Compile Include="Interface\Configuration\IExternalCatalogServiceRepository.cs" />
     <Compile Include="Interface\Configuration\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
