@@ -182,7 +182,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "nutritional", EmitDefaultValue = false)]
 		public Nutritional Nutritional { get; set; }
 
-		[DataMember(Name = "kosher", EmitDefaultValue = false)]
+        [DataMember(Name = "unfi", EmitDefaultValue = false)]
+        public UNFI Unfi { get; set; }
+
+        [DataMember(Name = "kosher", EmitDefaultValue = false)]
 		public string Kosher { get; set; }
 
 		[DataMember(Name = "manufacturer_number", EmitDefaultValue = false)]
