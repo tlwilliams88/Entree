@@ -160,6 +160,134 @@
               </tbody>
             </table>
         </tab>
+        <tab ng-if="::item.is_specialty_catalog && DisplayUFNIDetails" heading="Extended Specifications">
+          <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Extended Specifications</h3>
+            <table class="table item-details__table table-striped-rows no-margin">
+              <colgroup>
+                <col style="width: 25%">
+                <col style="width: 75%">
+              </colgroup>
+              <tbody>
+                <tr>
+                  <th>Specification</th>
+                  <th>Details</th>
+                </tr>
+                <tr class="odd">
+                  <td>Case Price</td>
+                  <td>{{item.unfi.caseprice}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Package Price</td>
+                  <td>{{item.unfi.packageprice}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>CLength</td>
+                  <td>{{item.unfi.clength}}</td>
+                </tr>
+                <tr class="even">
+                  <td>CWidth</td>
+                  <td>{{item.unfi.cwidth}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>CLength</td>
+                  <td>{{item.unfi.CLength}}</td>
+                </tr>
+                <tr class="even">
+                  <td>CHeight</td>
+                  <td>{{item.unfi.cheight}}</td>
+                </tr>
+                <!-- Always null
+                <tr>
+                  <td>Portion Size</td>
+                  <td>{{item.nutritional.servingsuggestion}}</td>
+                </tr> -->
+                <!-- <tr class="even">
+                  <td>Previous Orders</td>
+                  <td></td>
+                </tr> -->
+                <tr class="odd">
+                  <td>PLength</td>
+                  <td>{{item.unfi.plength}}</td>
+                </tr>
+                <tr class="even">
+                  <td>PHeight</td>
+                  <td>{{item.unfi.pheight}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>PWidth</td>
+                  <td>{{item.unfi.pwidth}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Unit of Sale</td>
+                  <td>{{item.unfi.unitofsale}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Weight</td>
+                  <td>{{item.unfi.weight}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Catalog Dept.</td>
+                  <td>{{item.unfi.catalogdept}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Ship Min. Expire</td>
+                  <td>{{item.unfi.shipinexpire}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Min. Order</td>
+                  <td>{{item.unfi.minorder}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Case Qty.</td>
+                  <td>{{item.unfi.casequantity}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Put Up</td>
+                  <td>{{item.unfi.putup}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Cont. Unit</td>
+                  <td>{{item.unfi.contunit}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Tcs Code</td>
+                  <td>{{item.unfi.tcscode}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Case UPC</td>
+                  <td>{{item.unfi.caseupc}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Status</td>
+                  <td>{{item.unfi.status}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Flag 1</td>
+                  <td>{{item.unfi.flag1}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Flag 2</td>
+                  <td>{{item.unfi.flag2}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>Flag 3</td>
+                  <td>{{item.unfi.flag3}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Flag 4</td>
+                  <td>{{item.unfi.flag4}}</td>
+                </tr>
+                <tr class="odd">
+                  <td>On Hand Qty.</td>
+                  <td>{{item.unfi.onhandqty}}</td>
+                </tr>
+                <tr class="even">
+                  <td>Vendor</td>
+                  <td>{{item.unfi.vendor}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </tab>
         <tab heading="Dietary Specifications"
              ng-show = "item.nutritional != null">
           <h3 class="visible-print-block hidden-xs hidden-sm hidden-md hidden-lg">Dietary Specifications</h3>
