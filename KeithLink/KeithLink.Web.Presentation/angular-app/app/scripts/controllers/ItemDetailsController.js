@@ -8,13 +8,14 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'PricingService',
-    function ($scope, $modal, item, ProductService, PricingService) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService',
+    function ($scope, $modal, item, ProductService, AccessService, PricingService) {
     
     var originalItemNotes = item.notes;
 
     $scope.item = item;
     $scope.item.quantity = 1;
+    $scope.DisplayUFNIDetails = AccessService.isOrderEntryCustomer();
 
     $scope.canOrderItemInd = PricingService.canOrderItem(item);
     $scope.casePriceInd = PricingService.hasCasePrice(item);
