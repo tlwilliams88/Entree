@@ -15,7 +15,7 @@ angular.module('bekApp')
 
     $scope.item = item;
     $scope.item.quantity = 1;
-    $scope.DisplayUFNIDetails = AccessService.isOrderEntryCustomer();
+    $scope.DisplayUNFIDetails = AccessService.canViewUNFIDetails();
 
     $scope.canOrderItemInd = PricingService.canOrderItem(item);
     $scope.casePriceInd = PricingService.hasCasePrice(item);
