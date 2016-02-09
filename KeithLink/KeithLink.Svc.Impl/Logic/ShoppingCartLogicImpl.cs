@@ -440,7 +440,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 
                 CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
-
+                
                 foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
                 {
                     var item = (CS.LineItem)lineItem.Target;
@@ -468,6 +468,8 @@ namespace KeithLink.Svc.Impl.Logic
 
                 if (isSpecialOrder)
                 {
+                    client.UpdatePurchaseOrderStatus(customer.CustomerId, newPurchaseOrder.Id.ToGuid(), "Requested");
+
                     orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, type, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
                 }
                 else

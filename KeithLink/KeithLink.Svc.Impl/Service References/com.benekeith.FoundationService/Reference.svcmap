@@ -19,17 +19,17 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://win2012bek:1000/Foundation/FoundationService.svc" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:1000/Foundation/FoundationService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="FoundationService5.xsd" MetadataType="Schema" ID="627c1b12-6b46-4da8-a45f-b0105bf737fa" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd5" />
-    <MetadataFile FileName="FoundationService.xsd" MetadataType="Schema" ID="762c7531-ad37-4b6d-bdcf-f60121cae19d" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd3" />
-    <MetadataFile FileName="FoundationService.disco" MetadataType="Disco" ID="3c9fb348-22ec-4689-ac4c-b2ae01bd33ca" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?disco" />
-    <MetadataFile FileName="FoundationService1.xsd" MetadataType="Schema" ID="accb7678-80e7-4e09-9097-5ef3d38fdb49" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd4" />
-    <MetadataFile FileName="BEKFoundationService.wsdl" MetadataType="Wsdl" ID="3f99d896-f41b-4403-aa3e-e0345823cf11" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?wsdl" />
-    <MetadataFile FileName="FoundationService2.xsd" MetadataType="Schema" ID="52bf4e7b-0c11-4682-8db7-20bd881cf3c5" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd2" />
-    <MetadataFile FileName="FoundationService3.xsd" MetadataType="Schema" ID="90bd233c-7af7-4d95-baf6-164cc65c7d73" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd0" />
-    <MetadataFile FileName="FoundationService4.xsd" MetadataType="Schema" ID="8b665a9f-5f06-4094-8ca7-fbb88adc8623" SourceId="1" SourceUrl="http://win2012bek:1000/Foundation/FoundationService.svc?xsd=xsd1" />
+    <MetadataFile FileName="FoundationService1.disco" MetadataType="Disco" ID="0022f3f0-20e7-4e22-aea8-eef2a759808a" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?disco" />
+    <MetadataFile FileName="FoundationService6.xsd" MetadataType="Schema" ID="fda2312e-af63-4f13-8223-36566c87bad9" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?xsd=xsd0" />
+    <MetadataFile FileName="FoundationService61.xsd" MetadataType="Schema" ID="deb2f4fc-4033-472f-856f-b5d324fa4caf" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?xsd=xsd4" />
+    <MetadataFile FileName="FoundationService62.xsd" MetadataType="Schema" ID="d4a6c33c-7bfb-4cb4-95ea-0bfd57859df9" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?xsd=xsd1" />
+    <MetadataFile FileName="BEKFoundationService1.wsdl" MetadataType="Wsdl" ID="3caad379-7342-48a5-83dd-6fdcad2839ae" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?wsdl" />
+    <MetadataFile FileName="FoundationService63.xsd" MetadataType="Schema" ID="2b4bacf3-2e9d-41c5-8be7-180f311b3806" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?xsd=xsd2" />
+    <MetadataFile FileName="FoundationService64.xsd" MetadataType="Schema" ID="7fae8188-cfde-4392-b424-636750b78fa0" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?xsd=xsd5" />
+    <MetadataFile FileName="FoundationService65.xsd" MetadataType="Schema" ID="5a458c45-00f2-47d9-a028-3405efee9d43" SourceId="1" SourceUrl="http://corpmisdev2b.bekco.com:1000/Foundation/FoundationService.svc?xsd=xsd3" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
