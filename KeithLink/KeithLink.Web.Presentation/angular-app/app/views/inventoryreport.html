@@ -1,8 +1,8 @@
 <div page-header-bar>
   <div header-message>
-    Inventory Valuation Report
-    <button class="btn hidden-md hidden-lg btn-lg btn-primary" ng-click="saveReport(report)" type="button">Save</button>
-    <button class="btn hidden-md hidden-lg btn-lg btn-default" ng-click="clearReport(report.listid)" type="button">Clear</button>
+    Inventory Valuation Report 
+    <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6" ng-click="clearReport(report.listid)" type="button">Clear</button>
+    <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right" ng-click="saveReport(report)" type="button">Save</button>   
   </div>
   <div header-buttons>
     <button class="btn btn-lg btn-primary" ng-click="saveReport(report)" type="button">Save</button>
@@ -86,9 +86,11 @@
             <td>{{::item.name}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
             <td class="hidden-mobile-visible-print">{{::item.label}}</td>
-            <td class="input-col nowrap">
-              <!-- <div type="text" counter numeric-validation min="0" length="5" ng-model="item.quantity"></div> -->
+            <td class="input-col nowrap counter-container">
+              <button type="button" class="btn btn-warning icon-minus3 hidden-lg" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1; 
+              "></button>                 
               <input type="text" numeric-validation class="input-number tabstop" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity">
+               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.quantity = item.quantity + 1;"></button> 
             </td>
             <td class="input-col hidden-xs hidden-sm">
               <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">
