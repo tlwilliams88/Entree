@@ -18,6 +18,8 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
         OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
         void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder);
 
+        void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
+
 		void ListenForQueueMessages();
 
         void StopListening();

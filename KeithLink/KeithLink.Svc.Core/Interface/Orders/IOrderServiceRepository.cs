@@ -36,5 +36,8 @@ namespace KeithLink.Svc.Core.Interface.Orders
         Guid GetUserIdForControlNumber(int controlNumber);
 
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging);
+
+        void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
+
 	}
 }

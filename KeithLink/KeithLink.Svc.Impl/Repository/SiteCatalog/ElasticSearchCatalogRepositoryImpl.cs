@@ -520,6 +520,36 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.IsSpecialtyCatalog = true;
                 p.Cases = oProd._source.onhandqty.ToString();
                 p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
+
+                UNFI unfi = new UNFI();
+                
+                unfi.CHeight = oProd._source.cheight;
+                unfi.CLength = oProd._source.clength;
+                unfi.CWidth = oProd._source.cwidth;
+                unfi.Weight = oProd._source.averageweight;
+                unfi.UnitOfSale = oProd._source.unitofsale;
+                unfi.CatalogDept = oProd._source.catalogdept;
+                unfi.ShipMinExpire = oProd._source.shipminexpire;
+                unfi.MinOrder = oProd._source.minorder;
+                unfi.CaseQuantity = oProd._source.casequantity;
+                unfi.PutUp = oProd._source.putup;
+                unfi.ContUnit = oProd._source.contunit;
+                unfi.TCSCode = oProd._source.tcscode;
+                unfi.CaseUPC = oProd._source.caseupc;
+                unfi.PLength = oProd._source.plength;
+                unfi.PHeight = oProd._source.pheight;
+                unfi.PWidth = oProd._source.pwidth;
+                unfi.Status = oProd._source.status;
+                unfi.PackagePrice = oProd._source.packageprice;
+                unfi.CasePrice = oProd._source.caseprice;
+                unfi.Flag1 = oProd._source.flag1;
+                unfi.Flag2 = oProd._source.flag2;
+                unfi.Flag3 = oProd._source.flag3;
+                unfi.Flag4 = oProd._source.flag4;
+                unfi.OnHandQty = oProd._source.onhandqty;
+                unfi.Vendor = oProd._source.vendor1;
+
+                p.Unfi = unfi;
             }
           
             if (oProd._source.nutritional != null) {

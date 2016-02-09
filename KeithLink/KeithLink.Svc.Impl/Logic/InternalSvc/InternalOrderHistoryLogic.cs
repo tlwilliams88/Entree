@@ -191,7 +191,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     if (po != null) {
                         returnOrder.Status = po.Status;
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
-                        returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
+
+                        if (myOrder.RelatedControlNumber == null) {
+                            FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
+                        } else {
+                            returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
+                        }
                     }
                 }
             }
@@ -246,25 +251,25 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             string customerNumber = po.Properties["CustomerId"].ToString();
             string branchId = po.Properties["BranchId"].ToString();
             string orderNumber = po.Properties["OrderNumber"].ToString();
-            DateTime startDT = thisOrder.CreatedUtc.AddMinutes(-3);
-            DateTime endDT = thisOrder.CreatedUtc.AddMinutes(3);
+            //string controlNumber = po.Properties["OrderNumber"].ToString();
+            
             if (headers == null)
                 headers = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
-                     h.CustomerNumber.Equals(customerNumber) &&
-                     h.CreatedUtc > startDT &&
-                     h.CreatedUtc < endDT).ToList();
+                                                 h.CustomerNumber.Equals(customerNumber) &&
+                                                 h.RelatedControlNumber == orderNumber).ToList();
+
             StringBuilder sbRelatedOrders = new StringBuilder();
             StringBuilder sbRelatedInvoices = new StringBuilder();
+            
             foreach (var item in headers)
             {
-                if (item.CreatedUtc < startDT && item.CreatedUtc < endDT)
-                {
-                    if (sbRelatedOrders.Length > 0) sbRelatedOrders.Append(",");
-                    if (sbRelatedInvoices.Length > 0) sbRelatedInvoices.Append(",");
-                    sbRelatedOrders.Append(item.ControlNumber);
-                    sbRelatedInvoices.Append(item.InvoiceNumber);
-                }
+                if (sbRelatedOrders.Length > 0) sbRelatedOrders.Append(",");
+                if (sbRelatedInvoices.Length > 0) sbRelatedInvoices.Append(",");
+
+                sbRelatedOrders.Append(item.ControlNumber);
+                sbRelatedInvoices.Append(item.InvoiceNumber);
             }
+
             returnOrder.RelatedOrderNumbers = sbRelatedOrders.ToString();
             returnOrder.RelatedInvoiceNumbers = sbRelatedInvoices.ToString();
         }
@@ -691,18 +696,32 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         sbBody.Append(po.Properties["CustomerId"].ToString());
                         sbBody.Append("-");
                         sbBody.Append(po.Properties["BranchId"].ToString().ToUpper());
-                        sbBody.Append(" with cart ");
-                        sbBody.Append(po.Properties["Name"].ToString());
-                        sbBody.Append(" and tracking ");
+                        //sbBody.Append(" with cart ");
+                        //sbBody.Append(po.Properties["Name"].ToString());
+                        sbBody.Append(" with tracking ");
                         sbBody.Append(po.Properties["OrderNumber"].ToString());
                         sbBody.Append(" last modified");
-                        sbBody.Append(" on " + lastModified.ToString("MM-dd-yyyy hh(z):mm tt"));
+                        sbBody.Append(" on " + lastModified.ToString("MM-dd-yyyy hh:mm tt"));
                         sbBody.Append(" in status " + po.Properties["Status"].ToString());
                         sbBody.Append(".\n");
                     }
                 }
             }
         }
+
+
+        public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
+            var header = _headerRepo.ReadByConfirmationNumber(childOrderNumber, "B").FirstOrDefault();
+
+            if(header != null){
+                header.RelatedControlNumber = parentOrderNumber;
+
+                _headerRepo.Update(header);
+
+                _unitOfWork.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }
