@@ -521,35 +521,35 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.Cases = oProd._source.onhandqty.ToString();
                 p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
 
-                UNFI unfi = new UNFI();
-                
-                unfi.CHeight = oProd._source.cheight;
-                unfi.CLength = oProd._source.clength;
-                unfi.CWidth = oProd._source.cwidth;
-                unfi.Weight = oProd._source.averageweight;
-                unfi.UnitOfSale = oProd._source.unitofsale;
-                unfi.CatalogDept = oProd._source.catalogdept;
-                unfi.ShipMinExpire = oProd._source.shipminexpire;
-                unfi.MinOrder = oProd._source.minorder;
-                unfi.CaseQuantity = oProd._source.casequantity;
-                unfi.PutUp = oProd._source.putup;
-                unfi.ContUnit = oProd._source.contunit;
-                unfi.TCSCode = oProd._source.tcscode;
-                unfi.CaseUPC = oProd._source.caseupc;
-                unfi.PLength = oProd._source.plength;
-                unfi.PHeight = oProd._source.pheight;
-                unfi.PWidth = oProd._source.pwidth;
-                unfi.Status = oProd._source.status;
-                unfi.PackagePrice = oProd._source.packageprice;
-                unfi.CasePrice = oProd._source.caseprice;
-                unfi.Flag1 = oProd._source.flag1;
-                unfi.Flag2 = oProd._source.flag2;
-                unfi.Flag3 = oProd._source.flag3;
-                unfi.Flag4 = oProd._source.flag4;
-                unfi.OnHandQty = oProd._source.onhandqty;
-                unfi.Vendor = oProd._source.vendor1;
+                    UNFI unfi = new UNFI();
 
-                p.Unfi = unfi;
+                    unfi.CHeight = oProd._source.cheight.ToString();
+                    unfi.CLength = oProd._source.clength.ToString();
+                    unfi.CWidth = oProd._source.cwidth.ToString();
+                    unfi.Weight = oProd._source.averageweight.ToString();
+                    unfi.UnitOfSale = oProd._source.unitofsale.ToString();
+                    unfi.CatalogDept = oProd._source.catalogdept.ToString();
+                    unfi.ShipMinExpire = oProd._source.shipminexpire.ToString();
+                    unfi.MinOrder = oProd._source.minorder.ToString();
+                    unfi.CaseQuantity = oProd._source.casequantity.ToString();
+                    unfi.PutUp = oProd._source.putup.ToString();
+                    unfi.ContUnit = oProd._source.contunit.ToString();
+                    unfi.TCSCode = oProd._source.tcscode.ToString();
+                    unfi.CaseUPC = oProd._source.caseupc.ToString();
+                    unfi.PLength = oProd._source.plength.ToString();
+                    unfi.PHeight = oProd._source.pheight.ToString();
+                    unfi.PWidth = oProd._source.pwidth.ToString();
+                    unfi.Status = oProd._source.status.ToString();
+                    unfi.PackagePrice = oProd._source.packageprice.ToString();
+                    unfi.CasePrice = oProd._source.caseprice.ToString();
+                    unfi.Flag1 = oProd._source.flag1.ToString();
+                    unfi.Flag2 = oProd._source.flag2.ToString();
+                    unfi.Flag3 = oProd._source.flag3.ToString();
+                    unfi.Flag4 = oProd._source.flag4.ToString();
+                    unfi.OnHandQty = oProd._source.onhandqty.ToString();
+                    unfi.Vendor = oProd._source.vendor1.ToString();
+
+                    p.Unfi = unfi;
             }
           
             if (oProd._source.nutritional != null) {
