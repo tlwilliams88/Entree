@@ -190,7 +190,7 @@
       </div>
     </div>
 
-    <div class="hidden-print col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
+    <div ng-if="::!isChangeOrder" class="hidden-print col-xs-12 col-sm-5 col-md-5 col-lg-6 padding-top-xs" ng-show="(reminderList && reminderList.items.length > 0) || (mandatoryList && mandatoryList.items.length > 0)">
       <tabset class="tabset critical-items__tabset tab-border">
 
         <tab heading="Mandatory Items" ng-show="mandatoryList && mandatoryList.items.length > 0" active="mandatoryList.active">
@@ -404,10 +404,12 @@
             <td class="hidden-mobile-visible-print " item-icons>
             </td>
             <td class="input-col nowrap">
-              <span class="visible-print">{{item.quantity}}</span>
+              <span ng-if="::!item.isoutofstock" class="visible-print">{{item.quantity}}</span>
+              <span ng-if="::item.isoutofstock" class="visible-print">{{item.quantityordered}}</span>
               <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid">
                 <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
-                <div counter ng-model="item.quantity" min="0" length="5" ></div>
+                <div ng-if="::!item.isoutofstock" counter ng-model="item.quantity" min="0" length="5" ></div>
+                <div ng-if="::item.isoutofstock" ng-if="::!item.isoutofstock" counter ng-model="item.quantityordered" min="0" length="5" ></div>
               </ng-form>
             </td>
             <td class="hidden-mobile-visible-print input-col" ng-if="!isChangeOrder">
@@ -432,7 +434,7 @@
             </td>
             <td class="large-icon icon-col">
               <a class="hidden-print visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-              <a class="hidden-print hidden-xs hidden-sm" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+              <a class="hidden-print hidden-xs hidden-sm" ng-if="!item.isMandatory" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
             </td>
             <td></td>
           </tr>
