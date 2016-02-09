@@ -199,11 +199,6 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     },
 
-    //Permission set specifically for allowing access to additional UNFI item details
-    canViewUNFIDetails: function() {
-      return ( Service.isLoggedIn() && ( isDsr() || isDsm() || isSysAdmin() || isKbitAdmin() || isBranchManager() || isPowerUser() || isMarketing() || isBuyer() ) );
-    }
-
   };
 
   return Service;
