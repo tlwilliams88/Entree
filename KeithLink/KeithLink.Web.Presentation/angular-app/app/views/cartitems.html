@@ -409,7 +409,7 @@
               <ng-form class="hidden-print" name="quantityForm" ng-if="item.isvalid">
                 <!-- <input name="quantity" required type="text" ng-model="item.quantity" class="input-number text-right" integer> -->
                 <div ng-if="::!item.isoutofstock" counter ng-model="item.quantity" min="0" length="5" ></div>
-                <div ng-if="::item.isoutofstock" ng-if="::!item.isoutofstock" counter ng-model="item.quantityordered" min="0" length="5" ></div>
+                <div ng-if="::item.isoutofstock" counter ng-model="item.quantityordered" min="0" length="5" ></div>
               </ng-form>
             </td>
             <td class="hidden-mobile-visible-print input-col" ng-if="!isChangeOrder">
