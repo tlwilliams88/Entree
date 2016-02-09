@@ -85,8 +85,14 @@ angular.module('bekApp')
     });
 
     // set default selected critical items list
+    // add property isMandatory for carts items that are on the mandatory list
     if ($scope.mandatoryList) {
       $scope.mandatoryList.active = true;
+      $scope.currentCart.items.forEach(function(item){
+        if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
+          item.isMandatory = true;
+        }
+      })
     } else if ($scope.reminderList) {
       $scope.reminderList.active = true;
     } else {
