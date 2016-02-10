@@ -116,6 +116,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.CustomerId = catalogInfo.CustomerId;
 			newBasket.Shared = true;
 			newBasket.TempSubTotal = cart.SubTotal;
+            newBasket.PONumber = cart.PONumber;
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
             var cartBranchId = catalogInfo.BranchId;
@@ -440,7 +441,7 @@ namespace KeithLink.Svc.Impl.Logic
 
 
                 CS.PurchaseOrder newPurchaseOrder = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
-                
+
                 foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)newPurchaseOrder.Properties["LineItems"]))
                 {
                     var item = (CS.LineItem)lineItem.Target;
