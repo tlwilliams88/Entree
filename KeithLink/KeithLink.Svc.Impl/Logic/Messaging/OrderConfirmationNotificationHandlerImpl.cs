@@ -308,19 +308,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private string BuildPriceInfo(OrderLineChange line, Product currentProduct)
         {
-            string priceInfo = line.ItemPrice.ToString("f2");
+            StringBuilder priceInfo = new StringBuilder();
+            if(line.ItemPrice != null) priceInfo.Append(line.ItemPrice.ToString("f2"));
+            else priceInfo.Append("?");
             if (currentProduct.CatchWeight)
             {
-                priceInfo += " lb per";
-                if (line.Each) priceInfo += " package";
-                else priceInfo += " case";
+                priceInfo.Append(" lb per");
+                if (line.Each) priceInfo.Append(" package");
+                else priceInfo.Append(" case");
             }
             else
             {
-                if (line.Each) priceInfo += " per package";
-                else priceInfo += " per case";
+                if (line.Each) priceInfo.Append(" per package");
+                else priceInfo.Append(" per case");
             }
-            return priceInfo;
+            return priceInfo.ToString();
         }
 
         private Message MakeRejectedMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)
