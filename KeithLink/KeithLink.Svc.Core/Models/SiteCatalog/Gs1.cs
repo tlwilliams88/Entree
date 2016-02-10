@@ -105,20 +105,20 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
     {
         [DataMember(Name = "caseprice")]
         public string CasePrice { get; set; }
-        [DataMember(Name = "clength")]
-        public string CLength { get; set; }
-        [DataMember(Name = "cwidth")]
-        public string CWidth { get; set; }
-        [DataMember(Name = "cheight")]
-        public string CHeight { get; set; }
+        [DataMember(Name = "caselength")]
+        public string CaseLength { get; set; }
+        [DataMember(Name = "casewidth")]
+        public string CaseWidth { get; set; }
+        [DataMember(Name = "caseheight")]
+        public string CaseHeight { get; set; }
         [DataMember(Name = "packageprice")]
         public string PackagePrice { get; set; }
-        [DataMember(Name = "plength")]
-        public string PLength { get; set; }
-        [DataMember(Name = "pheight")]
-        public string PHeight { get; set; }
-        [DataMember(Name = "pwidth")]
-        public string PWidth { get; set; }
+        [DataMember(Name = "packagelength")]
+        public string PackageLength { get; set; }
+        [DataMember(Name = "packageheight")]
+        public string PackageHeight { get; set; }
+        [DataMember(Name = "packagewidth")]
+        public string PackageWidth { get; set; }
         [DataMember(Name = "unitofsale")]
         public string UnitOfSale { get; set; }
         [DataMember(Name = "weight")]

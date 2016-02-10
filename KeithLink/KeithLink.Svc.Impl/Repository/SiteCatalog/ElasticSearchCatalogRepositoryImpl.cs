@@ -523,9 +523,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
                     UNFI unfi = new UNFI();
 
-                    unfi.CHeight = oProd._source.cheight.ToString();
-                    unfi.CLength = oProd._source.clength.ToString();
-                    unfi.CWidth = oProd._source.cwidth.ToString();
+                    unfi.CaseHeight = oProd._source.cheight.ToString();
+                    unfi.CaseLength = oProd._source.clength.ToString();
+                    unfi.CaseWidth = oProd._source.cwidth.ToString();
                     unfi.Weight = oProd._source.averageweight.ToString();
                     unfi.UnitOfSale = oProd._source.unitofsale.ToString();
                     unfi.CatalogDept = oProd._source.catalogdept.ToString();
@@ -536,9 +536,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     unfi.ContUnit = oProd._source.contunit.ToString();
                     unfi.TCSCode = oProd._source.tcscode.ToString();
                     unfi.CaseUPC = oProd._source.caseupc.ToString();
-                    unfi.PLength = oProd._source.plength.ToString();
-                    unfi.PHeight = oProd._source.pheight.ToString();
-                    unfi.PWidth = oProd._source.pwidth.ToString();
+                    unfi.PackageLength = oProd._source.plength.ToString();
+                    unfi.PackageHeight = oProd._source.pheight.ToString();
+                    unfi.PackageWidth = oProd._source.pwidth.ToString();
                     unfi.Status = oProd._source.status.ToString();
                     unfi.PackagePrice = oProd._source.packageprice.ToString();
                     unfi.CasePrice = oProd._source.caseprice.ToString();
