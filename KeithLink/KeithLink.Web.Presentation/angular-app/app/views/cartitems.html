@@ -434,7 +434,7 @@
             </td>
             <td class="large-icon icon-col">
               <a class="hidden-print visible-xs-inline visible-sm-inline"><span class="hidden-print text-light visible-xs-inline visible-sm-inline icon-ellipsis" ng-click="showDetails = !showDetails;"></span></a>
-              <a class="hidden-print hidden-xs hidden-sm" ng-if="!item.isMandatory" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
+              <a class="hidden-print hidden-xs hidden-sm" ng-if="!(item.isMandatory && isChangeOrder)" ng-click="deleteItem(item)"><span class="text-red icon-cross"></span></a>
             </td>
             <td></td>
           </tr>
@@ -491,7 +491,7 @@
                 </tr>
                 <tr>
                   <td colspan="2" class="sub-content">
-                    <button type="button" ng-click="deleteItem(item)" class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
+                    <button type="button" ng-if="!(item.isMandatory && isChangeOrder)" ng-click="deleteItem(item)" class="btn btn-lg btn-danger"><span class="icon-cross"></span>Remove Item</button>
                   </td>
                 </tr>
               </table>

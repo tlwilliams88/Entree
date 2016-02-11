@@ -183,7 +183,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.Status = po.Status;
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
-                        returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
+                        // needed to reconnect parent orders to special orders
+                        if (myOrder.RelatedControlNumber == null) {		
+                            FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);		
+                        } else {		
+                            returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;		
+                        }
                     }
                 }
             }
@@ -428,7 +433,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     
                     returnOrder = h.ToOrder();
 
-                    LookupProductDetails(h.BranchId, returnOrder);
                     if (h.OrderSystem.Trim().Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
                     {
                         // Check if the purchase order exists and grab it for additional information if it does
@@ -452,8 +456,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.CatalogId = h.BranchId;
                     }
 
-                    if ((returnOrder.CatalogId != null) && (returnOrder.CatalogId.Length > 0)) LookupProductDetails(returnOrder.CatalogId, returnOrder);
-                    else LookupProductDetails(userContext.BranchId, returnOrder);
+                    //if ((returnOrder.CatalogId != null) && (returnOrder.CatalogId.Length > 0)) LookupProductDetails(returnOrder.CatalogId, returnOrder);
+                    //else LookupProductDetails(userContext.BranchId, returnOrder);
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
                     if (invoice != null) {
@@ -464,7 +468,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.Status = "Delivered";
                     }
 
-                    //LookupProductDetails(h.BranchId, returnOrder);
                     if (returnOrder.Items != null) {
                         returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
