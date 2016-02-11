@@ -145,15 +145,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             _headerRepo.CreateOrUpdate(header);
 
-            // clean up any previous orders where the special order item existed
-            var specialOrderItemHeaderIds = currentFile.Details.Where(currentDetail => !String.IsNullOrEmpty(currentDetail.SpecialOrderHeaderId)).Select(d => d.SpecialOrderHeaderId).Distinct();
-            var existingDetails = _detailRepo.Read(existingDetail =>
-                                        specialOrderItemHeaderIds.Contains(existingDetail.SpecialOrderHeaderId)
-                                        && existingDetail.OrderHistoryHeader.Id != header.Id);
-            // TODO: gs - delete each of the existing details; should we just set a status; something like filled in a later order
-            foreach (var detail in existingDetails)
-                _detailRepo.Delete(detail);
-            _unitOfWork.SaveChangesAndClearContext();
+            RemoveSpecialOrderItemsFromHistory(header);
         }
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
@@ -626,6 +618,43 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
                                            Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
         }
+
+        private void RemoveSpecialOrderItemsFromHistory(EF.OrderHistoryHeader order) {
+            // clean up any previous orders where the special order item existed
+            var specialOrderInfo = order.OrderDetails.Where(currentDetail => !String.IsNullOrEmpty(currentDetail.SpecialOrderHeaderId))
+                                                     .Select(d => new { HeaderId = d.SpecialOrderHeaderId, LineNumber = d.SpecialOrderLineNumber })
+                                                     .Distinct()
+                                                     .ToList();
+
+            foreach (var specialOrderItem in specialOrderInfo) {
+                var specialLines = _detailRepo.Read(d => d.BranchId.Equals(order.BranchId)
+                                                      && d.SpecialOrderHeaderId.Equals(specialOrderItem.HeaderId)
+                                                      && d.SpecialOrderLineNumber.Equals(specialOrderItem.LineNumber)
+                                                      && !d.InvoiceNumber.Equals(order.InvoiceNumber))
+                                              .ToList();
+
+                foreach (var line in specialLines) {
+                    _detailRepo.Delete(line);
+
+                    if (_detailRepo.Read(d => d.BranchId.Equals(line.BranchId)
+                                          && d.InvoiceNumber.Equals(line.InvoiceNumber))
+                                  .Any() == false) {
+                        _headerRepo.Delete(h => h.BranchId.Equals(line.BranchId)
+                                             && h.InvoiceNumber.Equals(line.InvoiceNumber));
+                    }
+                }
+            }
+
+            _unitOfWork.SaveChanges();
+        }
+
+        //private void RemoveSpecialOrderItemsFromPurchaseOrder(EF.OrderHistoryHeader order) {
+        //    var po = _poRepo.ReadPurchaseOrderByTrackingNumber(order.OriginalControlNumber);
+
+        //    _poRepo.
+        //}
+
+        private void RemoveEmptyPurchaseOrder() { }
 
         public void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder) {
             Create(historyFile, isSpecialOrder);
