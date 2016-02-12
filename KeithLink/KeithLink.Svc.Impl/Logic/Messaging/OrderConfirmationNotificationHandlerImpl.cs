@@ -210,12 +210,19 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 CustomerName = customer.CustomerName,
                 InvoiceNumber = invoiceNumber
             });
+            StringBuilder sbShipDate = new StringBuilder();
+            if ((notification != null) && 
+                (notification.OrderChange != null) && 
+                (notification.OrderChange.ShipDate != null) &&
+                (notification.OrderChange.ShipDate != DateTime.MinValue))
+                sbShipDate.Append(notification.OrderChange.ShipDate.ToShortDateString());
+            else sbShipDate.Append("Undetermined");
             message.MessageBody = template.Body.Inject(new
             {
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName,
                 InvoiceNumber = invoiceNumber,
-                ShipDate = notification.OrderChange.ShipDate.ToShortDateString(),
+                ShipDate = sbShipDate.ToString(),
                 Count = notification.OrderChange.Items.Count,
                 Total = totalAmount.ToString("f2"),
                 PurchaseOrder = notification.OrderChange.OrderName,
