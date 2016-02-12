@@ -31,3 +31,9 @@
   list-style:none;
   padding-left:0px;
 }
+
+  [data-tooltip] {
+      cursor: default;
+      content: attr(data-tooltip);
+      white-space: pre-wrap;
+  }
