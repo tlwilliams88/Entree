@@ -186,9 +186,12 @@ angular.module('bekApp')
     function invalidItemCheck(items) {
       var invalidItemFound = false;
       items.forEach(function(item){
-        if (!item.extPrice && !(item.extPrice > 0)){
+        if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && !(item.status == 'Out of Stock')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
+        } else if(item.isMandatory && item.quantity == 0 && $scope.isChangeOrder){
+          invalidItemFound = true;
+          $scope.displayMessage('error', 'Please enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
         }
       })
       return invalidItemFound;
