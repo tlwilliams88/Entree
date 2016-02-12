@@ -5,6 +5,10 @@ angular.module('bekApp')
   function ($scope, $state, $timeout, $modal, CartService, OrderService, PagingModel) {
  
   var currentCustomer = $scope.selectedUserContext.customer;
+
+  CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
  
   /******
   CARTS
@@ -15,6 +19,7 @@ angular.module('bekApp')
     CartService.getCartHeaders();
     $scope.loadingCarts = false;
     $scope.carts = CartService.cartHeaders;
+    $scope.cartHeaders = cartHeaders;
   });
  
   $scope.cartGuids = [];

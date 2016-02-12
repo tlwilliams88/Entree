@@ -105,6 +105,8 @@
               Product Catalog
             </li>
           </button>
+          </div>
+          <div>
           <li
               ng-if="selectedUserContext.customer.canViewUNFI"
               ng-class="{'is-selected': $state.includes('menu.catalog') && ($state.params.catalogType == 'UNFI' || $state.params.catalogType == 'E&S')}"
@@ -121,6 +123,7 @@
             <ul ng-show="specialCatalogOpen">
                 <button 
                     class="btn-no-style sub-btn"
+                    ng-click="toggleSidebarMenu()";
                     type="button"
                     ui-sref="menu.catalog.home({catalogType: 'UNFI'})"
                     ng-class="{'is-sub-selected': $state.includes('menu.catalog') && $state.params.catalogType == 'UNFI'}">
@@ -135,6 +138,8 @@
                 </button> -->
             </ul>
           </li>
+          </div>
+          <div ng-click="isSidebarOpen = false">
           <a
             ng-if="::userProfile.ispowermenucustomer"
             ng-href="{{userProfile.powermenuloginurl}}"
@@ -360,7 +365,7 @@
               <span class="icon-bell"></span>
               <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
-            <div class="person-info user-info" ng-mouseenter="displayUserMenu = true" ng-mouseleave="displayUserMenu = false">
+            <div class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
               <div class="person-info__section person-info__details">
                 <span class="user-info__name">{{userProfile.displayname}}</span>
                 <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
