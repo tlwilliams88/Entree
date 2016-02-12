@@ -132,6 +132,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     tempDetail.BranchId = header.BranchId;
                     tempDetail.InvoiceNumber = header.InvoiceNumber;
 
+                    if (isSpecialOrder)
+                        tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE;
+
                     header.OrderDetails.Add(tempDetail);
                 }
                 else
@@ -140,6 +143,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                     detail.BranchId = header.BranchId;
                     detail.InvoiceNumber = header.InvoiceNumber;
+                    if (isSpecialOrder)
+                        detail.ItemStatus = KeithLink.Svc.Core.Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE;
                 }
             }
 
