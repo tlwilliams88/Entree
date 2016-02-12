@@ -220,6 +220,30 @@ angular.module('bekApp')
       $scope.breadcrumbs = breadcrumbs;
       $scope.filterCount = filterCount;
     }
+      
+    $scope.itemNumberDesc = false;
+    $scope.UNFISortByItemNumber= function(ascendingDate) {
+      $scope.sortField = 'itemnumber'
+      
+      if($state.params.catalogType != 'BEK'){
+        $scope.products = $scope.products.sort(function(obj1, obj2){
+          var sorterval1 = parseInt(obj1.itemnumber);
+          var sorterval2 = parseInt(obj2.itemnumber);
+
+          $scope.itemNumberDesc = !ascendingDate;  
+
+          if(ascendingDate){      
+            return sorterval1 - sorterval2;
+          }
+          else{
+            return sorterval2 - sorterval1;
+          }   
+        });
+      }
+      else{
+        $scope.sortTable('itemnumber');
+      }
+    };
 
     /*************
     LOAD PRODUCT DATA
@@ -234,6 +258,9 @@ angular.module('bekApp')
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
       // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
+      if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
+        $scope.sortField  = '';
+      }
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
       return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
     }
@@ -366,9 +393,13 @@ angular.module('bekApp')
       if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
         return;
       }
-
+      var sortfieldholder = $scope.sortField;
       $scope.itemIndex += $scope.itemsPerPage;
-      loadProducts(true);
+      loadProducts(true).then(function(){
+        if(sortfieldholder === 'itemnumber' && $state.params.catalogType != 'BEK'){
+          $scope.UNFISortByItemNumber(!$scope.itemNumberDesc);
+        }
+      });      
     };
 
     $scope.toggleSelection = function(facetList, selectedFacet) {
