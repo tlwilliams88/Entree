@@ -224,7 +224,6 @@ angular.module('bekApp')
 
   $scope.pagingPageSize = LocalStorage.getPageSize();
   $scope.pageChanged = function(page, visited) {
-    console.log('pageChanged');
       $scope.currentPage = page.currentPage
       $scope.startingPoint = ((page.currentPage - 1)*parseInt($scope.pagingPageSize));
       $scope.endPoint = $scope.startingPoint + parseInt($scope.pagingPageSize);
@@ -283,7 +282,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.addCartWatches();
     }
     function setSelectedList(list) {
-      console.log('setSelectedList');
       $scope.selectedList = list;
       $scope.startingPoint = 0;
       $scope.visitedPages = [];
@@ -309,7 +307,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.addItemWatches($scope.startingPoint, $scope.endPoint);
     }
     function appendListItems(list) {
-      console.log('appendListItems');
       $stateParams.listItems = $scope.selectedList.items;
       var originalItemCount = $scope.selectedList.items.length;
       var entireListReturned = (list.items.length === $scope.selectedList.itemCount) ? true : false;
