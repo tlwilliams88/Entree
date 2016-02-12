@@ -20,7 +20,6 @@ angular.module('bekApp')
     ) {
 
   $scope.$state = $state;
-  $scope.isMobileApp = ENV.mobileApp;
   $scope.mandatoryMessages = NotificationService.mandatoryMessages;
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
@@ -43,6 +42,8 @@ angular.module('bekApp')
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
 
+  $scope.VersionNum = '1.5.0';
+ 
   if (AccessService.isOrderEntryCustomer()) {
 
     $scope.cartHeaders = CartService.cartHeaders;
