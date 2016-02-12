@@ -256,7 +256,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             StringBuilder itemOrderInfo = new StringBuilder();
             StringBuilder itemOrderInfoOOS = new StringBuilder();
             decimal totalAmount = 0;
-            ProductsReturn products = _catRepo.GetProductsByIds(customer.CustomerBranch, notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
+            ProductsReturn products = _catRepo.GetProductsByIds(notification.OrderChange.Items.Select(i => i.ItemCatalog).FirstOrDefault(), notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
             foreach (var line in notification.OrderChange.Items)
             {
                 Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
