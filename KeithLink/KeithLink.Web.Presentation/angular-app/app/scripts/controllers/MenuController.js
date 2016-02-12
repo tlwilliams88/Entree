@@ -259,7 +259,7 @@ angular.module('bekApp')
             if ($scope.$state.params.catalogType !== 'UNFI'/* or other third parties $scope.$state.params.catalogType !== 'B&E'*/) {
                 $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
             } else {
-                $scope.specialCatalogOpen = true;
+                $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
             }
         } else {
             $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
@@ -268,7 +268,9 @@ angular.module('bekApp')
   };
   // $scope.toggleSpecialCatalogSubmenu(); //call to expand if it is in special catlog
 
-  //
+  $scope.toggleSidebarMenu = function() {
+          $scope.isSidebarOpen = !$scope.isSidebarOpen;
+  };
 
   /**********
   MENU BUTTON CLICK HANDLERS
