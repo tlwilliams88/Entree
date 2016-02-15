@@ -551,12 +551,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
 			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
             List<ItemHistory> itemStatistics = _itemHistoryRepository.Read( f => f.BranchId.Equals( catalogInfo.BranchId ) && f.CustomerNumber.Equals( catalogInfo.CustomerId ) ).ToList();
-			
-			Parallel.ForEach(list.Items, listItem =>
-			{
-				var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
-				if (prod != null) {
+            Parallel.ForEach(list.Items, listItem => {
+                var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
+
+                if (prod != null) {
                     listItem.IsValid = true;
                     listItem.Name = prod.Name;
                     listItem.Pack = prod.Pack;
@@ -564,7 +563,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
                     listItem.Description = prod.Description;
                     listItem.Brand = prod.BrandExtendedDescription;
-                    listItem.StorageTemp = prod.Nutritional.StorageTemp;
                     listItem.ReplacedItem = prod.ReplacedItem;
                     listItem.ReplacementItem = prod.ReplacementItem;
                     listItem.NonStock = prod.NonStock;
@@ -583,15 +581,18 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.AverageWeight = prod.AverageWeight;
                     listItem.TempZone = prod.TempZone;
                     listItem.IsSpecialtyCatalog = prod.CatalogId.StartsWith("UNFI", StringComparison.InvariantCultureIgnoreCase);
-                    listItem.Nutritional = new Nutritional() {
-                        CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
-                        GrossWeight = prod.Nutritional.GrossWeight,
-                        HandlingInstructions = prod.Nutritional.HandlingInstructions,
-                        Height = prod.Nutritional.Height,
-                        Length = prod.Nutritional.Length,
-                        Ingredients = prod.Nutritional.Ingredients,
-                        Width = prod.Nutritional.Width
-                    };
+                    if (prod.Nutritional != null) {
+                        listItem.StorageTemp = prod.Nutritional.StorageTemp;
+                        listItem.Nutritional = new Nutritional() {
+                            CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                            GrossWeight = prod.Nutritional.GrossWeight,
+                            HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                            Height = prod.Nutritional.Height,
+                            Length = prod.Nutritional.Length,
+                            Ingredients = prod.Nutritional.Ingredients,
+                            Width = prod.Nutritional.Width
+                        };
+                    }
                     listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel() {
                         CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("C")).Select(p => p.AverageUse).FirstOrDefault(),
                         PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("P")).Select(p => p.AverageUse).FirstOrDefault()
@@ -599,7 +600,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 }
 
             });
-
         }
 
         private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
