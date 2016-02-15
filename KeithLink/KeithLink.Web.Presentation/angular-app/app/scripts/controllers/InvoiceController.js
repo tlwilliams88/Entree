@@ -1,8 +1,12 @@
   'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'LocalStorage', 'CustomerService', '$state', 'PagingModel',
-    function ($scope, $filter, $modal, accounts, InvoiceService, $rootScope, LocalStorage, CustomerService, $state, PagingModel) {
+  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel',
+    function ($scope, $filter, $modal, accounts, InvoiceService, $rootScope, LocalStorage, CartService, CustomerService, $state, PagingModel) {
+
+  CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
 
   var currentUserSelectedContext = {};
   $scope.errorMessage = '';

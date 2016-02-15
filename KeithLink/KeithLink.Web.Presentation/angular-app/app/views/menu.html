@@ -365,7 +365,7 @@
               <span class="icon-bell"></span>
               <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
-            <div class="person-info user-info" ng-click="displayUserMenu = !displayUserMenu">
+            <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu">
               <div class="person-info__section person-info__details">
                 <span class="user-info__name">{{userProfile.displayname}}</span>
                 <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
