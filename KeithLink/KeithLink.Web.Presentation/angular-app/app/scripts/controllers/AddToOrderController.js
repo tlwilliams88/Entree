@@ -309,25 +309,43 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     function appendListItems(list) {
       $stateParams.listItems = $scope.selectedList.items;
       var originalItemCount = $scope.selectedList.items.length;
-      $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
-       $scope.visitedPages.push({page: $scope.currentPage, items: list.items});
-      $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
-        var sorterval1 = obj1.page;      
-        var sorterval2 = obj2.page;       
-        return sorterval1 - sorterval2;         
-      })
+      var entireListReturned = (list.items.length === $scope.selectedList.itemCount) ? true : false;
+      if(entireListReturned){       
+        $scope.visitedPages = [];
+        var continueLoop = true;
+        var numberOfPages = parseInt(list.items.length/$scope.pagingPageSize);
+        for(var i = 1; continueLoop; i++){
+          var start = (i -1) * $scope.pagingPageSize;
+           continueLoop = (start + $scope.pagingPageSize) < ($scope.selectedList.itemCount -1);
+          var end = (continueLoop) ? (start + $scope.pagingPageSize) : ($scope.selectedList.itemCount -1);      
+          $scope.visitedPages.push({page: i, items: list.items.slice(start,end)});
+        }
+      }
+      else{
+        $scope.selectedList.items = $scope.selectedList.items.concat(list.items);
+        $scope.visitedPages.push({page: $scope.currentPage, items: list.items});
+        $scope.visitedPages = $scope.visitedPages.sort(function(obj1, obj2){   
+          var sorterval1 = obj1.page;      
+          var sorterval2 = obj2.page;       
+          return sorterval1 - sorterval2;         
+        })
+      }
+      var firstItemOnCurrentpage = {};
       $scope.selectedList.items = [];
       $scope.visitedPages.forEach(function(page){
         $scope.selectedList.items = $scope.selectedList.items.concat(page.items);
-      })
-
-      $scope.selectedList.items.forEach(function(item, index){
-        if(item.listitemid === list.items[0].listitemid){
-          $scope.startingPoint = index;
-          $scope.endPoint = angular.copy(index + list.items.length);
-          $scope.setCartItemsDisplayFlag();
+        if($scope.currentPage === page.page){
+          firstItemOnCurrentpage = page.items[0];
         }
       })
+
+        $scope.selectedList.items.forEach(function(item, index){
+          if(item.listitemid === firstItemOnCurrentpage.listitemid){
+            $scope.startingPoint = index;
+            $scope.endPoint = angular.copy(index + $scope.pagingPageSize);
+            $scope.setCartItemsDisplayFlag();
+          }
+        })
 
       $scope.appendingList = true;
       $scope.appendedItems = list.items;

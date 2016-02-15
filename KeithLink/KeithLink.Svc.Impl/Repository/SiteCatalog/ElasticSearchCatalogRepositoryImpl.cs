@@ -520,6 +520,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 p.IsSpecialtyCatalog = true;
                 p.Cases = oProd._source.onhandqty.ToString();
                 p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
+                p.CasePrice = oProd._source.caseprice.ToString();
 
                     UNFI unfi = new UNFI();
 
