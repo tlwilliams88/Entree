@@ -53,12 +53,15 @@
     </form>
   </div>
 
-  	<!-- <div class="col-xs-12 col-md-12 col-lg-11"> -->
-  		<div class="row">
-  			<h2 class="col-xs-6">Item Usage</h2>
-        <span class="sub-content col-xs-6 text-right">{{itemusages.length}} results</span>
-  		</div>
-  		
+      <div class="row sub-content">
+        <div class="col-xs-7 padding-top-15">
+          {{itemusages.length}} result<span ng-if="itemusages.length !== 1">s</span>
+        </div>
+        <div class="text-green currency-value col-xs-5 text-right">
+          {{totalCost | currency}}
+        </div>
+      </div>
+
   		<table class="table table-striped-rows table-border table-item-usage-report">
   			<thead>
   				<tr fsm-sticky-header scroll-body="'.table-item-usage-report'" scroll-stop="0">
@@ -69,16 +72,19 @@
             <th class="sort-col-header" ng-click="sortTable('Name')" >
               <span>Name <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortTable('Brand')" >
-              <span>Brand <span sort-icons field="'Name'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('Brand')" >
+              <span>Brand <span sort-icons field="'Brand'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortTable('ManufacturerName')" >
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('class')" >
+              <span>Category <span sort-icons field="'class'" sortorder="sortReverse" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header hidden-mobile-visible-print" ng-click="sortTable('ManufacturerName')" >
               <span>Mfr Name <span sort-icons field="'ManufacturerName'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortTable('UPC')" >
+            <th class="sort-col-header item-usage-drop-column" ng-click="sortTable('UPC')" >
               <span>GTIN <span sort-icons field="'UPC'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
-            <th class="sort-col-header" ng-click="sortTable('VendorItemNumber')" >
+            <th class="sort-col-header item-usage-drop-column" ng-click="sortTable('VendorItemNumber')" >
               <span>Vendor Item <span sort-icons field="'VendorItemNumber'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
             <th class="hidden-mobile-visible-print">
@@ -91,15 +97,15 @@
               #
               <span>Ordered<span sort-icons field="'TotalQuantityOrdered'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('TotalQuantityShipped')">
+            <th class="sort-col-header text-center"  ng-click="sortTable('TotalQuantityShipped')">
               #
   			       <span>Shipped <span sort-icons field="'TotalQuantityShipped'" sortorder="sortReverse" sortby="sortField"></span></span>
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('AveragePrice')">
-              <span>Average Price <span sort-icons field="'AveragePrice'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th class="sort-col-header text-center"  ng-click="sortTable('AveragePrice')">
+              Average Price
             </th>
-            <th class="sort-col-header hidden-mobile-visible-print text-center"  ng-click="sortTable('TotalCost')">
-              <span>Total Cost <span sort-icons field="'TotalCost'" sortorder="sortReverse" sortby="sortField"></span></span>
+            <th class="sort-col-header text-center"  ng-click="sortTable('TotalCost')">
+              Total Cost
             </th>
             <th></th>
           </tr>
@@ -107,23 +113,25 @@
   			<tbody>
   				<tr ng-repeat-start="item in itemusages" ng-class="{ odd : $odd, even: $even }">
             <td>
-              <a ng-if="!item.catalog_id || item.catalog_id.indexOf('unfi') != 0" ng-if="item.name != 'Special Item'" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
-              <a ng-if="item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ng-if="item.name != 'Special Item'" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber, catalogType: 'UNFI' })">{{item.itemnumber}}</a>
+              <a ng-if="item.name != 'Special Item'" ui-sref="menu.catalog.products.details({ itemNumber: item.itemnumber })">{{item.itemnumber}}</a>
               <span ng-if="item.name == 'Special Item'">{{item.itemnumber}}</span>
             </td>
             <td>
               {{item.name}}
             </td>
-            <td>
+            <td class="hidden-mobile-visible-print">
               {{item.brand}}
             </td>
-            <td>
+            <td class="hidden-mobile-visible-print">
+              {{item.class}}
+            </td>
+            <td class="hidden-mobile-visible-print">
               {{item.manufacturer_name}}
             </td>
-            <td>
+            <td class="item-usage-drop-column">
               {{item.upc}}
             </td>
-            <td>
+            <td class="item-usage-drop-column">
               {{item.vendor_num}}
             </td>
             <td class="hidden-mobile-visible-print">
@@ -135,13 +143,13 @@
             <td class="text-center hidden-mobile-visible-print">
               {{item.totalquantityordered}}
             </td>
-            <td class="text-center hidden-mobile-visible-print">
+            <td class="text-center">
               {{item.totalquantityshipped}}
             </td>
-             <td class="text-center hidden-mobile-visible-print">
+             <td class="text-center">
               {{item.averageprice | currency}}
             </td>
-             <td class="text-center hidden-mobile-visible-print">
+             <td class="text-center">
               {{item.totalcost | currency}}
             </td>
             <td class="large-icon icon-col">
@@ -149,19 +157,31 @@
             </td>
           </tr>
           <tr ng-repeat-end class="mobile-details-row hidden-md hidden-lg" ng-show="showDetails" ng-class="{ odd : $odd, even: $even }">
-            <td colspan="5">
+            <td colspan="6">
               <table>
                 <colgroup>
                   <col width="25%" />
                   <col width="75%" />
                 </colgroup>
                 <tr>
-                  <td># Ordered</td>
-                  <td>{{item.totalquantityordered}}</td>
+                  <td>Brand </td>
+                  <td>{{item.brand}}</td>
                 </tr>
                 <tr>
-                  <td># Shipped</td>
-                  <td>{{item.totalquantityshipped}}</td>
+                  <td>Category </td>
+                  <td>{{item.class}}</td>
+                </tr>
+                <tr>
+                  <td>Mfr Name </td>
+                  <td>{{item.manufacturer_name}}</td>
+                </tr>
+                <tr>
+                  <td>GTIN </td>
+                  <td>{{item.upc}}</td>
+                </tr>
+                <tr>
+                  <td>Vendor Item </td>
+                  <td>{{item.vendor_num}}</td>
                 </tr>
                 <tr>
                   <td>Pack/Size</td>
@@ -170,6 +190,10 @@
                 <tr>
                   <td>Each</td>
                   <td>{{item.each}}</td>
+                </tr>  
+                <tr>
+                  <td># Ordered</td>
+                  <td>{{item.totalquantityordered}}</td>
                 </tr>
               </table>
             </td>
@@ -177,11 +201,10 @@
   			</tbody>
   			<tfoot>
   				<tr ng-show="itemusages.length === 0 && !loadingResults">
-  					<td colspan="8">No orders found.</td>
+  					<td colspan="14">No orders found.</td>
   				</tr>
   			</tfoot>
   		</table>
-
   		<div class="text-center" loading-spinner="loadingResults"></div>
   	<!-- </div> -->
   </div>

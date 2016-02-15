@@ -8,14 +8,17 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$q', '$modal', 'toaster', 'reports', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $q, $modal, toaster, reports, ProductService, PricingService, ListService, List) {
-
+  .controller('InventoryReportController', ['$scope', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'ProductService', 'PricingService', 'ListService', 'List',
+    function($scope, $q, $modal, $stateParams, $state, toaster, reports, ProductService, PricingService, ListService, List) {
+      $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
       $scope.sortDescending = false;
       $scope.confirmQuantity = ListService.confirmQuantity;
       $scope.listsLoading = true;
+      $scope.numberReportNamesToShow = 10;
+      $scope.today = moment().format('YYYY-MM-DD');
+      
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;
       }).finally(function() {
@@ -25,6 +28,57 @@ angular.module('bekApp')
       function refreshSubtotal() {
         $scope.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.report.items, 'extprice');
         return $scope.subtotal;
+      }
+
+      //Toggle scope variable to render Reports side panel when screen is resized
+      $(window).resize(function(){ 
+        $scope.$apply(function(){ 
+          $scope.renderSidePanel();
+        });
+      });
+
+      $scope.renderSidePanel = function(){
+        $scope.resized = window.innerWidth > 991;
+      }
+      $scope.renderSidePanel();
+
+      function init() {
+        $scope.report = {
+          items: []
+        };
+        if(reports && reports.length > 0){
+          var lastIndex = reports.length - 1;
+          if($stateParams.listid){
+            if($stateParams.listid === 'newReport'){ 
+            //Call save function to create new report             
+              $scope.saveReport($scope.report);
+              $scope.showMoreReportNames = ((lastIndex + 1) > $scope.numberReportNamesToShow) ? true : false;
+            }
+            else{
+              var found = false;
+              //Find the requested report
+              reports.forEach(function(report, index){
+                if(report.listid == $stateParams.listid || (index === lastIndex) && !found){
+                  found = true;
+                  $scope.report = report;
+                  $scope.showMoreReportNames = ((index + 1) > $scope.numberReportNamesToShow) ? true : false;           
+                }
+              })
+            }
+          }
+          else{
+            //Find last created report if none requested and not creating new report            
+            $scope.report = reports[lastIndex];
+            $scope.showMoreReportNames = (lastIndex > $scope.numberReportNamesToShow) ? true : false;
+          }
+        }
+        if($scope.report.items.length > 0){
+          $scope.report.items.forEach(function(item,index){
+            item.position = index + 1;
+            watchersQuantity.push($scope.$watch('report.items[' + index + '].quantity', onItemQuantityChanged));
+            watchersEach.push($scope.$watch('report.items[' + index + '].each', onItemQuantityChanged));
+          })
+        }
       }
 
       function onItemQuantityChanged(newVal, oldVal) {
@@ -45,6 +99,7 @@ angular.module('bekApp')
       var watchersEach = [];
 
       var deletedItems = [];
+
       $scope.removeRow = function(item) {
         $scope.inventoryForm.$setDirty();
         
@@ -63,9 +118,11 @@ angular.module('bekApp')
 
       $scope.addRow = function(item, useListItemId) {
         var reportItem = {
-          itemid: item.itemnumber,
+          itemnumber: item.itemnumber,
+          position: $scope.report.items.length + 1,
           name: item.name,
           packsize: item.packsize,
+          pack: item.pack,
           label: item.label,
           quantity: item.quantity,
           each: item.each,
@@ -75,13 +132,13 @@ angular.module('bekApp')
           hasPackagePrice: PricingService.hasPackagePrice(item),
           hasCasePrice: PricingService.hasCasePrice(item),
           average_weight: item.average_weight,
-          pack: item.pack
-        };
+          class: item.class,
+          brand_extended_description: item.brand_extended_description
+        };        
         if (useListItemId === true) {
           reportItem.listitemid = item.listitemid;
           reportItem.position = item.position;
-        }
-
+        }       
         $scope.report.items.push(reportItem);
 
         var lastIndex = $scope.report.items.length - 1;
@@ -111,8 +168,10 @@ angular.module('bekApp')
         ListService.getListWithItems(listId).then(function(listFound) {
           $scope.successMessage = 'Added ' + listFound.items.length + ' items from ' + listFound.name + ' to report.'
           $scope.inventoryForm.$setDirty();
-          listFound.items.forEach($scope.addRow);
+          listFound.items.forEach($scope.addRow);          
+           $scope.sortTable('position', false);
         });
+       
       };
 
       $scope.sortTable = function(field, sortDescending) {
@@ -122,32 +181,83 @@ angular.module('bekApp')
 
       $scope.saveReport = function(scopeReport) {
         var report = angular.copy(scopeReport);
-        report.name = moment().format('YYYY-MM-DD');
+        var sameDayReports = [];
+        if(!report.name){         
+          report.name = $scope.today;
+        }
+        
+        if($scope.reports.length > 0 && report.name.length === 10){   
+          $scope.reports.forEach(function(existingReport){
+
+            if(report.name === existingReport.name.slice(0,10)){             
+              sameDayReports.push(existingReport);
+            }
+          })
+
+          var highestDuplicate = 0;
+          if(sameDayReports.length > 0){
+            sameDayReports.forEach(function(sameDayReport){
+              var openParenthIndex = sameDayReport.name.indexOf('(')
+              if(openParenthIndex > -1){
+                var duplicateCount = parseInt(sameDayReport.name.slice(openParenthIndex + 1, sameDayReport.name.indexOf(')')));
+                if(duplicateCount > highestDuplicate){
+                  highestDuplicate = duplicateCount;
+                }
+              }
+            })
+            highestDuplicate++;
+            report.name = report.name.concat(' ('+(highestDuplicate)+')');
+          }
+        }
+
         report.message = 'Saving report...';
-
-        report.items.forEach(function(item) {
-          item.itemnumber = item.itemid;
-          delete item.itemid;
-        });
-
         report.items = report.items.concat(deletedItems);
 
         var promise;
+        var creatingList = false;
         if (report.listid) {
           promise = List.update({}, report).$promise;
         } else {
           promise = List.save({ type: 'InventoryValuation' }, report).$promise;
+          creatingList = true;
         }
 
         promise.then(function(response) {
-          $scope.report.listid = response.listitemid;
+        
+          $scope.successMessage = '';
+          $scope.errorMessage = '';
           $scope.inventoryForm.$setPristine();
-          deletedItems = [];
+
+          if(creatingList){
+            $scope.goToReport(response.listitemid);
+          }
           toaster.pop('success', 'Successfully saved report.');
         }, function() {
           toaster.pop('error', 'Error saving report.');
         });
       };
+
+      $scope.deleteReport = function(listId){
+          List.delete({
+            listId: listId
+          }).$promise.then(function() {
+            $scope.reports.forEach(function(report, index){
+              if(report.listid === listId){                
+                $scope.reports.splice(index,1);
+              }
+            })
+            var rep = ($scope.reports.length > 0) ? $scope.reports[$scope.reports.length - 1].listid : 'newReport';
+            $state.go('menu.inventoryreport', {listid: rep});
+          });
+      }
+
+      $scope.goToReport = function(listId){
+        $state.go('menu.inventoryreport', {listid: listId});
+      }
+
+      $scope.createReport = function(){        
+        $state.go('menu.inventoryreport', {listid: 'newReport'});
+      }
 
       $scope.clearReport = function(listId) {
         // clear item watches
@@ -157,23 +267,16 @@ angular.module('bekApp')
         watchersEach.forEach(function(watch) {
           watch();
         });
-
+        $scope.inventoryForm.$setDirty();
         $scope.successMessage = '';
         $scope.errorMessage = '';
-        $scope.subtotal = 0;
-        if(!listId){
-            $scope.report = {};
-            $scope.report.items = [];
-        }
-        else{
-          List.delete({
-            listId: listId
-          }).$promise.then(function() {
-            $scope.report = {};
-            $scope.report.items = [];
-          });
-        }
-
+        $scope.subtotal = 0;      
+        //$scope.report = {};
+        $scope.report.items.forEach(function(item){
+          item.isdeleted = true;
+        })
+        deletedItems = $scope.report.items;
+        $scope.report.items = [];
       };
 
       $scope.openExportModal = function() {
@@ -188,15 +291,6 @@ angular.module('bekApp')
         });
       };
 
-      $scope.report = {
-        items: []
-      };
-      if (reports && reports.length > 0) {
-        $scope.report.listid = reports[0].listid;
-        reports[0].items.forEach(function(item) {
-          $scope.addRow(item, true);
-        });
-      }
-
+      init();
     }
   ]);
