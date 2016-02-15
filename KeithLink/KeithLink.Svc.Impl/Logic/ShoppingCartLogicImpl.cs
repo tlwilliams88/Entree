@@ -5,7 +5,9 @@ using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
 
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.Orders;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
@@ -486,6 +488,11 @@ namespace KeithLink.Svc.Impl.Logic
                 foreach(var toDelete in itemsToDelete) {
                     DeleteItem(user, catalogInfo, cartId, toDelete.ToGuid());
                 }
+
+                if (isSpecialOrder)
+                {
+                    PublishSpecialOrderNotification(newPurchaseOrder);
+                }
             }
 
             if (returnOrders.OrdersReturned.Count > 1) {
@@ -507,6 +514,41 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return returnOrders; //Return actual order number
 		}
+
+        private void PublishSpecialOrderNotification(CS.PurchaseOrder po)
+        {
+            Order order = po.ToOrder();
+            Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
+            orderChange.OrderName = (string)po.Properties["DisplayName"];
+            orderChange.OriginalStatus = "Requested";
+            orderChange.CurrentStatus = "Requested";
+            orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.SpecialInstructions = "";
+            orderChange.ShipDate = DateTime.MinValue;
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+            {
+                var item = (CS.LineItem)lineItem.Target;
+                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange()
+                {
+                    ItemNumber = item.ProductId,
+                    ItemCatalog = item.CatalogName,
+                    OriginalStatus = "Requested",
+                    QuantityOrdered = (int)item.Quantity,
+                    QuantityShipped = 0,
+                    ItemPrice = item.PlacedPrice.Value
+                });
+            } 
+            Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+            orderConfNotification.OrderChange = orderChange;
+            orderConfNotification.CustomerNumber = (string)po.Properties["CustomerId"];
+            orderConfNotification.BranchId = (string)po.Properties["BranchId"];
+            orderConfNotification.InvoiceNumber = (string)po.Properties["InvoiceNumber"];
+
+            queueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
+                Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+                Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+        }
 
         public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId) {
             //var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
