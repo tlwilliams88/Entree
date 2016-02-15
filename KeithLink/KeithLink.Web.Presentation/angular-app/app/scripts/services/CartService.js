@@ -44,11 +44,14 @@ angular.module('bekApp')
         }).$promise.then(function(cart) {
             Service.cartContainsSpecialItems = false;
             var i;
-            for (i = 0; i < cart.items.length; i++) { 
+            if(cart.items && cart.items.length > 0){
+              for (i = 0; i < cart.items.length; i++) { 
                 if (cart.items[i].is_specialty_catalog) {
-                   Service.cartContainsSpecialItems = true; 
+                  Service.cartContainsSpecialItems = true; 
                 }
+              }
             }
+
           PricingService.updateCaculatedFields(cart.items);
           return cart;
         });
