@@ -102,7 +102,7 @@ angular.module('bekApp')
 
       $scope.removeRow = function(item) {
         $scope.inventoryForm.$setDirty();
-        
+        item.quantity = 0;
         var idx = $scope.report.items.indexOf(item);
         var quantityWatch = watchersQuantity.splice(watchersQuantity.length - 1, 1);
         quantityWatch[0]();
