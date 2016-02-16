@@ -188,6 +188,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
                     if (po != null) {
                         returnOrder.Status = po.Status;
+                        returnOrder.CommerceId = Guid.Parse(po.Id);
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
                         // needed to reconnect parent orders to special orders
