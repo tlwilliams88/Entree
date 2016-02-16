@@ -43,7 +43,7 @@
           <div class="order-item-title">Total Cost</div>
           <div class="order-item-value-1">{{UNFIOrder.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
-          <div class="order-item-value-2">{{UNFIOrder.itemcount}}</div>
+          <div class="order-item-value-2"> {{UNFIOrder.itemcount}} Item<span ng-if="UNFIOrder.itemcount !== 1">s</span> / {{UNFIOrder.piececount}} Piece<span ng-if="UNFIOrder.piececount !== 1">s</span></div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Invoice Status</div>
@@ -276,7 +276,7 @@
           <div class="order-item-title">Total Cost</div>
           <div class="order-item-value-1">{{order.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
-          <div class="order-item-value-2">{{order.itemcount}}</div>
+          <div class="order-item-value-2"> {{order.itemcount}} Item<span ng-if="order.itemcount !== 1">s</span> / {{order.piececount}} Piece<span ng-if="order.piececount !== 1">s</span></div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Invoice Status</div>
