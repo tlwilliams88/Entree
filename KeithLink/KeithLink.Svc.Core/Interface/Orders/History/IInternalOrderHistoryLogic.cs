@@ -16,7 +16,9 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
         OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
-        void SaveOrder(OrderHistoryFile historyFile);
+        void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder);
+
+        void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
 
 		void ListenForQueueMessages();
 

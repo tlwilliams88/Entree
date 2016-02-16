@@ -56,8 +56,9 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             serviceClient.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
 
-        public void SaveOrderHistory(OrderHistoryFile historyFile) {
-            serviceClient.SaveOrderHistory(historyFile);
+        public void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder)
+        {
+            serviceClient.SaveOrderHistory(historyFile, isSpecialOrder);
         }
 
         public List<OrderHeader> GetSubmittedUnconfirmedOrders()
@@ -69,12 +70,16 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
         {
             return serviceClient.GetUserIdForControlNumber(controlNumber);
         }
-        #endregion
-
 
 		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
 		{
 			return serviceClient.GetPagedOrders(userId, customerInfo, paging);
 		}
-	}
+
+        public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
+            serviceClient.UpdateRelatedControlNumber(childOrderNumber, parentOrderNumber);
+        }
+
+        #endregion
+    }
 }

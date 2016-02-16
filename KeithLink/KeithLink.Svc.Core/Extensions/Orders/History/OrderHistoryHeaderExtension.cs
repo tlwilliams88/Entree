@@ -96,6 +96,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.ErrorStatus = value.ErrorStatus;
             entity.RouteNumber = value.RouteNumber;
             entity.StopNumber = value.StopNumber;
+            //entity.IsSpecialOrder = 
 
             if (string.IsNullOrEmpty(entity.ControlNumber)) {
                 entity.ControlNumber = value.ControlNumber.Trim();
@@ -148,7 +149,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 		{
 			Order retVal = new Order();
 
-			retVal.OrderNumber = value.InvoiceNumber;
+			//retVal.OrderNumber = value.InvoiceNumber;
+            retVal.OrderNumber = value.ControlNumber;
 
 			switch (value.OrderStatus.Trim())
 			{
@@ -178,6 +180,8 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.CommerceId = Guid.Empty;
             FillEtaInformation(value, retVal);
 			retVal.PONumber = value.PONumber;
+            retVal.IsSpecialOrder = value.IsSpecialOrder;
+            
 
             retVal.OrderSystem = new OrderSource().Parse(value.OrderSystem).ToString(); 
 

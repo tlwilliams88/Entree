@@ -5,7 +5,9 @@ using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Enumerations.List;
 
 using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Extensions.Orders;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
 using KeithLink.Svc.Core.Extensions.ShoppingCart;
 
@@ -116,6 +118,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.CustomerId = catalogInfo.CustomerId;
 			newBasket.Shared = true;
 			newBasket.TempSubTotal = cart.SubTotal;
+            newBasket.PONumber = cart.PONumber;
 
 			newBasket.RequestedShipDate = cart.RequestedShipDate;
             var cartBranchId = catalogInfo.BranchId;
@@ -152,7 +155,8 @@ namespace KeithLink.Svc.Impl.Logic
                     {
                         ItemNumber = item.ItemNumber,
                         Each = item.Each,
-                        Quantity = item.Quantity
+                        Quantity = item.Quantity,
+                        CatalogId = catalogInfo.BranchId
                     }
                     );
                 }
@@ -458,12 +462,17 @@ namespace KeithLink.Svc.Impl.Logic
                 }
                 
 
-                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo)); // save to order history
-
                 var type = catalogLogic.GetCatalogTypeFromCatalogId(catalogId).ToUpper().Substring(0, 3);
 
-                if (catalogLogic.IsSpecialtyCatalog(null, catalogId))
+
+                bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
+
+                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
+
+                if (isSpecialOrder)
                 {
+                    client.UpdatePurchaseOrderStatus(customer.CustomerId, newPurchaseOrder.Id.ToGuid(), "Requested");
+
                     orderQueueLogic.WriteFileToQueue(user.EmailAddress, orderNumber, newPurchaseOrder, OrderType.SpecialOrder, type, customer.DsrNumber, customer.Address.StreetAddress, customer.Address.City, customer.Address.RegionCode, customer.Address.PostalCode);
                 }
                 else
@@ -473,11 +482,26 @@ namespace KeithLink.Svc.Impl.Logic
 
                 auditLogRepository.WriteToAuditLog(Common.Core.Enumerations.AuditType.OrderSubmited, user.EmailAddress, String.Format("Order: {0}, Customer: {1}", orderNumber, customer.CustomerNumber));
 
-                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type });
+                returnOrders.OrdersReturned.Add(new NewOrderReturn() { OrderNumber = orderNumber, CatalogType = type, IsSpecialOrder = isSpecialOrder });
 
                 var itemsToDelete = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => l.Id).ToList();
                 foreach(var toDelete in itemsToDelete) {
                     DeleteItem(user, catalogInfo, cartId, toDelete.ToGuid());
+                }
+
+                if (isSpecialOrder)
+                {
+                    PublishSpecialOrderNotification(newPurchaseOrder);
+                }
+            }
+
+            if (returnOrders.OrdersReturned.Count > 1) {
+                string parentOrderId = returnOrders.OrdersReturned.Where(o => o.IsSpecialOrder == false).Select(ro => ro.OrderNumber).FirstOrDefault();
+
+                List<string> childOrderIds = returnOrders.OrdersReturned.Where(o => o.IsSpecialOrder).Select(ro => ro.OrderNumber).ToList();
+
+                foreach (string orderId in childOrderIds) {
+                    orderServiceRepository.UpdateRelatedOrderNumber(orderId, parentOrderId);
                 }
             }
 
@@ -490,6 +514,41 @@ namespace KeithLink.Svc.Impl.Logic
 
 			return returnOrders; //Return actual order number
 		}
+
+        private void PublishSpecialOrderNotification(CS.PurchaseOrder po)
+        {
+            Order order = po.ToOrder();
+            Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
+            orderChange.OrderName = (string)po.Properties["DisplayName"];
+            orderChange.OriginalStatus = "Requested";
+            orderChange.CurrentStatus = "Requested";
+            orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
+            orderChange.SpecialInstructions = "";
+            orderChange.ShipDate = DateTime.MinValue;
+            foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+            {
+                var item = (CS.LineItem)lineItem.Target;
+                orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange()
+                {
+                    ItemNumber = item.ProductId,
+                    ItemCatalog = item.CatalogName,
+                    OriginalStatus = "Requested",
+                    QuantityOrdered = (int)item.Quantity,
+                    QuantityShipped = 0,
+                    ItemPrice = item.PlacedPrice.Value
+                });
+            } 
+            Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
+            orderConfNotification.OrderChange = orderChange;
+            orderConfNotification.CustomerNumber = (string)po.Properties["CustomerId"];
+            orderConfNotification.BranchId = (string)po.Properties["BranchId"];
+            orderConfNotification.InvoiceNumber = (string)po.Properties["InvoiceNumber"];
+
+            queueRepository.PublishToQueue(orderConfNotification.ToJson(), Configuration.RabbitMQNotificationServer,
+                Configuration.RabbitMQNotificationUserNamePublisher, Configuration.RabbitMQNotificationUserPasswordPublisher,
+                Configuration.RabbitMQVHostNotification, Configuration.RabbitMQExchangeNotification);
+        }
 
         public void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId) {
             //var cart = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);

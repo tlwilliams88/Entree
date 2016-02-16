@@ -1,12 +1,18 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('CustomerGroupsController', ['$scope', '$state', 'CustomerGroupService', 'PagingModel',
+  .controller('CustomerGroupsController', ['$scope', '$state', 'CustomerGroupService', 'PagingModel', 'CartService',
     function (
       $scope, // angular
       $state,
-      CustomerGroupService, PagingModel // custom bek service
+      CustomerGroupService, 
+      PagingModel, // custom bek service
+      CartService
     ) {
+
+          CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
 
   $scope.searchOptions = [{
     text: 'Customer Group Name',

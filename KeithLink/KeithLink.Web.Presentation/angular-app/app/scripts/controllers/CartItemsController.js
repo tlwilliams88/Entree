@@ -85,8 +85,14 @@ angular.module('bekApp')
     });
 
     // set default selected critical items list
+    // add property isMandatory for carts items that are on the mandatory list
     if ($scope.mandatoryList) {
       $scope.mandatoryList.active = true;
+      $scope.currentCart.items.forEach(function(item){
+        if($filter('filter')($scope.mandatoryList.items, {itemnumber: item.itemnumber}).length>0){
+          item.isMandatory = true;
+        }
+      })
     } else if ($scope.reminderList) {
       $scope.reminderList.active = true;
     } else {
@@ -129,10 +135,10 @@ angular.module('bekApp')
     };
 
     $scope.validateShipDate = function(shipDate){
-      var cutoffDate = moment(shipDate.cutoffdatetime);
-      var now = moment();
+      var cutoffDate = moment(shipDate.cutoffdatetime).format();
+      var now = moment().tz("America/Chicago").format();
       $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
-      if($scope.invalidShipDate){
+      if($scope.invalidSelectedDate){
         CartService.getShipDates().then(function(result){
           $scope.shipDates = result;
         })
@@ -180,9 +186,12 @@ angular.module('bekApp')
     function invalidItemCheck(items) {
       var invalidItemFound = false;
       items.forEach(function(item){
-        if (!item.extPrice && !(item.extPrice > 0)){
+        if (!item.extPrice && !(item.extPrice > 0) && !item.isMandatory && !(item.status == 'Out of Stock')){
           invalidItemFound = true;
           $scope.displayMessage('error', 'Please delete or enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
+        } else if(item.isMandatory && item.quantity == 0 && $scope.isChangeOrder){
+          invalidItemFound = true;
+          $scope.displayMessage('error', 'Please enter a quantity for item ' + item.itemnumber +' before saving or submitting the cart.');
         }
       })
       return invalidItemFound;
@@ -251,7 +260,7 @@ angular.module('bekApp')
 
             if(orderNumber == -1 ) {
                 //no BEK items bought
-                if (data.ordersReturned.length && data.ordersReturned.length != data.numberOfOrders) {
+                if (data.ordersReturned && data.ordersReturned.length && data.ordersReturned.length != data.numberOfOrders) {
                     status = 'error';
                     message = 'One or more catalog orders failed. Please contact your DSR representative for assistance';
                 } else {

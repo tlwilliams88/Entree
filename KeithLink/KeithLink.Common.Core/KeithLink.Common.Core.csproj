@@ -115,6 +115,7 @@
     <Compile Include="Helpers\EnumUtil.cs" />
     <Compile Include="Logging\IEventLogRepository.cs" />
     <Compile Include="Parsing\StringHelpers.cs" />
+    <Compile Include="Performance\PerformanceLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueParsingUtil.cs" />
   </ItemGroup>

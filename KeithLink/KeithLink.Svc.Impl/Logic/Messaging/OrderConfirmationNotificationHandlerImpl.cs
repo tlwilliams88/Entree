@@ -210,12 +210,19 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 CustomerName = customer.CustomerName,
                 InvoiceNumber = invoiceNumber
             });
+            StringBuilder sbShipDate = new StringBuilder();
+            if ((notification != null) && 
+                (notification.OrderChange != null) && 
+                (notification.OrderChange.ShipDate != null) &&
+                (notification.OrderChange.ShipDate != DateTime.MinValue))
+                sbShipDate.Append(notification.OrderChange.ShipDate.ToShortDateString());
+            else sbShipDate.Append("Undetermined");
             message.MessageBody = template.Body.Inject(new
             {
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName,
                 InvoiceNumber = invoiceNumber,
-                ShipDate = notification.OrderChange.ShipDate.ToShortDateString(),
+                ShipDate = sbShipDate.ToString(),
                 Count = notification.OrderChange.Items.Count,
                 Total = totalAmount.ToString("f2"),
                 PurchaseOrder = notification.OrderChange.OrderName,
@@ -256,7 +263,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             StringBuilder itemOrderInfo = new StringBuilder();
             StringBuilder itemOrderInfoOOS = new StringBuilder();
             decimal totalAmount = 0;
-            ProductsReturn products = _catRepo.GetProductsByIds(customer.CustomerBranch, notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
+            ProductsReturn products = _catRepo.GetProductsByIds(notification.OrderChange.Items.Select(i => i.ItemCatalog).FirstOrDefault(), notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
             foreach (var line in notification.OrderChange.Items)
             {
                 Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
@@ -308,19 +315,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private string BuildPriceInfo(OrderLineChange line, Product currentProduct)
         {
-            string priceInfo = line.ItemPrice.ToString("f2");
+            StringBuilder priceInfo = new StringBuilder();
+            if(line.ItemPrice != null) priceInfo.Append(line.ItemPrice.ToString("f2"));
+            else priceInfo.Append("?");
             if (currentProduct.CatchWeight)
             {
-                priceInfo += " lb per";
-                if (line.Each) priceInfo += " package";
-                else priceInfo += " case";
+                priceInfo.Append(" lb per");
+                if (line.Each) priceInfo.Append(" package");
+                else priceInfo.Append(" case");
             }
             else
             {
-                if (line.Each) priceInfo += " per package";
-                else priceInfo += " per case";
+                if (line.Each) priceInfo.Append(" per package");
+                else priceInfo.Append(" per case");
             }
-            return priceInfo;
+            return priceInfo.ToString();
         }
 
         private Message MakeRejectedMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)

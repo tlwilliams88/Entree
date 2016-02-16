@@ -8,6 +8,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Service", "Service", "{14C0B446-B30D-4C46-93A4-025400F4DFDD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.Impl", "KeithLink.Svc.Impl\KeithLink.Svc.Impl.csproj", "{878AA2E7-769B-409C-8285-3A7FACA750F9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CE886F8C-097C-4C60-BFCF-6B3B9EE7A444} = {CE886F8C-097C-4C60-BFCF-6B3B9EE7A444}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeithLink.Svc.Core", "KeithLink.Svc.Core\KeithLink.Svc.Core.csproj", "{E272DA17-C7F8-4F35-A4B0-E97D03D35754}"
 EndProject
@@ -65,6 +68,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SQL", "SQL", "{1FFC01AE-BA8
 		KeithLink.ETL.Setup\SQL\ETL_AlterProcedure_ProcessWorksheetList.sql = KeithLink.ETL.Setup\SQL\ETL_AlterProcedure_ProcessWorksheetList.sql
 		KeithLink.ETL.Setup\SQL\ETL_CleanupScript_BEK_Commerce_AppData.sql = KeithLink.ETL.Setup\SQL\ETL_CleanupScript_BEK_Commerce_AppData.sql
 		KeithLink.ETL.Setup\SQL\v1.4.1.sql = KeithLink.ETL.Setup\SQL\v1.4.1.sql
+		v1.5.0.sql = v1.5.0.sql
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{C1090939-215D-4B9B-AABD-C16C6DC25D3B}"

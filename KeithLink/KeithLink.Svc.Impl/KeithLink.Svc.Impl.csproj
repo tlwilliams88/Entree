@@ -630,6 +630,14 @@
     <Compile Include="Repository\EF\Migrations\201512030739583_2015-12-03_gsSyncMigrations.Designer.cs">
       <DependentUpon>201512030739583_2015-12-03_gsSyncMigrations.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201602042227402_Add Special Order Flag to Order History Header.cs" />
+    <Compile Include="Repository\EF\Migrations\201602042227402_Add Special Order Flag to Order History Header.Designer.cs">
+      <DependentUpon>201602042227402_Add Special Order Flag to Order History Header.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Migrations\201602052337298_Add RelatedControlNumber to Order History Header.cs" />
+    <Compile Include="Repository\EF\Migrations\201602052337298_Add RelatedControlNumber to Order History Header.Designer.cs">
+      <DependentUpon>201602052337298_Add RelatedControlNumber to Order History Header.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -864,23 +872,23 @@
     <None Include="Models\Orders\Schemas\ShippingDateResponse.xss">
       <DependentUpon>ShippingDateResponse.xsd</DependentUpon>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\BEKFoundationService.wsdl" />
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\BEKFoundationService1.wsdl" />
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService6.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService1.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService61.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService2.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService62.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService3.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService63.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService4.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService64.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService5.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService65.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.AuthorizeRequestResponse.datasource">
@@ -954,9 +962,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.FoundationService\configuration91.svcinfo" />
@@ -1256,8 +1261,15 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201512030739583_2015-12-03_gsSyncMigrations.resx">
       <DependentUpon>201512030739583_2015-12-03_gsSyncMigrations.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201602042227402_Add Special Order Flag to Order History Header.resx">
+      <DependentUpon>201602042227402_Add Special Order Flag to Order History Header.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201602052337298_Add RelatedControlNumber to Order History Header.resx">
+      <DependentUpon>201602052337298_Add RelatedControlNumber to Order History Header.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService1.disco" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

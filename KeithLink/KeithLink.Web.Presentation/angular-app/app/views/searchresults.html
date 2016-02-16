@@ -245,7 +245,7 @@ Item Specifications<i class="pull-right" ng-class="{'icon-arrow-up6': status.ope
     <thead>
       <tr fsm-sticky-header scroll-body="'.table-products'" scroll-stop="0" scroll-offset="184">
         <th ng-if="isOrderEntryCustomer"></th>
-        <th class="sort-col-header" ng-click="sortTable('itemnumber')">
+        <th class="sort-col-header" ng-click="$scope.itemNumberDesc = !$scope.itemNumberDesc; UNFISortByItemNumber(itemNumberDesc)">
           Item 
           <span># <span sort-icons field="'itemnumber'" sortorder="sortReverse" sortby="sortField"></span></span>
         </th>

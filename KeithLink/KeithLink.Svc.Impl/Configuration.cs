@@ -145,7 +145,8 @@ namespace KeithLink.Svc.Impl {
 
 		//Email
 		private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
-		private const string KEY_SMTP_SERVERNAME = "SmtpServer";
+        private const string KEY_SMTP_FAILUREADDRESS = "FailureEmailAddress";
+        private const string KEY_SMTP_SERVERNAME = "SmtpServer";
 		private const string KEY_SMTP_SEND_PORT = "SMTPSendPort";
 		private const string DEFAULT_SMTP_SEND_PORT = "25";
 		private const string KEY_SMTP_USERNAME = "SMTPUsername";
@@ -183,7 +184,8 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
 
         // Queue Service Functions
-        private const string KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS = "CheckLostOrders";       
+        private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
+        private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
         #endregion
 
         #region methods
@@ -192,7 +194,16 @@ namespace KeithLink.Svc.Impl {
         {
             get
             {
-                return GetValue(KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS, string.Empty);
+                return GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS, string.Empty);
+            }
+        }
+
+        public static List<string> CheckLostOrdersStatus
+        {
+            get
+            {
+                string val = GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS, string.Empty);
+                return GetCommaSeparatedValues(val);
             }
         }
 
@@ -988,7 +999,16 @@ namespace KeithLink.Svc.Impl {
             get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
         }
 
-        public static string SMTPHostName {
+        public static List<string> FailureEmailAdresses
+        {
+            get
+            {
+                string val = GetValue(KEY_SMTP_FAILUREADDRESS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        public static string SMTPHostName
+        {
             get { return GetValue(KEY_SMTP_SERVERNAME, null); }
         }
 

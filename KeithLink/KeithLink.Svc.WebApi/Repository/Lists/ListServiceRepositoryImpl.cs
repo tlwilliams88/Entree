@@ -224,6 +224,21 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
             if (list == null)
                 return null;
 
+            StringBuilder sortinfo = new StringBuilder();
+            foreach (SortInfo si in options.Paging.Sort)
+            {
+                if (sortinfo.Length > 0) sortinfo.Append(";");
+                sortinfo.Append(si.Field);
+                sortinfo.Append(",");
+                sortinfo.Append(si.Order);
+            }
+            list.Items = SortOrderItems(sortinfo.ToString(), list.Items);
+            int ind = 1;
+            foreach (ListItemModel item in list.Items)
+            {
+                item.Position = ind++;
+            }
+
             ListReportModel printModel = list.ToReportModel();
 
             ReportViewer rv = new ReportViewer();
@@ -244,6 +259,26 @@ namespace KeithLink.Svc.WebApi.Repository.Lists
             return stream;
         }
 
+        /// <summary>
+        /// Sort list items given an unparsed string with sort information
+        /// </summary>
+        /// <param name="sortinfo">A string with unparsed sort info for the list items (of the form "fld1,ord1[;fld2,ord2]")</param>
+        /// <param name="items">A list of shopping cart items</param>
+        /// <returns>A list of shopping cart items in the order described by sortinfo with position calibrated to that sort</returns>
+        private List<ListItemModel> SortOrderItems(string sortinfo, List<ListItemModel> items)
+        {
+            IQueryable<ListItemModel> stmt = items.AsQueryable();
+            string[] sortpairs = sortinfo.Split(';');
+            int ind = 0;
+            foreach (string sortpair in sortpairs)
+            {
+                string fld = sortpair.Substring(0, sortpair.IndexOf(','));
+                string ord = sortpair.Substring(sortpair.IndexOf(',') + 1);
+                stmt = stmt.OrderingHelper(fld, ord.Equals("desc", StringComparison.CurrentCultureIgnoreCase), ind > 0);
+                ind++;
+            }
+            return stmt.ToList();
+        }
         private string ChooseReportFromOptions(PrintListModel options, UserSelectedContext userContext)
         { // Choose different Report for different columns ; grouping doesn't change column widths so no different name
             Customer customer = _profileLogic.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);

@@ -182,7 +182,10 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		[DataMember(Name = "nutritional", EmitDefaultValue = false)]
 		public Nutritional Nutritional { get; set; }
 
-		[DataMember(Name = "kosher", EmitDefaultValue = false)]
+        [DataMember(Name = "unfi", EmitDefaultValue = false)]
+        public UNFI Unfi { get; set; }
+
+        [DataMember(Name = "kosher", EmitDefaultValue = false)]
 		public string Kosher { get; set; }
 
 		[DataMember(Name = "manufacturer_number", EmitDefaultValue = false)]
@@ -197,11 +200,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [Description("Average Weight")]
         public double AverageWeight { get; set; }
 
-        [DataMember(Name = "catalog_id", EmitDefaultValue = false)]
+        [DataMember(Name = "catalog_id")]
         [Description("Catalog Id - index from elastic search")]
         public string CatalogId { get; set; }
 
-        [DataMember(Name = "is_specialty_catalog", EmitDefaultValue = false)]
+        [DataMember(Name = "is_specialty_catalog")]
         [Description("Is Specialty Catalog bool")]
         public bool IsSpecialtyCatalog { get; set; }
 

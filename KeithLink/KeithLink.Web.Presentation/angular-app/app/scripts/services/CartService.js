@@ -150,6 +150,7 @@ angular.module('bekApp')
           newCart.itemcount = newCart.items.length;
           newCart.items = [];
           Service.cartHeaders.push(newCart);
+          Service.getCartHeaders();
           return newCart;
         });
       },
@@ -309,7 +310,8 @@ angular.module('bekApp')
           Service.isOffline = false;
         } 
       },
- 
+
+
       getShipDates: function() {
         var deferred = $q.defer();
         
@@ -317,6 +319,13 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
+            var cutoffDate = moment(data.shipdates[0].cutoffdatetime).format();
+            var now = moment().tz("America/Chicago").format();
+
+            var invalidSelectedDate = (now > cutoffDate) ? true : false;
+            if(invalidSelectedDate){
+              data.shipdates = data.shipdates.slice(1,data.shipdates.length);
+            }
             angular.copy(data.shipdates, Service.shipDates);
             deferred.resolve(data.shipdates);
             return data.shipdates;

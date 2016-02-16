@@ -328,6 +328,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
+            var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+
             return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
         }
 
@@ -438,9 +440,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                 return 0;
         }
 
-        private delegate TResult Func<in T, out TResult>(
-   
-);
+        //private delegate TResult Func<in T, out TResult>();
+
         private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 
@@ -493,7 +494,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CategoryName = oProd._source.categoryname;
             p.VendorItemNumber = oProd._source.vendor1;
 			p.ItemClass = oProd._source.parentcategoryname;
-            p.CaseCube = oProd._source.icube;
+            try {
+                p.CaseCube = oProd._source.icube;
+            } catch (Exception e) {
+                p.CaseCube = "";
+            }
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
@@ -509,12 +514,43 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             if (p.CatalogId.ToLower().StartsWith("unfi"))
             {
                 //make vendor into description
-                p.Description = oProd._source.vendor;
+                p.Description = oProd._source.vendor1;
                 p.Pack = oProd._source.casequantity.ToString();
                 p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
                 p.IsSpecialtyCatalog = true;
                 p.Cases = oProd._source.onhandqty.ToString();
                 p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
+                p.CasePrice = oProd._source.caseprice.ToString();
+
+                    UNFI unfi = new UNFI();
+
+                    unfi.CaseHeight = oProd._source.cheight.ToString();
+                    unfi.CaseLength = oProd._source.clength.ToString();
+                    unfi.CaseWidth = oProd._source.cwidth.ToString();
+                    unfi.Weight = oProd._source.averageweight.ToString();
+                    unfi.UnitOfSale = oProd._source.unitofsale.ToString();
+                    unfi.CatalogDept = oProd._source.catalogdept.ToString();
+                    unfi.ShipMinExpire = oProd._source.shipminexpire.ToString();
+                    unfi.MinOrder = oProd._source.minorder.ToString();
+                    unfi.CaseQuantity = oProd._source.casequantity.ToString();
+                    unfi.PutUp = oProd._source.putup.ToString();
+                    unfi.ContUnit = oProd._source.contunit.ToString();
+                    unfi.TCSCode = oProd._source.tcscode.ToString();
+                    unfi.CaseUPC = oProd._source.caseupc.ToString();
+                    unfi.PackageLength = oProd._source.plength.ToString();
+                    unfi.PackageHeight = oProd._source.pheight.ToString();
+                    unfi.PackageWidth = oProd._source.pwidth.ToString();
+                    unfi.Status = oProd._source.status.ToString();
+                    unfi.PackagePrice = oProd._source.packageprice.ToString();
+                    unfi.CasePrice = oProd._source.caseprice.ToString();
+                    unfi.Flag1 = oProd._source.flag1.ToString();
+                    unfi.Flag2 = oProd._source.flag2.ToString();
+                    unfi.Flag3 = oProd._source.flag3.ToString();
+                    unfi.Flag4 = oProd._source.flag4.ToString();
+                    unfi.OnHandQty = oProd._source.onhandqty.ToString();
+                    unfi.Vendor = oProd._source.vendor1.ToString();
+
+                    p.Unfi = unfi;
             }
           
             if (oProd._source.nutritional != null) {

@@ -254,21 +254,14 @@ angular.module('bekApp')
 
   //Submenu for specialty catalogs
   $scope.toggleSpecialCatalogSubmenu = function() {
-    if ($scope.$state !== undefined) {
-        if ($scope.$state.params.catalogType !== undefined) {
-            if ($scope.$state.params.catalogType !== 'UNFI'/* or other third parties $scope.$state.params.catalogType !== 'B&E'*/) {
-                $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
-            } else {
-                $scope.specialCatalogOpen = true;
-            }
-        } else {
-            $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
-        }
+    if ($scope.$state !== undefined) {       
+      $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
     }
   };
-  // $scope.toggleSpecialCatalogSubmenu(); //call to expand if it is in special catlog
 
-  //
+  $scope.toggleSidebarMenu = function() {
+      $scope.isSidebarOpen = !$scope.isSidebarOpen;
+  };
 
   /**********
   MENU BUTTON CLICK HANDLERS

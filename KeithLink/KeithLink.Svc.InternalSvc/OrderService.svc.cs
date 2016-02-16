@@ -69,8 +69,9 @@ namespace KeithLink.Svc.InternalSvc {
             _orderLogic.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
 
-        public void SaveOrderHistory(OrderHistoryFile historyFile) {
-            _historyLogic.SaveOrder(historyFile);
+        public void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder)
+        {
+            _historyLogic.SaveOrder(historyFile, isSpecialOrder);
         }
 
         public List<OrderHeader> GetSubmittedUnconfirmedOrders()
@@ -89,6 +90,12 @@ namespace KeithLink.Svc.InternalSvc {
 		{
 			return _historyLogic.GetPagedOrders(userId, customerInfo, paging);
 		}
-		#endregion
-	}		
+
+
+        public void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber) {
+            _historyLogic.UpdateRelatedOrderNumber(childOrderNumber, parentOrderNumber);
+        }
+
+        #endregion
+    }		
 }

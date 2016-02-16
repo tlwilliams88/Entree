@@ -31,6 +31,129 @@ namespace KeithLink.Svc.FoundationSvc
         #endregion
 
         #region methods
+        public string CancelPurchaseOrder(Guid userId, Guid orderId) {
+            try {
+                CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
+                po.Status = "Cancelled";
+                po.TrackingNumber = GetNextControlNumber();
+                po.Save();
+                return po.TrackingNumber;
+            } catch (Exception ex) {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in CancelPurchaseOrder: ", ex);
+
+                throw ex;
+            }
+        }
+
+        public void CleanUpChangeOrder(Guid userId, Guid cartId) {
+            try {
+                PurchaseOrder po = GetPurchaseOrder(userId, cartId);
+
+                List<LineItem> lineItemIndexesToRemove = new List<LineItem>();
+
+                foreach (LineItem li in po.OrderForms[0].LineItems) {
+                    if (li.Status == "deleted") {
+                        lineItemIndexesToRemove.Add(li);
+                    }
+                    li.Status = string.Empty;
+                }
+
+                foreach (LineItem item in lineItemIndexesToRemove) {
+                    po.OrderForms[0].LineItems.Remove(item);
+                }
+
+                po.Save();
+            } catch (Exception ex) {
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in CleanUpChangeOrder: ", ex);
+
+                throw ex;
+            }
+        }
+
+        private static string GetNextControlNumber() {
+            try {
+                string controlNumber = string.Empty;
+                // get tracking number from DB
+                using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AppDataConnection"].ConnectionString)) {
+                    using (SqlCommand cmd = new SqlCommand("Orders.usp_GetNextControlNumber", conn)) {
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        SqlParameter parm = new SqlParameter();
+                        parm.Direction = ParameterDirection.ReturnValue;
+                        cmd.Parameters.Add(parm);
+                        conn.Open();
+                        cmd.ExecuteNonQuery();
+                        controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("0000000.##"); // format to main frame of 7 digits
+                    }
+                }
+                return controlNumber;
+            } catch (Exception ex) {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in GetNextControlNumber: ", ex);
+
+                throw ex;
+            }
+        }
+
+        private static PurchaseOrder GetPurchaseOrder(Guid userId, Guid cartId) {
+            try {
+                CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();
+                return context.GetPurchaseOrder(userId, cartId);
+            } catch (Exception ex) {
+                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
+                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in GetPurchaseOrder: ", ex);
+
+                throw ex;
+            }
+        }
+
+        public XmlElement GetUnconfirmatedOrders() {
+            var manager = Extensions.SiteHelper.GetOrderManageContext().PurchaseOrderManager;
+            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", "Submitted");
+            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
+
+            int c = results.Tables.Count;
+
+            // Get the value of the OrderGroupId property of each
+            // purchase order.
+            List<Guid> poIds = new List<Guid>();
+            foreach (DataRow row in results.Tables[0].Rows) {
+                poIds.Add(new Guid(row["OrderGroupId"].ToString()));
+            }
+            // Get the XML representation of the purchase orders.
+            return manager.GetPurchaseOrdersAsXml(poIds.ToArray());
+        }
+
+        public string SaveOrderAsChangeOrder(Guid userId, Guid cartId)
+        {
+            try
+            {
+                PurchaseOrder po = GetPurchaseOrder(userId, cartId);
+
+                PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
+                pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
+
+                po.TrackingNumber = GetNextControlNumber();
+                po.Status = "Submitted";
+                po.Save();
+
+                return po.TrackingNumber;
+            }
+            catch (Exception ex)
+            {
+                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
+                eventLog.WriteErrorLog("Error in SaveOrderAsChangeOrder: ", ex);
+
+                throw ex;
+            }
+        }
+
         public string SaveCartAsOrder(Guid userId, Guid cartId)
         {
             try
@@ -59,80 +182,6 @@ namespace KeithLink.Svc.FoundationSvc
             {
                 EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
                 eventLog.WriteErrorLog("Error in SaveCartAsOrder: ", ex);
-
-                throw ex;
-            }
-        }
-
-        public string SaveOrderAsChangeOrder(Guid userId, Guid cartId)
-        {
-            try
-            {
-                PurchaseOrder po = GetPurchaseOrder(userId, cartId);
-
-                PipelineHelper pipeLineHelper = new PipelineHelper(Extensions.SiteHelper.GetSiteName());
-                pipeLineHelper.RunPipeline(po, true, false, "Checkout", string.Format("{0}\\pipelines\\checkout.pcf", HttpContext.Current.Server.MapPath(".")));
-
-                po.TrackingNumber = GetNextControlNumber();
-                po.Status = "Submitted";
-                po.Save();
-
-                return po.TrackingNumber;
-            }
-            catch (Exception ex)
-            {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
-                eventLog.WriteErrorLog("Error in SaveOrderAsChangeOrder: ", ex);
-
-                throw ex;
-            }
-        }
-
-        public void CleanUpChangeOrder(Guid userId, Guid cartId)
-        {
-            try
-            {
-                PurchaseOrder po = GetPurchaseOrder(userId, cartId);
-
-                List<LineItem> lineItemIndexesToRemove = new List<LineItem>();
-
-                foreach (LineItem li in po.OrderForms[0].LineItems)
-                {
-                    if (li.Status == "deleted")
-                    {
-                        lineItemIndexesToRemove.Add(li);
-                    }
-                    li.Status = string.Empty;
-                }
-
-                foreach (LineItem item in lineItemIndexesToRemove)
-                {
-                    po.OrderForms[0].LineItems.Remove(item);
-                }
-
-                po.Save();
-            }
-            catch (Exception ex)
-            {
-                EventLogRepositoryImpl eventLog = new EventLogRepositoryImpl(applicationNameForLogging);
-                eventLog.WriteErrorLog("Error in CleanUpChangeOrder: ", ex);
-
-                throw ex;
-            }
-        }
-
-        private static CommerceServer.Core.Runtime.Orders.PurchaseOrder GetPurchaseOrder(Guid userId, Guid cartId)
-        {
-            try
-            {
-                CommerceServer.Core.Runtime.Orders.OrderContext context = Extensions.SiteHelper.GetOrderContext();
-                return context.GetPurchaseOrder(userId, cartId);
-            }
-            catch (Exception ex)
-            {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
-                eventLog.WriteErrorLog("Error in GetPurchaseOrder: ", ex);
 
                 throw ex;
             }
@@ -209,76 +258,20 @@ namespace KeithLink.Svc.FoundationSvc
             }
         }
 
-        public string CancelPurchaseOrder(Guid userId, Guid orderId)
-        {
-            try
-            {
-                CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
-                po.Status = "Cancelled";
-                po.TrackingNumber = GetNextControlNumber();
+        public void UpdatePurchaseOrderStatus(Guid userId, Guid orderId, string status) {
+            try {
+                var context = Extensions.SiteHelper.GetOrderContext();
+                var po = context.GetPurchaseOrder(userId, orderId);
+                //CommerceServer.Core.Runtime.Orders.PurchaseOrder po = GetPurchaseOrder(userId, orderId);
+                po.Status = status;
                 po.Save();
-                return po.TrackingNumber;
-            }
-            catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
                     new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
-                eventLog.WriteErrorLog("Error in CancelPurchaseOrder: ", ex);
+                eventLog.WriteErrorLog("Error Updating Purchase Order Status: ", ex);
 
-                throw ex;
+                throw;
             }
-        }
-
-        private static string GetNextControlNumber()
-        {
-            try
-            {
-                string controlNumber = string.Empty;
-                // get tracking number from DB
-                using (SqlConnection conn = new SqlConnection(System.Configuration.ConfigurationManager.ConnectionStrings["AppDataConnection"].ConnectionString))
-                {
-                    using (SqlCommand cmd = new SqlCommand("Orders.usp_GetNextControlNumber", conn))
-                    {
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        SqlParameter parm = new SqlParameter();
-                        parm.Direction = ParameterDirection.ReturnValue;
-                        cmd.Parameters.Add(parm);
-                        conn.Open();
-                        cmd.ExecuteNonQuery();
-                        controlNumber = (int.Parse(cmd.Parameters[0].Value.ToString())).ToString("0000000.##"); // format to main frame of 7 digits
-                    }
-                }
-                return controlNumber;
-            }
-            catch (Exception ex)
-            {
-                KeithLink.Common.Impl.Logging.EventLogRepositoryImpl eventLog =
-                    new Common.Impl.Logging.EventLogRepositoryImpl(applicationNameForLogging);
-                eventLog.WriteErrorLog("Error in GetNextControlNumber: ", ex);
-
-                throw ex;
-            }
-        }
-
-        public System.Xml.XmlElement GetUnconfirmatedOrders()
-        {
-            var manager = Extensions.SiteHelper.GetOrderManageContext().PurchaseOrderManager;
-            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
-            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
-            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", "Submitted");
-            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
-
-            int c = results.Tables.Count;
-
-            // Get the value of the OrderGroupId property of each
-            // purchase order.
-            List<Guid> poIds = new List<Guid>();
-            foreach (DataRow row in results.Tables[0].Rows)
-            {
-                poIds.Add(new Guid(row["OrderGroupId"].ToString()));
-            }
-            // Get the XML representation of the purchase orders.
-            return manager.GetPurchaseOrdersAsXml(poIds.ToArray());
         }
         #endregion
     }

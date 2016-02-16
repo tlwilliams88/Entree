@@ -39,7 +39,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);
 
         [OperationContract]
-        void SaveOrderHistory(OrderHistoryFile historyFile);
+        void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder);
 
         [OperationContract]
         List<OrderHeader> GetSubmittedUnconfirmedOrders();
@@ -50,5 +50,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		[OperationContract]
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
 
+        [OperationContract]
+        void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber);
 	}
 }
