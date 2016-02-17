@@ -186,7 +186,7 @@ namespace KeithLink.Svc.Core
         public const string CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS = "Partially Shipped, Item Replaced";
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_CODE = "S";
         public const string CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS = "Item Subbed";
-        public const string CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE = "Q";
+        public const string CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE = "\u00C9";
         public const string CONFIRMATION_DETAIL_ITEM_REQUESTED_STATUS = "Requested";
         public const string ITEM_DELETED_STATUS = "Deleted";
 
