@@ -83,7 +83,7 @@
         <li><a ng-click="openPrintOptionsModal(selectedList)">Print</a></li>
         <li><a ng-click="openExportModal()">Export</a></li>
         <li><a ng-click="openListImportModal()">Import</a></li>
-        <li><a ng-if="shareList" ng-click="openReplicateListModal(selectedList)">Give list</a></li>
+        <li><a ng-if="::selectedList.permissions.canShareList || selectedList.permissions.canCopyList" ng-click="openReplicateListModal(selectedList)">Give list</a></li>
         <li><a ng-click="copyList(selectedList)">Duplicate list</a></li>
       </ul>
     </div>

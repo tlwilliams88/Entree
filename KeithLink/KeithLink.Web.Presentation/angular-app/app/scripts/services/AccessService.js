@@ -199,10 +199,6 @@ angular.module('bekApp')
       return ( Service.isInternalAccountAdminUser() || isOwner() || isAccounting() || isApprover() || isBuyer() );
     },
 
-    isDsrDsm: function() {
-      return ( isDsr() || isDsm() );
-    }
-
   };
 
   return Service;

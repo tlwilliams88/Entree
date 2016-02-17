@@ -98,8 +98,7 @@ angular.module('bekApp')
           permissions.canDeleteItems = true;
           permissions.canReorderItems = true;
         
-        // CUSTOM LISTS (only these can be shared/copied by all users,
-        // DSR/DSM can share recommended and mandatory lists)
+        // CUSTOM LISTS (only these can be shared/copied)
         } else {
 
           // SHARED WITH ME
@@ -118,7 +117,8 @@ angular.module('bekApp')
             permissions.canEditLabels = true;
             permissions.canSeeParlevel = true;
             permissions.canEditParlevel = true;
-            permissions.canCopyAndShareList = true;
+            permissions.canShareList = true;
+            permissions.canCopyList = true;
             permissions.canReorderItems = true;
           }
         }
@@ -133,7 +133,8 @@ angular.module('bekApp')
           permissions.canRenameList = false;
           permissions.canEditLabels = false;
           permissions.canEditParlevel = false;
-          permissions.canCopyAndShareList = true;
+          permissions.canShareList = false;
+          permissions.canCopyList = false;
         }
 
         list.permissions = permissions;        

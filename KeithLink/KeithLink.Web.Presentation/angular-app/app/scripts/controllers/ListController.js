@@ -165,10 +165,6 @@ angular.module('bekApp')
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
       });
-
-      if(($scope.isDsrDsm && ($scope.selectedList.isrecommended || $scope.selectedList.ismandatory)) || $scope.selectedList.permissions.canCopuAndShareList){
-        $scope.shareList = true;
-      }
     }
 
     function appendListItems(list) {
