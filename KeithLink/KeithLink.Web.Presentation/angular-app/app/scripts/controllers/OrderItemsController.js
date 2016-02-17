@@ -19,11 +19,13 @@ angular.module('bekApp')
   };
 
   function calculatePieces(order){   
-      var pieceCount = 0;
+    var pieceCount = 0;
+    if(order.items && order.items.length > 0){
       order.items.forEach(function(item){
         pieceCount = pieceCount + item.quantityordered;
       })
-      order.piececount = pieceCount   
+    }
+    order.piececount = pieceCount   
   }
 
   $scope.setOrder = function(order){
