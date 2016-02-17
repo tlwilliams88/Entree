@@ -106,8 +106,7 @@ angular.module('bekApp')
         if (duplicateItem) {
           if(item.quantity){
             duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
-            duplicateItem.extPrice = (duplicateItem.quantity === item.quantity) ? item.extPrice : PricingService.getPriceForItem(duplicateItem);
-
+            duplicateItem.extPrice = PricingService.getPriceForItem(duplicateItem);
             duplicateItem.each = item.each;
             if(item.quantity > 0){             
               duplicateItem.iscombinedquantity = true;
