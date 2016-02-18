@@ -26,6 +26,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IContainer container;
         private IConfirmationLogic _confirmationLogic;
         private IInternalOrderHistoryLogic _orderHistoryLogic;
+        private IInternalSpecialOrderLogic _specialOrderLogic;
         private Svc.Core.Interface.Messaging.INotificationQueueConsumer _externalNotificationQueueConsumer;
         private Svc.Core.Interface.Messaging.INotificationQueueConsumer _internalNotificationQueueConsumer;
         private IEventLogRepository _log;
@@ -34,6 +35,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope confirmationScope;
         private ILifetimeScope lostOrdersScope;
         private ILifetimeScope orderHistoryScope;
+        private ILifetimeScope specialOrderScope;
         private ILifetimeScope externalNotificationScope;
         private ILifetimeScope internalNotificationScope;
 
@@ -75,6 +77,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             InitializeConfirmationMoverThread();
             InitializeOrderUpdateThread();
             InitializeCheckLostOrdersTimer();
+            InitializeSpecialOrderUpdateThread();
         }
 
         protected override void OnStop() {
@@ -82,6 +85,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TerminateOrderHistoryThread();
             TerminateNotificationsThread();
             TerminateCheckLostOrdersTimer();
+            TerminateSpecialOrderUpdateThread();
 
             _log.WriteInformationLog( "Service stopped" );
         }
@@ -110,7 +114,24 @@ namespace KeithLink.Svc.Windows.QueueService {
             _orderHistoryLogic.ListenForQueueMessages();
         }
 
-        private void TerminateConfirmationThread() {
+        private void InitializeSpecialOrderUpdateThread()
+        {
+            specialOrderScope = container.BeginLifetimeScope();
+            _specialOrderLogic = specialOrderScope.Resolve<IInternalSpecialOrderLogic>();
+            _specialOrderLogic.ListenForQueueMessages();
+        }
+
+        private void TerminateSpecialOrderUpdateThread()
+        {
+            if (_specialOrderLogic != null)
+                _specialOrderLogic.StopListening();
+
+            if (specialOrderScope != null)
+                specialOrderScope.Dispose();
+        }
+
+        private void TerminateConfirmationThread()
+        {
             if (_confirmationLogic != null)
                 _confirmationLogic.Stop();
             if (confirmationScope != null)
