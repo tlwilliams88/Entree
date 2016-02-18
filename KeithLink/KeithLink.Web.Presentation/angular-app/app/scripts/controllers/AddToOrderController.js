@@ -109,7 +109,7 @@ angular.module('bekApp')
         if (duplicateItem) {
           if(item.quantity){
             duplicateItem.quantity = duplicateItem.quantity ? duplicateItem.quantity += item.quantity : item.quantity;
-            duplicateItem.extPrice = (duplicateItem.quantity === item.quantity) ? item.extPrice : PricingService.getPriceForItem(duplicateItem);
+            duplicateItem.extPrice = PricingService.getPriceForItem(duplicateItem);
             duplicateItem.each = item.each;
             if(item.quantity > 0){
               duplicateItem.iscombinedquantity = true;
@@ -254,20 +254,19 @@ angular.module('bekApp')
 $scope.setCurrentPageAfterRedirect = function(pageToSet){
     var visited = [];
     if(!pageToSet && $stateParams.currentPage){
-    var page = $stateParams.currentPage;
-      }
-       else{
-        $stateParams.currentPage = '';
-        var page = pageToSet || 1;
-       }
-       
-      if($scope.visitedPages[0]){
-        visited = $filter('filter')($scope.visitedPages, {page: page});
-      }
-   var selectedPage = {
+      var page = $stateParams.currentPage;      
+    }
+     else{     
+      var page = pageToSet || 1;
+    }
+    $stateParams.currentPage = '';
+    if($scope.visitedPages[0]){
+      visited = $filter('filter')($scope.visitedPages, {page: page});
+    }
+    var selectedPage = {
       currentPage: page   
-     };
-     $scope.pageChanged(selectedPage, visited);
+    };
+    $scope.pageChanged(selectedPage, visited);
 }
 
   $scope.setRange = function(){
