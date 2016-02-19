@@ -9,17 +9,19 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
     function (
       $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       $filter,
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService // bek custom services
+      CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService // bek custom services
     ) {
 
   $scope.$state = $state;
+  $scope.isMobile = UtilityService.isMobileDevice();
+  $scope.isMobileApp = ENV.mobileApp;
   $scope.mandatoryMessages = NotificationService.mandatoryMessages;
   // define search term in user bar so it can be cleared in the SearchController after a user searches
   $scope.userBar = {};
@@ -34,6 +36,15 @@ angular.module('bekApp')
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
 
+  // Application version for use on sidebar menu
+  // Using 3 different values for potential hotfix mobile submissions
+  $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
+  $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
+ 
+  $scope.webVersionNum = '1.5.0';
+  $scope.androidVersionNum = '1.5.0';
+  $scope.iOSVersionNum = '1.5.0';
+
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
@@ -42,8 +53,6 @@ angular.module('bekApp')
   $scope.specialCatalogOpen = false;
   $scope.showSpecialtyCatalogs = true;
 
-  $scope.VersionNum = '1.5.0';
- 
   if (AccessService.isOrderEntryCustomer()) {
 
     $scope.cartHeaders = CartService.cartHeaders;
@@ -192,6 +201,15 @@ angular.module('bekApp')
         query.callback(customerList);
       });
     }
+  };
+
+  $scope.displayUserMenu  = false;
+  document.onclick = function(element){
+    $timeout(function() {
+      if($scope.displayUserMenu && !$scope.mouseOverDropdown){
+        $scope.displayUserMenu = !$scope.displayUserMenu; 
+      }
+    }, 0);
   };
 
   $scope.customerSelectOptions = {
