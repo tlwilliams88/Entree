@@ -192,18 +192,15 @@ angular.module('bekApp')
       });
     }
   };
-$scope.displayUserMenu  = false;
-   document.onclick = function(element){
-      
-            $timeout(function() {
-              if($scope.displayUserMenu && !$scope.mouseOverDropdown){
-                $scope.displayUserMenu = !$scope.displayUserMenu; 
-              }
-    
-      }, 0);
-              
-       
-      };
+
+  $scope.displayUserMenu  = false;
+  document.onclick = function(element){
+    $timeout(function() {
+      if($scope.displayUserMenu && !$scope.mouseOverDropdown){
+        $scope.displayUserMenu = !$scope.displayUserMenu; 
+      }
+    }, 0);
+  };
 
   $scope.customerSelectOptions = {
     query: function (query){
