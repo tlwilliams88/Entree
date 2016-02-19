@@ -1,5 +1,6 @@
 ﻿using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.SpecialOrders;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc
 {

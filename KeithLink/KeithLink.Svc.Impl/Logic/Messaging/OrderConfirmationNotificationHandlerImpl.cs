@@ -214,7 +214,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             if ((notification != null) && 
                 (notification.OrderChange != null) && 
                 (notification.OrderChange.ShipDate != null) &&
-                (notification.OrderChange.ShipDate != DateTime.MinValue))
+                (notification.OrderChange.ShipDate.ToShortDateString().Equals("1/1/0001") == false))
                 sbShipDate.Append(notification.OrderChange.ShipDate.ToShortDateString());
             else sbShipDate.Append("Undetermined");
             message.MessageBody = template.Body.Inject(new
@@ -263,7 +263,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             StringBuilder itemOrderInfo = new StringBuilder();
             StringBuilder itemOrderInfoOOS = new StringBuilder();
             decimal totalAmount = 0;
-            ProductsReturn products = _catRepo.GetProductsByIds(notification.OrderChange.Items.Select(i => i.ItemCatalog).FirstOrDefault(), notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
+            string catalog = null;
+            catalog = notification.OrderChange.Items.Select(i => i.ItemCatalog).FirstOrDefault();
+            if (catalog == null) catalog = customer.CustomerBranch;
+            ProductsReturn products = _catRepo.GetProductsByIds(catalog, notification.OrderChange.Items.Select(i => i.ItemNumber.Trim()).ToList());
             foreach (var line in notification.OrderChange.Items)
             {
                 Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
@@ -287,16 +290,20 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private void BuildExceptionItemDetail(StringBuilder itemOrderInfoOOS, OrderLineChange line, string priceInfo, Product currentProduct)
         {
-            MessageTemplateModel itemOOSDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL);
-            itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new
+            if ((line != null) && (currentProduct != null) && (line.ItemNumber != null) && (currentProduct.Name != null) && (line.QuantityOrdered != null) && (line.QuantityShipped != null) && 
+                (line.OriginalStatus != null) && (priceInfo != null))
             {
-                ProductNumber = line.ItemNumber,
-                ProductDescription = currentProduct.Name,
-                Quantity = line.QuantityOrdered.ToString(),
-                Sent = line.QuantityShipped.ToString(),
-                Price = priceInfo,
-                Status = line.OriginalStatus
-            }));
+                MessageTemplateModel itemOOSDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL);
+                itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new
+                {
+                    ProductNumber = line.ItemNumber,
+                    ProductDescription = currentProduct.Name,
+                    Quantity = line.QuantityOrdered.ToString(),
+                    Sent = line.QuantityShipped.ToString(),
+                    Price = priceInfo,
+                    Status = line.OriginalStatus
+                }));
+            }
         }
 
         private void BuildItemDetail(StringBuilder itemOrderInfo, OrderLineChange line, string priceInfo, Product currentProduct)
@@ -318,7 +325,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             StringBuilder priceInfo = new StringBuilder();
             if(line.ItemPrice != null) priceInfo.Append(line.ItemPrice.ToString("f2"));
             else priceInfo.Append("?");
-            if (currentProduct.CatchWeight)
+            if ((currentProduct != null) && (currentProduct.CatchWeight))
             {
                 priceInfo.Append(" lb per");
                 if (line.Each) priceInfo.Append(" package");
