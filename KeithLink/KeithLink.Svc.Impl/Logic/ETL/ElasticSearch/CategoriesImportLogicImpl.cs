@@ -139,6 +139,7 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 								parentcategoryid = null,
 								name = row.GetString("CategoryName"),
 								ppicode = row.GetString("CategoryId"),
+                                department = row.GetString("Department"),
 								subcategories = PopulateUnfiSubCategories(row.GetString("CategoryId"), childCategories)
 							}
 						}
@@ -159,7 +160,8 @@ namespace KeithLink.Svc.Impl.Logic.ETL {
 							{
 								parentcategoryid = row.GetString("ParentCategoryId"),
 								name = row.GetString("CategoryName"),
-								ppicode = row.GetString("CategoryId")
+								ppicode = row.GetString("CategoryId"),
+                                department = row.GetString("Department"),
 							}
 						}
 					});
