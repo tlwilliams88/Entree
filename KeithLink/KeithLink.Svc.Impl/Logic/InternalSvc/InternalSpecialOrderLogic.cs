@@ -99,17 +99,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             SpecialOrderResponseModel specialorder = new SpecialOrderResponseModel();
             specialorder = JsonConvert.DeserializeObject<SpecialOrderResponseModel>(rawOrder);
 
-            _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0})", specialorder.MessageId));
-
-            EF.OrderHistoryDetail detail = FindOrderHistoryDetailForUpdate(specialorder);
-
-            if (detail != null) // only process if we match the order specified on this system
+            while ((specialorder != null) && (specialorder.MessageId != null) && (specialorder.Header.RequestHeaderId != null) && (specialorder.Item.LineNumber != null))
             {
-                ProcessOrderHistoryDetailByUpdateStatus(specialorder, detail);
-            }
-            else
-            {
-                _log.WriteInformationLog(string.Format("Specialorder update from queue for message ({0}) not an order on this system", specialorder.MessageId));
+                _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0})", specialorder.MessageId));
+
+                EF.OrderHistoryDetail detail = FindOrderHistoryDetailForUpdate(specialorder);
+
+                if (detail != null) // only process if we match the order specified on this system
+                {
+                    ProcessOrderHistoryDetailByUpdateStatus(specialorder, detail);
+                }
+                else
+                {
+                    _log.WriteInformationLog(string.Format("Specialorder update from queue for message ({0}) not an order on this system", specialorder.MessageId));
+                }
             }
         }
 
