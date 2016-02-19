@@ -13,7 +13,7 @@
 
   <!-- Desktop Sidebar -->
   <div class="sidebar hidden-print" ng-class="{'open': isSidebarOpen}" style="z-index:10002;">
-    <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu = !displayUserMenu">
+    <div class="person-info user-info hidden-md hidden-lg" ng-click="displayUserMenu2 = !displayUserMenu2">
       <div class="person-info__section"><img ng-src="{{userProfile.imageurl}}" alt=""></div>
       <div class="person-info__section person-info__details">
         <div>
@@ -36,7 +36,7 @@
     <nav class="sidebar-nav">
       <ul class="list-unstyled">
         
-        <div ng-show="displayUserMenu" class="hidden-md hidden-lg">
+        <div ng-show="displayUserMenu2" class="hidden-md hidden-lg">
           <button
             class="btn-no-style"
             type="button"
@@ -317,7 +317,7 @@
       <div ng-if="mandatoryMessages.length" class="row user-notification-bar hidden-print" style="background-color:rgb(250, 255, 189); height:40px; border: 1px solid #c3bc9c; ">   
         <button class="btn btn-primary" style="margin-left:6px; margin-top: 4px;"  ng-click="showNotification(mandatoryMessages[0])"  type="submit">View Notification</button>
         <button class="btn btn-danger" style="margin-right:6px; margin-top: 4px;" ng-click="dismissNotification(mandatoryMessages[0])">Dismiss</button>
-       <td>{{mandatoryMessages[0].subject}}</td>  
+       <td>{{mandatoryMessages[0].subject}}</td>
       </div>
       
     <div class="row hidden-md hidden-lg mobile-user-context hidden-print"> 
@@ -365,7 +365,7 @@
               <span class="icon-bell"></span>
               <span class="badge" ng-if="userBar.userNotificationsCount.unread && userBar.userNotificationsCount.unread > 0">{{userBar.userNotificationsCount.unread}}</span>
             </span></a>
-            <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu">
+            <div class="person-info user-info hand-pointer" ng-click="displayUserMenu = !displayUserMenu"  ng-mouseenter="mouseOverDropdown = true" ng-mouseleave="mouseOverDropdown = false">
               <div class="person-info__section person-info__details">
                 <span class="user-info__name">{{userProfile.displayname}}</span>
                 <span ng-if="userProfile.displayRole !== 'approver' && userProfile.displayRole !== 'buyer'" class="user-info__job-title text-capitalize">{{userProfile.displayRole}}</span>
