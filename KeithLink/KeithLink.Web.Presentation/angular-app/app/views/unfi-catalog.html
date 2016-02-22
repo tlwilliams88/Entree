@@ -61,9 +61,9 @@
         <accordion-heading>
         Categories<i class="pull-right" ng-class="{'icon-arrow-up6': ture, 'icon-arrow-down7': !status.openCategories}"></i>
       </accordion-heading>
-      <div ng-repeat="category in categories | orderBy: ['name']" class="panel panel-default">
+      <div ng-repeat="category in categories | orderBy: ['department','name']" class="panel panel-default">
         <div class="panel-body">
-          <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })">{{category.name}}</a>
+          <a ui-sref="menu.catalog.products.list({ type: 'category', id: category.search_name })">{{category.department}} - {{category.name}}</a>
         </div>
       </div>
     </accordion-group>

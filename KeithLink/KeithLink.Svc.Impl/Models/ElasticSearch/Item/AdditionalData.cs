@@ -226,6 +226,8 @@ namespace KeithLink.Svc.Impl.Models.ElasticSearch.Item
         public decimal? CasePrice { get; set; }
         [JsonProperty("packageprice")]
         public decimal? PackagePrice { get; set; }
+        [JsonProperty( "stockedinbranches" )]
+        public string StockedInBranches { get; set; }
 
     }
 

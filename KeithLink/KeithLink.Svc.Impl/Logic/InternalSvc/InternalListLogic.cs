@@ -473,46 +473,61 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             //stopWatch.Start();
 
             var prices = new PriceReturn() { Prices = new List<Price>() };
-            var catalogList = listItems.Select(i => i.CatalogId).Distinct().ToList();
-            
-            if (catalogList[0] == null) {
-                prices.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), 
-                                                     listItems.GroupBy(g => g.ItemNumber)
-                                                             .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
-                                                             .Distinct()
-                                                             .ToList()
-                                                     )
-                                );
-            } else {
-                foreach (var catalogId in catalogList) {
-                    if (catalogLogic.IsSpecialtyCatalog(null, catalogId)) {
-                        var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
-                        prices.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),
-                                                                       listItems.Where(item => item.CatalogId == catalogId)
-                                                                                .GroupBy(g => g.ItemNumber)
-                                                                                .Select(i => new Product() {
-                                                                                    ItemNumber = i.First().ItemNumber,
-                                                                                    CatchWeight = i.First().CatchWeight,
-                                                                                    PackagePriceNumeric = i.First().PackagePriceNumeric,
-                                                                                    CasePriceNumeric = i.First().CasePriceNumeric,
-                                                                                    CategoryName = i.First().CategoryName
-                                                                                })
-                                                                                .Distinct()
-                                                                                .ToList()
-                                                                      )
-                                        );
-                    } else {
-                        prices.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
-                                                             listItems.Where(item => item.CatalogId == catalogId)
-                                                                      .GroupBy(g => g.ItemNumber)
-                                                                      .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
-                                                                      .Distinct()
-                                                                      .ToList()
-                                                             )
-                                        ); //BEK
-                    }
-                }
-            }
+            //var catalogList = listItems.Select(i => i.CatalogId).Distinct().ToList();
+
+            prices.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
+                                                 listItems.GroupBy(g => g.ItemNumber)
+                                                          .Select(i => new Product() {
+                                                              ItemNumber = i.First().ItemNumber,
+                                                              CatchWeight = i.First().CatchWeight,
+                                                              PackagePriceNumeric = i.First().PackagePriceNumeric,
+                                                              CasePriceNumeric = i.First().CasePriceNumeric,
+                                                              CategoryName = i.First().CategoryName,
+                                                              CatalogId = i.First().CatalogId
+                                                          })
+                                                          .Distinct()
+                                                          .ToList()
+                                                 )
+                           );
+            //if (catalogList[0] == null) {
+            //    prices.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), 
+            //                                         listItems.GroupBy(g => g.ItemNumber)
+            //                                                 .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
+            //                                                 .Distinct()
+            //                                                 .ToList()
+            //                                         )
+            //                    );
+            //} else {
+
+            //    foreach (var catalogId in catalogList) {
+            //        if (catalogLogic.IsSpecialtyCatalog(null, catalogId)) {
+            //            var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
+            //            prices.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),
+            //                                                           listItems.Where(item => item.CatalogId == catalogId)
+            //                                                                    .GroupBy(g => g.ItemNumber)
+            //                                                                    .Select(i => new Product() {
+            //                                                                        ItemNumber = i.First().ItemNumber,
+            //                                                                        CatchWeight = i.First().CatchWeight,
+            //                                                                        PackagePriceNumeric = i.First().PackagePriceNumeric,
+            //                                                                        CasePriceNumeric = i.First().CasePriceNumeric,
+            //                                                                        CategoryName = i.First().CategoryName
+            //                                                                    })
+            //                                                                    .Distinct()
+            //                                                                    .ToList()
+            //                                                          )
+            //                            );
+            //        } else {
+            //            prices.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
+            //                                                 listItems.Where(item => item.CatalogId == catalogId)
+            //                                                          .GroupBy(g => g.ItemNumber)
+            //                                                          .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
+            //                                                          .Distinct()
+            //                                                          .ToList()
+            //                                                 )
+            //                            ); //BEK
+            //        }
+            //    }
+            //}
 
             //stopWatch.Stop();
             //var priceTime = stopWatch.ElapsedMilliseconds;

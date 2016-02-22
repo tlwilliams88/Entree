@@ -9,8 +9,7 @@ using System.Dynamic;
 namespace KeithLink.Svc.Core.Models.SiteCatalog
 {
     [DataContract(Name = "ProductsReturn")]
-    public class ProductsReturn
-    {
+    public class ProductsReturn {
         [DataMember(Name = "count")]
         public int Count { get; set; }
 
@@ -26,10 +25,13 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "catalogCounts")]
         public Dictionary<string,int> CatalogCounts { get; set; }
 
-        public ProductsReturn AddRange(ProductsReturn products)
-        {
+        public ProductsReturn AddRange(ProductsReturn products) {
             this.Count += products.Count;
             this.TotalCount += products.TotalCount;
+
+            if (this.Products == null) { 
+                Products = new List<Product>(); 
+            }
             this.Products.AddRange(products.Products);
             //this.Facets
 

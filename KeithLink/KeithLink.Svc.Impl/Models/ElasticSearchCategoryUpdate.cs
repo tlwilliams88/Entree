@@ -32,6 +32,7 @@ namespace KeithLink.Svc.Impl.Models
         public string parentcategoryid { get; set; }
         public string name { get; set; }
         public string ppicode { get; set; }
+        public string department { get; set; }
         public List<ESSubCategories> subcategories { get; set; }
     }
     

@@ -1,38 +1,80 @@
 <div page-header-bar>
   <div header-message>
-    Inventory Valuation Report 
-    <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6" ng-click="clearReport(report.listid)" type="button">Clear</button>
-    <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right" ng-click="saveReport(report)" type="button">Save</button>   
+    Inventory Valuation Report
+  <button class="btn hidden-md hidden-lg btn-lg btn-default pull-right margin-left-6" ng-click="clearReport(report.listid)" type="button">Clear</button> 
+ <button class="btn hidden-md hidden-lg btn-lg btn-primary pull-right" ng-click="saveReport(report)" type="button">Save</button>
   </div>
   <div header-buttons>
-    <button class="btn btn-lg btn-primary" ng-click="saveReport(report)" type="button">Save</button>
+  <button class="btn btn-lg btn-primary" 
+    ng-disabled="inventoryForm.$invalid || inventoryForm.$pristine" 
+    ng-click="saveReport(report)" type="button">Save
+  </button>
+  <button
+    class="btn-lg btn btn-danger"
+    ng-show="reports.length > 0"
+    confirmed-click="deleteReport(report.listid)"
+    ng-confirm-click="{{'This will delete the report created on ' + report.name + '. Are you sure you want to delete this report?'}}">Delete
+  </button>
     <button class="btn btn-lg btn-default" ng-click="clearReport(report.listid)" type="button">Clear</button>
     <a class="btn btn-icon btn-default" ng-click="print()" title="Print"><span class="icon-printer"></span></a>
     <a title="Export" ng-click="openExportModal()" class="btn btn-default btn-icon"><span class="icon-export"></span></a>
   </div>
 </div>
 
-<div class="page-content inventory-report">
-  
-  <div style="max-width:100px;" class="row">
-    <a class="col-xs-12 hidden-print text-large btn-link" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
+
+<!-- Mobile subheader bar -->
+<div class="visible-xs visible-sm hidden-print row page-subheader-bar">
+
+  <button  
+    class="btn-no-style page-subheader-bar__button button-right" 
+    confirmed-click="deleteReport(report.listid)"
+    ng-confirm-click="{{'This will delete the report created on ' + report.name + '. Are you sure you want to delete this report?'}}" 
+    ng-show="reports.length > 0"
+    type="button">
+    Delete
+  </button>
+  <button  
+    class="btn-no-style page-subheader-bar__button button-right" 
+    ng-click="clearReport(report.listid)" 
+    type="button">
+    Clear
+  </button>
+  <button
+    type="submit" 
+    class="btn-no-style page-subheader-bar__button button-right"  
+    ng-disabled="inventoryForm.$invalid || inventoryForm.$pristine"  
+    ng-click="saveReport(report)">
+    Save
+  </button>
+   
+
+  <div class="btn-group pull-left" dropdown is-open="status.listsisopen">
+    <a type="button" class="dropdown-toggle btn-no-style page-subheader-bar__button button-left text-regular">Reports <span class="icon-arrow-down5"></span></a>
+    <ul class="dropdown-menu" role="menu">
+      <li ng-repeat="availableReport in reports track by availableReport.listid" ng-if="::(report.listid !== availableReport.listid)">
+        <a ng-click="goToList(list, selectedCart)">
+          {{availableReport.name}}
+        </a>
+      </li>
+      <li><a ng-click="createReport()">Create a Report</a></li>
+    </ul>
   </div>
 
-<!--   <div class="row">
-    <p class="col-md-12 col-lg-8 hidden-print text-red">This report is still under development.  Right now you can’t save your work, but you can print or export to Excel or PDF.  Please try it out if you have a chance and let us know what you think.</p>
-  </div> -->
+</div>
 
-  <div class="row sub-content">
-    <form class="hidden-print col-md-12 col-lg-8 form-inline" name="addItemByNumberForm">
-      <div style="width:100%" class="form-group">
-        <p class="text-green" ng-show="successMessage">{{successMessage}}</p>
-        <p class="text-red" ng-show="errorMessage">{{errorMessage}}</p>
+<div class="page-content inventory-report">  
+  <div class="row margin-bottom-none">
+    <a class="col-xs-12 hidden-print text-large btn-link max-width-100" ui-sref="menu.reports"><span class="icon-arrow-left6"></span> Back</a>
 
-        <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg">
+    <form class="hidden-print col-md-12 col-lg-10 form-inline" name="addItemByNumberForm">
+      <div class="form-group pull-right text-right">
 
-        <button type="submit" class="btn btn-primary btn-lg" ng-disabled="!itemNumber"  ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
-        
-        <div class="lists-dropdown btn-group hidden-print" dropdown is-open="status.listactions">
+        <p class="text-green margin-right-25" ng-show="successMessage">{{successMessage}}</p>
+        <p class="text-red margin-right-25" ng-show="errorMessage">{{errorMessage}}</p>     
+        <button type="submit" class="btn btn-primary btn-lg margin-right-25 float-right margin-bottom-6"  ng-disabled="!itemNumber"  ng-click="addItemByItemNumber(itemNumber)">Add Item</button>
+        <input type="text" placeholder="Item Number" ng-model="itemNumber" class="item-number-input form-control input-lg  margin-bottom-6 float-right">        
+
+        <div class=" btn-group hidden-print padding-right-25" dropdown is-open="status.listactions" style="text-align:right max-width:100px !important;">
           <button type="button" class="btn btn-lg btn-default dropdown-toggle" ng-disabled="listsLoading">
             <div ng-if="!listsLoading">Add Items from List <span class="icon-arrow-down6"></span></div>
             <div class="text-red" ng-if="listsLoading">Loading Lists...
@@ -48,10 +90,58 @@
         <div class="clearfix"></div>
       </div>
     </form>
+
+  </div>
+<div class="overflow-hide width-full-percent">
+    <div class="width-150 float-left">   
+     <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists" ng-if="resized">
+      <div class="row">
+        <div class="col-sm-12 padding-left-none" sticky>
+          <div class="custom-lists">
+            <h3>Your Reports</h3>
+
+            <div class="btn-group-vertical list-names text-blue">
+              <button 
+                type="button" 
+                ng-repeat="availableReport in reports | sortLists | limitTo: showMoreReportNames ? reports.length : numberReportNamesToShow track by availableReport.listid" 
+                ng-show="reports.length > 0"
+                ng-click="goToReport(availableReport.listid)" 
+                ng-class="{'current-list' : availableReport.listid == report.listid}" 
+                class="btn-lg custom-lists__name btn btn-default btn-list">
+                {{availableReport.name}}
+              </button>
+              <button 
+                type="button"                
+                ng-show="!reports.length"                 
+                class="btn-lg custom-lists__name btn btn-default btn-list current-list">
+                {{today}}
+              </button>
+            </div>
+            <h5>
+              <a 
+                ng-show="reports.length > numberReportNamesToShow" 
+                ng-click="showMoreReportNames = !showMoreReportNames">
+                {{!showMoreReportNames ? '+ Show More' : '- Show Less'}}
+              </a>
+            </h5>            
+          </div>
+            <div class="btn-group-vertical">
+            <button 
+              type="button" 
+              ng-click="createReport()" 
+              class="btn btn-default btn-list text-light btn-lg">
+              Create A Report
+            </button>
+            </div> 
+        </div>
+      </div>
+    </div>
+    </div>
+    <div  class=" items col-md-10 col-xs-12" >
     
-    <form name="inventoryForm" class="style-validation-errors col-md-12 col-lg-8" unsaved-warning-form>
-      <div class="row sub-content">
-        <div class="col-xs-7" style="margin-top: 10px;">
+    <form name="inventoryForm" class="style-validation-errors " width="100%" unsaved-warning-form>
+      <div class="row sub-content height-40">
+        <div class="col-xs-7">
           Showing {{report.items.length}} Item<span ng-if="report.items.length !== 1">s</span>
         </div>
         <div class="text-green currency-value col-xs-5 text-right">
@@ -61,11 +151,20 @@
       <table class="table table-border table-striped-rows table-inventory-valuation" navigate-table>
         <thead>
         <tr fsm-sticky-header scroll-body="'.table-inventory-valuation'" scroll-stop="0" scroll-offset="245">
-            <th class="sort-col-header" ng-click="sortTable('itemid', sortDescending)">
-              Item <span># <span sort-icons field="'itemid'" sortorder="sortDescending" sortby="sortField"></span></span>
+            <th class="sort-col-header" ng-click="sortTable('position', sortDescending)">
+              <span># <span sort-icons field="'position'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header" ng-click="sortTable('itemnumber', sortDescending)">
+              Item <span># <span sort-icons field="'itemnumber'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
             <th class="sort-col-header" ng-click="sortTable('name', sortDescending)">
               <span>Name <span sort-icons field="'name'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('brand_extended_description', sortDescending)">
+              <span>Brand <span sort-icons field="'brand_extended_description'" sortorder="sortDescending" sortby="sortField"></span></span>
+            </th>
+            <th class="sort-col-header hidden-mobile item-usage-drop-column" ng-click="sortTable('class', sortDescending)">
+              <span>Category <span sort-icons field="'class'" sortorder="sortDescending" sortby="sortField"></span></span>
             </th>
             <th class="hidden-mobile-visible-print">Pack/Size</th>
             <th class="hidden-mobile-visible-print sort-col-header" ng-click="sortTable('label', sortDescending)">
@@ -81,22 +180,26 @@
         <tbody>
           <tr ng-repeat-start="item in report.items | orderBy:sortField:sortDescending" ng-class="{ odd : $odd, even: $even }">
             <td>
-              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemid})">{{::item.itemid}}</a>
+              <a>{{item.position}}</a>
+            </td>
+            <td>
+              <a ui-sref="menu.catalog.products.details({itemNumber: item.itemnumber})">{{::item.itemnumber}}</a>
             </td>
             <td>{{::item.name}}</td>
+            <td class="hidden-mobile item-usage-drop-column">{{::item.brand_extended_description}}</td>
+            <td class="hidden-mobile item-usage-drop-column">{{::item.class}}</td>
             <td class="hidden-mobile-visible-print">{{::item.packsize}}</td>
-            <td class="hidden-mobile-visible-print">{{::item.label}}</td>
-            <td class="input-col nowrap counter-container">
-              <button type="button" class="btn btn-warning icon-minus3 hidden-lg" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1; 
-              "></button>                 
-              <input type="text" numeric-validation class="input-number tabstop" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity">
-               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.quantity = item.quantity + 1;"></button> 
+            <td class="hidden-mobile-visible-print label-col">{{::item.label}}</td>
+            <td class="input-col nowrap counter-container">  
+            <button type="button" class="btn btn-warning icon-minus3 hidden-lg" min="0" ng-disabled = "item.quantity < 1"  ng-click="item.quantity = item.quantity -1;"></button> 
+              <input type="text" numeric-validation class="input-number tabstop" ng-blur="confirmQuantity('quantity', item, item.quantity)" id="inventoryRep" ng-model="item.quantity" min="0" length="5" autocomplete="off">
+              <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.quantity = item.quantity + 1;"></button> 
             </td>
             <td class="input-col hidden-xs hidden-sm">
-              <input ng-if="item.hasPackagePrice" name="each" type="checkbox" ng-model="item.each">
+              <input ng-if="item.packageprice > 0" ng-checked = "::((item.caseprice == 0) || item.each)" ng-disabled = "::(item.caseprice == 0)" name="each" type="checkbox" ng-model="item.each">
             </td>
             <td class="hidden-mobile-visible-print">
-              {{item.price | currency}}
+              {{item.each ? item.packageprice : item.caseprice | currency}}
               <span class="text-small" tooltip="Catch weight pricing" ng-if="item.catchweight">LB</span>
             </td>
             <td class="hidden-mobile-visible-print">
@@ -115,6 +218,14 @@
                   <col width="75%" />
                 </colgroup>
                 <tr>
+                  <td>Brand</td>
+                  <td>{{::item.brand_extended_description}}</td>
+                </tr>
+                <tr>
+                  <td>Category</td>
+                  <td>{{::item.class}}</td>
+                </tr>
+                <tr>
                   <td>Pack/Size</td>
                   <td>{{::item.packsize}}</td>
                 </tr>
@@ -122,7 +233,7 @@
                   <td>Label</td>
                   <td>{{::item.label}}</td>
                 </tr>
-                <tr ng-if="item.hasPackagePrice">
+                <tr ng-if="item.packageprice > 0">
                   <td>Each</td>
                   <td>
                     <ng-form name="eachForm_mobile">
@@ -154,12 +265,19 @@
         </tbody>
         <tfoot ng-show="report.items && report.items.length === 0">
           <tr>
-            <td colspan="9">There are no items to display.</td>
+            <td colspan="12">There are no items to display.</td>
           </tr>
         </tfoot>
       </table>
     </form>
+  </div>
+
+
+</div>
+
+
+
     <div class="text-center" loading-spinner="loadingResults"></div>
 
-  </div>
+
 </div>

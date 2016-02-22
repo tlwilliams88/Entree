@@ -96,7 +96,17 @@ namespace KeithLink.Svc.Core.Models.Orders
         public int QantityShipped { get; set; }
 
         [DataMember(Name = "isoutofstock")]
-        public bool IsOutOfStock { get; set; }
+        public bool IsOutOfStock
+        {
+            get
+            {
+                string mfStatus = string.IsNullOrEmpty(MainFrameStatus) ? string.Empty : MainFrameStatus.ToUpper().Trim();
+
+                if (mfStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE, StringComparison.CurrentCultureIgnoreCase)) return true;
+                return false;
+            }
+            set { }
+        }
 
         [DataMember(Name = "status")]
         public string Status { 
@@ -122,6 +132,34 @@ namespace KeithLink.Svc.Core.Models.Orders
                         return Constants.CONFIRMATION_DETAIL_PARTIAL_SHIP_REPLACED_STATUS;
                     case Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_CODE:
                         return Constants.CONFIRMATION_DETAIL_ITEM_SUBBED_STATUS;
+                    case Constants.SPECIALORDERITEM_NEW_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_NEW_STATUS;
+                    case Constants.SPECIALORDERITEM_ERR_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_ERR_STATUS;
+                    case Constants.SPECIALORDERITEM_2MF_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_2MF_STATUS;
+                    case Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_REQ_STATUS;
+                    case Constants.SPECIALORDERITEM_ACC_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_ACC_STATUS;
+                    case Constants.SPECIALORDERITEM_APP_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_APP_STATUS;
+                    case Constants.SPECIALORDERITEM_DEL_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_DEL_STATUS;
+                    case Constants.SPECIALORDERITEM_HLD_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_HLD_STATUS;
+                    case Constants.SPECIALORDERITEM_RCV_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_RCV_STATUS;
+                    case Constants.SPECIALORDERITEM_R_H_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_R_H_STATUS;
+                    case Constants.SPECIALORDERITEM_ATT_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_ATT_STATUS;
+                    case Constants.SPECIALORDERITEM_PTL_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_PTL_STATUS;
+                    case Constants.SPECIALORDERITEM_SHP_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_SHP_STATUS;
+                    case Constants.SPECIALORDERITEM_PUR_STATUS_TRANSLATED_CODE:
+                        return Constants.SPECIALORDERITEM_PUR_STATUS;
                     default:
                         // this could contain messages such as "added", "changed", or "deleted"
                         return mfStatus;

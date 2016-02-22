@@ -37,6 +37,18 @@ angular.module('bekApp')
       $scope.hideRecommendedListCreateButton = true;
     }
 
+      //Toggle scope variable to render Reports side panel when screen is resized
+        $(window).resize(function(){ 
+          $scope.$apply(function(){ 
+            $scope.renderSidePanel();
+          });
+        });
+  
+        $scope.renderSidePanel = function(){
+          $scope.resized = window.innerWidth > 991;
+        }
+       $scope.renderSidePanel();
+
 
     $scope.rowChanged = function(index){
       $scope.indexOfSDestroyedRow = index;
