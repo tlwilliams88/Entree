@@ -85,25 +85,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #endregion
 
         #region methods
-        private void Create(OrderHistoryFile currentFile, bool isSpecialOrder)
-        {
+        private void Create(OrderHistoryFile currentFile, bool isSpecialOrder) {
             // first attempt to find the order, look by confirmation number
             EF.OrderHistoryHeader header = null;
 
-            if (!String.IsNullOrEmpty(currentFile.Header.ControlNumber) && !String.IsNullOrEmpty(currentFile.Header.OrderSystem.ToShortString()))
-            {
+            if (!String.IsNullOrEmpty(currentFile.Header.ControlNumber) && !String.IsNullOrEmpty(currentFile.Header.OrderSystem.ToShortString())) {
                 header = _headerRepo.ReadByConfirmationNumber(currentFile.Header.ControlNumber, currentFile.Header.OrderSystem.ToShortString()).FirstOrDefault();
             }
 
             // second attempt to find the order, look by invioce number
-            if (header == null && !currentFile.Header.InvoiceNumber.Equals("Processing"))
-            {
+            if (header == null && !currentFile.Header.InvoiceNumber.Equals("Processing")) {
                 header = _headerRepo.ReadForInvoice(currentFile.Header.BranchId, currentFile.Header.InvoiceNumber).FirstOrDefault();
             }
 
             // last ditch effort is to create a new header
-            if (header == null)
-            {
+            if (header == null) {
                 header = new EF.OrderHistoryHeader();
                 header.OrderDetails = new List<EF.OrderHistoryDetail>();
             }
@@ -111,46 +107,52 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             currentFile.Header.MergeWithEntity(ref header);
 
             // set isSpecialOrder if that is true; but don't set otherwise (used from two places)
-            if (isSpecialOrder) 
+            if (isSpecialOrder) {
                 header.IsSpecialOrder = true;
+            }
 
             if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
 
-            foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList())
-            {
+            bool hasSpecialItems = false;
+
+            foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList()) {
+                if (string.IsNullOrWhiteSpace(currentDetail.SpecialOrderHeaderId)) {
+                    hasSpecialItems = true;
+                }
 
                 EF.OrderHistoryDetail detail = null;
 
-                if (header.OrderDetails != null && header.OrderDetails.Count > 0)
-                {
+                if (header.OrderDetails != null && header.OrderDetails.Count > 0) {
                     detail = header.OrderDetails.Where(d => (d.LineNumber == currentDetail.LineNumber)).FirstOrDefault();
                 }
 
-                if (detail == null)
-                {
+                if (detail == null) {
                     EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
                     tempDetail.BranchId = header.BranchId;
                     tempDetail.InvoiceNumber = header.InvoiceNumber;
+                    tempDetail.OrderHistoryHeader = header;
 
-                    if (isSpecialOrder)
-                        tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE;
+                    if (isSpecialOrder) {
+                        tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
+                    }
 
                     header.OrderDetails.Add(tempDetail);
-                }
-                else
-                {
+                } else {
                     currentDetail.MergeWithEntityFrameworkModel(ref detail);
 
                     detail.BranchId = header.BranchId;
                     detail.InvoiceNumber = header.InvoiceNumber;
-                    if (isSpecialOrder)
-                        detail.ItemStatus = KeithLink.Svc.Core.Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE;
+                    if (isSpecialOrder) {
+                        detail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
+                    }
                 }
             }
 
             _headerRepo.CreateOrUpdate(header);
 
-            RemoveSpecialOrderItemsFromHistory(header);
+            if (hasSpecialItems) {
+                RemoveSpecialOrderItemsFromHistory(header);
+            }
         }
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
@@ -186,6 +188,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
                     if (po != null) {
                         returnOrder.Status = po.Status;
+                        returnOrder.CommerceId = Guid.Parse(po.Id);
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
                         // needed to reconnect parent orders to special orders
@@ -634,18 +637,22 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                                                      .Distinct()
                                                      .ToList();
 
+            // loop through each special order item in the current order
             foreach (var specialOrderItem in specialOrderInfo) {
+                // find all detail records with the current line's special order info that is not the current order
                 var specialLines = _detailRepo.Read(d => d.BranchId.Equals(order.BranchId)
                                                       && d.SpecialOrderHeaderId.Equals(specialOrderItem.HeaderId)
                                                       && d.SpecialOrderLineNumber.Equals(specialOrderItem.LineNumber)
                                                       && !d.InvoiceNumber.Equals(order.InvoiceNumber))
                                               .ToList();
 
+                // loop through each found detail record
                 foreach (var line in specialLines) {
                     _detailRepo.Delete(line);
 
+                    // check to see if there are any more records on the detail's header record
                     if (_detailRepo.Read(d => d.BranchId.Equals(line.BranchId)
-                                          && d.InvoiceNumber.Equals(line.InvoiceNumber))
+                                           && d.InvoiceNumber.Equals(line.InvoiceNumber))
                                   .Any() == false) {
                         _headerRepo.Delete(h => h.BranchId.Equals(line.BranchId)
                                              && h.InvoiceNumber.Equals(line.InvoiceNumber));
@@ -653,14 +660,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 }
             }
 
-            _unitOfWork.SaveChanges();
+            // this is commented out so that all updates to EF happen in one transaction for the current order
+            //_unitOfWork.SaveChanges();
         }
-
-        //private void RemoveSpecialOrderItemsFromPurchaseOrder(EF.OrderHistoryHeader order) {
-        //    var po = _poRepo.ReadPurchaseOrderByTrackingNumber(order.OriginalControlNumber);
-
-        //    _poRepo.
-        //}
 
         private void RemoveEmptyPurchaseOrder() { }
 

@@ -180,18 +180,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
                 lineItem.SubstitutedItemNumber = value.SubbedOriginalItemNumber.Trim();
             }
             lineItem.MainFrameStatus = value.ItemStatus;
-            switch (value.ItemStatus)
-            {
-                case Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE:
-                    lineItem.MainFrameStatus = Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_STATUS;
-                    break;
-            }
             lineItem.Each = value.UnitOfMeasure.Equals(UnitOfMeasure.Package.ToShortString()) ? true : false;
-            if (lineItem.Status.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS,
-                        StringComparison.CurrentCultureIgnoreCase))
-            {
-                lineItem.IsOutOfStock = true;
-            }
             return lineItem;
         }
 
