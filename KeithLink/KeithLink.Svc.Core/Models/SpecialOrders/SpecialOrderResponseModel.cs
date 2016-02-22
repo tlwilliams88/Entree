@@ -10,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Models.SpecialOrders
 {
-    [DataContract(Name = "specialorderresponse")]
+    [DataContract]
     public class SpecialOrderResponseModel : BaseQueueMessage
     {
-        [DataMember(Name = "header")]
+        [DataMember(Name = "Header")]
         public ResponseHeader Header { get; set; }
 
-        [DataMember(Name = "item")]
+        [DataMember(Name = "Item")]
+
         public ResponseItem Item { get; set; }
     }
 }

@@ -153,6 +153,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public string OnHandQty { get; set; }
         [DataMember(Name = "vendor")]
         public string Vendor { get; set; }
+        [DataMember( Name = "stockedinbranches" )]
+        public string StockedInBranches { get; set; }
     }
 
 }
