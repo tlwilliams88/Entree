@@ -46,12 +46,28 @@
 
 	<xs:element name="Item" msdata:IsDataSet="true">
 		<xs:complexType>
-			<xs:attribute name="number" type="itemNumberType" use="required"/>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="number" type="itemNumberType"></xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Source" type="sourceNameType"></xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="Category" type="categoryNameType"></xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="CaseCost" type="xs:decimal"></xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="PackageCost" type="xs:decimal"></xs:element>
+        <xs:element minOccurs="0" maxOccurs="1" name="IsCatchWeight" type="xs:boolean"></xs:element>
+      </xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
 	<!-- Power Net Specific data types -->
-	<xs:simpleType name="companyType">
+  <xs:simpleType name="categoryNameType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z0-9\s]*"/>
+      <xs:whiteSpace value="preserve"/>
+      <xs:minLength value="1"/>
+      <xs:maxLength value="50"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="companyType">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="[A-Z0-9\s]{3}"/>
 			<xs:whiteSpace value="preserve"/>
@@ -73,4 +89,14 @@
 			<xs:maxLength value="10"/>
 		</xs:restriction>
 	</xs:simpleType>
+
+  <xs:simpleType name="sourceNameType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z0-9\s]*"/>
+      <xs:whiteSpace value="preserve"/>
+      <xs:minLength value="0"/>
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+
 </xs:schema>

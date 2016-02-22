@@ -210,15 +210,22 @@ namespace KeithLink.Svc.Impl.Logic
             var pricing = new PriceReturn() { Prices = new List<Price>() };
 
             foreach (var catalogId in catalogList) {
-                var tempProducts = catalogLogic.GetProductsByIds(catalogId, cart.Items.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
+                var tempProducts = catalogLogic.GetProductsByIds(catalogId, 
+                                                                 cart.Items.Where(i => i.CatalogId.Equals(catalogId))
+                                                                           .Select(i => i.ItemNumber)
+                                                                           .Distinct()
+                                                                           .ToList()
+                                                                );
                 products.AddRange(tempProducts);
-                if (catalogLogic.IsSpecialtyCatalog(null, catalogId)) {
-                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
-                    pricing.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1), tempProducts.Products));
-                } else {
-                    pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products)); //BEK
-                }
+                //if (catalogLogic.IsSpecialtyCatalog(null, catalogId)) {
+                //    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
+                //    pricing.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1), tempProducts.Products));
+                //} else {
+                //    pricing.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), tempProducts.Products)); //BEK
+                //}
             }
+
+            pricing.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products));
 
 			var productHash = products.Products.ToDictionary(p => p.ItemNumber);
 			var priceHash = pricing.Prices.ToDictionary(p => p.ItemNumber);
