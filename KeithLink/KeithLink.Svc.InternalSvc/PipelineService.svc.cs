@@ -1,5 +1,8 @@
 ﻿using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
 using KeithLink.Svc.InternalSvc.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,33 +17,32 @@ namespace KeithLink.Svc.InternalSvc
 	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
 	public class PipelineService : IPipelineService
 	{
-		private readonly IPriceLogic priceLogic;
-        private readonly ICatalogLogic catalogLogic;
+		private readonly IPriceLogic _priceLogic;
+        private readonly ICatalogLogic _catalogLogic;
 
 		public PipelineService(IPriceLogic priceLogic, ICatalogLogic catalogLogic)
 		{
-			this.priceLogic = priceLogic;
-            this.catalogLogic = catalogLogic;
+			_priceLogic = priceLogic;
+            _catalogLogic = catalogLogic;
 		}
 
-		public Core.Models.SiteCatalog.PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Core.Models.SiteCatalog.Product> products)
+		public Core.Models.SiteCatalog.PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Product> products)
 		{
             var catalogList = products.Select(i => i.CatalogId).Distinct().ToList();
-            var pricing = new Core.Models.SiteCatalog.PriceReturn() { Prices = new List<Core.Models.SiteCatalog.Price>() };
-            foreach (var catalogId in catalogList)
-            {
-                var tempProducts = catalogLogic.GetProductsByIds(catalogId, products.Where(i => i.CatalogId.Equals(catalogId)).Select(i => i.ItemNumber).Distinct().ToList());
-                if (!catalogLogic.IsSpecialtyCatalog(null, catalogId))
-                {
-                    pricing.AddRange(priceLogic.GetPrices(catalogId, customerNumber, shipDate, tempProducts.Products)); //BEK
-                }
-                else {
-                    var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
-                    pricing.AddRange(priceLogic.GetNonBekItemPrices(BranchId, customerNumber, source, shipDate, tempProducts.Products));
-                }                    
+
+            ProductsReturn completedProducts = new ProductsReturn();
+            
+            foreach (var catalogId in catalogList) {
+                completedProducts.AddRange(_catalogLogic.GetProductsByIds(catalogId, 
+                                                                          products.Where(i => i.CatalogId.Equals(catalogId, StringComparison.InvariantCultureIgnoreCase))
+                                                                                  .Select(i => i.ItemNumber)
+                                                                                  .Distinct()
+                                                                                  .ToList()
+                                                                          )
+                                          );
             }
-            // need to split for bek/non-bek
-			return priceLogic.GetPrices(BranchId, customerNumber, shipDate, products);
+
+			return _priceLogic.GetPrices(BranchId, customerNumber, shipDate, completedProducts.Products);
 		}
 	}
 }

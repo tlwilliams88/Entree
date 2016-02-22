@@ -109,11 +109,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             PriceReturn pricingInfo = null;
 
-            if (IsSpecialtyCatalog(searchModel.CatalogType)) {
-                pricingInfo = _priceLogic.GetNonBekItemPrices(context.BranchId, context.CustomerId, searchModel.CatalogType, DateTime.Now.AddDays(1), prods.Products);
-            } else {
+            //if (IsSpecialtyCatalog(searchModel.CatalogType)) {
+            //    pricingInfo = _priceLogic.GetNonBekItemPrices(context.BranchId, context.CustomerId, searchModel.CatalogType, DateTime.Now.AddDays(1), prods.Products);
+            //} else {
                 pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
-            }
+            //}
             
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
@@ -293,11 +293,11 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             PriceReturn pricingInfo = null;
 
-            if (IsSpecialtyCatalog(catalogType)) {
-                pricingInfo = _priceLogic.GetNonBekItemPrices(bekBranchId, catalogInfo.CustomerId, catalogType, DateTime.Now.AddDays(1), new List<Product>() { ret });
-            } else { 
-                pricingInfo = _priceLogic.GetPrices(bekBranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
-            }
+            //if (IsSpecialtyCatalog(catalogType)) {
+            //    pricingInfo = _priceLogic.GetNonBekItemPrices(bekBranchId, catalogInfo.CustomerId, catalogType, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            //} else { 
+            pricingInfo = _priceLogic.GetPrices(bekBranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            //}
 
             if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any()) {
                 var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();
@@ -337,10 +337,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             //PriceReturn pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
             PriceReturn pricingInfo = null;
-            if (!IsSpecialtyCatalog(null,ret.CatalogId))
-                pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
-            else
-                pricingInfo = _priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, GetCatalogTypeFromCatalogId(ret.CatalogId), DateTime.Now.AddDays(1), new List<Product>() { ret });
+            //if (!IsSpecialtyCatalog(null,ret.CatalogId))
+            pricingInfo = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), new List<Product>() { ret });
+            //else
+            //    pricingInfo = _priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, GetCatalogTypeFromCatalogId(ret.CatalogId), DateTime.Now.AddDays(1), new List<Product>() { ret });
 
             if (pricingInfo != null && pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).Any()) {
                 var price = pricingInfo.Prices.Where(p => p.ItemNumber.Equals(ret.ItemNumber)).First();

@@ -1,4 +1,5 @@
 ﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Impl.Models.SiteCatalog.Schemas;
@@ -173,12 +174,32 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             custRow.Number = customerNumber;
             request.Customer.AddCustomerRow(custRow);
 
-            request.Items.AddItemsRow(request.Items.NewItemsRow());
+            PricingRequestMain.ItemsRow items = request.Items.NewItemsRow();
+            request.Items.AddItemsRow(items);
 
             foreach (Product item in products)
             {
                 PricingRequestMain._ItemRow itemRow = request._Item.New_ItemRow();
                 itemRow.number = item.ItemNumber;
+
+                string source = GetSourceCatalog(item.CatalogId);
+                if (!source.Equals(Constants.CATALOG_BEK)) {
+                    if (!item.IsSpecialtyCatalog && item.Unfi.StockedInBranches.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
+                    //if (!item.IsSpecialtyCatalog && item.Brand.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
+                        source = Constants.CATALOG_BEK;
+                    }
+                }
+
+                itemRow.Source = source;
+
+                if (!source.Equals(Constants.CATALOG_BEK)) {
+                    itemRow.Category = item.CategoryName;
+                    itemRow.IsCatchWeight = item.CatchWeight;
+                    itemRow.CaseCost = (decimal)item.CasePriceNumeric;
+                    itemRow.PackageCost = (decimal)item.PackagePriceNumeric;
+                }
+
+                itemRow.SetParentRow(items);
                 request._Item.Add_ItemRow(itemRow);
             }
 
@@ -202,6 +223,25 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
             response.ReadXml(responseBody, System.Data.XmlReadMode.InferSchema);
 
             return response;
+        }
+
+        private string GetSourceCatalog(string catalogId) {
+            switch (catalogId.ToLower()){
+                case "fam":
+                case "faq":
+                case "far":
+                case "fdf":
+                case "fhs":
+                case "flr":
+                case "fok":
+                case "fsa":
+                    return Constants.CATALOG_BEK;
+                case "unfi_5":
+                case "unfi_7":
+                    return Constants.CATALOG_UNFI;
+                default:
+                    return null;
+            }
         }
     }
 }

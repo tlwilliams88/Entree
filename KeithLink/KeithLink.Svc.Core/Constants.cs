@@ -25,6 +25,9 @@ namespace KeithLink.Svc.Core
         public const string BRANCH_FSA = "FSA";
         public const string BRANCH_GOF = "GOF";
 
+        public const string CATALOG_BEK = "BEK";
+        public const string CATALOG_UNFI = "UNFI";
+
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
         public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
         public const string REGEX_PASSWORD_PATTERN = @"^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d]).*$";

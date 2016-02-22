@@ -304,6 +304,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>NonBekItemPricingRequest.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Models\SiteCatalog\Schemas\PricingRequest.cs">
+      <DependentUpon>PricingRequest.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
     <Compile Include="Logic\SiteCatalog\SiteCatalogLogicImpl.cs" />
     <Compile Include="Repository\Cache\CacheRefreshRepositoryImpl.cs" />
