@@ -133,7 +133,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     tempDetail.OrderHistoryHeader = header;
 
                     if (isSpecialOrder) {
-                        tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE;
+                        tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
                     }
 
                     header.OrderDetails.Add(tempDetail);
@@ -143,7 +143,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     detail.BranchId = header.BranchId;
                     detail.InvoiceNumber = header.InvoiceNumber;
                     if (isSpecialOrder) {
-                        detail.ItemStatus = KeithLink.Svc.Core.Constants.CONFIRMATION_DETAIL_ITEM_REQUESTED_CODE;
+                        detail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
                     }
                 }
             }
@@ -188,6 +188,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
                     if (po != null) {
                         returnOrder.Status = po.Status;
+                        returnOrder.CommerceId = Guid.Parse(po.Id);
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
                         // needed to reconnect parent orders to special orders

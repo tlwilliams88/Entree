@@ -85,6 +85,7 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES = "RabbitMQOrderUpdateExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_SPECIALORDER_UPDATES = "RabbitMQSpecialOrderUpdateExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_CREATED = "RabbitMQOrderCreatedExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
@@ -95,6 +96,7 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
+        private const string KEY_RABBITMQ_QUEUE_SPECIALORDER_UPDATES = "RabbitMQSpecialOrderUpdateQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_CREATED = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
@@ -753,7 +755,24 @@ namespace KeithLink.Svc.Impl {
             }
         }
 
-        public static string RabbitMQQueueAccess {
+        public static string RabbitMQExchangeSpecialOrderUpdateRequests
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_SPECIALORDER_UPDATES, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueSpecialOrderUpdateRequests
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_QUEUE_SPECIALORDER_UPDATES, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueAccess
+        {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ACCESS, string.Empty);
             }

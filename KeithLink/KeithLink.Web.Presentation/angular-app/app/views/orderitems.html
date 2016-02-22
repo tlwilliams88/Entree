@@ -43,7 +43,10 @@
           <div class="order-item-title">Total Cost</div>
           <div class="order-item-value-1">{{UNFIOrder.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
-          <div class="order-item-value-2">{{UNFIOrder.itemcount}}</div>
+          <div class="order-item-value-2">
+            {{UNFIOrder.itemcount}} <ng-pluralize count="UNFIOrder.itemcount" when="{'one': 'Item', 'other': 'Items'}"></ng-pluralize>
+            / {{UNFIOrder.piececount}} <ng-pluralize count="UNFIOrder.piececount" when="{'one': 'Piece', 'other': 'Pieces'}"></ng-pluralize>
+          </div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Invoice Status</div>
@@ -276,7 +279,10 @@
           <div class="order-item-title">Total Cost</div>
           <div class="order-item-value-1">{{order.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
-          <div class="order-item-value-2">{{order.itemcount}}</div>
+          <div class="order-item-value-2">
+            {{order.itemcount}} <ng-pluralize count="order.itemcount" when="{'one': 'Item', 'other': 'Items'}"></ng-pluralize>
+            / {{order.piececount}} <ng-pluralize count="order.piececount" when="{'one': 'Piece', 'other': 'Pieces'}"></ng-pluralize>
+          </div>
         </div>
         <div class="order-item">
           <div class="order-item-title">Invoice Status</div>

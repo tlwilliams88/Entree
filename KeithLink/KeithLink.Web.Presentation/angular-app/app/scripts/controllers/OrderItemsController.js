@@ -18,8 +18,19 @@ angular.module('bekApp')
     });
   };
 
+  function calculatePieces(order){   
+    var pieceCount = 0;
+    if(order.items && order.items.length > 0){
+      order.items.forEach(function(item){
+        pieceCount = pieceCount + item.quantityordered;
+      })
+    }
+    order.piececount = pieceCount   
+  }
+
   $scope.setOrder = function(order){
-      if(order.catalogtype === 'UNFI,' || order.catalogtype === 'UNFI'){
+    calculatePieces(order);
+    if(order.catalogtype === 'UNFI,' || order.catalogtype === 'UNFI'){
       $scope.UNFIOrder = $scope.filterDeletedItems(order);
     }
     else{

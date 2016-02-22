@@ -67,7 +67,7 @@
             <label for="password">Password</label>
             <span ng-show="registrationForm.password.$error.required && registrationForm.password.$dirty" class="text-red">Password is required</span>
             <span ng-show="registrationForm.password.$error.passwordRequirements && registrationForm.password.$dirty && !registrationForm.password.$error.required" class="text-red">Must contain one uppercase letter, one lowercase letter, and a number. Minimum length is 8 characters. Cannot contain any part of your name or email address.</span>
-            <input password-requirements required class="form-control" id="password" email-address="{{loginInfo.username}}" type="password" name="password" ng-model="registerUser.password">
+            <input password-requirements required class="form-control" id="password" email-address="{{registerUser.email}}" type="password" name="password" ng-model="registerUser.password">
           </div>
           <div class="col-md-6 form-group">
             <label for="confirmPassword">Confirm Password</label>
@@ -103,6 +103,8 @@
             </div>
           </div>
         </div>
+
+        <hr>
 
         <div class="row">
           <div class="col-xs-12">

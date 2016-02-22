@@ -549,6 +549,7 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                     unfi.Flag4 = oProd._source.flag4.ToString();
                     unfi.OnHandQty = oProd._source.onhandqty.ToString();
                     unfi.Vendor = oProd._source.vendor1.ToString();
+                    unfi.StockedInBranches = oProd._source.stockedinbranches.ToString();
 
                     p.Unfi = unfi;
             }
