@@ -205,7 +205,7 @@
         <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList" ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) track by item.listitemid"          
             ng-class="{ odd : $odd, even: $even }">
 
-          <tr>
+          <tr id="rowForFocus">
             <td>
               {{::item.position}}
               <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>

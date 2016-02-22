@@ -9,64 +9,65 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders {
     [DataContract]
     public class ResponseItem
     {
-        [DataMember(Name = "catalog")]
+        [DataMember(Name = "Catalog")]
         public string Catalog { get; set; }
 
-        [DataMember(Name = "linenumber")]
+        [DataMember(Name = "LineNumber")]
         public string LineNumber { get; set; }
 
-        [DataMember(Name = "itemstatusid")]
+        [DataMember(Name = "ItemStatusId")]
         public string ItemStatusId { get; set; }
 
-        [DataMember(Name = "manufacturernumber")]
+        [DataMember(Name = "ManufacturerNumber")]
         public string ManufacturerNumber { get; set; }
 
-        [DataMember(Name = "gtinupc")]
+        [DataMember(Name = "GtinUpc")]
         public string GtinUpc { get; set; }
 
-        [DataMember(Name = "description")]
+        [DataMember(Name = "Description")]
         public string Description { get; set; }
 
-        [DataMember(Name = "quantityrequested")]
+        [DataMember(Name = "QuantityRequested")]
         public Int16? QuantityRequested { get; set; }
 
-        [DataMember(Name = "quantityshipped")]
+        [DataMember(Name = "QuantityShipped")]
         public Int16? QuantityShipped { get; set; }
 
-        [DataMember(Name = "unitofmeasure")]
+        [DataMember(Name = "UnitOfMeasure")]
         public string UnitOfMeasure { get; set; }
 
-        [DataMember(Name = "itemnumber")]
+        [DataMember(Name = "ItemNumber")]
         public string ItemNumber { get; set; }
 
-        [DataMember(Name = "invoicenumber")]
+        [DataMember(Name = "InvoiceNumber")]
         public string InvoiceNumber { get; set; }
 
-        [DataMember(Name = "estimatecost")]
-        public float? EstimateCost { get; set; } 
+        [DataMember(Name = "EstimateCost")]
+        public float? EstimateCost { get; set; }
 
-        [DataMember(Name = "price")]
+        [DataMember(Name = "Price")]
         public float? Price { get; set; }
 
-        [DataMember(Name = "estimatedgppercent")]
+        [DataMember(Name = "EstimatedGPPercent")]
         public decimal? EstimatedGPPercent { get; set; }
 
-        [DataMember(Name = "comments")]
+        [DataMember(Name = "Comments")]
         public string Comments { get; set; }
 
-        [DataMember(Name = "ponumber")]
+        [DataMember(Name = "PONumber")]
         public string PONumber { get; set; }
 
-        [DataMember(Name = "estimatedarrival")]
-        public DateTime? EstimatedArrival { get; set; }
+        [DataMember(Name = "EstimatedArrival")]
+        public string EstimatedArrival { get; set; }
 
-        [DataMember(Name = "arrivaldateflag")]
+        [DataMember(Name = "ArrivalDateFlag")]
         public string ArrivalDateFlag { get; set; }
 
-        [DataMember(Name = "updatedby")]
+        [DataMember(Name = "UpdatedBy")]
         public string UpdatedBy { get; set; }
 
-        [DataMember(Name = "shipmethodid")]
+        [DataMember(Name = "ShipMethodId")]
+
         public byte ShipMethodId { get; set; }
     }
 }

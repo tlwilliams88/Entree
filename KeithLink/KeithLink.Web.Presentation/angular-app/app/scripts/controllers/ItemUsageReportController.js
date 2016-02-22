@@ -14,6 +14,7 @@ angular.module('bekApp')
 
   $scope.itemusagequery = {};
   $scope.itemUsageForm = {};
+  $scope.totalCost = 0;
 
   var initialFromDate = new Date();
   initialFromDate = initialFromDate.setMonth(initialFromDate.getMonth() - 6);
@@ -38,6 +39,10 @@ angular.module('bekApp')
       .then(function(items) {
         $scope.itemusages = items;
         $scope.loadingResults = false;
+        angular.forEach(items, function(item, index) {
+            $scope.totalCost += item.totalcost;
+        });
+        return $scope.totalCost;
       });
   }
 

@@ -695,7 +695,8 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           CartService.renameCart = false;
         });
       }
-    }      
+    }
+        $('#rowForFocus').find('input:first').focus(); 
     };
 
     $scope.generateNewCartForDisplay = function() {
