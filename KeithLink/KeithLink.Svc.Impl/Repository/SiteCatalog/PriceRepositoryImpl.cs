@@ -184,8 +184,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
 
                 string source = GetSourceCatalog(item.CatalogId);
                 if (!source.Equals(Constants.CATALOG_BEK)) {
-                    //if (!item.IsSpecialtyCatalog && item.StockedInBranches.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
-                    if (!item.IsSpecialtyCatalog && item.Brand.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
+                    if (!item.IsSpecialtyCatalog && item.Unfi.StockedInBranches.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
+                    //if (!item.IsSpecialtyCatalog && item.Brand.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
                         source = Constants.CATALOG_BEK;
                     }
                 }

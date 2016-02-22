@@ -1463,7 +1463,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnnumber = new global::System.Data.DataColumn("number", typeof(string), null, global::System.Data.MappingType.Element);
+                this.columnnumber = new global::System.Data.DataColumn("number", typeof(string), null, global::System.Data.MappingType.Attribute);
                 base.Columns.Add(this.columnnumber);
                 this.columnSource = new global::System.Data.DataColumn("Source", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnSource);
@@ -1478,6 +1478,7 @@ namespace KeithLink.Svc.Impl.Models.SiteCatalog.Schemas {
                 this.columnItems_Id = new global::System.Data.DataColumn("Items_Id", typeof(int), null, global::System.Data.MappingType.Hidden);
                 base.Columns.Add(this.columnItems_Id);
                 this.columnnumber.AllowDBNull = false;
+                this.columnnumber.Namespace = "";
                 this.columnnumber.MaxLength = 10;
                 this.columnSource.MaxLength = 20;
                 this.columnCategory.MaxLength = 50;

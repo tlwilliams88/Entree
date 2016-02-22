@@ -47,13 +47,13 @@
 	<xs:element name="Item" msdata:IsDataSet="true">
 		<xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="1" maxOccurs="1" name="number" type="itemNumberType"></xs:element>
         <xs:element minOccurs="0" maxOccurs="1" name="Source" type="sourceNameType"></xs:element>
         <xs:element minOccurs="0" maxOccurs="1" name="Category" type="categoryNameType"></xs:element>
         <xs:element minOccurs="0" maxOccurs="1" name="CaseCost" type="xs:decimal"></xs:element>
         <xs:element minOccurs="0" maxOccurs="1" name="PackageCost" type="xs:decimal"></xs:element>
         <xs:element minOccurs="0" maxOccurs="1" name="IsCatchWeight" type="xs:boolean"></xs:element>
       </xs:sequence>
+      <xs:attribute name="number" type="itemNumberType" use="required"/>
 		</xs:complexType>
 	</xs:element>
 
