@@ -31,12 +31,24 @@ namespace KeithLink.Common.Core.Extensions
             return value.ToString("MM/dd/yyyy");
         }
 
+        public static string ToLongDateFormatWithTime(this DateTime value) {
+            return value.ToString("MM/dd/yyyy HH:mm:ss");
+        }
+
         public static string ToShortDateFormat(this DateTime value) {
             return value.ToString("M/d/yyyy");
         }
 
+        public static string ToShortDateFormatWithTime(this DateTime value) {
+            return value.ToString("M/d/yyyy HH:mm:ss");
+        }
+
         public static string ToYearFirstFormat(this DateTime currentTime) {
             return currentTime.ToString("yyyyMMdd");
+        }
+
+        public static string ToYearFirstFormatWithTime(this DateTime currentTime) {
+            return currentTime.ToString("yyyyMMddHHmmss");
         }
         #endregion
     }

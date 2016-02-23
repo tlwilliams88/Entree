@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Core.Models.Orders.Confirmations
     {
         #region properties
         [DataMember(Name = "ConfirmationDate")]
-        public DateTime ConfirmationDate { get; set; }
+        public string ConfirmationDate { get; set; }
 
         [DataMember(Name = "Branch")]
         public string Branch { get; set; }
