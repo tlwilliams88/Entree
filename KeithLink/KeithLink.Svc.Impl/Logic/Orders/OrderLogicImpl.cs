@@ -204,7 +204,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 InvoiceNumber = purchaseOrder.Properties["MasterNumber"] == null ? string.Empty : purchaseOrder.Properties["MasterNumber"].ToString(),
                 IsChangeOrderAllowed = (purchaseOrder.Properties["MasterNumber"] != null && (purchaseOrder.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
                 Status = System.Text.RegularExpressions.Regex.Replace(purchaseOrder.Status, "([a-z])([A-Z])", "$1 $2"),
-                RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)purchaseOrder.Properties["RequestedShipDate"],
+                RequestedShipDate = purchaseOrder.Properties["RequestedShipDate"].ToString(),
                 Items = purchaseOrder.Properties["LineItems"] == null || headerOnly ? new List<OrderLine>() : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 ItemCount = purchaseOrder.Properties["LineItems"] == null ? 0 : ((CommerceServer.Foundation.CommerceRelationshipList)purchaseOrder.Properties["LineItems"]).Count,
                 CommerceId = Guid.Parse(purchaseOrder.Id),
@@ -213,14 +213,20 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         private Order ToOrder(Core.Models.Orders.History.OrderHistoryHeader orderHistoryHeader) {
+            DateTime createdDateTime = new DateTime();
+ 
+            if (!DateTime.TryParse(orderHistoryHeader.DeliveryDate, out createdDateTime)){
+                createdDateTime = DateTime.Now;
+            }
+
             return new Order() {
-                CreatedDate = orderHistoryHeader.DeliveryDate.HasValue ? orderHistoryHeader.DeliveryDate.Value : DateTime.Now,
+                CreatedDate = createdDateTime,
                 OrderNumber = orderHistoryHeader.ControlNumber,
                 OrderTotal = orderHistoryHeader.Items.Sum(l => l.SellPrice),
                 InvoiceNumber = orderHistoryHeader.InvoiceNumber,
                 IsChangeOrderAllowed = false,
                 Status = orderHistoryHeader.OrderStatus,
-                RequestedShipDate = DateTime.UtcNow,
+                RequestedShipDate = DateTime.Now.ToShortDateFormat(),
                 Items = orderHistoryHeader.Items.Select(l => ToOrderLine(l)).ToList(),
                 CommerceId = Guid.Empty, // could be orders from any system
             };
