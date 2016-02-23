@@ -10977,11 +10977,11 @@ namespace KeithLink.Svc.Core.Models.Generated
 	    /// <value>
 	    /// The RequestedShipDate property from the property collection.
 	    /// </value>
-		public virtual DateTime? RequestedShipDate
+		public virtual string RequestedShipDate
 		{
 			get
 			{
-				return this._commerceEntity.GetPropertyValue(PropertyName.RequestedShipDate) as DateTime?;
+				return this._commerceEntity.GetPropertyValue(PropertyName.RequestedShipDate) as string;
 			}
 	
 			set
