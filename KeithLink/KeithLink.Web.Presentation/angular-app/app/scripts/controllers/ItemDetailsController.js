@@ -27,7 +27,9 @@ angular.module('bekApp')
       $scope.item.orderHistoryKeys = Object.keys(item.orderhistory);
     });
 
-    ProductService.saveRecentlyViewedItem(item.itemnumber);
+    if(!item.is_specialty_catalog){
+      ProductService.saveRecentlyViewedItem(item.itemnumber);
+    }
 
     $scope.openNotesModal = function (item) {
 
