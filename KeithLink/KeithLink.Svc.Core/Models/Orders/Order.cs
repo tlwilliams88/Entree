@@ -34,7 +34,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 
 		[DataMember(Name = "deliverydate")]
 		[Description("Delivery Date")]
-		public DateTime? DeliveryDate { get; set; }
+		public string DeliveryDate { get; set; }
 						
 		[DataMember(Name = "invoicenumber")]
 		[Description("Invoice #")]
@@ -58,7 +58,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 		public DateTime CreatedDate { get; set; }
 
         [DataMember(Name = "requestedshipdate")]
-        public DateTime RequestedShipDate { get; set; }
+        public string RequestedShipDate { get; set; }
         
         [DataMember(Name = "ischangeorderallowed")]
         public bool IsChangeOrderAllowed { get; set; }
@@ -70,13 +70,13 @@ namespace KeithLink.Svc.Core.Models.Orders
         public Guid CommerceId { get; set; }
 
         [DataMember(Name = "estimateddeliverytime")]
-        public DateTime? EstimatedDeliveryTime { get; set; }
+        public string EstimatedDeliveryTime { get; set; }
 
         [DataMember(Name = "scheduleddeliverytime")]
-        public DateTime? ScheduledDeliveryTime { get; set; }
+        public string ScheduledDeliveryTime { get; set; }
 
         [DataMember(Name = "actualdeliverytime")]
-        public DateTime? ActualDeliveryTime { get; set; }
+        public string ActualDeliveryTime { get; set; }
 
         [DataMember(Name = "deliveryoutofsequence")]
         public bool? DeliveryOutOfSequence { get; set; }
