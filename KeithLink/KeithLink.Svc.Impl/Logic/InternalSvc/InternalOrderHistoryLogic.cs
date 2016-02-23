@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Core.Helpers;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
 
 using KeithLink.Svc.Core.Enumerations;
@@ -311,8 +312,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <param name="endDate"></param>
         /// <returns></returns>
         private List<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate.ToDateTime() >= startDate && h.DeliveryDate.ToDateTime() <= endDate, i => i.OrderDetails).ToList();
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) 
+                                                                     && h.CustomerNumber.Equals(customerInfo.CustomerId) 
+                                                                     && h.DeliveryDate.ToDateTime() >= startDate 
+                                                                     && h.DeliveryDate.ToDateTime() <= endDate, 
+                                                                   i => i.OrderDetails)
+                                                             .ToList();
 
             List<Order> orders = new List<Order>();
 
