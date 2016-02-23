@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Reports
 	{
         IEnumerable<OrderLine> GetOrderLinesForItemUsageReport(
 			string branchId, string customerNumber,
-			DateTime fromDateTime, DateTime toDateTime,
+			string fromDateTime, string toDateTime,
 			string sortDir, string sortField);
     }
 }

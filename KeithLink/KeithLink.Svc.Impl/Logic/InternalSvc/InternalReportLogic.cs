@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -36,8 +37,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         {
 			var orderLines = reportRepository.GetOrderLinesForItemUsageReport(usageQuery.UserSelectedContext.BranchId,
 					usageQuery.UserSelectedContext.CustomerId,
-					usageQuery.fromDate.Value,
-					usageQuery.toDate.Value.AddDays(1),
+					usageQuery.fromDate.Value.ToLongDateFormat(),
+					usageQuery.toDate.Value.AddDays(1).ToLongDateFormat(),
 					usageQuery.sortDir,
 					usageQuery.sortField).ToList();
 
