@@ -877,23 +877,23 @@
     <None Include="Models\Orders\Schemas\ShippingDateResponse.xss">
       <DependentUpon>ShippingDateResponse.xsd</DependentUpon>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\BEKFoundationService1.wsdl" />
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService6.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\BEKFoundationService.wsdl" />
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService61.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService62.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService63.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService64.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService65.xsd">
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService5.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.FoundationService\KeithLink.Svc.Impl.com.benekeith.FoundationService.AuthorizeRequestResponse.datasource">
@@ -1274,7 +1274,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\com.benekeith.FoundationService\FoundationService1.disco" />
+    <None Include="Service References\com.benekeith.FoundationService\FoundationService.disco" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

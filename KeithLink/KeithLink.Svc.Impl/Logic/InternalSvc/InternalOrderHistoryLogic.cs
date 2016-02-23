@@ -278,8 +278,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
             List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
                                                                                && h.CustomerNumber.Equals( customerInfo.CustomerId ) 
-                                                                               && h.DeliveryDate >= startDate 
-                                                                               && h.DeliveryDate <= endDate, i => i.OrderDetails ).ToList();
+                                                                               && h.DeliveryDate.ToDateTime() >= startDate 
+                                                                               && h.DeliveryDate.ToDateTime() <= endDate, i => i.OrderDetails ).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
@@ -312,7 +312,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <returns></returns>
         private List<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
             List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails).ToList();
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate.ToDateTime() >= startDate && h.DeliveryDate.ToDateTime() <= endDate, i => i.OrderDetails).ToList();
 
             List<Order> orders = new List<Order>();
 
