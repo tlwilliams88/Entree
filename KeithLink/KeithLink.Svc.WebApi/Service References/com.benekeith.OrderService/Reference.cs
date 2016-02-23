@@ -16,10 +16,10 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
     public interface IOrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomer", ReplyAction="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomerResponse")]
-        System.Nullable<System.DateTime> ReadLatestOrderModifiedDateForCustomer(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        string ReadLatestOrderModifiedDateForCustomer(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomer", ReplyAction="http://tempuri.org/IOrderService/ReadLatestOrderModifiedDateForCustomerResponse")]
-        System.Threading.Tasks.Task<System.Nullable<System.DateTime>> ReadLatestOrderModifiedDateForCustomerAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
+        System.Threading.Tasks.Task<string> ReadLatestOrderModifiedDateForCustomerAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/GetLastFiveOrderHistory", ReplyAction="http://tempuri.org/IOrderService/GetLastFiveOrderHistoryResponse")]
         KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile[] GetLastFiveOrderHistory(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo, string itemNumber);
@@ -121,11 +121,11 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
                 base(binding, remoteAddress) {
         }
         
-        public System.Nullable<System.DateTime> ReadLatestOrderModifiedDateForCustomer(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+        public string ReadLatestOrderModifiedDateForCustomer(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
             return base.Channel.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }
         
-        public System.Threading.Tasks.Task<System.Nullable<System.DateTime>> ReadLatestOrderModifiedDateForCustomerAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+        public System.Threading.Tasks.Task<string> ReadLatestOrderModifiedDateForCustomerAsync(KeithLink.Svc.Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
             return base.Channel.ReadLatestOrderModifiedDateForCustomerAsync(catalogInfo);
         }
         

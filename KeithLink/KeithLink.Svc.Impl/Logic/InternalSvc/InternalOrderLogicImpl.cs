@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			this.userActiveCartRepository = userActiveCartRepository;
 		}
 
-		public DateTime? ReadLatestUpdatedDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
+		public string ReadLatestUpdatedDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo)
 		{
 			return orderHistoryHeaderRepository.ReadLatestOrderDate(catalogInfo);
 					
