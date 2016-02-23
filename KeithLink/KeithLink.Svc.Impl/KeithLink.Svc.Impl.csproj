@@ -643,6 +643,10 @@
     <Compile Include="Repository\EF\Migrations\201602052337298_Add RelatedControlNumber to Order History Header.Designer.cs">
       <DependentUpon>201602052337298_Add RelatedControlNumber to Order History Header.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\EF\Migrations\201602232102536_change_dates_to_strings.cs" />
+    <Compile Include="Repository\EF\Migrations\201602232102536_change_dates_to_strings.Designer.cs">
+      <DependentUpon>201602232102536_change_dates_to_strings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\EF\Migrations\Configuration.cs" />
     <Compile Include="Models\ElasticSearchCategoryUpdate.cs" />
     <Compile Include="Models\ElasticSearch\BrandControlLabels\BrandData.cs" />
@@ -1271,6 +1275,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201602052337298_Add RelatedControlNumber to Order History Header.resx">
       <DependentUpon>201602052337298_Add RelatedControlNumber to Order History Header.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201602232102536_change_dates_to_strings.resx">
+      <DependentUpon>201602232102536_change_dates_to_strings.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

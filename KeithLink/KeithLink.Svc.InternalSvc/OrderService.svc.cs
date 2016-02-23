@@ -36,7 +36,7 @@ namespace KeithLink.Svc.InternalSvc {
         #endregion
 
         #region methods
-        public DateTime? ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo) {
+        public string ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo) {
 			return _orderLogic.ReadLatestUpdatedDate(catalogInfo);
 		}
 

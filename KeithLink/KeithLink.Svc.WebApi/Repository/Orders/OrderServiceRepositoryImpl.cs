@@ -47,7 +47,7 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetOrderTotalByMonth( customerInfo, numberOfMonths );
         }
 
-        public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
+        public string ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
             return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }
 
