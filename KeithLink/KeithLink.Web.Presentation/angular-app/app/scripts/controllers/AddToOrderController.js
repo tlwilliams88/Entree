@@ -40,6 +40,7 @@ angular.module('bekApp')
     $scope.destroyedOnField = '';
     $scope.useParLevel = false;
     $scope.visitedPages = [];
+    $scope.canSaveCart = false;
         
     $scope.removeRowHighlightParLevel = function(){
         $('.ATOrowHighlight').removeClass('ATOrowHighlight');
@@ -701,13 +702,29 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
     $scope.generateNewCartForDisplay = function() {
       var cart = {};
-      cart.items = [];
-      cart.id = 'New';
-      cart.requestedshipdate = $scope.shipDates[0].shipdate;
+          cart.items = [];
+          cart.id = 'New';
+          cart.requestedshipdate = $scope.shipDates[0].shipdate;
       $scope.selectedCart = cart;
       $scope.isChangeOrder = false;
       $scope.startRenamingCart($scope.selectedCart.name);
     };
+
+    //Function used for updating/saving order without quantity and new ship date
+    $scope.updateShipDate = false;
+
+    $scope.generateCartforShipDateChange = function(items, shipDate, name) {
+      $scope.addToOrderForm.$setDirty();
+      if(!name){
+        createNewCart(items, shipDate, name).then(function(resp){
+        $scope.isRedirecting(resp);
+        })
+      } else {
+        $scope.updateShipDate = true;
+        updateCart($scope.selectedCart);
+      }
+      $scope.addToOrderForm.$setPristine();
+    }
 
     /**********
     FORM EVENTS
@@ -728,16 +745,18 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           var newItemCount = updatedCart.items.length - $scope.origItemCount;
           $scope.origItemCount = updatedCart.items.length;
 
-          if(newItemCount > 0){
-            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Cart ' + updatedCart.name + '.');
+          if(newItemCount > 0 && !updateShipDate){
+            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Cart ' + $scope.selectedCart.name + '.');
           }else if(newItemCount < 0){
-              $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Cart ' + updatedCart.name + '.');
+              $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Cart ' + $scope.selectedCart.name + '.');
+          }else if($scope.updateShipDate){
+            $scope.displayMessage('success', 'Successfully Updated ' + $scope.selectedCart.name + '.');
           }
           else{
-            $scope.displayMessage('success', 'Successfully Saved Cart ' + updatedCart.name + '.');
+            $scope.displayMessage('success', 'Successfully Saved Cart ' + $scope.selectedCart.name + '.');
            }
            processingUpdateCart = false
-           return updatedCart; 
+           return updatedCart;
         }, function() {
           $scope.displayMessage('error', 'Error adding items to cart.');
         }).finally(function() {
@@ -833,14 +852,19 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     $scope.saveAndRetainQuantity = function(){
+
     $stateParams.listItems = $scope.selectedList.items;
     if($scope.selectedCart.id === 'New'){
       $scope.createFromSearch = true;
+    }
+    if($scope.selectedCart.subtotal === 0){
+      $scope.addToOrderForm.$dirty;
     }
     $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
       $scope.isRedirecting(resp);
     })
     $scope.addToOrderForm.$setPristine();
+
     }
 
     $scope.updateOrderClick = function(list, cart) {
