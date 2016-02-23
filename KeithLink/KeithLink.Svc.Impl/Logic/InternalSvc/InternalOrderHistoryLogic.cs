@@ -721,9 +721,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 sbBody.Append("Purchase Order Details:\n");
                 foreach (PurchaseOrder po in Pos)
                 {
-                    DateTime lastModified = DateTime.Parse(po.Properties["DateModified"].ToString());
+                    //string sCreated = po.Properties["DateCreated"].ToString();
+                    DateTime created = DateTime.Parse(po.Properties["DateCreated"].ToString());
+                    DateTime now = DateTime.Now.AddMinutes(-10);
                     //// only if they've been created more than 10 minutes ago in the query status
-                    if (lastModified < DateTime.UtcNow.AddMinutes(-10))
+                    if (created < now)
                     {
                         sbBody.Append("* PO");
                         sbBody.Append(" for ");
@@ -735,7 +737,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         sbBody.Append(" with tracking ");
                         sbBody.Append(po.Properties["OrderNumber"].ToString());
                         sbBody.Append(" last modified");
-                        sbBody.Append(" on " + lastModified.ToString("MM-dd-yyyy hh:mm tt"));
+                        sbBody.Append(" on " + created.ToString("MM-dd-yyyy hh:mm tt"));
                         sbBody.Append(" in status " + po.Properties["Status"].ToString());
                         sbBody.Append(".\n");
                     }
