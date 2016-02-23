@@ -67,7 +67,6 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders {
         public string UpdatedBy { get; set; }
 
         [DataMember(Name = "ShipMethodId")]
-
-        public byte ShipMethodId { get; set; }
+        public byte? ShipMethodId { get; set; }
     }
 }
