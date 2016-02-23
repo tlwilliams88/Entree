@@ -20,13 +20,13 @@ namespace KeithLink.Svc.Impl.Repository.Reports
             this.UnitOfWork = UnitOfWork;
         }
 		
-		public IEnumerable<Core.Models.Orders.OrderLine> GetOrderLinesForItemUsageReport(string branchId, string customerNumber, DateTime fromDateTime, DateTime toDateTime, string sortDir, string sortField)
+		public IEnumerable<Core.Models.Orders.OrderLine> GetOrderLinesForItemUsageReport(string branchId, string customerNumber, string fromDateTime, string toDateTime, string sortDir, string sortField)
 		{
 			var query = this.UnitOfWork.Context.OrderHistoryDetails
 				.Where(c => c.OrderHistoryHeader.CustomerNumber == customerNumber &&
 					c.OrderHistoryHeader.BranchId.Equals(branchId, StringComparison.CurrentCultureIgnoreCase)
-					&& c.OrderHistoryHeader.DeliveryDate >= fromDateTime
-					&& c.OrderHistoryHeader.DeliveryDate <= toDateTime
+					&& DateTime.Parse(c.OrderHistoryHeader.DeliveryDate) >= DateTime.Parse(fromDateTime)
+					&& DateTime.Parse(c.OrderHistoryHeader.DeliveryDate) <= DateTime.Parse(toDateTime)
 					&& !c.ItemDeleted).ToList();
 
 			return query.Select(o => o.ToOrderLine("o")).ToList();
