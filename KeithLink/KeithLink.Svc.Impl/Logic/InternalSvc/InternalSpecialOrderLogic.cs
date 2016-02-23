@@ -169,7 +169,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private void ProcessOrderHistoryDetailOnApprovedStatusUpdate(SpecialOrderResponseModel specialorder, EF.OrderHistoryDetail detail)
         {
             EF.OrderHistoryHeader header = detail.OrderHistoryHeader;
-            header.DeliveryDate = DateTime.Parse(specialorder.Item.EstimatedArrival);
+            header.DeliveryDate = specialorder.Item.EstimatedArrival;
             _headerRepo.Update(header);
             _unitOfWork.SaveChanges();
         }
