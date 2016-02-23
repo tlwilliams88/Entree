@@ -6,16 +6,12 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Common.Core.Extensions
 {
-    public static class DateTimeExtensions
-    {
+    public static class DateTimeExtensions {
+        #region attributes
         private static string centralTimeZoneCode = "Central Standard Time";
+        #endregion
 
-        public static DateTime ToCentralTime(this DateTime localTime)
-        {
-            TimeZoneInfo centralTimeZone = TimeZoneInfo.FindSystemTimeZoneById(centralTimeZoneCode);
-            return TimeZoneInfo.ConvertTime(localTime, centralTimeZone);
-        }
-
+        #region methods
         public static string CentralTimeZoneName(this DateTime centralTime)
         {
             TimeZoneInfo centralTimeZone = TimeZoneInfo.FindSystemTimeZoneById(centralTimeZoneCode);
@@ -24,5 +20,24 @@ namespace KeithLink.Common.Core.Extensions
             else
                 return centralTimeZone.StandardName;
         }
+
+        public static DateTime ToCentralTime(this DateTime localTime)
+        {
+            TimeZoneInfo centralTimeZone = TimeZoneInfo.FindSystemTimeZoneById(centralTimeZoneCode);
+            return TimeZoneInfo.ConvertTime(localTime, centralTimeZone);
+        }
+
+        public static string ToLongDateFormat(this DateTime value) {
+            return value.ToString("MM/dd/yyyy");
+        }
+
+        public static string ToShortDateFormat(this DateTime value) {
+            return value.ToString("M/d/yyyy");
+        }
+
+        public static string ToYearFirstFormat(this DateTime currentTime) {
+            return currentTime.ToString("yyyyMMdd");
+        }
+        #endregion
     }
 }
