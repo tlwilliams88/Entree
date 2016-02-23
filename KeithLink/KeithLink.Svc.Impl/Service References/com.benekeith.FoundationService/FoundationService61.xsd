@@ -83,7 +83,7 @@
       <xs:sequence>
         <xs:element xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="userId" type="q9:guid" />
         <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="orderId" type="q10:guid" />
-        <xs:element minOccurs="0" name="requestedShipDate" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="requestedShipDate" nillable="true" type="xs:string" />
         <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/KeithLink.Svc.FoundationSvc.Interface" minOccurs="0" name="itemUpdates" nillable="true" type="q11:ArrayOfPurchaseOrderLineItemUpdate" />
       </xs:sequence>
     </xs:complexType>

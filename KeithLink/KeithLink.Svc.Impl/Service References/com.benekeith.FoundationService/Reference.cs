@@ -5036,10 +5036,10 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         System.Threading.Tasks.Task<string> SaveCartAsOrderAsync(System.Guid userId, System.Guid cartId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
-        string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
+        string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
-        System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
+        System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderStatus", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderStatusResponse")]
         void UpdatePurchaseOrderStatus(System.Guid userId, System.Guid orderId, string status);
@@ -5229,11 +5229,11 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
             return base.Channel.SaveCartAsOrderAsync(userId, cartId);
         }
         
-        public string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+        public string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
             return base.Channel.UpdatePurchaseOrder(userId, orderId, requestedShipDate, itemUpdates);
         }
         
-        public System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+        public System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
             return base.Channel.UpdatePurchaseOrderAsync(userId, orderId, requestedShipDate, itemUpdates);
         }
         
