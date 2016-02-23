@@ -716,17 +716,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             sbBody = new StringBuilder();
             if ((Pos != null) && (Pos.Count > 0))
             {
-                sbSubject.Clear();
-                sbSubject.Append(Pos.Count + " POs in a " + qStatus + " status for more than 10 minutes.");
-                sbBody.Append("Purchase Order Details:\n");
+                int count = 0;
+                sbBody.Clear();
+                DateTime now = DateTime.Now.AddMinutes(-10);
+                
                 foreach (PurchaseOrder po in Pos)
                 {
                     //string sCreated = po.Properties["DateCreated"].ToString();
                     DateTime created = DateTime.Parse(po.Properties["DateCreated"].ToString());
-                    DateTime now = DateTime.Now.AddMinutes(-10);
                     //// only if they've been created more than 10 minutes ago in the query status
                     if (created < now)
                     {
+                        count++;
+                        sbSubject.Clear();
+                        sbSubject.Append(count + " POs in a " + qStatus + " status for more than 10 minutes.");
+                        if (sbBody.Length == 0) sbBody.Append("Purchase Order Details:\n");
                         sbBody.Append("* PO");
                         sbBody.Append(" for ");
                         sbBody.Append(po.Properties["CustomerId"].ToString());
