@@ -27,7 +27,7 @@ angular.module('bekApp')
   $scope.sortReverse = true;
 
 
-  function loadItemUsage() {
+  function loadItemUsage() {    
     $scope.loadingResults = true;
     ReportService.itemUsageParams = {
       from: $scope.itemusagequery.fromDate,
@@ -39,6 +39,7 @@ angular.module('bekApp')
       .then(function(items) {
         $scope.itemusages = items;
         $scope.loadingResults = false;
+        $scope.totalCost = 0;
         angular.forEach(items, function(item, index) {
             $scope.totalCost += item.totalcost;
         });
