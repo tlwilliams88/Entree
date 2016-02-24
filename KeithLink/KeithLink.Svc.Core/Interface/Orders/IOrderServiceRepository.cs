@@ -39,5 +39,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 
         void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
 
+        string SetLostOrder(string trackingNumber);
+
 	}
 }

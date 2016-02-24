@@ -92,6 +92,12 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/UpdateRelatedControlNumber", ReplyAction="http://tempuri.org/IOrderService/UpdateRelatedControlNumberResponse")]
         System.Threading.Tasks.Task UpdateRelatedControlNumberAsync(string childOrderNumber, string parentOrderNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/SetLostOrder", ReplyAction="http://tempuri.org/IOrderService/SetLostOrderResponse")]
+        string SetLostOrder(string trackingNumber);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IOrderService/SetLostOrder", ReplyAction="http://tempuri.org/IOrderService/SetLostOrderResponse")]
+        System.Threading.Tasks.Task<string> SetLostOrderAsync(string trackingNumber);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -223,6 +229,14 @@ namespace KeithLink.Svc.WebApi.com.benekeith.OrderService {
         
         public System.Threading.Tasks.Task UpdateRelatedControlNumberAsync(string childOrderNumber, string parentOrderNumber) {
             return base.Channel.UpdateRelatedControlNumberAsync(childOrderNumber, parentOrderNumber);
+        }
+        
+        public string SetLostOrder(string trackingNumber) {
+            return base.Channel.SetLostOrder(trackingNumber);
+        }
+        
+        public System.Threading.Tasks.Task<string> SetLostOrderAsync(string trackingNumber) {
+            return base.Channel.SetLostOrderAsync(trackingNumber);
         }
     }
 }

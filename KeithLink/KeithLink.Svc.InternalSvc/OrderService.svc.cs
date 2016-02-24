@@ -83,8 +83,6 @@ namespace KeithLink.Svc.InternalSvc {
         {
             return _orderLogic.GetUserIdForControlNumber(controlNumber);
         }
-		
-
 
 		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
 		{
@@ -96,6 +94,10 @@ namespace KeithLink.Svc.InternalSvc {
             _historyLogic.UpdateRelatedOrderNumber(childOrderNumber, parentOrderNumber);
         }
 
+        public string SetLostOrder(string trackingNumber)
+        {
+            return _historyLogic.SetLostOrder(trackingNumber);
+        }
         #endregion
     }		
 }

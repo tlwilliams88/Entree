@@ -1,6 +1,6 @@
 ﻿using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
-
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions;
@@ -678,6 +678,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             if (_queueTask != null && _queueTask.Status == TaskStatus.Running) {
                 _queueTask.Wait();
             }
+        }
+
+        public string SetLostOrder(string trackingNumber)
+        {
+            PurchaseOrder Po = _poRepo.ReadPurchaseOrderByTrackingNumber(trackingNumber);
+            //Save to Commerce Server
+            com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+            client.UpdatePurchaseOrderStatus(Po.Properties["UserId"].ToString().ToGuid(), Po.Id.ToGuid(), "Lost");
+            return "Success";
         }
 
         public string CheckForLostOrders(out string sBody)
