@@ -440,8 +440,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         $stateParams.searchTerm = '';
         clearItemWatches(watches);       
       }
-      else{      
-          $scope.validateAndSave().then(function(resp){
+      else{
+        $scope.fromFilterItems = true;   
+          $scope.saveAndRetainQuantity().then(function(resp){
             if($scope.isRedirecting(resp)){
               //do nothing
             }
@@ -456,19 +457,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
             }        
           })      
       }   
-    };
-
-    $scope.validateAndSave = function(){
-      if($scope.addToOrderForm.$invalid){
-          var r = confirm('Unsaved data will be lost. Do you wish to continue?');
-          return r;   
-      }
-      else{  
-          if($scope.selectedCart.id === 'New'){
-             $scope.createFromSearch = true;
-          }           
-          return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
-      }      
     };
 
     $scope.clearFilter = function(){ 
@@ -728,13 +716,11 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
           var newItemCount = updatedCart.items.length - $scope.origItemCount;
           $scope.origItemCount = updatedCart.items.length;
-
-          if(newItemCount > 0 && !$scope.updateShipDate){
-            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Cart ' + $scope.selectedCart.name + '.');
-          }else if(newItemCount < 0){
+          if(newItemCount > 0){
+            $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to ' + $scope.selectedCart.name + '.');
+          }
+          else if(newItemCount < 0){
               $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Cart ' + $scope.selectedCart.name + '.');
-          }else if($scope.updateShipDate){
-            $scope.displayMessage('success', 'Successfully Updated ' + $scope.selectedCart.name + '.');
           }
           else{
             $scope.displayMessage('success', 'Successfully Saved Cart ' + $scope.selectedCart.name + '.');
@@ -835,20 +821,31 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       })
     }
 
-    $scope.saveAndRetainQuantity = function(){
-
-    $stateParams.listItems = $scope.selectedList.items;
-    if($scope.selectedCart.id === 'New'){
-      $scope.createFromSearch = true;
-    }
-    if($scope.selectedCart.subtotal === 0){
-      $scope.addToOrderForm.$dirty;
-    }
-    $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
-      $scope.isRedirecting(resp);
-    })
-    $scope.addToOrderForm.$setPristine();
-
+    //Function includes support for saving items while filtering and saving cart when changing ship date
+    $scope.saveAndRetainQuantity = function() {
+      $stateParams.listItems = $scope.selectedList.items;
+      if($scope.addToOrderForm.$invalid){
+        var r = confirm('Unsaved data will be lost. Do you wish to continue?');
+          return r;   
+      } 
+      else { 
+        if($scope.selectedCart.id === 'New'){
+          $scope.createFromSearch = true;
+        }
+        if($scope.fromFilterItems) {
+          $scope.fromFilterItems = false;
+          return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
+        }
+        else {
+          if($scope.selectedCart.subtotal === 0){
+            $scope.addToOrderForm.$dirty;
+          }
+          $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+            $scope.isRedirecting(resp);
+          })
+        }
+      }
+      $scope.addToOrderForm.$setPristine();
     }
 
     $scope.updateOrderClick = function(list, cart) {
@@ -890,27 +887,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         return false;
       }
     };
-
-    //Function used for updating/saving order without quantity and new ship date
-    $scope.updateShipDate = false;
-
-    $scope.generateCartforShipDateChange = function(items, shipDate, name) {
-      $scope.addToOrderForm.$setDirty();
-      if(!name){
-        createNewCart(items, shipDate, name).then(function(resp){
-        $scope.isRedirecting(resp);
-        })
-      } else {
-        $scope.updateShipDate = true;
-        $scope.saveAndRetainQuantity().then(function(resp){
-        $scope.isRedirecting(resp);
-        })
-      }
-      if(selectedCart.subtotal === 0) {
-        $scope.addToOrderForm.$setPristine();
-      }
-      $scope.updateShipDate = false;
-    }
 
     function refreshSubtotal(cartItems, listItems) {
       var items = getCombinedCartAndListItems(cartItems, listItems);

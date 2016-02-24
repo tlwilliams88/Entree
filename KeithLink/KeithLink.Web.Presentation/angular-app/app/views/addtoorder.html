@@ -91,7 +91,7 @@
                 <td>Ship Date</td>
                 <td>Submit By</td>
               </tr>
-              <tr ng-repeat="shipDate in shipDates" ng-click="selectedCart.requestedshipdate = shipDate.shipdate; generateCartforShipDateChange(selectedCart, selectedCart.requestedshipdate, selectedCart.name);">
+              <tr ng-repeat="shipDate in shipDates" ng-click="selectedCart.requestedshipdate = shipDate.shipdate; saveAndRetainQuantity();">
                 <td>{{shipDate.dayofweek}}</td>
                 <td class="nowrap">{{shipDate.shipdate}}</td>
                 <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
