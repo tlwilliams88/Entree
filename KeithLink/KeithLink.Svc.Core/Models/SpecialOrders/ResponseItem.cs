@@ -28,10 +28,10 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders {
         public string Description { get; set; }
 
         [DataMember(Name = "QuantityRequested")]
-        public Int16? QuantityRequested { get; set; }
+        public string QuantityRequested { get; set; }
 
         [DataMember(Name = "QuantityShipped")]
-        public Int16? QuantityShipped { get; set; }
+        public string QuantityShipped { get; set; }
 
         [DataMember(Name = "UnitOfMeasure")]
         public string UnitOfMeasure { get; set; }
@@ -43,13 +43,13 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders {
         public string InvoiceNumber { get; set; }
 
         [DataMember(Name = "EstimateCost")]
-        public float? EstimateCost { get; set; }
+        public string EstimateCost { get; set; }
 
         [DataMember(Name = "Price")]
-        public float? Price { get; set; }
+        public string Price { get; set; }
 
         [DataMember(Name = "EstimatedGPPercent")]
-        public decimal? EstimatedGPPercent { get; set; }
+        public string EstimatedGPPercent { get; set; }
 
         [DataMember(Name = "Comments")]
         public string Comments { get; set; }
@@ -67,6 +67,6 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders {
         public string UpdatedBy { get; set; }
 
         [DataMember(Name = "ShipMethodId")]
-        public byte? ShipMethodId { get; set; }
+        public string ShipMethodId { get; set; }
     }
 }
