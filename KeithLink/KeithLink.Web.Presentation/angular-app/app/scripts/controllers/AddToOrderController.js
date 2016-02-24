@@ -710,22 +710,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       $scope.startRenamingCart($scope.selectedCart.name);
     };
 
-    //Function used for updating/saving order without quantity and new ship date
-    $scope.updateShipDate = false;
-
-    $scope.generateCartforShipDateChange = function(items, shipDate, name) {
-      $scope.addToOrderForm.$setDirty();
-      if(!name){
-        createNewCart(items, shipDate, name).then(function(resp){
-        $scope.isRedirecting(resp);
-        })
-      } else {
-        $scope.updateShipDate = true;
-        updateCart($scope.selectedCart);
-      }
-      $scope.addToOrderForm.$setPristine();
-    }
-
     /**********
     FORM EVENTS
     **********/
@@ -745,7 +729,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           var newItemCount = updatedCart.items.length - $scope.origItemCount;
           $scope.origItemCount = updatedCart.items.length;
 
-          if(newItemCount > 0 && !updateShipDate){
+          if(newItemCount > 0 && !$scope.updateShipDate){
             $scope.displayMessage('success', 'Successfully added ' + newItemCount + ' Items to Cart ' + $scope.selectedCart.name + '.');
           }else if(newItemCount < 0){
               $scope.displayMessage('success', 'Successfully removed ' + Math.abs(newItemCount) + ' Items from Cart ' + $scope.selectedCart.name + '.');
@@ -906,6 +890,27 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         return false;
       }
     };
+
+    //Function used for updating/saving order without quantity and new ship date
+    $scope.updateShipDate = false;
+
+    $scope.generateCartforShipDateChange = function(items, shipDate, name) {
+      $scope.addToOrderForm.$setDirty();
+      if(!name){
+        createNewCart(items, shipDate, name).then(function(resp){
+        $scope.isRedirecting(resp);
+        })
+      } else {
+        $scope.updateShipDate = true;
+        $scope.saveAndRetainQuantity().then(function(resp){
+        $scope.isRedirecting(resp);
+        })
+      }
+      if(selectedCart.subtotal === 0) {
+        $scope.addToOrderForm.$setPristine();
+      }
+      $scope.updateShipDate = false;
+    }
 
     function refreshSubtotal(cartItems, listItems) {
       var items = getCombinedCartAndListItems(cartItems, listItems);
