@@ -84,5 +84,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         }
 
         #endregion
+
+
+        public string SetLostOrder(string trackingNumber)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

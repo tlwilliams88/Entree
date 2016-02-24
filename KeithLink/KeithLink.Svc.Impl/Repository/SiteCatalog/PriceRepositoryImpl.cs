@@ -183,8 +183,14 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 itemRow.number = item.ItemNumber;
 
                 string source;
-                if(item.CatalogId != null) source = GetSourceCatalog(item.CatalogId);
-                else source = GetSourceCatalog(branchId);
+                if (item.CatalogId != null)
+                {
+                    source = GetSourceCatalog(item.CatalogId);
+                }
+                else
+                {
+                    source = GetSourceCatalog(branchId);
+                }
                 if (!source.Equals(Constants.CATALOG_BEK))
                 {
                     if (!item.IsSpecialtyCatalog && item.Unfi.StockedInBranches.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {

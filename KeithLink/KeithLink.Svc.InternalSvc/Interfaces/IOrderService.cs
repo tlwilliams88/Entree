@@ -52,5 +52,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber);
+
+        [OperationContract]
+        string SetLostOrder(string trackingNumber);
 	}
 }
