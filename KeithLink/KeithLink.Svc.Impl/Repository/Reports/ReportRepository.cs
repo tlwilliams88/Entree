@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Reports;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Core.Extensions;
@@ -20,16 +21,25 @@ namespace KeithLink.Svc.Impl.Repository.Reports
             this.UnitOfWork = UnitOfWork;
         }
 		
-		public IEnumerable<Core.Models.Orders.OrderLine> GetOrderLinesForItemUsageReport(string branchId, string customerNumber, string fromDateTime, string toDateTime, string sortDir, string sortField)
+		public IEnumerable<Core.Models.Orders.OrderLine> GetOrderLinesForItemUsageReport(string branchId, string customerNumber, DateTime fromDateTime, DateTime toDateTime, string sortDir, string sortField)
 		{
-			var query = this.UnitOfWork.Context.OrderHistoryDetails
-				.Where(c => c.OrderHistoryHeader.CustomerNumber == customerNumber &&
-					c.OrderHistoryHeader.BranchId.Equals(branchId, StringComparison.CurrentCultureIgnoreCase)
-					&& DateTime.Parse(c.OrderHistoryHeader.DeliveryDate) >= DateTime.Parse(fromDateTime)
-					&& DateTime.Parse(c.OrderHistoryHeader.DeliveryDate) <= DateTime.Parse(toDateTime)
-					&& !c.ItemDeleted).ToList();
+            try {
+                int numberOfDays = (toDateTime - fromDateTime).Days;
+                var dates = Enumerable.Range(0, numberOfDays + 1).Select(d => fromDateTime.AddDays(d).ToLongDateFormat());
 
-			return query.Select(o => o.ToOrderLine("o")).ToList();
+                var query = this.UnitOfWork.Context.OrderHistoryDetails
+                    .Where(c => c.OrderHistoryHeader.CustomerNumber == customerNumber 
+                                 && c.OrderHistoryHeader.BranchId.Equals(branchId, StringComparison.CurrentCultureIgnoreCase)
+                                 && dates.Contains(c.OrderHistoryHeader.DeliveryDate)
+                                 && !c.ItemDeleted)
+                    .ToList();
+
+			    return query.Select(o => o.ToOrderLine("o")).ToList();
+            } catch (Exception ex) {
+                throw;
+            }
+
+            return null;
 		}
 	}
 }
