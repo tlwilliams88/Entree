@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$rootScope', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
-    function ($scope, $state, $modal, $rootScope, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
+  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
+    function ($scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
     
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -956,7 +956,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     };
 
     $scope.openErrorMessageModal = function(message) {
-      $rootScope.disableMenu = true;
       var modalInstance = $modal.open({
         templateUrl: 'views/modals/errormessagemodal.html',
         controller: 'ErrorMessageModalController',
@@ -971,7 +970,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
 
 
       modalInstance.result.then(function(resp) {
-        $rootScope.disableMenu = false;
         if(resp){
           selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
