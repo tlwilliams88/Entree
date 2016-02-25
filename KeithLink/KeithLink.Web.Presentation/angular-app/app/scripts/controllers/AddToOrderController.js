@@ -31,8 +31,8 @@ angular.module('bekApp')
     } else {
       basketId = 'New';
     }
-    if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {
-      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid}, {location:'replace', inherit:false, notify: false});
+    if ($stateParams.cartId !== basketId.toString() || $stateParams.listId !== selectedList.listid.toString()) {  
+      $state.go('menu.addtoorder.items', {cartId: basketId, listId: selectedList.listid, pageLoaded: true}, {location:'replace', inherit:false, notify: false});
     }
     $scope.confirmQuantity = ListService.confirmQuantity;
     $scope.basketId = basketId;   
@@ -372,7 +372,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           if (selectedCart) {
             setSelectedCart(selectedCart);
             $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
-            if(selectedCart.requestedshipdate && moment(selectedCart.requestedshipdate.slice(0,10)) < moment($scope.shipDates[0].shipdate)){
+            if(selectedCart.requestedshipdate && moment(selectedCart.requestedshipdate.slice(0,10)) < moment($scope.shipDates[0].shipdate) && !$stateParams.pageLoaded){
                $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
@@ -960,11 +960,25 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         templateUrl: 'views/modals/errormessagemodal.html',
         controller: 'ErrorMessageModalController',
         scope: $scope,
+        backdrop:'static',
         resolve: {
           message: function() {
             return message;
           }
           }
+      });
+
+
+      modalInstance.result.then(function(resp) {
+        if(resp){
+          selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
+            $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+            $scope.isRedirecting(resp);
+          })
+        }
+        else{
+          $state.go('menu.home'); 
+          }  
       });
     };
 

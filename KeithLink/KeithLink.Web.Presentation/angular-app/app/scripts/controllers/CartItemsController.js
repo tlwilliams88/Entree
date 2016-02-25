@@ -161,17 +161,6 @@ angular.module('bekApp')
        }
     };
 
-      if($scope.currentCart && !$scope.currentCart.requestedshipdate){
-          $scope.selectShipDate($scope.shipDates[0]);
-      }else{
-          var requestedDate = $scope.currentCart.requestedshipdate;
-          var firstAvailableDate = $scope.shipDates[0].shipdate;
-
-          if (requestedDate < firstAvailableDate) {
-           $scope.selectShipDate($scope.shipDates[0]);
-          }
-      }
-
     $scope.sortByPrice = function(item) {
        if (item.price) {
          return item.price;
@@ -283,7 +272,6 @@ angular.module('bekApp')
                     message  = 'Successfully submitted order.';
                 }
             }
-
 
             $state.go('menu.orderitems', { invoiceNumber: orderNumber });
             $scope.displayMessage(status, message);
@@ -484,6 +472,46 @@ angular.module('bekApp')
         $scope.changeAllSelectedItems(items, false);
       }
     };
+
+    $scope.openErrorMessageModal = function(message) {
+      var modalInstance = $modal.open({
+        templateUrl: 'views/modals/errormessagemodal.html',
+        controller: 'ErrorMessageModalController',
+        scope: $scope,
+        backdrop:'static',
+        resolve: {
+          message: function() {
+            return message;
+          }
+          }
+      });
+
+      modalInstance.result.then(function(resp) {
+        if(resp){
+          $scope.selectShipDate($scope.shipDates[0]);
+          if($scope.isChangeOrder){
+            $scope.saveChangeOrder($scope.currentCart);
+          }
+          else{
+            $scope.saveCart($scope.currentCart);
+          }          
+        }
+        else{
+          $state.go('menu.home'); 
+        }  
+      });
+    };
+
+      if($scope.currentCart && !$scope.currentCart.requestedshipdate){
+          $scope.selectShipDate($scope.shipDates[0]);
+      }else{
+          var requestedDate = $scope.currentCart.requestedshipdate;
+          var firstAvailableDate = $scope.shipDates[0].shipdate;
+
+          if (requestedDate < firstAvailableDate) {
+            $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
+          }
+      }
 
     // on page load
     // if ($stateParams.renameCart === 'true' && !$scope.isChangeOrder) {
