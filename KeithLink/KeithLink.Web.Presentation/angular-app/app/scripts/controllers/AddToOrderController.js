@@ -441,7 +441,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         clearItemWatches(watches);       
       }
       else{
-        $scope.fromFilterItems = true;   
+        $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
             if($scope.isRedirecting(resp)){
               //do nothing
@@ -460,31 +460,27 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     };
 
     $scope.clearFilter = function(){ 
-
-          $scope.orderSearchTerm = '';
-         $stateParams.searchTerm = '';
+      $scope.orderSearchTerm = '';
+      $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
-
         $scope.filterItems( $scope.orderSearchTerm)
-        $scope.clearedWhilePristine = true;
-      
+        $scope.clearedWhilePristine = true;      
       }
       else{
-       $scope.validateAndSave().then(function(resp){
-        if($scope.isRedirecting(resp)){        
-        return
-        }
-        else{
-        var clearSearchTerm = resp;
-       
-      if(clearSearchTerm){
-        $scope.filterItems($scope.orderSearchTerm);
+        $scope.saveAndRetainQuantity().then(function(resp){
+          if($scope.isRedirecting(resp)){        
+            return
+          }
+          else{
+            var clearSearchTerm = resp;       
+            if(clearSearchTerm){
+              $scope.filterItems($scope.orderSearchTerm);
+            }
+          }
+        })
       }
-    }
-      })
-    }
-     $scope.setCurrentPageAfterRedirect(1);
-    angular.element(orderSearchForm.searchBar).focus();
+      $scope.setCurrentPageAfterRedirect(1);
+      angular.element(orderSearchForm.searchBar).focus();
     };
   
 
@@ -801,7 +797,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     $scope.isRedirecting = function(resp){
-      if(resp.message && resp.message === "Creating cart..."){
+      if(resp.message && resp.message === "Creating cart..."){ 
         $scope.redirect($scope.selectedList.listid, resp);
         return true;
       }
@@ -822,7 +818,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     //Function includes support for saving items while filtering and saving cart when changing ship date
-    $scope.saveAndRetainQuantity = function() {
+    $scope.saveAndRetainQuantity = function(noParentFunction) {
       $stateParams.listItems = $scope.selectedList.items;
       if($scope.addToOrderForm.$invalid){
         var r = confirm('Unsaved data will be lost. Do you wish to continue?');
@@ -840,8 +836,11 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           if($scope.selectedCart.subtotal === 0){
             $scope.addToOrderForm.$dirty;
           }
-          $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
-            $scope.isRedirecting(resp);
+          return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+            if(noParentFunction){
+              $scope.isRedirecting(resp);
+            }
+            return resp;
           })
         }
       }
@@ -884,7 +883,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         }
       }
       else{
-        return false;
+          var deferred = $q.defer();
+          deferred.resolve(false);
+          return deferred.promise;
       }
     };
 
@@ -895,6 +896,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     // update quantity from on hand amount and par level
+
     $scope.onItemOnHandAmountChanged = function(item) {
       var offset = item.onhand;
       if(item.onhand && item.onhand.toString() === 'true'){
@@ -922,7 +924,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         $scope.createdFromPrint = true;
         $scope.addToOrderForm.$setDirty();
       }         
-      $scope.validateAndSave().then(function(resp){
+      $scope.saveAndRetainQuantity().then(function(resp){
         if($scope.isRedirecting(resp)){
           //do nothing
         }
@@ -967,7 +969,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           }
           }
       });
-
 
       modalInstance.result.then(function(resp) {
         if(resp){
