@@ -893,7 +893,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       return $scope.selectedCart.subtotal;
     }
 
-    // update quantity from on hand amount and par level1.5
+    // update quantity from on hand amount and par level
 
     $scope.onItemOnHandAmountChanged = function(item) {
       var offset = item.onhand;
