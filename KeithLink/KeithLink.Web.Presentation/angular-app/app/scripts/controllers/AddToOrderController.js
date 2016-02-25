@@ -441,7 +441,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         clearItemWatches(watches);       
       }
       else{
-        $scope.fromFilterItems = true;   
+        $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
             if($scope.isRedirecting(resp)){
               //do nothing
@@ -818,7 +818,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     //Function includes support for saving items while filtering and saving cart when changing ship date
-    $scope.saveAndRetainQuantity = function() {
+    $scope.saveAndRetainQuantity = function(noParentFunction) {
       $stateParams.listItems = $scope.selectedList.items;
       if($scope.addToOrderForm.$invalid){
         var r = confirm('Unsaved data will be lost. Do you wish to continue?');
@@ -837,6 +837,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
             $scope.addToOrderForm.$dirty;
           }
           return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+            if(noParentFunction){
+              $scope.isRedirecting(resp);
+            }
             return resp;
           })
         }
@@ -890,7 +893,8 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       return $scope.selectedCart.subtotal;
     }
 
-    // update quantity from on hand amount and par level
+    // update quantity from on hand amount and par level1.5
+
     $scope.onItemOnHandAmountChanged = function(item) {
       var offset = item.onhand;
       if(item.onhand && item.onhand.toString() === 'true'){
