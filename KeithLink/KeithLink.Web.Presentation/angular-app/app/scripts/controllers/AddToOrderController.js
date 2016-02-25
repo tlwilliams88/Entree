@@ -797,7 +797,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     }
 
     $scope.isRedirecting = function(resp){
-      if(resp.message && resp.message === "Creating cart..."){
+      if(resp.message && resp.message === "Creating cart..."){ 
         $scope.redirect($scope.selectedList.listid, resp);
         return true;
       }
@@ -883,7 +883,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         }
       }
       else{
-        return false;
+          var deferred = $q.defer();
+          deferred.resolve(false);
+          return deferred.promise;
       }
     };
 
