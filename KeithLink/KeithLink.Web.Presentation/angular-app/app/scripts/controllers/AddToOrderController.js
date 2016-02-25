@@ -460,31 +460,27 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     };
 
     $scope.clearFilter = function(){ 
-
-          $scope.orderSearchTerm = '';
-         $stateParams.searchTerm = '';
+      $scope.orderSearchTerm = '';
+      $stateParams.searchTerm = '';
       if($scope.addToOrderForm.$pristine){
-
         $scope.filterItems( $scope.orderSearchTerm)
-        $scope.clearedWhilePristine = true;
-      
+        $scope.clearedWhilePristine = true;      
       }
       else{
-       $scope.validateAndSave().then(function(resp){
-        if($scope.isRedirecting(resp)){        
-        return
-        }
-        else{
-        var clearSearchTerm = resp;
-       
-      if(clearSearchTerm){
-        $scope.filterItems($scope.orderSearchTerm);
+        $scope.saveAndRetainQuantity().then(function(resp){
+          if($scope.isRedirecting(resp)){        
+            return
+          }
+          else{
+            var clearSearchTerm = resp;       
+            if(clearSearchTerm){
+              $scope.filterItems($scope.orderSearchTerm);
+            }
+          }
+        })
       }
-    }
-      })
-    }
-     $scope.setCurrentPageAfterRedirect(1);
-    angular.element(orderSearchForm.searchBar).focus();
+      $scope.setCurrentPageAfterRedirect(1);
+      angular.element(orderSearchForm.searchBar).focus();
     };
   
 
@@ -840,8 +836,8 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           if($scope.selectedCart.subtotal === 0){
             $scope.addToOrderForm.$dirty;
           }
-          $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
-            $scope.isRedirecting(resp);
+          return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart).then(function(resp){
+            return resp;
           })
         }
       }
@@ -922,7 +918,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         $scope.createdFromPrint = true;
         $scope.addToOrderForm.$setDirty();
       }         
-      $scope.validateAndSave().then(function(resp){
+      $scope.saveAndRetainQuantity().then(function(resp){
         if($scope.isRedirecting(resp)){
           //do nothing
         }
@@ -967,7 +963,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           }
           }
       });
-
 
       modalInstance.result.then(function(resp) {
         if(resp){
