@@ -9,9 +9,9 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
     function (
-      $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
+      $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       $filter,
       ENV,      // environment config, see configenv.js file which is generated from Grunt
@@ -28,6 +28,7 @@ angular.module('bekApp')
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
   $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
+ 
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
@@ -76,6 +77,11 @@ angular.module('bekApp')
     }
   }
 
+  $scope.checkModal = function(){   
+    if($modal){
+      $modalStack.dismissAll();
+    }
+  }
   //Check stored settings. If they exist, update local storage, if not, clear out local storage values.
    ApplicationSettingsService.getApplicationSettings('').then(function(settings){
       if(settings.length > 0){

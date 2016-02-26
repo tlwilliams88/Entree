@@ -1,6 +1,6 @@
 ﻿using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
-
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions;
@@ -685,6 +685,25 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
         }
 
+        public string SetLostOrder(string trackingNumber)
+        {
+            _log.WriteInformationLog("InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ")");
+            PurchaseOrder Po = _poRepo.ReadPurchaseOrderByTrackingNumber(trackingNumber);
+            //Save to Commerce Server
+            if (Po != null)
+            {
+                com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+                client.UpdatePurchaseOrderStatus(Po.Properties["UserId"].ToString().ToGuid(), Po.Id.ToGuid(), "Lost");
+                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Success");
+                return "Success";
+            }
+            else
+            {
+                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Po not found");
+                return "Po not found";
+            }
+        }
+
         public string CheckForLostOrders(out string sBody)
         {
             StringBuilder sbMsgSubject = new StringBuilder();
@@ -721,15 +740,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             sbBody = new StringBuilder();
             if ((Pos != null) && (Pos.Count > 0))
             {
-                sbSubject.Clear();
-                sbSubject.Append(Pos.Count + " POs in a " + qStatus + " status for more than 10 minutes.");
-                sbBody.Append("Purchase Order Details:\n");
+                int count = 0;
+                sbBody.Clear();
+                DateTime now = DateTime.Now.AddMinutes(-10);
+                
                 foreach (PurchaseOrder po in Pos)
                 {
-                    DateTime lastModified = DateTime.Parse(po.Properties["DateModified"].ToString());
+                    //string sCreated = po.Properties["DateCreated"].ToString();
+                    DateTime created = DateTime.Parse(po.Properties["DateCreated"].ToString());
                     //// only if they've been created more than 10 minutes ago in the query status
-                    if (lastModified < DateTime.UtcNow.AddMinutes(-10))
+                    if (created < now)
                     {
+                        count++;
+                        sbSubject.Clear();
+                        sbSubject.Append(count + " POs in a " + qStatus + " status for more than 10 minutes.");
+                        if (sbBody.Length == 0) sbBody.Append("Purchase Order Details:\n");
                         sbBody.Append("* PO");
                         sbBody.Append(" for ");
                         sbBody.Append(po.Properties["CustomerId"].ToString());
@@ -740,7 +765,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         sbBody.Append(" with tracking ");
                         sbBody.Append(po.Properties["OrderNumber"].ToString());
                         sbBody.Append(" last modified");
-                        sbBody.Append(" on " + lastModified.ToString("MM-dd-yyyy hh:mm tt"));
+                        sbBody.Append(" on " + created.ToString("MM-dd-yyyy hh:mm tt"));
                         sbBody.Append(" in status " + po.Properties["Status"].ToString());
                         sbBody.Append(".\n");
                     }

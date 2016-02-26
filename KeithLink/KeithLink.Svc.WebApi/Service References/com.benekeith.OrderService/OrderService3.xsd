@@ -192,4 +192,18 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="SetLostOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="trackingNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetLostOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SetLostOrderResult" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
 </xs:schema>

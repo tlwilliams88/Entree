@@ -25,5 +25,7 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
         void StopListening();
 
         string CheckForLostOrders(out string sBody);
+
+        string SetLostOrder(string trackingNumber);
     }
 }

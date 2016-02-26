@@ -101,7 +101,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             while ((specialorder != null) && (specialorder.MessageId != null) && (specialorder.Header.RequestHeaderId != null) && (specialorder.Item.LineNumber != null))
             {
-                _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0})", specialorder.MessageId));
+                _log.WriteInformationLog(string.Format("Consuming specialorder update from queue for message ({0}) with status {1}", specialorder.MessageId, specialorder.Item.ItemStatusId));
 
                 EF.OrderHistoryDetail detail = FindOrderHistoryDetailForUpdate(specialorder);
 
@@ -111,7 +111,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 }
                 else
                 {
-                    _log.WriteInformationLog(string.Format("Specialorder update from queue for message ({0}) not an order on this system", specialorder.MessageId));
+                    _log.WriteInformationLog(string.Format(" ({0}) Specialorder update from queue for message not an order on this system", specialorder.MessageId));
                 }
             }
         }
@@ -168,6 +168,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         private void ProcessOrderHistoryDetailOnApprovedStatusUpdate(SpecialOrderResponseModel specialorder, EF.OrderHistoryDetail detail)
         {
+            _log.WriteInformationLog(string.Format(" ({0}) InternalSpecialOrderLogic.ProcessOrderHistoryDetailOnApprovedStatusUpdate", specialorder.MessageId));
             EF.OrderHistoryHeader header = detail.OrderHistoryHeader;
             header.DeliveryDate = DateTime.Parse(specialorder.Item.EstimatedArrival);
             _headerRepo.Update(header);
@@ -176,6 +177,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         private void ProcessOrderHistoryDetailOnStatusUpdate(SpecialOrderResponseModel specialorder, EF.OrderHistoryDetail detail)
         {
+            _log.WriteInformationLog(string.Format(" ({0})  InternalSpecialOrderLogic.ProcessOrderHistoryDetailOnStatusUpdate", specialorder.MessageId));
             switch (specialorder.Item.ItemStatusId)
             {
                 case Constants.SPECIALORDERITEM_NEW_STATUS_CODE:

@@ -44,7 +44,7 @@ namespace KeithLink.Svc.Core.Models.SpecialOrders
         public string ManufacturerName { get; set; }
 
         [DataMember(Name = "ShipMethodId")]
-        public byte ShipMethodId { get; set; }
+        public byte? ShipMethodId { get; set; }
 
         [DataMember(Name = "OrderStatusId")]
         public string OrderStatusId { get; set; }

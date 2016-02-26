@@ -80,6 +80,10 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             serviceClient.UpdateRelatedControlNumber(childOrderNumber, parentOrderNumber);
         }
 
+        public string SetLostOrder(string trackingNumber)
+        {
+            return serviceClient.SetLostOrder(trackingNumber);
+        }
         #endregion
     }
 }
