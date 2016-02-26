@@ -191,6 +191,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.CommerceId = Guid.Parse(po.Id);
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
+                        if (po.Status == "Confirmed with un-submitted changes") {
+                            returnOrder = po.ToOrder();
+                        }
+
+
                         // needed to reconnect parent orders to special orders
                         if (myOrder.RelatedControlNumber == null) {		
                             FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);		
