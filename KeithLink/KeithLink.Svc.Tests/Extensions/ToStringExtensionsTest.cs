@@ -13,13 +13,14 @@ namespace KeithLink.Svc.Test.Extensions {
         public void ToYearFirstDateWithTimeShouldParseDateTimeStrings() {
             string testValue = "08/24/2020 01:02:03";
 
-            Assert.Equals( "20200824010203", testValue.ToYearFirstDateWithTime() );
+            Assert.AreEqual( "20200824010203", testValue.ToYearFirstDateWithTime() );
         }
 
+        [TestMethod]
         public void ToYearFirstDateShouldParseDateStrings() {
             string testValue = "08/24/2020";
 
-            Assert.Equals( "20200824", testValue.ToYearFirstDate() );
+            Assert.AreEqual( "20200824", testValue.ToYearFirstDate() );
         }
 
     }

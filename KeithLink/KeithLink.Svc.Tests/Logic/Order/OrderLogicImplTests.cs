@@ -20,11 +20,11 @@ namespace KeithLink.Svc.Test.Logic
             order.Header.Branch = "FDF";
             order.Header.ControlNumber = 3407;
             order.Header.CustomerNumber = "709333";
-            order.Header.DeliveryDate = DateTime.Now.AddDays(1);
+            order.Header.DeliveryDate = DateTime.Now.AddDays(1).ToString();
             order.Header.OrderCreateDateTime = DateTime.Now;
             order.Header.OrderType = OrderType.NormalOrder;
             order.Header.OrderingSystem = OrderSource.Entree;
-            order.Header.OrderSendDateTime = DateTime.Now;
+            order.Header.OrderSendDateTime = DateTime.Now.ToString();
             order.Header.PONumber = string.Empty;
             order.Header.Specialinstructions = string.Empty;
             order.Header.InvoiceNumber = string.Empty;

@@ -38,14 +38,25 @@ namespace KeithLink.Common.Core.Extensions {
             return parsedDate;
         }
 
+        public static string ToFormattedDateString( this string value ) {
+            string returnValue = String.Empty;
+            var parsedDate = new DateTime();
+
+            if (DateTime.TryParse(value, out parsedDate)) {
+                returnValue = parsedDate.ToLongDateFormat();
+            }
+
+            return returnValue;
+        }
+
         public static string ToYearFirstDate( this string value ) {
             string returnValue = String.Empty;
             var parsedDate = new DateTime();
 
             if (DateTime.TryParse( value, out parsedDate )) {
-                var date = value.Substring( 0, 8 ).Split( Char.Parse( "/" ) );
+                var date = value.Substring( 0, 10 ).Split( Char.Parse( "/" ) );
 
-                returnValue = String.Format( "{0}", String.Join("", date) );
+                returnValue = String.Format( "{0}{1}{2}", date[2], date[0], date[1] );
             }
 
             return returnValue;
@@ -57,10 +68,10 @@ namespace KeithLink.Common.Core.Extensions {
             var parsedDate = new DateTime();
 
             if (DateTime.TryParse( value, out parsedDate )) {
-                var date = value.Substring( 0, 8 ).Split( Char.Parse( "/" ) );
+                var date = value.Substring( 0, 10 ).Split( Char.Parse( "/" ) );
                 var time = value.Substring(11).Split(Char.Parse(":"));
 
-                returnValue = String.Format( "{0}{2}", String.Join("", date), String.Join("", time) );
+                returnValue = String.Format( "{0}{1}{2}{3}", date[2], date[0], date[1], String.Join("", time) );
             }
 
             return returnValue;
