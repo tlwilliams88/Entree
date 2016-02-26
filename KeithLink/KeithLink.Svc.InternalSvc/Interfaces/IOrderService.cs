@@ -15,7 +15,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 	public interface IOrderService
 	{
 		[OperationContract]
-		DateTime? ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo);
+		string ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo);
 
         [OperationContract]
         List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber);
@@ -52,5 +52,8 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 
         [OperationContract]
         void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber);
+
+        [OperationContract]
+        string SetLostOrder(string trackingNumber);
 	}
 }

@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
 	public interface IOrderServiceRepository
 	{
-		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
+		string ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
 
         List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
 
@@ -38,6 +38,8 @@ namespace KeithLink.Svc.Core.Interface.Orders
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging);
 
         void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
+
+        string SetLostOrder(string trackingNumber);
 
 	}
 }

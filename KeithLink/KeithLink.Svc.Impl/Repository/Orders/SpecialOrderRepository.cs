@@ -131,8 +131,9 @@ namespace KeithLink.Svc.Impl.Repository.Orders
                 _log.WriteWarningLog(warningMessage.ToString());
             } else {
                 //details
-                foreach (var orderItem in orderHistory.OrderDetails) {
-                    var detailItems = file.Details.Where(x => x.ItemNumber == orderItem.ItemNumber).ToList();
+                foreach (var orderItem in orderHistory.OrderDetails)
+                {
+                    var detailItems = file.Details.Where(x => x.ItemNumber == orderItem.ItemNumber.Trim()).ToList();
                     foreach (var detailItem in detailItems) {
                         orderItem.ManufacturerId = detailItem.ManufacturerName;//todo
                         orderItem.SpecialOrderLineNumber = detailItem.LineNumber.ToString();

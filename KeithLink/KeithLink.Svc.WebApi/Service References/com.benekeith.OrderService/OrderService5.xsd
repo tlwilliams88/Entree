@@ -12,14 +12,14 @@
   <xs:element name="ArrayOfOrder" nillable="true" type="tns:ArrayOfOrder" />
   <xs:complexType name="Order">
     <xs:sequence>
-      <xs:element minOccurs="0" name="actualdeliverytime" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="actualdeliverytime" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="catalog_id" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="catalogtype" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="commerceid" type="ser:guid" />
       <xs:element minOccurs="0" name="createddate" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="deliverydate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="deliverydate" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="deliveryoutofsequence" nillable="true" type="xs:boolean" />
-      <xs:element minOccurs="0" name="estimateddeliverytime" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="estimateddeliverytime" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="invoicenumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="invoicestatus" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ischangeorderallowed" type="xs:boolean" />
@@ -32,8 +32,8 @@
       <xs:element minOccurs="0" name="ponumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="relatedinvoicenumbers" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="relatedordernumbers" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="requestedshipdate" type="xs:dateTime" />
-      <xs:element minOccurs="0" name="scheduleddeliverytime" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="requestedshipdate" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="scheduleddeliverytime" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
@@ -101,13 +101,13 @@
       <xs:element minOccurs="0" name="CatalogType" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="ControlNumber" type="xs:int" />
       <xs:element minOccurs="0" name="CustomerNumber" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="DeliveryDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DeliveryDate" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="DsrNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="FutureOrder" type="xs:boolean" />
       <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="OrderCreateDateTime" type="xs:dateTime" />
       <xs:element minOccurs="0" name="OrderFilled" type="xs:boolean" />
-      <xs:element minOccurs="0" name="OrderSendDateTime" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="OrderSendDateTime" nillable="true" type="xs:string" />
       <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderType" type="q3:OrderType" />
       <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Enumerations.Order" minOccurs="0" name="OrderingSystem" type="q4:OrderSource" />
       <xs:element minOccurs="0" name="PONumber" nillable="true" type="xs:string" />

@@ -168,25 +168,26 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void ProcessCheckLostOrdersMinuteTick( object state ) {
 
-            if (!_checkLostOrdersProcessing) {
+            if ((_checkLostOrdersProcessing) && (DateTime.Now.Minute == 0))
+                _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, _checkLostOrdersProcessing=true");
+            if (!_checkLostOrdersProcessing)
+            {
                 _checkLostOrdersProcessing = true;
 
-                // do not process between 1 and 5
-                if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5) {
-                    _log.WriteInformationLog( "Script stopped for processing window" );
-
-                    while (DateTime.Now.Hour < 5) {
-                        System.Threading.Thread.Sleep( 60000 );
+                if (DateTime.Now.Hour >= 1 && DateTime.Now.Hour < 5)
+                {
+                    while (DateTime.Now.Hour < 5)
+                    {
+                        _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick, asleep");
+                        System.Threading.Thread.Sleep(60000);
                     }
-
-                    _log.WriteInformationLog( "Script started after processing window" );
                 }
 
                 // only process at the top of the hour
                 if (DateTime.Now.Minute == 0)
                 //if (true) // testing only
                 {
-                    _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run at " + DateTime.Now.ToString("h:mm:ss tt"));
+                    _log.WriteInformationLog("ProcessCheckLostOrdersMinuteTick run");
                     try {
                         string subject;
                         string body;

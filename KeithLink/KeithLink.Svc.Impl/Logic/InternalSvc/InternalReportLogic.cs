@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Core.Logging;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.Reports;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -34,15 +35,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public List<Core.Models.Reports.ItemUsageReportItemModel> GetItemUsage(ItemUsageReportQueryModel usageQuery)
         {
-			var orderLines = reportRepository.GetOrderLinesForItemUsageReport(usageQuery.UserSelectedContext.BranchId,
-					usageQuery.UserSelectedContext.CustomerId,
-					usageQuery.fromDate.Value,
-					usageQuery.toDate.Value.AddDays(1),
-					usageQuery.sortDir,
-					usageQuery.sortField).ToList();
+			var orderLines = reportRepository.GetOrderLinesForItemUsageReport(usageQuery.UserSelectedContext.BranchId, usageQuery.UserSelectedContext.CustomerId, usageQuery.fromDate.Value,
+					                                                                                               usageQuery.toDate.Value.AddDays(1), usageQuery.sortDir, usageQuery.sortField).ToList();
 
 			LookupProductInfo(orderLines, usageQuery.UserSelectedContext.BranchId);
-
 
 			var reportItems = orderLines.GroupBy(x => new { x.ItemNumber, x.Each }).Select(g => new ItemUsageReportItemModel()
                 {

@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Core.Models.Orders.Confirmations
     {
         #region properties
         [DataMember(Name = "ConfirmationDate")]
-        public DateTime ConfirmationDate { get; set; }
+        public string ConfirmationDate { get; set; }
 
         [DataMember(Name = "Branch")]
         public string Branch { get; set; }
@@ -35,7 +35,7 @@ namespace KeithLink.Svc.Core.Models.Orders.Confirmations
         public string InvoiceNumber { get; set; }
 
         [DataMember(Name = "ShipDate")]
-        public DateTime? ShipDate { get; set; }
+        public string ShipDate { get; set; }
 
         [DataMember(Name = "RouteNumber")]
         public string RouteNumber { get; set; }
@@ -69,9 +69,6 @@ namespace KeithLink.Svc.Core.Models.Orders.Confirmations
 
         [DataMember(Name = "ConfirmationStatus")]
         public string ConfirmationStatus { get; set; }
-
-        // TODO: Finish this after looking at the mock screens.
-
         #endregion
     }
 }

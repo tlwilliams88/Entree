@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         {
 		}
 
-		public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
+		public string ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
         {
             throw new NotImplementedException();
 		}
@@ -84,5 +84,11 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         }
 
         #endregion
+
+
+        public string SetLostOrder(string trackingNumber)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

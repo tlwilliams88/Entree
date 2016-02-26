@@ -532,7 +532,7 @@ namespace KeithLink.Svc.Impl.Logic
             orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
             orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
             orderChange.SpecialInstructions = "";
-            orderChange.ShipDate = DateTime.MinValue;
+            orderChange.ShipDate = DateTime.MinValue.ToShortDateString();
             foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
             {
                 var item = (CS.LineItem)lineItem.Target;

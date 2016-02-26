@@ -116,9 +116,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
 
                     if (etaInfo != null){
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : etaInfo.ScheduledTime;
+                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : etaInfo.EstimatedTime;
+                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : etaInfo.ActualTime;
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
@@ -187,9 +187,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                     if (etaInfo != null)
                     {
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.ScheduledDeliveryTime = etaInfo.ScheduledTime;
+                        order.EstimatedDeliveryTime = etaInfo.EstimatedTime;
+                        order.ActualDeliveryTime = etaInfo.ActualTime;
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
@@ -264,9 +264,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                     if (etaInfo != null)
                     {
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.ScheduledDeliveryTime = etaInfo.ScheduledTime;
+                        order.EstimatedDeliveryTime = etaInfo.EstimatedTime;
+                        order.ActualDeliveryTime = etaInfo.ActualTime;
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;

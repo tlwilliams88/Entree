@@ -47,7 +47,7 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetOrderTotalByMonth( customerInfo, numberOfMonths );
         }
 
-        public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
+        public string ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
             return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }
 
@@ -80,6 +80,10 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             serviceClient.UpdateRelatedControlNumber(childOrderNumber, parentOrderNumber);
         }
 
+        public string SetLostOrder(string trackingNumber)
+        {
+            return serviceClient.SetLostOrder(trackingNumber);
+        }
         #endregion
     }
 }

@@ -306,6 +306,15 @@ namespace KeithLink.Svc.WebApi.Controllers
                 };
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("order/admin/setlostorder")]
+        public Models.OperationReturnModel<string> SetLostOrder(string trackingNumber)
+        {
+            if(AuthenticatedUser.RoleName.Equals("beksysadmin",StringComparison.CurrentCultureIgnoreCase))
+                return new Models.OperationReturnModel<string>() { SuccessResponse = _orderServiceRepository.SetLostOrder(trackingNumber) };
+            else
+                return new Models.OperationReturnModel<string>() { ErrorMessage = "Must be a beksysadmin user" };
+        }
         #endregion
     }
 }

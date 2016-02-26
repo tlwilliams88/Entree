@@ -214,8 +214,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             if ((notification != null) && 
                 (notification.OrderChange != null) && 
                 (notification.OrderChange.ShipDate != null) &&
-                (notification.OrderChange.ShipDate.ToShortDateString().Equals("1/1/0001") == false))
-                sbShipDate.Append(notification.OrderChange.ShipDate.ToShortDateString());
+                (notification.OrderChange.ShipDate.Equals("1/1/0001") == false))
+                sbShipDate.Append(notification.OrderChange.ShipDate);
             else sbShipDate.Append("Undetermined");
             message.MessageBody = template.Body.Inject(new
             {

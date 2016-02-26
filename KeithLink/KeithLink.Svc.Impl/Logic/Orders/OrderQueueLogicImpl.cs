@@ -1,6 +1,7 @@
 ﻿using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core;
 using KeithLink.Common.Core.Extensions;
+
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders;
@@ -249,14 +250,14 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     AddressCity = addressCity,
                     AddressRegionCode = addressState,
                     AddressPostalCode = addressZip,
-                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
+                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString(),
                     PONumber = newPurchaseOrder.Properties["PONumber"] == null ? string.Empty : newPurchaseOrder.Properties["PONumber"].ToString(),
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(orderNumber),
                     OrderType = orderType,
                     InvoiceNumber = orderType == OrderType.NormalOrder ? string.Empty : (string)newPurchaseOrder.Properties["MasterNumber"],
                     OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    OrderSendDateTime = DateTime.Now,
+                    OrderSendDateTime = DateTime.Now.ToLongDateFormatWithTime(),
                     UserId = orderingUserEmail.ToUpper(),
                     OrderFilled = false,
                     FutureOrder = false,

@@ -38,6 +38,34 @@ namespace KeithLink.Common.Core.Extensions {
             return parsedDate;
         }
 
+        public static string ToYearFirstDate( this string value ) {
+            string returnValue = String.Empty;
+            var parsedDate = new DateTime();
+
+            if (DateTime.TryParse( value, out parsedDate )) {
+                var date = value.Substring( 0, 8 ).Split( Char.Parse( "/" ) );
+
+                returnValue = String.Format( "{0}", String.Join("", date) );
+            }
+
+            return returnValue;
+
+        }
+
+        public static string ToYearFirstDateWithTime( this string value ) {
+            string returnValue = String.Empty;
+            var parsedDate = new DateTime();
+
+            if (DateTime.TryParse( value, out parsedDate )) {
+                var date = value.Substring( 0, 8 ).Split( Char.Parse( "/" ) );
+                var time = value.Substring(11).Split(Char.Parse(":"));
+
+                returnValue = String.Format( "{0}{2}", String.Join("", date), String.Join("", time) );
+            }
+
+            return returnValue;
+        }
+
         public static short? ToShort(this string value) {
             short parsedShort;
 

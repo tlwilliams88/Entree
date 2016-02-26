@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Enumerations.Order;
+﻿using KeithLink.Common.Core.Extensions;
+
+using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
@@ -42,7 +44,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             confirmation.Header.ConfirmationNumber = historyFile.Header.ControlNumber;
             confirmation.Header.CustomerNumber = historyFile.Header.CustomerNumber;
             confirmation.Header.InvoiceNumber = historyFile.Header.InvoiceNumber;
-            confirmation.Header.ConfirmationDate = DateTime.Now;
+            confirmation.Header.ConfirmationDate = DateTime.Now.ToLongDateFormatWithTime();
             confirmation.Header.ShipDate = historyFile.Header.DeliveryDate;
             confirmation.Header.RemoteOrderNumber = historyFile.Header.ControlNumber;
             // a confirmation will never have this data, and it is coming back wrong now

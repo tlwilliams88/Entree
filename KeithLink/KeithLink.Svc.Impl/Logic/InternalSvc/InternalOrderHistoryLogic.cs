@@ -1,6 +1,7 @@
-﻿using KeithLink.Common.Core.Helpers;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
-
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions;
@@ -191,6 +192,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.CommerceId = Guid.Parse(po.Id);
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
+                        if (po.Status == "Confirmed with un-submitted changes") {
+                            returnOrder = po.ToOrder();
+                        }
+
+
                         // needed to reconnect parent orders to special orders
                         if (myOrder.RelatedControlNumber == null) {		
                             FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);		
@@ -202,7 +208,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             // Set the status to delivered if the Actual Delivery Time is populated
-            if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+            //if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+            if (!string.IsNullOrEmpty(returnOrder.ActualDeliveryTime)) {
                     returnOrder.Status = "Delivered";
             }
 
@@ -277,8 +284,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
             List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
                                                                                && h.CustomerNumber.Equals( customerInfo.CustomerId ) 
-                                                                               && h.DeliveryDate >= startDate 
-                                                                               && h.DeliveryDate <= endDate, i => i.OrderDetails ).ToList();
+                                                                               && h.DeliveryDate.ToDateTime() >= startDate 
+                                                                               && h.DeliveryDate.ToDateTime() <= endDate, i => i.OrderDetails ).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
@@ -310,9 +317,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <param name="endDate"></param>
         /// <returns></returns>
         private List<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails).ToList();
+            int numberOfDays = (endDate - startDate).Days + 1;
+            var dateRange = Enumerable.Range(0, numberOfDays).Select(d => startDate.AddDays(d).ToLongDateFormat());
 
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) 
+                                                                                                       && h.CustomerNumber.Equals(customerInfo.CustomerId) 
+                                                                                                       && dateRange.Contains(h.DeliveryDate),
+                                                                                                    i => i.OrderDetails)
+                                                                                           .ToList();
             List<Order> orders = new List<Order>();
 
             foreach (EF.OrderHistoryHeader h in headers) {
@@ -680,6 +692,25 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
         }
 
+        public string SetLostOrder(string trackingNumber)
+        {
+            _log.WriteInformationLog("InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ")");
+            PurchaseOrder Po = _poRepo.ReadPurchaseOrderByTrackingNumber(trackingNumber);
+            //Save to Commerce Server
+            if (Po != null)
+            {
+                com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+                client.UpdatePurchaseOrderStatus(Po.Properties["UserId"].ToString().ToGuid(), Po.Id.ToGuid(), "Lost");
+                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Success");
+                return "Success";
+            }
+            else
+            {
+                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Po not found");
+                return "Po not found";
+            }
+        }
+
         public string CheckForLostOrders(out string sBody)
         {
             StringBuilder sbMsgSubject = new StringBuilder();
@@ -716,15 +747,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             sbBody = new StringBuilder();
             if ((Pos != null) && (Pos.Count > 0))
             {
-                sbSubject.Clear();
-                sbSubject.Append(Pos.Count + " POs in a " + qStatus + " status for more than 10 minutes.");
-                sbBody.Append("Purchase Order Details:\n");
+                int count = 0;
+                sbBody.Clear();
+                DateTime now = DateTime.Now.AddMinutes(-10);
+                
                 foreach (PurchaseOrder po in Pos)
                 {
-                    DateTime lastModified = DateTime.Parse(po.Properties["DateModified"].ToString());
+                    //string sCreated = po.Properties["DateCreated"].ToString();
+                    DateTime created = DateTime.Parse(po.Properties["DateCreated"].ToString());
                     //// only if they've been created more than 10 minutes ago in the query status
-                    if (lastModified < DateTime.UtcNow.AddMinutes(-10))
+                    if (created < now)
                     {
+                        count++;
+                        sbSubject.Clear();
+                        sbSubject.Append(count + " POs in a " + qStatus + " status for more than 10 minutes.");
+                        if (sbBody.Length == 0) sbBody.Append("Purchase Order Details:\n");
                         sbBody.Append("* PO");
                         sbBody.Append(" for ");
                         sbBody.Append(po.Properties["CustomerId"].ToString());
@@ -735,7 +772,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         sbBody.Append(" with tracking ");
                         sbBody.Append(po.Properties["OrderNumber"].ToString());
                         sbBody.Append(" last modified");
-                        sbBody.Append(" on " + lastModified.ToString("MM-dd-yyyy hh:mm tt"));
+                        sbBody.Append(" on " + created.ToString("MM-dd-yyyy hh:mm tt"));
                         sbBody.Append(" in status " + po.Properties["Status"].ToString());
                         sbBody.Append(".\n");
                     }

@@ -214,6 +214,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="CommercePropertyItem", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceUpdateOptions))]
@@ -474,12 +480,6 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfanyTypek9wYX3t0))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     public partial class CommercePropertyItem : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -523,6 +523,160 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
                 if ((object.ReferenceEquals(this.ValueField, value) != true)) {
                     this.ValueField = value;
                     this.RaisePropertyChanged("Value");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DBNull", Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [System.SerializableAttribute()]
+    public partial class DBNull : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PurchaseOrderLineItemUpdate", Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.FoundationSvc.Interface")]
+    [System.SerializableAttribute()]
+    public partial class PurchaseOrderLineItemUpdate : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string CatalogField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool CatchWeightField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool EachField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ItemNumberField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int QuantityField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string StatusField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Catalog {
+            get {
+                return this.CatalogField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.CatalogField, value) != true)) {
+                    this.CatalogField = value;
+                    this.RaisePropertyChanged("Catalog");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool CatchWeight {
+            get {
+                return this.CatchWeightField;
+            }
+            set {
+                if ((this.CatchWeightField.Equals(value) != true)) {
+                    this.CatchWeightField = value;
+                    this.RaisePropertyChanged("CatchWeight");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool Each {
+            get {
+                return this.EachField;
+            }
+            set {
+                if ((this.EachField.Equals(value) != true)) {
+                    this.EachField = value;
+                    this.RaisePropertyChanged("Each");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ItemNumber {
+            get {
+                return this.ItemNumberField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ItemNumberField, value) != true)) {
+                    this.ItemNumberField = value;
+                    this.RaisePropertyChanged("ItemNumber");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int Quantity {
+            get {
+                return this.QuantityField;
+            }
+            set {
+                if ((this.QuantityField.Equals(value) != true)) {
+                    this.QuantityField = value;
+                    this.RaisePropertyChanged("Quantity");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Status {
+            get {
+                return this.StatusField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
+                    this.StatusField = value;
+                    this.RaisePropertyChanged("Status");
                 }
             }
         }
@@ -1935,6 +2089,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RequestTemplateResponse", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceUpdateOptions))]
@@ -2195,12 +2355,6 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfanyTypek9wYX3t0))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     public partial class RequestTemplateResponse : KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOperationResponse {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -2453,6 +2607,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="RequestTemplateParameter", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceUpdateOptions))]
@@ -2713,12 +2873,6 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfanyTypek9wYX3t0))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     public partial class RequestTemplateParameter : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -4426,6 +4580,12 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="MultilingualValue.LanguageValuePairOfanyTypek9wYX3t0", Namespace="http://schemas.commerceserver.net/2013/01/Foundation/Types")]
     [System.SerializableAttribute()]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
+    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceOptions[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.CommerceUpdateOptions))]
@@ -4686,12 +4846,6 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfanyTypek9wYX3t0[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0[]))]
     [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.MultilingualValueLanguageValuePairOfstringk9wYX3t0))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(string[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(System.Collections.Generic.Dictionary<string, string>))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(object[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[]))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate))]
-    [System.Runtime.Serialization.KnownTypeAttribute(typeof(KeithLink.Svc.Impl.com.benekeith.FoundationService.DBNull))]
     public partial class MultilingualValueLanguageValuePairOfanyTypek9wYX3t0 : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
         
         [System.NonSerializedAttribute()]
@@ -4810,160 +4964,6 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         }
     }
     
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PurchaseOrderLineItemUpdate", Namespace="http://schemas.datacontract.org/2004/07/KeithLink.Svc.FoundationSvc.Interface")]
-    [System.SerializableAttribute()]
-    public partial class PurchaseOrderLineItemUpdate : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string CatalogField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool CatchWeightField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private bool EachField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string ItemNumberField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private int QuantityField;
-        
-        [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private string StatusField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Catalog {
-            get {
-                return this.CatalogField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.CatalogField, value) != true)) {
-                    this.CatalogField = value;
-                    this.RaisePropertyChanged("Catalog");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool CatchWeight {
-            get {
-                return this.CatchWeightField;
-            }
-            set {
-                if ((this.CatchWeightField.Equals(value) != true)) {
-                    this.CatchWeightField = value;
-                    this.RaisePropertyChanged("CatchWeight");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public bool Each {
-            get {
-                return this.EachField;
-            }
-            set {
-                if ((this.EachField.Equals(value) != true)) {
-                    this.EachField = value;
-                    this.RaisePropertyChanged("Each");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string ItemNumber {
-            get {
-                return this.ItemNumberField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.ItemNumberField, value) != true)) {
-                    this.ItemNumberField = value;
-                    this.RaisePropertyChanged("ItemNumber");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public int Quantity {
-            get {
-                return this.QuantityField;
-            }
-            set {
-                if ((this.QuantityField.Equals(value) != true)) {
-                    this.QuantityField = value;
-                    this.RaisePropertyChanged("Quantity");
-                }
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
-        public string Status {
-            get {
-                return this.StatusField;
-            }
-            set {
-                if ((object.ReferenceEquals(this.StatusField, value) != true)) {
-                    this.StatusField = value;
-                    this.RaisePropertyChanged("Status");
-                }
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
-    [System.Diagnostics.DebuggerStepThroughAttribute()]
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="DBNull", Namespace="http://schemas.datacontract.org/2004/07/System")]
-    [System.SerializableAttribute()]
-    public partial class DBNull : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
-        
-        [System.NonSerializedAttribute()]
-        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
-        
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
-            get {
-                return this.extensionDataField;
-            }
-            set {
-                this.extensionDataField = value;
-            }
-        }
-        
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        
-        protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
-            if ((propertyChanged != null)) {
-                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
-            }
-        }
-    }
-    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="com.benekeith.FoundationService.IBEKFoundationService")]
     public interface IBEKFoundationService {
@@ -5036,10 +5036,10 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
         System.Threading.Tasks.Task<string> SaveCartAsOrderAsync(System.Guid userId, System.Guid cartId);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
-        string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
+        string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrder", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderResponse")]
-        System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
+        System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderStatus", ReplyAction="http://tempuri.org/IBEKFoundationService/UpdatePurchaseOrderStatusResponse")]
         void UpdatePurchaseOrderStatus(System.Guid userId, System.Guid orderId, string status);
@@ -5229,11 +5229,11 @@ namespace KeithLink.Svc.Impl.com.benekeith.FoundationService {
             return base.Channel.SaveCartAsOrderAsync(userId, cartId);
         }
         
-        public string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+        public string UpdatePurchaseOrder(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
             return base.Channel.UpdatePurchaseOrder(userId, orderId, requestedShipDate, itemUpdates);
         }
         
-        public System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, System.DateTime requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
+        public System.Threading.Tasks.Task<string> UpdatePurchaseOrderAsync(System.Guid userId, System.Guid orderId, string requestedShipDate, KeithLink.Svc.Impl.com.benekeith.FoundationService.PurchaseOrderLineItemUpdate[] itemUpdates) {
             return base.Channel.UpdatePurchaseOrderAsync(userId, orderId, requestedShipDate, itemUpdates);
         }
         
