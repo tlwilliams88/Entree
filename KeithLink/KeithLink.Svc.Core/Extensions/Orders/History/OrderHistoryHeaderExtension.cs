@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Enumerations.Order;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions.Enumerations;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders;
@@ -63,7 +64,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
                 string deliveryDate = record.Substring(HEADER_STARTPOS_DELVDATE, HEADER_LENGTH_DELVDATE);
                 value.DeliveryDate = new DateTime(int.Parse(deliveryDate.Substring(0, 4)),
                                                    int.Parse(deliveryDate.Substring(4, 2)),
-                                                   int.Parse(deliveryDate.Substring(6, 2)));
+                                                   int.Parse(deliveryDate.Substring(6, 2))).ToLongDateFormat();
             }
 
             if (record.Length >= HEADER_STARTPOS_PONUM + HEADER_LENGTH_PONUM) { value.PONumber = record.Substring(HEADER_STARTPOS_PONUM, HEADER_LENGTH_PONUM).Trim(); }
@@ -175,7 +176,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.InvoiceStatus = "N/A";
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
             retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
-			retVal.RequestedShipDate = (DateTime)value.DeliveryDate;
+			retVal.RequestedShipDate = value.DeliveryDate;
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
             FillEtaInformation(value, retVal);
@@ -232,7 +233,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 			retVal.ItemCount = value.OrderDetails == null ? 0 : value.OrderDetails.Count;
             retVal.OrderTotal = (double)value.OrderDetails.Sum(d => d.ShippedQuantity * d.SellPrice); 
 			retVal.CreatedDate = DateTime.SpecifyKind(value.CreatedUtc.ToLocalTime(), DateTimeKind.Unspecified);
-            retVal.RequestedShipDate = (DateTime)(value.DeliveryDate.HasValue ? value.DeliveryDate : DateTime.Now);
+            retVal.RequestedShipDate = value.DeliveryDate;
 			retVal.IsChangeOrderAllowed = false;
 			retVal.CommerceId = Guid.Empty;
             FillEtaInformation(value, retVal);
@@ -273,7 +274,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
 
             retVal.CustomerNumber = customerInfo.CustomerId;
             retVal.InvoiceNumber = value.Properties["MasterNumber"] == null ? "Processing" : value.Properties["MasterNumber"].ToString();
-            retVal.DeliveryDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"];
+            retVal.DeliveryDate = value.Properties["RequestedShipDate"].ToString();
             retVal.PONumber = value.Properties["PONumber"] == null ? string.Empty : value.Properties["PONumber"].ToString();
             retVal.ControlNumber = value.Properties["OrderNumber"].ToString();
             retVal.OriginalControlNumber = value.Properties["OrderNumber"].ToString();

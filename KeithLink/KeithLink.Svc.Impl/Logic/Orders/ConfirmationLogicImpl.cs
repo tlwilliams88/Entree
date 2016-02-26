@@ -106,7 +106,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region methods/functions
         private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, 
-                                                                          string originalStatus, string specialInstructions, DateTime? shipDate) {
+                                                                          string originalStatus, string specialInstructions, string shipDate) {
             Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
             orderChange.OrderName = (string)po["DisplayName"];
             orderChange.OriginalStatus = originalStatus;
@@ -114,7 +114,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
             orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
 			orderChange.SpecialInstructions = specialInstructions;
-            orderChange.ShipDate = shipDate.HasValue ? shipDate.Value : DateTime.MinValue;
+            orderChange.ShipDate = shipDate;
 			
             foreach (LineItem origItem in origLineItems) {
                 LineItem newItem = currLineItems.Where(i => i.ProductId == origItem.ProductId).FirstOrDefault();

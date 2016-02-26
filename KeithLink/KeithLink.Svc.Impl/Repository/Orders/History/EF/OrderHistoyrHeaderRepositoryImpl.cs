@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Orders.History;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using System;
@@ -40,9 +41,9 @@ namespace KeithLink.Svc.Impl.Repository.Orders.History.EF {
             return Entities.Include(d => d.OrderDetails).Where(l => (l.BranchId.Equals(branchId) && l.InvoiceNumber.Equals(invoiceNumber)));
         }
 
-        public DateTime? ReadLatestOrderDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
+        public string ReadLatestOrderDate(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
             return this.Entities.Where(o => o.CustomerNumber.Equals(catalogInfo.CustomerId, StringComparison.InvariantCultureIgnoreCase) &&
-                o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModifiedUtc).DefaultIfEmpty().Max();
+                o.BranchId.Equals(catalogInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)).Select(m => m.ModifiedUtc).DefaultIfEmpty().Max().ToLongDateFormatWithTime();
         }
         #endregion
 	}

@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         {
 		}
 
-		public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
+		public string ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
         {
             throw new NotImplementedException();
 		}

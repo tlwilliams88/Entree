@@ -29,7 +29,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         public string AddressPostalCode { get; set; }
 
         [DataMember(Name = "DeliveryDate")]
-        public DateTime DeliveryDate { get; set; }
+        public string DeliveryDate { get; set; }
 
         [DataMember(Name = "PONumber")]
         public string PONumber { get; set; }
@@ -50,7 +50,7 @@ namespace KeithLink.Svc.Core.Models.Orders
         public DateTime OrderCreateDateTime { get; set; }
 
         [DataMember(Name = "OrderSendDateTime")]
-        public DateTime OrderSendDateTime { get; set; }
+        public string OrderSendDateTime { get; set; }
 
         [DataMember(Name = "UserId")]
         public string UserId { get; set; }

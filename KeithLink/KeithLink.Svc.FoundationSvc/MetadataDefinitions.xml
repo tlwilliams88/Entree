@@ -2220,7 +2220,7 @@ This file contains the Metadata Repository
 						<DisplayName value="PONumber"/>
 					</Property>
 					
-					<Property name="RequestedShipDate" dataType="DateTime">
+					<Property name="RequestedShipDate" dataType="String">
 						<DisplayName value="Requested Ship Date"/>
 					</Property>
 					<Property name="Active" dataType="Boolean">

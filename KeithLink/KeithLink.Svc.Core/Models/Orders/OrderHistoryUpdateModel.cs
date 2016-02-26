@@ -11,6 +11,6 @@ namespace KeithLink.Svc.Core.Models.Orders
 	public class OrderHistoryUpdateModel
 	{
 		[DataMember(Name="lastupdated")]
-		public DateTime? LastUpdated { get; set; }
+		public string LastUpdated { get; set; }
 	}
 }

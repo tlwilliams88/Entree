@@ -1,5 +1,10 @@
-﻿using KeithLink.Svc.Core.Enumerations.Order;
+﻿// KeithLink
+using KeithLink.Common.Core.Extensions;
+
+using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Models.Orders;
+
+// Core
 using System;
 using System.Text;
 
@@ -36,14 +41,14 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
             output.Append(GetOrderSource(value.OrderingSystem, entreeCollectorType));
             output.Append(value.Branch);
             output.Append(value.CustomerNumber);
-            output.Append(value.DeliveryDate.ToString("yyyyMMdd"));
+            output.Append(value.DeliveryDate.ToYearFirstDate());
             output.Append(value.PONumber.PadRight(20));
             output.Append(value.Specialinstructions.PadRight(80));
             output.Append(value.ControlNumber.ToString().PadLeft(7, '0'));
             output.Append(GetOrderType(value.OrderType));
             output.Append(value.InvoiceNumber.PadLeft(8, '0'));
             output.Append(value.OrderCreateDateTime.ToString("yyyyMMddHHmmss"));
-            output.Append(value.OrderSendDateTime.ToString("yyyyMMddHHmmss"));
+            output.Append(value.OrderSendDateTime.ToYearFirstDateWithTime());
             output.Append(value.UserId.PadRight(50));
             output.Append(value.OrderFilled ? "Y" : " ");
             output.Append(value.FutureOrder ? "Y" : " ");

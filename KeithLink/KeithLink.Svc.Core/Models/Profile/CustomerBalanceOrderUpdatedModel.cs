@@ -15,6 +15,6 @@ namespace KeithLink.Svc.Core.Models.Profile
 		public CustomerAccountBalanceModel balance { get; set; }
 
 		[DataMember(Name = "lastorderupdate")]
-		public DateTime? LastOrderUpdate { get; set; }
+		public string LastOrderUpdate { get; set; }
 	}
 }

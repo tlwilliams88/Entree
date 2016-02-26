@@ -22,7 +22,7 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public string InvoiceNumber { get; set; }
 
         [DataMember(Name="deliverydate")]
-        public DateTime? DeliveryDate { get; set; }
+        public string DeliveryDate { get; set; }
 
         [DataMember(Name="ponumber")]
         public string PONumber { get; set; }
@@ -49,13 +49,13 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public string StopNumber { get; set; }
 
         [DataMember(Name = "scheduledtime")]
-        public DateTime? ScheduledDeliveryTime { get; set; }
+        public string ScheduledDeliveryTime { get; set; }
 
         [DataMember(Name = "estimatedtime")]
-        public DateTime? EstimatedDeliveryTime { get; set; }
+        public string EstimatedDeliveryTime { get; set; }
 
         [DataMember(Name = "actualtime")]
-        public DateTime? ActualDeliveryTime { get; set; }
+        public string ActualDeliveryTime { get; set; }
 
         [DataMember(Name = "deliveryoutofsequence")]
         public bool? DeliveryOutOfSequence { get; set; }

@@ -170,7 +170,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         {
             _log.WriteInformationLog(string.Format(" ({0}) InternalSpecialOrderLogic.ProcessOrderHistoryDetailOnApprovedStatusUpdate", specialorder.MessageId));
             EF.OrderHistoryHeader header = detail.OrderHistoryHeader;
-            header.DeliveryDate = DateTime.Parse(specialorder.Item.EstimatedArrival);
+            header.DeliveryDate = specialorder.Item.EstimatedArrival;
             _headerRepo.Update(header);
             _unitOfWork.SaveChanges();
         }

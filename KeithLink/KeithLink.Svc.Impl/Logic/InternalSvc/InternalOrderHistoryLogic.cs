@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Core.Helpers;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations;
@@ -207,7 +208,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             }
 
             // Set the status to delivered if the Actual Delivery Time is populated
-            if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+            //if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+            if (!string.IsNullOrEmpty(returnOrder.ActualDeliveryTime)) {
                     returnOrder.Status = "Delivered";
             }
 
@@ -282,8 +284,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
             List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
                                                                                && h.CustomerNumber.Equals( customerInfo.CustomerId ) 
-                                                                               && h.DeliveryDate >= startDate 
-                                                                               && h.DeliveryDate <= endDate, i => i.OrderDetails ).ToList();
+                                                                               && h.DeliveryDate.ToDateTime() >= startDate 
+                                                                               && h.DeliveryDate.ToDateTime() <= endDate, i => i.OrderDetails ).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
@@ -315,9 +317,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <param name="endDate"></param>
         /// <returns></returns>
         private List<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails).ToList();
+            int numberOfDays = (endDate - startDate).Days + 1;
+            var dateRange = Enumerable.Range(0, numberOfDays).Select(d => startDate.AddDays(d).ToLongDateFormat());
 
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) 
+                                                                                                       && h.CustomerNumber.Equals(customerInfo.CustomerId) 
+                                                                                                       && dateRange.Contains(h.DeliveryDate),
+                                                                                                    i => i.OrderDetails)
+                                                                                           .ToList();
             List<Order> orders = new List<Order>();
 
             foreach (EF.OrderHistoryHeader h in headers) {

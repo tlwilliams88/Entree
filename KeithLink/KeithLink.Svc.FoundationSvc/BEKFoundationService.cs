@@ -187,7 +187,7 @@ namespace KeithLink.Svc.FoundationSvc
             }
         }
 
-        public string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> lineItemUpdates)
+        public string UpdatePurchaseOrder(Guid userId, Guid orderId, string requestedShipDate, List<PurchaseOrderLineItemUpdate> lineItemUpdates)
         {
             try
             {
