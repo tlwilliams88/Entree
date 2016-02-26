@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
                 string deliveryDate = record.Substring(HEADER_STARTPOS_DELVDATE, HEADER_LENGTH_DELVDATE);
                 value.DeliveryDate = new DateTime(int.Parse(deliveryDate.Substring(0, 4)),
                                                    int.Parse(deliveryDate.Substring(4, 2)),
-                                                   int.Parse(deliveryDate.Substring(6, 2))).ToShortDateFormat();
+                                                   int.Parse(deliveryDate.Substring(6, 2))).ToLongDateFormat();
             }
 
             if (record.Length >= HEADER_STARTPOS_PONUM + HEADER_LENGTH_PONUM) { value.PONumber = record.Substring(HEADER_STARTPOS_PONUM, HEADER_LENGTH_PONUM).Trim(); }

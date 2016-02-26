@@ -35,15 +35,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         public List<Core.Models.Reports.ItemUsageReportItemModel> GetItemUsage(ItemUsageReportQueryModel usageQuery)
         {
-			var orderLines = reportRepository.GetOrderLinesForItemUsageReport(usageQuery.UserSelectedContext.BranchId,
-					usageQuery.UserSelectedContext.CustomerId,
-					usageQuery.fromDate.Value.ToLongDateFormat(),
-					usageQuery.toDate.Value.AddDays(1).ToLongDateFormat(),
-					usageQuery.sortDir,
-					usageQuery.sortField).ToList();
+			var orderLines = reportRepository.GetOrderLinesForItemUsageReport(usageQuery.UserSelectedContext.BranchId, usageQuery.UserSelectedContext.CustomerId, usageQuery.fromDate.Value,
+					                                                                                               usageQuery.toDate.Value.AddDays(1), usageQuery.sortDir, usageQuery.sortField).ToList();
 
 			LookupProductInfo(orderLines, usageQuery.UserSelectedContext.BranchId);
-
 
 			var reportItems = orderLines.GroupBy(x => new { x.ItemNumber, x.Each }).Select(g => new ItemUsageReportItemModel()
                 {

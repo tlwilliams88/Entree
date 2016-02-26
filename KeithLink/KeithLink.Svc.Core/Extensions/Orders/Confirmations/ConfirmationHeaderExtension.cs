@@ -107,7 +107,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
             value.ConfirmationDate = DateTime.ParseExact(StringHelpers.GetField(
                 CONFIRMATION_HEADER_DATE_INDEX, 
                 CONFIRMATION_HEADER_DATE_LENGTH, 
-                Line), "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToShortDateFormatWithTime();
+                Line), "yyyyMMddHHmmss", CultureInfo.InvariantCulture).ToLongDateFormatWithTime();
 
             value.Branch = StringHelpers.GetField(
                 CONFIRMATION_HEADER_DIVISION_INDEX, 
@@ -142,7 +142,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.Confirmations
             value.ShipDate = DateTime.ParseExact(StringHelpers.GetField(
                 CONFIRMATION_HEADER_SHIP_DATE_INDEX, 
                 CONFIRMATION_HEADER_SHIP_DATE_LENGTH, 
-                Line), "yyyyMMdd", CultureInfo.InvariantCulture).ToShortDateFormat();
+                Line), "yyyyMMdd", CultureInfo.InvariantCulture).ToLongDateFormat();
 
             value.RouteNumber = StringHelpers.GetField(
                 CONFIRMATION_HEADER_ROUTE_NUMBER_INDEX, 

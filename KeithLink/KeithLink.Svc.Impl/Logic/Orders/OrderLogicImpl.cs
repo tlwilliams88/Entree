@@ -226,7 +226,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 InvoiceNumber = orderHistoryHeader.InvoiceNumber,
                 IsChangeOrderAllowed = false,
                 Status = orderHistoryHeader.OrderStatus,
-                RequestedShipDate = DateTime.Now.ToShortDateFormat(),
+                RequestedShipDate = DateTime.Now.ToLongDateFormat(),
                 Items = orderHistoryHeader.Items.Select(l => ToOrderLine(l)).ToList(),
                 CommerceId = Guid.Empty, // could be orders from any system
             };
