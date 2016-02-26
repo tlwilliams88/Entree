@@ -130,6 +130,7 @@
   <ItemGroup>
     <Compile Include="AutoFac\DependencyMap.cs" />
     <Compile Include="Email\EmailTemplateTest.cs" />
+    <Compile Include="Extensions\ToStringExtensionsTest.cs" />
     <Compile Include="Helpers\PricingHelperTests.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalDivisionLogicTests.cs" />

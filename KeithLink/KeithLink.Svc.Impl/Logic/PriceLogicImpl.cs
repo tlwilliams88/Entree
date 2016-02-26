@@ -43,13 +43,8 @@ namespace KeithLink.Svc.Impl.Logic
             if (uncachedProductList.Count > 0)
             {
                 List<Price> uncachedPrices = new List<Price>();
-                try {
-                    uncachedPrices = _priceRepository.GetPrices(BranchId, customerNumber, shipDate, uncachedProductList);
-                } catch (Exception ex) {
-                    
-                    throw;
-                }
-
+                uncachedPrices = _priceRepository.GetPrices(BranchId, customerNumber, shipDate, uncachedProductList);
+                
                 foreach (Price p in uncachedPrices)
                 {
 					_priceCacheRepository.AddItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(p.BranchId, p.CustomerNumber, p.ItemNumber), TimeSpan.FromHours(2), p);

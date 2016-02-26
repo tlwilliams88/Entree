@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
 	public interface IOrderServiceRepository
 	{
-		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
+		string ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
 
         List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
 

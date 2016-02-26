@@ -27,7 +27,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
         [Index("IdxOrderHeader", 1)]
 		public string InvoiceNumber { get; set; }
         [Index("IdxCustomerNumberByDate", 1)]
-		public DateTime? DeliveryDate { get; set; }
+        [Column(TypeName = "char")]
+        [MaxLength(10)]
+		public string DeliveryDate { get; set; }
 		[MaxLength(20)]
 		public string PONumber { get; set; }
 		[MaxLength(7)]
@@ -52,9 +54,15 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
         [MaxLength(7)]
         [Column(TypeName = "char")]
         public string RelatedControlNumber { get; set; }
-        public DateTime? ScheduledDeliveryTime { get; set; }
-        public DateTime? EstimatedDeliveryTime { get; set; }
-        public DateTime? ActualDeliveryTime { get; set; }
+        [Column(TypeName = "char")]
+        [MaxLength(19)]
+        public string ScheduledDeliveryTime { get; set; }
+        [Column(TypeName = "char")]
+        [MaxLength(19)]
+        public string EstimatedDeliveryTime { get; set; }
+        [Column(TypeName = "char")]
+        [MaxLength(19)]
+        public string ActualDeliveryTime { get; set; }
         public bool? DeliveryOutOfSequence { get; set; }
 
 		public virtual ICollection<OrderHistoryDetail> OrderDetails { get; set; }

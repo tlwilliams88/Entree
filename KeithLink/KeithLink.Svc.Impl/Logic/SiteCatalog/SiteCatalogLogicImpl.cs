@@ -95,10 +95,10 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             foreach (OrderHistoryFile h in history) {
                 foreach (OrderHistoryDetail d in h.Details) {
-                    if (returnValue.OrderHistory.ContainsKey(h.Header.DeliveryDate.Value.ToShortDateString()))
-                        returnValue.OrderHistory[h.Header.DeliveryDate.Value.ToShortDateString()] += d.ShippedQuantity;
+                    if (returnValue.OrderHistory.ContainsKey(h.Header.DeliveryDate))
+                        returnValue.OrderHistory[h.Header.DeliveryDate] += d.ShippedQuantity;
                     else
-                        returnValue.OrderHistory.Add(h.Header.DeliveryDate.Value.ToShortDateString(), d.ShippedQuantity);
+                        returnValue.OrderHistory.Add(h.Header.DeliveryDate, d.ShippedQuantity);
                 }
             }
         }
