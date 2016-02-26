@@ -477,13 +477,15 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             prices.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
                                                  listItems.GroupBy(g => g.ItemNumber)
-                                                          .Select(i => new Product() {
+                                                          .Select(i => new Product()
+                                                          {
                                                               ItemNumber = i.First().ItemNumber,
                                                               CatchWeight = i.First().CatchWeight,
                                                               PackagePriceNumeric = i.First().PackagePriceNumeric,
                                                               CasePriceNumeric = i.First().CasePriceNumeric,
                                                               CategoryName = i.First().CategoryName,
-                                                              CatalogId = i.First().CatalogId
+                                                              CatalogId = i.First().CatalogId,
+                                                              Unfi = i.First().Unfi
                                                           })
                                                           .Distinct()
                                                           .ToList()
@@ -596,6 +598,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.AverageWeight = prod.AverageWeight;
                     listItem.TempZone = prod.TempZone;
                     listItem.IsSpecialtyCatalog = prod.CatalogId.StartsWith("UNFI", StringComparison.InvariantCultureIgnoreCase);
+                    listItem.Unfi = prod.Unfi;
                     if (prod.Nutritional != null) {
                         listItem.StorageTemp = prod.Nutritional.StorageTemp;
                         listItem.Nutritional = new Nutritional() {
