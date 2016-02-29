@@ -193,7 +193,8 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 }
                 if (!source.Equals(Constants.CATALOG_BEK))
                 {
-                    if (!item.IsSpecialtyCatalog && item.Unfi.StockedInBranches.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
+                    if (item.IsValid && !item.IsSpecialtyCatalog && item.Unfi.StockedInBranches.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase) > 0)
+                    {
                     //if (!item.IsSpecialtyCatalog && item.Brand.IndexOf(branchId, StringComparison.InvariantCultureIgnoreCase)> 0) {
                         source = Constants.CATALOG_BEK;
                     }
