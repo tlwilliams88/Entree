@@ -1,4 +1,5 @@
-﻿using KeithLink.Common.Impl.Logging;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Impl.Logging;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.Logic.Orders;
@@ -20,11 +21,11 @@ namespace KeithLink.Svc.Test.Repositories.Order
             order.Header.Branch = "FDF";
             order.Header.ControlNumber = 1;
             order.Header.CustomerNumber = "001001";
-            order.Header.DeliveryDate = DateTime.Now.AddDays(1).ToString();
+            order.Header.DeliveryDate = DateTime.Now.AddDays(1).ToLongDateFormat();
             order.Header.OrderCreateDateTime = DateTime.Now;
             order.Header.OrderType = OrderType.NormalOrder;
             order.Header.OrderingSystem = OrderSource.Entree;
-            order.Header.OrderSendDateTime = DateTime.Now.ToString();
+            order.Header.OrderSendDateTime = DateTime.Now.ToLongDateFormat();
             order.Header.PONumber = string.Empty;
             order.Header.Specialinstructions = string.Empty;
             order.Header.InvoiceNumber = string.Empty;
