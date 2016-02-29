@@ -131,8 +131,13 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             try {
                 return base.SaveChanges();
             } catch (System.Data.Entity.Validation.DbEntityValidationException e) {
+                // Create a custom error message with validation information
                 StringBuilder errorDetails = new StringBuilder();
 
+                // First message shoudl be the thrown error
+                errorDetails.AppendLine( e.Message );
+
+                // Loop through the validation errors and append them to the message
                 foreach (var eve in e.EntityValidationErrors) {
                     errorDetails.AppendLine( String.Format( "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType(), eve.Entry.State ) );
                     foreach (var ve in eve.ValidationErrors) {
@@ -142,8 +147,9 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 
 				if(_log != null)
 					_log.WriteErrorLog( errorDetails.ToString() );
-                
-				throw;
+
+                // Throw a new exception using the error details we have established
+				throw new System.Data.Entity.Validation.DbEntityValidationException(errorDetails.ToString(), e);
             }
         }
 
