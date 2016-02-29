@@ -282,10 +282,13 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         }
 
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            int daysDiff = (endDate - startDate).Days;
+            var dateRange = Enumerable.Range(0, daysDiff + 1).Select(dt => startDate.AddDays(dt).ToLongDateFormat());
+            
             List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
-                                                                               && h.CustomerNumber.Equals( customerInfo.CustomerId ) 
-                                                                               && h.DeliveryDate.ToDateTime() >= startDate 
-                                                                               && h.DeliveryDate.ToDateTime() <= endDate, i => i.OrderDetails ).ToList();
+                                                                     && h.CustomerNumber.Equals( customerInfo.CustomerId ) 
+                                                                     && dateRange.Contains(h.DeliveryDate), 
+                                                                    i => i.OrderDetails ).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
