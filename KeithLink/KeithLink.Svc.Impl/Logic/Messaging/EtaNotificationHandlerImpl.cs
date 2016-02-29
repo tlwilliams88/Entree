@@ -116,8 +116,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
 
                     if (etaInfo != null){
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : etaInfo.ScheduledTime;
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : etaInfo.EstimatedTime;
+                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
+                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : DateTime.Parse(etaInfo.EstimatedTime).ToLongDateFormatWithTime();
                         order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : etaInfo.ActualTime;
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
@@ -187,8 +187,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                     if (etaInfo != null)
                     {
-                        order.ScheduledDeliveryTime = etaInfo.ScheduledTime;
-                        order.EstimatedDeliveryTime = etaInfo.EstimatedTime;
+                        order.ScheduledDeliveryTime = DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
+                        order.EstimatedDeliveryTime = DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
                         order.ActualDeliveryTime = etaInfo.ActualTime;
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
@@ -264,8 +264,8 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                     if (etaInfo != null)
                     {
-                        order.ScheduledDeliveryTime = etaInfo.ScheduledTime;
-                        order.EstimatedDeliveryTime = etaInfo.EstimatedTime;
+                        order.ScheduledDeliveryTime = DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
+                        order.EstimatedDeliveryTime = DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
                         order.ActualDeliveryTime = etaInfo.ActualTime;
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
