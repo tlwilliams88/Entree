@@ -59,7 +59,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #region methods
         private string GetOffsetTimeString(string dateTimeString) {
             if (string.IsNullOrEmpty(dateTimeString)) {
-                return string.Empty;
+                return null;
             } else {
                 int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
 
