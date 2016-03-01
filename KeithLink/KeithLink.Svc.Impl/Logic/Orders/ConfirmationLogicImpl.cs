@@ -358,6 +358,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0) {
                     Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
                     orderConfNotification.OrderChange = orderChange;
+                    orderConfNotification.OrderNumber = (string)po["OrderNumber"];
                     orderConfNotification.CustomerNumber = (string)po["CustomerId"];
                     orderConfNotification.BranchId = (string)po["BranchId"];
                     orderConfNotification.InvoiceNumber = confirmation.Header.InvoiceNumber;
