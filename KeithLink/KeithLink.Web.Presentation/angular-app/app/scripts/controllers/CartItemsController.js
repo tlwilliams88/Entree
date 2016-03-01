@@ -505,10 +505,7 @@ angular.module('bekApp')
       if($scope.currentCart && !$scope.currentCart.requestedshipdate){
           $scope.selectShipDate($scope.shipDates[0]);
       }else{
-          var requestedDate = $scope.currentCart.requestedshipdate;
-          var firstAvailableDate = $scope.shipDates[0].shipdate;
-
-          if (requestedDate < firstAvailableDate) {
+          if(moment($scope.currentCart.requestedshipdate.slice(0,10)) < moment($scope.shipDates[0].shipdate)) {
             $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
           }
       }
