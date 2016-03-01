@@ -8,12 +8,12 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', 'ProductService', 'CategoryService', 'Constants', 'PricingService',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
-      ProductService, CategoryService, Constants, PricingService // bek custom services
+      ProductService, CategoryService, Constants, PricingService, CartService // bek custom services
     ) {
 
     // clear keyword search term at top of the page
