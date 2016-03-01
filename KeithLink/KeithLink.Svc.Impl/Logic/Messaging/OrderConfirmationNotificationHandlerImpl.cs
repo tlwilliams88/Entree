@@ -253,21 +253,6 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             return invoiceNumber;
         }
 
-        private OrderLine ToOrderLine(CS.LineItem lineItem)
-        {
-            return new OrderLine()
-            {
-                ItemNumber = lineItem.ProductId,
-                Quantity = (short)lineItem.Quantity,
-                Price = (double)lineItem.PlacedPrice,
-                QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
-                QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
-                ChangeOrderStatus = lineItem.Status,
-                SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
-                MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
-                Each = (bool)lineItem.Properties["Each"]
-            };
-        }
 
         private decimal BuildOrderTable(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder originalOrderInfo)
         {
