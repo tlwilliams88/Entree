@@ -243,12 +243,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             string invoiceNumber = null;
             if (notification.InvoiceNumber != null)
             {
-                invoiceNumber = " INV " + notification.InvoiceNumber + " #" + notification.OrderNumber;
+                invoiceNumber = notification.InvoiceNumber + " #" + notification.OrderNumber;
             }
             else
             {
                 Order order = _orderHistoryLogic.GetOrder(customer.CustomerBranch, notification.OrderNumber);
-                invoiceNumber = " INV " + order.InvoiceNumber + " #" + notification.OrderNumber;
+                invoiceNumber = order.InvoiceNumber + " #" + notification.OrderNumber;
             }
             return invoiceNumber;
         }
