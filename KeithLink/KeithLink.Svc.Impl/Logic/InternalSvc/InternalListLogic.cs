@@ -483,7 +483,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                                                               CatchWeight = i.First().CatchWeight,
                                                               PackagePriceNumeric = i.First().PackagePriceNumeric,
                                                               CasePriceNumeric = i.First().CasePriceNumeric,
-                                                              CategoryName = i.First().CategoryName,
+                                                              CategoryName = i.First().ItemClass,
                                                               CatalogId = i.First().CatalogId,
                                                               Unfi = i.First().Unfi
                                                           })

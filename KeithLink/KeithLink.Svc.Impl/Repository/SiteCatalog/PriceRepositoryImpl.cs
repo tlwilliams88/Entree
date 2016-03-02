@@ -205,8 +205,13 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog
                 if (!source.Equals(Constants.CATALOG_BEK)) {
                     itemRow.Category = item.CategoryName;
                     itemRow.IsCatchWeight = item.CatchWeight;
-                    itemRow.CaseCost = (decimal)item.CasePriceNumeric;
-                    itemRow.PackageCost = (decimal)item.PackagePriceNumeric;
+                    if (item.Unfi == null) {
+                        itemRow.CaseCost = (decimal)item.CasePriceNumeric;
+                        itemRow.PackageCost = (decimal)item.PackagePriceNumeric;
+                    } else {
+                        itemRow.CaseCost = decimal.Parse(item.Unfi.CasePrice);
+                        itemRow.PackageCost = decimal.Parse(item.Unfi.PackagePrice);
+                    }
                 }
 
                 itemRow.SetParentRow(items);
