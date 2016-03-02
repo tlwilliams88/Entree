@@ -546,6 +546,7 @@ namespace KeithLink.Svc.Impl.Logic
             } 
             Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
             orderConfNotification.OrderChange = orderChange;
+            orderConfNotification.OrderNumber = (string)po.Properties["OrderNumber"];
             orderConfNotification.CustomerNumber = (string)po.Properties["CustomerId"];
             orderConfNotification.BranchId = (string)po.Properties["BranchId"];
             orderConfNotification.InvoiceNumber = (string)po.Properties["InvoiceNumber"];

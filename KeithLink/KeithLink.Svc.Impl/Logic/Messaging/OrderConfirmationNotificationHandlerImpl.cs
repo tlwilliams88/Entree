@@ -1,9 +1,11 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using CS = KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -241,22 +243,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             string invoiceNumber = null;
             if (notification.InvoiceNumber != null)
             {
-                invoiceNumber = notification.InvoiceNumber;
+                invoiceNumber = notification.InvoiceNumber + " #" + notification.OrderNumber;
             }
             else
             {
-                UserSelectedContext usc = new UserSelectedContext();
-                usc.CustomerId = customer.CustomerNumber;
-                usc.BranchId = customer.CustomerBranch;
-                DateTime today = DateTime.Parse(DateTime.Now.ToShortDateString());
-                List<string> notifItems = notification.OrderChange.Items.Select(x => x.ItemNumber).ToList();
-                List<Order> orders = _orderHistoryLogic.GetOrderHeaderInDateRange(usc, today, today.AddDays(1))
-                                        .ToList();
-                if ((orders != null) && (orders.Count > 0))
-                    invoiceNumber = orders[0].InvoiceNumber;
+                Order order = _orderHistoryLogic.GetOrder(customer.CustomerBranch, notification.OrderNumber);
+                invoiceNumber = order.InvoiceNumber + " #" + notification.OrderNumber;
             }
             return invoiceNumber;
         }
+
 
         private decimal BuildOrderTable(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder originalOrderInfo)
         {
