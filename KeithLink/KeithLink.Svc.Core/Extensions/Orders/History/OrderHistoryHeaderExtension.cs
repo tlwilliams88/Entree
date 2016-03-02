@@ -85,7 +85,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             entity.CustomerNumber = value.CustomerNumber;
             entity.InvoiceNumber = value.InvoiceNumber;
             entity.DeliveryDate = value.DeliveryDate.ToDateTime().Value.ToLongDateFormat();
-            entity.PONumber = value.PONumber;
+            entity.PONumber = value.PONumber ?? entity.PONumber;
             //entity.ControlNumber = value.ControlNumber.Trim();
             // the original control number is actually set from the entity already
             // and because the order history header is actually a converted confirmation
