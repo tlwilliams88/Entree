@@ -192,7 +192,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.CommerceId = Guid.Parse(po.Id);
                         PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
 
-                        if (po.Status == "Confirmed with un-submitted changes") {
+                        if (po.Status == "Confirmed with un-submitted changes" || po.Status == "Submitted") {
                             returnOrder = po.ToOrder();
                         }
 
