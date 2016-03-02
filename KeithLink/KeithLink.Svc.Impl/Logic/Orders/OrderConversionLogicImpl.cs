@@ -36,10 +36,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
         #endregion
 
         #region methods
-        private PurchaseOrder GetCsPurchaseOrderByNumber(string poNum) {
+        private PurchaseOrder GetCsPurchaseOrderByNumber(string controlNumber) {
             System.Data.DataSet searchableProperties = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchableProperties(System.Globalization.CultureInfo.CurrentUICulture.ToString());
             SearchClauseFactory searchClauseFactory = Svc.Impl.Helpers.CommerceServerCore.GetPoManager().GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
-            SearchClause trackingNumberClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", poNum);
+            SearchClause trackingNumberClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", controlNumber);
 
             // Create search options.
 
@@ -56,7 +56,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                     Guid soldToId = Guid.Parse(results.Tables[0].Rows[0].ItemArray[2].ToString());
 
                     // get the guids for the customers associated users and loop if necessary
-                    PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, poNum);
+                    PurchaseOrder po = Svc.Impl.Helpers.CommerceServerCore.GetOrderContext().GetPurchaseOrder(soldToId, controlNumber);
                     return po;
                 } catch (Exception ex) {
                     _log.WriteWarningLog("Could not locate POs for user's ID. This is not an exception, just a notice.", ex);

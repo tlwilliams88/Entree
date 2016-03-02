@@ -340,9 +340,9 @@ angular.module('bekApp')
       findCutoffDate: function(cart) {
         var shipDateFound;
         if (cart && cart.requestedshipdate) {
-          var selectedShipDate = cart.requestedshipdate.substr(0, 10);
+          var selectedShipDate = moment(cart.requestedshipdate.substr(0, 10)).format('YYYY-MM-DD');
           angular.forEach(Service.shipDates, function(shipDate) {
-            if (selectedShipDate === shipDate.shipdate) {
+            if (selectedShipDate == moment(shipDate.shipdate).format('YYYY-MM-DD')) {
               shipDateFound = shipDate;
             }
           });
