@@ -123,8 +123,13 @@ angular.module('bekApp')
     };
 
     $scope.cancelChanges = function() {
-      $scope.currentCart = angular.copy(originalBasket);
-       $scope.resetSubmitDisableFlag(true);
+      $scope.originalCart = angular.copy(originalBasket);
+      $scope.originalCart.items.forEach(function(item) {
+        item.extPrice = PricingService.getPriceForItem(item);
+      });
+      $scope.originalCart.subtotal = PricingService.getSubtotalForItemsWithPrice($scope.originalCart.items);
+      $scope.currentCart = $scope.originalCart;
+      $scope.resetSubmitDisableFlag(true);
       $scope.cartForm.$setPristine();
     };
 
