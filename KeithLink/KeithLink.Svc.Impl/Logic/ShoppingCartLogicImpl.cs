@@ -109,7 +109,6 @@ namespace KeithLink.Svc.Impl.Logic
 		{
 			var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-
             var newBasket = new CS.Basket();
             newBasket.BranchId = catalogInfo.BranchId.ToLower();
 			newBasket.DisplayName = cart.Name;
@@ -119,8 +118,7 @@ namespace KeithLink.Svc.Impl.Logic
 			newBasket.Shared = true;
 			newBasket.TempSubTotal = cart.SubTotal;
             newBasket.PONumber = cart.PONumber;
-
-			newBasket.RequestedShipDate = cart.RequestedShipDate;
+            newBasket.RequestedShipDate = cart.RequestedShipDate.ToFormattedDateString();
             var cartBranchId = catalogInfo.BranchId;
             if (catalogId != null)
                 cartBranchId = catalogId;
