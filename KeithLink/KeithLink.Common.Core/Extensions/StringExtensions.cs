@@ -50,31 +50,12 @@ namespace KeithLink.Common.Core.Extensions {
         }
 
         public static string ToYearFirstDate( this string value ) {
-            string returnValue = String.Empty;
-            var parsedDate = new DateTime();
-
-            if (DateTime.TryParse( value, out parsedDate )) {
-                var date = value.Substring( 0, 10 ).Split( Char.Parse( "/" ) );
-
-                returnValue = String.Format( "{0}{1}{2}", date[2], date[0], date[1] );
-            }
-
-            return returnValue;
+            return DateTime.Parse(value).ToYearFirstFormat();
 
         }
 
         public static string ToYearFirstDateWithTime( this string value ) {
-            string returnValue = String.Empty;
-            var parsedDate = new DateTime();
-
-            if (DateTime.TryParse( value, out parsedDate )) {
-                var date = value.Substring( 0, 10 ).Split( Char.Parse( "/" ) );
-                var time = value.Substring(11).Split(Char.Parse(":"));
-
-                returnValue = String.Format( "{0}{1}{2}{3}", date[2], date[0], date[1], String.Join("", time) );
-            }
-
-            return returnValue;
+            return DateTime.Parse( value ).ToYearFirstFormatWithTime();
         }
 
         public static short? ToShort(this string value) {
