@@ -143,7 +143,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("order/{orderNumber}")]
 		public Order Orders(string orderNumber)
 		{
-			//return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
             try {
                 return _orderLogic.UpdateOrderForEta(this.AuthenticatedUser,
                     _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
@@ -181,9 +180,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, 0);
 		}
-
-        
-
 
 		/// <summary>
 		/// Request order history for customer
