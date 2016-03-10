@@ -200,6 +200,7 @@
     </None>
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
     <None Include="Service References\IS_OrderService\OrderService.wsdl" />
