@@ -156,6 +156,7 @@
   <ItemGroup>
     <None Include="App.Beta.config">
       <DependentUpon>App.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
