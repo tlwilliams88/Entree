@@ -156,6 +156,7 @@
   <ItemGroup>
     <None Include="App.Beta.config">
       <DependentUpon>App.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.config">
       <SubType>Designer</SubType>
@@ -172,6 +173,7 @@
     </None>
     <None Include="App.Release.config">
       <DependentUpon>App.config</DependentUpon>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App.Test.config">
       <DependentUpon>App.config</DependentUpon>
