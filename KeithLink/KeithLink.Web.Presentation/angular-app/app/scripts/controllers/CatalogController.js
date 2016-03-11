@@ -11,7 +11,7 @@ angular.module('bekApp')
   .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'CartService', 'BrandService', 'ListService',
     function ($scope, $state, CategoryService, ProductService, CartService, BrandService, ListService) {
     
-    $scope.myInterval = -1;
+    //$scope.myInterval = -1;
 
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
