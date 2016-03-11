@@ -48,10 +48,4 @@ angular.module('bekApp')
       });
     });
 
-
-
-
-
-
-
   }]);
