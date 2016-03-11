@@ -11,7 +11,7 @@ angular.module('bekApp')
   .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'CartService', 'BrandService', 'ListService',
     function ($scope, $state, CategoryService, ProductService, CartService, BrandService, ListService) {
     
-    //$scope.myInterval = -1;
+    $scope.myInterval = -1;
 
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -28,23 +28,30 @@ angular.module('bekApp')
     }
 
     ProductService.getRecentlyViewedItems().then(function(items) {
-      $scope.loadingRecentlyViewedItems = false;
       $scope.recentlyViewedItems = items;
+      $scope.loadingRecentlyViewedItems = false;
+      
+      ListService.getRecommendedItems().then(function(items) {
+        $scope.recommendedItems = items;
+        $scope.loadingRecommendedItems = false;
+        
+        CategoryService.getCategories($state.params.catalogType).then(function(data) {
+          $scope.categories = data.categories;
+          $scope.loadingCategories = false;
+          
+          BrandService.getHouseBrands().then(function(data){
+            $scope.brands = data;
+            $scope.loadingBrands = false;
+            
+          });
+        });
+      });
     });
 
-    ListService.getRecommendedItems().then(function(items) {
-      $scope.loadingRecommendedItems = false;
-      $scope.recommendedItems = items;
-    });
 
-    CategoryService.getCategories($state.params.catalogType).then(function(data) {
-      $scope.loadingCategories = false;
-      $scope.categories = data.categories;
-    });
 
-    BrandService.getHouseBrands().then(function(data){
-      $scope.loadingBrands = false;
-      $scope.brands = data;
-    });
+
+
+
 
   }]);
