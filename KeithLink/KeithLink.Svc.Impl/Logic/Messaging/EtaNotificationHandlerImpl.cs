@@ -57,6 +57,16 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         #endregion
 
         #region methods
+        private string GetOffsetTimeString(string dateTimeString) {
+            if (string.IsNullOrEmpty(dateTimeString)) {
+                return string.Empty;
+            } else {
+                int timeZoneOffset = (DateTime.UtcNow - DateTime.Now).Hours;
+
+                return DateTime.Parse(dateTimeString).AddHours(timeZoneOffset * -1).ToLongDateFormatWithTime();
+            }
+        }
+
         protected Message GetEmailMessageForNotification(IEnumerable<OrderEta> orderEtas, IEnumerable<OrderHistoryHeader> orders, Svc.Core.Models.Profile.Customer customer)
         {
             // TODO: Add logic for delivered orders (actualtime) - not needed now, but maybe in the future.
@@ -116,9 +126,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                     var etaInfo = eta.Orders.Where(o => o.OrderId.Equals(order.InvoiceNumber) && o.BranchId.Equals(order.BranchId)).FirstOrDefault();
 
                     if (etaInfo != null){
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? null : DateTime.Parse(etaInfo.ScheduledTime).ToLongDateFormatWithTime();
+                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? null : DateTime.Parse(etaInfo.EstimatedTime).ToLongDateFormatWithTime();
+                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? null : etaInfo.ActualTime;
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
@@ -187,9 +197,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                     if (etaInfo != null)
                     {
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.ScheduledDeliveryTime = GetOffsetTimeString(etaInfo.ScheduledTime);
+                        order.EstimatedDeliveryTime = GetOffsetTimeString(etaInfo.EstimatedTime);
+                        order.ActualDeliveryTime = GetOffsetTimeString(etaInfo.ActualTime);
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;
@@ -245,6 +255,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             //    }
             //}
         }
+
         public void ProcessNotificationForInternalUsers(Core.Models.Messaging.Queue.BaseNotification notification)
         {
             if (notification.NotificationType != NotificationType.Eta) { throw new ApplicationException("notification/handler type mismatch"); }
@@ -264,9 +275,9 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
                     if (etaInfo != null)
                     {
-                        order.ScheduledDeliveryTime = String.IsNullOrEmpty(etaInfo.ScheduledTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ScheduledTime).ToUniversalTime();
-                        order.EstimatedDeliveryTime = String.IsNullOrEmpty(etaInfo.EstimatedTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.EstimatedTime).ToUniversalTime();
-                        order.ActualDeliveryTime = String.IsNullOrEmpty(etaInfo.ActualTime) ? new Nullable<DateTime>() : DateTime.Parse(etaInfo.ActualTime).ToUniversalTime();
+                        order.ScheduledDeliveryTime = GetOffsetTimeString(etaInfo.ScheduledTime);
+                        order.EstimatedDeliveryTime = GetOffsetTimeString(etaInfo.EstimatedTime);
+                        order.ActualDeliveryTime = GetOffsetTimeString(etaInfo.ActualTime);
                         order.RouteNumber = String.IsNullOrEmpty(etaInfo.RouteId) ? String.Empty : etaInfo.RouteId;
                         order.StopNumber = String.IsNullOrEmpty(etaInfo.StopNumber) ? String.Empty : etaInfo.StopNumber;
                         order.DeliveryOutOfSequence = etaInfo.OutOfSequence == null ? false : etaInfo.OutOfSequence;

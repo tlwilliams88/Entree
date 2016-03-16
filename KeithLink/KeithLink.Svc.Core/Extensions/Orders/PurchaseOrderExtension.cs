@@ -18,7 +18,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
                 InvoiceNumber = value.Properties["MasterNumber"] == null ? "Pending" : value.Properties["MasterNumber"].ToString(),
                 IsChangeOrderAllowed = (value.Properties["MasterNumber"] != null && (value.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
                 Status = System.Text.RegularExpressions.Regex.Replace(value.Status, "([a-z])([A-Z])", "$1 $2"),
-                RequestedShipDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"],
+                RequestedShipDate = value.Properties["RequestedShipDate"].ToString(),
                 InvoiceStatus = "N/A",
 				Items = value.Properties["LineItems"] == null ? null : ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList(),
                 CommerceId = Guid.Parse(value.Id),
@@ -41,7 +41,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders {
 				InvoiceNumber = value.Properties["MasterNumber"] == null ? "Pending" : value.Properties["MasterNumber"].ToString(),
 				IsChangeOrderAllowed = (value.Properties["MasterNumber"] != null && (value.Status.StartsWith("Confirmed"))), // if we have a master number (invoice #) and a confirmed status
 				Status = System.Text.RegularExpressions.Regex.Replace(value.Status, "([a-z])([A-Z])", "$1 $2"),
-				RequestedShipDate = value.Properties["RequestedShipDate"] == null ? DateTime.Now : (DateTime)value.Properties["RequestedShipDate"],
+				RequestedShipDate = value.Properties["RequestedShipDate"].ToString(),
 				InvoiceStatus = "N/A",
 				CommerceId = Guid.Parse(value.Id)
 			};

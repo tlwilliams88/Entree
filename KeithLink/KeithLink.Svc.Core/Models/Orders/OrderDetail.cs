@@ -18,6 +18,9 @@ namespace KeithLink.Svc.Core.Models.Orders
         [DataMember(Name="UnitOfMeasure")]
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
+        [DataMember(Name = "UnitCost")]
+        public decimal UnitCost { get; set; }
+
         [DataMember(Name = "SellPrice")]
         public double SellPrice { get; set; }
 
@@ -41,6 +44,12 @@ namespace KeithLink.Svc.Core.Models.Orders
 
         [DataMember(Name = "ItemStatus")]
         public string ItemStatus { get; set; }
+
+        [DataMember(Name = "Description")]
+        public string Description { get; set; }
+
+        [DataMember(Name = "ManufacturerName")]
+        public string ManufacturerName { get; set; }
 
         #endregion
     }

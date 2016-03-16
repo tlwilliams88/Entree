@@ -157,7 +157,7 @@
 <div class="page-content">
   <div class="row">
     <!-- Available Lists -->
-    <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists">
+    <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists" ng-if="resized">
       <div class="row">
         <div class="col-sm-12">
           <div class="custom-lists" sticky>
@@ -437,7 +437,8 @@
                 </span>          
               </td>
               <td class="bek-drag-handle">
-                <span><a ng-if="item.isvalid"class="bek-no-drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a></span>
+                <a class="bek-no-drag" ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item, catalogType: 'UNFI' })">{{::item.itemnumber}}</a>
+                <a class="bek-no-drag" ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })">{{::item.itemnumber}}</a>
                 <span ng-if="!item.isvalid" class="bek-no-drag" ui-sref="menu.catalog.products.details(::{ itemNumber : item.itemnumber, item: item })" tooltip="Please contact your DSR for more info.">{{::item.itemnumber}}</span>
               </td>
               <td class="bek-drag-handle">
@@ -682,7 +683,9 @@
                 {{::item.notes}}
               </td>
               <span class="hidden-sm hidden-xs" >                
-              <td class="hidden-mobile-visible-print" >              
+              <td class="hidden-mobile-visible-print">
+<!--                  loading-->
+              <a ng-if="::item.is_specialty_catalog === true"><span class="text-regular icon-exclaimation-splat"></span></a>
               <a ng-if="::item.notes"><span class="icon-docs text-regular"></span></a>
               <a ng-if="::item.inhistory === true"><span class="text-regular icon-history"></span></a>            
               <a ng-if="::item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>

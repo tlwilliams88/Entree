@@ -35,7 +35,8 @@ namespace KeithLink.Svc.Core.Enumerations.Order
 	{
 		NormalOrder,
 		ChangeOrder,
-		DeleteOrder
+		DeleteOrder,
+        SpecialOrder
 	}
 
 	public enum UnitOfMeasure

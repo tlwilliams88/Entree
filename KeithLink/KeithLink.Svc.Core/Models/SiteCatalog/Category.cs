@@ -34,5 +34,9 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "subcategories")]
         [ElasticProperty(Name="subcategories")]
         public SubCategory[] SubCategories { get; set; }
+
+        [DataMember( Name = "department" )]
+        [ElasticProperty( Name = "department" )]
+        public string Department { get; set; }
     }
 }

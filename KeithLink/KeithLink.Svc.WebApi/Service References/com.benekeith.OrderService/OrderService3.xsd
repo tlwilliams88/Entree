@@ -15,7 +15,7 @@
   <xs:element name="ReadLatestOrderModifiedDateForCustomerResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="ReadLatestOrderModifiedDateForCustomerResult" nillable="true" type="xs:dateTime" />
+        <xs:element minOccurs="0" name="ReadLatestOrderModifiedDateForCustomerResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -128,6 +128,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Orders.History" minOccurs="0" name="historyFile" nillable="true" type="q18:OrderHistoryFile" />
+        <xs:element minOccurs="0" name="isSpecialOrder" type="xs:boolean" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -175,6 +176,33 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/KeithLink.Svc.Core.Models.Paging" minOccurs="0" name="GetPagedOrdersResult" nillable="true" type="q24:PagedResultsOfOrderEqjqjVHj" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRelatedControlNumber">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="childOrderNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="parentOrderNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRelatedControlNumberResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetLostOrder">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="trackingNumber" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SetLostOrderResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SetLostOrderResult" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

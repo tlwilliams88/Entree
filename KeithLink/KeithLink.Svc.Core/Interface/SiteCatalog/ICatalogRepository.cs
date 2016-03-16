@@ -9,11 +9,12 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface ICatalogRepository
     {
-        CategoriesReturn GetCategories(int from, int size);
+        CategoriesReturn GetCategories(int from, int size, string catalogType);
 		ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string brandControlLabel, SearchInputModel searchModel);
         Product GetProductById(string branch, string id);
 		ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel);
 		ProductsReturn GetProductsByIds(string branch, List<string> ids);
 		ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
+        int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel);
     }
 }

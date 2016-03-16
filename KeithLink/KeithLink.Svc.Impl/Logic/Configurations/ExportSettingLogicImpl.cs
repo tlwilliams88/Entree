@@ -18,14 +18,17 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
     public class ExportSettingLogicImpl : IExportSettingLogic {
         #region attributes
         private readonly IExportSettingRepository _exportSettingRepository;
+        private readonly IExternalCatalogRepository _externalCatalogRepository;
         private readonly IListRepository _listRepository;
         private readonly IUnitOfWork _unitOfWork;
         #endregion
 
         #region ctor
-        public ExportSettingLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository) {
+        public ExportSettingLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository,
+                                                    IExternalCatalogRepository externalCatalogRepository) {
             _unitOfWork = unitOfWork;
             _exportSettingRepository = exportSettingRepository;
+            _externalCatalogRepository = externalCatalogRepository;
             _listRepository = listRepository;
         }
         #endregion
@@ -37,44 +40,6 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             using (var stream = new MemoryStream(Convert.FromBase64String(data))) {
                 return (List<ExportModelConfiguration>)formatter.Deserialize(stream);
             }
-        }
-
-        public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId) {
-            ExportSetting previousSettings = null;
-            ListType listType = ListType.Custom;
-
-            if (type == ExportType.List) {
-                //Determine the list type
-                var list = _listRepository.ReadById(ListId.Value);
-
-                if (list == null)
-                    return null;
-
-                listType = list.Type;
-
-                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type && u.ListType == list.Type).FirstOrDefault();
-            } else
-                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type).FirstOrDefault();
-
-            List<ExportModelConfiguration> previousOptions = new List<ExportModelConfiguration>();
-            var exportOptions = GetTypeSpecificExportOptions(type, listType);
-
-            if (previousSettings != null) {
-                previousOptions = DeserializeSettings(previousSettings.Settings);
-                exportOptions.SelectedType = previousSettings.ExportFormat;
-            }
-
-
-            //Update the Selected and Order for any used in previous export
-            foreach (var setting in previousOptions) {
-                var options = exportOptions.Fields.Where(f => f.Field.Equals(setting.Field)).FirstOrDefault();
-                if (options != null) {
-                    options.Selected = setting.Selected;
-                    options.Order = setting.Order;
-                }
-            }
-
-            return exportOptions;
         }
 
         private ExportOptionsModel GetTypeSpecificExportOptions(ExportType type, ListType listType) {
@@ -206,6 +171,60 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             }
 
             return options;
+        }
+
+        public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId) {
+            ExportSetting previousSettings = null;
+            ListType listType = ListType.Custom;
+
+            if (type == ExportType.List) {
+                //Determine the list type
+                var list = _listRepository.ReadById(ListId.Value);
+
+                if (list == null)
+                    return null;
+
+                listType = list.Type;
+
+                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type && u.ListType == list.Type).FirstOrDefault();
+            } else
+                previousSettings = _exportSettingRepository.Read(u => u.UserId == userId && u.Type == type).FirstOrDefault();
+
+            List<ExportModelConfiguration> previousOptions = new List<ExportModelConfiguration>();
+            var exportOptions = GetTypeSpecificExportOptions(type, listType);
+
+            if (previousSettings != null) {
+                previousOptions = DeserializeSettings(previousSettings.Settings);
+                exportOptions.SelectedType = previousSettings.ExportFormat;
+            }
+
+
+            //Update the Selected and Order for any used in previous export
+            foreach (var setting in previousOptions) {
+                var options = exportOptions.Fields.Where(f => f.Field.Equals(setting.Field)).FirstOrDefault();
+                if (options != null) {
+                    options.Selected = setting.Selected;
+                    options.Order = setting.Order;
+                }
+            }
+
+            return exportOptions;
+        }
+
+        public List<ExportExternalCatalog> ReadExternalCatalogs() {
+            List<ExportExternalCatalog> externalCatalog = new List<ExportExternalCatalog>();
+
+            foreach (ExternalCatalog externalCatalogItem in _externalCatalogRepository.ReadAll().ToList()) {
+                ExportExternalCatalog item = new ExportExternalCatalog();
+            
+                item.BekBranchId = externalCatalogItem.BekBranchId;
+                item.CatalogId = externalCatalogItem.ExternalBranchId;
+                item.Type = externalCatalogItem.Type.ToString();
+                
+                externalCatalog.Add(item);
+            }
+
+            return externalCatalog;
         }
 
         public void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration, string exportFormat) {

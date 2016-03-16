@@ -14,16 +14,18 @@ namespace KeithLink.Svc.Core.Interface.Orders.History {
 
 		List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate);
 
-        OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
-
-        void SaveOrder(OrderHistoryFile historyFile);
-
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging);
+        OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
+        void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder);
+
+        void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
 
 		void ListenForQueueMessages();
 
         void StopListening();
 
         string CheckForLostOrders(out string sBody);
+
+        string SetLostOrder(string trackingNumber);
     }
 }

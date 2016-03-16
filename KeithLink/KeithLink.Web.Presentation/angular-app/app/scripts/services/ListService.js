@@ -364,6 +364,7 @@ angular.module('bekApp')
         remapItems: function(item) {
           return {
             itemnumber: item.itemnumber,
+            catalog_id: item.catalog_id,
             each: item.each
           };
         },
@@ -588,7 +589,8 @@ angular.module('bekApp')
           items.forEach(function(item) {
             newItems.push({
               itemnumber: item.itemnumber,
-              each: item.each
+              each: item.each,
+              catalog_id: item.catalog_id
             });
           });
 

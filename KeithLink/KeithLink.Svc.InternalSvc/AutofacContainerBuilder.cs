@@ -227,6 +227,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
+            builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
             builder.RegisterType<ReportRepository>().As<IReportRepository>();

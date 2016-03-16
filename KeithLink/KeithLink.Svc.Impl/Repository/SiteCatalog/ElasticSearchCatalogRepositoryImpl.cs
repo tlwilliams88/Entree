@@ -239,12 +239,22 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             return fieldFilterTerms;
         }
 
-        public CategoriesReturn GetCategories(int from, int size) {
+        public CategoriesReturn GetCategories(int from, int size, string catagoryType) {
+            var index = "";
+            switch (catagoryType.ToLower())
+            {
+                case "unfi":
+                    index = Constants.ES_UNFI_INDEX_CATEGORIES;
+                    break;
+                default:
+                    index = Constants.ES_INDEX_CATEGORIES;
+                    break;
+            }
             var response = _eshelper.Client.Search<Category>(s => s
                 .From(from)
                 .Size(GetCategoryPagingSize(size))
                 .Type(Constants.ES_TYPE_CATEGORY)
-                .Index(Constants.ES_INDEX_CATEGORIES)
+                .Index(index)
                 );
 
             var prefixesToExclude = Configuration.CategoryPrefixesToExclude.Split(',').ToList();
@@ -318,22 +328,25 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             dynamic categorySearchExpression = BuildBoolFunctionScoreQuery(searchModel.From, searchModel.Size, searchModel.SField, searchModel.SDir, 
                 filterTerms);
 
+            var query = Newtonsoft.Json.JsonConvert.SerializeObject(categorySearchExpression);
+
             return GetProductsFromElasticSearch(catalogInfo.BranchId, "", categorySearchExpression);
         }
 
         public ProductsReturn GetProductsByIds(string branch, List<string> ids) {
-            var productList = String.Join(" OR ", ids);
-            var query = @"{
+			var productList = String.Join(" OR ", ids);
+			var query = @"{
 						""from"" : 0, ""size"" : 5000,
 						""query"":{
 						""query_string"" : {
-						""fields"" : [""itemnumber""],
+						""fields"" : [""itemnumber"",""mfritemnumber""],
 							""query"" : """ + productList + @""",
 						""use_dis_max"" : true
 							}
 						}}";
 
-            return GetProductsFromElasticSearch(branch, query);
+
+			return GetProductsFromElasticSearch(branch, query);
         }
 
         public ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel) {
@@ -353,12 +366,16 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
 			var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
-            return GetProductsFromElasticSearch(catalogInfo.BranchId.ToLower(), "", termSearchExpression);
+
+            string branch = catalogInfo.BranchId.ToLower();
+             
+
+            return GetProductsFromElasticSearch(branch, "", termSearchExpression);
         }
         
         private ProductsReturn GetProductsFromElasticSearch(string branch, string searchBody, object searchBodyD = null) {
             ElasticsearchResponse<DynamicDictionary> res = null;
-
+            
             if (searchBodyD == null)
                 res = _client.Search(branch.ToLower(), "product", searchBody);
             else
@@ -374,7 +391,57 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
 
             return new ProductsReturn() { Products = products, Facets = facets, TotalCount = totalCount, Count = products.Count };
         }
-        
+
+        public int GetHitsForSearchInIndex(UserSelectedContext catalogInfo, string searchTerm, SearchInputModel searchModel)
+        {
+            /*
+            //searching count func
+            string searchBody = @"{
+						""query"":{
+						""term"" : { ""name"" : """ + searchTerm + @""" }
+						}}";
+
+            ElasticsearchResponse<DynamicDictionary> res = _client.Count(index.ToLower(), searchBody);
+
+
+            if (res.Response != null)
+            {
+                return res.Response["count"];
+            }
+            else
+            {
+                return 0;
+            }*/
+
+            int size = GetProductPagingSize(searchModel.Size);
+            ExpandoObject filterTerms = BuildFilterTerms(searchModel.Facets, catalogInfo, department: searchModel.Dept);
+
+            string termSearch = searchTerm;
+            List<string> fieldsToSearch = Configuration.ElasticSearchTermSearchFields;
+            System.Text.RegularExpressions.Regex matchOnlyDigits = new System.Text.RegularExpressions.Regex(@"^\d+$");
+
+            // results in a search string like '1234 OR upc:*1234 OR gtin:*1234 OR itemnumber:*1234'
+            if (matchOnlyDigits.IsMatch(searchTerm))
+            {
+                List<string> digitSearchTerms = (Configuration.ElasticSearchDigitSearchFields.Select(x => string.Concat(x + ":*" + searchTerm + "*"))).ToList();
+                digitSearchTerms.Insert(0, searchTerm);
+                termSearch = String.Join(" OR ", digitSearchTerms);
+            }
+
+            dynamic termSearchExpression = BuildFunctionScoreQuery(searchModel, filterTerms, fieldsToSearch, termSearch);
+            var query = Newtonsoft.Json.JsonConvert.SerializeObject(termSearchExpression);
+
+            string branch = catalogInfo.BranchId.ToLower();
+
+            var res = _client.Search(branch.ToLower(), "product", termSearchExpression);
+            if (res.Response["hits"]["total"] != null) 
+                return Convert.ToInt32(res.Response["hits"]["total"].Value);
+            else 
+                return 0;
+        }
+
+        //private delegate TResult Func<in T, out TResult>();
+
         private static ExpandoObject LoadFacetsFromElasticSearchResponse(ElasticsearchResponse<DynamicDictionary> res) {
             ExpandoObject facets = new ExpandoObject();
 
@@ -427,7 +494,11 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CategoryName = oProd._source.categoryname;
             p.VendorItemNumber = oProd._source.vendor1;
 			p.ItemClass = oProd._source.parentcategoryname;
-            p.CaseCube = oProd._source.icube;
+            try {
+                p.CaseCube = oProd._source.icube;
+            } catch (Exception e) {
+                p.CaseCube = "";
+            }
 			p.NonStock = oProd._source.nonstock;
 			p.Pack = oProd._source.pack;
             p.TempZone = oProd._source.temp_zone;
@@ -435,8 +506,82 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
             p.CatchWeight = oProd._source.catchweight;
 			p.IsProprietary = oProd._source.isproprietary;
             p.AverageWeight = oProd._source.averageweight;
-            Nutritional nutritional = new Nutritional();
+            p.CasePriceNumeric = oProd._source.caseprice != null ? oProd._source.caseprice : 0.00;
+            p.CasePrice = p.CasePriceNumeric.ToString();
+            p.PackagePriceNumeric = oProd._source.packageprice != null ? oProd._source.packageprice : 0.00;
+            p.PackagePrice = p.PackagePriceNumeric.ToString();
+            p.CatalogId = oProd._index;
+            if (p.CatalogId.ToLower().StartsWith("unfi"))
+            {
+                //make vendor into description
+                p.Description = oProd._source.vendor1;
+                p.Pack = oProd._source.casequantity.ToString();
+                p.Size = oProd._source.contsize.ToString() + oProd._source.contunit;
+                p.IsSpecialtyCatalog = true;
+                p.Cases = oProd._source.onhandqty.ToString();
+                p.SpecialtyItemCost = (decimal)p.CasePriceNumeric;
+                p.CasePrice = oProd._source.caseprice.ToString();
+
+                UNFI unfi = new UNFI();
+
+                if (oProd._source.cheight != null)
+                    unfi.CaseHeight = oProd._source.cheight.ToString();
+                if (oProd._source.clength != null)
+                    unfi.CaseLength = oProd._source.clength.ToString();
+                if (oProd._source.clength != null)
+                    unfi.CaseWidth = oProd._source.cwidth.ToString();
+                if (oProd._source.averageweight != null)
+                    unfi.Weight = oProd._source.averageweight.ToString();
+                if (oProd._source.unitofsale != null)
+                    unfi.UnitOfSale = oProd._source.unitofsale.ToString();
+                if (oProd._source.shipminexpire != null)
+                    unfi.CatalogDept = oProd._source.catalogdept.ToString();
+                if (oProd._source.clength != null)
+                    unfi.ShipMinExpire = oProd._source.shipminexpire.ToString();
+                if (oProd._source.minorder != null)
+                    unfi.MinOrder = oProd._source.minorder.ToString();
+                if (oProd._source.casequantity != null)
+                    unfi.CaseQuantity = oProd._source.casequantity.ToString();
+                if (oProd._source.putup != null)
+                    unfi.PutUp = oProd._source.putup.ToString();
+                if (oProd._source.contunit != null)
+                    unfi.ContUnit = oProd._source.contunit.ToString();
+                if (oProd._source.tcscode != null)
+                    unfi.TCSCode = oProd._source.tcscode.ToString();
+                if (oProd._source.caseupc != null)
+                    unfi.CaseUPC = oProd._source.caseupc.ToString();
+                if (oProd._source.plength != null)
+                    unfi.PackageLength = oProd._source.plength.ToString();
+                if (oProd._source.pheight != null)
+                    unfi.PackageHeight = oProd._source.pheight.ToString();
+                if (oProd._source.pwidth != null)
+                    unfi.PackageWidth = oProd._source.pwidth.ToString();
+                if (oProd._source.status != null)
+                    unfi.Status = oProd._source.status.ToString();
+                if (oProd._source.packageprice != null)
+                    unfi.PackagePrice = oProd._source.packageprice.ToString();
+                if (oProd._source.caseprice != null)
+                    unfi.CasePrice = oProd._source.caseprice.ToString();
+                if (oProd._source.flag1 != null)
+                    unfi.Flag1 = oProd._source.flag1.ToString();
+                if (oProd._source.flag2 != null)
+                    unfi.Flag2 = oProd._source.flag2.ToString();
+                if (oProd._source.flag3 != null)
+                    unfi.Flag3 = oProd._source.flag3.ToString();
+                if (oProd._source.flag4 != null)
+                    unfi.Flag4 = oProd._source.flag4.ToString();
+                if (oProd._source.onhandqty != null)
+                    unfi.OnHandQty = oProd._source.onhandqty.ToString();
+                if (oProd._source.vendor1 != null)
+                    unfi.Vendor = oProd._source.vendor1.ToString();
+                if (oProd._source.stockedinbranches != null)
+                    unfi.StockedInBranches = oProd._source.stockedinbranches.ToString();
+
+                p.Unfi = unfi;
+            }
+          
             if (oProd._source.nutritional != null) {
+                Nutritional nutritional = new Nutritional();
                 nutritional.BrandOwner = oProd._source.nutritional.brandowner;
                 nutritional.CountryOfOrigin = oProd._source.nutritional.countryoforigin;
                 nutritional.GrossWeight = oProd._source.nutritional.grossweight;
@@ -503,8 +648,9 @@ namespace KeithLink.Svc.Impl.Repository.SiteCatalog {
                         nutritional.DietInfo.Add(d);
                     }
                 }
+                p.Nutritional = nutritional;
             }
-            p.Nutritional = nutritional;
+            
             return p;
         }
         #endregion

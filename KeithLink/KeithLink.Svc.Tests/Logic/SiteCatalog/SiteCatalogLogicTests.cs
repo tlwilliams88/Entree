@@ -21,16 +21,17 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
         #region constructor
         public SiteCatalogLogicTests()
         {
-            _logic = new SiteCatalogLogicImpl(
-                new ElasticSearchCatalogRepositoryImpl(),
-				new PriceLogicImpl(new PriceRepositoryImpl(), new NoCacheRepositoryImpl()),
-                new ProductImageRepositoryImpl(),
-				new NoListServiceRepositoryImpl(),
-                new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
-				new NoCacheRepositoryImpl(),
-				new DivisionLogicImpl(new DivisionRepositoryImpl(), new NoDivisionServiceRepositoryImpl()),
-                new Impl.Repository.Orders.NoOrderServiceRepositoryImpl()
-                );
+            //_logic = new SiteCatalogLogicImpl(
+            //    new ElasticSearchCatalogRepositoryImpl(),
+            //    new PriceLogicImpl(new PriceRepositoryImpl(), new NoCacheRepositoryImpl()),
+            //    new ProductImageRepositoryImpl(),
+            //    new NoListServiceRepositoryImpl(),
+            //    new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
+            //    new NoCacheRepositoryImpl(),
+            //    new DivisionLogicImpl(new DivisionRepositoryImpl(), new NoDivisionServiceRepositoryImpl()),
+            //    new Impl.Repository.Orders.NoOrderServiceRepositoryImpl(),
+            //    new Impl.Repository.Configurations.NoExternalCatalogRepositoryImpl() // may need to revisit
+            //    );
         }
         #endregion
 

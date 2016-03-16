@@ -7,7 +7,7 @@ namespace KeithLink.Svc.Impl.Migrations
     {
         public override void Up()
         {
-            AddColumn("Orders.OrderHistoryDetail", "BranchId", c => c.String(maxLength: 3, fixedLength: true, unicode: false));
+            AddColumn("Orders.OrderHistoryDetail", "BranchId", c => c.String(maxLength: 7, fixedLength: true, unicode: false));
             AddColumn("Orders.OrderHistoryDetail", "InvoiceNumber", c => c.String(maxLength: 8, fixedLength: true, unicode: false));
             CreateIndex("Orders.OrderHistoryDetail", new[] { "BranchId", "InvoiceNumber", "LineNumber" }, name: "IdxOrderDetail");
             CreateIndex("Orders.OrderHistoryHeader", new[] { "BranchId", "InvoiceNumber" }, name: "IdxOrderHeader");

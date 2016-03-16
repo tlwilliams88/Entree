@@ -43,7 +43,9 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 					var prices = PipelineServiceHelper.CreateWebServiceInstance(url).GetPrices(order["BranchId"].ToString(),
 						order["CustomerId"].ToString(),
 						DateTime.Parse(order["RequestedShipDate"].ToString()),
-						lineItems.Cast<IDictionary>().Select(p => new product() { itemnumber = p["product_id"].ToString() }).ToArray());
+						lineItems.Cast<IDictionary>().Select(
+                            p => new product() { itemnumber = p["product_id"].ToString(),
+                                                 catalog_id = p["product_catalog"].ToString()}).ToArray());
 					
 					foreach (object lineItem in lineItems)
 					{
@@ -54,8 +56,8 @@ namespace KeithLink.Ext.Pipeline.ItemPrice
 						{
 							var price = Item["Each"].ToString().ToLower() == "true" ? itemPrice.First().PackagePrice : itemPrice.First().CasePrice;
 
-							if(price == 0) //TODO: Enable this check once we are using a real customer. For now there are far too many products without a price.
-								throw new Exception("Price Not Found");
+                            if (price == 0) //TODO: Enable this check once we are using a real customer. For now there are far too many products without a price.
+                                throw new Exception("Price Not Found");
 
 							Item["_cy_iadjust_regularprice"] = (decimal)price;
 

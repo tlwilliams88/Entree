@@ -11,23 +11,26 @@ namespace KeithLink.Svc.FoundationSvc.Interface
 	[ServiceContract]
 	public interface IBEKFoundationService : IOperationService
 	{
-		[OperationContract]
-		string SaveCartAsOrder(Guid userId, Guid cartId);
-            
-		[OperationContract]
-        string SaveOrderAsChangeOrder(Guid userId, Guid cartId);
+        [OperationContract]
+        string CancelPurchaseOrder(Guid userId, Guid orderId);
 
         [OperationContract]
         void CleanUpChangeOrder(Guid userId, Guid cartId);
 
         [OperationContract]
-        string UpdatePurchaseOrder(Guid userId, Guid orderId, DateTime requestedShipDate, List<PurchaseOrderLineItemUpdate> itemUpdates);
+        System.Xml.XmlElement GetUnconfirmatedOrders();
 
         [OperationContract]
-        string CancelPurchaseOrder(Guid userId, Guid orderId);
-
+        string SaveOrderAsChangeOrder(Guid userId, Guid cartId);
+            
 		[OperationContract]
-		System.Xml.XmlElement GetUnconfirmatedOrders();
+		string SaveCartAsOrder(Guid userId, Guid cartId);
+
+        [OperationContract]
+        string UpdatePurchaseOrder(Guid userId, Guid orderId, string requestedShipDate, List<PurchaseOrderLineItemUpdate> itemUpdates);
+
+        [OperationContract]
+        void UpdatePurchaseOrderStatus(Guid userId, Guid orderId, string status);
 	}
 
     public class PurchaseOrderLineItemUpdate

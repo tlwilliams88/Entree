@@ -115,7 +115,8 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
 			builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
 			builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
-			builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+            builder.RegisterType<InternalSpecialOrderLogic>().As<IInternalSpecialOrderLogic>();
+            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
 			builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
 			builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
 			builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
@@ -203,6 +204,7 @@ namespace KeithLink.Svc.Windows.QueueService
 
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
+            builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
 			builder.RegisterType<ReportRepository>().As<IReportRepository>();
 			builder.RegisterType<InternalReportLogic>().As<IInternalReportLogic>();

@@ -10,16 +10,16 @@
 angular.module('bekApp')
   .factory('CategoryService', function ($http) {
     
-    var categories;
+    var categories = {};
  
     var Service = {
-      getCategories: function() {
-        if (!categories) {
-           categories = $http.get('/catalog/categories').then(function (response) {
+      getCategories: function(catalogType) {
+        if (!categories.hasOwnProperty(catalogType)) {
+           categories[catalogType] = $http.get('/catalog/' + catalogType + '/categories').then(function (response) {
               return response.data;
           });
         }
-        return categories;
+        return categories[catalogType];
       }
   };
  

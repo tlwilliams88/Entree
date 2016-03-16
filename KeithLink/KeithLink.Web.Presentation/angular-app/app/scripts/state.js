@@ -95,12 +95,24 @@ angular.module('bekApp')
     **********/
     .state('menu.catalog', {
       abstract: true,
-      url: '/catalog/',
-      template: '<div ui-view=""></div>'
+      url: '/catalog/:catalogType/',
+      template: '<div ui-view=""></div>',
+      params: {
+        catalogType: {
+          value: 'BEK',
+          squash: false
+        }
+      }
     })
     .state('menu.catalog.home', {
       url: '',
-      templateUrl: 'views/catalog.html',
+      templateUrl: function($stateParams) {
+          if ($stateParams.catalogType == "UNFI") {
+              return 'views/unfi-catalog.html';
+          } else {
+              return 'views/catalog.html';
+          }
+      },
       controller: 'CatalogController',
       data: {
         authorize: 'canBrowseCatalog'
@@ -128,7 +140,7 @@ angular.module('bekApp')
       },
       resolve: {
         item: ['$stateParams', 'ProductService', function($stateParams, ProductService) {
-          return ProductService.getProductDetails($stateParams.itemNumber);
+          return ProductService.getProductDetails($stateParams.itemNumber, $stateParams.catalogType);
         }]
       }
     })
@@ -295,7 +307,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.addtoorder.items', {
-      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage',
+      url: ':cartId/list/:listId/?useParlevel/?continueToCart/?searchTerm/?createdFromPrint/?currentPage/?pageLoaded',
       params: {listItems: null},
       templateUrl: 'views/addtoorder.html',
       controller: 'AddToOrderController',
@@ -489,7 +501,7 @@ angular.module('bekApp')
       }
     })
     .state('menu.inventoryreport', {
-      url: '/reports/inventory',
+      url: '/reports/inventory/?listid/',
       templateUrl: 'views/inventoryreport.html',
       controller: 'InventoryReportController',
       resolve: {

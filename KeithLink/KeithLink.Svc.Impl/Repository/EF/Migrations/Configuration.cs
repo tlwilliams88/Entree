@@ -132,6 +132,19 @@ namespace KeithLink.Svc.Impl.Migrations
 				}
 				);
 
+            List<ExternalCatalog> extCatalogs = new List<ExternalCatalog>();
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "COR", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FAM", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FAQ", ExternalBranchId = "unfi_5", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FAR", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FDF", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FHS", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FLR", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FOK", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+            extCatalogs.Add(new ExternalCatalog() { BekBranchId = "FSA", ExternalBranchId = "unfi_7", Type = ExternalCatalogType.UNFI });
+
+            context.ExternalCatalogs.AddOrUpdate(c => new { c.BekBranchId, c.ExternalBranchId }, extCatalogs.ToArray());
+
 			context.MessageTemplates.AddOrUpdate(
 				t => t.TemplateKey,
 				new MessageTemplate

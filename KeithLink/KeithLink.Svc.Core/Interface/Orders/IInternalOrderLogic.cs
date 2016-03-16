@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
 	public interface IInternalOrderLogic
 	{
-		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
+		string ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
         List<Core.Models.Orders.History.OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
         List<Core.Models.Orders.History.OrderHistoryHeader> GetCustomerOrderHistories(UserSelectedContext catalogInfo);
 		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);

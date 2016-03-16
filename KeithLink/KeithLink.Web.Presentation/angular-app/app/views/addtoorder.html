@@ -1,12 +1,12 @@
 <div page-header-bar>
   <div header-message>
     Add To Order
-    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="saveAndRetainQuantity()" ng-disabled="addToOrderForm.$invalid">Save</button>
+    <button class="btn-lg btn btn-primary pull-right hidden-md hidden-lg hidden-print" ng-click="saveAndRetainQuantity(true)" ng-disabled="addToOrderForm.$invalid">Save</button>
     <button class="btn-lg btn btn-danger pull-right hidden-md hidden-lg hidden-print" style="margin-right:3px;" ui-sref="menu.home">Cancel Order</button>
   </div>
   <div header-buttons ng-hide="invalidParams">
     <button class="btn-lg btn btn-danger pull-right-sm hidden-print" ui-sref="menu.home">Cancel Order</button>
-    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity()" ng-disabled="addToOrderForm.$invalid">Save</button>
+    <button class="btn-lg btn btn-primary pull-right-sm hidden-print" ng-click="saveAndRetainQuantity(true)" ng-disabled="addToOrderForm.$invalid || addToOrderForm.$pristine">Save</button>
     <a class="btn-lg btn btn-default pull-right-sm hidden-print" ng-click="addToOrderForm.$setPristine(); saveAndContinue()">Proceed to Checkout</a>
     <button title="Print" class="btn btn-default btn-icon" ng-click="saveBeforePrint()"><span class="icon-printer"></span></button>
     <!--<button id="quickOrder"class="btn btn-default btn-icon-right" title="Quick Order Entry" ng-click="openQuickAddModal()"><span class="glyphicon glyphicon-list-alt"></span></button>-->
@@ -91,7 +91,7 @@
                 <td>Ship Date</td>
                 <td>Submit By</td>
               </tr>
-              <tr ng-repeat="shipDate in shipDates" ng-click="selectedCart.requestedshipdate = shipDate.shipdate">
+              <tr ng-repeat="shipDate in shipDates" ng-click="selectedCart.requestedshipdate = shipDate.shipdate; saveAndRetainQuantity(true);">
                 <td>{{shipDate.dayofweek}}</td>
                 <td class="nowrap">{{shipDate.shipdate}}</td>
                 <td class="nowrap">{{shipDate.cutoffdatetime | formatDateWithTimezone}}</td>
@@ -175,7 +175,7 @@
             <th class="sort-col-header" ng-click="sortList('name',sort[0].order)">
               <span>Name<span sort-icons field="'name'" sortorder="sort[0].order" sortby="sort[0].field"></span></span>
             </th>       
-            <th class="hidden-xs hidden-sm"></th>
+            <th  class="hidden-mobile-visible-print"></th>
             <th class="hidden-mobile" ng-if="useParlevel">
               PAR
             </th>
@@ -205,20 +205,21 @@
         <tbody ng-hide="(selectedList.items.length === 0 || !selectedList.items) && selectedList" ng-repeat="item in selectedList.items.slice(startingPoint, endPoint) track by item.listitemid"          
             ng-class="{ odd : $odd, even: $even }">
 
-          <tr>
+          <tr id="rowForFocus">
             <td>
               {{::item.position}}
               <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
             </td>
             <td>
-              <span><a ng-if="item.isvalid" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a></span>
+              <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType: 'UNFI' })">{{::item.itemnumber}}</a>
+              <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
               <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
             </td>
             <td class="hidden-mobile-visible-print">
               {{::item.class}}
             </td>
             <td class="hidden-mobile-visible-print notes-col">
-              {{::item.notes}}
+                {{::item.notes}}              
             </td>
             <td class="hidden-mobile-visible-print label-col">
               {{::item.label}}
@@ -229,16 +230,14 @@
             <td class="hidden-mobile-visible-print">
               {{::item.brand_extended_description}}
             </td>
-            <td>
-              <span ng-if="item.isvalid">{{::item.name}}</span>
-              <span ng-if="!item.isvalid">Invalid item</span>
+            <td>                
+             <span ng-if="item.isvalid">{{::item.name}}</span>   
+             <span ng-if="!item.isvalid">Invalid item</span>
             </td>
-            <td class="hidden-mobile-visible-print" item-icons>
+            <td class="hidden-mobile-visible-print" item-icons>   
             </td>
-
-
-            <td ng-if="useParlevel" class="hidden-mobile">
-              {{::item.parlevel}}
+            <td ng-if="useParlevel" class="hidden-mobile">   
+              {{::item.parlevel}}   
             </td>
             <td ng-if="useParlevel" class="input-col text-center hidden-mobile" style="max-width:120px;" >            
               <ng-form name="parlevelForm" class="counter-container" style="white-space:nowrap;" ng-if="item.canOrder && item.isvalid">
@@ -452,7 +451,8 @@
         ng-class="{ odd : $odd, even: $even }">
 
         <td>
-          <span><a ng-if="item.isvalid" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a></span>
+          <a ng-if="item.isvalid && item.catalog_id && item.catalog_id.indexOf('unfi') == 0" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber, catalogType : 'UNFI' })">{{::item.itemnumber}}</a>
+          <a ng-if="item.isvalid && (!item.catalog_id || item.catalog_id.indexOf('unfi') != 0)" ui-sref="menu.catalog.products.details({ itemNumber : item.itemnumber })">{{::item.itemnumber}}</a>
           <span ng-if="!item.isvalid" tooltip="Contact your DSR for more info.">{{::item.itemnumber}}</span>
           <a ng-if="$last || clearedWhilePristine" ng-init="refreshQuantities();"></a>
         </td>

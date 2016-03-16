@@ -103,6 +103,8 @@ namespace KeithLink.Svc.WebApi {
             builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
+            builder.RegisterType<Svc.Impl.Repository.Configurations.ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
+
 
             // lists
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
@@ -117,6 +119,7 @@ namespace KeithLink.Svc.WebApi {
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
             builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
+            builder.RegisterType<NoSpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
 
             // other
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
@@ -129,7 +132,7 @@ namespace KeithLink.Svc.WebApi {
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
             builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
             builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
-            builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
+            //builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();  // this is also found in the DEMO preprocessor directive later
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
             builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
             builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
@@ -210,6 +213,10 @@ namespace KeithLink.Svc.WebApi {
             builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
             builder.RegisterType<DsrAliasServiceImpl>().As<IDsrAliasService>();
 
+            // removed
+            //builder.RegisterType<Repository.Configurations.ExportSettingServiceRepositoryImpl>().As<IExportSettingServiceRepository>();
+            //builder.RegisterType<Repository.Configurations.ExternalCatalogServiceRepositoryImpl>().As<IExternalCatalogServiceRepository>();
+            
             // Build the container.
             return builder.Build();
         }

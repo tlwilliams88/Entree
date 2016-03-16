@@ -9,17 +9,18 @@
  */
 
 angular.module('bekApp')
-  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
+  .controller('MenuController', ['$scope', '$timeout', '$rootScope', '$modalStack', '$state', '$q', '$log', '$window', '$modal', '$filter', 'ENV', 'branches', 'CustomerService', 'AuthenticationService', 'AccessService', 'UtilityService', 'LocalStorage', 'NotificationService', 'ProductService', 'ListService', 'CartService', 'userProfile', 'ApplicationSettingsService',
     function (
-      $scope, $timeout, $rootScope, $state, $q, $log, $window,  // built in angular services
+      $scope, $timeout, $rootScope, $modalStack, $state, $q, $log, $window,  // built in angular services
       $modal,   // ui-bootstrap library
       $filter,
       ENV,      // environment config, see configenv.js file which is generated from Grunt
       branches, // state resolve
-      CustomerService, AuthenticationService, AccessService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService // bek custom services
+      CustomerService, AuthenticationService, AccessService, UtilityService, LocalStorage, NotificationService, ProductService, ListService, CartService, userProfile, ApplicationSettingsService // bek custom services
     ) {
 
   $scope.$state = $state;
+  $scope.isMobile = UtilityService.isMobileDevice();
   $scope.isMobileApp = ENV.mobileApp;
   $scope.mandatoryMessages = NotificationService.mandatoryMessages;
   // define search term in user bar so it can be cleared in the SearchController after a user searches
@@ -27,21 +28,32 @@ angular.module('bekApp')
   $scope.userBar.universalSearchTerm = '';
   $scope.branches = branches;
   $scope.userGuideUrl = "/Assets/help/User_Guide.pdf";
+ 
 
   // global notification at the top of all pages
   // TODO: Global messaging backend?
   $scope.messageText = 'Hello world!';
   $scope.displayGlobalMessage = true;
-
   $scope.userProfile = userProfile;
   refreshAccessPermissions($scope.userProfile);
+
+  // Application version for use on sidebar menu
+  // Using 3 different values for potential hotfix mobile submissions
+  $scope.iOS = (/iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream && $scope.isMobileApp);
+  $scope.Android = (!(/iPad|iPhone|iPod/.test(navigator.userAgent)) && !window.MSStream && $scope.isMobileApp);
+ 
+  $scope.webVersionNum = '1.5.0';
+  $scope.androidVersionNum = '1.5.0';
+  $scope.iOSVersionNum = '1.5.0';
 
   // KBIT ACCESS
   var usernameToken = $scope.userProfile.usernametoken;
   $scope.cognosUrl = ENV.cognosUrl + '?username=' + usernameToken;
   
   $scope.userBar.userNotificationsCount = NotificationService.userNotificationsCount;
- 
+  $scope.specialCatalogOpen = false;
+  $scope.showSpecialtyCatalogs = true;
+
   if (AccessService.isOrderEntryCustomer()) {
 
     $scope.cartHeaders = CartService.cartHeaders;
@@ -55,7 +67,7 @@ angular.module('bekApp')
         function(carts) {
           $scope.numCartsToDisplay = carts.length <= 4 ? carts.length : 4;
           $scope.numOrdersToDisplay = 6 - $scope.numCartsToDisplay;
-        }, 
+        },
         function() {
           $scope.cartMessage = 'Error loading carts.';
         })
@@ -65,6 +77,11 @@ angular.module('bekApp')
     }
   }
 
+  $scope.checkModal = function(){   
+    if($modal){
+      $modalStack.dismissAll();
+    }
+  }
   //Check stored settings. If they exist, update local storage, if not, clear out local storage values.
    ApplicationSettingsService.getApplicationSettings('').then(function(settings){
       if(settings.length > 0){
@@ -94,12 +111,12 @@ angular.module('bekApp')
       ListService.getAllListsForOffline(),
       CartService.getAllCartsForOffline()
     ]).then(function() {
-      console.log('Downloaded data for offline use.');
+      // console.log('Downloaded data for offline use.');
     });
   }
 
   if (ENV.mobileApp && AccessService.isOrderEntryCustomer() && AccessService.canCreateOrders()) {
-    console.log('downloading data');  
+    // console.log('downloading data');
     downloadDataForOfflineStorage();
   }
 
@@ -144,10 +161,10 @@ angular.module('bekApp')
 
   // list of state names where a user has the possibility of viewing info from multiple customers
   var statesWithViewingAllCustomers = ['menu.invoice', 'menu.transaction'];
-  
+
   // listens for state change event to restore selectedUserContext
   $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
-  
+
     // if users is viewing all customers
     // change selected user context back to the one stored in LocalStorage here
     if (statesWithViewingAllCustomers.indexOf(fromState.name) > -1 && !$scope.selectedUserContext.id) {
@@ -166,8 +183,8 @@ angular.module('bekApp')
       query.callback(firstPageCustomers);
     } else {
       CustomerService.getCustomers(
-        query.term, 
-        $scope.customerInfiniteScroll.size, 
+        query.term,
+        $scope.customerInfiniteScroll.size,
         $scope.customerInfiniteScroll.from
       ).then(function(data) {
         // convert data to match select2 data object
@@ -190,6 +207,15 @@ angular.module('bekApp')
         query.callback(customerList);
       });
     }
+  };
+
+  $scope.displayUserMenu  = false;
+  document.onclick = function(element){
+    $timeout(function() {
+      if($scope.displayUserMenu && !$scope.mouseOverDropdown){
+        $scope.displayUserMenu = !$scope.displayUserMenu; 
+      }
+    }, 0);
   };
 
   $scope.customerSelectOptions = {
@@ -228,7 +254,7 @@ angular.module('bekApp')
     // internal bek admin user
     if ($scope.canViewCustomerGroups) {
       $state.go('menu.admin.customergroup');
-      
+
     // external owner admin
     } else {
       $state.go('menu.admin.customergroupdashboard', { customerGroupId: null });
@@ -250,7 +276,18 @@ angular.module('bekApp')
     LocalStorage.setTempContext(selectedUserContext);
     refreshPage();
   };
-  
+
+  //Submenu for specialty catalogs
+  $scope.toggleSpecialCatalogSubmenu = function() {
+    if ($scope.$state !== undefined) {       
+      $scope.specialCatalogOpen = !$scope.specialCatalogOpen;
+    }
+  };
+
+  $scope.toggleSidebarMenu = function() {
+      $scope.isSidebarOpen = !$scope.isSidebarOpen;
+  };
+
   /**********
   MENU BUTTON CLICK HANDLERS
   **********/
@@ -291,7 +328,7 @@ angular.module('bekApp')
   };
 
   // PHONEGAP Feature
-  $scope.scanBarcode = function() {
+  $scope.scanBarcode = function() { // TODO: should this work with UNFI?
     cordova.plugins.barcodeScanner.scan(
       function (result) {
         var scannedText = result.text;

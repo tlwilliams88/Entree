@@ -39,6 +39,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
         // Configuration
         public DbSet<ExportSetting> ExportSettings { get; set; }
         public DbSet<MessageTemplate> MessageTemplates { get; set; }
+        public DbSet<ExternalCatalog> ExternalCatalogs { get; set; }
 
         // Customers
         public DbSet<ItemHistory> ItemHistory { get; set; }
@@ -101,6 +102,7 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             // Configuration
             modelBuilder.Entity<MessageTemplate>().ToTable( "MessageTemplates", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
             modelBuilder.Entity<ExportSetting>().ToTable( "ExportSettings", schemaName: "Configuration" ).Property( o => o.Id ).HasDatabaseGeneratedOption( DatabaseGeneratedOption.Identity );
+            modelBuilder.Entity<ExternalCatalog>().ToTable("ExternalCatalogs", schemaName: "Configuration").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             // Profile
             modelBuilder.Entity<MarketingPreference>().ToTable("MarketingPreferences", schemaName: "Profile").Property(o => o.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
@@ -122,8 +124,13 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
             try {
                 return base.SaveChanges();
             } catch (System.Data.Entity.Validation.DbEntityValidationException e) {
+                // Create a custom error message with validation information
                 StringBuilder errorDetails = new StringBuilder();
 
+                // First message shoudl be the thrown error
+                errorDetails.AppendLine( e.Message );
+
+                // Loop through the validation errors and append them to the message
                 foreach (var eve in e.EntityValidationErrors) {
                     errorDetails.AppendLine( String.Format( "Entity of type \"{0}\" in state \"{1}\" has the following validation errors:", eve.Entry.Entity.GetType(), eve.Entry.State ) );
                     foreach (var ve in eve.ValidationErrors) {
@@ -133,8 +140,9 @@ namespace KeithLink.Svc.Impl.Repository.EF.Operational {
 
 				if(_log != null)
 					_log.WriteErrorLog( errorDetails.ToString() );
-                
-				throw;
+
+                // Throw a new exception using the error details we have established
+				throw new System.Data.Entity.Validation.DbEntityValidationException(errorDetails.ToString(), e);
             }
         }
 

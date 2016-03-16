@@ -187,6 +187,15 @@ namespace KeithLink.Svc.WebApi.Controllers
                     retVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
                 }
 
+                // UNFI Whitelisting configurations - these are temporary entries
+                // if user can view unfi, we want to say this right away
+                if ((retVal.UserProfiles != null) &&
+                    (retVal.UserProfiles.Count == 1) &&
+                    (retVal.UserProfiles[0].DefaultCustomer != null))
+                {
+                    retVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, retVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
+                }
+
                 return retVal;
             } else {
                 return _profileLogic.GetUserProfile(email, true);
@@ -804,7 +813,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 returnValue.SuccessResponse = _passwordResetService.ResetPassword(resetModel);
-                ;
             } catch (Exception ex) {
                 returnValue.SuccessResponse = false;
                 returnValue.ErrorMessage = "There was an error processing your request. If the problem persists please contact support";
@@ -953,7 +961,6 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// Get a list of settings for a user
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("profile/settings")]
@@ -970,6 +977,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        /// <summary>
+        /// Create or update profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("profile/settings")]
         public OperationReturnModel<bool> CreateOrUpdateProfileSettings(SettingsModel settings) {
@@ -989,9 +1001,14 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
-        [HttpDelete]
-        [ApiKeyedRoute("profile/settings")]
-        public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings) {
+        /// <summary>
+        /// Delete profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
+	    [HttpDelete]
+	    [ApiKeyedRoute("profile/settings")]
+	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings) {
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
 
             settings.UserId = AuthenticatedUser.UserId;

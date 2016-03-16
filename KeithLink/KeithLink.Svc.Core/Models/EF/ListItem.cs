@@ -26,5 +26,7 @@ namespace KeithLink.Svc.Core.Models.EF
 		public List ParentList { get; set; }
 		public bool? Each { get; set; }
 		public decimal Quantity { get; set; }
+        [MaxLength(24)]
+        public string CatalogId { get; set; }
 	}
 }

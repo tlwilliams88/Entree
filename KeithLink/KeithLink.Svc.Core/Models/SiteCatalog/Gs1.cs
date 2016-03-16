@@ -98,4 +98,63 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "allergens")]
         public Allergen Allergens { get; set; }
     }
+
+    [DataContract(Name = "unfi")]
+    [Serializable]
+    public class UNFI
+    {
+        [DataMember(Name = "caseprice")]
+        public string CasePrice { get; set; }
+        [DataMember(Name = "caselength")]
+        public string CaseLength { get; set; }
+        [DataMember(Name = "casewidth")]
+        public string CaseWidth { get; set; }
+        [DataMember(Name = "caseheight")]
+        public string CaseHeight { get; set; }
+        [DataMember(Name = "packageprice")]
+        public string PackagePrice { get; set; }
+        [DataMember(Name = "packagelength")]
+        public string PackageLength { get; set; }
+        [DataMember(Name = "packageheight")]
+        public string PackageHeight { get; set; }
+        [DataMember(Name = "packagewidth")]
+        public string PackageWidth { get; set; }
+        [DataMember(Name = "unitofsale")]
+        public string UnitOfSale { get; set; }
+        [DataMember(Name = "weight")]
+        public string Weight { get; set; }
+        [DataMember(Name = "catalogdept")]
+        public string CatalogDept { get; set; }
+        [DataMember(Name = "shipminexpire")]
+        public string ShipMinExpire { get; set; }
+        [DataMember(Name = "minorder")]
+        public string MinOrder { get; set; }
+        [DataMember(Name = "casequantity")]
+        public string CaseQuantity { get; set; }
+        [DataMember(Name = "putup")]
+        public string PutUp { get; set; }
+        [DataMember(Name = "contunit")]
+        public string ContUnit { get; set; }
+        [DataMember(Name = "tcscode")]
+        public string TCSCode { get; set; }
+        [DataMember(Name = "caseupc")]
+        public string CaseUPC { get; set; }
+        [DataMember(Name = "status")]
+        public string Status { get; set; }
+        [DataMember(Name = "flag1")]
+        public string Flag1 { get; set; }
+        [DataMember(Name = "flag2")]
+        public string Flag2 { get; set; }
+        [DataMember(Name = "flag3")]
+        public string Flag3 { get; set; }
+        [DataMember(Name = "flag4")]
+        public string Flag4 { get; set; }
+        [DataMember(Name = "onhandqty")]
+        public string OnHandQty { get; set; }
+        [DataMember(Name = "vendor")]
+        public string Vendor { get; set; }
+        [DataMember( Name = "stockedinbranches" )]
+        public string StockedInBranches { get; set; }
+    }
+
 }

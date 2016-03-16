@@ -19,5 +19,11 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         [DataMember(Name = "Prices")]
         public List<Price> Prices { get; set; }
         #endregion
+
+        public PriceReturn AddRange(PriceReturn price)
+        {
+            this.Prices.AddRange(price.Prices);
+            return this;
+        }
     }
 }

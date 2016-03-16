@@ -201,7 +201,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("order/{cartId}")]
-        public NewOrderReturn SaveOrder(Guid cartId) {
+        public SaveOrderReturn SaveOrder(Guid cartId) {
             return _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
         }
 
@@ -286,6 +286,16 @@ namespace KeithLink.Svc.WebApi.Controllers
             return new Models.OperationReturnModel<bool>() {
                 SuccessResponse = _orderLogic.ResendUnconfirmedOrder(this.AuthenticatedUser, controlNumber, this.SelectedUserContext)
             };
+        }
+
+        [HttpGet]
+        [ApiKeyedRoute("order/admin/setlostorder")]
+        public Models.OperationReturnModel<string> SetLostOrder(string trackingNumber)
+        {
+            if(AuthenticatedUser.RoleName.Equals("beksysadmin",StringComparison.CurrentCultureIgnoreCase))
+                return new Models.OperationReturnModel<string>() { SuccessResponse = _orderServiceRepository.SetLostOrder(trackingNumber) };
+            else
+                return new Models.OperationReturnModel<string>() { ErrorMessage = "Must be a beksysadmin user" };
         }
         #endregion
     }

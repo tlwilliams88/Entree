@@ -8,14 +8,17 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList', 'Constants', 'ListService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, PricingService, ListPagingModel, LocalStorage, UtilityService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList', 'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService, PricingService, ListPagingModel, LocalStorage, UtilityService) {
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
 
     var orderBy = $filter('orderBy');
 
+    CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
 
     $scope.lists = ListService.lists;
     $scope.labels = ListService.labels;  
@@ -33,6 +36,18 @@ angular.module('bekApp')
     if (ListService.findRecommendedList()) {
       $scope.hideRecommendedListCreateButton = true;
     }
+
+      //Toggle scope variable to render Reports side panel when screen is resized
+        $(window).resize(function(){ 
+          $scope.$apply(function(){ 
+            $scope.renderSidePanel();
+          });
+        });
+  
+        $scope.renderSidePanel = function(){
+          $scope.resized = window.innerWidth > 991;
+        }
+       $scope.renderSidePanel();
 
 
     $scope.rowChanged = function(index){

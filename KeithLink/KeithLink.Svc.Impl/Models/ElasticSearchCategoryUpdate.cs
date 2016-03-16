@@ -19,7 +19,8 @@ namespace KeithLink.Svc.Impl.Models
 
     public class ESCategoryRootData
     {
-        public string _index { get { return "categories"; } }
+		private string index = "categories";
+        public string _index { get { return index; } set { index = value; } }
         public string _type { get { return "category"; } }
         public string _id { get; set; }
         [JsonIgnore]
@@ -31,6 +32,7 @@ namespace KeithLink.Svc.Impl.Models
         public string parentcategoryid { get; set; }
         public string name { get; set; }
         public string ppicode { get; set; }
+        public string department { get; set; }
         public List<ESSubCategories> subcategories { get; set; }
     }
     

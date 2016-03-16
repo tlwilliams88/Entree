@@ -24,6 +24,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Interface.SpecialOrders;
 
 using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
@@ -86,6 +87,8 @@ namespace KeithLink.Svc.Windows.OrderService {
             builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
             builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
             builder.RegisterType<NoOrderConversionLogicImpl>().As<IOrderConversionLogic>();
+            builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
+            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 

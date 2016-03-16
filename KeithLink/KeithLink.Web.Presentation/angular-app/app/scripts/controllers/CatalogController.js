@@ -8,15 +8,24 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'BrandService', 'ListService',
-    function ($scope, $state, CategoryService, ProductService, BrandService, ListService) {
+  .controller('CatalogController', ['$scope', '$state', 'CategoryService', 'ProductService', 'CartService', 'BrandService', 'ListService',
+    function ($scope, $state, CategoryService, ProductService, CartService, BrandService, ListService) {
     
     $scope.myInterval = -1;
+
+    CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
 
     $scope.loadingRecentlyViewedItems = true;
     $scope.loadingCategories = true;
     $scope.loadingBrands = true;
     $scope.loadingRecommendedItems = true;
+    if ($state.params.catalogType == "BEK") {
+        $scope.pageTitle = "Product Catalog";
+    } else {
+        $scope.pageTitle = "Specialty Catalog";
+    }
 
     ProductService.getRecentlyViewedItems().then(function(items) {
       $scope.loadingRecentlyViewedItems = false;
@@ -28,7 +37,7 @@ angular.module('bekApp')
       $scope.recommendedItems = items;
     });
 
-    CategoryService.getCategories().then(function(data) {
+    CategoryService.getCategories($state.params.catalogType).then(function(data) {
       $scope.loadingCategories = false;
       $scope.categories = data.categories;
     });

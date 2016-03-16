@@ -1,9 +1,11 @@
-﻿using KeithLink.Common.Core.Extensions;
+﻿using CS = KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Extensions.Messaging;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
@@ -210,12 +212,19 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 CustomerName = customer.CustomerName,
                 InvoiceNumber = invoiceNumber
             });
+            StringBuilder sbShipDate = new StringBuilder();
+            if ((notification != null) && 
+                (notification.OrderChange != null) && 
+                (notification.OrderChange.ShipDate != null) &&
+                (notification.OrderChange.ShipDate.Equals("1/1/0001") == false))
+                sbShipDate.Append(notification.OrderChange.ShipDate);
+            else sbShipDate.Append("Undetermined");
             message.MessageBody = template.Body.Inject(new
             {
                 CustomerNumber = customer.CustomerNumber,
                 CustomerName = customer.CustomerName,
                 InvoiceNumber = invoiceNumber,
-                ShipDate = notification.OrderChange.ShipDate.ToShortDateString(),
+                ShipDate = sbShipDate.ToString(),
                 Count = notification.OrderChange.Items.Count,
                 Total = totalAmount.ToString("f2"),
                 PurchaseOrder = notification.OrderChange.OrderName,
@@ -234,21 +243,30 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             string invoiceNumber = null;
             if (notification.InvoiceNumber != null)
             {
-                invoiceNumber = notification.InvoiceNumber;
+                invoiceNumber = " INV " + notification.InvoiceNumber + " #" + notification.OrderNumber;
             }
             else
             {
-                UserSelectedContext usc = new UserSelectedContext();
-                usc.CustomerId = customer.CustomerNumber;
-                usc.BranchId = customer.CustomerBranch;
-                DateTime today = DateTime.Parse(DateTime.Now.ToShortDateString());
-                List<string> notifItems = notification.OrderChange.Items.Select(x => x.ItemNumber).ToList();
-                List<Order> orders = _orderHistoryLogic.GetOrderHeaderInDateRange(usc, today, today.AddDays(1))
-                                        .ToList();
-                if ((orders != null) && (orders.Count > 0))
-                    invoiceNumber = orders[0].InvoiceNumber;
+                Order order = _orderHistoryLogic.GetOrder(customer.CustomerBranch, notification.OrderNumber);
+                invoiceNumber = " INV " + order.InvoiceNumber + " #" + notification.OrderNumber;
             }
             return invoiceNumber;
+        }
+
+        private OrderLine ToOrderLine(CS.LineItem lineItem)
+        {
+            return new OrderLine()
+            {
+                ItemNumber = lineItem.ProductId,
+                Quantity = (short)lineItem.Quantity,
+                Price = (double)lineItem.PlacedPrice,
+                QuantityOrdered = lineItem.Properties["QuantityOrdered"] == null ? 0 : (int)lineItem.Properties["QuantityOrdered"],
+                QantityShipped = lineItem.Properties["QuantityShipped"] == null ? 0 : (int)lineItem.Properties["QuantityShipped"],
+                ChangeOrderStatus = lineItem.Status,
+                SubstitutedItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"],
+                MainFrameStatus = lineItem.Properties["MainFrameStatus"] == null ? null : (string)lineItem.Properties["MainFrameStatus"],
+                Each = (bool)lineItem.Properties["Each"]
+            };
         }
 
         private decimal BuildOrderTable(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer, StringBuilder originalOrderInfo)
@@ -256,7 +274,10 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             StringBuilder itemOrderInfo = new StringBuilder();
             StringBuilder itemOrderInfoOOS = new StringBuilder();
             decimal totalAmount = 0;
-            ProductsReturn products = _catRepo.GetProductsByIds(customer.CustomerBranch, notification.OrderChange.Items.Select(i => i.ItemNumber).ToList());
+            string catalog = null;
+            catalog = notification.OrderChange.Items.Select(i => i.ItemCatalog).FirstOrDefault();
+            if (catalog == null) catalog = customer.CustomerBranch;
+            ProductsReturn products = _catRepo.GetProductsByIds(catalog, notification.OrderChange.Items.Select(i => i.ItemNumber.Trim()).ToList());
             foreach (var line in notification.OrderChange.Items)
             {
                 Product currentProduct = products.Products.Where(i => i.ItemNumber == line.ItemNumber).FirstOrDefault();
@@ -280,16 +301,20 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private void BuildExceptionItemDetail(StringBuilder itemOrderInfoOOS, OrderLineChange line, string priceInfo, Product currentProduct)
         {
-            MessageTemplateModel itemOOSDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL);
-            itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new
+            if ((line != null) && (currentProduct != null) && (line.ItemNumber != null) && (currentProduct.Name != null) && (line.QuantityOrdered != null) && (line.QuantityShipped != null) && 
+                (line.OriginalStatus != null) && (priceInfo != null))
             {
-                ProductNumber = line.ItemNumber,
-                ProductDescription = currentProduct.Name,
-                Quantity = line.QuantityOrdered.ToString(),
-                Sent = line.QuantityShipped.ToString(),
-                Price = priceInfo,
-                Status = line.OriginalStatus
-            }));
+                MessageTemplateModel itemOOSDetailTemplate = _messageTemplateLogic.ReadForKey(MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL);
+                itemOrderInfoOOS.Append(itemOOSDetailTemplate.Body.Inject(new
+                {
+                    ProductNumber = line.ItemNumber,
+                    ProductDescription = currentProduct.Name,
+                    Quantity = line.QuantityOrdered.ToString(),
+                    Sent = line.QuantityShipped.ToString(),
+                    Price = priceInfo,
+                    Status = line.OriginalStatus
+                }));
+            }
         }
 
         private void BuildItemDetail(StringBuilder itemOrderInfo, OrderLineChange line, string priceInfo, Product currentProduct)
@@ -308,19 +333,21 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
 
         private string BuildPriceInfo(OrderLineChange line, Product currentProduct)
         {
-            string priceInfo = line.ItemPrice.ToString("f2");
-            if (currentProduct.CatchWeight)
+            StringBuilder priceInfo = new StringBuilder();
+            if(line.ItemPrice != null) priceInfo.Append(line.ItemPrice.ToString("f2"));
+            else priceInfo.Append("?");
+            if ((currentProduct != null) && (currentProduct.CatchWeight))
             {
-                priceInfo += " lb per";
-                if (line.Each) priceInfo += " package";
-                else priceInfo += " case";
+                priceInfo.Append(" lb per");
+                if (line.Each) priceInfo.Append(" package");
+                else priceInfo.Append(" case");
             }
             else
             {
-                if (line.Each) priceInfo += " per package";
-                else priceInfo += " per case";
+                if (line.Each) priceInfo.Append(" per package");
+                else priceInfo.Append(" per case");
             }
-            return priceInfo;
+            return priceInfo.ToString();
         }
 
         private Message MakeRejectedMessage(OrderConfirmationNotification notification, Svc.Core.Models.Profile.Customer customer)

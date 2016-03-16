@@ -1,0 +1,26 @@
+.register-wrapper {
+  color: $color-white;
+  min-height: 100%;
+  position: absolute;
+  background-image: url('../images/Registration-BG.jpg');
+  width: 100%;
+  margin-left: 0;
+}
+
+.entreeLogoDiv {
+  margin-top:36px;
+  margin-bottom:30px;
+}
+
+.entreeLogo {
+  width:212px;
+  height:85px;
+}
+
+.maitenanceTextDiv {
+  width:100%;
+}
+
+h3 {
+  color:#FFFFFF;
+}
