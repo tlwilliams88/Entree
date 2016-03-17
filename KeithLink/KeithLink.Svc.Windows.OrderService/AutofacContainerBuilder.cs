@@ -5,7 +5,7 @@ using KeithLink.Common.Impl.Logging;
 
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.ContentManagement;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.ETL;
