@@ -21,13 +21,14 @@ angular.module('bekApp')
     });
 
     $scope.lists = ListService.lists;
-    $scope.labels = ListService.labels;  
+    $scope.labels = ListService.labels;
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
     $scope.numberListNamesToShow = 10;
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
+    $scope.showRowOptionsDropdown = false;
    
 
     if (ListService.findMandatoryList()) {
@@ -76,7 +77,7 @@ angular.module('bekApp')
             else{
               $scope.pageChanged(page, visited);
             }
-          }) 
+          })
     }
 
      $scope.pageChanged = function(page) {      
@@ -104,7 +105,7 @@ angular.module('bekApp')
             $scope.selectedList.allSelected = true;
           };
           updateItemPositions();
-      }     
+      }
      };
 
      $scope.setStartAndEndPoints = function(page){
@@ -139,9 +140,19 @@ angular.module('bekApp')
     }
 
     $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
-    
+
+    function checkForEvenOrOdd(){
+      $scope.selectedList.items.forEach(function(item){
+          item.isEven = false;
+          if(item.position % 2 == 0) {
+          item.isEven = true;
+        }
+      })
+    };
+
     function resetPage(list, initialPageLoad) {
       $scope.initPagingValues();
+      $scope.activeElement = true;
       $scope.selectedList = angular.copy(list);
       $scope.totalItems = $scope.selectedList.itemCount;
       originalList = list;
@@ -164,8 +175,9 @@ angular.module('bekApp')
 
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
-      });
-    }
+      })
+      checkForEvenOrOdd();
+    };
 
     function appendListItems(list) {
       list.items.forEach(function(item) {
@@ -467,6 +479,7 @@ angular.module('bekApp')
           newPosition += 1;
       }
       });
+      checkForEvenOrOdd();
      }
 
     /**********
@@ -731,6 +744,10 @@ angular.module('bekApp')
         }
       });
     };
+
+    if((($scope.canManageLists || $scope.canCreateOrders || $scope.canSubmitOrders))){
+      $scope.showRowOptionsDropdown = true;
+    }
 
     resetPage(angular.copy(originalList), true);
     // $scope.selectedList.isRenaming = ($stateParams.renameList === 'true' && $scope.selectedList.permissions.canRenameList) ? true : false;
