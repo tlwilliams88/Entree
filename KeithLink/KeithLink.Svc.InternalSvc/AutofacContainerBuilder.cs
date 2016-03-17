@@ -1,84 +1,74 @@
-﻿
-
-#region using__common
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using KeithLink.Svc.Core.Interface.Configurations;
-using KeithLink.Svc.Impl.Repository.Configurations;
-using Autofac;
-using Autofac.Features.Indexed;
+﻿using KeithLink.Common.Core.AuditLog;
 using KeithLink.Common.Core.Logging;
+
+using KeithLink.Common.Impl.AuditLog;
 using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Core;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Component;
-using KeithLink.Svc.Impl.ETL;
-using KeithLink.Svc.Core.Models.SiteCatalog;
-#endregion
-#region using__interface
+
+using KeithLink.Svc.Core.Interface.Cache;
+using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.ETL;
 using KeithLink.Svc.Core.Interface.ETL.ElasticSearch;
 using KeithLink.Svc.Core.Interface.InternalCatalog;
 using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Interface.SiteCatalog;
-using KeithLink.Svc.Core.Interface.Common;
-using KeithLink.Svc.Core.Interface.Messaging;
-using KeithLink.Svc.Core.Interface.ContentManagement;
-using KeithLink.Svc.Core.Interface.Reports;
 using KeithLink.Svc.Core.Interface.PowerMenu;
-#endregion
-#region using__repository
+using KeithLink.Svc.Core.Interface.Profile;
+using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
+using KeithLink.Svc.Core.Interface.Reports;
+using KeithLink.Svc.Core.Interface.SiteCatalog;
+
+using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.ETL;
+
+using KeithLink.Svc.Impl.Logic;
+using KeithLink.Svc.Impl.Logic.Configurations;
+using KeithLink.Svc.Impl.Logic.ETL;
+using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Messaging;
+using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Logic.PowerMenu;
+using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.SiteCatalog;
+
+using KeithLink.Svc.Impl.Repository.Cache;
+using KeithLink.Svc.Impl.Repository.Configurations;
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Email;
-using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using KeithLink.Svc.Impl.Repository.Invoices;
+using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.Network;
 using KeithLink.Svc.Impl.Repository.OnlinePayments;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Log;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Payment;
 using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
+using KeithLink.Svc.Impl.Repository.PowerMenu;
 using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Svc.Impl.Repository.SiteCatalog;
+using KeithLink.Svc.Impl.Repository.Profile.PasswordReset;
 using KeithLink.Svc.Impl.Repository.Queue;
 using KeithLink.Svc.Impl.Repository.Reports;
-using KeithLink.Svc.Impl.Repository.Cache;
-using KeithLink.Svc.Core.Interface.Cache;
-using KeithLink.Svc.Impl.Repository.OnlinePayments.Payment;
-using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
-using KeithLink.Svc.Impl.Repository.PowerMenu;
-#endregion
-#region using__logic
-using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Logic.ETL;
-using KeithLink.Svc.Impl.Logic.Orders;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
-using KeithLink.Svc.Impl.Logic.Profile;
-using KeithLink.Svc.Impl.Logic.SiteCatalog;
-using KeithLink.Svc.Impl.Logic.Messaging;
-using KeithLink.Svc.Impl.Logic.PowerMenu;
-using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
-using KeithLink.Svc.Impl.Repository.Profile.PasswordReset;
-using KeithLink.Common.Core.AuditLog;
-using KeithLink.Common.Impl.AuditLog;
-#endregion
+using KeithLink.Svc.Impl.Repository.SiteCatalog;
+
+using Autofac;
+using Autofac.Features.Indexed;
+
+using System;
 
 namespace KeithLink.Svc.InternalSvc
 {
@@ -227,6 +217,7 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
+            builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();
             builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
