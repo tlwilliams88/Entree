@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using KeithLink.Svc.Core.Interface.Configuration;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using Autofac;
 using Autofac.Features.Indexed;
