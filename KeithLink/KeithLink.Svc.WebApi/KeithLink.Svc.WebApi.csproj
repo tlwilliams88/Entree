@@ -254,17 +254,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap" />
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.disco" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.DivisionService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\com.benekeith.DsrService\DsrService.wsdl" />
     <None Include="Service References\com.benekeith.DsrService\DsrService.xsd">
       <SubType>Designer</SubType>
@@ -470,12 +459,6 @@
     <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
     <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\DivisionServiceRepositoryImpl.cs" />
-    <Compile Include="Service References\com.benekeith.DivisionService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.DsrService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -533,16 +516,6 @@
     <Content Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.wsdl" />
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DivisionService\DivisionService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.xsd">
@@ -697,7 +670,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.DivisionService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.DsrService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />

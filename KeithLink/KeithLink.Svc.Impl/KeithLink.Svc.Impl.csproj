@@ -257,7 +257,6 @@
     <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalDivisionLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
@@ -754,7 +753,6 @@
     <Compile Include="Repository\SiteCatalog\CategoryImageRepository.cs" />
     <Compile Include="Repository\SiteCatalog\DivisionRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ElasticSearchCatalogRepositoryImpl.cs" />
-    <Compile Include="Repository\SiteCatalog\NoDivisionServiceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\PriceRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\ProductImageRepositoryImpl.cs" />
     <Compile Include="Repository\SiteCatalog\StubCatalogRepositoryImpl.cs" />

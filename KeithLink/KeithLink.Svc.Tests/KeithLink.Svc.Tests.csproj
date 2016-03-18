@@ -133,7 +133,6 @@
     <Compile Include="Extensions\ToStringExtensionsTest.cs" />
     <Compile Include="Helpers\PricingHelperTests.cs" />
     <Compile Include="Logic\ContentManagement\ContentManagementLogicImplTests.cs" />
-    <Compile Include="Logic\InternalSrv\InternalDivisionLogicTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalListLogicTest.cs" />
     <Compile Include="Logic\InternalSrv\InternalMarketingPreferenceLogicImplTests.cs" />
     <Compile Include="Logic\InternalSrv\InternalOnlinePaymentLogicTests.cs" />

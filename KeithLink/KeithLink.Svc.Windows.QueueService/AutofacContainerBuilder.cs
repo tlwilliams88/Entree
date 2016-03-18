@@ -144,7 +144,6 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
 
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
 			builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
@@ -185,7 +184,6 @@ namespace KeithLink.Svc.Windows.QueueService
 
 			// no implementation (will throw notimplementedexception if called)
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-			builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
 			//builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
