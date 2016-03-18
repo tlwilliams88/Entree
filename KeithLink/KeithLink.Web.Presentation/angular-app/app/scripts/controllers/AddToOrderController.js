@@ -456,7 +456,11 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
               }
             }        
           })      
-      }   
+      }
+
+      $timeout(function() {
+        $('#rowForFocus').find('input:first').focus();
+      }, 500);
     };
 
     $scope.clearFilter = function(){ 
@@ -825,10 +829,13 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           return r;   
       } 
       else { 
-        if($scope.selectedCart.id === 'New'){
+        if($scope.selectedCart.id === 'New' && $scope.tempCartName === ''){
           $scope.createFromSearch = true;
+        } 
+        else if($scope.tempCartName){
+          $scope.renameCart($scope.selectedCart.id, $scope.tempCartName);
         }
-        if($scope.fromFilterItems) {
+        else if($scope.fromFilterItems) {
           $scope.fromFilterItems = false;
           return $scope.updateOrderClick($scope.selectedList, $scope.selectedCart);
         }
