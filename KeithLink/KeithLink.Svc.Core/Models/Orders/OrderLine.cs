@@ -102,7 +102,14 @@ namespace KeithLink.Svc.Core.Models.Orders
             {
                 string mfStatus = string.IsNullOrEmpty(MainFrameStatus) ? string.Empty : MainFrameStatus.ToUpper().Trim();
 
-                if (mfStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE, StringComparison.CurrentCultureIgnoreCase)) return true;
+                if (mfStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_CODE, StringComparison.CurrentCultureIgnoreCase))
+                {
+                    return true;
+                }
+                else if (mfStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS, StringComparison.CurrentCultureIgnoreCase))
+                {
+
+                }
                 return false;
             }
             set { }
