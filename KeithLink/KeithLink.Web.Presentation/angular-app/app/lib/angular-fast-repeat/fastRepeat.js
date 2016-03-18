@@ -225,9 +225,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                         setTimeout(function() {
                             if(elIndex >= 0) {
-                                clone.find('*').eq(elIndex).trigger('mouseenter mouseleave');
+                                clone.find('*').eq(elIndex).trigger('mouseover');
                             } else {
-                                clone.trigger('mouseenter mouseleave');
+                                clone.trigger('mouseover');
                             }
                         }, 0);
                     });
@@ -236,7 +236,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 };
 
 
-                element.parent().on('mouseenter mouseleave', '[fast-repeat-id]',parentClickHandler);
+                element.parent().on('mouseover', '[fast-repeat-id]',parentClickHandler);
                 
                 // Handle resizes
                 //
@@ -248,7 +248,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 jqWindow.on('resize', onResize);
                 scope.$on('$destroy', function() { 
                     jqWindow.off('resize', onResize);
-                    element.parent().off('mouseenter mouseleave', '[fast-repeat-id]', parentClickHandler);
+                    element.parent().off('mouseover', '[fast-repeat-id]', parentClickHandler);
                 });
             };
         },
