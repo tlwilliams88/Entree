@@ -266,7 +266,6 @@
     <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalReportLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalSpecialOrderLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
@@ -294,6 +293,7 @@
     <Compile Include="Logic\Profile\SettingsLogicImpl.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\Reports\InventoryValuationReportLogicImpl.cs" />
+    <Compile Include="Logic\Reports\ReportLogic.cs" />
     <Compile Include="Logic\ShoppingCartLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\AccessRequestLogicImpl.cs" />
     <Compile Include="Logic\SingleSignOn\KbitRequestLogicImpl.cs" />

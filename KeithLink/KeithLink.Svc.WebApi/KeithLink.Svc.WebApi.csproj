@@ -366,13 +366,6 @@
     <None Include="Service References\com.benekeith.ProfileService\ProfileService2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService.disco" />
-    <None Include="Service References\com.benekeith.ReportService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ReportService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ReportService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Services\PowerMenuPricing.asmx" />
     <None Include="Service References\com.benekeith.ProfileService\ProfileService.disco" />
     <None Include="Service References\com.benekeith.ProfileService\configuration91.svcinfo" />
@@ -440,7 +433,6 @@
     <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
-    <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
     <Compile Include="Service References\com.benekeith.InvoiceService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -467,11 +459,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\com.benekeith.ProfileService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.ReportService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -576,23 +563,7 @@
     <None Include="Service References\com.benekeith.OrderService\OrderService4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService.wsdl" />
-    <None Include="Service References\com.benekeith.ReportService\ReportService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ReportService\ReportService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Services\PowerMenuPricingHandler.ashx" />
-    <None Include="Service References\com.benekeith.ReportService\ReportService41.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -653,7 +624,6 @@
     <WCFMetadataStorage Include="Service References\com.benekeith.OnlinePaymentService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ProfileService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.ReportService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

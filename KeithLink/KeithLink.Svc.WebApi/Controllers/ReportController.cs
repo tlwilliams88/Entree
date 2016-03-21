@@ -15,20 +15,31 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// controller for reports
+    /// </summary>
     [Authorize]
     public class ReportController : BaseController {
         #region attributes
-        private readonly IReportServiceRepository _reportServiceRepository;
+        private readonly IReportLogic _reportLogic;
 		private readonly IExportSettingLogic _exportLogic;
 		private readonly IInventoryValuationReportLogic _inventoryValuationReportLogic;       
         #endregion
 
         #region ctor
-		public ReportController(IReportServiceRepository reportServiceRepository, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
-                                IInventoryValuationReportLogic inventoryValuationReportLogic) : base(profileLogic) {
-            _reportServiceRepository = reportServiceRepository;
+        /// <summary>
+        /// constructor
+        /// </summary>
+        /// <param name="reportLogic"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="exportSettingsLogic"></param>
+        /// <param name="inventoryValuationReportLogic"></param>
+		public ReportController(IReportLogic reportLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
+                                IInventoryValuationReportLogic inventoryValuationReportLogic) 
+            : base(profileLogic) {
 			_exportLogic = exportSettingsLogic;
 			_inventoryValuationReportLogic = inventoryValuationReportLogic;
+            _reportLogic = reportLogic;
         }
         #endregion
 
@@ -43,7 +54,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public Models.OperationReturnModel<IEnumerable<ItemUsageReportItemModel>> ReadItemUsage([FromUri] ItemUsageReportQueryModel usageQuery) {
             if (usageQuery != null && usageQuery.fromDate.HasValue && usageQuery.toDate.HasValue) {
                 usageQuery.UserSelectedContext = this.SelectedUserContext;
-                var ret = _reportServiceRepository.GetItemUsage(usageQuery);
+                var ret = _reportLogic.GetItemUsage(usageQuery);
                 return new Models.OperationReturnModel<IEnumerable<Core.Models.Reports.ItemUsageReportItemModel>>() {
                     SuccessResponse = ret
                 };
@@ -62,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         public HttpResponseMessage ExportItemUsage([FromUri] ItemUsageReportQueryModel usageQuery, ExportRequestModel exportRequest) {
             if (usageQuery != null && usageQuery.fromDate.HasValue && usageQuery.toDate.HasValue) {
                 usageQuery.UserSelectedContext = this.SelectedUserContext;
-                var ret = _reportServiceRepository.GetItemUsage(usageQuery);
+                var ret = _reportLogic.GetItemUsage(usageQuery);
 
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.ItemUsage, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);

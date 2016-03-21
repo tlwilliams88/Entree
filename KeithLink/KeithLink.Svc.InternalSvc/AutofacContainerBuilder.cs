@@ -84,9 +84,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<MessagingService>();
             builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
-			builder.RegisterType<ReportService>();
 			builder.RegisterType<CacheService>();
-            builder.RegisterType<DsrService>();
 			builder.RegisterType<ProfileService>();
 
 			#if DEMO
@@ -218,7 +216,6 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
-            builder.RegisterType<InternalReportLogic>().As<IInternalReportLogic>();
 
             // order conversion - JA - 1/8/15
             builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();

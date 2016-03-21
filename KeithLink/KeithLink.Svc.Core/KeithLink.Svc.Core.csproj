@@ -257,10 +257,9 @@
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
-    <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IInventoryValuationReportLogic.cs" />
+    <Compile Include="Interface\Reports\IReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
-    <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IAccessRequestLogic.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
