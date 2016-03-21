@@ -39,6 +39,51 @@
   }
 }
 
+.facet-results__filters {
+  label {
+    font-weight: 400;
+  }
+  input[type="checkbox"]:checked + label {
+    color: $color-blue;
+    font-weight: 600;
+  }
+}
+
+.input-margin-5px{
+  margin-left: 5px !important;
+}
+
+.search-results__facets{
+  max-height: 210px;
+  overflow-y: scroll; 
+  -webkit-overflow-scrolling: touch;
+  background-color: white;
+  border: 1px solid $color-border;
+  border-radius: 3px;
+
+  li {
+    a {
+      color: $color-font;
+      &:hover{
+        background-color: transparent;
+      }
+      &.active {
+        color: $color-blue;
+        font-weight: 600;
+      }
+    }
+    ul{
+      list-style-type: none;
+      li{
+        .active{
+          color: $color-blue;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
 .mobile-filter {
   @include arrow('top','right', 10px, $color-brown, $color-brown, 2px);
   position: absolute;
