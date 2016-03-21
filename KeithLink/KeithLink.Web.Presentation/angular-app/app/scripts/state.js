@@ -188,7 +188,7 @@ angular.module('bekApp')
           ListService.lists.forEach(function(list){
             if(last && list.listid === last.listId){
                stillExists = true;
-               var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+               var timeoutDate  = UtilityService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
                if(last.timeset < timeoutDate){         
                   stillExists = false;
                  }
@@ -197,7 +197,7 @@ angular.module('bekApp')
 
           var listIdtoBeUsed = '';
           if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
-             last.timeset =  moment().format('YYYYMMDDHHmm');
+             last.timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
              LocalStorage.setLastList(last);
              listIdtoBeUsed = last.listId;
           }
@@ -347,7 +347,7 @@ angular.module('bekApp')
           if($stateParams.cartId !== 'New'){
             var allSets = LocalStorage.getLastOrderList();
             var allValidSets = [];           
-            var timeoutDate  = moment().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+            var timeoutDate  = UtilityService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
             allSets.forEach(function(set){          
               if(set.timeset > timeoutDate){
                 allValidSets.push(set);
@@ -360,7 +360,7 @@ angular.module('bekApp')
                     ListService.lists.forEach(function(list){
                       if(list.listid === set.listId){
                         validListId = set.listId;
-                         set.timeset =  moment().format('YYYYMMDDHHmm');
+                         set.timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
                       }
                     });
                   }

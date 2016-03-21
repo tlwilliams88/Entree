@@ -240,7 +240,7 @@ angular.module('bekApp')
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
 
-      var timeset =  moment().format('YYYYMMDDHHmm');
+      var timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
     
       var lastlist ={
           listId: list.listid,          
@@ -259,7 +259,7 @@ angular.module('bekApp')
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
-     var timeset =  moment().format('YYYYMMDDHHmm');
+     var timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
      var lastlist ={
           listId: newList.listid,          
           timeset: timeset

@@ -322,8 +322,8 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
-            var cutoffDate = moment(data.shipdates[0].cutoffdatetime).format();
-            var now = moment().tz("America/Chicago").format();
+            var cutoffDate = UtilityService.momentObject(data.shipdates[0].cutoffdatetime).format();
+            var now = UtilityService.momentObject().tz("America/Chicago").format();
 
             var invalidSelectedDate = (now > cutoffDate) ? true : false;
             if(invalidSelectedDate){
@@ -340,9 +340,9 @@ angular.module('bekApp')
       findCutoffDate: function(cart) {
         var shipDateFound;
         if (cart && cart.requestedshipdate) {
-          var selectedShipDate = cart.requestedshipdate.substr(0, 10);
+          var selectedShipDate = UtilityService.momentObject(cart.requestedshipdate.substr(0, 10)).format('YYYY-MM-DD');
           angular.forEach(Service.shipDates, function(shipDate) {
-            if (selectedShipDate === shipDate.shipdate) {
+            if (selectedShipDate == UtilityService.momentObject(shipDate.shipdate).format('YYYY-MM-DD')) {
               shipDateFound = shipDate;
             }
           });

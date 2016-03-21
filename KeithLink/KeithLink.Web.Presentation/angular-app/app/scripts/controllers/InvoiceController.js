@@ -1,8 +1,8 @@
   'use strict';
 
 angular.module('bekApp')
-  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel',
-    function ($scope, $filter, $modal, accounts, InvoiceService, $rootScope, LocalStorage, CartService, CustomerService, $state, PagingModel) {
+  .controller('InvoiceController', ['$scope', '$filter', '$modal', 'accounts', 'InvoiceService', '$rootScope', 'UtilityService', 'LocalStorage', 'CartService', 'CustomerService', '$state', 'PagingModel',
+    function ($scope, $filter, $modal, accounts, InvoiceService, $rootScope, UtilityService, LocalStorage, CartService, CustomerService, $state, PagingModel) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -21,16 +21,16 @@ angular.module('bekApp')
   $scope.selectedInvoiceContext = $scope.invoiceCustomerContexts[1];
   $scope.accounts = accounts;
  
-  $scope.currDate = new Date();  
-  $scope.currDate = moment($scope.currDate).format('YYYY-MM-DD');
-  
-  if(moment.utc().format('HHmmss') < 190000){
-    $scope.mindate = moment($scope.currDate);
+  $scope.currDate = UtilityService.momentObject().format('YYYY-MM-DD');
+
+  if(UtilityService.momentObject().utc().format('HHmmss') < 190000){
+    $scope.mindate = UtilityService.momentObject($scope.currDate);
+
   }
   else{
-    $scope.mindate = moment($scope.currDate).add(1,'d');
+    $scope.mindate = UtilityService.momentObject($scope.currDate).add(1,'d');
   }
-  $scope.tomorrow = moment($scope.mindate).format('YYYY-MM-DD');
+  $scope.tomorrow = $scope.mindate.format('YYYY-MM-DD');
 
   $scope.datepickerOptions = {
     minDate: $scope.mindate,
@@ -107,9 +107,12 @@ angular.module('bekApp')
       }
 
       // calculate max payment date
-      var date = moment(invoice.duedate).add(2, 'd');     
+    var date = {};
       if(invoice.amount < 0){
-        date = moment( date ).add(1, 'year');
+        date = UtilityService.momentObject(invoice.duedate.substr(0,10)).add(1, 'year');
+      }
+      else{
+        date = UtilityService.momentObject(invoice.duedate.substr(0,10)).subtract(1, 'd')
       }
        invoice.maxPaymentDate = date.format('YYYY-MM-DD');
     });
@@ -219,13 +222,13 @@ angular.module('bekApp')
 
   $scope.setDateSortValues = function(invoice){
     if((invoice.userCanPayInvoice || (invoice.statusdescription === 'Payment Pending' || invoice.statusdescription === 'Past Due')) && invoice.date){
-      return invoice.date;
+      return invoice.date.substr(0,10);
     }
     if(invoice.userCanPayInvoice && invoice.statusdescription === 'Past Due' && !invoice.date){
       return $scope.tomorrow;
     }
-    if(invoice.statusdescription === 'Payment Pending' && !invoice.date){
-      return invoice.pendingtransaction.date;
+    if(invoice.statusdescription === 'Payment Pending' && !invoice.date && invoice.pendingtransaction){
+      return invoice.pendingtransaction.date.substr(0,10);
     }
   };
 
@@ -235,8 +238,8 @@ angular.module('bekApp')
     };
 
    $scope.invoices = $scope.invoices.sort(function(obj1, obj2){
-        var sorterval1 = moment($scope.setDateSortValues(obj1));
-        var sorterval2 = moment($scope.setDateSortValues(obj2));
+        var sorterval1 = UtilityService.momentObject($scope.setDateSortValues(obj1));
+        var sorterval2 = UtilityService.momentObject($scope.setDateSortValues(obj2));
 
         $scope.ascendingDate = !ascendingDate;    
         if(!sorterval1){
@@ -430,7 +433,7 @@ angular.module('bekApp')
         if((payment.statusdescription === 'Payment Pending') || (payment.statusdescription === 'Past Due' && payment.amount < 0)){
           
         if(payment.statusdescription === 'Payment Pending' && !payment.date){
-             payment.date = moment(payment.pendingtransaction.date,"YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD");
+             payment.date = UtilityService.momentObject("2016-03-18T00:00:00Z","YYYY-MM-DDTHH:mm:ss").format("YYYY-MM-DD");
             }                       
         }
         
@@ -439,7 +442,7 @@ angular.module('bekApp')
         }
 
         if(payment.date.length !== 10){
-          payment.date = moment(payment.date).format("YYYY-MM-DD");
+          payment.date = UtilityService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format("YYYY-MM-DD");
         }
 
       });
@@ -476,7 +479,7 @@ angular.module('bekApp')
           });
           payments.forEach(function(payment){  
             if(payment.date.length !== 10){
-            payment.date = moment(payment.date).format("YYYY-MM-DD");
+            payment.date = UtilityService.momentObject(payment.date.substr(0,10)).subtract(1, 'd').format("YYYY-MM-DD");
           }
           })
           InvoiceService.payInvoices(payments).then(function() {
@@ -540,8 +543,11 @@ angular.module('bekApp')
         if(invoice.pendingtransaction || invoice.date){
           invoiceDate = invoice.date || invoice.pendingtransaction.date;
         }
-
-        if(transaction.account === invoice.account && transaction.customernumber === invoice.customernumber && transaction.branchid === invoice.branchid && moment(resp.successResponse.transactions[0].date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === moment(invoiceDate).format('YYYYMMDD') && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
+        if(transaction.account === invoice.account
+        && transaction.customernumber === invoice.customernumber
+        && transaction.branchid === invoice.branchid
+        && UtilityService.momentObject(resp.successResponse.transactions[0].date,"YYYY-MM-DDTHH:mm:ss").format("YYYYMMDD") === UtilityService.momentObject(invoiceDate.substr(0,10)).format('YYYYMMDD')
+        && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
           invoice.failedBatchValidation = true;
         }
       }); 

@@ -111,6 +111,32 @@ angular.module('bekApp')
         });
       },
 
+      momentObject: function(date, formatString, TZ){
+       //Generates moment object with correct formatting string
+        if(!date){
+          date = '';
+        }
+
+        var timezone = (date.length > 10);
+
+        if(!formatString && date.indexOf('/') !== -1){
+           formatString = (timezone) ? 'MM/DD/YYYY HH:mm:ss':'MM/DD/YYYY';
+        }
+        else if(!formatString && date.indexOf('-') !== -1){
+           formatString = (timezone) ? 'YYYY-MM-DD HH:mm:ss.SSSS':'YYYY-MM-DD';
+        }
+
+       if(TZ){
+        return moment.tz(date,formatString,TZ)
+       }
+        else if(date){
+          return moment(date,formatString);
+        }
+        else{
+          return moment(new Date());
+        }
+      },
+
       /**
        * general way to resolve most of our endpoints that return an object of the following format
        * where the request was sucessful if successResponse is not null

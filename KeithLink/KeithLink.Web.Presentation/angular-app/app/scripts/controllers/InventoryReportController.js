@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('InventoryReportController', ['$scope', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'ProductService', 'PricingService', 'ListService', 'List',
-    function($scope, $q, $modal, $stateParams, $state, toaster, reports, ProductService, PricingService, ListService, List) {
+  .controller('InventoryReportController', ['$scope', '$q', '$modal', '$stateParams', '$state', 'toaster', 'reports', 'UtilityService', 'ProductService', 'PricingService', 'ListService', 'List',
+    function($scope, $q, $modal, $stateParams, $state, toaster, reports, UtilityService, ProductService, PricingService, ListService, List) {
       $scope.reports = reports;
       $scope.subtotal = 0;
       $scope.sortField = 'position';
@@ -17,7 +17,7 @@ angular.module('bekApp')
       $scope.confirmQuantity = ListService.confirmQuantity;
       $scope.listsLoading = true;
       $scope.numberReportNamesToShow = 10;
-      $scope.today = moment().format('YYYY-MM-DD');
+      $scope.today = UtilityService.momentObject().format('YYYY-MM-DD');
       
       ListService.getListHeaders().then(function(listHeaders) {
         $scope.lists = listHeaders;
