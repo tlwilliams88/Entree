@@ -135,8 +135,9 @@ angular.module('bekApp')
     };
 
     $scope.validateShipDate = function(shipDate){
-      var cutoffDate = moment(shipDate.cutoffdatetime).format();
-      var now = moment().tz("America/Chicago").format();
+      var cutoffDate = UtilityService.momentObject(shipDate.cutoffdatetime,'').format();
+      var now = UtilityService.momentObject().tz("America/Chicago").format();
+
       $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
       if($scope.invalidSelectedDate){
         CartService.getShipDates().then(function(result){
@@ -505,7 +506,7 @@ angular.module('bekApp')
       if($scope.currentCart && !$scope.currentCart.requestedshipdate){
           $scope.selectShipDate($scope.shipDates[0]);
       }else{
-          if(moment($scope.currentCart.requestedshipdate.slice(0,10)) < moment($scope.shipDates[0].shipdate)) {
+            if(UtilityService.momentObject($scope.currentCart.requestedshipdate.slice(0,10),'') < UtilityService.momentObject($scope.shipDates[0].shipdate,'')) {
             $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
           }
       }

@@ -21,15 +21,15 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private readonly ICustomerRepository customerRepository;
         private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         private readonly Func<Channel, IMessageProvider> messageProviderFactory;
-        private readonly IDsrServiceRepository dsrServiceRepository;
         #endregion
 
         #region ctor
         public HasNewsNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
-                                                                  ICustomerRepository customerRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, 
-                                                                  IDsrServiceRepository dsrServiceRepository) :
-            base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, userMessagingPreferenceRepository, 
-                    messageProviderFactory, eventLogRepository, dsrServiceRepository) {
+                                              ICustomerRepository customerRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, 
+                                              IDsrLogic dsrLogic) :
+            base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, 
+                 userMessagingPreferenceRepository, messageProviderFactory, 
+                 eventLogRepository, dsrLogic) {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;

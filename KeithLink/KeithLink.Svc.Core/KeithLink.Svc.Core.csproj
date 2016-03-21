@@ -248,7 +248,6 @@
     <Compile Include="Interface\Profile\IDsrAliasService.cs" />
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
-    <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
     <Compile Include="Interface\Profile\IInternalMarketingPreferenceLogic.cs" />
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
@@ -258,10 +257,9 @@
     <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
-    <Compile Include="Interface\Reports\IInternalReportLogic.cs" />
     <Compile Include="Interface\Reports\IInventoryValuationReportLogic.cs" />
+    <Compile Include="Interface\Reports\IReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
-    <Compile Include="Interface\Reports\IReportServiceRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IAccessRequestLogic.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRepository.cs" />
     <Compile Include="Interface\SingleSignOn\IKbitRequestLogic.cs" />
@@ -418,12 +416,10 @@
     <Compile Include="Interface\Profile\ICustomerDomainRepository.cs" />
     <Compile Include="Interface\Profile\IUserProfileLogic.cs" />
     <Compile Include="Interface\SiteCatalog\IDivisionLogic.cs" />
-    <Compile Include="Interface\SiteCatalog\IInternalDivisionLogic.cs" />
     <Compile Include="Interface\SiteCatalog\ICatalogLogic.cs" />
     <Compile Include="Interface\Orders\IBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\ICategoryImageRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IDivisionRepository.cs" />
-    <Compile Include="Interface\SiteCatalog\IDivisionServiceRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IPriceLogic.cs" />
     <Compile Include="Interface\Orders\IInternalBasketRepository.cs" />
     <Compile Include="Interface\SiteCatalog\IProductImageRepository.cs" />

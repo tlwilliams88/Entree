@@ -372,7 +372,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           if (selectedCart) {
             setSelectedCart(selectedCart);
             $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
-            if(selectedCart.requestedshipdate && moment(selectedCart.requestedshipdate.slice(0,10)) < moment($scope.shipDates[0].shipdate) && !$stateParams.pageLoaded){
+            if(selectedCart.requestedshipdate && UtilityService.momentObject(selectedCart.requestedshipdate.slice(0,10),'') < UtilityService.momentObject($scope.shipDates[0].shipdate,'') && !$stateParams.pageLoaded){
                $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
@@ -576,7 +576,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       } else {
         cartId = cart.id;
       }
-      var timeset = moment().format('YYYYMMDDHHmm');
+      var timeset = UtilityService.momentObject().format('YYYYMMDDHHmm');
       var orderList ={
           listId: listId,
           cartId: cartId,
@@ -593,7 +593,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           allSets.forEach(function(set){
             if(set.cartId === orderList.cartId){
               set.listId = orderList.listId;
-              set.timeset =  moment().format('YYYYMMDDHHmm');
+              set.timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
               matchFound = true;
             }
           });

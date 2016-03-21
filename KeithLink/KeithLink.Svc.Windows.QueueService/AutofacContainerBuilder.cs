@@ -144,7 +144,6 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
 
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
 			builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
 			builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
 			builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
@@ -185,7 +184,6 @@ namespace KeithLink.Svc.Windows.QueueService
 
 			// no implementation (will throw notimplementedexception if called)
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-			builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
 			builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
 			//builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
@@ -207,7 +205,6 @@ namespace KeithLink.Svc.Windows.QueueService
             builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
 			builder.RegisterType<ReportRepository>().As<IReportRepository>();
-			builder.RegisterType<InternalReportLogic>().As<IInternalReportLogic>();
 
 			// order conversion - JA - 1/8/15
 			builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
@@ -222,10 +219,8 @@ namespace KeithLink.Svc.Windows.QueueService
 			builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
 			builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
-			builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.DsrService.DsrServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.DsrService.IDsrService>();
 			builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
 			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
-			builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
             builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
 
             //profile

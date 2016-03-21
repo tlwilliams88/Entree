@@ -90,7 +90,6 @@ namespace KeithLink.Svc.Test
 			//*******************************************
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-			builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
 			builder.RegisterType<InternalListLogic>().As<IInternalListLogic>();
             builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
@@ -155,9 +154,7 @@ namespace KeithLink.Svc.Test
             
             //Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-			builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-			builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
@@ -172,7 +169,6 @@ namespace KeithLink.Svc.Test
             //*******************************************
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-            builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
             builder.RegisterType<InternalListLogic>().As<IInternalListLogic>();
             builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
@@ -237,9 +233,7 @@ namespace KeithLink.Svc.Test
 
             //Replace
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();

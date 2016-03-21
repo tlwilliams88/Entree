@@ -38,10 +38,12 @@ using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.Reports;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
 
+using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.Brands;
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using KeithLink.Svc.Impl.Repository.ContentManagement;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
@@ -51,7 +53,7 @@ using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Queue;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Reports;
 using KeithLink.Svc.Impl.Repository.SiteCatalog;
 
 // this will be leaving soon!
@@ -92,19 +94,24 @@ namespace KeithLink.Svc.WebApi {
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
             builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
 
-            // customer
-            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
-            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
-            builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
-
             // catalog
+            builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
             builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
             builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
-            builder.RegisterType<Svc.Impl.Repository.Configurations.ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
+            builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
+            // customer
+            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
+            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+
+            // division
+            builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
+
+            // DSR
+            builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
 
             // lists
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
@@ -127,6 +134,7 @@ namespace KeithLink.Svc.WebApi {
             builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<ReportRepository>().As<IReportRepository>();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
@@ -151,8 +159,11 @@ namespace KeithLink.Svc.WebApi {
             builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             
-            // customer
+            // division
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
+
+            // DSR
+            builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
             // lists
             builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
@@ -170,6 +181,7 @@ namespace KeithLink.Svc.WebApi {
             // other
             builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
             builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
+            builder.RegisterType<ReportLogic>().As<IReportLogic>();
 
             // profile
             builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
@@ -193,22 +205,16 @@ namespace KeithLink.Svc.WebApi {
             // service repositories
             ///////////////////////////////////////////////////////////////////////////////
             builder.RegisterType<Repository.Lists.ListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<Repository.SiteCatalog.DivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<Repository.Messaging.MessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<Repository.OnlinePayments.OnlinePaymentServiceRepositoryImpl>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
-            builder.RegisterType<Repository.Reports.ReportServiceRepositoryImpl>().As<IReportServiceRepository>();
-            builder.RegisterType<Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
 
-            builder.RegisterType<com.benekeith.DivisionService.DivisionServiceClient>().As<com.benekeith.DivisionService.IDivisionService>();
             builder.RegisterType<com.benekeith.InvoiceService.InvoiceServiceClient>().As<com.benekeith.InvoiceService.IInvoiceService>();
             builder.RegisterType<com.benekeith.ListService.ListServcieClient>().As<com.benekeith.ListService.IListServcie>();
             builder.RegisterType<com.benekeith.MessagingService.MessagingServiceClient>().As<com.benekeith.MessagingService.IMessagingService>();
             builder.RegisterType<com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
             builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
-            builder.RegisterType<com.benekeith.ReportService.ReportServiceClient>().As<com.benekeith.ReportService.IReportService>();
-            builder.RegisterType<com.benekeith.DsrService.DsrServiceClient>().As<com.benekeith.DsrService.IDsrService>();
             builder.RegisterType<com.benekeith.ProfileService.ProfileServiceClient>().As<com.benekeith.ProfileService.IProfileService>();
             builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
             builder.RegisterType<DsrAliasServiceImpl>().As<IDsrAliasService>();

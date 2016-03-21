@@ -8,11 +8,11 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('OrderSummaryGraphController', [ '$scope', '$filter', 'OrderService',
-    function($scope, $filter, OrderService) {
+  .controller('OrderSummaryGraphController', [ '$scope', '$filter', 'OrderService', 'UtilityService',
+    function($scope, $filter, OrderService, UtilityService) {
 
-  var from = moment().subtract(5, 'months').startOf('month'),
-    to = moment().endOf('month');
+  var from = UtilityService.momentObject().subtract(5, 'months').startOf('month'),
+    to = UtilityService.momentObject().endOf('month');
   var fromString = from.format('YYYY-MM-DD'),
     toString = to.format('YYYY-MM-DD');
 

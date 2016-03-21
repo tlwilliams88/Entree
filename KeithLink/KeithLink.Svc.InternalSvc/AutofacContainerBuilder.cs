@@ -78,16 +78,13 @@ namespace KeithLink.Svc.InternalSvc
         {
             var builder = new ContainerBuilder();
 
-            builder.RegisterType<DivisionService>();
             builder.RegisterType<ETLService>();
             builder.RegisterType<InvoiceService>();
             builder.RegisterType<ListServcie>();
             builder.RegisterType<MessagingService>();
             builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
-			builder.RegisterType<ReportService>();
 			builder.RegisterType<CacheService>();
-            builder.RegisterType<DsrService>();
 			builder.RegisterType<ProfileService>();
 
 			#if DEMO
@@ -157,7 +154,6 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
 
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-            builder.RegisterType<InternalDivisionLogic>().As<IInternalDivisionLogic>();
             builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
@@ -197,10 +193,8 @@ namespace KeithLink.Svc.InternalSvc
 
             // no implementation (will throw notimplementedexception if called)
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            builder.RegisterType<NoDivisionServiceRepositoryImpl>().As<IDivisionServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
-            builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 			builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
@@ -222,7 +216,6 @@ namespace KeithLink.Svc.InternalSvc
 			builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
-            builder.RegisterType<InternalReportLogic>().As<IInternalReportLogic>();
 
             // order conversion - JA - 1/8/15
             builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
