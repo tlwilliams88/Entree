@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'NotificationService', 'CustomerService',
-    function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, NotificationService, CustomerService) {
+  .controller('HomeController', [ '$scope', '$state', '$modal', '$filter', 'CartService', 'OrderService', 'MarketingService', 'UtilityService', 'NotificationService', 'CustomerService',
+    function($scope, $state, $modal, $filter, CartService, OrderService, MarketingService, UtilityService, NotificationService, CustomerService) {
     
 
       CartService.getCartHeaders().then(function(cartHeaders){
@@ -103,7 +103,8 @@ angular.module('bekApp')
         notificationDates ={},
         dates = [];
         notifications.forEach(function(notification){
-         var date = moment(notification.messagecreated).format('YYYY-MM-DD');
+         var date = UtilityService.momentObject(notification.messagecreated).format('YYYY-MM-DD');
+
          if(notificationDates[date]){
           notificationDates[date].push(notification);
           }
