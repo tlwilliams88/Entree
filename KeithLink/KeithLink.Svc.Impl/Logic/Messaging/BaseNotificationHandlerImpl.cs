@@ -5,13 +5,10 @@ using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Messaging.EF;
 using KeithLink.Svc.Core.Models.Messaging.Provider;
-using KeithLink.Svc.Core.Models.Messaging.Queue;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Messaging {
     public abstract class BaseNotificationHandlerImpl {
@@ -22,20 +19,20 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
         private IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         private Func<Channel, IMessageProvider> messageProviderFactory;
         private IEventLogRepository log;
-        private IDsrServiceRepository dsrServiceRepository;
+        private IDsrLogic _dsrLogic;
         #endregion
 
         #region ctor
         public BaseNotificationHandlerImpl(IUserProfileLogic userProfileLogic , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository, 
                                                             IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, IEventLogRepository log, 
-                                                            IDsrServiceRepository dsrServiceRepository) {
+                                                            IDsrLogic dsrLogic) {
             this.userProfileLogic = userProfileLogic;
             this.userPushNotificationDeviceRepository = userPushNotificationDeviceRepository;
             this.customerRepository = customerRepository;
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             this.messageProviderFactory = messageProviderFactory;
             this.log = log;
-            this.dsrServiceRepository = dsrServiceRepository;
+            _dsrLogic = dsrLogic;
         }
         #endregion
 
@@ -60,7 +57,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging {
                 //Only load DSRs and DSMs for the customer
 
                 //Load DSRs
-                var dsr = dsrServiceRepository.GetDsr(customer.CustomerBranch, customer.DsrNumber);
+                var dsr = _dsrLogic.GetDsr(customer.CustomerBranch, customer.DsrNumber);
                 if (dsr != null && dsr.DsrNumber != "000" && !string.IsNullOrEmpty(dsr.EmailAddress)) {
                     users = (userProfileLogic.GetUserProfile(dsr.EmailAddress));
                 }

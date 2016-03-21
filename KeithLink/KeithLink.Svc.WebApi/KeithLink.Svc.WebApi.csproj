@@ -254,16 +254,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.DsrService\DsrService.wsdl" />
-    <None Include="Service References\com.benekeith.DsrService\DsrService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DsrService\DsrService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.DsrService\DsrService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
     <None Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
@@ -366,13 +356,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\com.benekeith.DsrService\DsrService.disco" />
-    <None Include="Service References\com.benekeith.DsrService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.DsrService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.DsrService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\com.benekeith.ProfileService\ProfileService.wsdl" />
     <None Include="Service References\com.benekeith.ProfileService\ProfileService.xsd">
       <SubType>Designer</SubType>
@@ -455,15 +438,9 @@
     <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
-    <Compile Include="Repository\Profile\DsrServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
     <Compile Include="Repository\Reports\ReportServiceRepositoryImpl.cs" />
-    <Compile Include="Service References\com.benekeith.DsrService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.InvoiceService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -670,7 +647,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.DsrService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />

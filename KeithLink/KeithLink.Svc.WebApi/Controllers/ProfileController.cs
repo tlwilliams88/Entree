@@ -670,19 +670,6 @@ namespace KeithLink.Svc.WebApi.Controllers
         }
 
         /// <summary>
-        /// Retrieve sales rep
-        /// </summary>
-        /// <returns></returns>
-        [Authorize]
-        [HttpGet]
-        [ApiKeyedRoute("profile/salesrep")]
-        public OperationReturnModel<bool> GetSalesRep() {
-            // Get the DSR
-            return new OperationReturnModel<bool>() { SuccessResponse = true };
-        }
-
-
-        /// <summary>
         /// Grant account to external applications(kbit, powermenu)
         /// </summary>
         /// <param name="email">User email</param>

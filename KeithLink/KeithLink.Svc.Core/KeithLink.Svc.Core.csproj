@@ -248,7 +248,6 @@
     <Compile Include="Interface\Profile\IDsrAliasService.cs" />
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
-    <Compile Include="Interface\Profile\IDsrServiceRepository.cs" />
     <Compile Include="Interface\Profile\IInternalMarketingPreferenceLogic.cs" />
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />

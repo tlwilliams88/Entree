@@ -155,7 +155,6 @@ namespace KeithLink.Svc.Test
             //Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-			builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
@@ -235,7 +234,6 @@ namespace KeithLink.Svc.Test
             //Replace
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
             builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();

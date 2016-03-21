@@ -32,17 +32,17 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
         private readonly IEventLogRepository _logger;
         private readonly ICacheRepository _customerCacheRepository;
-        private readonly IDsrServiceRepository _dsrService;
+        private readonly IDsrLogic _dsrLogic;
 		private readonly IAuditLogRepository _auditLogRepository;
 		private readonly IInvoiceServiceRepository _invoiceServiceRepository;
         #endregion
 
         #region ctor
-		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrServiceRepository dsrService, IAuditLogRepository auditLogRepository, IInvoiceServiceRepository invoiceServiceRepository)
-        {
+		public CustomerRepository(IEventLogRepository logger, ICacheRepository customerCacheRepository, IDsrLogic dsrLogic, 
+                                  IAuditLogRepository auditLogRepository, IInvoiceServiceRepository invoiceServiceRepository) {
             _logger = logger;
             _customerCacheRepository = customerCacheRepository;
-            _dsrService = dsrService;
+            _dsrLogic = dsrLogic;
 			_auditLogRepository = auditLogRepository;
 			_invoiceServiceRepository = invoiceServiceRepository;
         }
@@ -636,7 +636,7 @@ namespace KeithLink.Svc.Impl.Repository.Profile
                 if (cachedallDsrInfo != null)
                     return cachedallDsrInfo;
 
-                var dsrInfo = _dsrService.GetAllDsrInfo();
+                var dsrInfo = _dsrLogic.GetAllDsrInfo();
                 //Cache the dsrs
                 _customerCacheRepository.AddItem<List<Dsr>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey("dsrInfo"), TimeSpan.FromHours(4), dsrInfo);
 

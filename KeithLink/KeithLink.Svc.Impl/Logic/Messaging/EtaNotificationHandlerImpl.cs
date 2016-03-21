@@ -24,25 +24,25 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
     public class EtaNotificationHandlerImpl : BaseNotificationHandlerImpl, INotificationHandler
     {
         #region attributes
-        IEventLogRepository eventLogRepository;
-        IUserProfileLogic userProfileLogic;
-        IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
-        ICustomerRepository customerRepository;
-        IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
-        IOrderHistoryHeaderRepsitory orderHistoryRepository;
-        Func<Channel, IMessageProvider> messageProviderFactory;
-        IMessageTemplateLogic messageTemplateLogic;
-        IUnitOfWork unitOfWork;
-		IDsrServiceRepository dsrServiceRepository;
+        private readonly IEventLogRepository eventLogRepository;
+        private readonly IUserProfileLogic userProfileLogic;
+        private readonly IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
+        private readonly ICustomerRepository customerRepository;
+        private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
+        private readonly IOrderHistoryHeaderRepsitory orderHistoryRepository;
+        private readonly Func<Channel, IMessageProvider> messageProviderFactory;
+        private readonly IMessageTemplateLogic messageTemplateLogic;
+        private readonly IUnitOfWork unitOfWork;
         #endregion
 
         #region ctor
-        public EtaNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic
-            , IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, ICustomerRepository customerRepository
-            , IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory
-			, IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork, IDsrServiceRepository dsrServiceRepository)
-            : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository
-                    , userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, dsrServiceRepository)
+        public EtaNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository, 
+                                          ICustomerRepository customerRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, Func<Channel, IMessageProvider> messageProviderFactory, 
+                                          IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessageTemplateLogic messageTemplateLogic, IUnitOfWork unitOfWork, 
+                                          IDsrLogic dsrLogic)
+            : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository, 
+                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, 
+                   dsrLogic)
         {
             this.eventLogRepository = eventLogRepository;
             this.userProfileLogic = userProfileLogic;

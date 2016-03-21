@@ -35,29 +35,26 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private const string MESSAGE_TEMPLATE_ORDERITEMDETAIL = "OrderConfirmationItemDetail";
         private const string MESSAGE_TEMPLATE_ORDERITEMSOOS = "OrderConfirmationItemsOOS";
         private const string MESSAGE_TEMPLATE_ORDERITEMOOSDETAIL = "OrderConfirmationItemOOSDetail";
-        ICatalogRepository _catRepo;
-        IEventLogRepository eventLogRepository;
-        IUserProfileLogic userProfileLogic;
-        IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
-        ICustomerRepository customerRepository;
+
+        private readonly ICatalogRepository _catRepo;
+        private readonly IEventLogRepository eventLogRepository;
+        private readonly IUserProfileLogic userProfileLogic;
+        private readonly IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository;
+        private readonly ICustomerRepository customerRepository;
         private readonly IMessageTemplateLogic _messageTemplateLogic;
-        IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
-        Func<Channel, IMessageProvider> messageProviderFactory;
-		private readonly IDsrServiceRepository dsrServiceRepository;
-        private IInternalOrderHistoryLogic _orderHistoryLogic;
+        private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
+        private readonly Func<Channel, IMessageProvider> messageProviderFactory;
+        private readonly IInternalOrderHistoryLogic _orderHistoryLogic;
         #endregion
 
         #region ctor
-        public OrderConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, 
-                                                        IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository,
-                                                        IMessageTemplateLogic messageTemplateLogic, ICustomerRepository customerRepository, 
-                                                        IUserMessagingPreferenceRepository userMessagingPreferenceRepository, 
-                                                        Func<Channel, IMessageProvider> messageProviderFactory, 
-                                                        IDsrServiceRepository dsrServiceRepository, ICatalogRepository catalogRepository,
+        public OrderConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository,
+                                                        IMessageTemplateLogic messageTemplateLogic, ICustomerRepository customerRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, 
+                                                        Func<Channel, IMessageProvider> messageProviderFactory, IDsrLogic dsrLogic, ICatalogRepository catalogRepository,
                                                         IInternalOrderHistoryLogic orderHistoryLogic)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository,
-                     userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, 
-                     dsrServiceRepository)
+                   userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, 
+                   dsrLogic)
         {
             _catRepo = catalogRepository;
             this.eventLogRepository = eventLogRepository;
