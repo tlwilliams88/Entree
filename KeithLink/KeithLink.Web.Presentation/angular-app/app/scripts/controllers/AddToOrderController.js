@@ -436,13 +436,19 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           $scope.orderSearchTerm = $stateParams.searchTerm;
         }
         $scope.visitedPages = [];
-        listPagingModel.filterListItems(searchTerm);
+        listPagingModel.filterListItems(searchTerm)
+        $timeout(function() {
+          $('#rowForFocus').find('input:first').focus();
+        }, 2000);
         $stateParams.searchTerm = '';
         clearItemWatches(watches);       
       }
       else{
         $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
+            $timeout(function() {
+              $('#rowForFocus').find('input:first').focus();
+            }, 2000);
             if($scope.isRedirecting(resp)){
               //do nothing
             }
@@ -457,10 +463,6 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
             }        
           })      
       }
-
-      $timeout(function() {
-        $('#rowForFocus').find('input:first').focus();
-      }, 500);
     };
 
     $scope.clearFilter = function(){ 
@@ -485,6 +487,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       }
       $scope.setCurrentPageAfterRedirect(1);
       angular.element(orderSearchForm.searchBar).focus();
+      $timeout(function() {
+        $('#rowForFocus').find('input:first').focus();
+      }, 2000);
     };
   
 
