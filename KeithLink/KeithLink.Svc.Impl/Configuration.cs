@@ -1,6 +1,6 @@
 ﻿using KeithLink.Common.Core;
 using KeithLink.Svc.Core;
-
+using KeithLink.Svc.Impl.Repository.Configurations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,8 @@ namespace KeithLink.Svc.Impl {
         private const string DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT = "200";
 		private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
         private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
+        private const string APP_SETTINGS_DOMAIN = "SettingsDomain";
+        private const string DEFAULT_SETTINGS_DOMAIN = "Entree";
 
         // Item History
         private const string KEY_ITEM_HISTORY_WEEKS = "ItemHistoryAverageWeeks";
@@ -192,23 +194,6 @@ namespace KeithLink.Svc.Impl {
 
         #region methods
 
-        public static string CheckLostOrders
-        {
-            get
-            {
-                return GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS, string.Empty);
-            }
-        }
-
-        public static List<string> CheckLostOrdersStatus
-        {
-            get
-            {
-                string val = GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS, string.Empty);
-                return GetCommaSeparatedValues(val);
-            }
-        }
-
         public static readonly List<string> BekSysAdminRoles = new List<string>() {
            RoleNameCorporateAdmin, Constants.ROLE_CORPORATE_SECURITY 
         };
@@ -244,25 +229,25 @@ namespace KeithLink.Svc.Impl {
         #region properties
         public static string AccessGroupKbitAdmin {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITADMIN, string.Empty);
             }
         }
 
         public static string AccessGroupKbitCustomer {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_KBITCUSTOMER, string.Empty);
             }
         }
 
         public static string AccessGroupPowerMenuCustomer {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_POWERMENUCUSTOMER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ACCESSGROUP_POWERMENUCUSTOMER, string.Empty);
             }
         }
 
         public static string ActiveDirectoryExternalDomain {
             get {
-                return GetValue(KEY_AD_EXTERNAL_DOMAIN, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_DOMAIN, string.Empty);
             }
         }
 
@@ -274,41 +259,41 @@ namespace KeithLink.Svc.Impl {
 
         public static string ActiveDirectoryExternalPassword {
             get {
-                return GetValue(KEY_AD_EXTERNAL_PASSWORD, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_PASSWORD, string.Empty);
             }
         }
 
         public static string ActiveDirectoryExternalRootNode {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ROOTNODE, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ROOTNODE, string.Empty);
             }
         }
 
         public static string ActiveDirectoryExternalServerName {
             get {
-                return GetValue(KEY_AD_EXTERNAL_SERVERNAME, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_SERVERNAME, string.Empty);
             }
         }
 
         public static string ActiveDirectoryExternalUserName {
             get {
-                return GetValue(KEY_AD_EXTERNAL_USER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_USER, string.Empty);
             }
         }
 
         public static string ActiveDirectoryExternalUserContainer {
             get {
-                return GetValue(KEY_AD_EXTERNAL_USERCONTAINER, "Users");
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_USERCONTAINER, "Users");
             }
         }
 
         public static string ActiveDirectoryGuestContainer {
-            get { return GetValue(KEY_AD_GUEST_CONTAINER, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_GUEST_CONTAINER, string.Empty); }
         }
 
         public static string ActiveDirectoryInternalDomain {
             get {
-                return GetValue(KEY_AD_INTERNAL_DOMAIN, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_INTERNAL_DOMAIN, string.Empty);
             }
         }
 
@@ -320,32 +305,32 @@ namespace KeithLink.Svc.Impl {
 
         public static string ActiveDirectoryInternalPassword {
             get {
-                return GetValue(KEY_AD_INTERNAL_PASSWORD, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_INTERNAL_PASSWORD, string.Empty);
             }
         }
 
         public static string ActiveDirectoryInternalRootNode {
             get {
-                return GetValue(KEY_AD_INTERNAL_ROOTNODE, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_INTERNAL_ROOTNODE, string.Empty);
             }
         }
 
         public static string ActiveDirectoryInternalServerName {
             get {
-                return GetValue(KEY_AD_INTERNAL_SERVERNAME, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_INTERNAL_SERVERNAME, string.Empty);
             }
         }
 
         public static string ActiveDirectoryInternalUserName {
             get {
-                return GetValue(KEY_AD_INTERNAL_USER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_INTERNAL_USER, string.Empty);
             }
         }
 
         public static int ActiveDirectoryInvalidAttempts {
             get {
                 try {
-                    return Convert.ToInt32(GetValue(KEY_AD_INVALIDATTEMPTS, "3"));
+                    return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_AD_INVALIDATTEMPTS, "3"));
                 } catch {
                     return 3;
                 }
@@ -355,7 +340,7 @@ namespace KeithLink.Svc.Impl {
         public static int ActiveDirectoryLockoutDuration {
             get {
                 try {
-                    return Convert.ToInt32(GetValue(KEY_AD_LOCKOUTDURATION, "30"));
+                    return Convert.ToInt32(DBAppSettingsRepositoryImpl.GetValue(KEY_AD_LOCKOUTDURATION, "30"));
 
                 } catch {
                     return 30;
@@ -365,39 +350,39 @@ namespace KeithLink.Svc.Impl {
 
         public static bool AddServerNameToHeader {
             get {
-                var value = GetValue(KEY_ADD_SERVERNAME_TO_HEADER, "false");
+                var value = DBAppSettingsRepositoryImpl.GetValue(KEY_ADD_SERVERNAME_TO_HEADER, "false");
                 return ValueParsingUtil.ParseBool(value, "false");
             }
         }
 
         public static List<string> AllowedApiKeys {
             get {
-                string val = GetValue(KEY_ALLOWED_API_KEYS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_ALLOWED_API_KEYS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
 
         public static string AmazonSnsAccessKey {
             get {
-                return GetValue(KEY_AMAZON_SNS_ACCESS_KEY, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_ACCESS_KEY, string.Empty);
             }
         }
 
         public static string AmazonSnsMobilePlatformAppArnAndroid {
             get {
-                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_ANDROID, string.Empty);
             }
         }
 
         public static string AmazonSnsMobilePlatformAppArnIOS {
             get {
-                return GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_MOBILE_PLATFORM_APP_ARN_IOS, string.Empty);
             }
         }
 
         public static string AmazonSnsSecretKey {
             get {
-                return GetValue(KEY_AMAZON_SNS_SECRET_KEY, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AMAZON_SNS_SECRET_KEY, string.Empty);
             }
         }
 
@@ -411,6 +396,14 @@ namespace KeithLink.Svc.Impl {
             }
         }
 
+        public static string SettingsDomain
+        {
+            get
+            {
+                return GetValue(APP_SETTINGS_DOMAIN, DEFAULT_SETTINGS_DOMAIN);
+            }
+        }
+
         public static string BaseCatalog {
             get { return GetValue(KEY_BASE_CATALOG, string.Empty); }
         }
@@ -419,7 +412,7 @@ namespace KeithLink.Svc.Impl {
             get {
                 TimeSpan retVal = new TimeSpan();
 
-                if (!TimeSpan.TryParse(GetValue(KEY_CUTOFFTIME_BILLPAY, string.Empty), out retVal)) {
+                if (!TimeSpan.TryParse(DBAppSettingsRepositoryImpl.GetValue(KEY_CUTOFFTIME_BILLPAY, string.Empty), out retVal)) {
                     retVal = new TimeSpan(14, 0, 0);
                 }
 
@@ -428,17 +421,17 @@ namespace KeithLink.Svc.Impl {
         }
 
         public static string BranchContactEmail(string branchId) {
-            return GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
+            return DBAppSettingsRepositoryImpl.GetValue(string.Format(KEY_CONTACT_EMAIL_FORMAT, branchId.ToUpper()), string.Empty);
 
         }
 
         public static string BrandAssetsUrl {
-            get { return GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_BRAND_ASSETS_URL, string.Empty); }
         }
 
         public static List<string> CacheServersEndpoints {
             get {
-                string value = GetValue(KEY_CACHE_SERVERSENDPOINTS, string.Empty);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_CACHE_SERVERSENDPOINTS, string.Empty);
                 return GetCommaSeparatedValues(value);
             }
         }
@@ -448,7 +441,7 @@ namespace KeithLink.Svc.Impl {
         }
 
         public static string CSSiteName {
-            get { return GetValue(KEY_SITE_NAME, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SITE_NAME, string.Empty); }
         }
        
         public static string CSProfileDbConnection
@@ -457,66 +450,66 @@ namespace KeithLink.Svc.Impl {
         }
 
         public static string CorsEnabledDomains {
-            get { return GetValue(KEY_CORS_ENABLED_DOMAINS, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_CORS_ENABLED_DOMAINS, string.Empty); }
         }
 
         public static string CorsEnabledHeaders {
-            get { return GetValue(KEY_CORS_ENABLED_HEADERS, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_CORS_ENABLED_HEADERS, string.Empty); }
         }
 
         public static string CorsEnabledMethods {
-            get { return GetValue(KEY_CORS_ENABLED_METHODS, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_CORS_ENABLED_METHODS, string.Empty); }
         }
 
         public static int DefaultCategoryReturnSize {
             get {
-                string value = GetValue(KEY_DEFAULT_CATEGORY_RETURN_SIZE, DEFAULT_CATEGORY_RETURN_SIZE);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_DEFAULT_CATEGORY_RETURN_SIZE, DEFAULT_CATEGORY_RETURN_SIZE);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_CATEGORY_RETURN_SIZE);
             }
         }
 
         public static int DefaultProductReturnSize {
             get {
-                string value = GetValue(KEY_DEFAULT_PRODUCT_RETURN_SIZE, DEFAULT_PRODUCT_RETURN_SIZE);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_DEFAULT_PRODUCT_RETURN_SIZE, DEFAULT_PRODUCT_RETURN_SIZE);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_PRODUCT_RETURN_SIZE);
             }
         }
 
         public static string ElasticSearchAggregations {
-            get { return GetValue(KEY_ELASTIC_SEARCH_AGGREGATIONS, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_ELASTIC_SEARCH_AGGREGATIONS, string.Empty); }
         }
 
         public static int ElasticSearchBatchSize {
             get {
-                string value = GetValue(KEY_ELASTIC_SEARCH_BATCH_SIZE, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_ELASTIC_SEARCH_BATCH_SIZE, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
             }
         }
 
         public static string EnableEtaForUsers {
-            get { return GetValue(KEY_ENABLE_ETA_FOR_USERS, DEFAULT_ENABLE_ETA_FOR_USERS); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_ENABLE_ETA_FOR_USERS, DEFAULT_ENABLE_ETA_FOR_USERS); }
         }
 
         public static List<string> ElasticSearchDigitSearchFields {
             get {
-                string val = GetValue(KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_ELASTIC_SEARCH_DIGIT_SEARCH_FIELDS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
 
         public static string ElasticSearchItemExcludeValues {
-            get { return GetValue(KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_ELASTIC_SEARCH_ITEM_EXCLUDE_VALUES, string.Empty); }
         }
 
         public static List<string> ElasticSearchTermSearchFields {
             get {
-                string val = GetValue(KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_ELASTIC_SEARCH_TERM_SEARCH_FIELDS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
 
         public static string ElasticSearchURL {
-            get { return GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_ELASTIC_SEARCH_URL, string.Empty); }
         }
 
         public static string EntreeSiteURL {
@@ -527,25 +520,25 @@ namespace KeithLink.Svc.Impl {
 
         public static string ImagingServerUrl {
             get {
-                return GetValue(KEY_IMG_SERVER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_IMG_SERVER, string.Empty);
             }
         }
 
         public static string ImagingUserName {
             get {
-                return GetValue(KEY_IMG_USER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_IMG_USER, string.Empty);
             }
         }
 
         public static string ImagingUserPassword {
             get {
-                return GetValue(KEY_IMG_PASSWORD, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_IMG_PASSWORD, string.Empty);
             }
         }
 
         public static string ImagingViewId {
             get {
-                return GetValue(KEY_IMG_VIEWID, String.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_IMG_VIEWID, String.Empty);
             }
         }
 
@@ -569,87 +562,87 @@ namespace KeithLink.Svc.Impl {
 
         public static double ListItemsDaysNew {
             get {
-                string value = GetValue(LIST_ITEM_DAYS_NEW, String.Empty);
+                string value = DBAppSettingsRepositoryImpl.GetValue(LIST_ITEM_DAYS_NEW, String.Empty);
                 return ValueParsingUtil.ParseDouble(value, String.Empty);
             }
         }
 
         public static int LoginTokenDuration {
             get {
-                return int.Parse(GetValue(KEY_DURATION_TOKEN, "1"));
+                return int.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_DURATION_TOKEN, "1"));
             }
         }
 
         public static string MainframeCollectorType {
             get {
-                return GetValue(KEY_MF_COLLECTOR_TYPE, "B");
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MF_COLLECTOR_TYPE, "B");
             }
         }
 
         public static int MainframeConfirmationListeningPort {
             get {
-                return int.Parse(GetValue(KEY_MF_CONFRIMATION_PORT, "4001"));
+                return int.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_MF_CONFRIMATION_PORT, "4001"));
             }
         }
 
         public static int MainframOrderHistoryListeningPort {
             get {
-                return int.Parse(GetValue(KEY_MF_ORDERHISTORY_PORT, "4002"));
+                return int.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_MF_ORDERHISTORY_PORT, "4002"));
             }
         }
 
         public static int MainframeListeningPort {
             get {
-                return int.Parse(GetValue(KEY_MF_PORT, "0"));
+                return int.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_MF_PORT, "0"));
             }
         }
 
         public static string MainframeHistoryTransactionId {
             get {
-                return GetValue(KEY_MF_TRANS_HISTORY, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MF_TRANS_HISTORY, string.Empty);
             }
         }
 
         public static string MainframeIPAddress {
             get {
-                return GetValue(KEY_MF_ADDRESS, "192.168.20.12");
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MF_ADDRESS, "192.168.20.12");
             }
         }
 
         public static string MainframeOrderTransactionId {
             get {
-                return GetValue(KEY_MF_TRANS_ORDER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MF_TRANS_ORDER, string.Empty);
             }
         }
 
         public static int MarketingContentBranchItemCount {
             get {
-                return int.Parse(GetValue(KEY_MARKETINGCONTENT_BRANCHITEMCOUNT, "0"));
+                return int.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_MARKETINGCONTENT_BRANCHITEMCOUNT, "0"));
             }
         }
 
         public static int MarketingContentTotalItemCount {
             get {
-                return int.Parse(GetValue(KEY_MARKETINGCONTENT_TOTALITEMCOUNT, "0"));
+                return int.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_MARKETINGCONTENT_TOTALITEMCOUNT, "0"));
             }
         }
 
         public static string MarketingContentUrl {
             get {
-                return GetValue(KEY_MARKETINGCONTENT_URL, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_MARKETINGCONTENT_URL, string.Empty);
             }
         }
 
         public static int MaxSortByPriceItemCount {
             get {
-                string value = GetValue(KEY_MAX_SORT_BY_PRICE_ITEM_COUNT, DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_MAX_SORT_BY_PRICE_ITEM_COUNT, DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_ELASTIC_SEARCH_BATCH_SIZE);
             }
         }
 
         public static string MultiDocsUrl {
             get {
-                string configValue = GetValue(KEY_MULTIDOCS_URL, string.Empty);
+                string configValue = DBAppSettingsRepositoryImpl.GetValue(KEY_MULTIDOCS_URL, string.Empty);
                 if (!String.IsNullOrEmpty(configValue) && !configValue.EndsWith("/"))
                     configValue = configValue + "/";
                 return configValue;
@@ -658,7 +651,7 @@ namespace KeithLink.Svc.Impl {
 
         public static string MultiDocsProxyUrl {
             get {
-                string configValue = GetValue(KEY_MULTIDOCS_PROXY_URL, string.Empty);
+                string configValue = DBAppSettingsRepositoryImpl.GetValue(KEY_MULTIDOCS_PROXY_URL, string.Empty);
                 if (!String.IsNullOrEmpty(configValue) && !configValue.EndsWith("/"))
                     configValue = configValue + "/";
                 return configValue;
@@ -670,88 +663,88 @@ namespace KeithLink.Svc.Impl {
         }
 
         public static string PowerMenuAdminUsername {
-            get { return GetValue(KEY_POWERMENU_ADMIN_USERNAME, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_POWERMENU_ADMIN_USERNAME, string.Empty); }
         }
 
         public static string PowerMenuAdminPassword {
-            get { return GetValue(KEY_POWERMENU_ADMIN_PASSWORD, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_POWERMENU_ADMIN_PASSWORD, string.Empty); }
         }
 
         public static string PowerMenuWebServiceUrl {
-            get { return GetValue(KEY_POWERMENU_WEBSERVICE_URL, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_POWERMENU_WEBSERVICE_URL, string.Empty); }
         }
 
         public static string PowerMenuPermissionsUrl {
-            get { return GetValue(KEY_POWERMENU_PERMISSIONS_URL, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_POWERMENU_PERMISSIONS_URL, string.Empty); }
         }
 
         public static string PowerMenuLoginUrl {
-            get { return GetValue(KEY_POWERMENU_LOGIN_URL, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_POWERMENU_LOGIN_URL, string.Empty); }
         }
 
         public static string PowerMenuGroupSetupUrl {
-            get { return GetValue(KEY_POWERMENU_GROUP_SETUP_URL, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_POWERMENU_GROUP_SETUP_URL, string.Empty); }
         }
 
         public static string PresentationUrl {
-            get { return GetValue(PRESENTATION_URL, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(PRESENTATION_URL, string.Empty); }
         }
 
         public static string RabbitMQExchangeAccess {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_ACCESS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_ACCESS, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeConfirmation {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeConfirmationErrors {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeHourlyUpdates {
-            get { return GetValue(KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES, string.Empty); }
         }
 
         public static string RabbitMQExchangeOrdersCreated {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_CREATED, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_CREATED, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeOrdersError {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_ERROR, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_ERROR, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeOrdersHistory {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeNotification {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_NOTIFICATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_NOTIFICATION, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeOrdersReprocess {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_REPROCESS, string.Empty);
             }
         }
 
         public static string RabbitMQExchangeOrderUpdateRequests {
             get {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_ORDER_UPDATEREQUEST, string.Empty);
             }
         }
 
@@ -759,7 +752,7 @@ namespace KeithLink.Svc.Impl {
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_EXCHANGE_SPECIALORDER_UPDATES, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_EXCHANGE_SPECIALORDER_UPDATES, string.Empty);
             }
         }
 
@@ -767,60 +760,60 @@ namespace KeithLink.Svc.Impl {
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_QUEUE_SPECIALORDER_UPDATES, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_SPECIALORDER_UPDATES, string.Empty);
             }
         }
 
         public static string RabbitMQQueueAccess
         {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_ACCESS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ACCESS, string.Empty);
             }
         }
 
         public static string RabbitMQQueueConfirmation {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION, string.Empty);
             }
         }
 
         public static string RabbitMQQueueConfirmationErrors {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION_ERRORS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_CONFIRMATION_ERRORS, string.Empty);
             }
         }
 
         public static string RabbitMQQueueHourlyUpdates {
-            get { return GetValue(KEY_RABBITMQ_QUEUE_HOURLYUPDATES, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_HOURLYUPDATES, string.Empty); }
         }
 
         public static string RabbitMQQueueOrderCreated {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_CREATED, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ORDER_CREATED, string.Empty);
             }
         }
 
         public static string RabbitMQQueueOrderError {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_ERROR, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ORDER_ERROR, string.Empty);
             }
         }
 
         public static string RabbitMQQueueOrderHistory {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_HISTORY, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ORDER_HISTORY, string.Empty);
             }
         }
 
         public static string RabbitMQQueueOrderReprocess {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_REPROCESS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ORDER_REPROCESS, string.Empty);
             }
         }
 
         public static string RabbitMQQueueNotification {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION, string.Empty);
             }
         }
 
@@ -828,233 +821,233 @@ namespace KeithLink.Svc.Impl {
         {
             get
             {
-                return GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION_EXTERNAL, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_NOTIFICATION_EXTERNAL, string.Empty);
             }
         }
 
         public static string RabbitMQQueueOrderUpdateRequest {
             get {
-                return GetValue(KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_QUEUE_ORDER_UPDATEREQUEST, string.Empty);
             }
         }
 
         public static string RabbitMQAccessUserNameConsumer {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ACCESS_CONSUMEUSER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ACCESS_CONSUMEUSER, string.Empty);
             }
         }
 
         public static string RabbitMQAccessUserNamePublisher {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ACCESS_PUBLISHUSER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ACCESS_PUBLISHUSER, string.Empty);
             }
         }
 
         public static string RabbitMQAccessUserPasswordConsumer {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ACCESS_CONSUMEPASS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ACCESS_CONSUMEPASS, string.Empty);
             }
         }
 
         public static string RabbitMQAccessUserPasswordPublisher {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ACCESS_PUBLISHPASS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ACCESS_PUBLISHPASS, string.Empty);
             }
         }
 
         public static string RabbitMQUserNameConsumer {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEUSER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEUSER, string.Empty);
             }
         }
 
         public static string RabbitMQUserNamePublisher {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ORDER_PUBLISHUSER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ORDER_PUBLISHUSER, string.Empty);
             }
         }
 
         public static string RabbitMQUserPasswordConsumer {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEPASS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ORDER_CONSUMEPASS, string.Empty);
             }
         }
 
         public static string RabbitMQUserPasswordPublisher {
             get {
-                return GetValue(KEY_RABBITMQ_USER_ORDER_PUBLISHPASS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_ORDER_PUBLISHPASS, string.Empty);
             }
         }
 
         public static string RabbitMQNotificationUserNameConsumer {
             get {
-                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEUSER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEUSER, string.Empty);
             }
         }
 
         public static string RabbitMQNotificationUserNamePublisher {
             get {
-                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHUSER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHUSER, string.Empty);
             }
         }
 
         public static string RabbitMQNotificationUserPasswordConsumer {
             get {
-                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEPASS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_NOTIFICATION_CONSUMEPASS, string.Empty);
             }
         }
 
         public static string RabbitMQNotificationUserPasswordPublisher {
             get {
-                return GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHPASS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_USER_NOTIFICATION_PUBLISHPASS, string.Empty);
             }
         }
 
         public static string RabbitMQAccessServer {
             get {
-                return GetValue(KEY_RABBITMQ_SERVER_ACCESS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_SERVER_ACCESS, string.Empty);
             }
         }
 
         public static string RabbitMQConfirmationServer {
             get {
-                return GetValue(KEY_RABBITMQ_SERVER_CONFIRMATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_SERVER_CONFIRMATION, string.Empty);
             }
         }
 
         public static string RabbitMQOrderServer {
             get {
-                return GetValue(KEY_RABBITMQ_SERVER_ORDER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_SERVER_ORDER, string.Empty);
             }
         }
 
         public static string RabbitMQNotificationServer {
             get {
-                return GetValue(KEY_RABBITMQ_SERVER_NOTIFICATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_SERVER_NOTIFICATION, string.Empty);
             }
         }
 
         public static string RabbitMQVHostAccess {
             get {
-                return GetValue(KEY_RABBITMQ_VHOST_ACCESS, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_VHOST_ACCESS, string.Empty);
             }
         }
 
         public static string RabbitMQVHostConfirmation {
             get {
-                return GetValue(KEY_RABBITMQ_VHOST_CONFIRMATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_VHOST_CONFIRMATION, string.Empty);
             }
         }
 
         public static string RabbitMQVHostNotification {
             get {
-                return GetValue(KEY_RABBITMQ_VHOST_NOTIFICATION, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_VHOST_NOTIFICATION, string.Empty);
             }
         }
 
         public static string RabbitMQVHostOrder {
             get {
-                return GetValue(KEY_RABBITMQ_VHOST_ORDER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_RABBITMQ_VHOST_ORDER, string.Empty);
             }
         }
 
         public static int RecentItemsToKeep {
             get {
-                string value = GetValue(KEY_RECENT_ITEMS_TO_KEEP, DEFAULT_RECENT_ITEMS_TO_KEEP);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_RECENT_ITEMS_TO_KEEP, DEFAULT_RECENT_ITEMS_TO_KEEP);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_RECENT_ITEMS_TO_KEEP);
             }
         }
 
         public static bool RequireHttps {
             get {
-                var value = GetValue(KEY_REQUIRE_HTTPS, "false");
+                var value = DBAppSettingsRepositoryImpl.GetValue(KEY_REQUIRE_HTTPS, "false");
                 return ValueParsingUtil.ParseBool(value, "false");
             }
         }
 
         public static string RoleNameAccounting {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ROLENAME_ACCOUNTING, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ROLENAME_ACCOUNTING, string.Empty);
             }
         }
 
         public static string RoleNameApprover {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ROLENAME_APPROVER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ROLENAME_APPROVER, string.Empty);
             }
         }
 
         public static string RoleNameBuyer {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ROLENAME_BUYER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ROLENAME_BUYER, string.Empty);
             }
         }
 
         public static string RoleNameCorporateAdmin {
             get {
-                return GetValue(KEY_AD_INTERNAL_ROLE_CORPADMIN, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_INTERNAL_ROLE_CORPADMIN, string.Empty);
             }
         }
 
         public static string RoleNameGuest {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ROLENAME_GUEST, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ROLENAME_GUEST, string.Empty);
             }
         }
 
         public static string RoleNameOwner {
             get {
-                return GetValue(KEY_AD_EXTERNAL_ROLENAME_OWNER, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_AD_EXTERNAL_ROLENAME_OWNER, string.Empty);
             }
         }
 
         public static bool RunInternalServiceQueues {
             get {
-                return bool.Parse(GetValue(KEY_RUN_INTERNAL_SERVICE_QUEUES, "true"));
+                return bool.Parse(DBAppSettingsRepositoryImpl.GetValue(KEY_RUN_INTERNAL_SERVICE_QUEUES, "true"));
             }
         }
 
         public static string ServiceEmailAddress {
-            get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_FROMADDRESS, null); }
         }
 
         public static List<string> FailureEmailAdresses
         {
             get
             {
-                string val = GetValue(KEY_SMTP_FAILUREADDRESS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_FAILUREADDRESS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
         public static string SMTPHostName
         {
-            get { return GetValue(KEY_SMTP_SERVERNAME, null); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_SERVERNAME, null); }
         }
 
         public static int SMTPSendPort {
             get {
-                string value = GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
+                string value = DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_SEND_PORT, DEFAULT_SMTP_SEND_PORT);
                 return ValueParsingUtil.ParseInt(value, DEFAULT_SMTP_SEND_PORT);
             }
         }
 
         public static string SMTPUsername {
-            get { return GetValue(KEY_SMTP_USERNAME, null); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_USERNAME, null); }
         }
 
         public static string SMTPPassword {
-            get { return GetValue(KEY_SMTP_PASSWORD, null); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_SMTP_PASSWORD, null); }
         }
 
         public static string WebNowUrl {
             get {
-                return GetValue(KEY_URL_WEBNOW, string.Empty);
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_URL_WEBNOW, string.Empty);
             }
         }
 
         public static List<string> WhiteListedBekUsers {
             get {
-                string val = GetValue(KEY_WHITE_LISTED_BEK_USERS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_WHITE_LISTED_BEK_USERS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
@@ -1062,7 +1055,7 @@ namespace KeithLink.Svc.Impl {
         public static bool WhiteListedBekUsersEnforced {
             get {
                 try {
-                    return Convert.ToBoolean(GetValue(KEY_WHITE_LISTED_BEK_USERS_ENFORCED, "true"));
+                    return Convert.ToBoolean(DBAppSettingsRepositoryImpl.GetValue(KEY_WHITE_LISTED_BEK_USERS_ENFORCED, "true"));
                 } catch {
                     return true;
                 }
@@ -1073,7 +1066,7 @@ namespace KeithLink.Svc.Impl {
         public static List<string> WhiteListedUNFIDSRs
         {
             get {
-                string val = GetValue(KEY_UNFI_WHITELIST_DSRS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_UNFI_WHITELIST_DSRS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
@@ -1081,7 +1074,7 @@ namespace KeithLink.Svc.Impl {
         {
             get
             {
-                string val = GetValue(KEY_UNFI_WHITELIST_CUSTOMERS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_UNFI_WHITELIST_CUSTOMERS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
@@ -1089,10 +1082,27 @@ namespace KeithLink.Svc.Impl {
         {
             get
             {
-                string val = GetValue(KEY_UNFI_WHITELIST_BEKUSERS, string.Empty);
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_UNFI_WHITELIST_BEKUSERS, string.Empty);
                 return GetCommaSeparatedValues(val);
             }
         }
+        public static string CheckLostOrders
+        {
+            get
+            {
+                return DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS, string.Empty);
+            }
+        }
+
+        public static List<string> CheckLostOrdersStatus
+        {
+            get
+            {
+                string val = DBAppSettingsRepositoryImpl.GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+
         #endregion
     }
 }
