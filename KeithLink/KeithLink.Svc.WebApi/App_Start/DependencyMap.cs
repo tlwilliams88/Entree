@@ -33,6 +33,7 @@ using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.Export;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Invoices;
+using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.Reports;
@@ -44,6 +45,7 @@ using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using KeithLink.Svc.Impl.Repository.ContentManagement;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Email;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
@@ -119,6 +121,13 @@ namespace KeithLink.Svc.WebApi {
             // marketing
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
 
+            // messaging
+            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+            builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
+            builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
+            builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
+
             // order
             builder.RegisterType<ImagingRepositoryImpl>().As<IImagingRepository>();
             builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
@@ -171,6 +180,10 @@ namespace KeithLink.Svc.WebApi {
             //marketing 
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 
+            // messaging
+            builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
+            builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+
             // order
             builder.RegisterType<ImagingLogicImpl>().As<IImagingLogic>();
             builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();
@@ -205,14 +218,12 @@ namespace KeithLink.Svc.WebApi {
             // service repositories
             ///////////////////////////////////////////////////////////////////////////////
             builder.RegisterType<Repository.Lists.ListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<Repository.Messaging.MessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<Repository.OnlinePayments.OnlinePaymentServiceRepositoryImpl>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 
             builder.RegisterType<com.benekeith.InvoiceService.InvoiceServiceClient>().As<com.benekeith.InvoiceService.IInvoiceService>();
             builder.RegisterType<com.benekeith.ListService.ListServcieClient>().As<com.benekeith.ListService.IListServcie>();
-            builder.RegisterType<com.benekeith.MessagingService.MessagingServiceClient>().As<com.benekeith.MessagingService.IMessagingService>();
             builder.RegisterType<com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
             builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
             builder.RegisterType<com.benekeith.ProfileService.ProfileServiceClient>().As<com.benekeith.ProfileService.IProfileService>();

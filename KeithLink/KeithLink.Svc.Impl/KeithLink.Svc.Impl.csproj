@@ -259,7 +259,6 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalMessagingLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalInvoiceLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOnlinePaymentLogicImpl.cs" />
@@ -274,6 +273,7 @@
     <Compile Include="Logic\Messaging\HasNewsNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\InvoiceNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EmailMessageProvider.cs" />
+    <Compile Include="Logic\Messaging\MessagingLogicImpl.cs" />
     <Compile Include="Logic\Messaging\PaymentConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\WebMessageProvider.cs" />
     <Compile Include="Logic\Messaging\MessageTemplateLogicImpl.cs" />
@@ -687,7 +687,6 @@
     <Compile Include="Repository\Lists\ListShareRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\NoListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserPushNotificationDeviceRepositoryImpl.cs" />
-    <Compile Include="Repository\Messaging\NoMessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />

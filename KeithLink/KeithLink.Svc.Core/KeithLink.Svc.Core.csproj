@@ -215,12 +215,12 @@
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
+    <Compile Include="Interface\Messaging\IMessagingLogic.cs" />
     <Compile Include="Interface\Messaging\IPushNotificationMessageProvider.cs" />
     <Compile Include="Interface\Messaging\IMessageProvider.cs" />
     <Compile Include="Interface\Messaging\INotificationHandler.cs" />
     <Compile Include="Interface\Messaging\INotificationQueueConsumer.cs" />
     <Compile Include="Interface\Messaging\IUserPushNotificationDeviceRepository.cs" />
-    <Compile Include="Interface\Messaging\IMessagingServiceRepository.cs" />
     <Compile Include="Interface\Messaging\IUserMessagingPreferenceRepository.cs" />
     <Compile Include="Interface\Common\IGenericQueueRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankRepository.cs" />
@@ -384,7 +384,6 @@
     <Compile Include="Interface\Brand\IBrandRepository.cs" />
     <Compile Include="Interface\Common\ISocketListenerRepository.cs" />
     <Compile Include="Interface\Messaging\ICustomerTopicRepository.cs" />
-    <Compile Include="Interface\Messaging\IInternalMessagingLogic.cs" />
     <Compile Include="Interface\Messaging\IUserMessageRepository.cs" />
     <Compile Include="Interface\Messaging\IUserTopicSubscriptionRepository.cs" />
     <Compile Include="Interface\Email\IEmailClient.cs" />
