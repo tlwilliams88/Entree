@@ -29,12 +29,15 @@ using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
+
 using KeithLink.Svc.Impl.Repository.BranchSupports;
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.ContentManagement;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
+using KeithLink.Svc.Impl.Repository.Email;
 using KeithLink.Svc.Impl.Repository.InternalCatalog;
 using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
@@ -155,9 +158,17 @@ namespace KeithLink.Svc.Test
             //Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
+
+            // messaging
+            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+            builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
+            builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
+            builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
+            builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+            builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
 
             // Build the container.
             return builder.Build();
@@ -234,9 +245,17 @@ namespace KeithLink.Svc.Test
             //Replace
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
             builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
+
+            // messaging
+            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+            builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
+            builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
+            builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
+            builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+            builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
         }
     }
 }

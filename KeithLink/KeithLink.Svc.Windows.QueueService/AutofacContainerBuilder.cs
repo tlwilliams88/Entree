@@ -135,7 +135,6 @@ namespace KeithLink.Svc.Windows.QueueService
 
 			//added 11-6
 			builder.RegisterType<CustomerTopicRepositoryImpl>().As<ICustomerTopicRepository>();
-			builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalMessagingLogic>().As<IInternalMessagingLogic>();
 			builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
 			builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
 			builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
@@ -185,7 +184,6 @@ namespace KeithLink.Svc.Windows.QueueService
 			// no implementation (will throw notimplementedexception if called)
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-			builder.RegisterType<NoMessagingServiceRepositoryImpl>().As<IMessagingServiceRepository>();
 			//builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
@@ -227,7 +225,15 @@ namespace KeithLink.Svc.Windows.QueueService
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
 
-			return builder.Build();
+            // messaging
+            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+            builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
+            builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
+            builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
+            builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+
+            return builder.Build();
 		}
 	}
 }

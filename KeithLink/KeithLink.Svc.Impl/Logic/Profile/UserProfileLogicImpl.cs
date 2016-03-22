@@ -58,10 +58,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IAccountRepository _accountRepo;
         private ICustomerRepository _customerRepo;
 		private IOrderServiceRepository _orderServiceRepository;
-        private IMessagingServiceRepository _msgServiceRepo;
+        private IMessagingLogic _msgLogic;
+        private IMessageTemplateLogic _msgTemplateLogic;
 		private IInvoiceServiceRepository _invoiceServiceRepository;
 		private IEmailClient _emailClient;
-		private IMessagingServiceRepository _messagingServiceRepository;
 		private IEventLogRepository _eventLog;
 		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
         private IGenericQueueRepository _queue;
@@ -73,11 +73,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
-                                    IOrderServiceRepository orderServiceRepository, IMessagingServiceRepository msgServiceRepo, IInvoiceServiceRepository invoiceServiceRepository, 
-                                    IEmailClient emailClient, IMessagingServiceRepository messagingServiceRepository, IEventLogRepository eventLog,
-									IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService,
-                                    ISettingsLogicImpl settingsLogic)
-		{
+                                    IOrderServiceRepository orderServiceRepository, IMessagingLogic messagingLogic, IInvoiceServiceRepository invoiceServiceRepository, 
+                                    IEmailClient emailClient, IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository, 
+                                    IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService,
+                                    ISettingsLogicImpl settingsLogic, IMessageTemplateLogic messageTemplateLogic) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -85,10 +84,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
 			_orderServiceRepository = orderServiceRepository;
-            _msgServiceRepo = msgServiceRepo;
+            _msgLogic = messagingLogic;
+            _msgTemplateLogic = messageTemplateLogic;
 			_invoiceServiceRepository = invoiceServiceRepository;
 			_emailClient = emailClient;
-			_messagingServiceRepository = messagingServiceRepository;
 			_eventLog = eventLog;
 			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
             _queue = queue;
@@ -427,7 +426,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                          );
 
                 try {
-                    var template = _messagingServiceRepository.ReadMessageTemplateForKey( GUEST_USER_WELCOME );
+                    var template = _msgTemplateLogic.ReadForKey( GUEST_USER_WELCOME );
 
                     if (template != null)
                         _emailClient.SendTemplateEmail( template, new List<string>() { emailAddress }, null, null, new { contactEmail = Configuration.BranchContactEmail( branchId ) } );
@@ -919,7 +918,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         public List<ProfileMessagingPreferenceModel> GetMessagingPreferences(Guid guid) {
-            var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
+            var currentMessagingPreferences = _msgLogic.ReadMessagingPreferences(guid);
             var userCustomers = _customerRepo.GetCustomersForUser(guid);
 
             var returnedMsgPrefModel = new List<ProfileMessagingPreferenceModel>();
@@ -941,7 +940,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 		public List<ProfileMessagingPreferenceModel> GetMessagingPreferencesForCustomer(Guid guid, string customerId, string branchId)
 		{
-			var currentMessagingPreferences = _msgServiceRepo.ReadMessagingPreferences(guid);
+			var currentMessagingPreferences = _msgLogic.ReadMessagingPreferences(guid);
 			var customer = _customerRepo.GetCustomerByCustomerNumber(customerId, branchId);
 			if (customer == null)
 				return null;
@@ -1479,7 +1478,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <param name="MessageTemplate"></param>
         private void SendPasswordChangeEmail(string emailAddress, string newPassword, string MessageTemplate) {
             try {
-                var template = _messagingServiceRepository.ReadMessageTemplateForKey(MessageTemplate);
+                var template = _msgTemplateLogic.ReadForKey(MessageTemplate);
                 if (template != null) {
                     _emailClient.SendTemplateEmail(template, new List<string>() { emailAddress }, new { password = newPassword, url = Configuration.PresentationUrl });
                 } else {

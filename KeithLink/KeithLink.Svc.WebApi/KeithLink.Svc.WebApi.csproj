@@ -289,16 +289,6 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.disco" />
-    <None Include="Service References\com.benekeith.MessagingService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.MessagingService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.wsdl" />
     <None Include="Service References\com.benekeith.OnlinePaymentService\OnlinePaymentService.xsd">
       <SubType>Designer</SubType>
@@ -427,7 +417,6 @@
     </Compile>
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Messaging\MessagingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
@@ -439,11 +428,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\com.benekeith.ListService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.MessagingService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -522,32 +506,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.wsdl" />
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.MessagingService\MessagingService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -620,7 +578,6 @@
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.MessagingService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OnlinePaymentService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ProfileService\" />

@@ -1,33 +1,37 @@
-﻿using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Common.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.IO;
+﻿using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Core.Interface.Messaging;
+
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Paging;
+
 using KeithLink.Svc.WebApi.Models;
+
+using System;
+using System.Collections.Generic;
+using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// end points for handling messaging
+    /// </summary>
 	[Authorize]
     public class MessagingController : BaseController {
         #region attributes
-        private readonly IMessagingServiceRepository messagingServiceRepository;
+        private readonly IMessagingLogic _msgLogic;
         private readonly IUserProfileLogic userProfileLogic;
         #endregion
 
         #region ctor
-		public MessagingController(IUserProfileLogic profileLogic, IMessagingServiceRepository messagingServiceRepository)
-			: base(profileLogic)
-		{
-            this.messagingServiceRepository = messagingServiceRepository;
-            this.userProfileLogic = profileLogic;
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="profileLogic"></param>
+        /// <param name="messagingServiceRepository"></param>
+		public MessagingController(IUserProfileLogic profileLogic, IMessagingLogic messagingLogic)
+			: base(profileLogic) {
+            _msgLogic = messagingLogic;
+            userProfileLogic = profileLogic;
         }
         #endregion
 
@@ -41,18 +45,17 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/usermessages/")]
 		public PagedResults<UserMessageModel> usermessages(PagingModel paging)
         {
-            return messagingServiceRepository.ReadPagedUserMessages(this.AuthenticatedUser, paging);
+            return _msgLogic.ReadPagedUserMessages(this.AuthenticatedUser, paging);
         }
 
 		/// <summary>
 		/// Mark a message as read by the user
 		/// </summary>
-		/// <param name="updatedUserMessages">Array of read messages</param>
 		[HttpPut]
         [ApiKeyedRoute("messaging/usermessages/markasread")]
         public void UpdateReadMessages()
         {
-            messagingServiceRepository.MarkAllReadByUser(this.AuthenticatedUser);
+            _msgLogic.MarkAllReadByUser(this.AuthenticatedUser);
         }
 
 		/// <summary>
@@ -63,7 +66,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/usermessages/unreadcount")]
         public int ReadUnreadMessageCount()
         {
-            return messagingServiceRepository.GetUnreadMessagesCount(this.AuthenticatedUser.UserId);
+            return _msgLogic.GetUnreadMessagesCount(this.AuthenticatedUser.UserId);
         }
 
 		/// <summary>
@@ -75,7 +78,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<bool> UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel)
         {
-            messagingServiceRepository.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
+            _msgLogic.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
             ret.SuccessResponse = true;
             return ret;
@@ -114,7 +117,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/registerpushdevice")]
         public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)
         {
-            messagingServiceRepository.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
+            _msgLogic.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
             ret.SuccessResponse = true;
             return ret;
@@ -131,7 +134,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		{
 			try
 			{
-				messagingServiceRepository.CreateMailMessage(mailMessage);
+				_msgLogic.CreateMailMessage(mailMessage);
 				return new OperationReturnModel<bool>() { SuccessResponse = true };
 			}
 			catch (Exception ex)
