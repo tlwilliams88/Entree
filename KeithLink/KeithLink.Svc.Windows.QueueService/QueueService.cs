@@ -4,6 +4,7 @@ using KeithLink.Svc.Impl;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
 using Autofac;
@@ -18,7 +19,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-
 
 namespace KeithLink.Svc.Windows.QueueService {
     partial class QueueService : ServiceBase {
@@ -49,9 +49,18 @@ namespace KeithLink.Svc.Windows.QueueService {
         #endregion
 
         #region ctor
-        public QueueService( IContainer container ) {
-            this.container = container;
+        public QueueService()
+        {
+            //this.container = AutofacContainerBuilder.BuildContainer();
+            this.container = AddLocalDependencies(Impl.Repository.Autofac.DependencyMapFactory.BuildQueueSvcContainer()).Build();
             InitializeComponent();
+        }
+
+        private ContainerBuilder AddLocalDependencies(ContainerBuilder builder)
+        {
+            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
+            builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
+            return builder;
         }
         #endregion
 

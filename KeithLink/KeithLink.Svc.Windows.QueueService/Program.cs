@@ -12,14 +12,10 @@ namespace KeithLink.Svc.Windows.QueueService
 	{
 		static void Main(string[] args)
 		{
-			IContainer container = AutofacContainerBuilder.BuildContainer();
-			
-
-
 			ServiceBase[] ServicesToRun;
 
 			ServicesToRun = new ServiceBase[] { 
-                new QueueService(container) 
+                new QueueService() 
             };
 
 			if (Environment.UserInteractive)
