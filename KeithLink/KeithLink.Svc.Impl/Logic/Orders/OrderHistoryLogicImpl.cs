@@ -115,7 +115,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
             _log.WriteErrorLog(string.Concat("Exception encountered in OrderHistoryLogic: ", e.Exception.Message));
             _log.WriteWarningLog("Listener will stop processing and will need to be restarted");
 
-            KeithLink.Common.Core.Email.ExceptionEmail.Send(e.Exception, "Listener will stop processing and will need to be restarted");
+            KeithLink.Common.Impl.Email.ExceptionEmail.Send(e.Exception, "Listener will stop processing and will need to be restarted");
         }
         #endregion
 

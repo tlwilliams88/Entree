@@ -103,8 +103,12 @@
   <ItemGroup>
     <Compile Include="AuditLog\AuditLogRepositoryImpl.cs" />
     <Compile Include="Configuration.cs" />
+    <Compile Include="ConfigurationHelper.cs" />
+    <Compile Include="Email\ExceptionEmail.cs" />
+    <Compile Include="Email\NewUserEmail.cs" />
     <Compile Include="Logging\EventLogRepositoryImpl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsRepo\DBAppSettingsRepositoryImpl.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Lib\BEKlibrary.dll">
@@ -120,6 +124,7 @@
   <ItemGroup>
     <None Include="KeithLink.Svc.FoundationSvc.snk" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

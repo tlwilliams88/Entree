@@ -99,7 +99,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             _log.WriteErrorLog(string.Concat("Exception encountered in ConfirmationLogic: ", e.Exception.Message));
             _log.WriteWarningLog("Listener will stop processing and will need to be restarted");
 
-            KeithLink.Common.Core.Email.ExceptionEmail.Send(e.Exception, "Listener will stop processing and will need to be restarted");
+            KeithLink.Common.Impl.Email.ExceptionEmail.Send(e.Exception, "Listener will stop processing and will need to be restarted");
         }
 
         #endregion
@@ -254,7 +254,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                             KeithLink.Svc.Impl.Helpers.Retry.Do(() => _conversionLogic.SaveConfirmationAsOrderHistory(confirmation), TimeSpan.FromSeconds(1), 5);
                         } catch (Exception e) {
                             _log.WriteErrorLog("Error processing confirmation in Queue service", e);
-                            KeithLink.Common.Core.Email.ExceptionEmail.Send(e, subject: "Exception processing Confirmation in Queue Service");
+                            KeithLink.Common.Impl.Email.ExceptionEmail.Send(e, subject: "Exception processing Confirmation in Queue Service");
 
                             confirmation.ErrorMessage = e.Message;
                             confirmation.ErrorStack = e.StackTrace;

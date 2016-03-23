@@ -1,4 +1,4 @@
-﻿using KeithLink.Common.Core.Email;
+﻿using KeithLink.Common.Impl.Email;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
 using KeithLink.Svc.Core.Interface.SingleSignOn;

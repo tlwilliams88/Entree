@@ -1,4 +1,5 @@
 ﻿using KeithLink.Common.Core;
+using KeithLink.Common.Impl.SettingsRepo;
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Impl.Repository.Configurations;
 using System;
@@ -18,8 +19,6 @@ namespace KeithLink.Svc.Impl {
         private const string DEFAULT_MAX_SORT_BY_PRICE_ITEM_COUNT = "200";
 		private const string DEFAULT_RECENT_ITEMS_TO_KEEP = "5";
         private const string DEFAULT_ENABLE_ETA_FOR_USERS = "non";
-        private const string APP_SETTINGS_DOMAIN = "SettingsDomain";
-        private const string DEFAULT_SETTINGS_DOMAIN = "Entree";
 
         // Item History
         private const string KEY_ITEM_HISTORY_WEEKS = "ItemHistoryAverageWeeks";
@@ -393,14 +392,6 @@ namespace KeithLink.Svc.Impl {
         public static string ApplicationName {
             get {
                 return GetValue(KEY_APP_NAME, DEFAULT_APPNAME);
-            }
-        }
-
-        public static string SettingsDomain
-        {
-            get
-            {
-                return GetValue(APP_SETTINGS_DOMAIN, DEFAULT_SETTINGS_DOMAIN);
             }
         }
 

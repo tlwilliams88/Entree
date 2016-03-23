@@ -205,7 +205,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                         }
                     } catch (Exception ex) {
                         _log.WriteErrorLog( "Error in ProcessCheckLostOrdersMinuteTick", ex );
-                        KeithLink.Common.Core.Email.ExceptionEmail.Send( ex );
+                        KeithLink.Common.Impl.Email.ExceptionEmail.Send( ex );
                     }
                 }
 
