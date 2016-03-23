@@ -5,7 +5,7 @@
  * Uses moment.js library to format datetimes and convert times to correct timezone
  */
 angular.module('bekApp')
-  .filter('formatDate', [ 'UtilityService', function(UtilityService) {
+  .filter('formatDate', [ 'DateService', function(DateService) {
 
     function getFormattedDateTime(dateTime, formatString) {
      // Don't do anything if it's null
@@ -20,7 +20,7 @@ angular.module('bekApp')
 
         if(!dateTime._isAMomentObject){
     
-          var date = UtilityService.momentObject(dateTime,'');
+          var date = DateService.momentObject(dateTime,'');
         }
         else{
           var date = dateTime;
@@ -45,7 +45,7 @@ angular.module('bekApp')
       return getFormattedDateTime(dateTime, formatString);
     };
   }])
-  .filter('formatDateWithTimezone', ['$filter', 'UtilityService', function($filter, UtilityService) {
+  .filter('formatDateWithTimezone', ['$filter', 'DateService', function($filter, DateService) {
     return function(dateTime, formatString) {
      // check UTC time and convert to format 2015-02-13 00:00:00 -- all times coming from the backend are Central   
      if (dateTime && dateTime.indexOf && dateTime.indexOf('T') > -1 && dateTime.indexOf('Z') > -1) {
@@ -53,7 +53,7 @@ angular.module('bekApp')
         dateTime = dateTime.replace('Z', '');   
       }
 
-      var date = UtilityService.momentObject(dateTime,'','America/Chicago');
+      var date = DateService.momentObject(dateTime,'','America/Chicago');
      // var date = moment.tz(dateTime, 'America/Chicago');
       date.tz(jstz.determine().name());
       // use default format string if none is provided

@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('bekApp')
-  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI', 'lists', 'selectedList', 'selectedCart', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
-    function ($scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, CartService, ListService, OrderService, UtilityService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
+  .controller('AddToOrderController', ['$scope', '$state', '$modal', '$q', '$stateParams', '$filter', '$timeout', 'blockUI',
+   'lists', 'selectedList', 'selectedCart', 'Constants', 'CartService', 'ListService', 'OrderService', 'UtilityService', 'DateService', 'PricingService', 'ListPagingModel', 'LocalStorage', '$analytics', 'toaster',
+    function ($scope, $state, $modal, $q, $stateParams, $filter, $timeout, blockUI, lists, selectedList, selectedCart, Constants,
+     CartService, ListService, OrderService, UtilityService, DateService, PricingService, ListPagingModel, LocalStorage, $analytics, toaster) {
     
     CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
@@ -372,7 +374,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           if (selectedCart) {
             setSelectedCart(selectedCart);
             $scope.isChangeOrder = selectedCart.hasOwnProperty('ordernumber') ? true : false;
-            if(selectedCart.requestedshipdate && UtilityService.momentObject(selectedCart.requestedshipdate.slice(0,10),'') < UtilityService.momentObject($scope.shipDates[0].shipdate,'') && !$stateParams.pageLoaded){
+            if(selectedCart.requestedshipdate && DateService.momentObject(selectedCart.requestedshipdate.slice(0,10),'') < DateService.momentObject($scope.shipDates[0].shipdate,'') && !$stateParams.pageLoaded){
                $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
               selectedCart.requestedshipdate = $scope.shipDates[0].shipdate;
             }
@@ -581,7 +583,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       } else {
         cartId = cart.id;
       }
-      var timeset = UtilityService.momentObject().format('YYYYMMDDHHmm');
+      var timeset = DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
       var orderList ={
           listId: listId,
           cartId: cartId,
@@ -598,7 +600,7 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
           allSets.forEach(function(set){
             if(set.cartId === orderList.cartId){
               set.listId = orderList.listId;
-              set.timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
+              set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
               matchFound = true;
             }
           });

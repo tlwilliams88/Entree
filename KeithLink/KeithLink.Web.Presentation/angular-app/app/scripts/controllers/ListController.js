@@ -8,8 +8,10 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList', 'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService',
-    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService, PricingService, ListPagingModel, LocalStorage, UtilityService) {
+  .controller('ListController', ['$scope', '$filter', '$timeout', '$state', '$stateParams', '$modal', 'blockUI', 'originalList',
+   'Constants', 'ListService', 'CartService', 'PricingService', 'ListPagingModel', 'LocalStorage', 'UtilityService', 'DateService',
+    function($scope, $filter, $timeout, $state, $stateParams, $modal, blockUI, originalList, Constants, ListService, CartService,
+     PricingService, ListPagingModel, LocalStorage, UtilityService, DateService) {
     if ($stateParams.listId !== originalList.listid.toString()) {
       $state.go('menu.lists.items', {listId: originalList.listid, renameList: null}, {location:'replace', inherit:false, notify: false});
     }
@@ -240,7 +242,7 @@ angular.module('bekApp')
     // LIST INTERACTIONS
     $scope.goToList = function(list) {
 
-      var timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
+      var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
     
       var lastlist ={
           listId: list.listid,          
@@ -259,7 +261,7 @@ angular.module('bekApp')
     function goToNewList(newList) {
       // user loses changes if they go to a new list
       $scope.listForm.$setPristine();
-     var timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
+     var timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
      var lastlist ={
           listId: newList.listid,          
           timeset: timeset

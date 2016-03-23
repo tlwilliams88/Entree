@@ -8,8 +8,10 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants', 'CartService', 'OrderService', 'UtilityService', 'PricingService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
-    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService, PricingService, changeOrders, originalBasket, criticalItemsLists) {
+  .controller('CartItemsController', ['$scope', '$state', '$stateParams', '$filter', '$modal', '$q', 'ENV', 'Constants',
+   'CartService', 'OrderService', 'UtilityService', 'PricingService', 'DateService', 'changeOrders', 'originalBasket', 'criticalItemsLists',
+    function($scope, $state, $stateParams, $filter, $modal, $q, ENV, Constants, CartService, OrderService, UtilityService,
+     PricingService, DateService, changeOrders, originalBasket, criticalItemsLists) {
 
     // redirect to url with correct ID as a param
     var basketId = originalBasket.id || originalBasket.ordernumber;
@@ -135,8 +137,8 @@ angular.module('bekApp')
     };
 
     $scope.validateShipDate = function(shipDate){
-      var cutoffDate = UtilityService.momentObject(shipDate.cutoffdatetime,'').format();
-      var now = UtilityService.momentObject().tz("America/Chicago").format();
+      var cutoffDate = DateService.momentObject(shipDate.cutoffdatetime,'').format();
+      var now = DateService.momentObject().tz("America/Chicago").format();
 
       $scope.invalidSelectedDate = (now > cutoffDate) ? true : false;
       if($scope.invalidSelectedDate){
@@ -506,7 +508,7 @@ angular.module('bekApp')
       if($scope.currentCart && !$scope.currentCart.requestedshipdate){
           $scope.selectShipDate($scope.shipDates[0]);
       }else{
-            if(UtilityService.momentObject($scope.currentCart.requestedshipdate.slice(0,10),'') < UtilityService.momentObject($scope.shipDates[0].shipdate,'')) {
+            if(DateService.momentObject($scope.currentCart.requestedshipdate.slice(0,10),'') < DateService.momentObject($scope.shipDates[0].shipdate,'')) {
             $scope.openErrorMessageModal('The ship date requested for this order has expired. Select Cancel to return to the home screen without making changes. Select Accept to update to the next available ship date.');
           }
       }

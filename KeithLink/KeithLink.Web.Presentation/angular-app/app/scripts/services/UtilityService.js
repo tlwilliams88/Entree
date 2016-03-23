@@ -38,26 +38,6 @@ angular.module('bekApp')
       },
 
       /**
-       * format a JavaScript date object, used for Item Usage and Registered Users exports
-       * @param  {Date} date
-       * @return {String}      format of YYYY-MM-DD
-       */
-      formatJavascriptDate: function(date) {
-        var day = date.getDate().toString(),
-          month = (date.getMonth() + 1).toString(),
-          year = date.getFullYear();
-
-        if (day.length < 2) {
-          day = '0' + day;
-        }
-        if (month.length < 2) {
-          month = '0' + month;
-        }
-
-        return year + '-' + month + '-' + day;
-      },
-
-      /**
        * determines if current device is mobile device by userAgent and screen size
        * @return {Boolean} if current device is a mobile device
        */
@@ -109,32 +89,6 @@ angular.module('bekApp')
             delete item[name];
           });
         });
-      },
-
-      momentObject: function(date, formatString, TZ){
-       //Generates moment object with correct formatting string
-        if(!date){
-          date = '';
-        }
-
-        var timezone = (date.length > 10);
-
-        if(!formatString && date.indexOf('/') !== -1){
-           formatString = (timezone) ? 'MM/DD/YYYY HH:mm:ss':'MM/DD/YYYY';
-        }
-        else if(!formatString && date.indexOf('-') !== -1){
-           formatString = (timezone) ? 'YYYY-MM-DD HH:mm:ss.SSSS':'YYYY-MM-DD';
-        }
-
-       if(TZ){
-        return moment.tz(date,formatString,TZ)
-       }
-        else if(date){
-          return moment(date,formatString);
-        }
-        else{
-          return moment(new Date());
-        }
       },
 
       /**
