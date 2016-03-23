@@ -61,9 +61,10 @@ namespace KeithLink.Svc.Windows.OrderService
         #endregion
 
         #region ctor
-        public OrderService(IContainer container)
+        public OrderService()
         {
-            _diContainer = container;
+            ContainerBuilder container = Impl.Repository.Autofac.DependencyMapFactory.BuildOrderServiceContainer();
+            _diContainer = container.Build();
 
             InitializeComponent();
 
