@@ -33,9 +33,9 @@ namespace KeithLink.Common.Impl.SettingsRepo
         }
         private void Init()
         {
-            _log.WriteInformationLog("Initializing DBAppSettingsRepository");
             try
             {
+                _log.WriteInformationLog("Initializing DBAppSettingsRepository");
                 dict = new Dictionary<string, string>();
                 using (var conn = new SqlConnection(KeithLink.Common.Impl.Configuration.AppDataConnectionString))
                 {
@@ -61,6 +61,7 @@ namespace KeithLink.Common.Impl.SettingsRepo
                         _log.WriteInformationLog(" DBAppSettingsRepository, " + dict.Count + " settings");
                     }
                 }
+                _log.WriteInformationLog("Init DBAppSettingsRepository Complete");
             }
             catch (Exception ex)
             {
