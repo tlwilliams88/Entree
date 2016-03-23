@@ -254,19 +254,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.disco" />
-    <None Include="Service References\com.benekeith.InvoiceService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.InvoiceService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService61.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
     <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
     <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
@@ -394,7 +381,6 @@
     <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ItemNoteController.cs" />
     <Compile Include="Controllers\ListController.cs" />
-    <Compile Include="Controllers\OnlinePaymentController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\RecentItemController.cs" />
@@ -415,18 +401,12 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\OnlinePaymentServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
-    <Compile Include="Service References\com.benekeith.InvoiceService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.ListService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -465,25 +445,6 @@
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
     <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.wsdl" />
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.InvoiceService\InvoiceService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\com.benekeith.ListService\ListServcie.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -576,7 +537,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.InvoiceService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OnlinePaymentService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />

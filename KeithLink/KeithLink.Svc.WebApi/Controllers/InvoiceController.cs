@@ -5,6 +5,7 @@ using KeithLink.Svc.Core.Interface.Profile;
 
 using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.ModelExport;
+using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Models.Paging;
 
@@ -37,6 +38,27 @@ namespace KeithLink.Svc.WebApi.Controllers {
         #endregion
 
         #region methods
+        /// <summary>
+        /// Retrieve customer banks
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("banks")]
+        public List<CustomerBank> Get() {
+            return _repo.GetAllCustomerBanks(SelectedUserContext);
+        }
+
+        /// <summary>
+        /// Retrieve bank information for account
+        /// </summary>
+        /// <param name="accountNumber">Account number</param>
+        /// <returns></returns>
+        [HttpGet]
+        [ApiKeyedRoute("banks/{accountNumber}")]
+        public CustomerBank GetBackAccount(string accountNumber) {
+            return _repo.GetBankAccount(this.SelectedUserContext, accountNumber);
+        }
+  
         /// <summary>
         /// Read a paged list of invoices
         /// </summary>

@@ -60,7 +60,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		private IOrderServiceRepository _orderServiceRepository;
         private IMessagingLogic _msgLogic;
         private IMessageTemplateLogic _msgTemplateLogic;
-		private IInvoiceServiceRepository _invoiceServiceRepository;
 		private IEmailClient _emailClient;
 		private IEventLogRepository _eventLog;
 		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
@@ -73,10 +72,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
-                                    IOrderServiceRepository orderServiceRepository, IMessagingLogic messagingLogic, IInvoiceServiceRepository invoiceServiceRepository, 
-                                    IEmailClient emailClient, IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository, 
-                                    IGenericQueueRepository queue, IDsrAliasService dsrAliasService, IPasswordResetService passwordService,
-                                    ISettingsLogicImpl settingsLogic, IMessageTemplateLogic messageTemplateLogic) {
+                                    IOrderServiceRepository orderServiceRepository, IMessagingLogic messagingLogic, IEmailClient emailClient, 
+                                    IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, 
+                                    IDsrAliasService dsrAliasService, IPasswordResetService passwordService, ISettingsLogicImpl settingsLogic, 
+                                    IMessageTemplateLogic messageTemplateLogic) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
@@ -86,7 +85,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 			_orderServiceRepository = orderServiceRepository;
             _msgLogic = messagingLogic;
             _msgTemplateLogic = messageTemplateLogic;
-			_invoiceServiceRepository = invoiceServiceRepository;
 			_emailClient = emailClient;
 			_eventLog = eventLog;
 			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
