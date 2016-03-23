@@ -650,7 +650,7 @@ namespace KeithLink.Svc.Impl {
         }
 
         public static string OrderUpdateWatchPath {
-            get { return GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
+            get { return DBAppSettingsRepositoryImpl.GetValue(KEY_PATH_ORDERUPDATES, string.Empty); }
         }
 
         public static string PowerMenuAdminUsername {
