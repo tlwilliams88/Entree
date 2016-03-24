@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', '$q', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
-    function($http, $q, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
+  .factory('ProductService', ['$http', '$q', '$analytics', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
+    function($http, $q, $analytics, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
 
       var defaultPageSize = Constants.infiniteScrollPageSize,
         defaultStartingIndex = 0;
