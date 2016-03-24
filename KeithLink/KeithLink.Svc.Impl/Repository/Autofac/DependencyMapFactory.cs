@@ -93,7 +93,7 @@ using Autofac.Features.Indexed;
 
 namespace KeithLink.Svc.Impl.Repository.Autofac
 {
-    public class DependencyMapFactory
+    public static class DependencyMapFactory
     {
         public static ContainerBuilder GetWebApiContainer()
         {
@@ -332,6 +332,7 @@ namespace KeithLink.Svc.Impl.Repository.Autofac
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
             builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
+            builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();
 
             // keyed types - notification handlers
             builder.RegisterType<OrderConfirmationNotificationHandlerImpl>()
@@ -399,9 +400,7 @@ namespace KeithLink.Svc.Impl.Repository.Autofac
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
-//            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
             builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
-//            builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
             builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
 
             //profile

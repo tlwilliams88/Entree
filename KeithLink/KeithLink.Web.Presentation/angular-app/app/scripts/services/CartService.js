@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'UtilityService', 'PricingService', 'ExportService', 'Cart',
-    function ($http, $q, $upload, ENV, toaster, UtilityService, PricingService, ExportService, Cart) {
+  .factory('CartService', ['$http', '$q', '$upload', 'ENV', 'toaster', 'Constants', 'UtilityService', 'DateService', 'PricingService', 'ExportService', 'Cart',
+    function ($http, $q, $upload, ENV, toaster, Constants, UtilityService, DateService, PricingService, ExportService, Cart) {
  
     var Service = {
       
@@ -322,8 +322,8 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
-            var cutoffDate = UtilityService.momentObject(data.shipdates[0].cutoffdatetime).format();
-            var now = UtilityService.momentObject().tz("America/Chicago").format();
+            var cutoffDate = DateService.momentObject(data.shipdates[0].cutoffdatetime).format();
+            var now = DateService.momentObject().tz("America/Chicago").format();
 
             var invalidSelectedDate = (now > cutoffDate) ? true : false;
             if(invalidSelectedDate){
@@ -340,9 +340,9 @@ angular.module('bekApp')
       findCutoffDate: function(cart) {
         var shipDateFound;
         if (cart && cart.requestedshipdate) {
-          var selectedShipDate = UtilityService.momentObject(cart.requestedshipdate.substr(0, 10)).format('YYYY-MM-DD');
+          var selectedShipDate = DateService.momentObject(cart.requestedshipdate.substr(0, 10)).format(Constants.dateFormat.yearMonthDayDashes);
           angular.forEach(Service.shipDates, function(shipDate) {
-            if (selectedShipDate == UtilityService.momentObject(shipDate.shipdate).format('YYYY-MM-DD')) {
+            if (selectedShipDate == DateService.momentObject(shipDate.shipdate).format(Constants.dateFormat.yearMonthDayDashes)) {
               shipDateFound = shipDate;
             }
           });

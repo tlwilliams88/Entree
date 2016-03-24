@@ -18,7 +18,7 @@ angular.module('bekApp')
 
       function getRegisteredUsers() {
         $scope.loadingResults = true;
-        MarketingService.getUsersAndMarketingInfo(UtilityService.formatJavascriptDate($scope.fromDate), UtilityService.formatJavascriptDate($scope.toDate)).then(function(users) {
+        MarketingService.getUsersAndMarketingInfo(DateService.formatJavascriptDate($scope.fromDate), DateService.formatJavascriptDate($scope.toDate)).then(function(users) {
           $scope.users = users;
         }).finally(function() {
           $scope.loadingResults = false;
@@ -74,8 +74,8 @@ angular.module('bekApp')
             },
             exportParams: function() {
               var params = {
-                from: UtilityService.formatJavascriptDate($scope.fromDate),
-                to: UtilityService.formatJavascriptDate($scope.toDate)
+                from: DateService.formatJavascriptDate($scope.fromDate),
+                to: DateService.formatJavascriptDate($scope.toDate)
               };
               return '/profile/export/marketinginfo?' + jQuery.param(params);
             }

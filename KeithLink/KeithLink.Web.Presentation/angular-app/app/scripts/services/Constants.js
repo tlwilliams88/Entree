@@ -25,6 +25,14 @@ angular.module('bekApp')
       deletedCartGuids: 'deletedCartGuids'
     },
 
+    dateFormat: {
+     yearMonthDayHourMinute : 'YYYYMMDDHHmm',
+     yearMonthDayDashes : 'YYYY-MM-DD',
+     hourMinuteSecond : 'HHmmss',
+     yearMonthDay : 'YYYYMMDD',
+     minute : 'MM'
+    },
+
     servicelocatorUrl: '../servicelocator', // DEPRECATED
 
     roles: {

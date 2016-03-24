@@ -177,7 +177,8 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId);
         }],
-        originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, validListId, lists, ListService, UtilityService, LocalStorage, ENV) {
+        originalList: ['$stateParams', '$filter', 'validListId', 'lists', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
+         function($stateParams, $filter, validListId, lists, ListService, DateService, Constants, LocalStorage, ENV) {
          
           var last = LocalStorage.getLastList();
           var stillExists = false;
@@ -188,7 +189,7 @@ angular.module('bekApp')
           ListService.lists.forEach(function(list){
             if(last && list.listid === last.listId){
                stillExists = true;
-               var timeoutDate  = UtilityService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+               var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
                if(last.timeset < timeoutDate){         
                   stillExists = false;
                  }
@@ -197,7 +198,7 @@ angular.module('bekApp')
 
           var listIdtoBeUsed = '';
           if(last && stillExists && (!$stateParams.renameList || $stateParams.renameList === 'false')){
-             last.timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
+             last.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
              LocalStorage.setLastList(last);
              listIdtoBeUsed = last.listId;
           }
@@ -339,7 +340,8 @@ angular.module('bekApp')
         validListId: ['$stateParams', 'lists', 'ResolveService', function($stateParams, lists, ResolveService) {
           return ResolveService.validateList($stateParams.listId, 'isworksheet');
         }],
-        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'UtilityService', 'LocalStorage', 'ENV', function($stateParams, $filter, lists, validListId, ListService, UtilityService, LocalStorage, ENV) {
+        selectedList: ['$stateParams', '$filter', 'lists', 'validListId', 'ListService', 'DateService', 'Constants', 'LocalStorage', 'ENV',
+         function($stateParams, $filter, lists, validListId, ListService, DateService, Constants, LocalStorage, ENV) {
              
              var pageSize = $stateParams.pageSize = LocalStorage.getPageSize();
              var params = {size: pageSize, from: 0, sort: []};
@@ -347,7 +349,7 @@ angular.module('bekApp')
           if($stateParams.cartId !== 'New'){
             var allSets = LocalStorage.getLastOrderList();
             var allValidSets = [];           
-            var timeoutDate  = UtilityService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format('YYYYMMDDHHmm');
+            var timeoutDate  = DateService.momentObject().subtract(ENV.lastListStorageTimeout, 'hours').format(Constants.dateFormat.yearMonthDayHourMinute);
             allSets.forEach(function(set){          
               if(set.timeset > timeoutDate){
                 allValidSets.push(set);
@@ -360,7 +362,7 @@ angular.module('bekApp')
                     ListService.lists.forEach(function(list){
                       if(list.listid === set.listId){
                         validListId = set.listId;
-                         set.timeset =  UtilityService.momentObject().format('YYYYMMDDHHmm');
+                         set.timeset =  DateService.momentObject().format(Constants.dateFormat.yearMonthDayHourMinute);
                       }
                     });
                   }

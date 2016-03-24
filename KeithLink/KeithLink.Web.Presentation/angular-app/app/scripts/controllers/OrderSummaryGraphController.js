@@ -8,13 +8,13 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('OrderSummaryGraphController', [ '$scope', '$filter', 'OrderService', 'UtilityService',
-    function($scope, $filter, OrderService, UtilityService) {
+  .controller('OrderSummaryGraphController', [ '$scope', '$filter', 'Constants', 'OrderService', 'DateService',
+    function($scope, $filter, Constants, OrderService, DateService) {
 
-  var from = UtilityService.momentObject().subtract(5, 'months').startOf('month'),
-    to = UtilityService.momentObject().endOf('month');
-  var fromString = from.format('YYYY-MM-DD'),
-    toString = to.format('YYYY-MM-DD');
+  var from = DateService.momentObject().subtract(5, 'months').startOf('month'),
+    to = DateService.momentObject().endOf('month');
+  var fromString = from.format(Constants.dateFormat.yearMonthDayDashes),
+    toString = to.format(Constants.dateFormat.yearMonthDayDashes);
 
   // get order summary data
   $scope.loadingOrderGraph = true;
@@ -23,7 +23,7 @@ angular.module('bekApp')
     var months = [],
       tempDate = from;
     for (var i = 0; i < 6; i++) {
-      months.push(tempDate.format('MM'));
+      months.push(tempDate.format(Constants.dateFormat.minute));
       tempDate.add(1, 'month');
     }
 
