@@ -8,7 +8,7 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('DateService', [function () {
+  .factory('DateService', ['Constants', function (Constants) {
 
     var Service = {
       /**
@@ -36,14 +36,16 @@ angular.module('bekApp')
         if(!date){
           date = '';
         }
-
+        if(typeof date === 'object'){
+          date = moment(date).format(Constants.dateFormat.yearMonthDayDashes)
+        }
         var timezone = (date.length > 10);
 
         if(!formatString && date.indexOf('/') !== -1){
-           formatString = (timezone) ? 'MM/DD/YYYY HH:mm:ss':'MM/DD/YYYY';
+           formatString = (timezone) ? Constants.dateFormat.monthDayYearHourMinuteSecondSlashes : Constants.dateFormat.monthDayYearSlashes;
         }
         else if(!formatString && date.indexOf('-') !== -1){
-           formatString = (timezone) ? 'YYYY-MM-DD HH:mm:ss.SSSS':'YYYY-MM-DD';
+           formatString = (timezone) ? Constants.dateFormat.yearMonthDayHourMinuteSecondDashes : Constants.dateFormat.yearMonthDayDashes;
         }
 
        if(TZ){
