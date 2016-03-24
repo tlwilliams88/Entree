@@ -108,8 +108,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/")]
-        public List<ListModel> List(bool header = false) {
-            return _listServiceRepository.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, header);
+        public OperationReturnModel<List<ListModel>> List(bool header = false) {
+            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
+            try
+            {
+                ret.SuccessResponse = _listServiceRepository.ReadUserList(this.AuthenticatedUser, this.SelectedUserContext, header);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -120,8 +132,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/type/{type}")]
-        public List<ListModel> List(ListType type, bool headerOnly = false) {
-            return _listServiceRepository.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
+        public OperationReturnModel<List<ListModel>> List(ListType type, bool headerOnly = false) {
+            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
+            try
+            {
+                ret.SuccessResponse = _listServiceRepository.ReadListByType(this.AuthenticatedUser, this.SelectedUserContext, type, headerOnly);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
