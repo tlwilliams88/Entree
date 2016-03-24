@@ -285,106 +285,43 @@ angular.module('bekApp')
             $scope.unfiItemCount = 0;
         }
 
+      // append results to existing data (for infinite scroll)
+      if (appendResults) {
+        $scope.products.push.apply($scope.products, data.products);
+      // replace existing data (for sort, filter)
+      } else {
+        $scope.products = data.products;
+        function updateFacetCount(facets, data){
+          facets.available.forEach(function(facet){
+            var facetName = $filter('filter') (data, {name: facet.name})
+            facet.count = 0;
+            if(facetName.length > 0 && facet.name){
+              facet.count = facetName[0].count;
+            }
+          })
+        }
 
-        var selectedBrands = [],
-            selectedCategories = [],
-            selectedDietary = [],
-            selectedSpecs = [],
-            selectedMfr = []
+        updateFacetCount($scope.facets.brands, data.facets.brands);
+        updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
+        updateFacetCount($scope.facets.categories, data.facets.categories);
+        updateFacetCount($scope.facets.dietary, data.facets.dietary);
+        updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
+      }
 
-        // append results to existing data (for infinite scroll)
-        if (appendResults) {
-          $scope.products.push.apply($scope.products, data.products);
-        // replace existing data (for sort, filter)
-        } else {
-          $scope.products = data.products;
-          $scope.facets.brands.available.forEach(function(brand){
-           var brandName = $filter('filter') (data.facets.brands, {name: brand.name})
-           brand.count = 0;
-           if(brandName.length > 0 && brand.name){
-            selectedBrands.push(brandName[0]);
-           }
-          })
-          $scope.facets.categories.available.forEach(function(category){
-          var categoryName = $filter('filter') (data.facets.categories, {name: category.name})
-           category.count = 0;
-           if(categoryName.length > 0 && category.name){
-            selectedCategories.push(categoryName[0]);
-           }
-          })
-          $scope.facets.dietary.available.forEach(function(dietary){
-          var dietaryName = $filter('filter') (data.facets.dietary, {name: dietary.name})
-           dietary.count = 0;
-           if(dietaryName.length > 0 && dietary.name){
-            selectedDietary.push(dietaryName[0]);
-           }
-          })
-          $scope.facets.itemspecs.available.forEach(function(itemSpec){
-          var specName = $filter('filter') (data.facets.itemspecs, {name: itemSpec.name})
-           itemSpec.count = 0;
-           if(specName && specName.length > 0 && itemSpec.name){
-            selectedSpecs.push(specName[0]);
-           }
-          })
-          $scope.facets.mfrname.available.forEach(function(mfr){
-          var mfrName = $filter('filter') (data.facets.mfrname, {name: mfr.name})
-           mfr.count = 0;
-           if(mfrName.length > 0 && mfr.name){
-            selectedMfr.push(mfrName[0]);
-           }
-          })
-          $scope.searchResults(selectedBrands, selectedCategories, selectedDietary, selectedSpecs, selectedMfr, $scope.facets);
-          }
+      setBreadcrumbs(data);
 
-        setBreadcrumbs(data);
+      blockUI.stop();
 
-        blockUI.stop();
-
-        delete $scope.searchMessage;
-        
-        return data.facets;
-        })
-      }, function(error) {
-        $scope.searchMessage = 'Error loading products.';
-      }).finally(function() {
-        $scope.loadingResults = false;
-      });
-    }
-
-  //Apply product count to each facet using temporary array's created in function loadProducts
-   $scope.searchResults = function(selectedBrands, selectedCategories, selectedDietary, selectedSpecs, selectedMfr, availableFacets){
-        
-        availableFacets.brands.available.forEach(function(brand){
-          var brandName = $filter('filter') (selectedBrands, {name: brand.name})
-          if(brandName.length > 0){
-            brand.count = brandName[0].count;
-          }
-        })
-        availableFacets.categories.available.forEach(function(category){
-          var categoryName = $filter('filter') (selectedCategories, {name: category.name})
-          if(categoryName.length > 0){
-          category.count = categoryName[0].count || 0;
-          }
-        })
-        availableFacets.dietary.available.forEach(function(dietary){
-          var dietaryName = $filter('filter') (selectedDietary, {name: dietary.name})
-          if(dietaryName.length > 0) {
-            dietary.count = dietaryName[0].count || 0;
-          }
-        })
-        availableFacets.itemspecs.available.forEach(function(itemSpec){
-          var specName = $filter('filter') (selectedSpecs, {name: itemSpec.name})
-          if(specName.length > 0){
-            itemSpec.count = specName[0].count || 0;
-          }
-        })
-        availableFacets.mfrname.available.forEach(function(mfr){
-          var mfrName = $filter('filter') (selectedMfr, {name: mfr.name})
-          if(mfrName.length > 0){
-            mfr.count = mfrName[0].count || 0;
-          }
-        })
-    }
+      delete $scope.searchMessage;
+      
+      return data.facets;
+      })
+    }, function(error) {
+      $scope.searchMessage = 'Error loading products.';
+    }).finally(function() {
+      $scope.loadingResults = false;
+    });
+  }
 
     /*************
     FACETS
@@ -396,16 +333,11 @@ angular.module('bekApp')
       $scope.facets.dietary.selected = [];
       $scope.facets.itemspecs.selected = [];
       loadProducts().then(refreshFacets);
+      $scope.noFiltersSelected = true;
     }
 
-    $scope.clearFacetsButton = function() {
-      $scope.facets.categories.selected = [];
-      $scope.facets.brands.selected = [];
-      $scope.facets.mfrname.selected = [];
-      $scope.facets.dietary.selected = [];
-      $scope.facets.itemspecs.selected = [];
-      loadProducts().then(refreshFacets);
-      $scope.noFiltersSelected = true;
+    $scope.clearFacets = function() {
+      clearFacets();
     }
 
     function refreshFacets(facets) {
