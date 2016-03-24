@@ -211,8 +211,7 @@ angular.module('bekApp')
           displayText: $stateParams.deptName
         };
         breadcrumbs.unshift($scope.featuredBreadcrumb);
-        $analytics.eventTrack('Search Department', {  category: 'Department', label: $stateParams.deptName });
-
+        
         $scope.featuredBreadcrumb = {
           click: clearFacets,
           clickData: '',
@@ -458,6 +457,9 @@ angular.module('bekApp')
         templateUrl: 'views/modals/exportmodal.html',
         controller: 'ExportModalController',
         resolve: {
+          location: function() {
+            return {category:'Search', action:'Export Search Results'}
+          },
           headerText: function () {
             return 'Product Catalog (limited to 500 items)';
           },

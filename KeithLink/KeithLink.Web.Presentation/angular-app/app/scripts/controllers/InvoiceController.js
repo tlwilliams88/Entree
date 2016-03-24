@@ -564,6 +564,9 @@ angular.module('bekApp')
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
       resolve: {
+        location: function() {
+          return {category:'Invoices', action:'Export Invoices'}
+        },
         headerText: function () {
           return 'Invoices';
         },

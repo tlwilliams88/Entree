@@ -49,7 +49,7 @@ angular.module('bekApp')
         if(reports && reports.length > 0){
           var lastIndex = reports.length - 1;
           if($stateParams.listid){
-            if($stateParams.listid === 'newReport'){ 
+            if($stateParams.listid === 'newReport'){
             //Call save function to create new report             
               $scope.saveReport($scope.report);
               $scope.showMoreReportNames = ((lastIndex + 1) > $scope.numberReportNamesToShow) ? true : false;
@@ -218,6 +218,7 @@ angular.module('bekApp')
         if (report.listid) {
           promise = List.update({}, report).$promise;
         } else {
+          $analytics.eventTrack('Run Inventory Valuation', {  category: 'Reports'});
           promise = List.save({ type: 'InventoryValuation' }, report).$promise;
           creatingList = true;
         }

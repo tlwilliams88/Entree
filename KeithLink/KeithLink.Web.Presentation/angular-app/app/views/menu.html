@@ -140,6 +140,9 @@
           </div>
           <div ng-click="isSidebarOpen = false">
           <a
+            analytics-on 
+            analytics-category="External Applications" 
+            analytics-event="Emenumanage"
             ng-if="::userProfile.ispowermenucustomer"
             ng-href="{{userProfile.powermenuloginurl}}"
             target="_blank" >
@@ -149,6 +152,9 @@
             </li>
           </a>
           <a
+            analytics-on 
+            analytics-category="External Applications" 
+            analytics-event="Kbit"
             ng-if="userProfile.iskbitcustomer"
             ng-click="openExternalLink(cognosUrl)">
             <li>
