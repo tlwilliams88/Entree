@@ -12,6 +12,12 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
     public static class DependencyMapFactory
     {
+        public static ContainerBuilder BuildInternalServiceContainer()
+        {
+            ContainerBuilder builder = new ContainerBuilder();
+            AutofacDependencyMapProvider.AddOtherInternalServiceDependencies(builder);
+            return builder;
+        }
         public static ContainerBuilder BuildWebApiContainer()
         {
             ContainerBuilder builder = new ContainerBuilder();
