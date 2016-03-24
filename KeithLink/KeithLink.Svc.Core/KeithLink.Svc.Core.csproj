@@ -213,6 +213,7 @@
     <Compile Include="Interface\Export\IModelExportLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingLogic.cs" />
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
+    <Compile Include="Interface\Invoices\ITermLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
     <Compile Include="Interface\Messaging\IMessagingLogic.cs" />
@@ -390,10 +391,8 @@
     <Compile Include="Interface\Orders\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Orders\Confirmations\IConfirmationQueueRepository.cs" />
     <Compile Include="Interface\IImportLogic.cs" />
-    <Compile Include="Interface\Invoices\IInternalInvoiceLogic.cs" />
     <Compile Include="Interface\Invoices\IInvoiceItemRepository.cs" />
     <Compile Include="Interface\Invoices\IInvoiceRepository.cs" />
-    <Compile Include="Interface\Invoices\IInvoiceServiceRepository.cs" />
     <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IListCacheRepository.cs" />
     <Compile Include="Interface\Lists\IListItemRepository.cs" />

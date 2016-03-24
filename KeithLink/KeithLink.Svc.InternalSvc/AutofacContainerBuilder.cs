@@ -35,6 +35,7 @@ using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.Configurations;
 using KeithLink.Svc.Impl.Logic.ETL;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Invoices;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
@@ -79,7 +80,6 @@ namespace KeithLink.Svc.InternalSvc
             var builder = new ContainerBuilder();
 
             builder.RegisterType<ETLService>();
-            builder.RegisterType<InvoiceService>();
             builder.RegisterType<ListServcie>();
             builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
@@ -127,7 +127,6 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
-            builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
             builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
             //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
             //builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
@@ -195,7 +194,7 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
 
 			builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
-			builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
+            builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             // customer bank - JA - 11/13<
             builder.RegisterType<OnlinePaymentService>();

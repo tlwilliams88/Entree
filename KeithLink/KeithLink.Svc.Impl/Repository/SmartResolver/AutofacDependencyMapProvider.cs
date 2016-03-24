@@ -282,7 +282,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<InternalSpecialOrderLogic>().As<IInternalSpecialOrderLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
-            builder.RegisterType<InternalInvoiceLogic>().As<IInternalInvoiceLogic>();
             builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
             //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
             //builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
@@ -352,7 +351,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             //builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
             builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
-            builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 
             // customer bank - JA - 11/13<
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();

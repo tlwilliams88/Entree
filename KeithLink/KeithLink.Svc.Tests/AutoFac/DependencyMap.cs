@@ -1,8 +1,6 @@
-﻿#region Using
-using KeithLink.Common.Core.AuditLog;
+﻿using KeithLink.Common.Core.AuditLog;
 using KeithLink.Common.Core.Logging;
 using KeithLink.Common.Impl.Logging;
-
 
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
@@ -28,9 +26,11 @@ using KeithLink.Svc.Impl;
 using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
+using KeithLink.Svc.Impl.Logic.Invoices;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.Orders;
+using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
 
 using KeithLink.Svc.Impl.Repository.BranchSupports;
@@ -62,9 +62,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using KeithLink.Svc.Impl.Logic.Profile;
-
-#endregion
 
 namespace KeithLink.Svc.Test
 {
@@ -105,6 +102,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
+            builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
 			//*******************************************
 			//Repositories
@@ -140,6 +138,9 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
 
+            // invoice
+            builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
+
             //Orders
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
@@ -158,7 +159,6 @@ namespace KeithLink.Svc.Test
             //Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
 
             // messaging
@@ -191,6 +191,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
+            builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             //*******************************************
             //Repositories
@@ -226,6 +227,9 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
 
+            // invoice
+            builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
+
             //Orders
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
@@ -245,7 +249,6 @@ namespace KeithLink.Svc.Test
             //Replace
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<NoInvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
 
             // messaging

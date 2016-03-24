@@ -115,6 +115,9 @@ namespace KeithLink.Svc.WebApi {
             // DSR
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
 
+            // invoices
+            builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
+
             // lists
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
 
@@ -174,6 +177,9 @@ namespace KeithLink.Svc.WebApi {
             // DSR
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
+            // invoices
+            builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
+
             // lists
             builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
 
@@ -220,9 +226,7 @@ namespace KeithLink.Svc.WebApi {
             builder.RegisterType<Repository.Lists.ListServiceRepositoryImpl>().As<IListServiceRepository>();
             builder.RegisterType<Repository.OnlinePayments.OnlinePaymentServiceRepositoryImpl>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 
-            builder.RegisterType<com.benekeith.InvoiceService.InvoiceServiceClient>().As<com.benekeith.InvoiceService.IInvoiceService>();
             builder.RegisterType<com.benekeith.ListService.ListServcieClient>().As<com.benekeith.ListService.IListServcie>();
             builder.RegisterType<com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
             builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
