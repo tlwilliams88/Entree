@@ -61,12 +61,23 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("list/export/{listId}")]
         public HttpResponseMessage ExportList(long listId, ExportRequestModel exportRequest) {
-            var list = _listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
+            HttpResponseMessage ret;
+            try
+            {
+                var list = _listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId);
 
-            if (exportRequest.Fields != null)
-                _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,
-                                                               exportRequest.Fields, exportRequest.SelectedType);
-            return ExportModel<ListItemModel>(list.Items, exportRequest);
+                if (exportRequest.Fields != null)
+                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,
+                                                                   exportRequest.Fields, exportRequest.SelectedType);
+                ret = ExportModel<ListItemModel>(list.Items, exportRequest);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _elRepo.WriteErrorLog("List Export", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -76,8 +87,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/export/{listId}")]
-        public ExportOptionsModel ExportList(long listId) {
-            return _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, listId);
+        public OperationReturnModel<ExportOptionsModel> ExportList(long listId) {
+            OperationReturnModel<ExportOptionsModel> ret = new OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                ret.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, listId);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("Recommended List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -156,15 +179,26 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/{listId}")]
-        public ListModel List(long listId, bool includePrice = true) {
-            var list = _listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId, includePrice);
+        public OperationReturnModel<ListModel> List(long listId, bool includePrice = true) {
+            OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
+            try
+            {
+                var list = _listServiceRepository.ReadList(this.AuthenticatedUser, this.SelectedUserContext, listId, includePrice);
 
-            if (list != null)
-                list.ReadOnly = (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.RecommendedItems) ||
-                    (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.Mandatory);
+                if (list != null)
+                    list.ReadOnly = (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.RecommendedItems) ||
+                        (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.Mandatory);
 
-            return list;
-
+                ret.SuccessResponse = list;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -173,8 +207,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/labels")]
-        public List<string> ListLabels() {
-            return _listServiceRepository.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
+        public OperationReturnModel<List<string>> ListLabels() {
+            OperationReturnModel<List<string>> ret = new OperationReturnModel<List<string>>();
+            try
+            {
+                var list = _listServiceRepository.ReadListLabels(this.AuthenticatedUser, this.SelectedUserContext);
+                ret.SuccessResponse = list;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -183,8 +230,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/reminders")]
-        public List<ListModel> ListReminders() {
-            return _listServiceRepository.ReadReminders(this.AuthenticatedUser, this.SelectedUserContext);
+        public OperationReturnModel<List<ListModel>> ListReminders() {
+            OperationReturnModel<List<ListModel>> ret = new OperationReturnModel<List<ListModel>>();
+            try
+            {
+                var list = _listServiceRepository.ReadReminders(this.AuthenticatedUser, this.SelectedUserContext);
+                ret.SuccessResponse = list;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -196,8 +256,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/")]
-        public NewListItem List(ListModel list, [FromUri] ListType type = ListType.Custom) {
-            return new NewListItem() { Id = _listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, type) };
+        public OperationReturnModel<NewListItem> List(ListModel list, [FromUri] ListType type = ListType.Custom) {
+            OperationReturnModel<NewListItem> ret = new OperationReturnModel<NewListItem>();
+            try
+            {
+                var nlist = new NewListItem() { Id = _listServiceRepository.CreateList(this.AuthenticatedUser.UserId, this.SelectedUserContext, list, type) };
+                ret.SuccessResponse = nlist;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
 
@@ -209,8 +282,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/{listId}/item")]
-        public NewListItem AddItem(long listId, ListItemModel newItem) {
-            return new NewListItem() { Id = _listServiceRepository.AddItem(listId, newItem) };
+        public OperationReturnModel<NewListItem> AddItem(long listId, ListItemModel newItem) {
+            OperationReturnModel<NewListItem> ret = new OperationReturnModel<NewListItem>();
+            try
+            {
+                var nlist = new NewListItem() { Id = _listServiceRepository.AddItem(listId, newItem) };
+                ret.SuccessResponse = nlist;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -222,8 +308,26 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("list/{listId}/items")]
-        public ListModel AddItems(long listId, List<ListItemModel> newItems, bool allowDuplicates = false) {
-            return _listServiceRepository.AddItems(this.AuthenticatedUser, this.SelectedUserContext, listId, newItems);
+        public OperationReturnModel<ListModel> AddItems(long listId, List<ListItemModel> newItems, bool allowDuplicates = false) {
+            OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
+            try
+            {
+                var list = _listServiceRepository.AddItems(this.AuthenticatedUser, this.SelectedUserContext, listId, newItems);
+
+                if (list != null)
+                    list.ReadOnly = (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.RecommendedItems) ||
+                        (!this.AuthenticatedUser.IsInternalUser && list.Type == ListType.Mandatory);
+
+                ret.SuccessResponse = list;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
