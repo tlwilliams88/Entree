@@ -267,8 +267,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpGet]
         [AllowAnonymous]
         [ApiKeyedRoute("catalog/divisions")]
-        public List<Division> GetDivisions() {
-            return _catalogLogic.GetDivisions();
+        public OperationReturnModel<List<Division>> GetDivisions() {
+            OperationReturnModel<List<Division>> ret = new OperationReturnModel<List<Division>>();
+            try
+            {
+                ret.SuccessResponse = _catalogLogic.GetDivisions();
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("GetDivisions", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -277,8 +289,20 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("catalog/export")]
-        public ExportOptionsModel ExportProducts() {
-            return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, ExportType.Products, 0);
+        public OperationReturnModel<ExportOptionsModel> ExportProducts() {
+            OperationReturnModel<ExportOptionsModel> ret = new OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                ret.SuccessResponse = _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, ExportType.Products, 0);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("ExportProducts", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -292,15 +316,26 @@ namespace KeithLink.Svc.WebApi.Controllers {
 		[HttpPost]
 		[ApiKeyedRoute("catalog/{catalogType}/export/{searchTerms}/products")]
 		public HttpResponseMessage ProductSearchExport(string catalogType, string searchTerms, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest) {
-			searchModel.Size = 500;
-            searchModel.CatalogType = catalogType;
+            HttpResponseMessage ret;
+            try
+            {
+                searchModel.Size = 500;
+                searchModel.CatalogType = catalogType;
 
-            ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
-			if (exportRequest.Fields != null)
-				_exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-		
-            return ExportModel<Product>(prods.Products, exportRequest);	
-		}
+                ProductsReturn prods = _catalogLogic.GetProductsBySearch(this.SelectedUserContext, searchTerms, searchModel, this.AuthenticatedUser);
+                if (exportRequest.Fields != null)
+                    _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+
+                ret = ExportModel<Product>(prods.Products, exportRequest);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _elRepo.WriteErrorLog("ProductSearchExport", ex);
+            }
+            return ret;
+        }
 
         /// <summary>
         /// Export products for a Category
@@ -312,13 +347,24 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("catalog/export/category/{catalogType}/{categoryId}/products")]
         public HttpResponseMessage GetProductsByCategoryIdExport(string catalogType, string categoryId, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest) {
-            searchModel.Size = 500;
-            searchModel.CatalogType = catalogType;
+            HttpResponseMessage ret;
+            try
+            {
+                searchModel.Size = 500;
+                searchModel.CatalogType = catalogType;
 
-            ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
-            if (exportRequest.Fields != null)
-                _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-            return ExportModel<Product>(prods.Products, exportRequest);
+                ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
+                if (exportRequest.Fields != null)
+                    _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+                ret = ExportModel<Product>(prods.Products, exportRequest);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _elRepo.WriteErrorLog("GetProductsByCategoryIdExport", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -331,16 +377,28 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("catalog/export/brands/house/{brandControlLabel}")]
         public HttpResponseMessage GetProductsByHouseBrandExport(string brandControlLabel, [FromUri] SearchInputModel searchModel, ExportRequestModel exportRequest) {
-            searchModel.Size = 500;
+            HttpResponseMessage ret;
+            try
+            {
+                searchModel.Size = 500;
 
-            ProductsReturn prods = _catalogLogic.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
+                ProductsReturn prods = _catalogLogic.GetHouseProductsByBranch(this.SelectedUserContext, brandControlLabel, searchModel, this.AuthenticatedUser);
 
-            if (exportRequest.Fields != null){
-                _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, 
-                                                                                        exportRequest.Fields, exportRequest.SelectedType);
+                if (exportRequest.Fields != null)
+                {
+                    _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom,
+                                                                                            exportRequest.Fields, exportRequest.SelectedType);
+                }
+
+                ret = ExportModel<Product>(prods.Products, exportRequest);
             }
-
-            return ExportModel<Product>(prods.Products, exportRequest);
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _elRepo.WriteErrorLog("GetProductsByHouseBrandExport", ex);
+            }
+            return ret;
         }
         #endregion
     }
