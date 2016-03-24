@@ -94,7 +94,14 @@ angular.module('bekApp')
         },
 
         searchCatalog: function(type, id, catalogType, params) {
-          
+          if(type === 'search'){
+            if(params.dept === ''){
+              params.dept = 'All';
+            }
+            $analytics.eventTrack('Search Department', {  category: 'Search', label: params.dept });
+            $analytics.eventTrack('Search Terms', {  category: 'Search', label: id });
+          }
+
           var url = Service.getSearchUrl(type, id, catalogType);
           
           var config = {

@@ -63,6 +63,9 @@ angular.module('bekApp')
           templateUrl: 'views/modals/exportmodal.html',
           controller: 'ExportModalController',
           resolve: {
+            location: function() {
+              return {category:'Marketing', action:'Export Registered Users'}
+            },
             headerText: function() {
               return 'Registered Users';
             },

@@ -51,6 +51,9 @@ angular.module('bekApp')
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
       resolve: {
+        location: function() {
+          return {category:'Orders', action:'Export Order Items'}
+        },
         headerText: function () {
           return 'Order #' + order.ordernumber;
         },

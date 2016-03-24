@@ -97,7 +97,10 @@ angular.module('bekApp')
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
-      resolve: {
+      resolve: {        
+        location: function() {
+          return {category:'Transactions', action:'Export Pending Transactions'}
+        },
         headerText: function () {
           return 'Transactions';
         },

@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('PrintOptionsModalController', ['$scope', '$modalInstance', 'PrintService', 'ListService', 'CartService', 'list', 'cart', 'pagingModelOptions',
-  function ($scope, $modalInstance, PrintService, ListService, CartService, list, cart, pagingModelOptions) {
+.controller('PrintOptionsModalController', ['$scope', '$analytics', '$modalInstance', 'PrintService', 'ListService', 'CartService', 'list', 'cart', 'pagingModelOptions',
+  function ($scope, $analytics, $modalInstance, PrintService, ListService, CartService, list, cart, pagingModelOptions) {
 
   $scope.list = list;
   if(cart){
@@ -32,6 +32,7 @@ angular.module('bekApp')
   // };
 
   $scope.printLabels = function(list, labelOption) {
+    $analytics.eventTrack('Print List', {  category: 'Lists', label: 'Print Labels' });
     ListService.printBarcodes(list.listid);
   };
 
@@ -49,10 +50,12 @@ angular.module('bekApp')
      pagingModelOptions = $scope.originalPagingModel;
     }
     if(!$scope.printingOrder){
+      $analytics.eventTrack('Print List', {  category: 'Lists', label: 'Print Page' });
       ListService.printList(list.listid, landscape, showparvalues, pagingModelOptions, shownotes);
     }
     else{
-    CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
+      $analytics.eventTrack('Print Order', {  category: 'Add To Order'});
+      CartService.printOrder(list.listid, $scope.cart.id, landscape, showparvalues, pagingModelOptions, shownotes);
     }
   };
 

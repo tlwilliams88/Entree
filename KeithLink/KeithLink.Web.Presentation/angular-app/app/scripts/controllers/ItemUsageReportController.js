@@ -8,8 +8,8 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemUsageReportController', ['$scope', '$state', 'Constants', 'ReportService', 'DateService', '$modal', 
-    function($scope, $state, Constants, ReportService, DateService, $modal) {
+  .controller('ItemUsageReportController', ['$scope', '$analytics', '$state', 'Constants', 'ReportService', 'DateService', '$modal', 
+    function($scope, $analytics, $state, Constants, ReportService, DateService, $modal) {
   
 
   $scope.itemusagequery = {};
@@ -26,6 +26,7 @@ angular.module('bekApp')
 
 
   function loadItemUsage() {  
+    $analytics.eventTrack('Run Item Usage', {  category: 'Reports'});
     $scope.loadingResults = true;
     ReportService.itemUsageParams = {
       from: $scope.itemusagequery.fromDate,
@@ -108,6 +109,9 @@ angular.module('bekApp')
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
       resolve: {
+        location: function() {
+          return {category:'Reports', action:'Export Item Usage'}
+        },
         headerText: function() {
           return 'Item Usage';
         },
