@@ -86,8 +86,19 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("list/recommended")]
-        public List<RecommendedItemModel> ReadRecommendedItemsList() {
-            return _listServiceRepository.ReadRecommendedItemsList(this.SelectedUserContext);
+        public OperationReturnModel<List<RecommendedItemModel>> ReadRecommendedItemsList() {
+            OperationReturnModel<List<RecommendedItemModel>> ret = new OperationReturnModel<List<RecommendedItemModel>>();
+            try
+            {
+                ret.SuccessResponse = _listServiceRepository.ReadRecommendedItemsList(this.SelectedUserContext);
+                ret.IsSuccess = true;
+            }catch(Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("Recommended List", ex);
+            }
+            return ret;
         }
 
         /// <summary>
