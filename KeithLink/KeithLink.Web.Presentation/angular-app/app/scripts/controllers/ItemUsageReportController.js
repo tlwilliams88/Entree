@@ -17,8 +17,6 @@ angular.module('bekApp')
   $scope.totalCost = 0;
 
   var initialFromDate = DateService.momentObject().subtract(6, 'months');
-//  initialFromDate = initialFromDate
-  //initialFromDate = new Date(initialFromDate);
 
   $scope.itemusagequery.fromDate = initialFromDate.format();
   $scope.itemusagequery.toDate = DateService.momentObject().format();
@@ -28,7 +26,6 @@ angular.module('bekApp')
 
 
   function loadItemUsage() {  
-  console.log('loadItemUsage')  
     $scope.loadingResults = true;
     ReportService.itemUsageParams = {
       from: $scope.itemusagequery.fromDate,
@@ -49,7 +46,6 @@ angular.module('bekApp')
   }
 
   $scope.itemUsageForm.updateItems = function() {
-    console.log('itemUsageForm.updateItems')
     loadItemUsage();
   };
 
@@ -61,7 +57,6 @@ angular.module('bekApp')
   // };
 
   $scope.openInventoryModal = function() {
-    console.log('openInventoryModal')
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/cartquickaddmodal.html',
       controller: 'CartQuickAddModalController'
@@ -70,7 +65,6 @@ angular.module('bekApp')
   };
 
   $scope.sortTable = function(field) {
-    console.log('sortTable')
     $scope.itemsPerPage = 50;
     $scope.itemIndex = 0;
 
@@ -95,7 +89,6 @@ angular.module('bekApp')
   };
 
   function formatJavascriptDate(date) {
-    console.log('formatJavascriptDate')
     var day = date.getDate().toString(),
       month = (date.getMonth() + 1).toString(),
       year = date.getFullYear();
@@ -111,7 +104,6 @@ angular.module('bekApp')
   }
 
   $scope.openExportModal = function() {
-    console.log('openExportModal')
     var modalInstance = $modal.open({
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
