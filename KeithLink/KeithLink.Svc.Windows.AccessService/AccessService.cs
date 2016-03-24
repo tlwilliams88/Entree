@@ -23,8 +23,8 @@ namespace KeithLink.Svc.Windows.AccessService {
         #endregion
 
         #region ctor
-        public AccessService(IContainer container) {
-            _container = container;
+        public AccessService() {
+            _container = Impl.Repository.Autofac.DependencyMapFactory.BuildAccessServiceContainer().Build();
 
             _log = _container.Resolve<IEventLogRepository>();
             //_requestLogic = container.Resolve<IAccessRequestLogic>();

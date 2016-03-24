@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using System.Text;
 
-namespace KeithLink.Common.Core.Email {
+namespace KeithLink.Common.Impl.Email {
     public static class NewUserEmail {
         #region attributes
         private const string EMAIL_WELCOME_SUBJECT = "Welcome to Entree - Ben E. Keith's Premier ordering system!";

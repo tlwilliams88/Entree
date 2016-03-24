@@ -100,7 +100,6 @@
     <Compile Include="AccessService.Designer.cs">
       <DependentUpon>AccessService.cs</DependentUpon>
     </Compile>
-    <Compile Include="AutoFacContainerBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>

@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using System.Text;
 
-namespace KeithLink.Common.Core.Email {
+namespace KeithLink.Common.Impl.Email {
     public static class ExceptionEmail {
         #region attributes
         private const string EMAIL_FAILURE_SUBJECT = "Exception encountered in KeithLink Order Service";

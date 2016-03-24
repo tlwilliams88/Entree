@@ -79,7 +79,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 }
                 catch (Exception ex)
                 {
-                    KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, subject: "Exception processing InternalSpecialOrderLogic.ListenForQueueMessagesInTask");
+                    KeithLink.Common.Impl.Email.ExceptionEmail.Send(ex, subject: "Exception processing InternalSpecialOrderLogic.ListenForQueueMessagesInTask");
 
                     _log.WriteErrorLog("Error in InternalSpecialOrderLogic.ListenForQueueMessagesInTask ", ex);
                 }
