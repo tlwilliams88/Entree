@@ -158,9 +158,7 @@
   <div class="row">
     <!-- Available Lists -->
     <div class="col-sm-2 hidden-xs hidden-sm hidden-print lists" ng-if="resized">
-      <div class="row">
-        <div class="col-sm-12">
-          <div class="custom-lists" sticky>
+
             <h3>Your Lists</h3>
 
             <div class="btn-group-vertical list-names text-blue">
@@ -276,19 +274,19 @@
                   ng-click="addItemsToList(list)" 
                   ng-repeat="list in ::lists | sortLists track by list.listid" 
                   ng-if="::(list.permissions.canAddItems && selectedList.listid !== list.listid && !list.permissions.specialDisplay)">
-                  <a href="">{{::list.name}}</a>
+                  <a href="">{{list.name}}</a>
                 </li>
                 <li ng-click="createListFromMultiSelect()"><a>Create New List...</a></li>
               </ul>
             </div>
             <!-- Edit Labels -->
-            <div class="btn-group" dropdown is-open="multiSelect.showLabels" ng-if="::selectedList.permissions.canEditLabels">
+            <div class="btn-group" dropdown is-open="multiSelect.showLabels" ng-if="selectedList.permissions.canEditLabels">
               <button type="button" class="multi-action-btn btn btn-default btn-lg dropdown-toggle">
                 <span class="icon-tag large-icon text-light"></span>
                 <span class="icon-arrow-down6 text-light"></span>
               </button>
               <ul class="dropdown-menu" role="menu">
-                <li ng-repeat="label in ::labels track by label" ng-click="addLabels(label)"><a>{{::label}}</a></li>
+                <li ng-repeat="label in labels track by label" ng-click="addLabels(label)"><a>{{label}}</a></li>
                 <li ng-click="multiSelect.addingNewLabel=true; multiSelect.showLabels=false;"><a>Add New Label...</a></li>
               </ul>
             </div>
@@ -567,7 +565,7 @@
               </td>
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
-                <ng-form name="parlevelForm">
+                <form name="parlevelForm">
                    <input                    
                     id="parlevel" 
                     name="parlevel"                    
@@ -578,7 +576,7 @@
                     ng-model="item.parlevel"   
                     ng-blur="initParLvl(item)"
                     class="text-right input-number bek-no-drag tabstop" />
-                </ng-form>
+                </form>
               </td>
 
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" style="padding-top:12px;" ng-if="(selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel)">
@@ -639,7 +637,7 @@
               <!-- Notes -->
               <td class="notes-col hidden-drag drop-column">
                 {{item.notes}}
-              </td>               
+              </td>             
               <td class="hidden-mobile-visible-print">
 <!--                  loading-->
               <!-- Specialty Catalog -->
@@ -742,7 +740,7 @@
               </td>
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
-                <ng-form name="parlevelForm">
+                <form name="parlevelForm">
                    <input                    
                     id="parlevel" 
                     name="parlevel"                    
@@ -753,7 +751,7 @@
                     ng-model="item.parlevel"   
                     ng-blur="initParLvl(item)"
                     class="text-right input-number bek-no-drag tabstop" />
-                </ng-form>
+                </form>
               </td>
 
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" style="padding-top:12px;" ng-if="(selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel)">

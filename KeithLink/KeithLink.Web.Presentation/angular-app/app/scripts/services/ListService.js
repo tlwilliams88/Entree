@@ -174,12 +174,12 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-          return List.query(params).$promise.then(function(lists) {
-            lists.forEach(function(list) {
+          return List.get(params).$promise.then(function(lists) {
+            lists.successResponse.forEach(function(list) {
               updateListPermissions(list);
             });
-            angular.copy(lists, Service.lists);
-            return lists;
+            angular.copy(lists.successResponse, Service.lists);
+            return lists.successResponse;
           });
         },
 
@@ -276,7 +276,7 @@ angular.module('bekApp')
 
             Service.sortObject = params.sort;
             return $http.post('/list/' + listId, params).then(function(response) {
-              var list = response.data;
+              var list = response.data.successResponse;
               if (!list) {
                 return $q.reject('No list found.');
               }
