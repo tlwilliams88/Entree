@@ -1,5 +1,4 @@
-﻿
-using KeithLink.Common.Core.AuditLog;
+﻿using KeithLink.Common.Core.AuditLog;
 using KeithLink.Common.Core.Logging;
 
 using KeithLink.Common.Impl.AuditLog;
@@ -82,6 +81,7 @@ using KeithLink.Svc.Impl.Repository.SiteCatalog;
 //using KeithLink.Svc.WebApi.Repository.Profile;
 
 using Autofac;
+using Autofac.Features.Indexed;
 using Autofac.Integration.WebApi;
 
 using System;
@@ -89,17 +89,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Autofac.Features.Indexed;
 
-namespace KeithLink.Svc.Impl.Repository.Autofac
+namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
-    public static class DependencyMapFactory
+    internal static class AutofacDependencyMapProvider
     {
-        public static ContainerBuilder GetWebApiContainer()
+        internal static void AddOtherWebApiDependencies(ContainerBuilder builder)
         {
-            // Create the container builder.
-            ContainerBuilder builder = new ContainerBuilder();
-
             // Register the Web API controllers.
             builder.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
 
@@ -170,7 +166,7 @@ namespace KeithLink.Svc.Impl.Repository.Autofac
             builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
             //builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();  // this is also found in the DEMO preprocessor directive later
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
-//            builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
+            //            builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
             builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
@@ -252,29 +248,12 @@ namespace KeithLink.Svc.Impl.Repository.Autofac
             // removed
             //builder.RegisterType<Repository.Configurations.ExportSettingServiceRepositoryImpl>().As<IExportSettingServiceRepository>();
             //builder.RegisterType<Repository.Configurations.ExternalCatalogServiceRepositoryImpl>().As<IExternalCatalogServiceRepository>();
-
-            // Build the container.
-            return builder;
         }
-        public static ContainerBuilder BuildQueueSvcContainer()
+        internal static void AddOtherQueueServiceDependencies(ContainerBuilder builder)
         {
-
-            ContainerBuilder builder = new ContainerBuilder();
-
-#if DEMO
-				builder.RegisterType<DemoStagingRepositoryImpl>().As<IStagingRepository>();
-				builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#else
-            builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#endif
-
-
             builder.RegisterType<CatalogInternalRepositoryImpl>().As<ICatalogInternalRepository>();
             builder.RegisterType<CatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.ETL.ICatalogLogic>();
 
-            builder.RegisterType<ElasticSearchRepositoryImpl>().As<IElasticSearchRepository>();
-            builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<InternalBasketRepository>().As<IInternalBasketRepository>();
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
@@ -416,46 +395,9 @@ namespace KeithLink.Svc.Impl.Repository.Autofac
             builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
             builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
-
-            return builder;
         }
-        public static ContainerBuilder BuildAccessServiceContainer()
+        internal static void AddOtherOrderServiceDependencies(ContainerBuilder builder)
         {
-            ContainerBuilder builder = new ContainerBuilder();
-
-            builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
-
-#if DEMO
-				builder.RegisterType<DemoStagingRepositoryImpl>().As<IStagingRepository>();
-				builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#else
-            builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#endif
-
-            // PowerMenu
-            builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
-            builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
-
-
-            // Service
-            builder.RegisterType<AccessRequestLogicImpl>().As<IAccessRequestLogic>();
-            builder.RegisterType<KbitRequestLogicImpl>().As<IKbitRequestLogic>();
-            builder.RegisterType<KbitRepositoryImpl>().As<IKbitRepository>();
-
-
-            return builder;
-        }
-        public static ContainerBuilder BuildOrderServiceContainer()
-        {
-            ContainerBuilder builder = new ContainerBuilder();
-
-            builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
-
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-
-            builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
-
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
@@ -470,8 +412,43 @@ namespace KeithLink.Svc.Impl.Repository.Autofac
             builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+        }
 
-            return builder;
+        internal static void AddOtherAccessServiceDependencies(ContainerBuilder builder)
+        {
+            // PowerMenu
+            builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
+            builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
+
+
+            // Service
+            builder.RegisterType<AccessRequestLogicImpl>().As<IAccessRequestLogic>();
+            builder.RegisterType<KbitRequestLogicImpl>().As<IKbitRequestLogic>();
+            builder.RegisterType<KbitRepositoryImpl>().As<IKbitRepository>();
+        }
+        internal static void AddGenericQueueDependency(ContainerBuilder builder)
+        {
+            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+        }
+
+        internal static void AddElasticSearchDependency(ContainerBuilder builder)
+        {
+            builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
+        }
+
+        internal static void AddEventLogDependency(ContainerBuilder builder)
+        {
+            builder.Register(c => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
+        }
+        internal static void AddStagingDependency(ContainerBuilder builder)
+        {
+#if DEMO
+				builder.RegisterType<DemoStagingRepositoryImpl>().As<IStagingRepository>();
+				builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+#else
+            builder.RegisterType<StagingRepositoryImpl>().As<IStagingRepository>();
+            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+#endif
         }
     }
 }

@@ -6,21 +6,16 @@ using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Models.Orders.History;
-using KeithLink.Svc.Core.Models.Orders.Confirmations;
 using KeithLink.Svc.Impl;
 
 using Autofac;
 using Newtonsoft.Json;
 using System;
-using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Collections.Generic;
-using KeithLink.Svc.Core.Models.Generated;
 
 namespace KeithLink.Svc.Windows.OrderService
 {
@@ -63,7 +58,7 @@ namespace KeithLink.Svc.Windows.OrderService
         #region ctor
         public OrderService()
         {
-            _diContainer = Impl.Repository.Autofac.DependencyMapFactory.BuildOrderServiceContainer().Build();
+            _diContainer = Impl.Repository.SmartResolver.DependencyMapFactory.BuildOrderServiceContainer().Build();
 
             InitializeComponent();
 
