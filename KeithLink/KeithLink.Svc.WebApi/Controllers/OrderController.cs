@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Cart;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.Cart;
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
@@ -30,18 +31,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         private readonly IShoppingCartLogic _shoppingCartLogic;
 		private readonly IOrderServiceRepository _orderServiceRepository;
 		private readonly IExportSettingLogic _exportLogic;
+        private readonly IEventLogRepository _log;
         #endregion
 
         #region ctor
         public OrderController(IShoppingCartLogic shoppingCartLogic, IOrderLogic orderLogic, IShipDateRepository shipDayRepo,
 							   IOrderHistoryRequestLogic historyRequestLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository, 
-                               IExportSettingLogic exportSettingsLogic) : base(profileLogic) {
+                               IExportSettingLogic exportSettingsLogic, IEventLogRepository logRepo) : base(profileLogic) {
             _historyRequestLogic = historyRequestLogic;
 			_orderLogic = orderLogic;
             _shipDayService = shipDayRepo;
 			_shoppingCartLogic = shoppingCartLogic;
 			_orderServiceRepository = orderServiceRepository;
 			_exportLogic = exportSettingsLogic;
+            _log = logRepo;
         }
         #endregion
 
@@ -52,8 +55,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/shipdays")]
-        public ShipDateReturn GetShipDays() {
-            return _shipDayService.GetShipDates(this.SelectedUserContext);
+        public Models.OperationReturnModel<ShipDateReturn> GetShipDays() {
+            Models.OperationReturnModel<ShipDateReturn> retVal = new Models.OperationReturnModel<ShipDateReturn>();
+            try
+            {
+                retVal.SuccessResponse = _shipDayService.GetShipDates(this.SelectedUserContext);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetShipDays", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -62,9 +78,22 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/")]
-        public List<Order> Orders() {
-            return _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
+        public Models.OperationReturnModel<List<Order>> Orders() {
+            Models.OperationReturnModel<List<Order>> retVal = new Models.OperationReturnModel<List<Order>>();
+            try
+            {
+                retVal.SuccessResponse = _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
                 _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext));
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Orders", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -74,10 +103,23 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("order/")]
-        public PagedResults<Order> PagedOrders(PagingModel paging) {
-            var results = _orderServiceRepository.GetPagedOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext, paging);
-            _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser, results.Results);
-            return results;
+        public Models.OperationReturnModel<PagedResults<Order>> PagedOrders(PagingModel paging) {
+            Models.OperationReturnModel<PagedResults<Order>> retVal = new Models.OperationReturnModel<PagedResults<Order>>();
+            try
+            {
+                var results = _orderServiceRepository.GetPagedOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext, paging);                
+                _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser, results.Results);
+                retVal.SuccessResponse = results;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("PagedOrders", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -88,9 +130,22 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/date")]
-        public List<Order> OrdersIndate(DateTime from, DateTime to) {
-            return _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
+        public Models.OperationReturnModel<List<Order>> OrdersIndate(DateTime from, DateTime to) {
+            Models.OperationReturnModel<List<Order>> retVal = new Models.OperationReturnModel<List<Order>>();
+            try
+            {
+                retVal.SuccessResponse = _orderLogic.UpdateOrdersForSecurity(this.AuthenticatedUser,
                 _orderServiceRepository.GetOrderHeaderInDateRange(this.SelectedUserContext, from, to));
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("OrdersIndate", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -100,8 +155,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="numberOfMonths">Number of months from today</param>
         [HttpGet]
         [ApiKeyedRoute("order/totalbymonth/{numberOfMonths}")]
-        public OrderTotalByMonth GetOrderTotalByMonth(int numberOfMonths) {
-            return _orderServiceRepository.GetOrderTotalByMonth(this.SelectedUserContext, numberOfMonths);
+        public Models.OperationReturnModel<OrderTotalByMonth> GetOrderTotalByMonth(int numberOfMonths) {
+            Models.OperationReturnModel<OrderTotalByMonth> retVal = new Models.OperationReturnModel<OrderTotalByMonth>();
+            try
+            {
+                retVal.SuccessResponse = _orderServiceRepository.GetOrderTotalByMonth(this.SelectedUserContext, numberOfMonths);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("OrdersIndate", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -112,12 +180,23 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute("order/export/")]
         public HttpResponseMessage ExportOrders(ExportRequestModel exportRequest) {
-            //var orders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
-            var orders = _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext);
-            if (exportRequest.Fields != null)
-                _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+            HttpResponseMessage ret;
+            try
+            {
+                //var orders = _orderLogic.ReadOrders(this.AuthenticatedUser, this.SelectedUserContext);
+                var orders = _orderServiceRepository.GetCustomerOrders(this.AuthenticatedUser.UserId, this.SelectedUserContext);
+                if (exportRequest.Fields != null)
+                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
-            return ExportModel<Order>(orders, exportRequest);
+                ret = ExportModel<Order>(orders, exportRequest);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("ExportInvoices", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -126,8 +205,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/export")]
-        public ExportOptionsModel ExportOrders() {
-            return _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, 0);
+        public Models.OperationReturnModel<ExportOptionsModel> ExportOrders() {
+            Models.OperationReturnModel<ExportOptionsModel> retVal = new Models.OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                retVal.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, 0);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("OrdersIndate", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -137,14 +229,23 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("order/{orderNumber}")]
-        public Order Orders(string orderNumber) {
+        public Models.OperationReturnModel<Order> Orders(string orderNumber) {
             //return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
-            try {
-                return _orderLogic.UpdateOrderForEta(this.AuthenticatedUser,
+            Models.OperationReturnModel<Order> retVal = new Models.OperationReturnModel<Order>();
+            try
+            {
+                retVal.SuccessResponse = _orderLogic.UpdateOrderForEta(this.AuthenticatedUser,
                     _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
-            } catch (Exception ex) {
-                return null;
+                retVal.IsSuccess = true;
             }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("OrdersIndate", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
