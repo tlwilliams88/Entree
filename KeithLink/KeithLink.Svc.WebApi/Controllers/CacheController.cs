@@ -1,6 +1,8 @@
-﻿using KeithLink.Svc.Core.Interface.Cache;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.WebApi.Attribute;
+using KeithLink.Svc.WebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,24 +16,38 @@ namespace KeithLink.Svc.WebApi.Controllers
 	public class CacheController: BaseController
 	{
 		private ICacheRefreshRepository cacheRepository;
+        private readonly IEventLogRepository _elRepo;
 
-		public CacheController(ICacheRefreshRepository cacheRepository, IUserProfileLogic profileLogic): base(profileLogic)
+        public CacheController(ICacheRefreshRepository cacheRepository, IUserProfileLogic profileLogic, IEventLogRepository elRepo) : base(profileLogic)
 		{
 			this.cacheRepository = cacheRepository;
-		}
+            this._elRepo = elRepo;
+        }
 
-		/// <summary>
-		/// Used for clearing an item from the WebAPI cache
-		/// </summary>
-		/// <param name="cacheGroupName">Cache Group</param>
-		/// <param name="cachePrefix">Cache Prefix</param>
-		/// <param name="cacheName">Cache Name</param>
-		/// <param name="key">Cache Key</param>
-		[Route("cache/RefreshCacheItem")]
+        /// <summary>
+        /// Used for clearing an item from the WebAPI cache
+        /// </summary>
+        /// <param name="cacheGroupName">Cache Group</param>
+        /// <param name="cachePrefix">Cache Prefix</param>
+        /// <param name="cacheName">Cache Name</param>
+        /// <param name="key">Cache Key</param>
+        [Route("cache/RefreshCacheItem")]
 		[HttpGet]
-		public void RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key)
+		public OperationReturnModel<bool> RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key)
 		{
-			cacheRepository.RefreshCacheItem(cacheGroupName, cachePrefix, cacheName, key);
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try
+            {
+                cacheRepository.RefreshCacheItem(cacheGroupName, cachePrefix, cacheName, key);
+                ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("RefreshCacheItem", ex);
+            }
+            return ret;
 		}
 
 		/// <summary>
@@ -42,9 +58,21 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="cacheName">Cache Name</param>
 		[Route("cache/RefreshCache")]
 		[HttpGet]
-		public void RefreshCache(string cacheGroupName, string cachePrefix, string cacheName)
+		public OperationReturnModel<bool> RefreshCache(string cacheGroupName, string cachePrefix, string cacheName)
 		{
-			cacheRepository.RefreshCache(cacheGroupName, cachePrefix, cacheName);
-		}
-	}
+            OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
+            try
+            {
+                cacheRepository.RefreshCache(cacheGroupName, cachePrefix, cacheName);
+                ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
+            }
+            catch (Exception ex)
+            {
+                ret.IsSuccess = false;
+                ret.ErrorMessage = ex.Message;
+                _elRepo.WriteErrorLog("RefreshCache", ex);
+            }
+            return ret;
+        }
+    }
 }
