@@ -155,15 +155,23 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private void ProcessOrderHistoryDetailOnDeletedOrPurgedStatusUpdate(EF.OrderHistoryDetail detail)
         {
             EF.OrderHistoryHeader header = detail.OrderHistoryHeader;
-            if (header.OrderDetails.Count > 1)
+            if (header != null)
             {
-                _detailRepo.Delete(detail);
+                if (header.OrderDetails.Count > 1)
+                {
+                    _detailRepo.Delete(detail);
+                }
+                else
+                {
+                    _headerRepo.Delete(header);
+                }
+                _unitOfWork.SaveChanges();
             }
             else
             {
-                _headerRepo.Delete(header);
+                _detailRepo.Delete(detail);
+                _unitOfWork.SaveChanges();
             }
-            _unitOfWork.SaveChanges();
         }
 
         private void ProcessOrderHistoryDetailOnApprovedStatusUpdate(SpecialOrderResponseModel specialorder, EF.OrderHistoryDetail detail)
