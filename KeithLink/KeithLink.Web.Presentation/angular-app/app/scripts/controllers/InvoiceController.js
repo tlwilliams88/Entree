@@ -433,7 +433,7 @@ angular.module('bekApp')
         if((payment.statusdescription === 'Payment Pending') || (payment.statusdescription === 'Past Due' && payment.amount < 0)){
           
         if(payment.statusdescription === 'Payment Pending' && !payment.date){
-             payment.date = DateService.momentObject(payment.pendingtransaction.date,"YYYY-MM-DDTHH:mm:ss").format(Constants.dateFormat.yearMonthDayDashes);
+             payment.date = DateService.momentObject(payment.pendingtransaction.date,Constants.dateFormat.yearMonthDayHourMinuteSecondDashes).format(Constants.dateFormat.yearMonthDayDashes);
             }                       
         }
         
@@ -546,7 +546,7 @@ angular.module('bekApp')
         if(transaction.account === invoice.account
         && transaction.customernumber === invoice.customernumber
         && transaction.branchid === invoice.branchid
-        && DateService.momentObject(resp.successResponse.transactions[0].date,"YYYY-MM-DDTHH:mm:ss").format(Constants.dateFormat.yearMonthDay) === DateService.momentObject(invoiceDate.substr(0,10)).format(Constants.dateFormat.yearMonthDay)
+        && DateService.momentObject(resp.successResponse.transactions[0].date,Constants.dateFormat.yearMonthDayHourMinuteSecondDashes).format(Constants.dateFormat.yearMonthDay) === DateService.momentObject(invoiceDate.substr(0,10)).format(Constants.dateFormat.yearMonthDay)
         && (invoice.isSelected || invoice.statusdescription === 'Payment Pending')){
           invoice.failedBatchValidation = true;
         }
@@ -564,6 +564,9 @@ angular.module('bekApp')
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
       resolve: {
+        location: function() {
+          return {category:'Invoices', action:'Export Invoices'}
+        },
         headerText: function () {
           return 'Invoices';
         },

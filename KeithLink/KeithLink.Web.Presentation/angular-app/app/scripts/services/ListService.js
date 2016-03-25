@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ListService', ['$http', '$q', '$filter', '$upload', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
-    function($http, $q, $filter, $upload, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
+  .factory('ListService', ['$http', '$q', '$filter', '$upload', '$analytics', 'toaster', 'UtilityService', 'ExportService', 'PricingService', 'List', 'LocalStorage',
+    function($http, $q, $filter, $upload, $analytics, toaster, UtilityService, ExportService, PricingService, List, LocalStorage) {
 
       function updateItemPositions(list) {
         angular.forEach(list.items, function(item, index) {
@@ -174,12 +174,12 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-          return List.query(params).$promise.then(function(lists) {
-            lists.forEach(function(list) {
+          return List.get(params).$promise.then(function(lists) {
+            lists.successResponse.forEach(function(list) {
               updateListPermissions(list);
             });
-            angular.copy(lists, Service.lists);
-            return lists;
+            angular.copy(lists.successResponse, Service.lists);
+            return lists.successResponse;
           });
         },
 
@@ -276,7 +276,7 @@ angular.module('bekApp')
 
             Service.sortObject = params.sort;
             return $http.post('/list/' + listId, params).then(function(response) {
-              var list = response.data;
+              var list = response.data.successResponse;
               if (!list) {
                 return $q.reject('No list found.');
               }
@@ -310,7 +310,9 @@ angular.module('bekApp')
         getExportConfig: function(listId) {
           return List.exportConfig({
             listId: listId
-          }).$promise;
+          }).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         exportList: function(config, listId) {
@@ -408,7 +410,7 @@ angular.module('bekApp')
           if (!params) {
             params = {};
           }
-
+          $analytics.eventTrack('Create List', {  category: 'Lists'});
           newList.message = 'Creating list...';
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
@@ -655,6 +657,7 @@ angular.module('bekApp')
         },
 
         addItemToFavorites: function(item) {
+          $analytics.eventTrack('Add Favorite', {  category: 'Lists'});
           return Service.addItem(Service.getFavoritesList().listid, item, true);
         },
 

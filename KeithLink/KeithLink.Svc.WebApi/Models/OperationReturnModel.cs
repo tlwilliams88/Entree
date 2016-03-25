@@ -7,7 +7,7 @@ namespace KeithLink.Svc.WebApi.Models
     public class OperationReturnModel<T>
     {
         public string ErrorMessage { get; set; }
-
+        public bool IsSuccess { get; set; }
         public T SuccessResponse { get; set; }
     }
 }

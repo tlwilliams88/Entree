@@ -38,13 +38,15 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// </remarks>
         [HttpGet]
         [ApiKeyedRoute("cms/promoitems/{branchId}")]
-        public Models.OperationReturnModel<List<ContentItemViewModel>> ReadMarkeitingContent(string branchId) {
+        public Models.OperationReturnModel<List<ContentItemViewModel>> ReadMarketingContent(string branchId) {
             Models.OperationReturnModel<List<ContentItemViewModel>> retVal = new Models.OperationReturnModel<List<ContentItemViewModel>>();
             try {
                 retVal.SuccessResponse = _logic.ReadContentForBranch(branchId);
+                retVal.IsSuccess = true;
             } catch (Exception ex) {
                 _log.WriteErrorLog("Could not retrieve content from CMS.", ex);
                 retVal.ErrorMessage = "Could not load content";
+                retVal.IsSuccess = false;
             }
 
             return retVal;

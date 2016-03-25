@@ -51,7 +51,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         #region ctor
         public QueueService()
         {
-            this.container = AddLocalDependencies(Impl.Repository.Autofac.DependencyMapFactory.BuildQueueSvcContainer()).Build();
+            this.container = AddLocalDependencies(Impl.Repository.SmartResolver.DependencyMapFactory.BuildQueueSvcContainer()).Build();
             InitializeComponent();
         }
 

@@ -1,4 +1,4 @@
-﻿using KeithLink.Svc.Impl.Repository.Autofac;
+﻿using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 using Autofac.Integration.WebApi;
 
@@ -15,7 +15,7 @@ namespace KeithLink.Svc.WebApi
         public static void Register(HttpConfiguration config)
         {
             // Configure Web API with the dependency resolver.
-            var diMap = DependencyMapFactory.GetBaseContainer();
+            var diMap = DependencyMapFactory.BuildWebApiContainer();
             diMap.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
             DependencyMap.AddServiceReferences(ref diMap);
 

@@ -672,6 +672,9 @@ angular.module('bekApp')
         templateUrl: 'views/modals/exportmodal.html',
         controller: 'ExportModalController',
         resolve: {
+          location: function() {
+            return {category:'Lists', action:'Export List'}
+          },
           headerText: function () {
             return 'List ' + $scope.selectedList.name;
           },

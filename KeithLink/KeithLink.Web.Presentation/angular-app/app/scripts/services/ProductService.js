@@ -8,8 +8,8 @@
  * Service of the bekApp
  */
 angular.module('bekApp')
-  .factory('ProductService', ['$http', '$q', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
-    function($http, $q, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
+  .factory('ProductService', ['$http', '$q', '$analytics', 'UserProfileService', 'RecentlyViewedItem','ItemNotes', 'Constants', 'ExportService',
+    function($http, $q, $analytics, UserProfileService, RecentlyViewedItem, ItemNotes, Constants, ExportService) {
 
       var defaultPageSize = Constants.infiniteScrollPageSize,
         defaultStartingIndex = 0;
@@ -94,7 +94,14 @@ angular.module('bekApp')
         },
 
         searchCatalog: function(type, id, catalogType, params) {
-          
+          if(type === 'search'){
+
+            var dept = (params.dept === '') ? 'All' : params.dept;
+       
+            $analytics.eventTrack('Search Department', {  category: 'Search', label: dept });
+            $analytics.eventTrack('Search Terms', {  category: 'Search', label: id });
+          }
+
           var url = Service.getSearchUrl(type, id, catalogType);
           
           var config = {

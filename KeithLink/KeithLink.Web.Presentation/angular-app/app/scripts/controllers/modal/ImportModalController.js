@@ -32,7 +32,7 @@ angular.module('bekApp')
 
   $scope.startListUpload = function(options) {
     var file = $scope.files[0];
-
+    $analytics.eventTrack('Import List', {category: 'Lists'});
     ListService.importList(file, options).then(function(data) {
       goToImportedPage('menu.lists.items', { listId: data.listid });
     });
@@ -41,7 +41,7 @@ angular.module('bekApp')
 
   $scope.startOrderUpload = function(options) {
     var file = $scope.files[0];
-
+    $analytics.eventTrack('Import Order', {category: 'Orders'});
     CartService.importCart(file, options).then(function(data) {
       $state.go('menu.cart.items', { cartId: data.listid });
       $modalInstance.close(data);

@@ -8,26 +8,25 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemUsageReportController', ['$scope', '$state', 'ReportService', '$modal', 
-    function($scope, $state, ReportService, $modal) {
+  .controller('ItemUsageReportController', ['$scope', '$analytics', '$state', 'Constants', 'ReportService', 'DateService', '$modal', 
+    function($scope, $analytics, $state, Constants, ReportService, DateService, $modal) {
   
 
   $scope.itemusagequery = {};
   $scope.itemUsageForm = {};
   $scope.totalCost = 0;
 
-  var initialFromDate = new Date();
-  initialFromDate = initialFromDate.setMonth(initialFromDate.getMonth() - 6);
-  initialFromDate = new Date(initialFromDate);
+  var initialFromDate = DateService.momentObject().subtract(6, 'months');
 
-  $scope.itemusagequery.fromDate = initialFromDate;
-  $scope.itemusagequery.toDate = new Date();
+  $scope.itemusagequery.fromDate = initialFromDate.format();
+  $scope.itemusagequery.toDate = DateService.momentObject().format();
 
   $scope.sortField = 'TotalQuantityOrdered';
   $scope.sortReverse = true;
 
 
-  function loadItemUsage() {    
+  function loadItemUsage() {  
+    $analytics.eventTrack('Run Item Usage', {  category: 'Reports'});
     $scope.loadingResults = true;
     ReportService.itemUsageParams = {
       from: $scope.itemusagequery.fromDate,
@@ -83,9 +82,9 @@ angular.module('bekApp')
 
   $scope.datepickerOptions = {
     minDate: initialFromDate,
-    maxDate: new Date(),
+    maxDate: DateService.momentObject(),
     options: {
-      dateFormat: 'yyyy-MM-dd',
+      dateFormat: Constants.dateFormat.yearMonthDayDashes,
       showWeeks: false
     }
   };
@@ -110,6 +109,9 @@ angular.module('bekApp')
       templateUrl: 'views/modals/exportmodal.html',
       controller: 'ExportModalController',
       resolve: {
+        location: function() {
+          return {category:'Reports', action:'Export Item Usage'}
+        },
         headerText: function() {
           return 'Item Usage';
         },

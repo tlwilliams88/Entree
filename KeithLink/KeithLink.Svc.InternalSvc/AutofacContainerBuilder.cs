@@ -128,13 +128,11 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
-            builder.RegisterType<InvoiceRepositoryImpl>().As<IInvoiceRepository>();
             //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
             //builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
 
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<InvoiceItemRepositoryImpl>().As<IInvoiceItemRepository>();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
