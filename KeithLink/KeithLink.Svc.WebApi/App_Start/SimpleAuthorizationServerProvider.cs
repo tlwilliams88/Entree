@@ -1,14 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Web;
+﻿using KeithLink.Svc.Core.Enumerations.Authentication;
 using KeithLink.Svc.Core.Exceptions.Profile;
-using KeithLink.Svc.Core.Enumerations.Authentication;
+
+using KeithLink.Svc.Core.Interface.Profile;
+
+using KeithLink.Svc.Core.Models.Authentication;
+using KeithLink.Svc.Core.Models.Profile;
+
+using Microsoft.Owin.Security.OAuth;
+
+using System;
+using System.Collections.Specialized;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi
 {
-    public class SimpleAuthorizationServerProvider : Microsoft.Owin.Security.OAuth.OAuthAuthorizationServerProvider
+    /// <summary>
+    /// handles authentication for OAUTH2 via OWIN
+    /// </summary>
+    public class SimpleAuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
         #region attributes
         Core.Interface.Profile.IUserProfileRepository _userRepo;
@@ -22,7 +33,7 @@ namespace KeithLink.Svc.WebApi
         /// <remarks>
         /// jwames - 8/12/2014 - original code
         /// </remarks>
-        public override async System.Threading.Tasks.Task GrantResourceOwnerCredentials(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext context)
+        public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
             if (!ValidateApiKey(context))
@@ -30,49 +41,42 @@ namespace KeithLink.Svc.WebApi
 
             string errMsg = null;
 
-            Core.Interface.Profile.IUserProfileLogic _profileLogic =
-                System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.IUserProfileLogic))
-                as Core.Interface.Profile.IUserProfileLogic;
+            IUserProfileLogic _profileLogic = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserProfileLogic)) as IUserProfileLogic;
 
             // determine if we are authenticating an internal or external user
             if (_profileLogic.IsInternalAddress(context.UserName)) {
-                Core.Interface.Profile.IUserDomainRepository ADRepo;
-                ADRepo = System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.IUserDomainRepository))
-                as Core.Interface.Profile.IUserDomainRepository;
+                IUserDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserDomainRepository)) as IUserDomainRepository;
 
                 if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false) {
                     context.SetError("invalid_grant", errMsg);
                     return;
                 }
             } else {
-                Core.Interface.Profile.ICustomerDomainRepository ADRepo =
-                    System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(Core.Interface.Profile.ICustomerDomainRepository))
-                    as Core.Interface.Profile.ICustomerDomainRepository;
+                ICustomerDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(ICustomerDomainRepository)) as ICustomerDomainRepository;
 
-                KeithLink.Svc.Core.Models.Authentication.AuthenticationModel authentication = ADRepo.AuthenticateUser( context.UserName, context.Password );
+                AuthenticationModel authentication = ADRepo.AuthenticateUser( context.UserName, context.Password );
+
                 if (!authentication.Status.Equals( AuthenticationStatus.Successful ) && !authentication.Status.Equals( AuthenticationStatus.PasswordExpired ) ) {
                     context.SetError( "invalid_grant", authentication.Message );
                     return;
                 }
-           }
+            }
 
-
-            KeithLink.Svc.Core.Models.Profile.UserProfileReturn userReturn = _profileLogic.GetUserProfile(context.UserName);
+            UserProfileReturn userReturn = _profileLogic.GetUserProfile(context.UserName);
 
             if (userReturn.UserProfiles.Count == 0) {
                 context.SetError("invalid_grant", "User profile does not exist in Commerce Server");
             } else {
-                var identity = new System.Security.Claims.ClaimsIdentity(context.Options.AuthenticationType);
-                identity.AddClaim(new System.Security.Claims.Claim(System.Security.Claims.ClaimTypes.Name, context.UserName));
-                identity.AddClaim(new System.Security.Claims.Claim("name", context.UserName));
-                identity.AddClaim(new System.Security.Claims.Claim("role", userReturn.UserProfiles[0].RoleName));
+                var identity = new ClaimsIdentity(context.Options.AuthenticationType);
+                identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
+                identity.AddClaim(new Claim("name", context.UserName));
+                identity.AddClaim(new Claim("role", userReturn.UserProfiles[0].RoleName));
 
                 context.Validated(identity);
             }
-
         }
 
-        private static bool ValidateApiKey(Microsoft.Owin.Security.OAuth.OAuthGrantResourceOwnerCredentialsContext context)
+        private static bool ValidateApiKey(OAuthGrantResourceOwnerCredentialsContext context)
         {
 
             context.Request.Body.Position = 0;
@@ -104,7 +108,7 @@ namespace KeithLink.Svc.WebApi
         /// <remarks>
         /// jwames - 8/12/2014 - original code
         /// </remarks>
-        public override async System.Threading.Tasks.Task ValidateClientAuthentication(Microsoft.Owin.Security.OAuth.OAuthValidateClientAuthenticationContext context)
+        public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
         }

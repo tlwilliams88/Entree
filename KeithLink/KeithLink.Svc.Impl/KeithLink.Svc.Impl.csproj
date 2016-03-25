@@ -272,7 +272,6 @@
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalOnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
@@ -291,6 +290,7 @@
     <Compile Include="Logic\Messaging\MessageTemplateLogicImpl.cs" />
     <Compile Include="Logic\Messaging\NotificationQueueConsumerImpl.cs" />
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
+    <Compile Include="Logic\OnlinePayments\OnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
     <Compile Include="Logic\Orders\NoOrderConverionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
@@ -703,7 +703,6 @@
     <Compile Include="Repository\OnlinePayments\Customer\CustomerBankRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Invoice\KPayInvoiceRepositoryImpl.cs" />
     <Compile Include="Repository\OnlinePayments\Log\KPayLogRepositoryImpl.cs" />
-    <Compile Include="Repository\OnlinePayments\NoOnlinePaymentServiceRepository.cs" />
     <Compile Include="Repository\OnlinePayments\Payment\KPayPaymentTransactionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\Confirmations\ConfirmationQueueRepositoryImpl.cs" />
     <Compile Include="Repository\EF\Operational\BEKDBContext.cs" />

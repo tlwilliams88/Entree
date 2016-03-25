@@ -1,9 +1,12 @@
-﻿using System;
+﻿using KeithLink.Svc.Impl.Repository.Autofac;
+
+using Autofac.Integration.WebApi;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using System.Configuration;
-using KeithLink.Svc.Core;
 
 namespace KeithLink.Svc.WebApi
 {
@@ -11,24 +14,14 @@ namespace KeithLink.Svc.WebApi
     {
         public static void Register(HttpConfiguration config)
         {
-            //******************************************************
-            // moved from Global.asax
-            //******************************************************
-            //GlobalConfiguration.Configure(WebApiConfig.Register);
-
             // Configure Web API with the dependency resolver.
-            //var resolver = DependencyMap.Build();
-            //GlobalConfiguration.Configuration.DependencyResolver = resolver;
+            var diMap = DependencyMapFactory.GetBaseContainer();
+            diMap.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
+            DependencyMap.AddServiceReferences(ref diMap);
 
-            //GlobalConfiguration.Configuration.EnsureInitialized();
-            //******************************************************
-            // end of move from Global.asax
-            //******************************************************
-
-            // Configure Web API with the dependency resolver.
-            var resolver = DependencyMap.Build();
+            var resolver = new AutofacWebApiDependencyResolver(diMap.Build());
             config.DependencyResolver = resolver;
-            System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver = resolver;
+            GlobalConfiguration.Configuration.DependencyResolver = resolver;
 
 
             // Web API configuration and services
@@ -40,12 +33,6 @@ namespace KeithLink.Svc.WebApi
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-
-            //config.Routes.MapHttpRoute(
-            //    name: "DefaultApi",
-            //    routeTemplate: "api/{controller}/{id}",
-            //    defaults: new { id = RouteParameter.Optional }
-            //);
 
             config.Formatters.Clear();
             config.Formatters.Add(new System.Net.Http.Formatting.JsonMediaTypeFormatter());

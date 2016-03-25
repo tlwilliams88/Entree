@@ -37,6 +37,7 @@ using KeithLink.Svc.Impl.Logic.ETL;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Invoices;
 using KeithLink.Svc.Impl.Logic.Messaging;
+using KeithLink.Svc.Impl.Logic.OnlinePayments;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
 using KeithLink.Svc.Impl.Logic.Profile;
@@ -197,15 +198,12 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             // customer bank - JA - 11/13<
-            builder.RegisterType<OnlinePaymentService>();
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
-            builder.RegisterType<NoOnlinePaymentServiceRepository>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
             builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
 			builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
-
-			builder.RegisterType<InternalOnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
+			builder.RegisterType<OnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 
 			builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();

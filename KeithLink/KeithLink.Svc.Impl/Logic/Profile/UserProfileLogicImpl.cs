@@ -62,7 +62,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private IMessageTemplateLogic _msgTemplateLogic;
 		private IEmailClient _emailClient;
 		private IEventLogRepository _eventLog;
-		private IOnlinePaymentServiceRepository _onlinePaymentServiceRepository;
+		private IOnlinePaymentsLogic _paymentLogic;
         private IGenericQueueRepository _queue;
         private IDsrAliasService _dsrAliasService;
 		private IPasswordResetService _passwordService;
@@ -73,7 +73,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
 									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
                                     IOrderServiceRepository orderServiceRepository, IMessagingLogic messagingLogic, IEmailClient emailClient, 
-                                    IEventLogRepository eventLog, IOnlinePaymentServiceRepository onlinePaymentServiceRepository, IGenericQueueRepository queue, 
+                                    IEventLogRepository eventLog, IOnlinePaymentsLogic paymentLogic, IGenericQueueRepository queue, 
                                     IDsrAliasService dsrAliasService, IPasswordResetService passwordService, ISettingsLogicImpl settingsLogic, 
                                     IMessageTemplateLogic messageTemplateLogic) {
             _cache = profileCache;
@@ -87,7 +87,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _msgTemplateLogic = messageTemplateLogic;
 			_emailClient = emailClient;
 			_eventLog = eventLog;
-			_onlinePaymentServiceRepository = onlinePaymentServiceRepository;
+			_paymentLogic = paymentLogic;
             _queue = queue;
             _dsrAliasService = dsrAliasService;
 			_passwordService = passwordService;
@@ -837,7 +837,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             var returnModel = new CustomerBalanceOrderUpdatedModel();
 
             returnModel.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
-            returnModel.balance = _onlinePaymentServiceRepository.GetCustomerAccountBalance(customerId, branchId);
+            returnModel.balance = _paymentLogic.GetCustomerAccountBalance(customerId, branchId);
 
             return returnModel;
         }

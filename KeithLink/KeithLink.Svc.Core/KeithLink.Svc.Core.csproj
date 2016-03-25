@@ -163,6 +163,7 @@
     <Compile Include="Events\EventHandlers\EventHandlers.cs" />
     <Compile Include="Enumerations\List.cs" />
     <Compile Include="Extensions\LinqSortHelpers.cs" />
+    <Compile Include="Extensions\Orders\OrderLineExtension.cs" />
     <Compile Include="Interface\Configurations\IExternalCatalogRepository.cs" />
     <Compile Include="Extensions\ShoppingCart\ShoppingCartExtensions.cs" />
     <Compile Include="Helpers\PagingHelper.cs" />
@@ -227,7 +228,6 @@
     <Compile Include="Interface\OnlinePayments\Customer\ICustomerBankRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IKPayDBContext.cs" />
     <Compile Include="Interface\OnlinePayments\Invoice\IKPayInvoiceRepository.cs" />
-    <Compile Include="Interface\OnlinePayments\IOnlinePaymentServiceRepository.cs" />
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
     <Compile Include="Interface\OnlinePayments\Log\IKPayLogRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />

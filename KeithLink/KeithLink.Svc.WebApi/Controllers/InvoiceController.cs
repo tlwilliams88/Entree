@@ -1,5 +1,8 @@
-﻿using KeithLink.Svc.Core.Interface.Configurations;
+﻿using KeithLink.Svc.Core.Extensions.Orders;
+
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Invoices;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Profile;
 
@@ -7,6 +10,7 @@ using KeithLink.Svc.Core.Models.Invoices;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.OnlinePayments.Customer;
 using KeithLink.Svc.Core.Models.OnlinePayments.Payment;
+using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Paging;
 
 using KeithLink.Svc.WebApi.Models;
@@ -20,18 +24,31 @@ using System.Runtime.Serialization;
 using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers {
+    /// <summary>
+    /// end points for online bill payment
+    /// </summary>
 	[Authorize]
     public class InvoiceController : BaseController {
         #region attributes
-        private readonly IOnlinePaymentServiceRepository _repo;
+        private readonly IOnlinePaymentsLogic _invLogic;
 		private readonly IExportSettingLogic _exportLogic;
+        private readonly IOrderHistoryLogic _orderLogic;
         private readonly IImagingLogic _imgLogic;
 		#endregion
 
         #region ctor
-		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentServiceRepository invoiceRepository, IExportSettingLogic exportSettingsLogic,
-                                 IImagingLogic invoiceImagingLogic) : base(profileLogic) {
-            _repo = invoiceRepository;
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="profileLogic"></param>
+        /// <param name="invoiceLogic"></param>
+        /// <param name="exportSettingsLogic"></param>
+        /// <param name="invoiceImagingLogic"></param>
+        /// <param name="orderHistoryLogic"></param>
+		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentsLogic invoiceLogic, IExportSettingLogic exportSettingsLogic,
+                                 IOrderHistoryLogic orderHistoryLogic, IImagingLogic invoiceImagingLogic) : base(profileLogic) {
+            _invLogic = invoiceLogic;
+            _orderLogic = orderHistoryLogic;
 			_exportLogic = exportSettingsLogic;
             _imgLogic = invoiceImagingLogic;
 		}
@@ -45,7 +62,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpGet]
         [ApiKeyedRoute("banks")]
         public List<CustomerBank> Get() {
-            return _repo.GetAllCustomerBanks(SelectedUserContext);
+            return _invLogic.GetAllBankAccounts(SelectedUserContext);
         }
 
         /// <summary>
@@ -56,7 +73,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpGet]
         [ApiKeyedRoute("banks/{accountNumber}")]
         public CustomerBank GetBackAccount(string accountNumber) {
-            return _repo.GetBankAccount(this.SelectedUserContext, accountNumber);
+            return _invLogic.GetBankAccount(this.SelectedUserContext, accountNumber);
         }
   
         /// <summary>
@@ -68,7 +85,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/")]
         public InvoiceHeaderReturnModel Invoice(PagingModel paging, bool forAllCustomers = false) {
-            return _repo.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
+            return _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
         }
 
         /// <summary>
@@ -80,7 +97,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/export/")]
         public HttpResponseMessage ExportInvoices(InvoiceExportRequestModel request, bool forAllCustomers = false) {
-            var list = _repo.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, request.paging, forAllCustomers);
+            var list = _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, request.paging, forAllCustomers);
 
             if (request.export.Fields != null)
                 _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
@@ -124,7 +141,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpGet]
         [ApiKeyedRoute("invoice/{invoiceNumber}")]
         public InvoiceModel InvoiceTransactions(string invoiceNumber) {
-            return _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
+            InvoiceModel inv = _invLogic.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
+            Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
+
+            inv.Items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
+
+            return inv;
         }
 
         /// <summary>
@@ -136,11 +158,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/export/{invoiceNumber}")]
         public HttpResponseMessage ExportInvoiceDetail(string invoiceNumber, ExportRequestModel exportRequest) {
-            var invoice = _repo.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
             if (exportRequest.Fields != null)
                 _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
-            return ExportModel<InvoiceItemModel>(invoice.Items, exportRequest);
+            Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
+            List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
+
+            return ExportModel<InvoiceItemModel>(items, exportRequest);
         }
 
         /// <summary>
@@ -165,7 +189,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                _repo.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser.EmailAddress, payments);
+                _invLogic.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser.EmailAddress, payments);
 
                 retVal.SuccessResponse = true;
             } catch (Exception ex) {
@@ -186,7 +210,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         public OperationReturnModel<PaymentValidationResponseModel> ValidatePayment(List<PaymentTransactionModel> payments) {
             OperationReturnModel<PaymentValidationResponseModel> returnValue = new OperationReturnModel<PaymentValidationResponseModel>();
 
-            List<PaymentTransactionModel> transactionErrors = _repo.ValidatePayment(this.SelectedUserContext, payments);
+            List<PaymentTransactionModel> transactionErrors = _invLogic.ValidatePayment(this.SelectedUserContext, payments);
 
             // If the payment validation list comes back with a count > 0 then there were errors
             // validating a transaction. It will return the transactions that did not validate correctly.
@@ -214,7 +238,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/transactions/pending/single")]
         public PagedResults<PaymentTransactionModel> PendingTransactions(PagingModel paging) {
-            return _repo.PendingTransactions(this.SelectedUserContext, paging);
+            return _invLogic.PendingTransactions(this.SelectedUserContext, paging);
         }
 
         /// <summary>
@@ -225,7 +249,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/transactions/pending")]
         public PagedResults<PaymentTransactionModel> PendingTransactionsForAllCustomers(PagingModel paging) {
-            return _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
+            return _invLogic.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
         }
 
         /// <summary>
@@ -239,7 +263,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             request.paging.Size = int.MaxValue;
             request.paging.From = 0;
 
-            var transactions = _repo.PendingTransactionsAllCustomers(this.AuthenticatedUser, request.paging);
+            var transactions = _invLogic.PendingTransactionsAllCustomers(this.AuthenticatedUser, request.paging);
 
             if (request.export.Fields != null)
                 _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, request.export.Fields, request.export.SelectedType);

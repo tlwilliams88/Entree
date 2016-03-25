@@ -18,6 +18,9 @@ using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Customer;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Log;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Payment;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
@@ -34,6 +37,7 @@ using KeithLink.Svc.Impl.Logic.Export;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Invoices;
 using KeithLink.Svc.Impl.Logic.Messaging;
+using KeithLink.Svc.Impl.Logic.OnlinePayments;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.Profile;
 using KeithLink.Svc.Impl.Logic.Reports;
@@ -50,6 +54,9 @@ using KeithLink.Svc.Impl.Repository.Invoices;
 using KeithLink.Svc.Impl.Repository.Lists;
 using KeithLink.Svc.Impl.Repository.Messaging;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Customer;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Log;
+using KeithLink.Svc.Impl.Repository.OnlinePayments.Payment;
 using KeithLink.Svc.Impl.Repository.Orders;
 using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
@@ -70,176 +77,191 @@ using System.Web;
 
 namespace KeithLink.Svc.WebApi {
     internal static class DependencyMap {
-        public static AutofacWebApiDependencyResolver Build(){
-            // Create the dependency resolver.
-            var resolver = new AutofacWebApiDependencyResolver(GetContainer());
+//        public static AutofacWebApiDependencyResolver Build(){
+//            // Create the dependency resolver.
+//            var resolver = new AutofacWebApiDependencyResolver(GetContainer());
 
-            return resolver;
-        }
+//            return resolver;
+//        }
 
-        public static IContainer GetContainer() {
-            // Create the container builder.
-            var builder = new ContainerBuilder();
+//        public static IContainer GetContainer() {
+//            // Create the container builder.
+//            var builder = new ContainerBuilder();
 
-            // Register the Web API controllers.
-            builder.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
+//            // Register the Web API controllers.
+//            builder.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
 
-            ///////////////////////////////////////////////////////////////////////////////
-            // Repositories
-            ///////////////////////////////////////////////////////////////////////////////
+//            ///////////////////////////////////////////////////////////////////////////////
+//            // Repositories
+//            ///////////////////////////////////////////////////////////////////////////////
 
-            // cache
-            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
-            builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
+//            // cache
+//            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
+//            builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
-            // cart
-            builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
-            builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
+//            // cart
+//            builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
+//            builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
 
-            // catalog
-            builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
-            builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
-            builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
-            builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
-            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
-            builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
-            builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
+//            // catalog
+//            builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
+//            builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
+//            builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
+//            builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
+//            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+//            builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
+//            builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
-            // customer
-            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
-            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
+//            // customer
+//            builder.RegisterType<AccountRepository>().As<IAccountRepository>();
+//            builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
 
-            // division
-            builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
+//            // division
+//            builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
 
-            // DSR
-            builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
+//            // DSR
+//            builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
 
-            // invoices
-            builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
+//            // invoices
+//            builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
+//            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
+//            builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
+//            builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
+//            builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
+//            builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 
-            // lists
-            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
+//            // lists
+//            builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
 
-            // marketing
-            builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
+//            // marketing
+//            builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
 
-            // messaging
-            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
-            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
-            builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
-            builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
-            builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
+//            // messaging
+//            builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
+//            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+//            builder.RegisterType<UserPushNotificationDeviceRepositoryImpl>().As<IUserPushNotificationDeviceRepository>();
+//            builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
+//            builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
 
-            // order
-            builder.RegisterType<ImagingRepositoryImpl>().As<IImagingRepository>();
-            builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
-            builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
-            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
-            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
-            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
-            builder.RegisterType<NoSpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
+//            // order
+//            builder.RegisterType<ImagingRepositoryImpl>().As<IImagingRepository>();
+//            builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
+//            builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
+//            builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
+//            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
+//            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
+//            builder.RegisterType<NoSpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
 
-            // other
-            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
-            builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
-            builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
-            builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
-            builder.RegisterType<ReportRepository>().As<IReportRepository>();
+//            // other
+//            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+//            builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
+//            builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
+//            builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
+//            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+//            builder.RegisterType<ReportRepository>().As<IReportRepository>();
 
-            // profile 
-            builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
-            builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
-            builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
-            //builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();  // this is also found in the DEMO preprocessor directive later
-            builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
-            builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
-            builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
-            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
-            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
+//            // profile 
+//            builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
+//            builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
+//            builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
+//            //builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();  // this is also found in the DEMO preprocessor directive later
+//            builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
+//            builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
+//            builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
+//            builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
+//            builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 
-            ///////////////////////////////////////////////////////////////////////////////
-            // Logic Classes
-            ///////////////////////////////////////////////////////////////////////////////
+//            ///////////////////////////////////////////////////////////////////////////////
+//            // Logic Classes
+//            ///////////////////////////////////////////////////////////////////////////////
 
-            // cart
-            builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
-            builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
+//            // cart
+//            builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+//            builder.RegisterType<ShoppingCartLogicImpl>().As<IShoppingCartLogic>();
 
-            // catalog
-            builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
-            builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
+//            // catalog
+//            builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
+//            builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             
-            // division
-            builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
+//            // division
+//            builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
 
-            // DSR
-            builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+//            // DSR
+//            builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
-            // invoices
-            builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
+//            // invoices
+//            builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
+//            builder.RegisterType<OnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
 
-            // lists
-            builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
+//            // lists
+//            builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
 
-            //marketing 
-            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
+//            //marketing 
+//            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 
-            // messaging
-            builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
-            builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+//            // messaging
+//            builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
+//            builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
 
-            // order
-            builder.RegisterType<ImagingLogicImpl>().As<IImagingLogic>();
-            builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();
-            builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
-            builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
-            builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
+//            // order
+//            builder.RegisterType<ImagingLogicImpl>().As<IImagingLogic>();
+//            builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();
+//            builder.RegisterType<OrderHistoryRequestLogicImpl>().As<IOrderHistoryRequestLogic>();
+//            builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
+//            builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
             
-            // other
-            builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
-            builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
-            builder.RegisterType<ReportLogic>().As<IReportLogic>();
+//            // other
+//            builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
+//            builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
+//            builder.RegisterType<ReportLogic>().As<IReportLogic>();
 
-            // profile
-            builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
-            builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
+//            // profile
+//            builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+//            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+//            builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
 
-            ///////////////////////////////////////////////////////////////////////////////
-            // still moving
-            ///////////////////////////////////////////////////////////////////////////////
+//            ///////////////////////////////////////////////////////////////////////////////
+//            // still moving
+//            ///////////////////////////////////////////////////////////////////////////////
 
 
-#if DEMO
-			builder.RegisterType<DemoExternalUserDomainRepositoryImpl>().As<ICustomerDomainRepository>();
-			builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#else
-            builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
-            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
-#endif
+//#if DEMO
+//			builder.RegisterType<DemoExternalUserDomainRepositoryImpl>().As<ICustomerDomainRepository>();
+//			builder.RegisterType<DemoGenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+//#else
+//            builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
+//            builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
+//#endif
 
+//            ///////////////////////////////////////////////////////////////////////////////
+//            // service repositories
+//            ///////////////////////////////////////////////////////////////////////////////
+//            builder.RegisterType<Repository.Lists.ListServiceRepositoryImpl>().As<IListServiceRepository>();
+//            builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
+
+//            builder.RegisterType<com.benekeith.ListService.ListServcieClient>().As<com.benekeith.ListService.IListServcie>();
+//            builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
+//            builder.RegisterType<com.benekeith.ProfileService.ProfileServiceClient>().As<com.benekeith.ProfileService.IProfileService>();
+//            builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
+//            builder.RegisterType<DsrAliasServiceImpl>().As<IDsrAliasService>();
+
+//            // Build the container.
+//            return builder.Build();
+//        }
+
+        public static void AddServiceReferences(ref ContainerBuilder builder) {
             ///////////////////////////////////////////////////////////////////////////////
             // service repositories
             ///////////////////////////////////////////////////////////////////////////////
             builder.RegisterType<Repository.Lists.ListServiceRepositoryImpl>().As<IListServiceRepository>();
-            builder.RegisterType<Repository.OnlinePayments.OnlinePaymentServiceRepositoryImpl>().As<IOnlinePaymentServiceRepository>();
             builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 
             builder.RegisterType<com.benekeith.ListService.ListServcieClient>().As<com.benekeith.ListService.IListServcie>();
-            builder.RegisterType<com.benekeith.OnlinePaymentService.OnlinePaymentServiceClient>().As<com.benekeith.OnlinePaymentService.IOnlinePaymentService>();
             builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
             builder.RegisterType<com.benekeith.ProfileService.ProfileServiceClient>().As<com.benekeith.ProfileService.IProfileService>();
             builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
             builder.RegisterType<DsrAliasServiceImpl>().As<IDsrAliasService>();
-
-            // removed
-            //builder.RegisterType<Repository.Configurations.ExportSettingServiceRepositoryImpl>().As<IExportSettingServiceRepository>();
-            //builder.RegisterType<Repository.Configurations.ExternalCatalogServiceRepositoryImpl>().As<IExternalCatalogServiceRepository>();
-            
-            // Build the container.
-            return builder.Build();
+            builder.RegisterType<MarketingPreferencesServiceRepositoryImpl>().As<IMarketingPreferencesServiceRepository>();
         }
     }
 }
