@@ -284,49 +284,47 @@ angular.module('bekApp')
             $scope.unfiItemCount = 0;
         }
 
-      // append results to existing data (for infinite scroll)
-      if (appendResults) {
-        $scope.products.push.apply($scope.products, data.products);
-      // replace existing data (for sort, filter)
-      } else {
-        $scope.products = data.products;
-      }
+        // append results to existing data (for infinite scroll)
+        if (appendResults) {
+          $scope.products.push.apply($scope.products, data.products);
+        // replace existing data (for sort, filter)
+        } else {
+          $scope.products = data.products;
+          updateFacetCount($scope.facets.brands, data.facets.brands);
+          updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
+          updateFacetCount($scope.facets.categories, data.facets.categories);
+          updateFacetCount($scope.facets.dietary, data.facets.dietary);
+          updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
+        }
 
-      setBreadcrumbs(data);
+        setBreadcrumbs(data);
 
-      blockUI.stop();
+        blockUI.stop();
 
-      delete $scope.searchMessage;
-      
-      return data.facets;
+        delete $scope.searchMessage;
+        
+        return data.facets;
+        })
+      }, function(error) {
+        $scope.searchMessage = 'Error loading products.';
+      }).finally(function() {
+        $scope.loadingResults = false;
+      });
+    }
+
+    function updateFacetCount(facets, data){
+      facets.available.forEach(function(facet){
+        var facetName = $filter('filter') (data, {name: facet.name})
+        facet.count = 0;
+        if(facetName.length > 0 && facet.name){
+          facet.count = facetName[0].count;
+        }
       })
-    }), function(error) {
-      $scope.searchMessage = 'Error loading products.';
-    }.finally(function() {
-      $scope.loadingResults = false;
-    });
-  }
+    }
 
     /*************
     FACETS
     *************/
-
-    function updateFacetCount(facets, data) {
-       facets.available.forEach(function(facet){
-         var facetName = $filter('filter') (data, {name: facet.name})
-         facet.count = 0;
-         if(facetName.length > 0 && facet.name){
-            facet.count = facetName[0].count;
-          }
-      })
-    }
-
-    updateFacetCount($scope.facets.brands, data.facets.brands);
-    updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
-    updateFacetCount($scope.facets.categories, data.facets.categories);
-    updateFacetCount($scope.facets.dietary, data.facets.dietary);
-    updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
-        
     function clearFacets() {
       $scope.facets.categories.selected = [];
       $scope.facets.brands.selected = [];
