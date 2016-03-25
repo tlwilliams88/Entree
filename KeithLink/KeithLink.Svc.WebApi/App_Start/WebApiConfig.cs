@@ -10,12 +10,19 @@ using System.Configuration;
 
 namespace KeithLink.Svc.WebApi
 {
+    /// <summary>
+    /// custom configuration for the web api project
+    /// </summary>
     public static class WebApiConfig
     {
+        /// <summary>
+        /// register the http configuration
+        /// </summary>
+        /// <param name="config"></param>
         public static void Register(HttpConfiguration config)
         {
             // Configure Web API with the dependency resolver.
-            var diMap = DependencyMapFactory.BuildWebApiContainer();
+            var diMap = DependencyMapFactory.GetWebApiContainer();
             diMap.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
             DependencyMap.AddServiceReferences(ref diMap);
 

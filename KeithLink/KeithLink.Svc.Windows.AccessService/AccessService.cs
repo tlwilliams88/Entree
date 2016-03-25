@@ -24,7 +24,7 @@ namespace KeithLink.Svc.Windows.AccessService {
 
         #region ctor
         public AccessService() {
-            _container = Impl.Repository.SmartResolver.DependencyMapFactory.BuildAccessServiceContainer().Build();
+            _container = Impl.Repository.SmartResolver.DependencyMapFactory.GetAccessServiceContainer().Build();
 
             _log = _container.Resolve<IEventLogRepository>();
             //_requestLogic = container.Resolve<IAccessRequestLogic>();

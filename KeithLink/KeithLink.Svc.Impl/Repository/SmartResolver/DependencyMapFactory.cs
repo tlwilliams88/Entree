@@ -10,46 +10,52 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
     public static class DependencyMapFactory
     {
-        public static ContainerBuilder BuildAccessServiceContainer()
-        {
+        public static ContainerBuilder GetAccessServiceContainer(){
             ContainerBuilder builder = new ContainerBuilder();
+
             AutofacDependencyMapProvider.AddEventLogDependency(builder);
             AutofacDependencyMapProvider.AddStagingDependency(builder);
             AutofacDependencyMapProvider.AddOtherAccessServiceDependencies(builder);
+
             return builder;
         }
 
-        public static ContainerBuilder BuildInternalServiceContainer()
-        {
+        public static ContainerBuilder GetInternalServiceContainer(){
             ContainerBuilder builder = new ContainerBuilder();
+
+            //AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
             AutofacDependencyMapProvider.AddOtherInternalServiceDependencies(builder);
+
             return builder;
         }
 
-        public static ContainerBuilder BuildOrderServiceContainer()
-        {
+        public static ContainerBuilder GetOrderServiceContainer(){
             ContainerBuilder builder = new ContainerBuilder();
+
             AutofacDependencyMapProvider.AddEventLogDependency(builder);
             AutofacDependencyMapProvider.AddElasticSearchDependency(builder);
             AutofacDependencyMapProvider.AddGenericQueueDependency(builder);
             AutofacDependencyMapProvider.AddOtherOrderServiceDependencies(builder);
+
             return builder;
         }
 
-        public static ContainerBuilder BuildQueueSvcContainer()
-        {
+        public static ContainerBuilder GetQueueSvcContainer() {
             ContainerBuilder builder = new ContainerBuilder();
+
             AutofacDependencyMapProvider.AddEventLogDependency(builder);
             AutofacDependencyMapProvider.AddStagingDependency(builder);
             AutofacDependencyMapProvider.AddElasticSearchDependency(builder);
             AutofacDependencyMapProvider.AddOtherQueueServiceDependencies(builder);
+
             return builder;
         }
 
-        public static ContainerBuilder BuildWebApiContainer()
-        {
+        public static ContainerBuilder GetWebApiContainer() {
             ContainerBuilder builder = new ContainerBuilder();
+
             AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
+
             return builder;
         }
     }
