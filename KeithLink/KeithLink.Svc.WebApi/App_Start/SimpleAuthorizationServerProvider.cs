@@ -47,14 +47,16 @@ namespace KeithLink.Svc.WebApi
             if (_profileLogic.IsInternalAddress(context.UserName)) {
                 IUserDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserDomainRepository)) as IUserDomainRepository;
 
-                if (ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg) == false) {
+                bool success = await Task.Run<bool>(() => ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg));
+
+                if (!success) {
                     context.SetError("invalid_grant", errMsg);
                     return;
                 }
             } else {
                 ICustomerDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(ICustomerDomainRepository)) as ICustomerDomainRepository;
 
-                AuthenticationModel authentication = ADRepo.AuthenticateUser( context.UserName, context.Password );
+                AuthenticationModel authentication = await Task.Run<AuthenticationModel>(() => ADRepo.AuthenticateUser( context.UserName, context.Password ));
 
                 if (!authentication.Status.Equals( AuthenticationStatus.Successful ) && !authentication.Status.Equals( AuthenticationStatus.PasswordExpired ) ) {
                     context.SetError( "invalid_grant", authentication.Message );
@@ -62,7 +64,7 @@ namespace KeithLink.Svc.WebApi
                 }
             }
 
-            UserProfileReturn userReturn = _profileLogic.GetUserProfile(context.UserName);
+            UserProfileReturn userReturn = await Task.Run<UserProfileReturn>(() => _profileLogic.GetUserProfile(context.UserName));
 
             if (userReturn.UserProfiles.Count == 0) {
                 context.SetError("invalid_grant", "User profile does not exist in Commerce Server");
@@ -110,7 +112,7 @@ namespace KeithLink.Svc.WebApi
         /// </remarks>
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-            context.Validated();
+            await Task.Run(() => context.Validated());
         }
 
         #endregion
