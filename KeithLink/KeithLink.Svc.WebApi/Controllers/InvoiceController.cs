@@ -1,3 +1,5 @@
+﻿﻿using KeithLink.Common.Core.Logging;
+
 ﻿using KeithLink.Svc.Core.Extensions.Orders;
 
 using KeithLink.Svc.Core.Interface.Configurations;
@@ -34,7 +36,8 @@ namespace KeithLink.Svc.WebApi.Controllers {
 		private readonly IExportSettingLogic _exportLogic;
         private readonly IOrderHistoryLogic _orderLogic;
         private readonly IImagingLogic _imgLogic;
-		#endregion
+        private readonly IEventLogRepository _log;
+        #endregion
 
         #region ctor
         /// <summary>
@@ -46,12 +49,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="invoiceImagingLogic"></param>
         /// <param name="orderHistoryLogic"></param>
 		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentsLogic invoiceLogic, IExportSettingLogic exportSettingsLogic,
-                                 IOrderHistoryLogic orderHistoryLogic, IImagingLogic invoiceImagingLogic) : base(profileLogic) {
+                                 IOrderHistoryLogic orderHistoryLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo) : base(profileLogic) {
             _invLogic = invoiceLogic;
             _orderLogic = orderHistoryLogic;
 			_exportLogic = exportSettingsLogic;
             _imgLogic = invoiceImagingLogic;
-		}
+            _log = logRepo;
+        }
         #endregion
 
         #region methods
@@ -61,8 +65,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("banks")]
-        public List<CustomerBank> Get() {
-            return _invLogic.GetAllBankAccounts(SelectedUserContext);
+        public OperationReturnModel<List<CustomerBank>> Get() {
+            OperationReturnModel<List<CustomerBank>> retVal = new OperationReturnModel<List<CustomerBank>>();
+            try
+            {
+                retVal.SuccessResponse = _invLogic.GetAllBankAccounts(SelectedUserContext);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Get banks", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -72,10 +89,23 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("banks/{accountNumber}")]
-        public CustomerBank GetBackAccount(string accountNumber) {
-            return _invLogic.GetBankAccount(this.SelectedUserContext, accountNumber);
+        public OperationReturnModel<CustomerBank> GetBackAccount(string accountNumber) {
+            OperationReturnModel<CustomerBank> retVal = new OperationReturnModel<CustomerBank>();
+            try
+            {
+                retVal.SuccessResponse = _invLogic.GetBankAccount(this.SelectedUserContext, accountNumber);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetBackAccount", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
-  
+
         /// <summary>
         /// Read a paged list of invoices
         /// </summary>
@@ -84,8 +114,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("invoice/")]
-        public InvoiceHeaderReturnModel Invoice(PagingModel paging, bool forAllCustomers = false) {
-            return _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
+        public OperationReturnModel<InvoiceHeaderReturnModel> Invoice(PagingModel paging, bool forAllCustomers = false) {
+            OperationReturnModel<InvoiceHeaderReturnModel> retVal = new OperationReturnModel<InvoiceHeaderReturnModel>();
+            try
+            {
+                retVal.SuccessResponse = _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, paging, forAllCustomers);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetInvoiceHeaders", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -97,11 +140,22 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/export/")]
         public HttpResponseMessage ExportInvoices(InvoiceExportRequestModel request, bool forAllCustomers = false) {
-            var list = _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, request.paging, forAllCustomers);
+            HttpResponseMessage ret;
+            try
+            {
+                var list = _invLogic.GetInvoiceHeaders(this.AuthenticatedUser, SelectedUserContext, request.paging, forAllCustomers);
 
-            if (request.export.Fields != null)
-                _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
-            return ExportModel<InvoiceModel>(list.PagedResults.Results, request.export);
+                if(request.export.Fields != null)
+                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
+                ret = ExportModel<InvoiceModel>(list.PagedResults.Results, request.export);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("ExportInvoices", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -110,8 +164,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/export/")]
-        public ExportOptionsModel ExportInvoices() {
-            return _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0);
+        public Models.OperationReturnModel<ExportOptionsModel> ExportInvoices() {
+            Models.OperationReturnModel<ExportOptionsModel> retVal = new Models.OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                retVal.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ReadCustomExportOptions", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -123,11 +190,14 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [ApiKeyedRoute("invoice/image/{invoiceNumber}")]
         public OperationReturnModel<List<string>> GetInvoiceImages(string invoiceNumber) {
             OperationReturnModel<List<string>> retVal = new OperationReturnModel<List<string>>();
-
             try {
                 retVal.SuccessResponse = _imgLogic.GetInvoiceImages(this.SelectedUserContext, invoiceNumber);
-            } catch (Exception ex) {
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 retVal.ErrorMessage = string.Format("Could not retrieve invoice images at this time.");
+                _log.WriteErrorLog("GetInvoiceImages", ex);
+                retVal.IsSuccess = false;
             }
 
             return retVal;
@@ -140,13 +210,26 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/{invoiceNumber}")]
-        public InvoiceModel InvoiceTransactions(string invoiceNumber) {
-            InvoiceModel inv = _invLogic.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
-            Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
+        public Models.OperationReturnModel<InvoiceModel> InvoiceTransactions(string invoiceNumber) {
+            Models.OperationReturnModel<InvoiceModel> retVal = new Models.OperationReturnModel<InvoiceModel>();
+            try
+            {
+                InvoiceModel inv = _invLogic.GetInvoiceDetails(this.SelectedUserContext, invoiceNumber);
+                Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
 
-            inv.Items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
+                inv.Items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
 
-            return inv;
+                retVal.SuccessResponse = inv;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("InvoiceTransactions", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -158,13 +241,24 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/export/{invoiceNumber}")]
         public HttpResponseMessage ExportInvoiceDetail(string invoiceNumber, ExportRequestModel exportRequest) {
-            if (exportRequest.Fields != null)
-                _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+            HttpResponseMessage ret;
+            try
+            {
+                if(exportRequest.Fields != null)
+                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
-            Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
-            List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
+                Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
+                List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
 
-            return ExportModel<InvoiceItemModel>(items, exportRequest);
+                ret = ExportModel<InvoiceItemModel>(items, exportRequest);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("ExportInvoiceDetail", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -174,8 +268,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/export/{invoiceNumber}")]
-        public ExportOptionsModel ExportInvoiceDetail(string invoiceNumber) {
-            return _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, 0);
+        public OperationReturnModel<ExportOptionsModel> ExportInvoiceDetail(string invoiceNumber) {
+            OperationReturnModel<ExportOptionsModel> retVal = new OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                retVal.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.InvoiceDetail, 0);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("ExportInvoiceDetail", ex);
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -192,9 +299,13 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 _invLogic.MakeInvoicePayment(this.SelectedUserContext, this.AuthenticatedUser.EmailAddress, payments);
 
                 retVal.SuccessResponse = true;
-            } catch (Exception ex) {
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 retVal.SuccessResponse = false;
+                retVal.IsSuccess = false;
                 retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("MakeInvoicePayment", ex);
             }
 
             return retVal;
@@ -210,21 +321,36 @@ namespace KeithLink.Svc.WebApi.Controllers {
         public OperationReturnModel<PaymentValidationResponseModel> ValidatePayment(List<PaymentTransactionModel> payments) {
             OperationReturnModel<PaymentValidationResponseModel> returnValue = new OperationReturnModel<PaymentValidationResponseModel>();
 
-            List<PaymentTransactionModel> transactionErrors = _invLogic.ValidatePayment(this.SelectedUserContext, payments);
+            try
+            {
+                List<PaymentTransactionModel> transactionErrors = _invLogic.ValidatePayment(this.SelectedUserContext, payments);
 
-            // If the payment validation list comes back with a count > 0 then there were errors
-            // validating a transaction. It will return the transactions that did not validate correctly.
-            if (transactionErrors.Count > 0) {
-                returnValue.ErrorMessage = string.Format("The total for Bank Account {0} on {1} must be positive.", transactionErrors.First().AccountNumber, transactionErrors.First().PaymentDate.Value.ToShortDateString());
-                returnValue.SuccessResponse = new PaymentValidationResponseModel() {
-                    IsValid = false,
-                    PaymentTransactions = transactionErrors,
-                };
-            } else {
-                returnValue.SuccessResponse = new PaymentValidationResponseModel() {
-                    IsValid = true,
-                    PaymentTransactions = null,
-                };
+                // If the payment validation list comes back with a count > 0 then there were errors
+                // validating a transaction. It will return the transactions that did not validate correctly.
+                if (transactionErrors.Count > 0)
+                {
+                    returnValue.ErrorMessage = string.Format("The total for Bank Account {0} on {1} must be positive.", transactionErrors.First().AccountNumber, transactionErrors.First().PaymentDate.Value.ToShortDateString());
+                    returnValue.SuccessResponse = new PaymentValidationResponseModel()
+                    {
+                        IsValid = false,
+                        PaymentTransactions = transactionErrors,
+                    };
+                    returnValue.IsSuccess = true;
+                }
+                else {
+                    returnValue.SuccessResponse = new PaymentValidationResponseModel()
+                    {
+                        IsValid = true,
+                        PaymentTransactions = null,
+                    };
+                    returnValue.IsSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                returnValue.IsSuccess = false;
+                returnValue.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("ValidatePayment", ex);
             }
 
             return returnValue;
@@ -237,8 +363,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("invoice/transactions/pending/single")]
-        public PagedResults<PaymentTransactionModel> PendingTransactions(PagingModel paging) {
-            return _invLogic.PendingTransactions(this.SelectedUserContext, paging);
+        public OperationReturnModel<PagedResults<PaymentTransactionModel>> PendingTransactions(PagingModel paging) {
+            OperationReturnModel<PagedResults<PaymentTransactionModel>> retVal = new OperationReturnModel<PagedResults<PaymentTransactionModel>>();
+            try
+            {
+                retVal.SuccessResponse = _invLogic.PendingTransactions(this.SelectedUserContext, paging);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                retVal.IsSuccess = false;
+                retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("PendingTransactions", ex);
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -248,8 +387,21 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("invoice/transactions/pending")]
-        public PagedResults<PaymentTransactionModel> PendingTransactionsForAllCustomers(PagingModel paging) {
-            return _invLogic.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
+        public OperationReturnModel<PagedResults<PaymentTransactionModel>> PendingTransactionsForAllCustomers(PagingModel paging) {
+            OperationReturnModel<PagedResults<PaymentTransactionModel>> retVal = new OperationReturnModel<PagedResults<PaymentTransactionModel>>();
+            try
+            {
+                retVal.SuccessResponse = _invLogic.PendingTransactionsAllCustomers(this.AuthenticatedUser, paging);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                retVal.IsSuccess = false;
+                retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("PendingTransactionsForAllCustomers", ex);
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -260,15 +412,26 @@ namespace KeithLink.Svc.WebApi.Controllers {
         [HttpPost]
         [ApiKeyedRoute("invoice/transactions/pending/export/")]
         public HttpResponseMessage ExportOrders(InvoiceExportRequestModel request) {
-            request.paging.Size = int.MaxValue;
-            request.paging.From = 0;
+            HttpResponseMessage ret;
+            try
+            {
+                request.paging.Size = int.MaxValue;
+                request.paging.From = 0;
 
-            var transactions = _invLogic.PendingTransactionsAllCustomers(this.AuthenticatedUser, request.paging);
+                var transactions = _invLogic.PendingTransactionsAllCustomers(this.AuthenticatedUser, request.paging);
 
-            if (request.export.Fields != null)
-                _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, request.export.Fields, request.export.SelectedType);
+                if (request.export.Fields != null)
+                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, request.export.Fields, request.export.SelectedType);
 
-            return ExportModel<PaymentTransactionModel>(transactions.Results, request.export);
+                ret = ExportModel<PaymentTransactionModel>(transactions.Results, request.export);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("ExportOrders", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -277,8 +440,22 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("invoice/transactions/pending/export")]
-        public ExportOptionsModel ExportOrders() {
-            return _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, 0);
+        public OperationReturnModel<ExportOptionsModel> ExportOrders() {
+            OperationReturnModel<ExportOptionsModel> retVal = new OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                retVal.SuccessResponse = _exportLogic.ReadCustomExportOptions
+                    (this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, 0);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                retVal.IsSuccess = false;
+                retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog("ExportOrders", ex);
+            }
+
+            return retVal;
         }
         #endregion
     }
