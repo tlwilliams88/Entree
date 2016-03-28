@@ -62,7 +62,7 @@ angular.module('bekApp')
       getRecommendedItems: {
         url: '/list/recommended',
         method: 'GET',
-        isArray: true
+        isArray: false
       },
 
       copyList: {
