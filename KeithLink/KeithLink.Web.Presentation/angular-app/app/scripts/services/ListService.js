@@ -640,7 +640,7 @@ angular.module('bekApp')
         getAllLabels: function() {
           return $http.get('/list/labels').then(function(response) {
             angular.copy(response.data, Service.labels);
-            return response.data;
+            return response.data.successResponse;
           });
         },
 
