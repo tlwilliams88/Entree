@@ -483,7 +483,7 @@ angular.module('bekApp')
             }
 
             return promise.then(function(list) {
-              toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
+              toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
               return list;
             });
           }, function(error) {
@@ -701,7 +701,9 @@ angular.module('bekApp')
         },
 
         getRecommendedItems: function() {
-          return List.getRecommendedItems().$promise;
+          return List.getRecommendedItems().$promise.then(function(response){
+            return response.successResponse;
+          });
         },
 
         findRecommendedList: function() {

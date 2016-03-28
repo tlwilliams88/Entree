@@ -183,7 +183,9 @@ angular.module('bekApp')
         },
 
         getRecentlyViewedItems: function() {
-          return RecentlyViewedItem.get({}).$promise;
+          return RecentlyViewedItem.get({}).$promise.then(function(response){
+            return response.successResponse;
+          });
         },
 
         /****************
