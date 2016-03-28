@@ -33,7 +33,7 @@ angular.module('bekApp')
     getHouseBrands: function() {
       if (!brands) {
         brands = $http.get('/brands/house').then(function (response) {
-          return response.data.brands;
+          return response.data.successResponse.brands;
         });
       }
       return brands;

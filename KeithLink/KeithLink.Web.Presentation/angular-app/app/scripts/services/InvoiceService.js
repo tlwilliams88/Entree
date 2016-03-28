@@ -14,7 +14,9 @@ angular.module('bekApp')
     var Service = {
 
       getInvoices: function(params) {
-        return Invoice.save(params).$promise;
+        return Invoice.save(params).$promise.then(function(resp){
+          return resp.successResponse;          
+        });
       },
 
       getInvoice: function(invoiceNumber) {

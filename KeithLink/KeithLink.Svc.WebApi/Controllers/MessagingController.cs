@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Messaging;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.Profile;
 
 using KeithLink.Svc.Core.Models.Messaging;
@@ -20,6 +21,7 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private readonly IMessagingLogic _msgLogic;
         private readonly IUserProfileLogic userProfileLogic;
+        private readonly IEventLogRepository _log;
         #endregion
 
         #region ctor
@@ -28,24 +30,38 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// </summary>
         /// <param name="profileLogic"></param>
         /// <param name="messagingServiceRepository"></param>
-		public MessagingController(IUserProfileLogic profileLogic, IMessagingLogic messagingLogic)
+		public MessagingController(IUserProfileLogic profileLogic, IMessagingLogic messagingLogic, IEventLogRepository logRepo)
 			: base(profileLogic) {
             _msgLogic = messagingLogic;
             userProfileLogic = profileLogic;
+            _log = logRepo;
         }
         #endregion
 
         #region methods
-		/// <summary>
-		/// Retrieve paged list of user messages
-		/// </summary>
-		/// <param name="paging">Paging options</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Retrieve paged list of user messages
+        /// </summary>
+        /// <param name="paging">Paging options</param>
+        /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("messaging/usermessages/")]
-		public PagedResults<UserMessageModel> usermessages(PagingModel paging)
+		public Models.OperationReturnModel<PagedResults<UserMessageModel>> usermessages(PagingModel paging)
         {
-            return _msgLogic.ReadPagedUserMessages(this.AuthenticatedUser, paging);
+            Models.OperationReturnModel<PagedResults<UserMessageModel>> retVal = new Models.OperationReturnModel<PagedResults<UserMessageModel>>();
+            try
+            {
+                retVal.SuccessResponse = _msgLogic.ReadPagedUserMessages(this.AuthenticatedUser, paging);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("usermessages", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
 		/// <summary>
@@ -53,9 +69,23 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// </summary>
 		[HttpPut]
         [ApiKeyedRoute("messaging/usermessages/markasread")]
-        public void UpdateReadMessages()
+        public Models.OperationReturnModel<bool> UpdateReadMessages()
         {
-            _msgLogic.MarkAllReadByUser(this.AuthenticatedUser);
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                _msgLogic.MarkAllReadByUser(this.AuthenticatedUser);
+                retVal.SuccessResponse = true;
+                retVal.IsSuccess = retVal.SuccessResponse;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("UpdateReadMessages", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
 		/// <summary>
@@ -64,9 +94,22 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("messaging/usermessages/unreadcount")]
-        public int ReadUnreadMessageCount()
+        public Models.OperationReturnModel<int> ReadUnreadMessageCount()
         {
-            return _msgLogic.GetUnreadMessagesCount(this.AuthenticatedUser.UserId);
+            Models.OperationReturnModel<int> retVal = new Models.OperationReturnModel<int>();
+            try
+            {
+                retVal.SuccessResponse = _msgLogic.GetUnreadMessagesCount(this.AuthenticatedUser.UserId);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ReadUnreadMessageCount", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
 		/// <summary>
@@ -78,9 +121,20 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<bool> UpdateMessagingPreferences(ProfileMessagingPreferenceModel messagingPreferenceModel)
         {
-            _msgLogic.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
-            ret.SuccessResponse = true;
+            try
+            {
+                _msgLogic.UpdateMessagingPreferences(messagingPreferenceModel, this.AuthenticatedUser);
+                ret.SuccessResponse = true;
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("UpdateMessagingPreferences", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
+
             return ret;
         }
 
@@ -92,7 +146,19 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("messaging/preferences")]
         public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences()
         {
-            return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferences(this.AuthenticatedUser.UserId) };
+            Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> ret = new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>();
+            try
+            {
+                ret.SuccessResponse = userProfileLogic.GetMessagingPreferences(this.AuthenticatedUser.UserId);
+                ret.IsSuccess = true;
+            }
+            catch(Exception ex)
+            {
+                _log.WriteErrorLog("GetMessagingPreferences", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
+            return ret;
         }
 
 		/// <summary>
@@ -105,21 +171,42 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("messaging/preferences/{customerId}/{branchId}")]
 		public Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> GetMessagingPreferences(string customerId, string branchId)
 		{
-			return new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>() { SuccessResponse = userProfileLogic.GetMessagingPreferencesForCustomer(this.AuthenticatedUser.UserId, customerId, branchId) };
-		}
+            Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>> ret = new Models.OperationReturnModel<List<ProfileMessagingPreferenceModel>>();
+            try
+            {
+                ret.SuccessResponse = userProfileLogic.GetMessagingPreferencesForCustomer(this.AuthenticatedUser.UserId, customerId, branchId);
+                ret.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetMessagingPreferences", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
+            return ret;
+        }
 
-		/// <summary>
-		/// Register a push device (mobile device)
-		/// </summary>
-		/// <param name="pushDeviceModel">Registration information</param>
-		/// <returns></returns>
+        /// <summary>
+        /// Register a push device (mobile device)
+        /// </summary>
+        /// <param name="pushDeviceModel">Registration information</param>
+        /// <returns></returns>
         [HttpPut]
         [ApiKeyedRoute("messaging/registerpushdevice")]
         public Models.OperationReturnModel<bool> RegisterPushDeviceToken(PushDeviceRegistrationModel pushDeviceModel)
         {
-            _msgLogic.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
             Models.OperationReturnModel<bool> ret = new Models.OperationReturnModel<bool>();
-            ret.SuccessResponse = true;
+            try
+            {
+                _msgLogic.RegisterPushDevice(this.AuthenticatedUser, pushDeviceModel);
+                ret.SuccessResponse = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("RegisterPushDeviceToken", ex);
+                ret.ErrorMessage = ex.Message;
+                ret.IsSuccess = false;
+            }
             return ret;
         }
 
@@ -135,15 +222,14 @@ namespace KeithLink.Svc.WebApi.Controllers
 			try
 			{
 				_msgLogic.CreateMailMessage(mailMessage);
-				return new OperationReturnModel<bool>() { SuccessResponse = true };
+				return new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
 			}
 			catch (Exception ex)
 			{
-				return new OperationReturnModel<bool>() { ErrorMessage = ex.Message, SuccessResponse = false };
-				throw ex;
-			}
-
-		}
+                _log.WriteErrorLog("RegisterPushDeviceToken", ex);
+                return new OperationReturnModel<bool>() { ErrorMessage = ex.Message, SuccessResponse = false, IsSuccess = false };
+            }
+        }
 				
         #endregion
     }

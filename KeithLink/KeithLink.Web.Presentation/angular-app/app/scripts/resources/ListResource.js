@@ -11,7 +11,7 @@ angular.module('bekApp')
       getByType: {
         url: '/list/type/:type',
         method: 'GET',
-        isArray: true
+        isArray: false
       },
 
       // postData is the list
@@ -56,13 +56,13 @@ angular.module('bekApp')
       getCriticalItems: {
         url: '/list/reminders',
         method: 'GET',
-        isArray: true
+        isArray: false
       },
 
       getRecommendedItems: {
         url: '/list/recommended',
         method: 'GET',
-        isArray: true
+        isArray: false
       },
 
       copyList: {

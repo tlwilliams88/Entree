@@ -322,16 +322,16 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
-            var cutoffDate = DateService.momentObject(data.shipdates[0].cutoffdatetime).format();
+            var cutoffDate = DateService.momentObject(data.successResponse.shipdates[0].cutoffdatetime).format();
             var now = DateService.momentObject().tz("America/Chicago").format();
 
             var invalidSelectedDate = (now > cutoffDate) ? true : false;
             if(invalidSelectedDate){
-              data.shipdates = data.shipdates.slice(1,data.shipdates.length);
+              data.successResponse.shipdates = data.successResponse.shipdates.slice(1,data.successResponse.shipdates.length);
             }
-            angular.copy(data.shipdates, Service.shipDates);
-            deferred.resolve(data.shipdates);
-            return data.shipdates;
+            angular.copy(data.successResponse.shipdates, Service.shipDates);
+            deferred.resolve(data.successResponse.shipdates);
+            return data.successResponse.shipdates;
           }); 
         }
         return deferred.promise;

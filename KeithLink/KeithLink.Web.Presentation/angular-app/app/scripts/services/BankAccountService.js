@@ -14,7 +14,7 @@ angular.module('bekApp')
 
     // gets all bank accounts for a given customer using the userSelectedContext header
     getAllBankAccounts: function() {
-      return BankAccount.query({}).$promise;
+      return BankAccount.get({}).$promise;
     },
 
     // gets one bank account

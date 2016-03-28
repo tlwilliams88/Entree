@@ -109,7 +109,7 @@ angular.module('bekApp')
           };
 
           return $http.get(url, config).then(function(response) {
-            var data = response.data;
+            var data = response.data.successResponse;
 
             // convert nonstock data structure to match other itemspecs
             if (data.facets.nonstock && data.facets.nonstock.length > 0) {
@@ -131,7 +131,12 @@ angular.module('bekApp')
           var returnProduct;
           if (!Service.selectedProduct.name) {
             returnProduct = $http.get('/catalog/' + catalogType + '/product/' + itemNumber).then(function(response) {
-              return response.data;
+              if(response.data.successResponse){
+                return response.data.successResponse;
+              }
+              else{
+                return null;
+              }             
             });
           } else {
             returnProduct = Service.selectedProduct;
@@ -178,7 +183,9 @@ angular.module('bekApp')
         },
 
         getRecentlyViewedItems: function() {
-          return RecentlyViewedItem.query({}).$promise;
+          return RecentlyViewedItem.get({}).$promise.then(function(response){
+            return response.successResponse;
+          });
         },
 
         /****************

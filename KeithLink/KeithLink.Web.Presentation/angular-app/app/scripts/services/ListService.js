@@ -231,7 +231,9 @@ angular.module('bekApp')
         },
 
         getListsByType: function(type, params) {
-          return List.getByType({ type: type }, { params: params }).$promise;
+          return List.getByType({ type: type }, { params: params }).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         // accepts listId (guid)
@@ -246,7 +248,7 @@ angular.module('bekApp')
             params: params
           };
           return $http.get('/list/' + listId, data).then(function(response) {
-            var list = response.data;
+            var list = response.data.successResponse;
             if (!list) {
               return $q.reject('No list found.');
             }
@@ -415,7 +417,7 @@ angular.module('bekApp')
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');
-            return Service.getList(response.listitemid);
+            return Service.getList(response.successResponse.listitemid);
           }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
             return $q.reject(error);
@@ -464,6 +466,7 @@ angular.module('bekApp')
           list.message = 'Saving list...';
 
           return List.update(null, list).$promise.then(function(response) {
+            var list = response.successResponse;
             
             // update labels
             angular.forEach(list.items, function(item, index) {
@@ -474,13 +477,13 @@ angular.module('bekApp')
 
             var promise;
             if (getEntireList) {
-              promise = Service.getListWithItems(response.listid, { includePrice: false });
+              promise = Service.getListWithItems(list.listid, { includePrice: false });
             } else {
-              promise = Service.getList(response.listid, params);
+              promise = Service.getList(list.listid, params);
             }
 
             return promise.then(function(list) {
-              toaster.pop('success', null, 'Successfully save list ' + list.name + '.');
+              toaster.pop('success', null, 'Successfully saved list ' + list.name + '.');
               return list;
             });
           }, function(error) {
@@ -531,7 +534,7 @@ angular.module('bekApp')
           return List.addItem({
             listId: listId
           }, item).$promise.then(function(response) {
-            item.listitemid = response.listitemid;
+            item.listitemid = response.successResponse.listitemid;
             item.editPosition = 0;
 
             if (!doNotDisplayMessage) {
@@ -638,7 +641,7 @@ angular.module('bekApp')
         getAllLabels: function() {
           return $http.get('/list/labels').then(function(response) {
             angular.copy(response.data, Service.labels);
-            return response.data;
+            return response.data.successResponse;
           });
         },
 
@@ -672,11 +675,14 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getCriticalItems().$promise.then(function(criticalLists) {
-            criticalLists.forEach(function(list) {
-              PricingService.updateCaculatedFields(list.items);
-            });
-            return criticalLists;
+          return List.getCriticalItems().$promise.then(function(resp) {
+            if(resp.successResponse){
+              resp.successResponse.forEach(function(list) {
+                PricingService.updateCaculatedFields(list.items);
+              });
+            }
+
+            return resp.successResponse;
           });
         },
 
@@ -695,7 +701,9 @@ angular.module('bekApp')
         },
 
         getRecommendedItems: function() {
-          return List.getRecommendedItems().$promise;
+          return List.getRecommendedItems().$promise.then(function(response){
+            return response.successResponse;
+          });
         },
 
         findRecommendedList: function() {

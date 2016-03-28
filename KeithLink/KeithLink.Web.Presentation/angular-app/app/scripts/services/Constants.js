@@ -34,7 +34,7 @@ angular.module('bekApp')
      yearMonthDayDashes : 'YYYY-MM-DD',
      hourMinuteSecond : 'HHmmss',
      yearMonthDay : 'YYYYMMDD',
-     minute : 'MM'
+     month : 'MM'
     },
 
     servicelocatorUrl: '../servicelocator', // DEPRECATED

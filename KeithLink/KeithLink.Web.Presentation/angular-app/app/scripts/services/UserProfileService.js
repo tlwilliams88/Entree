@@ -67,10 +67,11 @@ angular.module('bekApp')
         }
 
         return $http.get('/profile', config).then(function(response){
-          if (response.data.userProfiles.length === 0) {
+          var data = response.data.successResponse;
+          if (data.userProfiles.length === 0) {
             return $q.reject('User profile not found.');
           }
-          var profile = response.data.userProfiles[0];
+          var profile = data.userProfiles[0];
           $log.debug(profile);
           profile.displayRole = AccessService.getRoleDisplayString(profile.rolename);
           Service.updateDisplayName(profile);  

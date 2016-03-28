@@ -17,6 +17,7 @@ using System.Reflection;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
@@ -26,41 +27,70 @@ namespace KeithLink.Svc.WebApi.Controllers
 		#region attributes
 		private readonly IShoppingCartLogic shoppingCartLogic;
 		private readonly IOrderServiceRepository orderServiceRepository;
-		#endregion
+        private readonly IEventLogRepository _log;
+        #endregion
 
-		#region ctor
-		public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository)
+        #region ctor
+        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository, 
+            IEventLogRepository logRepo)
 			: base(profileLogic)
 		{
 			this.shoppingCartLogic = shoppingCartLogic;
 			this.orderServiceRepository = orderServiceRepository;
-		}
-		#endregion
+            _log = logRepo;
+        }
+        #endregion
 
-		#region methods
-		/// <summary>
-		/// Retrieve user shopping carts (orders not yet submitted)
-		/// </summary>
-		/// <param name="header">Header level info only?</param>
-		/// <returns></returns>
-		[HttpGet]
+        #region methods
+        /// <summary>
+        /// Retrieve user shopping carts (orders not yet submitted)
+        /// </summary>
+        /// <param name="header">Header level info only?</param>
+        /// <returns></returns>
+        [HttpGet]
 		[ApiKeyedRoute("cart/")]
-		public List<ShoppingCart> List(bool header = false)
+		public Models.OperationReturnModel<List<ShoppingCart>> List(bool header = false)
 		{
-			return shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.SelectedUserContext, header);
-		}
+            Models.OperationReturnModel<List<ShoppingCart>> retVal = new Models.OperationReturnModel<List<ShoppingCart>>();
+            try
+            {
+                retVal.SuccessResponse = shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.SelectedUserContext, header);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("Cart List", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Retrieve a specific cart
-		/// </summary>
-		/// <param name="cartId">Cart id</param>
-		/// <returns></returns>
-		[HttpGet]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Retrieve a specific cart
+        /// </summary>
+        /// <param name="cartId">Cart id</param>
+        /// <returns></returns>
+        [HttpGet]
 		[ApiKeyedRoute("cart/{cartId}")]
-		public ShoppingCart Cart(Guid cartId)
+		public Models.OperationReturnModel<ShoppingCart> Cart(Guid cartId)
 		{
-			return shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
-		}
+            Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
+            try
+            {
+                retVal.SuccessResponse = shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetCart", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
 
 
         /// <summary>
@@ -73,91 +103,156 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute( "cart/print/{cartId}/{listId}" )]
         public HttpResponseMessage PrintCartWithList( Guid cartId, long listId, PrintListModel options ) {
-            ReportViewer rv = new ReportViewer();
+            HttpResponseMessage ret;
+            try
+            {
+                ReportViewer rv = new ReportViewer();
 
-            Assembly assembly = Assembly.Load( "KeithLink.Svc.Impl" );
+                Assembly assembly = Assembly.Load("KeithLink.Svc.Impl");
 
-            Stream rdlcStream = null;
-            var deviceInfo = string.Empty;
-            if (options.Landscape) {
-                deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
-                rdlcStream = assembly.GetManifestResourceStream( "KeithLink.Svc.Impl.Reports.CartReport_Landscape.rdlc" );
-            } else {
-                deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
-                rdlcStream = assembly.GetManifestResourceStream( "KeithLink.Svc.Impl.Reports.CartReport.rdlc" );
+                Stream rdlcStream = null;
+                var deviceInfo = string.Empty;
+                if (options.Landscape)
+                {
+                    deviceInfo = "<DeviceInfo><PageHeight>8.5in</PageHeight><PageWidth>11in</PageWidth></DeviceInfo>";
+                    rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport_Landscape.rdlc");
+                }
+                else {
+                    deviceInfo = "<DeviceInfo><PageHeight>11in</PageHeight><PageWidth>8.5in</PageWidth></DeviceInfo>";
+                    rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
+                }
+
+                ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList(this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options);
+
+                rv.LocalReport.LoadReportDefinition(rdlcStream);
+                ReportParameter[] parameters = new ReportParameter[3];
+                parameters[0] = new ReportParameter("ListName", reportModel.ListName);
+                parameters[1] = new ReportParameter("CartName", reportModel.CartName);
+                parameters[2] = new ReportParameter("ShowParValues", options.ShowParValues ? "true" : "false");
+
+                rv.LocalReport.SetParameters(parameters);
+
+                rv.LocalReport.DataSources.Add(new ReportDataSource("CartItems", reportModel.CartItems));
+                rv.LocalReport.DataSources.Add(new ReportDataSource("ListItems", reportModel.ListItems));
+
+                var bytes = rv.LocalReport.Render("PDF", deviceInfo);
+                Stream stream = new MemoryStream(bytes);
+
+                HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(stream);
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/pdf");
+
+                ret = result;
             }
-
-            ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList( this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options );
-
-            rv.LocalReport.LoadReportDefinition( rdlcStream );
-            ReportParameter[] parameters = new ReportParameter[3];
-            parameters[0] = new ReportParameter( "ListName", reportModel.ListName );
-            parameters[1] = new ReportParameter( "CartName", reportModel.CartName );
-            parameters[2] = new ReportParameter( "ShowParValues", options.ShowParValues ? "true" : "false" );
-
-            rv.LocalReport.SetParameters( parameters );
-
-            rv.LocalReport.DataSources.Add( new ReportDataSource( "CartItems", reportModel.CartItems ) );
-            rv.LocalReport.DataSources.Add( new ReportDataSource( "ListItems", reportModel.ListItems ) );
-
-            var bytes = rv.LocalReport.Render( "PDF", deviceInfo );
-            Stream stream = new MemoryStream( bytes );
-
-            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-            result.Content = new StreamContent(stream);
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-            result.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue( "application/pdf" );
-
-            return result;
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("List Export", ex);
+            }
+            return ret;
         }
 
-		/// <summary>
-		/// Create a user cart
-		/// </summary>
-		/// <param name="cart">Cart</param>
-		/// <returns></returns>
-		[HttpPost]
+        /// <summary>
+        /// Create a user cart
+        /// </summary>
+        /// <param name="cart">Cart</param>
+        /// <returns></returns>
+        [HttpPost]
 		[ApiKeyedRoute("cart/")]
-		public NewCSItem Cart(ShoppingCart cart)
+		public Models.OperationReturnModel<NewCSItem> Cart(ShoppingCart cart)
 		{
-			return new NewCSItem() { Id = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
-		}
+            Models.OperationReturnModel<NewCSItem> retVal = new Models.OperationReturnModel<NewCSItem>();
+            try
+            {
+                retVal.SuccessResponse = new NewCSItem() { Id = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("POST Cart", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Create a new cart from the quick add screen
-		/// </summary>
-		/// <param name="items">Items for the new cart</param>
-		/// <returns></returns>
-		[HttpPost]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Create a new cart from the quick add screen
+        /// </summary>
+        /// <param name="items">Items for the new cart</param>
+        /// <returns></returns>
+        [HttpPost]
 		[ApiKeyedRoute("cart/quickadd")]
-		public QuickAddReturnModel QuickAddCart(List<QuickAddItemModel> items)
+		public new Models.OperationReturnModel<QuickAddReturnModel> QuickAddCart(List<QuickAddItemModel> items)
 		{
-			return shoppingCartLogic.CreateQuickAddCart(this.AuthenticatedUser, this.SelectedUserContext, items);
-		}
+            Models.OperationReturnModel<QuickAddReturnModel> retVal = new Models.OperationReturnModel<QuickAddReturnModel>();
+            try
+            {
+                retVal.SuccessResponse = shoppingCartLogic.CreateQuickAddCart(this.AuthenticatedUser, this.SelectedUserContext, items);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("POST QuickAddCart", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Validate if items are valid in the quick add screen
-		/// </summary>
-		/// <param name="items">Items to validate</param>
-		/// <returns></returns>
-		[HttpPost]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Validate if items are valid in the quick add screen
+        /// </summary>
+        /// <param name="items">Items to validate</param>
+        /// <returns></returns>
+        [HttpPost]
 		[ApiKeyedRoute("cart/quickadd/validate")]
-		public List<ItemValidationResultModel> Validate(List<QuickAddItemModel> items)
+		public Models.OperationReturnModel<List<ItemValidationResultModel>> Validate(List<QuickAddItemModel> items)
 		{
-			return shoppingCartLogic.ValidateItems(this.SelectedUserContext, items);
-		}
+            Models.OperationReturnModel<List<ItemValidationResultModel>> retVal = new Models.OperationReturnModel<List<ItemValidationResultModel>>();
+            try
+            {
+                retVal.SuccessResponse = shoppingCartLogic.ValidateItems(this.SelectedUserContext, items);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("POST Validate", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Add a new item to an existing cart
-		/// </summary>
-		/// <param name="cartId">Cart id</param>
-		/// <param name="newItem">Item</param>
-		/// <returns></returns>
-		[HttpPost]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Add a new item to an existing cart
+        /// </summary>
+        /// <param name="cartId">Cart id</param>
+        /// <param name="newItem">Item</param>
+        /// <returns></returns>
+        [HttpPost]
 		[ApiKeyedRoute("cart/{cartId}/item")]
-		public NewCSItem AddItem(Guid cartId, ShoppingCartItem newItem)
+		public Models.OperationReturnModel<NewCSItem> AddItem(Guid cartId, ShoppingCartItem newItem)
 		{
-			return new NewCSItem() { Id = shoppingCartLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, newItem) };
+            Models.OperationReturnModel<NewCSItem> retVal = new Models.OperationReturnModel<NewCSItem>();
+            try
+            {
+                retVal.SuccessResponse = new NewCSItem() { Id = shoppingCartLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, newItem) };
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("POST Validate", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
 		}
 
 		/// <summary>
@@ -167,67 +262,151 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <param name="updatedItem">Item</param>
 		[HttpPut]
 		[ApiKeyedRoute("cart/{cartId}/item")]
-		public void UpdateItem(Guid cartId, ShoppingCartItem updatedItem)
+		public Models.OperationReturnModel<ShoppingCartItem> UpdateItem(Guid cartId, ShoppingCartItem updatedItem)
 		{
-			shoppingCartLogic.UpdateItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, updatedItem);
-		}
+            Models.OperationReturnModel<ShoppingCartItem> retVal = new Models.OperationReturnModel<ShoppingCartItem>();
+            try
+            {
+                shoppingCartLogic.UpdateItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, updatedItem);
+                retVal.SuccessResponse = updatedItem;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("PUT UpdateItem", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Update existing cart
-		/// </summary>
-		/// <param name="updatedCart">Cart</param>
-		/// <param name="deleteomitted">Delete items ommitted from the request?</param>
-		[HttpPut]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Update existing cart
+        /// </summary>
+        /// <param name="updatedCart">Cart</param>
+        /// <param name="deleteomitted">Delete items ommitted from the request?</param>
+        [HttpPut]
 		[ApiKeyedRoute("cart/")]
-		public void Put(ShoppingCart updatedCart, bool deleteomitted = true)
+		public Models.OperationReturnModel<ShoppingCart> Put(ShoppingCart updatedCart, bool deleteomitted = true)
 		{
-			shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
-		}
+            Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
+            try
+            {
+                shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
+                retVal.SuccessResponse = updatedCart;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("PUT UpdateCart", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Set a cart as the active cart. (Is this still used?)
-		/// </summary>
-		/// <param name="cartId"></param>
-		[HttpPut]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Set a cart as the active cart. (Is this still used?)
+        /// </summary>
+        /// <param name="cartId"></param>
+        [HttpPut]
 		[ApiKeyedRoute("cart/{cartId}/active")]
-		public void SetActive(Guid cartId)
+		public Models.OperationReturnModel<Guid> SetActive(Guid cartId)
 		{
-			orderServiceRepository.SaveUserActiveCart(this.SelectedUserContext, this.AuthenticatedUser.UserId, cartId);
-		}
+            Models.OperationReturnModel<Guid> retVal = new Models.OperationReturnModel<Guid>();
+            try
+            {
+                orderServiceRepository.SaveUserActiveCart(this.SelectedUserContext, this.AuthenticatedUser.UserId, cartId);
+                retVal.SuccessResponse = cartId;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("PUT CartActive", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Delete a cart
-		/// </summary>
-		/// <param name="cartId">Cart id</param>
-		[HttpDelete]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Delete a cart
+        /// </summary>
+        /// <param name="cartId">Cart id</param>
+        [HttpDelete]
 		[ApiKeyedRoute("cart/{cartId}")]
-		public void DeleteCart(Guid cartId)
+		public Models.OperationReturnModel<Guid> DeleteCart(Guid cartId)
 		{
-			shoppingCartLogic.DeleteCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
-		}
+            Models.OperationReturnModel<Guid> retVal = new Models.OperationReturnModel<Guid>();
+            try
+            {
+                shoppingCartLogic.DeleteCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                retVal.SuccessResponse = cartId;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("DELETE Cart", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Delete a list of carts
-		/// </summary>
-		/// <param name="cartIds">List of cart ids</param>
-		[HttpDelete]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Delete a list of carts
+        /// </summary>
+        /// <param name="cartIds">List of cart ids</param>
+        [HttpDelete]
 		[ApiKeyedRoute("cart/")]
-		public void DeleteCarts(List<Guid> cartIds)
+		public Models.OperationReturnModel<List<Guid>> DeleteCarts(List<Guid> cartIds)
 		{
-			shoppingCartLogic.DeleteCarts(this.AuthenticatedUser, this.SelectedUserContext, cartIds);
-		}
+            Models.OperationReturnModel<List<Guid>> retVal = new Models.OperationReturnModel<List<Guid>>();
+            try
+            {
+                shoppingCartLogic.DeleteCarts(this.AuthenticatedUser, this.SelectedUserContext, cartIds);
+                retVal.SuccessResponse = cartIds;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("DELETE Carts", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
 
-		/// <summary>
-		/// Delete item from a cart
-		/// </summary>
-		/// <param name="cartId">Cart id</param>
-		/// <param name="itemId">Item id</param>
-		[HttpDelete]
+            return retVal;
+        }
+
+        /// <summary>
+        /// Delete item from a cart
+        /// </summary>
+        /// <param name="cartId">Cart id</param>
+        /// <param name="itemId">Item id</param>
+        [HttpDelete]
 		[ApiKeyedRoute("cart/{cartId}/item/{itemId}")]
-		public void DeleteItem(Guid cartId, Guid itemId)
+		public Models.OperationReturnModel<bool> DeleteItem(Guid cartId, Guid itemId)
 		{
-			shoppingCartLogic.DeleteItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, itemId);
-		}
-		#endregion
-	}
+            Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
+            try
+            {
+                shoppingCartLogic.DeleteItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, itemId);
+                retVal.SuccessResponse = true;
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("DELETE Items", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
+        }
+        #endregion
+    }
 }

@@ -46,7 +46,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// ctor
         /// </summary>
         /// <param name="profileLogic"></param>
-        /// <param name="listServiceRepository"></param>
+        /// <param name="listLogic"></param>
         /// <param name="exportSettingsLogic"></param>
         /// <param name="elRepo"></param>
         public ListController(IUserProfileLogic profileLogic, IListLogic listLogic, IExportSettingLogic exportSettingsLogic,
@@ -450,12 +450,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="updatedList">Updated list</param>
         [HttpPut]
         [ApiKeyedRoute("list/")]
-        public OperationReturnModel<string> Put(ListModel updatedList) {
-            OperationReturnModel<string> ret = new OperationReturnModel<string>();
+        public OperationReturnModel<ListModel> Put(ListModel updatedList) {
+            OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
                 _listLogic.UpdateList(updatedList);
-                ret.SuccessResponse = null;
+                ret.SuccessResponse = updatedList;
                 ret.IsSuccess = true;
             }
             catch (Exception ex)

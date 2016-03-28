@@ -106,6 +106,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 row.copy = angular.copy(item);
                                 row.compiled = false;
                                 row.item = item;
+                                if(row.item.position % 2 == 0) {
+                                    row.el[0].children[0].className += ' even';
+                                }
                             }
                         } else {
                             // This must be a new node
@@ -116,6 +119,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                     item: item,
                                     el: render(item)
                                 };
+                                if(row.item.position % 2 == 0) {
+                                    row.el[0].children[0].className += ' even';
+                                }
                             } else {
                                 // Optimizations are disabled
                                 row = {
@@ -146,6 +152,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var busy=false;
                 listScope.$watch(function(scp){ return JSON.stringify(getter(scp), JSONStripper); }, function(list) {
                     tplContainer.width(elParent.width());
+                    scope.itemIconsActive = false;
 
                     if(busy) { return; }
                     busy=true;
@@ -215,7 +222,15 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     // -1 would indicate the row itself was clicked.
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
-                        $target.replaceWith(clone);
+                        scope.itemIconsActive = true;
+                        if(parseFloat($target[0].children[0].outerText) % 2 == 0){
+                            $target.replaceWith(clone);
+                            clone[0].children[0].className += ' even';
+                        }else{
+                            $target.replaceWith(clone);
+                        }
+                        
+
 
                         currentRowEls[rowId] = {
                             compiled: true,
@@ -225,9 +240,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                         setTimeout(function() {
                             if(elIndex >= 0) {
-                                clone.find('*').eq(elIndex).trigger('mouseover');
+                                clone.find('*').eq(elIndex).trigger('mouseenter');
                             } else {
-                                clone.trigger('mouseover');
+                                clone.trigger('mouseenter');
                             }
                         }, 0);
                     });
@@ -236,7 +251,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 };
 
 
-                element.parent().on('mouseover', '[fast-repeat-id]',parentClickHandler);
+                element.parent().on('mouseenter', '[fast-repeat-id]',parentClickHandler);
                 
                 // Handle resizes
                 //
@@ -248,7 +263,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 jqWindow.on('resize', onResize);
                 scope.$on('$destroy', function() { 
                     jqWindow.off('resize', onResize);
-                    element.parent().off('mouseover', '[fast-repeat-id]', parentClickHandler);
+                    element.parent().off('mouseleave', '[fast-repeat-id]', parentClickHandler);
                 });
             };
         },

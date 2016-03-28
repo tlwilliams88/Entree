@@ -9,8 +9,8 @@
  */
 
 angular.module('bekApp')
-  .controller('MarketingController', ['$scope', '$modal', 'MarketingService', 'UtilityService', 'CartService', 'ReportService',
-    function($scope, $modal, MarketingService, UtilityService, CartService, ReportService) {
+  .controller('MarketingController', ['$scope', '$modal', 'MarketingService', 'DateService', 'CartService', 'ReportService',
+    function($scope, $modal, MarketingService, DateService, CartService, ReportService) {
 
   CartService.getCartHeaders().then(function(cartHeaders){
       $scope.cartHeaders = cartHeaders;
