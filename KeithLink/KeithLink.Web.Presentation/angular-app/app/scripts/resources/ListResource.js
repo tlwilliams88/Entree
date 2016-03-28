@@ -11,7 +11,7 @@ angular.module('bekApp')
       getByType: {
         url: '/list/type/:type',
         method: 'GET',
-        isArray: true
+        isArray: false
       },
 
       // postData is the list

@@ -230,15 +230,10 @@ angular.module('bekApp')
           });
         },
 
-        getListsByType: function(type, params) {         
-          return $http.get('/list/type/'+ type, { params: params }).then(function(resp){
-            if(resp.data.successResponse){
-              return resp.data.successResponse;
-            }
-            else{
-              return null;
-            }             
-          });       
+        getListsByType: function(type, params) {
+          return List.getByType({ type: type }, { params: params }).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         // accepts listId (guid)
@@ -645,7 +640,7 @@ angular.module('bekApp')
         getAllLabels: function() {
           return $http.get('/list/labels').then(function(response) {
             angular.copy(response.data, Service.labels);
-            return response.data.successResponse;
+            return response.data;
           });
         },
 
