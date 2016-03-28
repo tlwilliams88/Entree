@@ -382,9 +382,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
         public List<Customer> GetCustomersForUser(Guid userId)
         {
 			var customerFromCache = _customerCacheRepository.GetItem<List<Customer>>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, GetCacheKey(string.Format("user_{0}", userId.ToString())));
-			if (customerFromCache == null && customerFromCache.Count > 0) {
+			if (customerFromCache != null && customerFromCache.Count > 0) {
 
-            } else {
+            //} else {
 				return customerFromCache;
             }
 
