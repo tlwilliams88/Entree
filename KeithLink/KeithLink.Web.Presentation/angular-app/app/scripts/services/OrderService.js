@@ -41,7 +41,11 @@ angular.module('bekApp')
       },      
 
       getMonthTotals: function(numberOfMonths) {
-       return $http.get('/order/totalbymonth/'+ numberOfMonths);
+       return $http.get('/order/totalbymonth/'+ numberOfMonths).then(function(resp){
+        if(resp.data.successResponse){
+          return resp.data.successResponse;
+        }
+        });
       },
 
       /*************
