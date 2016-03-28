@@ -81,13 +81,14 @@ namespace KeithLink.Svc.WebApi.Controllers
                 retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(this.AuthenticatedUser, userInfo.CustomerName, userInfo.Email, userInfo.Password,
                                                                             userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
                                                                             userInfo.Role, userInfo.BranchId);
+                retVal.IsSuccess = true;
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -127,13 +128,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 _marketingPreferencesServicesRepository.CreateMarketingPref(model);
                 _profileService.SetDefaultApplicationSettings(guestInfo.Email);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -155,11 +158,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword(this.AuthenticatedUser, guestInfo.Email, guestInfo.BranchId);
                 _profileService.SetDefaultApplicationSettings(guestInfo.Email);
-            } catch (ApplicationException ex) {
+                returnValue.IsSuccess = true;
+            }
+            catch (ApplicationException ex) {
                 returnValue.ErrorMessage = ex.Message;
+                returnValue.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", ex);
             } catch (Exception ex) {
                 returnValue.ErrorMessage = String.Concat("Could not complete the request. ", ex.Message);
+                returnValue.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -174,32 +181,50 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string email = "") {
-            if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
-                UserProfileReturn retVal = new UserProfileReturn();
-                retVal.UserProfiles.Add(this.AuthenticatedUser);
-
-                PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);
-
-                if (customers.Results == null) {
-                    retVal.UserProfiles.First().DefaultCustomer = null;
-                } else {
-                    retVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
-                }
-
-                // UNFI Whitelisting configurations - these are temporary entries
-                // if user can view unfi, we want to say this right away
-                if ((retVal.UserProfiles != null) &&
-                    (retVal.UserProfiles.Count == 1) &&
-                    (retVal.UserProfiles[0].DefaultCustomer != null))
+        public Models.OperationReturnModel<UserProfileReturn> GetUser(string email = "") {
+            Models.OperationReturnModel<UserProfileReturn> retVal = new Models.OperationReturnModel<UserProfileReturn>();
+            try
+            {
+                if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
                 {
-                    retVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, retVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
-                }
+                    UserProfileReturn upVal = new UserProfileReturn();
+                    upVal.UserProfiles.Add(this.AuthenticatedUser);
 
-                return retVal;
-            } else {
-                return _profileLogic.GetUserProfile(email, true);
+                    PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);
+
+                    if (customers.Results == null)
+                    {
+                        upVal.UserProfiles.First().DefaultCustomer = null;
+                    }
+                    else {
+                        upVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
+                    }
+
+                    // UNFI Whitelisting configurations - these are temporary entries
+                    // if user can view unfi, we want to say this right away
+                    if ((upVal.UserProfiles != null) &&
+                        (upVal.UserProfiles.Count == 1) &&
+                        (upVal.UserProfiles[0].DefaultCustomer != null))
+                    {
+                        upVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, 
+                            upVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
+                    }
+
+                    retVal.SuccessResponse = upVal;
+                }
+                else {
+                    retVal.SuccessResponse = _profileLogic.GetUserProfile(email, true);
+                }
+                retVal.IsSuccess = true;
             }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetUser", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -210,8 +235,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ApiKeyedRoute("profile/searchcustomer/{searchText}")]
-        public CustomerContainerReturn SearchCustomers(string searchText) {
-            return _custRepo.SearchCustomerContainers(searchText);
+        public Models.OperationReturnModel<CustomerContainerReturn> SearchCustomers(string searchText) {
+            Models.OperationReturnModel<CustomerContainerReturn> retVal = new Models.OperationReturnModel<CustomerContainerReturn>();
+            try
+            {
+                retVal.SuccessResponse = _custRepo.SearchCustomerContainers(searchText);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("SearchCustomers", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -221,8 +259,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ApiKeyedRoute("profile/customer/balance")]
-        public CustomerBalanceOrderUpdatedModel CustomerBalance() {
-            return _profileLogic.GetBalanceForCustomer(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
+        public Models.OperationReturnModel<CustomerBalanceOrderUpdatedModel> CustomerBalance() {
+            Models.OperationReturnModel<CustomerBalanceOrderUpdatedModel> retVal = new Models.OperationReturnModel<CustomerBalanceOrderUpdatedModel>();
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetBalanceForCustomer(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("CustomerBalance", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -237,9 +288,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
             try {
                 returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(this.AuthenticatedUser, pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
-            } catch (Exception ex) {
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex) {
+                _log.WriteErrorLog("UpdatePassword", ex);
                 returnValue.SuccessResponse = false;
                 returnValue.ErrorMessage = ex.Message;
+                returnValue.IsSuccess = false;
             }
 
             return returnValue;
