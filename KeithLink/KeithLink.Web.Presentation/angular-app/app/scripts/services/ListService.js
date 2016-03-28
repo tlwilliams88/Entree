@@ -466,6 +466,7 @@ angular.module('bekApp')
           list.message = 'Saving list...';
 
           return List.update(null, list).$promise.then(function(response) {
+            var list = response.successResponse;
             
             // update labels
             angular.forEach(list.items, function(item, index) {
@@ -476,9 +477,9 @@ angular.module('bekApp')
 
             var promise;
             if (getEntireList) {
-              promise = Service.getListWithItems(response.listid, { includePrice: false });
+              promise = Service.getListWithItems(list.listid, { includePrice: false });
             } else {
-              promise = Service.getList(response.listid, params);
+              promise = Service.getList(list.listid, params);
             }
 
             return promise.then(function(list) {

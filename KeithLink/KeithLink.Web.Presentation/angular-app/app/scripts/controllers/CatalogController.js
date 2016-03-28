@@ -27,14 +27,16 @@ angular.module('bekApp')
         $scope.pageTitle = "Specialty Catalog";
     }
 
-    ProductService.getRecentlyViewedItems().then(function(recentItems) {
+    ProductService.getRecentlyViewedItems().then(function(response) {
+      var recentItems = response.successResponse;
       $scope.loadingRecentlyViewedItems = false;
       $scope.recentlyViewedItems = recentItems;
     });
 
-    ListService.getRecommendedItems().then(function(recomItems) {
+    ListService.getRecommendedItems().then(function(response) {
+      var recomItems = response.successResponse;
       $scope.loadingRecommendedItems = false;
-      $scope.recommendedItems = recomItems.successResponse;
+      $scope.recommendedItems = recomItems;
     });
 
     CategoryService.getCategories($state.params.catalogType).then(function(categories) {
