@@ -230,8 +230,15 @@ angular.module('bekApp')
           });
         },
 
-        getListsByType: function(type, params) {
-          return List.getByType({ type: type }, { params: params }).$promise;
+        getListsByType: function(type, params) {         
+          return $http.get('/list/type/'+ type, { params: params }).then(function(resp){
+            if(resp.data.successResponse){
+              return resp.data.successResponse;
+            }
+            else{
+              return null;
+            }             
+          });       
         },
 
         // accepts listId (guid)
