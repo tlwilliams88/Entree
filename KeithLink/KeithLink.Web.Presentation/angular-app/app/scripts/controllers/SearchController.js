@@ -275,7 +275,7 @@ angular.module('bekApp')
 
       return blockUI.start("Loading Products...").then(function(){
         return getData().then(function(data) {
-        $scope.totalItems = data.successResponse.totalcount;
+        $scope.totalItems = data.totalcount;
         if (data.catalogCounts != null) {
             $scope.bekItemCount = data.catalogCounts.bek;
             $scope.unfiItemCount = data.catalogCounts.unfi;
@@ -289,12 +289,12 @@ angular.module('bekApp')
           $scope.products.push.apply($scope.products, data.products);
         // replace existing data (for sort, filter)
         } else {
-          $scope.products = data.successResponse.products;
-          updateFacetCount($scope.facets.brands, data.successResponse.facets.brands);
-          updateFacetCount($scope.facets.itemspecs, data.successResponse.facets.itemspecs);
-          updateFacetCount($scope.facets.categories, data.successResponse.facets.categories);
-          updateFacetCount($scope.facets.dietary, data.successResponse.facets.dietary);
-          updateFacetCount($scope.facets.mfrname, data.successResponse.facets.mfrname);
+          $scope.products = data.products;
+          updateFacetCount($scope.facets.brands, data.facets.brands);
+          updateFacetCount($scope.facets.itemspecs, data.facets.itemspecs);
+          updateFacetCount($scope.facets.categories, data.facets.categories);
+          updateFacetCount($scope.facets.dietary, data.facets.dietary);
+          updateFacetCount($scope.facets.mfrname, data.facets.mfrname);
         }
 
         setBreadcrumbs(data);
@@ -303,7 +303,7 @@ angular.module('bekApp')
 
         delete $scope.searchMessage;
         
-        return data.successResponse.facets;
+        return data.facets;
         })
       }, function(error) {
         $scope.searchMessage = 'Error loading products.';

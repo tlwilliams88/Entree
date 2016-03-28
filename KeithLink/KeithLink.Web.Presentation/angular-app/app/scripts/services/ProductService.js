@@ -109,13 +109,13 @@ angular.module('bekApp')
           };
 
           return $http.get(url, config).then(function(response) {
-            var data = response.data;
+            var data = response.data.successResponse;
 
             // convert nonstock data structure to match other itemspecs
-            if (data.successResponse.facets.nonstock && data.successResponse.facets.nonstock.length > 0) {
-              data.successResponse.facets.nonstock.forEach(function(nonstockItem) {
+            if (data.facets.nonstock && data.facets.nonstock.length > 0) {
+              data.facets.nonstock.forEach(function(nonstockItem) {
                 if (nonstockItem.name === 'y') {
-                  data.successResponse.facets.itemspecs.push({
+                  data.facets.itemspecs.push({
                     name: 'nonstock',
                     count: nonstockItem.count // yes
                   });
