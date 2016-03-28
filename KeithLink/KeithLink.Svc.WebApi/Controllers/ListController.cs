@@ -444,12 +444,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="updatedList">Updated list</param>
         [HttpPut]
         [ApiKeyedRoute("list/")]
-        public OperationReturnModel<string> Put(ListModel updatedList) {
-            OperationReturnModel<string> ret = new OperationReturnModel<string>();
+        public OperationReturnModel<ListModel> Put(ListModel updatedList) {
+            OperationReturnModel<ListModel> ret = new OperationReturnModel<ListModel>();
             try
             {
                 _listServiceRepository.UpdateList(updatedList);
-                ret.SuccessResponse = null;
+                ret.SuccessResponse = updatedList;
                 ret.IsSuccess = true;
             }
             catch (Exception ex)

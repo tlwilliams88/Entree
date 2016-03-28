@@ -1,4 +1,5 @@
-﻿using KeithLink.Svc.Core.Interface.Configurations;
+﻿using KeithLink.Common.Core.Logging;
+using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Reports;
 
@@ -23,7 +24,9 @@ namespace KeithLink.Svc.WebApi.Controllers
         #region attributes
         private readonly IReportLogic _reportLogic;
 		private readonly IExportSettingLogic _exportLogic;
-		private readonly IInventoryValuationReportLogic _inventoryValuationReportLogic;       
+		private readonly IInventoryValuationReportLogic _inventoryValuationReportLogic;
+        private readonly IEventLogRepository _log;
+
         #endregion
 
         #region ctor
@@ -34,12 +37,13 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="profileLogic"></param>
         /// <param name="exportSettingsLogic"></param>
         /// <param name="inventoryValuationReportLogic"></param>
-		public ReportController(IReportLogic reportLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
-                                IInventoryValuationReportLogic inventoryValuationReportLogic) 
+        public ReportController(IReportLogic reportLogic, IUserProfileLogic profileLogic, IExportSettingLogic exportSettingsLogic, 
+                                IInventoryValuationReportLogic inventoryValuationReportLogic, IEventLogRepository logRepo) 
             : base(profileLogic) {
 			_exportLogic = exportSettingsLogic;
 			_inventoryValuationReportLogic = inventoryValuationReportLogic;
             _reportLogic = reportLogic;
+            _log = logRepo;
         }
         #endregion
 
@@ -52,14 +56,30 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpGet]
         [ApiKeyedRoute("report/itemusage")]
         public Models.OperationReturnModel<IEnumerable<ItemUsageReportItemModel>> ReadItemUsage([FromUri] ItemUsageReportQueryModel usageQuery) {
-            if (usageQuery != null && usageQuery.fromDate.HasValue && usageQuery.toDate.HasValue) {
-                usageQuery.UserSelectedContext = this.SelectedUserContext;
-                var ret = _reportLogic.GetItemUsage(usageQuery);
-                return new Models.OperationReturnModel<IEnumerable<Core.Models.Reports.ItemUsageReportItemModel>>() {
-                    SuccessResponse = ret
-                };
-            } else
-                return new Models.OperationReturnModel<IEnumerable<ItemUsageReportItemModel>>() { ErrorMessage = "A valid FROM and TO date are required" };
+            Models.OperationReturnModel<IEnumerable<ItemUsageReportItemModel>> retVal = new Models.OperationReturnModel<IEnumerable<ItemUsageReportItemModel>>();
+            try
+            {
+                if (usageQuery != null && usageQuery.fromDate.HasValue && usageQuery.toDate.HasValue)
+                {
+                    usageQuery.UserSelectedContext = this.SelectedUserContext;
+                    var ret = _reportLogic.GetItemUsage(usageQuery);
+                    retVal.SuccessResponse = ret;
+                    retVal.IsSuccess = true;
+                }
+                else
+                {
+                    retVal.IsSuccess = false;
+                    retVal.ErrorMessage = "A valid FROM and TO date are required";
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ReadItemUsage", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -71,16 +91,30 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute("report/itemusage/export")]
         public HttpResponseMessage ExportItemUsage([FromUri] ItemUsageReportQueryModel usageQuery, ExportRequestModel exportRequest) {
-            if (usageQuery != null && usageQuery.fromDate.HasValue && usageQuery.toDate.HasValue) {
-                usageQuery.UserSelectedContext = this.SelectedUserContext;
-                var ret = _reportLogic.GetItemUsage(usageQuery);
+            HttpResponseMessage retVal;
+            try
+            {
+                if (usageQuery != null && usageQuery.fromDate.HasValue && usageQuery.toDate.HasValue)
+                {
+                    usageQuery.UserSelectedContext = this.SelectedUserContext;
+                    var ret = _reportLogic.GetItemUsage(usageQuery);
 
-                if (exportRequest.Fields != null)
-                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.ItemUsage, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+                    if (exportRequest.Fields != null)
+                        _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.ItemUsage, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
-                return ExportModel<ItemUsageReportItemModel>(ret.ToList(), exportRequest);
-            } else
-                return new HttpResponseMessage() { StatusCode = HttpStatusCode.NoContent };
+                    retVal = ExportModel<ItemUsageReportItemModel>(ret.ToList(), exportRequest);
+                }
+                else
+                    retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.NoContent };
+
+            }
+            catch(Exception ex)
+            {
+                retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.InternalServerError };
+                retVal.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("ExportItemUsage", ex);
+            }
+            return retVal;
         }
 
         /// <summary>
