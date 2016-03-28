@@ -417,7 +417,7 @@ angular.module('bekApp')
           return List.save(params, newList).$promise.then(function(response) {
             Service.renameList = true;
             toaster.pop('success', null, 'Successfully created list.');
-            return Service.getList(response.listitemid);
+            return Service.getList(response.successResponse.listitemid);
           }, function(error) {
             toaster.pop('error', null, 'Error creating list.');
             return $q.reject(error);
@@ -533,7 +533,7 @@ angular.module('bekApp')
           return List.addItem({
             listId: listId
           }, item).$promise.then(function(response) {
-            item.listitemid = response.listitemid;
+            item.listitemid = response.successResponse.listitemid;
             item.editPosition = 0;
 
             if (!doNotDisplayMessage) {
