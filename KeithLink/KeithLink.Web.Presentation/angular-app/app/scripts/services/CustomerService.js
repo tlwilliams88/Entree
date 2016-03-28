@@ -32,7 +32,7 @@ angular.module('bekApp')
           }
         };
         return $http.get('/profile/customer', data).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         });
       },
 
