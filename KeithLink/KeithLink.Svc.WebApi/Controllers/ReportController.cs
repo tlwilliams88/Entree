@@ -123,8 +123,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("report/itemusage/export")]
-        public ExportOptionsModel ExportList() {
-            return _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.ItemUsage, 0);
+        public Models.OperationReturnModel<ExportOptionsModel> ExportList() {
+            Models.OperationReturnModel<ExportOptionsModel> retVal = new Models.OperationReturnModel<ExportOptionsModel>();
+            try
+            {
+                retVal.SuccessResponse = _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.ItemUsage, 0);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ExportList", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
 
@@ -136,18 +149,29 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute("report/inventoryvalue")]
         public HttpResponseMessage GenerateInventoryValuationReport(InventoryValuationRequestModel request) {
-            var stream = _inventoryValuationReportLogic.GenerateReport(request);
+            HttpResponseMessage retVal;
+            try
+            {
+                var stream = _inventoryValuationReportLogic.GenerateReport(request);
 
-            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
-            result.Content = new StreamContent(stream);
-            result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+                HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
+                result.Content = new StreamContent(stream);
+                result.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
 
-            if (request.ReportFormat.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
-                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-            else
-                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
+                if (request.ReportFormat.Equals("excel", StringComparison.CurrentCultureIgnoreCase))
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                else
+                    result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/pdf");
 
-            return result;
+                retVal = result;
+            }
+            catch (Exception ex)
+            {
+                retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.InternalServerError };
+                retVal.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("GenerateInventoryValuationReport", ex);
+            }
+            return retVal;
         }
         #endregion
     }
