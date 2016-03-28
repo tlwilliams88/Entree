@@ -112,10 +112,10 @@ angular.module('bekApp')
             var data = response.data;
 
             // convert nonstock data structure to match other itemspecs
-            if (data.facets.nonstock && data.facets.nonstock.length > 0) {
-              data.facets.nonstock.forEach(function(nonstockItem) {
+            if (data.successResponse.facets.nonstock && data.successResponse.facets.nonstock.length > 0) {
+              data.successResponse.facets.nonstock.forEach(function(nonstockItem) {
                 if (nonstockItem.name === 'y') {
-                  data.facets.itemspecs.push({
+                  data.successResponse.facets.itemspecs.push({
                     name: 'nonstock',
                     count: nonstockItem.count // yes
                   });
