@@ -131,7 +131,12 @@ angular.module('bekApp')
           var returnProduct;
           if (!Service.selectedProduct.name) {
             returnProduct = $http.get('/catalog/' + catalogType + '/product/' + itemNumber).then(function(response) {
-              return response.data;
+              if(response.data.successResponse){
+                return response.data.successResponse;
+              }
+              else{
+                return null;
+              }             
             });
           } else {
             returnProduct = Service.selectedProduct;
