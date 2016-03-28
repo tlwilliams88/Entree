@@ -30,7 +30,9 @@ angular.module('bekApp')
       getOrderDetails: function(orderNumber) {
         return Order.get({
           orderNumber: orderNumber
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       getOrdersByDate: function(startDate, endDate) {

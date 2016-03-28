@@ -42,8 +42,8 @@ angular.module('bekApp')
       var branches = localStorageService.get('branches');
       if (!branches) {
         $http.get('/catalog/divisions').then(function (response) {
-          localStorageService.set('branches', response.data);
-          return deferred.resolve(response.data);
+          localStorageService.set('branches', response.data.successResponse);
+          return deferred.resolve(response.data.successResponse);
         });
       } else {
         deferred.resolve(branches);
