@@ -114,14 +114,14 @@ namespace KeithLink.Svc.Impl.ETL
 		private readonly IEventLogRepository eventLog;
         private readonly IUserProfileLogic userProfileLogic;
 
-		private readonly IInternalListLogic listLogic;
+		private readonly IListLogic listLogic;
         private readonly IMessagingLogic messageLogic;
         
         #endregion
 
         #region constructor
         public CatalogLogicImpl(ICatalogInternalRepository catalogRepository, IStagingRepository stagingRepository, IElasticSearchRepository elasticSearchRepository,
-			                    IEventLogRepository eventLog, IUserProfileLogic userProfile, IInternalListLogic listLogic, 
+			                    IEventLogRepository eventLog, IUserProfileLogic userProfile, IListLogic listLogic, 
                                 IMessagingLogic messageLogic)
         {
             this.catalogRepository = catalogRepository;

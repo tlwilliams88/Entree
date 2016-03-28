@@ -143,7 +143,6 @@
   <ItemGroup>
     <Content Include="CacheService.svc" />
     <Content Include="ProfileService.svc" />
-    <Content Include="ListServcie.svc" />
     <Content Include="OrderService.svc" />
     <Content Include="ETLService.svc" />
     <Content Include="Global.asax" />
@@ -171,9 +170,6 @@
     <Compile Include="Interfaces\IListServcie.cs" />
     <Compile Include="Interfaces\IMessagingService.cs" />
     <Compile Include="Interfaces\IOrderService.cs" />
-    <Compile Include="ListServcie.svc.cs">
-      <DependentUpon>ListServcie.svc</DependentUpon>
-    </Compile>
     <Compile Include="OrderService.svc.cs">
       <DependentUpon>OrderService.svc</DependentUpon>
     </Compile>

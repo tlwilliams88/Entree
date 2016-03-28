@@ -271,13 +271,16 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalListLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
     <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalSpecialOrderLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
+    <Compile Include="Logic\Lists\FavoriteLogicImpl.cs" />
+    <Compile Include="Logic\Lists\HistoryLogic.cs" />
+    <Compile Include="Logic\Lists\ListLogicImpl.cs" />
+    <Compile Include="Logic\Lists\NoteLogicImpl.cs" />
     <Compile Include="Logic\Messaging\AmazonPushNotificationMessageProvider.cs" />
     <Compile Include="Logic\Messaging\BaseNotificationHandlerImpl.cs" />
     <Compile Include="Logic\Messaging\EtaNotificationHandlerImpl.cs" />
@@ -697,7 +700,6 @@
     <Compile Include="Repository\Invoices\ImagingRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\TermRepositoryImpl.cs" />
     <Compile Include="Repository\Lists\ListShareRepositoryImpl.cs" />
-    <Compile Include="Repository\Lists\NoListServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserPushNotificationDeviceRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessageRepositoryImpl.cs" />
     <Compile Include="Repository\Messaging\UserMessagingPreferenceRepositoryImpl.cs" />

@@ -13,7 +13,6 @@ using FizzWare.NBuilder;
 using KeithLink.Svc.Core.Models.EF;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 using Moq;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -28,12 +27,19 @@ namespace KeithLink.Svc.Test.Logic
     [TestClass]
     public class InternalListLogicTests
     {
-		private readonly IInternalListLogic listLogic;
+		private readonly IListLogic listLogic;
+        private readonly IFavoriteLogic _favoriteLogic;
+        private readonly IHistoryLogic _historyLogic;
+        private readonly INoteLogic _noteLogic;
+
 		public InternalListLogicTests()
 		{
 			var container = DependencyMap.Build();
 
-			listLogic = container.Resolve<IInternalListLogic>();				
+			listLogic = container.Resolve<IListLogic>();
+            _favoriteLogic = container.Resolve<IFavoriteLogic>();
+            _historyLogic = container.Resolve<IHistoryLogic>();
+            _noteLogic = container.Resolve<INoteLogic>();
 		}
 
 		[TestMethod]
@@ -93,7 +99,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void ReadFavories()
 		{
-			var favorites = listLogic.ReadFavorites(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
+			var favorites = _favoriteLogic.GetFavoritedItemNumbers(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
 			Assert.IsNotNull(favorites);
 		}
         
@@ -122,7 +128,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void ReadNotes()
 		{
-			var notes = listLogic.ReadNotes(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
+			var notes = _noteLogic.GetNotes(TestSessionObject.TestAuthenticatedUser, TestSessionObject.TestUserContext);
 			Assert.IsNotNull(notes);
 		}
 
@@ -197,7 +203,7 @@ namespace KeithLink.Svc.Test.Logic
 		[TestMethod]
 		public void ItemsInHistoryList()
 		{
-			var list = listLogic.ItemsInHistoryList(TestSessionObject.TestUserContext, new List<string>() { "023011" });
+			var list = _historyLogic.ItemsInHistoryList(TestSessionObject.TestUserContext, new List<string>() { "023011" });
 		}
 
         

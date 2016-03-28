@@ -14,7 +14,7 @@ namespace KeithLink.Svc.Test.Logic.InternalSrv
     public class InternalSvc_InternalListLogic_ReadPagedList_Tests
     {
         private long ListId = 1;
-        private IInternalListLogic internalListLogic;
+        private IListLogic internalListLogic;
         private UserSelectedContext userSelectedContext;
         private UserProfile userProfile;
         private PagingModel pagingModel;
@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Test.Logic.InternalSrv
             _cbuilder.RegisterStandard();
             var _container = _cbuilder.Build();
 
-            internalListLogic = _container.Resolve<IInternalListLogic>();
+            internalListLogic = _container.Resolve<IListLogic>();
 
             userSelectedContext = TestSessionObject.TestUserContext;
             userProfile = TestSessionObject.TestAuthenticatedUser;

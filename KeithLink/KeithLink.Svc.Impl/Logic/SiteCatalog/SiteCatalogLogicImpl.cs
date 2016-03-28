@@ -32,15 +32,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
     public class SiteCatalogLogicImpl : ICatalogLogic
     {
         #region attributes
-        private ICatalogRepository _catalogRepository;
-        private IPriceLogic _priceLogic;
-        private IProductImageRepository _imgRepository;
-        private ICategoryImageRepository _categoryImageRepository;
-        private ICacheRepository _catalogCacheRepository;
-		private IListServiceRepository _listServiceRepository;
-		private IDivisionLogic _divisionLogic;
-        private IOrderServiceRepository _orderServiceRepository;
-        private IExportSettingLogic _externalCatalogRepository;
+        private readonly ICacheRepository _catalogCacheRepository;
+        private readonly ICatalogRepository _catalogRepository;
+        private readonly ICategoryImageRepository _categoryImageRepository;
+		private readonly IDivisionLogic _divisionLogic;
+        private readonly IExportSettingLogic _externalCatalogRepository;
+        private readonly IFavoriteLogic _favoriteLogic;
+        private readonly IHistoryLogic _historyLogic;
+        private readonly IProductImageRepository _imgRepository;
+		//private readonly IListLogic _listServiceRepository;
+        private readonly INoteLogic _noteLogic;
+        private readonly IOrderServiceRepository _orderServiceRepository;
+        private readonly IPriceLogic _priceLogic;
 
         protected string CACHE_GROUPNAME { get { return "Catalog"; } }
         protected string CACHE_NAME { get { return "Catalog"; } }
@@ -48,19 +51,23 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         #endregion
 
         #region constructor
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository,
-                                                 ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic,
-                                                 IOrderServiceRepository orderServiceRepository, IExportSettingLogic externalCatalogRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, ICategoryImageRepository categoryImageRepository, 
+                                    ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderServiceRepository orderServiceRepository, 
+                                    IExportSettingLogic externalCatalogRepository, IFavoriteLogic favoriteLogic, INoteLogic noteLogic,
+                                    IHistoryLogic historyLogic)
         {
-            _catalogRepository = catalogRepository;
-            _priceLogic = priceLogic;
-            _imgRepository = imgRepository;
-            _listServiceRepository = listServiceRepository;
-            _categoryImageRepository = categoryImageRepository;
             _catalogCacheRepository = catalogCacheRepository;
+            _catalogRepository = catalogRepository;
+            _categoryImageRepository = categoryImageRepository;
             _divisionLogic = divisionLogic;
-            _orderServiceRepository = orderServiceRepository;
             _externalCatalogRepository = externalCatalogRepository;
+            _favoriteLogic = favoriteLogic;
+            _historyLogic = historyLogic;
+            _imgRepository = imgRepository;
+            //_listServiceRepository = listServiceRepository;
+            _noteLogic = noteLogic;
+            _orderServiceRepository = orderServiceRepository;
+            _priceLogic = priceLogic;
         }
         #endregion
 
@@ -147,14 +154,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo) {
             if (profile != null) {
-                var favorites = _listServiceRepository.ReadFavorites(profile, catalogInfo);
-                var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
-                var history = _listServiceRepository.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
+                var favorites = _favoriteLogic.GetFavoritedItemNumbers(profile, catalogInfo);
+                var notes = _noteLogic.GetNotes(profile, catalogInfo);
+                var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
 
                 ret.Products.ForEach(delegate(Product prod) {
                     prod.Favorite = favorites.Contains(prod.ItemNumber);
-                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
-                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber)).FirstOrDefault().InHistory;
+                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
+                                      .Select(i => i.Notes)
+                                      .FirstOrDefault();
+                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                            .FirstOrDefault()
+                                            .InHistory;
                 });
             }
         }

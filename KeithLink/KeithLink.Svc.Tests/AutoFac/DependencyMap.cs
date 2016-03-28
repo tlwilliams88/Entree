@@ -28,6 +28,7 @@ using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.Invoices;
 using KeithLink.Svc.Impl.Logic.InternalSvc;
+using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.OnlinePayments;
 using KeithLink.Svc.Impl.Logic.Orders;
@@ -91,7 +92,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-			builder.RegisterType<InternalListLogic>().As<IInternalListLogic>();
+			builder.RegisterType<ListLogicImpl>().As<IListLogic>();
             builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
 			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
 			builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
@@ -158,7 +159,6 @@ namespace KeithLink.Svc.Test
             
             //Replace
 			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-			builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
 
             // messaging
@@ -181,7 +181,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
             builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-            builder.RegisterType<InternalListLogic>().As<IInternalListLogic>();
+            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
             builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
@@ -248,7 +248,6 @@ namespace KeithLink.Svc.Test
 
             //Replace
             builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
 
             // messaging

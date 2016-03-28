@@ -52,7 +52,8 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IGenericQueueRepository queueRepository;
 		private readonly IBasketLogic basketLogic;
-		private readonly IListServiceRepository listServiceRepository;
+		private readonly IListLogic listServiceRepository;
+        private readonly INoteLogic _noteLogic;
         private readonly IOrderQueueLogic orderQueueLogic;
 		private readonly IOrderServiceRepository orderServiceRepository;
 		private readonly IAuditLogRepository auditLogRepository;
@@ -62,8 +63,9 @@ namespace KeithLink.Svc.Impl.Logic
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
-									 IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, 
-                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository)
+									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, 
+                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
+                                     INoteLogic noteLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
@@ -71,6 +73,7 @@ namespace KeithLink.Svc.Impl.Logic
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
 			this.listServiceRepository = listServiceRepository;
+            _noteLogic = noteLogic;
 			this.basketLogic = basketLogic;
             this.orderQueueLogic = orderQueueLogic;
 			this.orderServiceRepository = orderServiceRepository;
@@ -309,7 +312,7 @@ namespace KeithLink.Svc.Impl.Logic
 			else
 			{
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
-				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+				var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
@@ -334,7 +337,7 @@ namespace KeithLink.Svc.Impl.Logic
 				return null;
 			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
-			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+			var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
 

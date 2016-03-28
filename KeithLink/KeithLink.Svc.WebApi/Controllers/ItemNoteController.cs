@@ -10,15 +10,22 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// item note controller
+    /// </summary>
 	[Authorize]
     public class ItemNoteController : BaseController {
         #region attributes
-        private readonly IListServiceRepository listServiceRepository;
-        
+        private readonly IListLogic listServiceRepository;
         #endregion
 
         #region ctor
-        public ItemNoteController(IListServiceRepository listServiceRepository,  IUserProfileLogic profileLogic) : base(profileLogic) {
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="listServiceRepository"></param>
+        /// <param name="profileLogic"></param>
+        public ItemNoteController(IListLogic listServiceRepository,  IUserProfileLogic profileLogic) : base(profileLogic) {
 			this.listServiceRepository = listServiceRepository;
         }
         #endregion

@@ -10,14 +10,21 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// recent item controller
+    /// </summary>
     public class RecentItemController : BaseController {
         #region attributes
-        private readonly IListServiceRepository listServiceRepository;
-        
+        private readonly IListLogic listServiceRepository;
         #endregion
 
         #region ctor
-        public RecentItemController(IListServiceRepository listServiceRepository,  IUserProfileLogic profileLogic)  : base(profileLogic) {
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="listServiceRepository"></param>
+        /// <param name="profileLogic"></param>
+        public RecentItemController(IListLogic listServiceRepository,  IUserProfileLogic profileLogic)  : base(profileLogic) {
 			this.listServiceRepository = listServiceRepository;
         }
         #endregion

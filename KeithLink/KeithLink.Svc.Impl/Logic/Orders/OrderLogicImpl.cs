@@ -23,27 +23,26 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 {
 	public class OrderLogicImpl: IOrderLogic {
         #region attributes
-
         private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly ICatalogLogic catalogLogic;
-		private IListServiceRepository listServiceRepository;
-        private IOrderServiceRepository orderServiceRepository;
+        //private readonly IListLogic listServiceRepository;
+        private readonly INoteLogic _noteLogic;
+        private readonly IOrderServiceRepository orderServiceRepository;
         private readonly IOrderQueueLogic orderQueueLogic;
-        private IPriceLogic priceLogic;
-        private IEventLogRepository eventLogRepository;
-        private IUserProfileLogic userProfileLogic;
-		private ICustomerRepository customerRepository;
-
+        private readonly IPriceLogic priceLogic;
+        private readonly IEventLogRepository eventLogRepository;
+        private readonly IUserProfileLogic userProfileLogic;
+		private readonly ICustomerRepository customerRepository;
         #endregion
 
         #region ctor
         public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, IOrderServiceRepository orderServiceRepository,
-                              IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, 
+                              INoteLogic noteLogic, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, 
                               IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, ICustomerRepository customerRepository) {
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.catalogLogic = catalogLogic;
-			this.listServiceRepository = listServiceRepository;
             this.orderServiceRepository = orderServiceRepository;
+            _noteLogic = noteLogic;
             this.orderQueueLogic = orderQueueLogic;
             this.priceLogic = priceLogic;
             this.eventLogRepository = eventLogRepository;
@@ -127,7 +126,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
             var order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
             var returnOrder = ToOrder(order, false);
-            var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
 
 
             LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
@@ -142,7 +141,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
             var orders = purchaseOrderRepository.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
             var returnOrders = orders.Select(p => ToOrder(p, header)).ToList();
-            var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
 
             returnOrders.ForEach(delegate(Order order) {
                 LookupProductDetails(userProfile, catalogInfo, order, notes);
@@ -157,7 +156,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var orders = orderServiceRepository.GetCustomerOrders(userProfile.UserId, catalogInfo);
 
             //var returnOrders = orders.Select(p => ToOrder(p)).ToList();
-            var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
 
             //return returnOrders;
             return orders;
@@ -299,7 +298,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
             Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber, false);
-            var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+            var notes = _noteLogic.GetNotes(user, catalogInfo);
 
             LookupProductDetails(user, catalogInfo, order, notes);
             UpdateExistingOrderInfo(order, existingOrder, deleteOmmitedItems);
