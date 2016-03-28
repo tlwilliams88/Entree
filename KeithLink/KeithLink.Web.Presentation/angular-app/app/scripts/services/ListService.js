@@ -672,11 +672,14 @@ angular.module('bekApp')
         },
 
         getCriticalItemsLists: function() {
-          return List.getCriticalItems().$promise.then(function(criticalLists) {
-            criticalLists.forEach(function(list) {
-              PricingService.updateCaculatedFields(list.items);
-            });
-            return criticalLists;
+          return List.getCriticalItems().$promise.then(function(resp) {
+            if(resp.successResponse){
+              resp.successResponse.forEach(function(list) {
+                PricingService.updateCaculatedFields(list.items);
+              });
+            }
+
+            return resp.successResponse;
           });
         },
 

@@ -56,7 +56,7 @@ angular.module('bekApp')
       getCriticalItems: {
         url: '/list/reminders',
         method: 'GET',
-        isArray: true
+        isArray: false
       },
 
       getRecommendedItems: {
