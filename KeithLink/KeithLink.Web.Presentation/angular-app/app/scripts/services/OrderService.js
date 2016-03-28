@@ -68,15 +68,19 @@ angular.module('bekApp')
       resubmitOrder: function(orderNumber) {
         return Order.resubmitOrder({
           orderNumber: orderNumber
-        }, { message: 'Submitting changes...' }).$promise.then(function(order) {
-          return order.ordernumber;
+        }, { message: 'Submitting changes...' }).$promise.then(function(resp) {
+          return resp.successResponse.ordernumber;
         });
       },
 
       updateOrder: function(order, params) {
         order.message = 'Saving order...';
-        return Order.update(params, order).$promise.then(function(changeOrder) {
-          PricingService.updateCaculatedFields(changeOrder.items);
+        return Order.update(params, order).$promise.then(function(resp) {
+          var changeOrder = resp.successResponse;
+          if(changeOrder){
+            PricingService.updateCaculatedFields(changeOrder.items);
+          }
+          
           return changeOrder;
         });
       },
