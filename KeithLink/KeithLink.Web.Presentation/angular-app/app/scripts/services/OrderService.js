@@ -92,9 +92,9 @@ angular.module('bekApp')
       cancelOrder: function(commerceId) {
         return Order.delete({
           orderNumber: commerceId
-        }).$promise.then(function(orderNumber) {
+        }).$promise.then(function(resp) {
           // delete change order from cache
-          
+          var orderNumber = resp.successResponse.ordernumber
           var deletedChangeOrder;
           Service.changeOrderHeaders.forEach(function(changeOrder) {
             if (changeOrder.ordernumber === orderNumber) {
