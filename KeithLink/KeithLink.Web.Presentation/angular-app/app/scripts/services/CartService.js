@@ -150,7 +150,7 @@ angular.module('bekApp')
         newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
           
-          newCart.id = response.listitemid;
+          newCart.id = response.successResponse.listitemid;
           newCart.createddate = new Date();
           newCart.itemcount = newCart.items.length;
           newCart.items = [];
