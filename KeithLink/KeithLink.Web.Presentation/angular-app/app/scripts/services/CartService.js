@@ -29,8 +29,9 @@ angular.module('bekApp')
       },
  
       getCartHeaders: function() {
-        return Cart.query({header: true}).$promise
-          .then(function(cartHeaders) {
+        return Cart.get({header: true}).$promise
+          .then(function(resp) {
+            var cartHeaders = resp.successResponse;
             angular.copy(cartHeaders, Service.cartHeaders);
             return cartHeaders;
           });
@@ -41,7 +42,8 @@ angular.module('bekApp')
       getCart: function(cartId) {
         return Cart.get({ 
           cartId: cartId,
-        }).$promise.then(function(cart) {
+        }).$promise.then(function(resp) {
+          var cart = resp.successResponse;
             Service.cartContainsSpecialItems = false;
             var i;
             if(cart.items && cart.items.length > 0){
@@ -231,8 +233,8 @@ angular.module('bekApp')
               cartHeaderToUpdate.name = cart.name;
             }
           });
-
-          return Service.getCart(response.id);
+          var cartId = response.successResponse.id || null;
+          return Service.getCart(cartId);
         });
       },
  
@@ -252,7 +254,7 @@ angular.module('bekApp')
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
           
-          return response;
+          return response.successResponse;
         });
       },
  
@@ -322,16 +324,17 @@ angular.module('bekApp')
           deferred.resolve(Service.shipDates);
         } else {
           Cart.getShipDates().$promise.then(function(data) {
-            var cutoffDate = DateService.momentObject(data.successResponse.shipdates[0].cutoffdatetime).format();
+            var dates = data.successResponse;
+            var cutoffDate = DateService.momentObject(dates.shipdates[0].cutoffdatetime).format();
             var now = DateService.momentObject().tz("America/Chicago").format();
 
             var invalidSelectedDate = (now > cutoffDate) ? true : false;
             if(invalidSelectedDate){
-              data.successResponse.shipdates = data.successResponse.shipdates.slice(1,data.successResponse.shipdates.length);
+             dates.shipdates = dates.shipdates.slice(1,dates.shipdates.length);
             }
-            angular.copy(data.successResponse.shipdates, Service.shipDates);
-            deferred.resolve(data.successResponse.shipdates);
-            return data.successResponse.shipdates;
+            angular.copy(dates.shipdates, Service.shipDates);
+            deferred.resolve(dates.shipdates);
+            return dates.shipdates;
           }); 
         }
         return deferred.promise;
@@ -357,7 +360,7 @@ angular.module('bekApp')
           var deletedCart = Service.findCartById(cartId);
           var idx = Service.cartHeaders.indexOf(deletedCart);
           Service.cartHeaders.splice(idx, 1);
-          return data;
+          return data.successResponse;
         });
       },
  
