@@ -14,7 +14,9 @@ angular.module('bekApp')
     var Service = {
 
       getPendingTransactions: function(params) {
-        return Invoice.getAllPendingTransactions(params).$promise;
+        return Invoice.getAllPendingTransactions(params).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       getTransactionExportConfig: function(invoiceNumber) {
