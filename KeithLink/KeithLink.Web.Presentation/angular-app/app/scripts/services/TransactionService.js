@@ -18,7 +18,9 @@ angular.module('bekApp')
       },
 
       getTransactionExportConfig: function(invoiceNumber) {
-        return Invoice.getTransactionExportConfig({}).$promise;
+        return Invoice.getTransactionExportConfig({}).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportTransactions: function(config, params) {

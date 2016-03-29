@@ -14,14 +14,18 @@ angular.module('bekApp')
 
     // gets all bank accounts for a given customer using the userSelectedContext header
     getAllBankAccounts: function() {
-      return BankAccount.get({}).$promise;
+      return BankAccount.get({}).$promise.then(function(resp){
+        return resp.successResponse;
+      });
     },
 
     // gets one bank account
     getBankAccountByAccountNumber: function(bankAccountNumber) {
       return BankAccount.get({
         bankAccountNumber: bankAccountNumber
-      }).$promise;
+      }).$promise.then(function(resp){
+        return resp.successResponse;
+      });
     }
 
   };

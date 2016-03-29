@@ -10,8 +10,8 @@ customers : array - list of customer objects the current user has access to shar
 ******/
 
 angular.module('bekApp')
-.controller('ReplicateListModalController', ['$scope', '$modalInstance', 'ListService', 'CustomerPagingModel', 'list',
-  function ($scope, $modalInstance, ListService, CustomerPagingModel, list) {
+.controller('ReplicateListModalController', ['$scope', '$modalInstance', '$analytics', 'ListService', 'CustomerPagingModel', 'list',
+  function ($scope, $modalInstance, $analytics, ListService, CustomerPagingModel, list) {
 
   $scope.list = list;
   $scope.selectedShareCustomers = [];

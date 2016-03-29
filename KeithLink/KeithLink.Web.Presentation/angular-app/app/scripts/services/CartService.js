@@ -150,7 +150,7 @@ angular.module('bekApp')
         newCart.message = 'Creating cart...';
         return Cart.save({}, newCart).$promise.then(function(response) {
           
-          newCart.id = response.listitemid;
+          newCart.id = response.successResponse.listitemid;
           newCart.createddate = new Date();
           newCart.itemcount = newCart.items.length;
           newCart.items = [];
@@ -196,13 +196,13 @@ angular.module('bekApp')
  
       validateQuickAdd: function(items) {
         return $http.post('/cart/quickadd/validate', items).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         });
       },
 
       quickAdd: function(items) {
-        return Cart.quickAdd({}, items).$promise.then(function(response) {
- 
+        return Cart.quickAdd({}, items).$promise.then(function(resp) {
+          var response = resp.successResponse;
           if (response.success) {
             return response.id;
           } else {
@@ -287,7 +287,7 @@ angular.module('bekApp')
         }
         
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
-          return response;
+          return response.successResponse;
         });
       },
  
@@ -325,6 +325,7 @@ angular.module('bekApp')
         } else {
           Cart.getShipDates().$promise.then(function(data) {
             var dates = data.successResponse;
+            if(dates.shipdates.length > 0){
             var cutoffDate = DateService.momentObject(dates.shipdates[0].cutoffdatetime).format();
             var now = DateService.momentObject().tz("America/Chicago").format();
 
@@ -335,6 +336,7 @@ angular.module('bekApp')
             angular.copy(dates.shipdates, Service.shipDates);
             deferred.resolve(dates.shipdates);
             return dates.shipdates;
+        }
           }); 
         }
         return deferred.promise;
@@ -367,7 +369,9 @@ angular.module('bekApp')
       setActiveCart: function(cartId) {
         return Cart.setActive({
           cartId: cartId
-        }, null).$promise;
+        }, null).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       }
     };
  
