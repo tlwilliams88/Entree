@@ -745,7 +745,7 @@ angular.module('bekApp')
 
           return List.copyList(copyListData).$promise.then(function(newLists) {
             toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
-            return newLists;
+            return newLists.successResponse;
           }, function(error) {
             toaster.pop('error', null, 'Error copying list.');
             return $q.reject(error);

@@ -68,7 +68,7 @@ angular.module('bekApp')
       copyList: {
         url: '/list/copy',
         method: 'POST',
-        isArray: true
+        isArray: false
       },
 
       shareList: {
