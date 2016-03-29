@@ -133,7 +133,9 @@ angular.module('bekApp')
       ********************/
 
       getOrderExportConfig: function() {
-        return Order.getOrderExportConfig({}).$promise;
+        return Order.getOrderExportConfig({}).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportOrders: function(config) {
@@ -143,7 +145,9 @@ angular.module('bekApp')
       getDetailExportConfig: function(orderNumber) {
         return Order.getDetailExportConfig({
           orderNumber: orderNumber
-        }).$promise;
+        }).$promise.then(function(response){
+          return response.successResponse;
+        });;
       },
 
       exportOrderDetails: function(config, orderNumber) {

@@ -35,13 +35,13 @@ angular.module('bekApp')
         }
       };
       return $http.get('/profile/marketinginfo', data).then(function(response) {
-        return response.data;
+        return response.data.successResponse;
       });
     },
 
     getMarketingInfoExportConfig: function() {
       return $http.get('/profile/export/marketinginfo').then(function(response) {
-        return response.data;
+        return response.data.successResponse;
       });
     }
   };
