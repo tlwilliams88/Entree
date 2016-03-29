@@ -115,17 +115,23 @@ angular.module('bekApp')
       *************/
 
       refreshOrderHistory: function() {
-        return Order.getOrderHistory().$promise;
+        return Order.getOrderHistory().$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       getOrderHistoryDetails: function(invoiceNumber) {
         return Order.getOrderHistoryDetails({
           invoiceNumber: invoiceNumber
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       pollOrderHistory: function() {
-        return Order.pollOrderHistory().$promise;
+        return Order.pollOrderHistory().$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       /********************
