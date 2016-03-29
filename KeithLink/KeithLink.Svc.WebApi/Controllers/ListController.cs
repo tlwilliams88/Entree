@@ -16,7 +16,7 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.Impl.Helpers;
-
+using KeithLink.Svc.WebApi.Helpers;
 using KeithLink.Svc.WebApi.Models;
 
 using Microsoft.Reporting.WinForms;
@@ -39,6 +39,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         private readonly IListLogic _listLogic;
         private readonly IExportSettingLogic _exportLogic;
         private readonly IEventLogRepository _elRepo;
+        private readonly IUserProfileLogic _profileLogic;
         #endregion
 
         #region ctor
@@ -53,6 +54,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                               IEventLogRepository elRepo)
             : base(profileLogic) {
             _listLogic = listLogic;
+            _profileLogic = profileLogic;
             _exportLogic = exportSettingsLogic;
             _elRepo = elRepo;
         }
@@ -643,7 +645,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             HttpResponseMessage ret;
             try
             {
-                Stream stream = _listLogic.BuildReportFromList(options, listId, this.SelectedUserContext, this.AuthenticatedUser);
+                Stream stream = ListPrintHelper.BuildReportFromList(options, listId, this.SelectedUserContext, this.AuthenticatedUser, _listLogic, _profileLogic);
 
                 if (stream == null)
                     return new HttpResponseMessage() { StatusCode = HttpStatusCode.Gone };
@@ -659,7 +661,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
             {
                 ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
                 ret.ReasonPhrase = ex.Message;
-                _elRepo.WriteErrorLog("Barcode", ex);
+                _elRepo.WriteErrorLog("Print", ex);
             }
             return ret;
         }
