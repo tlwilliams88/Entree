@@ -107,7 +107,9 @@ angular.module('bekApp')
       getDetailExportConfig: function(invoiceNumber) {
         return Invoice.getDetailExportConfig({
           invoiceNumber: invoiceNumber
-        }).$promise;
+        }).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportInvoiceDetails: function(config, invoiceNumber) {
