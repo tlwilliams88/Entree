@@ -43,7 +43,7 @@ angular.module('bekApp')
 
       saveAccountingSettings: function(profile) {
         return $http.post('/profile/customer/viewpricing/', profile).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         });
       },
 
