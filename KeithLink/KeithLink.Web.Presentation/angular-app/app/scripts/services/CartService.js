@@ -325,6 +325,7 @@ angular.module('bekApp')
         } else {
           Cart.getShipDates().$promise.then(function(data) {
             var dates = data.successResponse;
+            if(dates.shipdates.length > 0){
             var cutoffDate = DateService.momentObject(dates.shipdates[0].cutoffdatetime).format();
             var now = DateService.momentObject().tz("America/Chicago").format();
 
@@ -335,6 +336,7 @@ angular.module('bekApp')
             angular.copy(dates.shipdates, Service.shipDates);
             deferred.resolve(dates.shipdates);
             return dates.shipdates;
+        }
           }); 
         }
         return deferred.promise;
