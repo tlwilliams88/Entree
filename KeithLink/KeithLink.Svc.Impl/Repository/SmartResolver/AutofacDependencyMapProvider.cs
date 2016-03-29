@@ -499,6 +499,9 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<FavoriteLogicImpl>().As<IFavoriteLogic>();
             builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
             builder.RegisterType<NoteLogicImpl>().As<INoteLogic>();
+
+            builder.RegisterType<OnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
+
         }
 
         internal static void AddOtherWebApiDependencies(ContainerBuilder builder)
