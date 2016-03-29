@@ -196,13 +196,13 @@ angular.module('bekApp')
  
       validateQuickAdd: function(items) {
         return $http.post('/cart/quickadd/validate', items).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         });
       },
 
       quickAdd: function(items) {
-        return Cart.quickAdd({}, items).$promise.then(function(response) {
- 
+        return Cart.quickAdd({}, items).$promise.then(function(resp) {
+          var response = resp.successResponse;
           if (response.success) {
             return response.id;
           } else {
@@ -287,7 +287,7 @@ angular.module('bekApp')
         }
         
         return Cart.addItem({ cartId: cartId }, item).$promise.then(function(response) {
-          return response;
+          return response.successResponse;
         });
       },
  
@@ -367,7 +367,9 @@ angular.module('bekApp')
       setActiveCart: function(cartId) {
         return Cart.setActive({
           cartId: cartId
-        }, null).$promise;
+        }, null).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       }
     };
  
