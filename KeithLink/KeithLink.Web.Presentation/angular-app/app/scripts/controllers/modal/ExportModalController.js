@@ -29,8 +29,8 @@ headerText    : text - value displayed at the top of the export window ('Invoice
 ******/
 
 angular.module('bekApp')
-.controller('ExportModalController', ['$scope', '$filter', '$modalInstance', 'exportConfig', 'exportMethod', 'exportParams', 'headerText', 'location',
-  function ($scope, $filter, $modalInstance, exportConfig, exportMethod, exportParams, headerText, location) {
+.controller('ExportModalController', ['$scope', '$filter', '$modalInstance', '$analytics', 'exportConfig', 'exportMethod', 'exportParams', 'headerText', 'location',
+  function ($scope, $filter, $modalInstance, $analytics, exportConfig, exportMethod, exportParams, headerText, location) {
 
   $scope.headerText = headerText;
   $scope.selectedFields = [];
