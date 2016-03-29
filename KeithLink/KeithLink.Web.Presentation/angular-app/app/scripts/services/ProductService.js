@@ -193,7 +193,7 @@ angular.module('bekApp')
         ****************/
         getExportConfig: function() {
           return $http.get('/catalog/export').then(function(response) {
-            return response.data;
+            return response.data.successResponse;
           });
         },
 
