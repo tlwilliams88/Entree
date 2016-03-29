@@ -39,7 +39,9 @@ angular.module('bekApp')
         return Order.getOrdersByDate({
           from: startDate,
           to: endDate
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },      
 
       getMonthTotals: function(numberOfMonths) {
