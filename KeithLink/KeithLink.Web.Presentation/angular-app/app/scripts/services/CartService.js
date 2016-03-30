@@ -169,8 +169,8 @@ angular.module('bekApp')
           data: { options: options },
           file: file, // or list of files ($files) for html5 only
         }).then(function(response) {
-          var data = response.data;
-          if (data.success) {
+          var data = response.data.successResponse;
+          if (response.data.isSuccess && data.success) {
             var cart = {
               id: data.listid,
               name: 'Imported Cart'
@@ -186,8 +186,12 @@ angular.module('bekApp')
  
             deferred.resolve(data);
           } else {
-            toaster.pop('error', null, data.errormsg);
-            deferred.reject(data.errormsg);
+            var errorMessage = response.data.errorMessage;
+            if(data && data.errormsg){
+              toaster.pop('error', null, data.errormsg);
+              errorMessage = data.errormsg;
+            }
+            deferred.reject(errorMessage);
           }
         });
  
