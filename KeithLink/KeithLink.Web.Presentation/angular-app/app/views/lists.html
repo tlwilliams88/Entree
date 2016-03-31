@@ -262,7 +262,7 @@
       </form>
 
       <!-- Multi-select menu -->
-      <div class="hidden-print row" ng-if="(selectedList.items | filter:{isSelected:'true'}).length > 0">
+      <div class="hidden-print row" ng-show="(selectedList.items | filter:{isSelected:'true'}).length > 0">
         <div class="col-xs-12 col-sm-6">
           <div class="btn-group custom-lists__multi-actions">
             <!-- Add to List -->
