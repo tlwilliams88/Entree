@@ -317,6 +317,11 @@
     <Compile Include="Models\SiteCatalog\Schemas\PricingRequest.cs">
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Customers\InternalUserAccessRepository.cs" />
+    <Compile Include="Repository\EF\Migrations\201603301341011_Create User Access Model.cs" />
+    <Compile Include="Repository\EF\Migrations\201603301341011_Create User Access Model.Designer.cs">
+      <DependentUpon>201603301341011_Create User Access Model.cs</DependentUpon>
+    </Compile>
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
@@ -1293,6 +1298,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Repository\EF\Migrations\201603162117290_remove content items table after 1_5 merge.resx">
       <DependentUpon>201603162117290_remove content items table after 1_5 merge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Repository\EF\Migrations\201603301341011_Create User Access Model.resx">
+      <DependentUpon>201603301341011_Create User Access Model.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
