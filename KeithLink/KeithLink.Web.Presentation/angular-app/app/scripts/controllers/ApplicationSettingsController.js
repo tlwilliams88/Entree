@@ -172,9 +172,7 @@
 
 
              LocalStorage.setDefaultSort(sortOrderSettings.value);
-            ApplicationSettingsService.saveApplicationSettings(sortOrderSettings).then(function(resp) {
-     
-             });
+            ApplicationSettingsService.saveApplicationSettings(sortOrderSettings);
           });
         });
       };

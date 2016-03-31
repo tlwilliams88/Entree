@@ -15,7 +15,7 @@ angular.module('bekApp')
       getOrdersByDate: {
         url: '/order/date',
         method: 'GET',
-        isArray: true
+        isArray: false
       },
 
       resubmitOrder: {

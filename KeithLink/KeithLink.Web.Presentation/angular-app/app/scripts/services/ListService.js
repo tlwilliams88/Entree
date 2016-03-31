@@ -433,9 +433,9 @@ angular.module('bekApp')
             data: { options: options },
             file: file, // or list of files ($files) for html5 only
           }).then(function(response) {
-            var data = response.data;
+            var data = response.data.successResponse;
 
-            if (data.success) {
+            if (response.data.isSuccess && data.success) {
               // add new list to cache
               var list = {
                 listid: data.listid,
@@ -452,8 +452,12 @@ angular.module('bekApp')
 
               deferred.resolve(data);
             } else {
-              toaster.pop('error', null, data.errormsg);
-              deferred.reject(data.errormsg);
+              var errorMessage = response.data.errorMessage;
+              if(data && data.errormsg){
+                toaster.pop('error', null, data.errormsg);
+                errorMessage = data.errormsg;
+              }
+              deferred.reject(errorMessage);
             }
           });
 
@@ -552,7 +556,7 @@ angular.module('bekApp')
           return List.updateItem({}, item).$promise.then(function(response) {
             // TODO: add label to Service.labels if it does not exist
             // TODO: replace item in Service.lists
-            return response.data;
+            return response.data.successResponse;
           });
         },
 
@@ -745,7 +749,7 @@ angular.module('bekApp')
 
           return List.copyList(copyListData).$promise.then(function(newLists) {
             toaster.pop('success', null, 'Successfully copied list ' + list.name + ' to ' + customers.length + ' customers.');
-            return newLists;
+            return newLists.successResponse;
           }, function(error) {
             toaster.pop('error', null, 'Error copying list.');
             return $q.reject(error);

@@ -39,7 +39,9 @@ angular.module('bekApp')
         return Order.getOrdersByDate({
           from: startDate,
           to: endDate
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },      
 
       getMonthTotals: function(numberOfMonths) {
@@ -115,17 +117,23 @@ angular.module('bekApp')
       *************/
 
       refreshOrderHistory: function() {
-        return Order.getOrderHistory().$promise;
+        return Order.getOrderHistory().$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       getOrderHistoryDetails: function(invoiceNumber) {
         return Order.getOrderHistoryDetails({
           invoiceNumber: invoiceNumber
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       pollOrderHistory: function() {
-        return Order.pollOrderHistory().$promise;
+        return Order.pollOrderHistory().$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       /********************
@@ -133,7 +141,9 @@ angular.module('bekApp')
       ********************/
 
       getOrderExportConfig: function() {
-        return Order.getOrderExportConfig({}).$promise;
+        return Order.getOrderExportConfig({}).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportOrders: function(config) {
@@ -143,7 +153,9 @@ angular.module('bekApp')
       getDetailExportConfig: function(orderNumber) {
         return Order.getDetailExportConfig({
           orderNumber: orderNumber
-        }).$promise;
+        }).$promise.then(function(response){
+          return response.successResponse;
+        });;
       },
 
       exportOrderDetails: function(config, orderNumber) {

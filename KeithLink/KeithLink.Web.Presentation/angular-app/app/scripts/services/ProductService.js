@@ -164,13 +164,17 @@ angular.module('bekApp')
             note: note,
             catalog_id: catalogid
           };
-          return ItemNotes.save(null, itemNote).$promise;
+          return ItemNotes.save(null, itemNote).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         deleteItemNote: function(itemNumber) {
           return ItemNotes.delete({
             itemNumber: itemNumber
-          }).$promise;
+          }).$promise.then(function(resp){
+            return resp.successResponse;
+          });
         },
 
         /****************

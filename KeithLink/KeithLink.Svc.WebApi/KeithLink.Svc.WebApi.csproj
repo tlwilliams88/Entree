@@ -310,6 +310,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Attribute\GlobalExceptionFilterAttribute.cs" />
+    <Compile Include="Helpers\ListPrintHelper.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GuestProfileModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -332,7 +333,6 @@
     </Compile>
     <Compile Include="Services\PowerMenuPricing.asmx.cs">
       <DependentUpon>PowerMenuPricing.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\PowerMenuPricingHandler.ashx.cs">
       <DependentUpon>PowerMenuPricingHandler.ashx</DependentUpon>

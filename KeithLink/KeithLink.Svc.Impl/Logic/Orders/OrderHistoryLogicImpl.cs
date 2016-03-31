@@ -298,20 +298,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders {
                 header.IsSpecialOrder = true;
         }
 
-        //public List<OrderHistoryHeader> GetCustomerOrderHistories(Core.Models.SiteCatalog.UserSelectedContext catalogInfo) {
-        //    var histHeaders = _headerRepo.GetCustomerOrderHistoryHeaders(catalogInfo.BranchId, catalogInfo.CustomerId).ToList();
-        //    // convert to orderhistoryheader from ef orderhistoryheader
-        //    List<OrderHistoryHeader> orderHistories = new List<OrderHistoryHeader>();
-
-        //    foreach(var histHeader in histHeaders) {
-        //        OrderHistoryHeader retHistHeader = histHeader.ToOrderHistoryHeader();
-        //        retHistHeader.Items = histHeader.OrderDetails.Select(l => l.ToOrderHistoryDetail()).ToList();
-        //        orderHistories.Add(retHistHeader);
-        //    }
-
-        //    return orderHistories;
-        //}
-
 
         /// <summary>
         /// Get a summary of order totals by month. Current month counts as 1.

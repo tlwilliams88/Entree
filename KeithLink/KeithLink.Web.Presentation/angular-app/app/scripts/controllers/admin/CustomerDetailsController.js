@@ -38,7 +38,7 @@ angular.module('bekApp')
   };
 
   $scope.restoreDefaults = function (customerNumber, branchId) {
-    MessagePreferenceService.getPreferencesForCustomer(null).then(function(defaultPreferences) {
+    MessagePreferenceService.getPreferencesForCustomer(customerNumber, branchId).then(function(defaultPreferences) {
       $scope.defaultPreferences = defaultPreferences;
       $scope.savePreferences(defaultPreferences, customerNumber, branchId);
     });

@@ -166,7 +166,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
             builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();

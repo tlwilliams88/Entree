@@ -143,9 +143,11 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
             if(myOrder == null) {
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
-                //_log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() invoiceNumber=" + invoiceNumber);
-                returnOrder = po.ToOrder();
-                if(po != null) {
+                
+                if(po == null) {
+                    throw new Exception("An order with invoice #" + invoiceNumber + " is not able to be selected in this data.");
+                } else {
+                    returnOrder = po.ToOrder();
                     PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
                 }
             } else {
