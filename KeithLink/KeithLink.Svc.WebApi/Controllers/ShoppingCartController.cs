@@ -21,22 +21,31 @@ using KeithLink.Common.Core.Logging;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// end points for the shopping cart
+    /// </summary>
 	[Authorize]
 	public class ShoppingCartController : BaseController
 	{
 		#region attributes
-		private readonly IShoppingCartLogic shoppingCartLogic;
-		private readonly IOrderServiceRepository orderServiceRepository;
+        private readonly IUserActiveCartLogic _activeCartLogic;
+		private readonly IShoppingCartLogic _shoppingCartLogic;
         private readonly IEventLogRepository _log;
         #endregion
 
         #region ctor
-        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IOrderServiceRepository orderServiceRepository, 
-            IEventLogRepository logRepo)
-			: base(profileLogic)
-		{
-			this.shoppingCartLogic = shoppingCartLogic;
-			this.orderServiceRepository = orderServiceRepository;
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="shoppingCartLogic"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="orderServiceRepository"></param>
+        /// <param name="logRepo"></param>
+        /// <param name="userActiveCartLogic"></param>
+        public ShoppingCartController(IShoppingCartLogic shoppingCartLogic, IUserProfileLogic profileLogic, IEventLogRepository logRepo, 
+                                      IUserActiveCartLogic userActiveCartLogic) : base(profileLogic) {
+            _activeCartLogic = userActiveCartLogic;
+			_shoppingCartLogic = shoppingCartLogic;
             _log = logRepo;
         }
         #endregion
@@ -54,7 +63,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<List<ShoppingCart>> retVal = new Models.OperationReturnModel<List<ShoppingCart>>();
             try
             {
-                retVal.SuccessResponse = shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.SelectedUserContext, header);
+                retVal.SuccessResponse = _shoppingCartLogic.ReadAllCarts(this.AuthenticatedUser, this.SelectedUserContext, header);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -79,7 +88,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
             try
             {
-                retVal.SuccessResponse = shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                retVal.SuccessResponse = _shoppingCartLogic.ReadCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -122,7 +131,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.CartReport.rdlc");
                 }
 
-                ShoppingCartReportModel reportModel = shoppingCartLogic.PrintCartWithList(this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options);
+                ShoppingCartReportModel reportModel = _shoppingCartLogic.PrintCartWithList(this.AuthenticatedUser, this.SelectedUserContext, cartId, listId, options);
 
                 rv.LocalReport.LoadReportDefinition(rdlcStream);
                 ReportParameter[] parameters = new ReportParameter[3];
@@ -166,7 +175,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<NewCSItem> retVal = new Models.OperationReturnModel<NewCSItem>();
             try
             {
-                retVal.SuccessResponse = new NewCSItem() { Id = shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
+                retVal.SuccessResponse = new NewCSItem() { Id = _shoppingCartLogic.CreateCart(this.AuthenticatedUser, this.SelectedUserContext, cart) };
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -191,7 +200,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<QuickAddReturnModel> retVal = new Models.OperationReturnModel<QuickAddReturnModel>();
             try
             {
-                retVal.SuccessResponse = shoppingCartLogic.CreateQuickAddCart(this.AuthenticatedUser, this.SelectedUserContext, items);
+                retVal.SuccessResponse = _shoppingCartLogic.CreateQuickAddCart(this.AuthenticatedUser, this.SelectedUserContext, items);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -216,7 +225,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<List<ItemValidationResultModel>> retVal = new Models.OperationReturnModel<List<ItemValidationResultModel>>();
             try
             {
-                retVal.SuccessResponse = shoppingCartLogic.ValidateItems(this.SelectedUserContext, items);
+                retVal.SuccessResponse = _shoppingCartLogic.ValidateItems(this.SelectedUserContext, items);
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -242,7 +251,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<NewCSItem> retVal = new Models.OperationReturnModel<NewCSItem>();
             try
             {
-                retVal.SuccessResponse = new NewCSItem() { Id = shoppingCartLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, newItem) };
+                retVal.SuccessResponse = new NewCSItem() { Id = _shoppingCartLogic.AddItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, newItem) };
                 retVal.IsSuccess = true;
             }
             catch (Exception ex)
@@ -267,7 +276,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<ShoppingCartItem> retVal = new Models.OperationReturnModel<ShoppingCartItem>();
             try
             {
-                shoppingCartLogic.UpdateItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, updatedItem);
+                _shoppingCartLogic.UpdateItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, updatedItem);
                 retVal.SuccessResponse = updatedItem;
                 retVal.IsSuccess = true;
             }
@@ -293,7 +302,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<ShoppingCart> retVal = new Models.OperationReturnModel<ShoppingCart>();
             try
             {
-                shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
+                _shoppingCartLogic.UpdateCart(this.SelectedUserContext, this.AuthenticatedUser, updatedCart, deleteomitted);
                 retVal.SuccessResponse = updatedCart;
                 retVal.IsSuccess = true;
             }
@@ -318,7 +327,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Guid> retVal = new Models.OperationReturnModel<Guid>();
             try
             {
-                orderServiceRepository.SaveUserActiveCart(this.SelectedUserContext, this.AuthenticatedUser.UserId, cartId);
+                _activeCartLogic.SaveUserActiveCart(this.SelectedUserContext, this.AuthenticatedUser.UserId, cartId);
                 retVal.SuccessResponse = cartId;
                 retVal.IsSuccess = true;
             }
@@ -343,7 +352,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<Guid> retVal = new Models.OperationReturnModel<Guid>();
             try
             {
-                shoppingCartLogic.DeleteCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
+                _shoppingCartLogic.DeleteCart(this.AuthenticatedUser, this.SelectedUserContext, cartId);
                 retVal.SuccessResponse = cartId;
                 retVal.IsSuccess = true;
             }
@@ -368,7 +377,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<List<Guid>> retVal = new Models.OperationReturnModel<List<Guid>>();
             try
             {
-                shoppingCartLogic.DeleteCarts(this.AuthenticatedUser, this.SelectedUserContext, cartIds);
+                _shoppingCartLogic.DeleteCarts(this.AuthenticatedUser, this.SelectedUserContext, cartIds);
                 retVal.SuccessResponse = cartIds;
                 retVal.IsSuccess = true;
             }
@@ -394,7 +403,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             Models.OperationReturnModel<bool> retVal = new Models.OperationReturnModel<bool>();
             try
             {
-                shoppingCartLogic.DeleteItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, itemId);
+                _shoppingCartLogic.DeleteItem(this.AuthenticatedUser, this.SelectedUserContext, cartId, itemId);
                 retVal.SuccessResponse = true;
                 retVal.IsSuccess = true;
             }

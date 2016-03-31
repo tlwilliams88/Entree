@@ -25,7 +25,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         #region attributes
         private IContainer container;
         private IConfirmationLogic _confirmationLogic;
-        private IInternalOrderHistoryLogic _orderHistoryLogic;
+        private IOrderHistoryLogic _orderHistoryLogic;
         private IInternalSpecialOrderLogic _specialOrderLogic;
         private Svc.Core.Interface.Messaging.INotificationQueueConsumer _externalNotificationQueueConsumer;
         private Svc.Core.Interface.Messaging.INotificationQueueConsumer _internalNotificationQueueConsumer;
@@ -118,7 +118,7 @@ namespace KeithLink.Svc.Windows.QueueService {
 
         private void InitializeOrderUpdateThread() {
             orderHistoryScope = container.BeginLifetimeScope();
-            _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
+            _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
             _orderHistoryLogic.ListenForQueueMessages();
         }
 
@@ -201,7 +201,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                         string body;
 
                         orderHistoryScope = container.BeginLifetimeScope();
-                        _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
+                        _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
                         subject = _orderHistoryLogic.CheckForLostOrders( out body );
 
                         StringBuilder sbMsgBody = new StringBuilder();

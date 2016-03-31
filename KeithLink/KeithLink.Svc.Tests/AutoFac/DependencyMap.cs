@@ -102,7 +102,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
-            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
 			//*******************************************
@@ -158,7 +157,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             
             //Replace
-			builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
 
             // messaging
@@ -190,7 +188,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
-            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             //*******************************************
@@ -247,7 +244,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
 
             //Replace
-            builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
 
             // messaging

@@ -247,6 +247,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
             builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
+            builder.RegisterType<UserActiveCartLogicImpl>().As<IUserActiveCartLogic>();
 
             // other
             builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
@@ -356,7 +357,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
-            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
             //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
@@ -386,7 +386,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
-            builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
 
             // keyed types - notification handlers
             builder.RegisterType<OrderConfirmationNotificationHandlerImpl>()
@@ -417,9 +416,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
                     var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.Channel, IMessageProvider>>();
                     return request => handlers[request];
                 });
-
-            // no implementation (will throw notimplementedexception if called)
-            builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
 
             builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
@@ -681,7 +677,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
-            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<InternalSpecialOrderLogic>().As<IInternalSpecialOrderLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
@@ -711,7 +706,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
-            builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
             builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();
 
             // keyed types - notification handlers
@@ -745,10 +739,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
                     var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.Channel, IMessageProvider>>();
                     return request => handlers[request];
                 });
-
-            // no implementation (will throw notimplementedexception if called)
-            builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            //builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
 
             builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 

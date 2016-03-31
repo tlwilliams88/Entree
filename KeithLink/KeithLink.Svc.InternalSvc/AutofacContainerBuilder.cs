@@ -78,7 +78,6 @@ namespace KeithLink.Svc.InternalSvc
     {
         public static void AddServiceReferences(ref ContainerBuilder builder) {
             builder.RegisterType<ETLService>();
-            builder.RegisterType<OrderService>();
             builder.RegisterType<PipelineService>();
             builder.RegisterType<CacheService>();
             builder.RegisterType<ProfileService>();

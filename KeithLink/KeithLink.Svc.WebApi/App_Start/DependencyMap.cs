@@ -253,9 +253,6 @@ namespace KeithLink.Svc.WebApi {
             ///////////////////////////////////////////////////////////////////////////////
             // service repositories
             ///////////////////////////////////////////////////////////////////////////////
-            builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-
-            builder.RegisterType<com.benekeith.OrderService.OrderServiceClient>().As<com.benekeith.OrderService.IOrderService>();
             builder.RegisterType<com.benekeith.ProfileService.ProfileServiceClient>().As<com.benekeith.ProfileService.IProfileService>();
             builder.RegisterType<PasswordResetServiceImpl>().As<IPasswordResetService>();
             builder.RegisterType<DsrAliasServiceImpl>().As<IDsrAliasService>();

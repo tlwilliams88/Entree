@@ -18,6 +18,7 @@ using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 using KeithLink.Svc.Core.Models.Messaging;
@@ -51,28 +52,28 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		protected string CACHE_PREFIX { get { return "Default"; } }
 
 
-        private ICacheRepository _cache;
-        private IUserProfileRepository _csProfile;
-        private ICustomerDomainRepository _extAd;
-        private IUserDomainRepository _intAd;
-        private IAccountRepository _accountRepo;
-        private ICustomerRepository _customerRepo;
-		private IOrderServiceRepository _orderServiceRepository;
-        private IMessagingLogic _msgLogic;
-        private IMessageTemplateLogic _msgTemplateLogic;
-		private IEmailClient _emailClient;
-		private IEventLogRepository _eventLog;
-		private IOnlinePaymentsLogic _paymentLogic;
-        private IGenericQueueRepository _queue;
-        private IDsrAliasService _dsrAliasService;
-		private IPasswordResetService _passwordService;
-        private ISettingsLogicImpl _settingsLogic;
+        private readonly ICacheRepository _cache;
+        private readonly IUserProfileRepository _csProfile;
+        private readonly ICustomerDomainRepository _extAd;
+        private readonly IUserDomainRepository _intAd;
+        private readonly IAccountRepository _accountRepo;
+        private readonly ICustomerRepository _customerRepo;
+        private readonly IMessagingLogic _msgLogic;
+        private readonly IMessageTemplateLogic _msgTemplateLogic;
+		private readonly IEmailClient _emailClient;
+		private readonly IEventLogRepository _eventLog;
+		private readonly IOnlinePaymentsLogic _paymentLogic;
+        private readonly IGenericQueueRepository _queue;
+        private readonly IDsrAliasService _dsrAliasService;
+		private readonly IPasswordResetService _passwordService;
+        private readonly ISettingsLogicImpl _settingsLogic;
+        private readonly IOrderHistoryHeaderRepsitory _historyRepo;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
-									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
-                                    IOrderServiceRepository orderServiceRepository, IMessagingLogic messagingLogic, IEmailClient emailClient, 
+									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo,
+                                    IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessagingLogic messagingLogic, IEmailClient emailClient, 
                                     IEventLogRepository eventLog, IOnlinePaymentsLogic paymentLogic, IGenericQueueRepository queue, 
                                     IDsrAliasService dsrAliasService, IPasswordResetService passwordService, ISettingsLogicImpl settingsLogic, 
                                     IMessageTemplateLogic messageTemplateLogic) {
@@ -82,7 +83,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile = commerceServerProfileRepo;
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
-			_orderServiceRepository = orderServiceRepository;
             _msgLogic = messagingLogic;
             _msgTemplateLogic = messageTemplateLogic;
 			_emailClient = emailClient;
@@ -92,6 +92,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _dsrAliasService = dsrAliasService;
 			_passwordService = passwordService;
             _settingsLogic = settingsLogic;
+            _historyRepo = orderHistoryRepository;
         }
         #endregion
 
@@ -836,7 +837,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId) {
             var returnModel = new CustomerBalanceOrderUpdatedModel();
 
-            returnModel.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
+            returnModel.LastOrderUpdate = _historyRepo.ReadLatestOrderDate(new UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
             returnModel.balance = _paymentLogic.GetCustomerAccountBalance(customerId, branchId);
 
             return returnModel;

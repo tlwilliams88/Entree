@@ -1,5 +1,5 @@
 ﻿// KeithLink
-using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Orders;
 
 using KeithLink.Svc.Core.Models.Orders;
 
@@ -21,7 +21,7 @@ namespace KeithLink.Svc.Test.Logic.Order {
     public class InternalOrderHistoryLogicTests {
 
         #region attributes
-        private IInternalOrderHistoryLogic _logic;
+        private IOrderLogic _logic;
         private IContainer _container;
         #endregion
 
@@ -30,7 +30,7 @@ namespace KeithLink.Svc.Test.Logic.Order {
         public InternalOrderHistoryLogicTests() {
             _container = DependencyMap.Build();
 
-            _logic = _container.Resolve<IInternalOrderHistoryLogic>();
+            _logic = _container.Resolve<IOrderLogic>();
         }
         #endregion
 

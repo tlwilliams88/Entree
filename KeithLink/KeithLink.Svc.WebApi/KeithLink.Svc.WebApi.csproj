@@ -254,25 +254,6 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
-    <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.OrderService\OrderService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService51.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <None Include="Service References\com.benekeith.ProfileService\ProfileService.wsdl" />
     <None Include="Service References\com.benekeith.ProfileService\ProfileService.xsd">
       <SubType>Designer</SubType>
@@ -341,15 +322,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
     <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
-    <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\com.benekeith.ProfileService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -372,22 +347,6 @@
     <Content Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
-    <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
-    <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Services\PowerMenuPricingHandler.ashx" />
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -443,7 +402,6 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
     <WCFMetadataStorage Include="Service References\com.benekeith.ProfileService\" />
   </ItemGroup>
   <PropertyGroup>

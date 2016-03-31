@@ -4,7 +4,7 @@
 
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Invoices;
-using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Profile;
 
@@ -34,7 +34,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         #region attributes
         private readonly IOnlinePaymentsLogic _invLogic;
 		private readonly IExportSettingLogic _exportLogic;
-        private readonly IOrderHistoryLogic _orderLogic;
+        private readonly IOrderLogic _orderLogic;
         private readonly IImagingLogic _imgLogic;
         private readonly IEventLogRepository _log;
         #endregion
@@ -47,11 +47,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="invoiceLogic"></param>
         /// <param name="exportSettingsLogic"></param>
         /// <param name="invoiceImagingLogic"></param>
-        /// <param name="orderHistoryLogic"></param>
+        /// <param name="orderLogic"></param>
+        /// <param name="logRepo"></param>
 		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentsLogic invoiceLogic, IExportSettingLogic exportSettingsLogic,
-                                 IOrderHistoryLogic orderHistoryLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo) : base(profileLogic) {
+                                 IOrderLogic orderLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo) : base(profileLogic) {
             _invLogic = invoiceLogic;
-            _orderLogic = orderHistoryLogic;
+            _orderLogic = orderLogic;
 			_exportLogic = exportSettingsLogic;
             _imgLogic = invoiceImagingLogic;
             _log = logRepo;

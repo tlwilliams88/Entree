@@ -271,8 +271,6 @@
     <Compile Include="Logic\ImportLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalOrderHistoryLogic.cs" />
-    <Compile Include="Logic\InternalSvc\InternalOrderLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalSpecialOrderLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
@@ -301,6 +299,7 @@
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
+    <Compile Include="Logic\Orders\UserActiveCartLogicImpl.cs" />
     <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
@@ -725,7 +724,6 @@
     <Compile Include="Repository\Orders\History\OrderUpdateRequestQueueRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\History\OrderUpdateRequestSocketRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\InternalBasketRepository.cs" />
-    <Compile Include="Repository\Orders\NoOrderServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\OrderSocketConnectionRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\PurchaseOrderRepositoryImpl.cs" />
     <Compile Include="Repository\Orders\UserActiveCartRepositoryImpl.cs" />
@@ -996,7 +994,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Repository\InternalSvc\" />
     <Folder Include="Schemas\" />
   </ItemGroup>
   <ItemGroup>

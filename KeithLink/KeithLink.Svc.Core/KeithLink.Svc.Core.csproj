@@ -237,12 +237,12 @@
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
     <Compile Include="Interface\Orders\History\IInternalSpecialOrderLogic.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderRepository.cs" />
-    <Compile Include="Interface\Orders\History\IInternalOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
     <Compile Include="Interface\Orders\IOrderSocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IOrderUpdateSocketConnectionRepository.cs" />
+    <Compile Include="Interface\Orders\IUserActiveCartLogic.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />
@@ -335,8 +335,6 @@
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceDetailModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceModel.cs" />
     <Compile Include="Models\Messaging\MessagePagingModel.cs" />
-    <Compile Include="Interface\Orders\IInternalOrderLogic.cs" />
-    <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
     <Compile Include="Models\Messaging\Queue\OrderEta.cs" />
     <Compile Include="Models\Messaging\Queue\EtaNotification.cs" />
     <Compile Include="Models\Messaging\Queue\PaymentConfirmationNotification.cs" />
