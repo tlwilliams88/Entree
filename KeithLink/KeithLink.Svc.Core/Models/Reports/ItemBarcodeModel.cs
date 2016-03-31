@@ -16,5 +16,7 @@ namespace KeithLink.Svc.Core.Models.Reports
 		public string Name { get; set; }
 		[DataMember]
 		public string PackSize { get; set; }
-	}
+        [DataMember]
+        public byte[] BarCode { get; set; }
+    }
 }

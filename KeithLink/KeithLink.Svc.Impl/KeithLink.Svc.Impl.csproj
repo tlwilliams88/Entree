@@ -98,6 +98,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AWSSDK.2.3.5.0\lib\net45\AWSSDK.dll</HintPath>
     </Reference>
+    <Reference Include="BarcodeLib, Version=1.0.0.19, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\BarcodeLib.dll</HintPath>
+    </Reference>
     <Reference Include="CommerceServer.Core.Catalog, Version=10.0.0.0, Culture=neutral, PublicKeyToken=f5c79cb11734af7a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Program Files (x86)\Commerce Server 10\Assemblies\CommerceServer.Core.Catalog.dll</HintPath>
@@ -852,6 +856,7 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <None Include="RequestTemplates\RequestTemplates.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>RequestTemplates.cs</LastGenOutput>
@@ -1040,7 +1045,6 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\InventoryValuation.rdlc" />
-    <EmbeddedResource Include="Reports\Itembarcode5160.rdlc" />
     <EmbeddedResource Include="Repository\EF\Migrations\201410230149117_Initial List creation.resx">
       <DependentUpon>201410230149117_Initial List creation.cs</DependentUpon>
     </EmbeddedResource>
@@ -1296,6 +1300,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.FoundationService\FoundationService.disco" />
+    <Content Include="Dependencies\BarcodeLib.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
