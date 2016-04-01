@@ -251,6 +251,7 @@
     <Compile Include="Component\TokenValuesCollection.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Email\EmailClientImpl.cs" />
+    <Compile Include="Helpers\ProfileHelper.cs" />
     <Compile Include="Logic\Configurations\ExportSettingLogicImpl.cs" />
     <Compile Include="Logic\ETL\DemoStagingRepositoryImpl.cs" />
     <Compile Include="Logic\ETL\CustomerLogicImpl.cs" />
@@ -269,9 +270,6 @@
     <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalDsrAliasLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalMarketingPreferenceLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalPasswordResetRequestLogicImpl.cs" />
     <Compile Include="Logic\InternalSvc\InternalSpecialOrderLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
@@ -302,8 +300,10 @@
     <Compile Include="Logic\Orders\UserActiveCartLogicImpl.cs" />
     <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
+    <Compile Include="Logic\Profile\DsrAliasLogicImpl.cs" />
     <Compile Include="Logic\Profile\DsrLogic.cs" />
-    <Compile Include="Logic\Profile\NoSettingsLogicImpl.cs" />
+    <Compile Include="Logic\Profile\MarketingPreferencesLogicImpl.cs" />
+    <Compile Include="Logic\Profile\PasswordRequest\PasswordResetLogicImpl.cs" />
     <Compile Include="Logic\Profile\SettingsLogicImpl.cs" />
     <Compile Include="Logic\Profile\UserProfileLogicImpl.cs" />
     <Compile Include="Logic\Reports\InventoryValuationReportLogicImpl.cs" />
@@ -741,11 +741,6 @@
     <Compile Include="Repository\Profile\InternalUserDomainRepository.cs" />
     <Compile Include="Repository\Profile\ItemHistoryRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\MarketingPreferencesRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\NoDsrAliasLogicImpl.cs" />
-    <Compile Include="Repository\Profile\NoDsrAliasRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\NoDsrAliasServiceImpl.cs" />
-    <Compile Include="Repository\Profile\NoSettingsRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\PasswordReset\NoPasswordResetServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\PasswordReset\PasswordResetRequestRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\SettingsRepositoryImpl.cs" />
     <Compile Include="Repository\Profile\UserProfileRepository.cs" />

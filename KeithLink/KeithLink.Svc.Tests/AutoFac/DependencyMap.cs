@@ -91,14 +91,14 @@ namespace KeithLink.Svc.Test
 			//*******************************************
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
 			builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-            builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
 			builder.RegisterType<ListLogicImpl>().As<IListLogic>();
-            builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
+            builder.RegisterType<MarketingPreferencesLogicImpl>().As<IMarketingPreferencesLogic>();
 			builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
 			builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
             builder.RegisterType<OnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
@@ -156,9 +156,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             
-            //Replace
-            builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
-
             // messaging
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
@@ -178,14 +175,14 @@ namespace KeithLink.Svc.Test
             //*******************************************
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             builder.RegisterType<DivisionLogicImpl>().As<IDivisionLogic>();
-            builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
-            builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
+            builder.RegisterType<MarketingPreferencesLogicImpl>().As<IMarketingPreferencesLogic>();
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<ICatalogLogic>();
             builder.RegisterType<OnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
@@ -242,9 +239,6 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<ItemHistoryRepositoryImpl>().As<IItemHistoryRepository>();
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
-
-            //Replace
-            builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
 
             // messaging
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();

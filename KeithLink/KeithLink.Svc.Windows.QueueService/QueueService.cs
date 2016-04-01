@@ -1,11 +1,13 @@
-﻿using Autofac;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Impl;
+﻿using KeithLink.Common.Core.Logging;
+
 using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Interface.Messaging;               
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 using Autofac;
 
@@ -27,8 +29,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         private IConfirmationLogic _confirmationLogic;
         private IOrderHistoryLogic _orderHistoryLogic;
         private IInternalSpecialOrderLogic _specialOrderLogic;
-        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _externalNotificationQueueConsumer;
-        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _internalNotificationQueueConsumer;
+        private INotificationQueueConsumer _externalNotificationQueueConsumer;
+        private INotificationQueueConsumer _internalNotificationQueueConsumer;
         private IEventLogRepository _log;
         private IEmailClient _emailClient;
 
@@ -51,15 +53,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         #region ctor
         public QueueService()
         {
-            this.container = AddLocalDependencies(Impl.Repository.SmartResolver.DependencyMapFactory.GetQueueSvcContainer()).Build();
+            container = DependencyMapFactory.GetQueueSvcContainer().Build();
             InitializeComponent();
-        }
-
-        private ContainerBuilder AddLocalDependencies(ContainerBuilder builder)
-        {
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
-            builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
-            return builder;
         }
         #endregion
 

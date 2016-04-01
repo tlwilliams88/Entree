@@ -24,7 +24,6 @@ namespace KeithLink.Svc.WebApi
             // Configure Web API with the dependency resolver.
             var diMap = DependencyMapFactory.GetWebApiContainer();
             diMap.RegisterApiControllers(System.Reflection.Assembly.GetExecutingAssembly());
-            DependencyMap.AddServiceReferences(ref diMap);
 
             var resolver = new AutofacWebApiDependencyResolver(diMap.Build());
             config.DependencyResolver = resolver;

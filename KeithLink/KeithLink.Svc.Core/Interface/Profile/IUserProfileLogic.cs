@@ -65,8 +65,6 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
 		void GrantRoleAccess(UserProfile updatedBy, string emailAddress, AccessRequestType requestedApp);
 
-        bool IsInternalAddress(string emailAddress);
-
         void RemoveUserFromAccount(UserProfile removedBy, Guid accountId, Guid userId);
 
         void RemoveUserFromCustomer(UserProfile removedBy, Guid customerId, Guid userId);

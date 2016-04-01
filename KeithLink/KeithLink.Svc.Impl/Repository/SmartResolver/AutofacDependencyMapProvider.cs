@@ -51,6 +51,7 @@ using KeithLink.Svc.Impl.Logic.OnlinePayments;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
 using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.Profile.PasswordRequest;
 using KeithLink.Svc.Impl.Logic.Reports;
 using KeithLink.Svc.Impl.Logic.SingleSignOn;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
@@ -255,8 +256,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
 
             // profile
-            builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<MarketingPreferencesLogicImpl>().As<IMarketingPreferencesLogic>();
+            builder.RegisterType<PasswordResetLogicImpl>().As<IPasswordResetLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
 
             // reports
@@ -453,20 +456,17 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
 
             //Password Reset
-            builder.RegisterType<InternalPasswordResetRequestLogicImpl>().As<IInternalPasswordResetLogic>();
+            builder.RegisterType<PasswordResetLogicImpl>().As<IPasswordResetLogic>();
             builder.RegisterType<PasswordResetRequestRepositoryImpl>().As<IPasswordResetRequestRepository>();
 
             // DSR Alias
             builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
-            builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
-            builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
 
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
-            builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
-
             builder.RegisterType<MarketingPreferencesRepositoryImpl>().As<IMarketingPreferencesRepository>();
-            builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
+            builder.RegisterType<MarketingPreferencesLogicImpl>().As<IMarketingPreferencesLogic>();
 
             // ElasticSearch ETL 
             builder.RegisterType<ItemImportLogicImpl>().As<IItemImport>();
@@ -481,7 +481,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // Profile Settings
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
 
             // messaging
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
@@ -576,10 +576,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
             builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
-            builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
+            builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
             //builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();  // this is also found in the DEMO preprocessor directive later
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
-            builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 
@@ -630,8 +630,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ReportLogic>().As<IReportLogic>();
 
             // profile
-            builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
 
             ///////////////////////////////////////////////////////////////////////////////
@@ -768,11 +768,11 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
-            builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
-            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<PasswordResetLogicImpl>().As<IPasswordResetLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
 
             //profile
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
 
             // messaging

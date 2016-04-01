@@ -59,14 +59,13 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly IUnitOfWork _uow;
         private readonly IUserActiveCartRepository _userActiveCartRepository;
-        private readonly IUserProfileLogic _userProfileLogic;
         #endregion
 
         #region ctor
         public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, 
                               IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, 
-                              IUserProfileLogic userProfileLogic, ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, 
-                              IUnitOfWork unitOfWork, IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository) {
+                              ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, 
+                              IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository) {
 			_catalogLogic = catalogLogic;
             _customerRepository = customerRepository;
             _log = eventLogRepository;
@@ -78,7 +77,6 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 			_poRepo = purchaseOrderRepository;
             _uow = unitOfWork;
             _userActiveCartRepository = userActiveCartRepository;
-            _userProfileLogic = userProfileLogic;
         }
         #endregion
 
@@ -726,7 +724,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         public Order UpdateOrderForEta(UserProfile user, Order order) {
             if (Configuration.EnableEtaForUsers.Equals("none", StringComparison.InvariantCultureIgnoreCase)
                 || (Configuration.EnableEtaForUsers.Equals("internal_only", StringComparison.InvariantCultureIgnoreCase)
-                    && !_userProfileLogic.IsInternalAddress(user.EmailAddress))
+                    && !ProfileHelper.IsInternalAddress(user.EmailAddress))
                 ) {
                 ClearEtaInformation(order);
             }

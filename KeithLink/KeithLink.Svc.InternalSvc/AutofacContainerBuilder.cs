@@ -80,7 +80,6 @@ namespace KeithLink.Svc.InternalSvc
             builder.RegisterType<ETLService>();
             builder.RegisterType<PipelineService>();
             builder.RegisterType<CacheService>();
-            builder.RegisterType<ProfileService>();
         }
 
    //     public static IContainer BuildContainer()
