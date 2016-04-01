@@ -152,7 +152,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var busy=false;
                 listScope.$watch(function(scp){ return JSON.stringify(getter(scp), JSONStripper); }, function(list) {
                     tplContainer.width(elParent.width());
-                    scope.itemIconsActive = false;
+                    if(scope.itemIconsActive !== true){
+                        scope.itemIconsActive = false;
+                    }
 
                     if(busy) { return; }
                     busy=true;
@@ -241,8 +243,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         setTimeout(function() {
                             if(elIndex >= 0) {
                                 clone.find('*').eq(elIndex).trigger('mouseenter');
+                                clone.find('*').eq(elIndex).trigger('mouseleave');
                             } else {
                                 clone.trigger('mouseenter');
+                                clone.trigger('mouseleave');
                             }
                         }, 0);
                     });

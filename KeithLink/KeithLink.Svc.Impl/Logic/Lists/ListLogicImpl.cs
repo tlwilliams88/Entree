@@ -372,10 +372,29 @@ namespace KeithLink.Svc.Impl.Logic.Lists {
                 var returnList = list.ToListModel(catalogInfo);
                 LookupNameAndPackSize(user, returnList, catalogInfo);
 
-                return returnList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
+                return returnList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize,
+                    BarCode = GetBarcode("*" + i.ItemNumber + "*") }).ToList();
             } else {
-                return cachedList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize }).ToList();
+                return cachedList.Items.Select(i => new ItemBarcodeModel() { ItemNumber = i.ItemNumber, Name = i.Name, PackSize = i.PackSize,
+                    BarCode = GetBarcode("*" + i.ItemNumber + "*") }).ToList();
             }
+        }
+
+        public byte[] GetBarcode(string text)
+        {
+            System.Drawing.Bitmap b;
+            BarcodeLib.Barcode bar = new BarcodeLib.Barcode(text);
+            bar.Alignment = BarcodeLib.AlignmentPositions.LEFT;
+            bar.IncludeLabel = false;
+            bar.RotateFlipType = System.Drawing.RotateFlipType.RotateNoneFlipNone;
+            b = (System.Drawing.Bitmap)bar.Encode(BarcodeLib.TYPE.CODE39Extended, text, 250, 40);
+            byte[] data;
+            using (System.IO.MemoryStream ms = new MemoryStream())
+            {
+                b.Save(ms, System.Drawing.Imaging.ImageFormat.Bmp);
+                data = ms.ToArray();
+            }
+            return data;
         }
 
         public ItemHistory[] GetItemsHistoryList(UserSelectedContext userContext, string[] itemNumbers) {

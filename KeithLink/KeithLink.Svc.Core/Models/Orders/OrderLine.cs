@@ -108,7 +108,7 @@ namespace KeithLink.Svc.Core.Models.Orders
                 }
                 else if (mfStatus.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS, StringComparison.CurrentCultureIgnoreCase))
                 {
-
+                    return true;
                 }
                 return false;
             }
