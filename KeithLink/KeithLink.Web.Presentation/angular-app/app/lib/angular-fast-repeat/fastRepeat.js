@@ -241,8 +241,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         setTimeout(function() {
                             if(elIndex >= 0) {
                                 clone.find('*').eq(elIndex).trigger('mouseenter');
+                                clone.find('*').eq(elIndex).trigger('mouseleave');
                             } else {
                                 clone.trigger('mouseenter');
+                                clone.trigger('mouseleave');
                             }
                         }, 0);
                     });
