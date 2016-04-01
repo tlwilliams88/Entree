@@ -23,11 +23,9 @@ using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Common.Impl.AuditLog;
 using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.ETL;
 using KeithLink.Svc.Impl.Logic;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.Invoices;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.OnlinePayments;
@@ -50,7 +48,6 @@ using KeithLink.Svc.Impl.Repository.OnlinePayments.Invoice;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Log;
 using KeithLink.Svc.Impl.Repository.OnlinePayments.Payment;
 using KeithLink.Svc.Impl.Repository.Orders;
-using KeithLink.Svc.Impl.Repository.Orders.History;
 using KeithLink.Svc.Impl.Repository.Orders.History.EF;
 using KeithLink.Svc.Impl.Repository.Profile;
 using KeithLink.Svc.Impl.Repository.Queue;
@@ -59,10 +56,6 @@ using KeithLink.Svc.Impl.Repository.SiteCatalog;
 using KeithLink.Svc.Test.Mock;
 
 using Autofac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace KeithLink.Svc.Test
 {

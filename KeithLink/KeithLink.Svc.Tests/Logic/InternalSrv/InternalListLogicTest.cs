@@ -1,27 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using KeithLink.Svc.Core.Interface.Lists;
-using KeithLink.Svc.Impl;
-using KeithLink.Svc.Impl.Logic;
-using KeithLink.Svc.Impl.Repository.SiteCatalog;
-using KeithLink.Svc.Core.Models.Profile;
-using KeithLink.Svc.Impl.Repository.Profile;
-using KeithLink.Common.Impl.Logging;
-using KeithLink.Svc.Impl.Repository.Lists;
-using KeithLink.Svc.Test.Mock;
-using FizzWare.NBuilder;
-using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
-using Moq;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
-using Autofac;
+﻿using KeithLink.Svc.Core.Interface.Lists;
+
 using KeithLink.Svc.Core.Models.Lists;
+using KeithLink.Svc.Core.Models.Profile;
+
+using Autofac;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+
 namespace KeithLink.Svc.Test.Logic
 {
     [TestClass]

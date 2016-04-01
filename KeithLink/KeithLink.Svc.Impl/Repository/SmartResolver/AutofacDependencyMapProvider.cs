@@ -43,7 +43,6 @@ using KeithLink.Svc.Impl.Logic.Configurations;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.ETL;
 using KeithLink.Svc.Impl.Logic.Export;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Invoices;
 using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Logic.Messaging;
@@ -677,7 +676,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
-            builder.RegisterType<InternalSpecialOrderLogic>().As<IInternalSpecialOrderLogic>();
+            builder.RegisterType<SpecialOrderLogicImpl>().As<ISpecialOrderLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
             //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
@@ -795,7 +794,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
             builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
-            builder.RegisterType<NoOrderConversionLogicImpl>().As<IOrderConversionLogic>();
+            builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
             builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
             builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 

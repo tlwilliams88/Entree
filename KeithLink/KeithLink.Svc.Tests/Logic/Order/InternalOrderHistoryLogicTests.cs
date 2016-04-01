@@ -1,20 +1,9 @@
 ﻿// KeithLink
 using KeithLink.Svc.Core.Interface.Orders;
 
-using KeithLink.Svc.Core.Models.Orders;
-
-using KeithLink.Svc.Impl.Logic.InternalSvc;
-
-using KeithLink.Svc.Test.Mock;
-
 // Core
 using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Test.Logic.Order {
     [TestClass]

@@ -274,7 +274,6 @@
     <Compile Include="Logic\ETL\ElasticSearch\ItemImportLogicImpl.cs" />
     <Compile Include="Logic\Export\ModelExportLogicImpl.cs" />
     <Compile Include="Logic\ImportLogicImpl.cs" />
-    <Compile Include="Logic\InternalSvc\InternalSpecialOrderLogic.cs" />
     <Compile Include="Logic\Invoices\ImagingLogicImpl.cs" />
     <Compile Include="Logic\Invoices\TermLogicImpl.cs" />
     <Compile Include="Logic\Lists\FavoriteLogicImpl.cs" />
@@ -295,12 +294,12 @@
     <Compile Include="Logic\Messaging\OrderConfirmationNotificationHandlerImpl.cs" />
     <Compile Include="Logic\OnlinePayments\OnlinePaymentLogicImpl.cs" />
     <Compile Include="Logic\Orders\ConfirmationLogicImpl.cs" />
-    <Compile Include="Logic\Orders\NoOrderConverionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderConversionLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderHistoryRequestLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\OrderQueueLogicImpl.cs" />
+    <Compile Include="Logic\Orders\SpecialOrderLogicImpl.cs" />
     <Compile Include="Logic\Orders\UserActiveCartLogicImpl.cs" />
     <Compile Include="Logic\PowerMenu\PowerMenuLogicImpl.cs" />
     <Compile Include="Logic\PriceLogicImpl.cs" />
