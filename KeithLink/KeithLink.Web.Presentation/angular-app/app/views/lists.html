@@ -467,19 +467,19 @@
               <td ng-if="itemIconsActive" class="hidden-mobile-visible-print" item-icons></td>
 <!--                  loading-->
               <td ng-if="!itemIconsActive" class="hidden-mobile-visible-print">
-              <a ng-if="item.is_specialty_catalog === true"><span class="text-regular icon-leaf"></span></a>
-              <a ng-if="item.notes"><span class="icon-docs text-regular"></span></a>
-              <a ng-if="item.inhistory === true"><span class="text-regular icon-history"></span></a>            
-              <a ng-if="item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>
-              <a ng-if="item.replaceditem > 0"><span class="text-green icon-cycle"></span></a>            
-              <a ng-if="item.substituteditemnumber"><span class="icon-switch text-regular"></span></a>              
-              <a ng-if="item.deviatedcost === 'Y'"><span class="text-regular icon-dollar"></span></a>            
-              <a ng-if="item.sellsheet === 'Y'"><span class="text-regular icon-sellsheet"></span></a>             
-              <a ng-if="item.childnutrition === 'Y'"><span class="text-regular icon-apple"></span></a>        
-              <a ng-if="item.nonstock === 'Y'"><span class="text-regular icon-user"></span></a>
-              <a ng-if="item.temp_zone === 'F'"><span  class="text-regular icon-snowflake"></span></a>
-              <a ng-if="item.temp_zone === 'C'"><span class="text-regular icon-thermometer"></span></a>
-              <a ng-if="item.temp_zone === 'D'"><span class="text-regular icon-air"></span></a>
+                <a ng-if="item.is_specialty_catalog === true"><span class="text-regular icon-leaf"></span></a>
+                <a ng-if="item.inhistory === true"><span class="text-regular icon-history"></span></a>
+                <a ng-if="item.notes"><span class="icon-docs text-regular"></span> </a>
+                <a ng-if="item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>
+                <a ng-if="item.replaceditem > 0"><span class="text-green icon-cycle"></span></a>
+                <a ng-if="item.substituteditemnumber"><span class="icon-switch text-regular"></span></a>
+                <a ng-if="item.deviatedcost === 'Y'"><span class="text-regular icon-dollar"></span></a>
+                <a ng-if="item.sellsheet === 'Y'"><span class="text-regular icon-sellsheet"></span></a>
+                <a ng-if="item.childnutrition === 'Y'"><span class="text-regular icon-apple"></span></a>
+                <a ng-if="item.nonstock === 'Y'"><span class="text-regular icon-user"></span></a>
+                <a ng-if="item.temp_zone === 'F'"><span class="text-regular icon-snowflake"></span></a>
+                <a ng-if="item.temp_zone === 'C'"><span class="text-regular icon-thermometer"></span></a>
+                <a ng-if="item.temp_zone === 'D'"><span class="text-regular icon-air"></span></a>
               </td>
               <td ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
                 {{item[selectedList.permissions.alternativeFieldName]}}
