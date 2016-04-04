@@ -85,10 +85,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         return rowTpl.clone();
                     }
 
-                    var list = getter(scope);
+                    scope.list = getter(scope);
                     // Generate ids if necessary and arrange in a hash map
                     var listByIds = {};
-                    angular.forEach(list, function(item) {
+                    angular.forEach(scope.list, function(item) {
                         // if(item.position == 1 && item.label){
                         //     var firstLabel;
                         //     firstLabel = item.label;
@@ -114,7 +114,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     });
                     // Add/rearrange all rows
                     var previousEl = element;
-                    angular.forEach(list, function(item) {
+                    angular.forEach(scope.list, function(item) {
                         var id = item.$$fastRepeatId;
                         var row=currentRowEls[id];
 
@@ -129,7 +129,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 row.copy = angular.copy(item);
                                 row.compiled = false;
                                 row.item = item;
-                                if(row.item.position % 2 == 0) {
+                                if(scope.list.indexOf(item) % 2 !== 0) {
                                     row.el[0].children[0].className += ' even';
                                 }
                             }
@@ -142,7 +142,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                     item: item,
                                     el: render(item)
                                 };
-                                if(row.item.position % 2 == 0) {
+                                if(scope.list.indexOf(item) % 2 !== 0) {
                                     row.el[0].children[0].className += ' even';
                                 }
                             } else {
@@ -164,6 +164,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         }
                         previousEl.after(row.el.last());
                         previousEl = row.el.last();
+                        // scope.isSortingList = false;
                     });
 
                 };
@@ -248,7 +249,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
                         scope.itemIconsActive = true;
-                        if(parseFloat($target[0].children[0].outerText) % 2 == 0){
+                        if(scope.list.indexOf(item) % 2 !== 0){
                             $target.replaceWith(clone);
                             clone[0].children[0].className += ' even';
                         }else{
