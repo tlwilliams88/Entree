@@ -92,6 +92,7 @@ angular.module('bekApp')
       $scope.setRange();
       $scope.selectedList.allSelected = false;
       var deletedItems = [];
+      setLabels();
       $scope.selectedList.items.forEach(function(item){
         if(item.deleted){
           deletedItems.push(item);
@@ -119,6 +120,7 @@ angular.module('bekApp')
             foundStartPoint = true;
           }
         })
+        setLabels();
 
         if(!foundStartPoint){
           appendListItems(page);
@@ -143,14 +145,22 @@ angular.module('bekApp')
 
     $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
 
-    // function checkForEvenOrOdd(){
-    //   $scope.selectedList.items.forEach(function(item){
-    //       item.isEven = false;
-    //       if(item.position % 2 == 0) {
-    //       item.isEven = true;
-    //     }
-    //   })
-    // };
+    $scope.keyPress = function(event){
+      $scope.listform.$setDirty();
+    }
+
+    function setLabels(){
+      $scope.selectedList.items.forEach(function(item){
+        var firstLabel;
+        if(item.position == 1 && item.label){
+          firstLabel = item.label;
+          item.label = '';
+          $timeout(function(){
+            item.label = firstLabel;
+          }, 0)
+        }
+      })
+    };
 
     function resetPage(list, initialPageLoad) {
       $scope.initPagingValues();
@@ -178,7 +188,6 @@ angular.module('bekApp')
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
       })
-      // checkForEvenOrOdd();
     };
 
     function appendListItems(list) {
@@ -481,7 +490,6 @@ angular.module('bekApp')
           newPosition += 1;
       }
       });
-      // checkForEvenOrOdd();
      }
 
     /**********
