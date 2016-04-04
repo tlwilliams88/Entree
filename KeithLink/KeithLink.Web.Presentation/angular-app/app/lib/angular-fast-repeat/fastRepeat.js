@@ -31,6 +31,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var disableOpts = $parse(attrs.fastRepeatDisableOpts)(listScope);
                 var currentRowEls = {};
                 var t;
+                var firstLabel;
 
                 // The rowTpl will be digested once -- want to make sure it has valid data for the first wasted digest.  Default to first row or {} if no rows
                 var scope = listScope.$new();
@@ -46,7 +47,16 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     } else {
                         $animate.enabled(false, rowTpl);
                     }
+                    renderLabels(scope);
                 });
+
+                function renderLabels(scope){
+                    if(scope.item.position == 1 && scope.item.label){
+                        firstLabel = scope.item.label;
+                        scope.item.label = '';
+                    }
+                    scope.fromRenderLabels = true;
+                }
 
                 // Create an offscreen div for the template
                 var tplContainer = $("<div/>");
@@ -63,6 +73,11 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 tplContainer.append(rowTpl);
 
                 var updateList = function(rowTpl, scope, forceUpdate) {
+                    // renderLabels(scope);
+                    if(scope.item.position == 1 && scope.item.label == ''){
+                        scope.item.label = firstLabel;
+                        scope.fromRenderLabels = false;
+                    }
                     function render(item) {
                         scope[repeatVarName] = item;
                         scope.$digest();
@@ -70,11 +85,19 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         return rowTpl.clone();
                     }
 
-
                     var list = getter(scope);
                     // Generate ids if necessary and arrange in a hash map
                     var listByIds = {};
                     angular.forEach(list, function(item) {
+                        // if(item.position == 1 && item.label){
+                        //     var firstLabel;
+                        //     firstLabel = item.label;
+                        //     item.label = '';
+                        //     var timeout = setInterval(function(){
+                        //     item.label = firstLabel;
+                        //     scope.$apply;
+                        //     }, 0)
+                        // }
                         if(!item.$$fastRepeatId) {
                             if(item.id) { item.$$fastRepeatId = item.id; }
                             else if(item._id) { item.$$fastRepeatId = item._id; }
