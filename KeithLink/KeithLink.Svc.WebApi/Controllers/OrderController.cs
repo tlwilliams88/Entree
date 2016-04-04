@@ -189,7 +189,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Order, Core.Enumerations.List.ListType.Custom, 
                                                         exportRequest.Fields, exportRequest.SelectedType);
 
-                ret = ExportModel<Order>(orders, exportRequest);
+                ret = ExportModel<Order>(orders, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -264,7 +264,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     _exportLogic.SaveUserExportSettings(AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, Core.Enumerations.List.ListType.Custom, 
                                                         exportRequest.Fields, exportRequest.SelectedType);
 
-                ret = ExportModel<OrderLine>(order.Items, exportRequest);
+                ret = ExportModel<OrderLine>(order.Items, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {

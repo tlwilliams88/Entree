@@ -26,7 +26,11 @@ namespace KeithLink.Svc.Core.Models.Reports
         [DataMember(Name = "name")]
 		[Description("Name")]
         public string Name { get; set; }
-        
+
+        [DataMember(Name = "class")]
+        [Description("Category")]
+        public string Class { get; set; }
+
         [DataMember(Name = "images")]
         public List<ProductImage> Images { get; set; }
 
@@ -42,18 +46,20 @@ namespace KeithLink.Svc.Core.Models.Reports
 		[Description("Pack/Size")]
         public string PackSize { get; set; }
 
+        public string Pack { get; set; }
+        public string Size { get; set; }
         [DataMember(Name = "each")]
 		[Description("Each")]
         public string Each { get; set; }
 
 		[DataMember(Name = "averageprice")]
 		[Description("Average Price")]
-		public double AveragePrice { get; set; }
+		public string AveragePrice { get; set; }
 
 
 		[DataMember(Name = "totalcost")]
 		[Description("Total Cost")]
-		public double TotalCost { get; set; }
+		public string TotalCost { get; set; }
 
 		
 
@@ -61,21 +67,24 @@ namespace KeithLink.Svc.Core.Models.Reports
 		{
 			var defaultConfig = new List<ExportModelConfiguration>();
 
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Brand", Order = 21, Label = "Brand" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Order = 21, Label = "Mfr Name" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "UPC", Order = 22, Label = "GTIN" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "VendorItemNumber", Order = 23, Label = "Vendor Item" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "AveragePrice", Order = 24, Label = "Average Price" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "TotalCost", Order = 25, Label = "Total Cost" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "TotalQuantityOrdered", Order = 30, Label = "Qty Ordered" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "TotalQuantityShipped", Order = 40, Label = "Qty Shipped" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 50, Label = "Pack / Size" });
-			defaultConfig.Add(new ExportModelConfiguration() { Field = "Each", Order = 60, Label = "Each" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Name", Order = 5, Label = "Name" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Brand", Order = 10, Label = "Brand" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Class", Order = 15, Label = "Category" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Order = 20, Label = "Mfr Name" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "UPC", Order = 25, Label = "GTIN" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "VendorItemNumber", Order = 30, Label = "Vendor Item" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Pack", Order = 35, Label = "Pack" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Size", Order = 36, Label = "Size" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "Each", Order = 40, Label = "Each" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "TotalQuantityOrdered", Order = 45, Label = "Qty Ordered" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "TotalQuantityShipped", Order = 50, Label = "Qty Shipped" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "AveragePrice", Order = 55, Label = "Average Price" });
+            defaultConfig.Add(new ExportModelConfiguration() { Field = "TotalCost", Order = 60, Label = "Total Cost" });
 
 
-			return defaultConfig;
+
+            return defaultConfig;
 		}
 	}
 }

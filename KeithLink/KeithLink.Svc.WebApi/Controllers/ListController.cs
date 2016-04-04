@@ -78,7 +78,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.List, list.Type,
                                                                    exportRequest.Fields, exportRequest.SelectedType);
-                ret = ExportModel<ListItemModel>(list.Items, exportRequest);
+                ret = ExportModel<ListItemModel>(list.Items, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {
