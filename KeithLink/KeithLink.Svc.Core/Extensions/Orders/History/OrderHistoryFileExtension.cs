@@ -1,4 +1,6 @@
-﻿using KeithLink.Svc.Core.Enumerations.Order;
+﻿using KeithLink.Common.Core.Extensions;
+
+using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders.Confirmations;
@@ -42,7 +44,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             confirmation.Header.ConfirmationNumber = historyFile.Header.ControlNumber;
             confirmation.Header.CustomerNumber = historyFile.Header.CustomerNumber;
             confirmation.Header.InvoiceNumber = historyFile.Header.InvoiceNumber;
-            confirmation.Header.ConfirmationDate = DateTime.Now;
+            confirmation.Header.ConfirmationDate = DateTime.Now.ToLongDateFormatWithTime();
             confirmation.Header.ShipDate = historyFile.Header.DeliveryDate;
             confirmation.Header.RemoteOrderNumber = historyFile.Header.ControlNumber;
             // a confirmation will never have this data, and it is coming back wrong now
@@ -71,6 +73,7 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             detail.UnitOfMeasure = (bool)lineItem.Properties["Each"] ? UnitOfMeasure.Package : UnitOfMeasure.Case;
             detail.CatchWeight = (bool)lineItem.Properties["CatchWeight"];
             //detail.ItemDeleted =
+            detail.UnitCost = lineItem.ListPrice ?? 0;
             detail.SellPrice = (double)lineItem.PlacedPrice;
             detail.SubbedOriginalItemNumber = lineItem.Properties["SubstitutedItemNumber"] == null ? null : (string)lineItem.Properties["SubstitutedItemNumber"];
             //detail.ReplacedOriginalItemNumber =
@@ -79,10 +82,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             return detail;
         }
 
-        public static OrderHistoryFile ToOrderHistoryFile(this CS.PurchaseOrder value, UserSelectedContext customerInfo) {
+        public static OrderHistoryFile ToOrderHistoryFile(this CS.PurchaseOrder value, UserSelectedContext customerInfo, string specialCatalogId = null)
+        {
             OrderHistoryFile retVal = new OrderHistoryFile();
 
-            retVal.Header = value.ToOrderHistoryHeader(customerInfo);
+            retVal.Header = value.ToOrderHistoryHeader(customerInfo, specialCatalogId);
             if (value.Properties["LineItems"] != null) {
                 retVal.Details = ((CommerceServer.Foundation.CommerceRelationshipList)value.Properties["LineItems"])
                                    .Select(l => ToOrderHistoryDetail((CS.LineItem)l.Target, customerInfo.BranchId, retVal.Header.InvoiceNumber)).ToList();

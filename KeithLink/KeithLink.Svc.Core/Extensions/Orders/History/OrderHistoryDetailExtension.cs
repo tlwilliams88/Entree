@@ -27,6 +27,10 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         private const int DETAIL_LENGTH_ITEMSTS = 1;
         private const int DETAIL_LENGTH_FUTURE = 1;
         private const int DETAIL_LENGTH_WEIGHT = 8;
+        private const int DETAIL_LENGTH_SOURCE = 3;
+        private const int DETAIL_LENGTH_MFGID = 25;
+        private const int DETAIL_LENGTH_REQID = 7;
+        private const int DETAIL_LENGTH_REQLINNUM = 3;
 
         private const int DETAIL_STARTPOS_ITEMNUM = 1;
         private const int DETAIL_STARTPOS_LINNUM = 7;
@@ -41,6 +45,10 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
         private const int DETAIL_STARTPOS_ITEMSTS = 45;
         private const int DETAIL_STARTPOS_FUTURE = 46;
         private const int DETAIL_STARTPOS_WEIGHT = 47;
+        private const int DETAIL_STARTPOS_SOURCE = 55;
+        private const int DETAIL_STARTPOS_MFGID = 58;
+        private const int DETAIL_STARTPOS_REQID = 83;
+        private const int DETAIL_STARTPOS_REQLINNUM = 90;
         #endregion
 
         #region methods
@@ -100,6 +108,11 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
                 double.TryParse(record.Substring(DETAIL_STARTPOS_WEIGHT, DETAIL_LENGTH_WEIGHT), out weight);
                 value.TotalShippedWeight = weight;
             }
+
+            if (record.Length >= DETAIL_STARTPOS_SOURCE + DETAIL_LENGTH_SOURCE) { value.Source = record.Substring(DETAIL_STARTPOS_SOURCE, DETAIL_LENGTH_SOURCE); }
+            if (record.Length >= DETAIL_STARTPOS_MFGID + DETAIL_LENGTH_MFGID) { value.ManufacturerId = record.Substring(DETAIL_STARTPOS_MFGID, DETAIL_LENGTH_MFGID).Trim(); }
+            if (record.Length >= DETAIL_STARTPOS_REQID + DETAIL_LENGTH_REQID) { value.SpecialOrderHeaderId = record.Substring(DETAIL_STARTPOS_REQID, DETAIL_LENGTH_REQID); }
+            if (record.Length >= DETAIL_STARTPOS_REQLINNUM + DETAIL_LENGTH_REQLINNUM) { value.SpecialOrderLineNumber = record.Substring(DETAIL_STARTPOS_REQLINNUM, DETAIL_LENGTH_REQLINNUM); }
         }
 
         public static EF.OrderHistoryDetail ToEntityFrameworkModel(this OrderHistoryDetail value) {
@@ -115,8 +128,12 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.SubbedOriginalItemNumber = value.SubbedOriginalItemNumber;
             retVal.ReplacedOriginalItemNumber = value.ReplacedOriginalItemNumber;
             retVal.ItemStatus = value.ItemStatus;
-            retVal.TotalShippedWeight = decimal.Parse(value.TotalShippedWeight.ToString());
+            retVal.TotalShippedWeight = (decimal)value.TotalShippedWeight;
             retVal.SellPrice = (decimal)value.SellPrice;
+            retVal.Source = value.Source;
+            retVal.ManufacturerId = value.ManufacturerId;
+            retVal.SpecialOrderHeaderId = value.SpecialOrderHeaderId;
+            retVal.SpecialOrderLineNumber = value.SpecialOrderLineNumber;
 
             return retVal;
         }
@@ -137,13 +154,16 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             retVal.ItemStatus = value.ItemStatus;
             retVal.TotalShippedWeight = (double)value.TotalShippedWeight;
             retVal.SellPrice = (double)value.SellPrice;
+            retVal.Source = value.Source;
+            retVal.ManufacturerId = value.ManufacturerId;
+            retVal.SpecialOrderHeaderId = value.SpecialOrderHeaderId;
+            retVal.SpecialOrderLineNumber = value.SpecialOrderLineNumber;
 
             return retVal;
         }
 
         public static OrderLine ToOrderLine(this EF.OrderHistoryDetail value, string orderStatus) {
             OrderLine lineItem = new OrderLine();
-
             lineItem.LineNumber = value.LineNumber;
             lineItem.ItemNumber = value.ItemNumber;
             lineItem.Quantity = (short)value.ShippedQuantity;
@@ -161,11 +181,6 @@ namespace KeithLink.Svc.Core.Extensions.Orders.History {
             }
             lineItem.MainFrameStatus = value.ItemStatus;
             lineItem.Each = value.UnitOfMeasure.Equals(UnitOfMeasure.Package.ToShortString()) ? true : false;
-            if (lineItem.Status.Equals(Constants.CONFIRMATION_DETAIL_OUT_OF_STOCK_STATUS,
-                        StringComparison.CurrentCultureIgnoreCase))
-            {
-                lineItem.IsOutOfStock = true;
-            }
             return lineItem;
         }
 

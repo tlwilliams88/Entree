@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Orders
 {
 	public interface IOrderServiceRepository
 	{
-		DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
+		string ReadLatestUpdatedDate(UserSelectedContext catalogInfo);
 
         List<OrderHistoryFile> GetLastFiveOrderHistory( UserSelectedContext catalogInfo, string itemNumber );
 
@@ -25,8 +25,8 @@ namespace KeithLink.Svc.Core.Interface.Orders
         OrderTotalByMonth GetOrderTotalByMonth( UserSelectedContext customerInfo, int numberOfMonths );
         
 		UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId);
-		
-        void SaveOrderHistory(OrderHistoryFile historyFile);
+
+        void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder);
 		
         void SaveUserActiveCart(UserSelectedContext catalogInfo, Guid userId, Guid cartId);
 
@@ -36,5 +36,10 @@ namespace KeithLink.Svc.Core.Interface.Orders
         Guid GetUserIdForControlNumber(int controlNumber);
 
 		PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging);
+
+        void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber);
+
+        string SetLostOrder(string trackingNumber);
+
 	}
 }

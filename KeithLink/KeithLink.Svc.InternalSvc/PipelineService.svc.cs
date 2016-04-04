@@ -1,5 +1,8 @@
 ﻿using KeithLink.Svc.Core.Interface.SiteCatalog;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+
 using KeithLink.Svc.InternalSvc.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,16 +17,32 @@ namespace KeithLink.Svc.InternalSvc
 	[GlobalErrorBehaviorAttribute(typeof(ErrorHandler))]
 	public class PipelineService : IPipelineService
 	{
-		private readonly IPriceLogic priceLogic;
+		private readonly IPriceLogic _priceLogic;
+        private readonly ICatalogLogic _catalogLogic;
 
-		public PipelineService(IPriceLogic priceLogic)
+		public PipelineService(IPriceLogic priceLogic, ICatalogLogic catalogLogic)
 		{
-			this.priceLogic = priceLogic;
+			_priceLogic = priceLogic;
+            _catalogLogic = catalogLogic;
 		}
 
-		public Core.Models.SiteCatalog.PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Core.Models.SiteCatalog.Product> products)
+		public Core.Models.SiteCatalog.PriceReturn GetPrices(string BranchId, string customerNumber, DateTime shipDate, List<Product> products)
 		{
-			return priceLogic.GetPrices(BranchId, customerNumber, shipDate, products);
+            var catalogList = products.Select(i => i.CatalogId).Distinct().ToList();
+
+            ProductsReturn completedProducts = new ProductsReturn();
+            
+            foreach (var catalogId in catalogList) {
+                completedProducts.AddRange(_catalogLogic.GetProductsByIds(catalogId, 
+                                                                          products.Where(i => i.CatalogId.Equals(catalogId, StringComparison.InvariantCultureIgnoreCase))
+                                                                                  .Select(i => i.ItemNumber)
+                                                                                  .Distinct()
+                                                                                  .ToList()
+                                                                          )
+                                          );
+            }
+
+			return _priceLogic.GetPrices(BranchId, customerNumber, shipDate, completedProducts.Products);
 		}
 	}
 }

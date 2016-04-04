@@ -28,11 +28,11 @@ namespace KeithLink.Svc.Core.Extensions
 			return null;
 		}
 
-		public static CS.LineItem ToLineItem(this ShoppingCartItem cartItem, string branchId)
+		public static CS.LineItem ToLineItem(this ShoppingCartItem cartItem)
 		{
 			return new CS.LineItem() {
                 Id = cartItem.CartItemId.ToCommerceServerFormat(), 
-                CatalogName = branchId, 
+                CatalogName = cartItem.CatalogId, 
                 Notes = cartItem.Notes, 
                 ProductId = cartItem.ItemNumber, 
                 DisplayName = cartItem.Name,

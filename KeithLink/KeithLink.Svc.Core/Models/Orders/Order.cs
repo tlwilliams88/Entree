@@ -17,12 +17,24 @@ namespace KeithLink.Svc.Core.Models.Orders
 		[Description("Order #")]
 		public string OrderNumber { get; set; }
 
+        [DataMember(Name = "catalog_id")]
+        public string CatalogId { get; set; }
+
+        [DataMember(Name = "catalogtype")]
+        public string CatalogType { get; set; }
+
+        [DataMember(Name = "relatedordernumbers")]
+        public string RelatedOrderNumbers { get; set; }
+
+        [DataMember(Name = "relatedinvoicenumbers")]
+        public string RelatedInvoiceNumbers { get; set; }
+
         [DataMember(Name = "status")]
         public string Status { get; set; }
 
 		[DataMember(Name = "deliverydate")]
 		[Description("Delivery Date")]
-		public DateTime? DeliveryDate { get; set; }
+		public string DeliveryDate { get; set; }
 						
 		[DataMember(Name = "invoicenumber")]
 		[Description("Invoice #")]
@@ -46,7 +58,7 @@ namespace KeithLink.Svc.Core.Models.Orders
 		public DateTime CreatedDate { get; set; }
 
         [DataMember(Name = "requestedshipdate")]
-        public DateTime RequestedShipDate { get; set; }
+        public string RequestedShipDate { get; set; }
         
         [DataMember(Name = "ischangeorderallowed")]
         public bool IsChangeOrderAllowed { get; set; }
@@ -58,13 +70,13 @@ namespace KeithLink.Svc.Core.Models.Orders
         public Guid CommerceId { get; set; }
 
         [DataMember(Name = "estimateddeliverytime")]
-        public DateTime? EstimatedDeliveryTime { get; set; }
+        public string EstimatedDeliveryTime { get; set; }
 
         [DataMember(Name = "scheduleddeliverytime")]
-        public DateTime? ScheduledDeliveryTime { get; set; }
+        public string ScheduledDeliveryTime { get; set; }
 
         [DataMember(Name = "actualdeliverytime")]
-        public DateTime? ActualDeliveryTime { get; set; }
+        public string ActualDeliveryTime { get; set; }
 
         [DataMember(Name = "deliveryoutofsequence")]
         public bool? DeliveryOutOfSequence { get; set; }
@@ -74,6 +86,9 @@ namespace KeithLink.Svc.Core.Models.Orders
 
 		[DataMember(Name = "ordersystem")]
 		public string OrderSystem { get; set; }
+
+        [DataMember( Name = "isspecialorder" )]
+        public bool IsSpecialOrder { get; set; }
 
 		public List<ModelExport.ExportModelConfiguration> DefaultExportConfiguration()
 		{

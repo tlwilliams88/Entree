@@ -22,6 +22,9 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
         public UnitOfMeasure UnitOfMeasure { get; set; }
 
         [DataMember()]
+        public decimal UnitCost { get; set; }
+
+        [DataMember()]
         public double SellPrice { get; set; }
 
         [DataMember()]
@@ -44,6 +47,18 @@ namespace KeithLink.Svc.Core.Models.Orders.History {
 
         [DataMember()]
         public double TotalShippedWeight { get; set; }
+
+        [DataMember()]
+        public string Source { get; set; }
+
+        [DataMember()]
+        public string ManufacturerId { get; set; }
+
+        [DataMember()]
+        public string SpecialOrderHeaderId { get; set; }
+
+        [DataMember()]
+        public string SpecialOrderLineNumber { get; set; }
         #endregion
     }
 }

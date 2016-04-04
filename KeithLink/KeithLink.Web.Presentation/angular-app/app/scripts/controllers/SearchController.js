@@ -8,18 +8,22 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', 'ProductService', 'CategoryService', 'Constants', 'PricingService',
+  .controller('SearchController', ['$scope', '$state', '$stateParams', '$modal', '$analytics', 'ProductService', 'CategoryService', 'Constants', 'PricingService', 'CartService',
     function(
       $scope, $state, $stateParams, // angular dependencies
       $modal, // ui bootstrap library
       $analytics, //google analytics
-      ProductService, CategoryService, Constants, PricingService // bek custom services
+      ProductService, CategoryService, Constants, PricingService, CartService // bek custom services
     ) {
-    
+
     // clear keyword search term at top of the page
     if ($scope.userBar) {
       $scope.userBar.universalSearchTerm = '';
     }
+
+    CartService.getCartHeaders().then(function(cartHeaders){
+      $scope.cartHeaders = cartHeaders;
+    });
 
     // TODO: do not call these functions directly from view
     $scope.canOrderItem = PricingService.canOrderItem;
@@ -36,11 +40,20 @@ angular.module('bekApp')
 
     $scope.itemsPerPage = Constants.infiniteScrollPageSize;
     $scope.itemIndex = 0;
-    
+
     $scope.numberFacetsToShow = 4;  // determines when to show the 'Show More' link for each facet
     $scope.maxSortCount = 200;      // max number of items that can be sorted by price
 
     $scope.hideMobileFilters = true;
+    if ($state.params.catalogType == "BEK") {
+        $scope.pageTitle = "Product Catalog";
+    } else {
+        if ($state.params.catalogType == "UNFI"){
+            $scope.pageTitle = "Natural and Organic";
+        } else {
+            $scope.pageTitle = "Specialty Catalog";
+        }
+    }
 
     $scope.products = [];
     $scope.facets = {
@@ -82,7 +95,7 @@ angular.module('bekApp')
       var displayText;
 
       if ($scope.paramType === 'category') {
-        CategoryService.getCategories().then(function(data) {
+        CategoryService.getCategories($state.params.catalogType).then(function(data) {
           angular.forEach(data.categories, function(item, index) {
             if (item.search_name === $scope.paramId) { // for the bread crumb, we map from the search name back to the display name
               displayText = item.name;
@@ -199,7 +212,7 @@ angular.module('bekApp')
         };
         breadcrumbs.unshift($scope.featuredBreadcrumb);
         $analytics.eventTrack('Search Department', {  category: 'Department', label: $stateParams.deptName });
-        
+
         $scope.featuredBreadcrumb = {
           click: clearFacets,
           clickData: '',
@@ -211,21 +224,49 @@ angular.module('bekApp')
       $scope.breadcrumbs = breadcrumbs;
       $scope.filterCount = filterCount;
     }
+      
+    $scope.itemNumberDesc = false;
+    $scope.UNFISortByItemNumber= function(ascendingDate) {
+      $scope.sortField = 'itemnumber'
+      
+      if($state.params.catalogType != 'BEK'){
+        $scope.products = $scope.products.sort(function(obj1, obj2){
+          var sorterval1 = parseInt(obj1.itemnumber);
+          var sorterval2 = parseInt(obj2.itemnumber);
+
+          $scope.itemNumberDesc = !ascendingDate;  
+
+          if(ascendingDate){      
+            return sorterval1 - sorterval2;
+          }
+          else{
+            return sorterval2 - sorterval1;
+          }   
+        });
+      }
+      else{
+        $scope.sortTable('itemnumber');
+      }
+    };
 
     /*************
     LOAD PRODUCT DATA
     *************/
     function getData() {
       var facets = ProductService.getFacets(
-        $scope.facets.categories.selected, 
+        $scope.facets.categories.selected,
         $scope.facets.brands.selected,
         $scope.facets.mfrname.selected,
-        $scope.facets.dietary.selected, 
-        $scope.facets.itemspecs.selected 
+        $scope.facets.dietary.selected,
+        $scope.facets.itemspecs.selected
       );
       var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
+      // console.log("catalog type in search controller: " + $scope.$state.params.catalogType);
+      if($scope.sortField === 'itemnumber' && $state.params.catalogType != 'BEK'){
+        $scope.sortField  = '';
+      }
       var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
-      return ProductService.searchCatalog($scope.paramType, $scope.paramId, params);
+      return ProductService.searchCatalog($scope.paramType, $scope.paramId, $scope.$state.params.catalogType,params);
     }
 
     function loadProducts(appendResults) {
@@ -233,6 +274,13 @@ angular.module('bekApp')
 
       return getData().then(function(data) {
         $scope.totalItems = data.totalcount;
+        if (data.catalogCounts != null) {
+            $scope.bekItemCount = data.catalogCounts.bek;
+            $scope.unfiItemCount = data.catalogCounts.unfi;
+        } else {
+            $scope.bekItemCount = 0;
+            $scope.unfiItemCount = 0;
+        }
 
         // append results to existing data (for infinite scroll)
         if (appendResults) {
@@ -245,7 +293,7 @@ angular.module('bekApp')
         setBreadcrumbs(data);
 
         delete $scope.searchMessage;
-        
+
         return data.facets;
       }, function(error) {
         $scope.searchMessage = 'Error loading products.';
@@ -253,6 +301,7 @@ angular.module('bekApp')
         $scope.loadingResults = false;
       });
     }
+
 
     /*************
     FACETS
@@ -267,7 +316,7 @@ angular.module('bekApp')
     }
 
     function refreshFacets(facets) {
-      // set the $scope.facets object using the response data 
+      // set the $scope.facets object using the response data
       $scope.facets.categories.available = facets.categories;
       $scope.facets.brands.available = facets.brands;
       $scope.facets.mfrname.available = facets.mfrname;
@@ -348,9 +397,13 @@ angular.module('bekApp')
       if (($scope.products && $scope.products.length >= $scope.totalItems) || $scope.loadingResults) {
         return;
       }
-
+      var sortfieldholder = $scope.sortField;
       $scope.itemIndex += $scope.itemsPerPage;
-      loadProducts(true);
+      loadProducts(true).then(function(){
+        if(sortfieldholder === 'itemnumber' && $state.params.catalogType != 'BEK'){
+          $scope.UNFISortByItemNumber(!$scope.itemNumberDesc);
+        }
+      });      
     };
 
     $scope.toggleSelection = function(facetList, selectedFacet) {
@@ -392,19 +445,29 @@ angular.module('bekApp')
             // return search url with params
             var sortDirection = $scope.sortReverse ? 'desc' : 'asc';
             var facets = ProductService.getFacets(
-              $scope.facets.categories.selected, 
+              $scope.facets.categories.selected,
               $scope.facets.brands.selected,
               $scope.facets.mfrname.selected,
-              $scope.facets.dietary.selected, 
-              $scope.facets.itemspecs.selected 
+              $scope.facets.dietary.selected,
+              $scope.facets.itemspecs.selected
             );
+
             var params = ProductService.getSearchParams($scope.itemsPerPage, $scope.itemIndex, $scope.sortField, sortDirection, facets, $stateParams.dept);
-            return ProductService.getSearchUrl($scope.paramType, $scope.paramId) + '?' + jQuery.param(params); // search query string param
+            return ProductService.getSearchUrl($scope.paramType, $scope.paramId, $scope.$state.params.catalogType) + '?' + jQuery.param(params); // search query string param
           }
         }
       });
     };
 
+    $scope.bekCatalogSwitch = function () {
+        //change state to unfi
+        $state.go($state.current,{catalogType: "BEK"}, {reload: true});
+    }
+
+    $scope.unfiCatalogSwitch = function () {
+        //change state to unfi
+        $state.go($state.current,{catalogType: "UNFI"}, {reload: true});
+    }
     // INIT
     loadProducts().then(refreshFacets);
 

@@ -238,12 +238,15 @@
     <Content Include="KeithLink.Svc.Core.Models.Profile.EF.DsrAlias.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.DsrAliasModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.Configuration.EF.ExternalCatalog.datasource" />
+    <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportExternalCatalog.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModel.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModelReturn.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth.datasource" />
     <Content Include="KeithLink.Svc.Core.Models.Customers.EF.ItemHistory.datasource" />
     <None Include="Properties\PublishProfiles\Beta.pubxml" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
+    <None Include="Properties\PublishProfiles\Dev2.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
     <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
@@ -500,6 +503,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Configurations\ExternalCatalogServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Configurations\ExportSettingServiceRepositoryImpl.cs" />
     <Compile Include="Repository\ContentManagement\ContentManagementServiceRepositoryImpl.cs" />
     <Compile Include="Repository\Invoices\InvoiceServiceRepositoryImpl.cs" />
@@ -707,6 +711,9 @@
     <None Include="Web.Dev.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
+    <None Include="Web.Dev2.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -802,6 +809,13 @@
     <DocumentationFile>
     </DocumentationFile>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>bin\KeithLink.Svc.WebApi.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -818,15 +832,15 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
+          <SaveServerSettingsInUserFile>True</SaveServerSettingsInUserFile>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>62512</DevelopmentServerPort>
+          <DevelopmentServerPort>1175</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:60606/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
-          <CustomServerUrl>
-          </CustomServerUrl>
+          <CustomServerUrl>http://localhost:60606/</CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

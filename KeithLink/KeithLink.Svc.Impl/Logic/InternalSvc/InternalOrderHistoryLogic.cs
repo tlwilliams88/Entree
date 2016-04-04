@@ -1,15 +1,14 @@
-﻿using KeithLink.Common.Core.Helpers;
+﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
-
+using KeithLink.Common.Core.Extensions;
 using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
-
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Enumerations;
 using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
 using KeithLink.Svc.Core.Extensions.Orders.History;
-
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.Orders;
@@ -21,24 +20,27 @@ using KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Orders;
 using KeithLink.Svc.Core.Models.Orders.History;
 using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using CS = KeithLink.Svc.Core.Models.Generated;
 using KeithLink.Svc.Core.Models.Paging;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
 using KeithLink.Svc.Impl.Helpers;
 using KeithLink.Svc.Impl.Repository.EF.Operational;
 
+using CommerceServer.Foundation;
+using CommerceServer.Core;
+
 using Newtonsoft.Json;
 using System;
+using System.Data;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
-using CommerceServer.Foundation;
-using System.ServiceModel;
-using System.Globalization;
-using CommerceServer.Core;
-using System.Data;
 using System.Xml;
 
 namespace KeithLink.Svc.Impl.Logic.InternalSvc {
@@ -51,6 +53,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
 
         private readonly IOrderHistoryHeaderRepsitory _headerRepo;
+        private readonly IOrderHistoryDetailRepository _detailRepo;
         private readonly IPurchaseOrderRepository _poRepo;
         private readonly IKPayInvoiceRepository _kpayInvoiceRepository;
         private readonly ICatalogLogic _catalogLogic;
@@ -66,9 +69,10 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
         #region ctor
         public InternalOrderHistoryLogic(IOrderHistoryHeaderRepsitory headerRepo,
-            IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic,
+            IPurchaseOrderRepository poRepo, IKPayInvoiceRepository kpayInvoiceRepository, ICatalogLogic catalogLogic, IOrderHistoryDetailRepository detailRepo,
             IUnitOfWork unitOfWork, IEventLogRepository log, IGenericQueueRepository queue, IOrderConversionLogic conversionLogic, ICustomerRepository customerRepository) {
             _headerRepo = headerRepo;
+            _detailRepo = detailRepo;
             _poRepo = poRepo;
             _kpayInvoiceRepository = kpayInvoiceRepository;
             _catalogLogic = catalogLogic;
@@ -82,7 +86,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         #endregion
 
         #region methods
-        private void Create(OrderHistoryFile currentFile) {
+        private void Create(OrderHistoryFile currentFile, bool isSpecialOrder) {
             // first attempt to find the order, look by confirmation number
             EF.OrderHistoryHeader header = null;
 
@@ -103,9 +107,19 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             currentFile.Header.MergeWithEntity(ref header);
 
+            // set isSpecialOrder if that is true; but don't set otherwise (used from two places)
+            if (isSpecialOrder) {
+                header.IsSpecialOrder = true;
+            }
+
             if (string.IsNullOrEmpty(header.OriginalControlNumber)) { header.OriginalControlNumber = currentFile.Header.ControlNumber; }
 
+            bool hasSpecialItems = false;
+
             foreach (OrderHistoryDetail currentDetail in currentFile.Details.ToList()) {
+                if (string.IsNullOrWhiteSpace(currentDetail.SpecialOrderHeaderId)) {
+                    hasSpecialItems = true;
+                }
 
                 EF.OrderHistoryDetail detail = null;
 
@@ -117,6 +131,11 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     EF.OrderHistoryDetail tempDetail = currentDetail.ToEntityFrameworkModel();
                     tempDetail.BranchId = header.BranchId;
                     tempDetail.InvoiceNumber = header.InvoiceNumber;
+                    tempDetail.OrderHistoryHeader = header;
+
+                    if (isSpecialOrder) {
+                        tempDetail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
+                    }
 
                     header.OrderDetails.Add(tempDetail);
                 } else {
@@ -124,23 +143,30 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                     detail.BranchId = header.BranchId;
                     detail.InvoiceNumber = header.InvoiceNumber;
+                    if (isSpecialOrder) {
+                        detail.ItemStatus = KeithLink.Svc.Core.Constants.SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE;
+                    }
                 }
             }
 
             _headerRepo.CreateOrUpdate(header);
+
+            if (hasSpecialItems) {
+                RemoveSpecialOrderItemsFromHistory(header);
+            }
         }
 
         public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
-            var headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                              h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                            d => d.OrderDetails);
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
+                                                                    && h.CustomerNumber.Equals( customerInfo.CustomerId ), 
+                                                                    d => d.OrderDetails ).ToList();
 
-            return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
+            return LookupControlNumberAndStatus( customerInfo, headers ).AsQueryable().GetPage( paging );
         }
 
         public Order GetOrder(string branchId, string invoiceNumber) {
             EF.OrderHistoryHeader myOrder = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                  h.InvoiceNumber.Equals(invoiceNumber),
+                                                                  (h.InvoiceNumber.Equals(invoiceNumber) || h.ControlNumber.Equals(invoiceNumber)),
                                                              d => d.OrderDetails).FirstOrDefault();
             PurchaseOrder po = null;
 
@@ -148,20 +174,42 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             if (myOrder == null) {
                 po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
+                //_log.WriteInformationLog("InternalOrderHistoryLogic.GetOrder() invoiceNumber=" + invoiceNumber);
                 returnOrder = po.ToOrder();
-            } else {
+                if (po != null)
+                {
+                    PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
+                }
+            }
+            else
+            {
                 returnOrder = myOrder.ToOrder();
 
                 if (myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0) {
                     po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
                     if (po != null) {
                         returnOrder.Status = po.Status;
+                        returnOrder.CommerceId = Guid.Parse(po.Id);
+                        PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
+
+                        if (po.Status == "Confirmed with un-submitted changes" || po.Status == "Submitted") {
+                            returnOrder = po.ToOrder();
+                        }
+
+
+                        // needed to reconnect parent orders to special orders
+                        if (myOrder.RelatedControlNumber == null) {		
+                            FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);		
+                        } else {		
+                            returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;		
+                        }
                     }
                 }
             }
 
             // Set the status to delivered if the Actual Delivery Time is populated
-            if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+            //if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+            if (!string.IsNullOrEmpty(returnOrder.ActualDeliveryTime)) {
                     returnOrder.Status = "Delivered";
             }
 
@@ -176,8 +224,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                 }
             }
-            
-			LookupProductDetails(branchId, returnOrder);
+
+            if ( returnOrder.CatalogId == null ) {
+                returnOrder.CatalogId = branchId;
+            }
+
+            LookupProductDetails(returnOrder.CatalogId, returnOrder);
 
             if (po != null) {
                 returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
@@ -194,16 +246,56 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return returnOrder;
         }
 
+        /// <summary>
+        /// Pulls orderhistory orders for that same customer within a few minutes (either before or after) and calls those related (stores the order number and invoice number) in the order
+        /// </summary>
+        /// <param name="po">The purchase order that the items are stored in</param>
+        /// <param name="returnOrder">The order that the items are being set on</param>
+        /// <param name="headers">The reference to order history headers if we have it</param>
+        /// <returns></returns>
+        private void FindOrdersRelatedToPurchaseOrder(PurchaseOrder po, Order returnOrder, EF.OrderHistoryHeader thisOrder, List<EF.OrderHistoryHeader> headers)
+        {
+            string customerNumber = po.Properties["CustomerId"].ToString();
+            string branchId = po.Properties["BranchId"].ToString();
+            string orderNumber = po.Properties["OrderNumber"].ToString();
+            //string controlNumber = po.Properties["OrderNumber"].ToString();
+            
+            if (headers == null)
+                headers = _headerRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                 h.CustomerNumber.Equals(customerNumber) &&
+                                                 h.RelatedControlNumber == orderNumber).ToList();
+
+            StringBuilder sbRelatedOrders = new StringBuilder();
+            StringBuilder sbRelatedInvoices = new StringBuilder();
+            
+            foreach (var item in headers)
+            {
+                if (sbRelatedOrders.Length > 0) sbRelatedOrders.Append(",");
+                if (sbRelatedInvoices.Length > 0) sbRelatedInvoices.Append(",");
+
+                sbRelatedOrders.Append(item.ControlNumber);
+                sbRelatedInvoices.Append(item.InvoiceNumber);
+            }
+
+            returnOrder.RelatedOrderNumbers = sbRelatedOrders.ToString();
+            returnOrder.RelatedInvoiceNumbers = sbRelatedInvoices.ToString();
+        }
+
         private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails);
+            int daysDiff = (endDate - startDate).Days;
+            var dateRange = Enumerable.Range(0, daysDiff + 1).Select(dt => startDate.AddDays(dt).ToLongDateFormat());
+            
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read( h => h.BranchId.Equals( customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase )
+                                                                     && h.CustomerNumber.Equals( customerInfo.CustomerId ) 
+                                                                     && dateRange.Contains(h.DeliveryDate), 
+                                                                    i => i.OrderDetails ).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
         private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
-            IEnumerable<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
-                                                                          d => d.OrderDetails);
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase)
+                                                                          && h.CustomerNumber.Equals( customerInfo.CustomerId ),
+                                                                          d => d.OrderDetails).ToList();
             return LookupControlNumberAndStatus(customerInfo, headers);
         }
 
@@ -228,9 +320,14 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
         /// <param name="endDate"></param>
         /// <returns></returns>
         private List<Order> GetShallowOrderDetailInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
-            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) &&
-                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && h.DeliveryDate >= startDate && h.DeliveryDate <= endDate, i => i.OrderDetails).ToList();
+            int numberOfDays = (endDate - startDate).Days + 1;
+            var dateRange = Enumerable.Range(0, numberOfDays).Select(d => startDate.AddDays(d).ToLongDateFormat());
 
+            List<EF.OrderHistoryHeader> headers = _headerRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) 
+                                                                                                       && h.CustomerNumber.Equals(customerInfo.CustomerId) 
+                                                                                                       && dateRange.Contains(h.DeliveryDate),
+                                                                                                    i => i.OrderDetails)
+                                                                                           .ToList();
             List<Order> orders = new List<Order>();
 
             foreach (EF.OrderHistoryHeader h in headers) {
@@ -306,21 +403,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
             return returnValue;
         }
-
-        public void SaveOrder(OrderHistoryFile historyFile) {
-            Create(historyFile);
-
-            _unitOfWork.SaveChanges();
-        }
-
-        public void StopListening() {
-            _keepListening = false;
-
-            if (_queueTask != null && _queueTask.Status == TaskStatus.Running) {
-                _queueTask.Wait();
-            }
-        }
-
+        
         public void ListenForQueueMessages() {
             _queueTask = Task.Factory.StartNew(() => ListenForQueueMessagesInTask());
         }
@@ -330,8 +413,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                 System.Threading.Thread.Sleep(THREAD_SLEEP_DURATION);
 
                 try {
-                    var rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, 
-                                                                                      Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+                    var rawOrder = ReadOrderFromQueue();
 
                     while (_keepListening && !string.IsNullOrEmpty(rawOrder)) {
                         OrderHistoryFile historyFile = new OrderHistoryFile();
@@ -340,93 +422,65 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
 
                         _log.WriteInformationLog(string.Format("Consuming order update from queue for message ({0})", historyFile.MessageId));
 
-                        Create(historyFile);
+                        Create(historyFile, false);
                         _conversionLogic.SaveOrderHistoryAsConfirmation(historyFile);
 
                         _unitOfWork.SaveChangesAndClearContext();
 
-                        rawOrder = _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer, 
-                                                                                     Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+                        // to make sure we do not pull an order off the queue without processing it
+                        // check to make sure we can still process before pulling off the queue
+                        if (_keepListening) {
+                            rawOrder = ReadOrderFromQueue();
+                        } else {
+                            rawOrder = null;
+                        }
                     }
-
                 } catch (Exception ex) {
                     KeithLink.Common.Core.Email.ExceptionEmail.Send(ex, subject: "Exception processing Order History in Queue Service");
 
                     _log.WriteErrorLog("Error in Internal Service Queue Listener", ex);
                 }
             }
-
         }
 
-        //private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers) {
-        //    var customerOrders = new BlockingCollection<Order>();
-        //    foreach (var h in headers) {
-        //        try {
-        //            Order returnOrder = null;
-
-        //            returnOrder = h.ToOrder();
-
-        //            if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
-        //                var po = _poRepo.ReadPurchaseOrderByTrackingNumber(h.ControlNumber);
-        //                if (po != null) {
-        //                    returnOrder.Status = po.Status;
-        //                    returnOrder.OrderNumber = h.ControlNumber;
-        //                    returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
-        //                }
-
-        //            }
-
-        //            var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
-        //            if (invoice != null) {
-        //                returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
-        //            }
-
-        //            if (returnOrder.ActualDeliveryTime != null) {
-        //                returnOrder.Status = "Delivered";
-        //            }
-
-        //            //LookupProductDetails(h.BranchId, returnOrder);
-        //            if (returnOrder.Items != null) {
-        //                returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
-        //            }
-
-        //            customerOrders.Add(returnOrder);
-        //        } catch (Exception ex) {
-        //            _log.WriteErrorLog("Error proceesing order history for order: " + h.InvoiceNumber + ".  " + ex.StackTrace);
-        //        }
-
-        //    }
-
-        //    return customerOrders.ToList();
-        //}
-
-        private List<Order> LookupControlNumberAndStatus( UserSelectedContext userContext, IEnumerable<EF.OrderHistoryHeader> headers ) {
+        private List<Order> LookupControlNumberAndStatus( UserSelectedContext userContext, List<EF.OrderHistoryHeader> headers ) {
             var customerOrders = new BlockingCollection<Order>();
 
             // Get the customer GUID to retrieve all purchase orders from commerce server
             var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
-            var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId);
+            var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId).ToList();
 
             foreach (var h in headers) {
                 try {
                     Order returnOrder = null;
-
+                    
                     returnOrder = h.ToOrder();
 
-                    LookupProductDetails(h.BranchId, returnOrder);
-
-                    if (h.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
+                    if (h.OrderSystem.Trim().Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0)
+                    {
                         // Check if the purchase order exists and grab it for additional information if it does
-                        if (POs != null) {
-                            PurchaseOrder currentPo = POs.Where( x => x.Properties["OrderNumber"].Equals( h.ControlNumber ) ).FirstOrDefault<PurchaseOrder>();
+                        if (POs != null)
+                        {
+                            PurchaseOrder currentPo = null;
+                            currentPo = POs.Where(p => p.Properties["OrderNumber"].ToString() == h.ControlNumber).FirstOrDefault();
 
-                            if (currentPo != null) {
+                            if (currentPo != null)
+                            {
+                                returnOrder.RelatedOrderNumbers = h.RelatedControlNumber;
                                 returnOrder.Status = currentPo.Status;
                                 returnOrder.OrderNumber = h.ControlNumber;
-                                returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith( "Confirmed" )));
+                                returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith("Confirmed")));
                             }
                         }
                     }
+                    else
+                    {
+                        returnOrder.CatalogType = h.BranchId;
+                        returnOrder.CatalogId = h.BranchId;
+                    }
+
+                    //if ((returnOrder.CatalogId != null) && (returnOrder.CatalogId.Length > 0)) LookupProductDetails(returnOrder.CatalogId, returnOrder);
+                    //else LookupProductDetails(userContext.BranchId, returnOrder);
 
                     var invoice = _kpayInvoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
                     if (invoice != null) {
@@ -437,7 +491,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                         returnOrder.Status = "Delivered";
                     }
 
-                    //LookupProductDetails(h.BranchId, returnOrder);
                     if (returnOrder.Items != null) {
                         returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
                     }
@@ -452,22 +505,84 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return customerOrders.ToList();
         }
 
-        private void LookupProductDetails(string branchId, Order order) {
+        /// <summary>
+        /// Pulls catalogname from purchase order lineitems and sets the catalogid and catalogname on order items, then bubbles those up to set them on the overall order
+        /// </summary>
+        /// <param name="po">The purchase order that the items are stored in</param>
+        /// <param name="returnOrder">The order that the items are being set on</param>
+        /// <returns></returns>
+        private void PullCatalogFromPurchaseOrderItemsToOrder(PurchaseOrder po, Order returnOrder)
+        {
+            //_log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
+            //    ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
+            if (po != null && po.Properties["LineItems"] != null)
+            {
+                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+                {
+                    var item = (CS.LineItem)lineItem.Target;
+                    var oitem = returnOrder.Items.Where(i => i.ItemNumber.Trim() == item.ProductId).FirstOrDefault();
+                    if (oitem != null)
+                    {
+                        oitem.CatalogId = item.CatalogName;
+                        oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                        //_log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
+                    }
+                }
+            }
+            var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
+            StringBuilder sbCatalogI = new StringBuilder();
+            foreach (var catalog in catalogIds)
+            {
+                if (sbCatalogI.Length > 0) sbCatalogI.Append(",");
+                if (catalog != null) sbCatalogI.Append(catalog.ToString());
+            }
+            returnOrder.CatalogId = sbCatalogI.ToString();
+            var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
+            StringBuilder sbCatalogT = new StringBuilder();
+            foreach (var catalog in catalogTypes)
+            {
+                if (sbCatalogT.Length > 0) sbCatalogT.Append(",");
+                if (catalog != null) sbCatalogT.Append(catalog.ToString());
+            }
+            returnOrder.CatalogType = sbCatalogT.ToString();
+        }
+
+        private void DetermineCatalogNotesSpecialOrder(PurchaseOrder po, ref EF.OrderHistoryHeader header)
+        {
+            //_log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
+            //    ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
+            string catalogId = null;
+            string catalogType;
+            if (po.Properties["LineItems"] != null)
+            {
+                foreach (var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]))
+                {
+                    var item = (CS.LineItem)lineItem.Target;
+                        catalogId = item.CatalogName;
+                        catalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                }
+            }
+            // Look for certain catalogs names or at least the start to be one of the special catalogs
+            if(catalogId.IndexOf("unfi")>-1)
+                header.IsSpecialOrder = true;
+        }
+
+        private void LookupProductDetails(string branchId, Order order)
+        {
             if (order.Items == null) { return; }
 
-            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber).ToList());
+            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber.Trim()).ToList());
 
             var productDict = products.Products.ToDictionary(p => p.ItemNumber);
 
             Parallel.ForEach(order.Items, item => {
-                var prod = productDict.ContainsKey(item.ItemNumber) ? productDict[item.ItemNumber] : null;
+                var prod = productDict.ContainsKey(item.ItemNumber.Trim()) ? productDict[item.ItemNumber.Trim()] : null;
                 if (prod != null) {
                     item.IsValid = true;
                     item.Name = prod.Name;
                     item.Description = prod.Description;
                     item.Pack = prod.Pack;
                     item.Size = prod.Size;
-                    item.StorageTemp = prod.Nutritional.StorageTemp;
                     item.Brand = prod.Brand;
                     item.BrandExtendedDescription = prod.BrandExtendedDescription;
                     item.ReplacedItem = prod.ReplacedItem;
@@ -486,15 +601,20 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
                     item.ManufacturerName = prod.ManufacturerName;
                     item.ManufacturerNumber = prod.ManufacturerNumber;
                     item.AverageWeight = prod.AverageWeight;
-                    item.Nutritional = new Nutritional() {
-                        CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
-                        GrossWeight = prod.Nutritional.GrossWeight,
-                        HandlingInstructions = prod.Nutritional.HandlingInstructions,
-                        Height = prod.Nutritional.Height,
-                        Length = prod.Nutritional.Length,
-                        Ingredients = prod.Nutritional.Ingredients,
-                        Width = prod.Nutritional.Width
-                    };
+                    if (prod.Nutritional != null)
+                    {
+                        item.StorageTemp = prod.Nutritional.StorageTemp;
+                        item.Nutritional = new Nutritional()
+                        {
+                            CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                            GrossWeight = prod.Nutritional.GrossWeight,
+                            HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                            Height = prod.Nutritional.Height,
+                            Length = prod.Nutritional.Length,
+                            Ingredients = prod.Nutritional.Ingredients,
+                            Width = prod.Nutritional.Width
+                        };
+                    }
                 }
                 //if (price != null) {
                 //    item.PackagePrice = price.PackagePrice.ToString();
@@ -503,7 +623,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             });
 
         }
-        
+
         private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders) {
             BlockingCollection<Order> mergedOrdeList = new BlockingCollection<Order>();
 
@@ -520,236 +640,163 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc {
             return mergedOrdeList.ToList();
         }
 
+        private string ReadOrderFromQueue() {
+            return _queue.ConsumeFromQueue(Configuration.RabbitMQConfirmationServer, Configuration.RabbitMQUserNameConsumer, Configuration.RabbitMQUserPasswordConsumer,
+                                           Configuration.RabbitMQVHostConfirmation, Configuration.RabbitMQQueueHourlyUpdates);
+        }
+
+        private void RemoveSpecialOrderItemsFromHistory(EF.OrderHistoryHeader order) {
+            // clean up any previous orders where the special order item existed
+            var specialOrderInfo = order.OrderDetails.Where(currentDetail => !String.IsNullOrEmpty(currentDetail.SpecialOrderHeaderId))
+                                                     .Select(d => new { HeaderId = d.SpecialOrderHeaderId, LineNumber = d.SpecialOrderLineNumber })
+                                                     .Distinct()
+                                                     .ToList();
+
+            // loop through each special order item in the current order
+            foreach (var specialOrderItem in specialOrderInfo) {
+                // find all detail records with the current line's special order info that is not the current order
+                var specialLines = _detailRepo.Read(d => d.BranchId.Equals(order.BranchId)
+                                                      && d.SpecialOrderHeaderId.Equals(specialOrderItem.HeaderId)
+                                                      && d.SpecialOrderLineNumber.Equals(specialOrderItem.LineNumber)
+                                                      && !d.InvoiceNumber.Equals(order.InvoiceNumber))
+                                              .ToList();
+
+                // loop through each found detail record
+                foreach (var line in specialLines) {
+                    _detailRepo.Delete(line);
+
+                    // check to see if there are any more records on the detail's header record
+                    if (_detailRepo.Read(d => d.BranchId.Equals(line.BranchId)
+                                           && d.InvoiceNumber.Equals(line.InvoiceNumber))
+                                  .Any() == false) {
+                        _headerRepo.Delete(h => h.BranchId.Equals(line.BranchId)
+                                             && h.InvoiceNumber.Equals(line.InvoiceNumber));
+                    }
+                }
+            }
+
+            // this is commented out so that all updates to EF happen in one transaction for the current order
+            //_unitOfWork.SaveChanges();
+        }
+
+        private void RemoveEmptyPurchaseOrder() { }
+
+        public void SaveOrder(OrderHistoryFile historyFile, bool isSpecialOrder) {
+            Create(historyFile, isSpecialOrder);
+
+            _unitOfWork.SaveChanges();
+        }
+
+        public void StopListening() {
+            _keepListening = false;
+
+            if (_queueTask != null && _queueTask.Status == TaskStatus.Running) {
+                _queueTask.Wait();
+            }
+        }
+
+        public string SetLostOrder(string trackingNumber)
+        {
+            _log.WriteInformationLog("InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ")");
+            PurchaseOrder Po = _poRepo.ReadPurchaseOrderByTrackingNumber(trackingNumber);
+            //Save to Commerce Server
+            if (Po != null)
+            {
+                com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
+                client.UpdatePurchaseOrderStatus(Po.Properties["UserId"].ToString().ToGuid(), Po.Id.ToGuid(), "Lost");
+                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Success");
+                return "Success";
+            }
+            else
+            {
+                _log.WriteInformationLog(" InternalOrderHistoryLogic.SetLostOrder(trackingNumber=" + trackingNumber + ") Po not found");
+                return "Po not found";
+            }
+        }
+
         public string CheckForLostOrders(out string sBody)
         {
             StringBuilder sbMsgSubject = new StringBuilder();
             StringBuilder sbMsgBody = new StringBuilder();
-
-            CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, "Pending");
-            CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, "Submitted");
-
+            List<string> statuses = Configuration.CheckLostOrdersStatus;
+            foreach(string status in statuses)
+                CheckForLostOrdersByStatus(sbMsgSubject, sbMsgBody, status);
             sBody = sbMsgBody.ToString();
+            if (sbMsgSubject.Length > 0) sbMsgSubject.Insert(0, "QSvc on " + Environment.MachineName + "; ");
             return sbMsgSubject.ToString();
         }
 
         private void CheckForLostOrdersByStatus(StringBuilder sbMsgSubject, StringBuilder sbMsgBody, string qStatus)
         {
-            List<DataSet> Pos;
-            GetPurchaseOrdersByStatus(qStatus, out Pos);
+            List<PurchaseOrder> Pos = _poRepo.GetPurchaseOrdersByStatus(qStatus);
             StringBuilder sbAppendSubject;
             StringBuilder sbAppendBody;
             BuildAlertStringsForLostPurchaseOrders(out sbAppendSubject, out sbAppendBody, Pos, qStatus);
             if (sbAppendSubject.Length > 0)
             {
+                if (sbMsgSubject.Length > 0) sbMsgSubject.Append(", ");
                 sbMsgSubject.Append(sbAppendSubject.ToString());
             }
             if (sbAppendBody.Length > 0)
             {
+                if (sbMsgBody.Length > 0) sbMsgBody.Append("\n\n");
                 sbMsgBody.Append(sbAppendBody.ToString());
             }
         }
 
-        private void GetPurchaseOrdersByStatus(string queryStatus, out List<DataSet> Pos)
-        {
-            var manager = CommerceServerCore.GetPoManager();
-            System.Data.DataSet searchableProperties = manager.GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
-            // set what to search
-            SearchClauseFactory searchClauseFactory = manager.GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
-            // set what field/value to search for
-            SearchClause clause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "Status", queryStatus);
-            // set what fields to return
-            DataSet results = manager.SearchPurchaseOrders(clause, new SearchOptions() { NumberOfRecordsToReturn = 100, PropertiesToReturn = "OrderGroupId,LastModified,SoldToId" });
-
-            int c = results.Tables.Count;
-
-            Pos = new List<DataSet>();
-            List<Guid> poIds = new List<Guid>();
-            foreach (DataRow row in results.Tables[0].Rows)
-            {
-                poIds.Add(new Guid(row["OrderGroupId"].ToString()));
-            }
-            // Get the XML representation of the purchase orders.
-            if (poIds.Count > 0)
-            {
-                foreach (var poid in poIds)
-                {
-                    var po = manager.GetPurchaseOrderAsDataSet(poid);
-                    Pos.Add(po);
-                }
-            }
-        }
-
-        private void BuildAlertStringsForLostPurchaseOrders(out StringBuilder sbSubject, out StringBuilder sbBody, List<DataSet> Pos, string qStatus)
+        private void BuildAlertStringsForLostPurchaseOrders(out StringBuilder sbSubject, out StringBuilder sbBody, List<PurchaseOrder> Pos, string qStatus)
         {
             sbSubject = new StringBuilder();
             sbBody = new StringBuilder();
             if ((Pos != null) && (Pos.Count > 0))
             {
-                foreach (var po in Pos)
+                int count = 0;
+                sbBody.Clear();
+                DateTime now = DateTime.Now.AddMinutes(-10);
+                
+                foreach (PurchaseOrder po in Pos)
                 {
-                    DateTime lastModified;
-                    DateTime.TryParse(po.Tables["PurchaseOrder"].Rows[0]["LastModified"].ToString(), out lastModified);
-                    // only if they've been created more than 10 minutes ago in the query status
-                    if (lastModified < DateTime.Now.AddMinutes(-10))
+                    //string sCreated = po.Properties["DateCreated"].ToString();
+                    DateTime created = DateTime.Parse(po.Properties["DateCreated"].ToString());
+                    //// only if they've been created more than 10 minutes ago in the query status
+                    if (created < now)
                     {
+                        count++;
                         sbSubject.Clear();
-                        sbSubject.Append("PO in a " + qStatus + " status for more than 10 minutes.");
+                        sbSubject.Append(count + " POs in a " + qStatus + " status for more than 10 minutes.");
+                        if (sbBody.Length == 0) sbBody.Append("Purchase Order Details:\n");
                         sbBody.Append("* PO");
                         sbBody.Append(" for ");
-                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
-                        {
-                            if(row["WeaklyTypedProperty.Name"].ToString().Equals("customerid", StringComparison.CurrentCultureIgnoreCase))
-                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString());
-                        }
+                        sbBody.Append(po.Properties["CustomerId"].ToString());
                         sbBody.Append("-");
-                        foreach (DataRow row in po.Tables["PurchaseOrder.WeaklyTypedProperties"].Rows)
-                        {
-                            if (row["WeaklyTypedProperty.Name"].ToString().Equals("branchid", StringComparison.CurrentCultureIgnoreCase))
-                                sbBody.Append(row["WeaklyTypedProperty.Value"].ToString().ToUpper());
-                        }
-                        sbBody.Append(" with cart ");
-                        {
-                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["Name"].ToString());
-                        }
-                        sbBody.Append(" and tracking ");
-                        {
-                            sbBody.Append(po.Tables["PurchaseOrder"].Rows[0]["TrackingNumber"].ToString());
-                        }
+                        sbBody.Append(po.Properties["BranchId"].ToString().ToUpper());
+                        //sbBody.Append(" with cart ");
+                        //sbBody.Append(po.Properties["Name"].ToString());
+                        sbBody.Append(" with tracking ");
+                        sbBody.Append(po.Properties["OrderNumber"].ToString());
                         sbBody.Append(" last modified");
-                        sbBody.Append(" at " + lastModified.ToShortTimeString());
-                        sbBody.Append(" in status " + qStatus);
+                        sbBody.Append(" on " + created.ToString("MM-dd-yyyy hh:mm tt"));
+                        sbBody.Append(" in status " + po.Properties["Status"].ToString());
                         sbBody.Append(".\n");
                     }
                 }
             }
         }
+
+
+        public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
+            var header = _headerRepo.ReadByConfirmationNumber(childOrderNumber, "B").FirstOrDefault();
+
+            if(header != null){
+                header.RelatedControlNumber = parentOrderNumber;
+
+                _headerRepo.Update(header);
+
+                _unitOfWork.SaveChanges();
+            }
+        }
+
         #endregion
     }
 }
-// An example of each purchase order xml
-//<PurchaseOrder BillingCurrency="" Status="Submitted" SoldToId="39f1ac2d-494a-4a65-bf83-68c020e3f815" TaxTotal="0.0000" 
-//    LastModified="2015-11-17T13:01:04.887-06:00" Created="2015-11-17T13:01:04.887-06:00" StatusCode="PurchaseOrder" SoldToName="" 
-//    TrackingNumber="0001083" SubTotal="130.8700" IsDirty="false" LineItemCount="4" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" 
-//    HandlingTotal="0.0000" BasketId="655811bf-b90d-4804-894b-5aebf6425cc1" ShippingTotal="0.0000" ModifiedBy="" Total="130.8700" 
-//    Name="sfdf_726971_NewCart0">
-//    <OrderForms>
-//        <OrderForm Status="InProcess" TaxTotal="0.0000" LastModified="2015-11-17T13:01:04.82-06:00" Created="2015-11-17T13:00:50.793-06:00" 
-//            PromoUserIdentity="" SubTotal="130.8700" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" HandlingTotal="0.0000" 
-//            ShippingTotal="0.0000" ModifiedBy="" BillingAddressId="" Total="130.8700" OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" 
-//            Name="Default">
-//            <PromoCodeRecords />
-//            <Shipments />
-//            <PromoCodes />
-//            <Payments />
-//            <LineItems>
-//                <LineItem ShippingMethodName="" ProductId="630420" PlacedPrice="50.2000" Description="" InventoryCondition="InStock" 
-//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" AllowBackordersAndPreorders="true" 
-//                    LastModified="2015-11-17T13:01:04.82-06:00" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="50.2000" 
-//                    Quantity="1.0000" DisplayName="Drink Mix Fruit Punch" ModifiedBy="" ProductCatalog="fdf" 
-//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.847-06:00" 
-//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
-//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
-//                    LineItemId="72c4ea80-dd99-482a-970a-f1079520379e">
-//                    <ItemLevelDiscountsApplied />
-//                    <OrderLevelDiscountsApplied />
-//                    <WeaklyTypedProperties>
-//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="Notes" Value="test note" Type="String" />
-//                        <WeaklyTypedProperty Name="Each" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
-//                        <WeaklyTypedProperty Name="LinePosition" Value="1" Type="Int32" />
-//                        <WeaklyTypedProperty Name="Label" Value="cat 1" Type="String" />
-//                    </WeaklyTypedProperties>
-//                </LineItem>
-//                <LineItem ShippingMethodName="" ProductId="102968" PlacedPrice="19.8500" Description="" InventoryCondition="InStock" 
-//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" AllowBackordersAndPreorders="true" 
-//                    LastModified="2015-11-17T13:01:04.82-06:00" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="19.8500" 
-//                    Quantity="1.0000" DisplayName="Juice Cranberry Cocktail 10%" ModifiedBy="" ProductCatalog="fdf" 
-//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.86-06:00" 
-//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
-//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
-//                    LineItemId="744a1c39-bf4b-4a6d-befa-14f1246b1dcc">
-//                    <ItemLevelDiscountsApplied />
-//                    <OrderLevelDiscountsApplied />
-//                    <WeaklyTypedProperties>
-//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="Each" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
-//                        <WeaklyTypedProperty Name="LinePosition" Value="2" Type="Int32" />
-//                        <WeaklyTypedProperty Name="Label" Value="cat 1" Type="String" />
-//                    </WeaklyTypedProperties>
-//                </LineItem>
-//                <LineItem ShippingMethodName="" ProductId="630613" PlacedPrice="53.1500" Description="" InventoryCondition="InStock" 
-//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" 
-//                    AllowBackordersAndPreorders="true" LastModified="2015-11-17T13:01:04.82-06:00" 
-//                    OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="53.1500" Quantity="1.0000" 
-//                    DisplayName="Gatorade Fierce Grape" ModifiedBy="" ProductCatalog="fdf" 
-//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.863-06:00" 
-//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
-//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
-//                    LineItemId="0d2ccad1-ef11-400f-b699-a89f204b4ac5"><ItemLevelDiscountsApplied />
-//                    <OrderLevelDiscountsApplied />
-//                    <WeaklyTypedProperties>
-//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="Each" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
-//                        <WeaklyTypedProperty Name="LinePosition" Value="3" Type="Int32" />
-//                        <WeaklyTypedProperty Name="Label" Value="cat 1" Type="String" />
-//                    </WeaklyTypedProperties>
-//                </LineItem>
-//                <LineItem ShippingMethodName="" ProductId="098073" PlacedPrice="7.6700" Description="" InventoryCondition="InStock" 
-//                    OrderFormId="30cdac83-bc8d-4fcc-8e2f-61bb7b33fad4" ShippingAddressId="" AllowBackordersAndPreorders="true" 
-//                    LastModified="2015-11-17T13:01:04.82-06:00" OrderGroupId="520a5db1-7d8d-4f66-b906-d08b26a7f16a" ListPrice="7.6700" 
-//                    Quantity="1.0000" DisplayName="Carrot Match Stick" ModifiedBy="" ProductCatalog="fdf" 
-//                    ShippingMethodId="00000000-0000-0000-0000-000000000000" Created="2015-11-17T13:00:50.863-06:00" 
-//                    OrderLevelDiscountAmount="0.0000" PreorderQuantity="0.0000" ExtendedPrice="0.0000" Status="" 
-//                    BackorderQuantity="0.0000" LineItemDiscountAmount="0.0000" InStockQuantity="0.0000" 
-//                    LineItemId="f12f38bb-1249-4c01-9062-c691b7cb4f34">
-//                    <ItemLevelDiscountsApplied />
-//                    <OrderLevelDiscountsApplied />
-//                    <WeaklyTypedProperties>
-//                        <WeaklyTypedProperty Name="CatchWeight" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="IsCombinedProperty" Value="false" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="Each" Value="true" Type="Boolean" />
-//                        <WeaklyTypedProperty Name="ParLevel" Value="0" Type="Decimal" />
-//                        <WeaklyTypedProperty Name="LinePosition" Value="4" Type="Int32" />
-//                        <WeaklyTypedProperty Name="Label" Value="cat 2" Type="String" />
-//                    </WeaklyTypedProperties>
-//                </LineItem>
-//            </LineItems>
-//            <WeaklyTypedProperties>
-//                <WeaklyTypedProperty Name="BranchId" Value="fdf" Type="String" />
-//                <WeaklyTypedProperty Name="Shared" Value="true" Type="Boolean" />
-//                <WeaklyTypedProperty Name="ListType" Value="3" Type="Int32" />
-//                <WeaklyTypedProperty Name="BasketLevelDiscountsTotal" Value="0" Type="Decimal" />
-//                <WeaklyTypedProperty Name="DiscountsTotal" Value="0" Type="Decimal" />
-//                <WeaklyTypedProperty Name="CustomerId" Value="726971" Type="String" />
-//                <WeaklyTypedProperty Name="ShippingDiscountsTotal" Value="0" Type="Decimal" />
-//                <WeaklyTypedProperty Name="TempSubTotal" Value="130.87" Type="Decimal" />
-//                <WeaklyTypedProperty Name="RequestedShipDate" Value="2015-11-18T00:00:00-06:00" Type="DateTime" />
-//                <WeaklyTypedProperty Name="LineItemDiscountsTotal" Value="0" Type="Decimal" />
-//                <WeaklyTypedProperty Name="DisplayName" Value="New Cart 0" Type="String" />
-//                <WeaklyTypedProperty Name="BasketType" Value="0" Type="Int32" />
-//            </WeaklyTypedProperties>
-//        </OrderForm>
-//    </OrderForms>
-//    <Addresses />
-//    <WeaklyTypedProperties>
-//        <WeaklyTypedProperty Name="OriginalOrderNumber" Value="0001083" Type="String" />
-//        <WeaklyTypedProperty Name="DiscountsTotal" Value="0" Type="Decimal" />
-//        <WeaklyTypedProperty Name="ListType" Value="3" Type="Int32" />
-//        <WeaklyTypedProperty Name="BasketLevelDiscountsTotal" Value="0" Type="Decimal" />
-//        <WeaklyTypedProperty Name="BranchId" Value="fdf" Type="String" />
-//        <WeaklyTypedProperty Name="RequestedShipDate" Value="2015-11-18T00:00:00-06:00" Type="DateTime" />
-//        <WeaklyTypedProperty Name="ShippingDiscountsTotal" Value="0" Type="Decimal" />
-//        <WeaklyTypedProperty Name="LineItemDiscountsTotal" Value="0" Type="Decimal" />
-//        <WeaklyTypedProperty Name="TempSubTotal" Value="130.87" Type="Decimal" />
-//        <WeaklyTypedProperty Name="DisplayName" Value="New Cart 0" Type="String" />
-//        <WeaklyTypedProperty Name="Shared" Value="true" Type="Boolean" />
-//        <WeaklyTypedProperty Name="CustomerId" Value="726971" Type="String" />
-//        <WeaklyTypedProperty Name="BasketType" Value="0" Type="Int32" />
-//    </WeaklyTypedProperties>
-//</PurchaseOrder>
+

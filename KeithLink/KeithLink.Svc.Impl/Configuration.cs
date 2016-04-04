@@ -85,6 +85,7 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION = "RabbitMQConfirmationExchange";
         private const string KEY_RABBITMQ_EXCHANGE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_HOURLYUPDATES = "RabbitMQOrderUpdateExchange";
+        private const string KEY_RABBITMQ_EXCHANGE_SPECIALORDER_UPDATES = "RabbitMQSpecialOrderUpdateExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_CREATED = "RabbitMQOrderCreatedExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_ERROR = "RabbitMQOrderErrorExchange";
         private const string KEY_RABBITMQ_EXCHANGE_ORDER_HISTORY = "RabbitMQOrderHistoryExchange";
@@ -95,6 +96,7 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION = "RabbitMQConfirmationQueue";
         private const string KEY_RABBITMQ_QUEUE_CONFIRMATION_ERRORS = "RabbitMQConfirmationErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_HOURLYUPDATES = "RabbitMQOrderUpdateQueue";
+        private const string KEY_RABBITMQ_QUEUE_SPECIALORDER_UPDATES = "RabbitMQSpecialOrderUpdateQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_CREATED = "RabbitMQOrderQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_ERROR = "RabbitMQOrderErrorQueue";
         private const string KEY_RABBITMQ_QUEUE_ORDER_HISTORY = "RabbitMQOrderHistoryQueue";
@@ -145,7 +147,8 @@ namespace KeithLink.Svc.Impl {
 
 		//Email
 		private const string KEY_SMTP_FROMADDRESS = "FromEmailAddress";
-		private const string KEY_SMTP_SERVERNAME = "SmtpServer";
+        private const string KEY_SMTP_FAILUREADDRESS = "FailureEmailAddress";
+        private const string KEY_SMTP_SERVERNAME = "SmtpServer";
 		private const string KEY_SMTP_SEND_PORT = "SMTPSendPort";
 		private const string DEFAULT_SMTP_SEND_PORT = "25";
 		private const string KEY_SMTP_USERNAME = "SMTPUsername";
@@ -177,8 +180,14 @@ namespace KeithLink.Svc.Impl {
         private const string KEY_MARKETINGCONTENT_TOTALITEMCOUNT = "MarketingTotalItemCount";
         private const string KEY_MARKETINGCONTENT_URL = "MarketingContentUrl";
 
+        // UNFI Whitelisting configurations - these are temporary entries
+        private const string KEY_UNFI_WHITELIST_DSRS = "UNFIWhitelistDSRs";
+        private const string KEY_UNFI_WHITELIST_CUSTOMERS = "UNFIWhitelistCustomers";
+        private const string KEY_UNFI_WHITELIST_BEKUSERS = "UNFIWhitelistBEKUsers";
+
         // Queue Service Functions
-        private const string KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS = "CheckLostOrders";       
+        private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS = "CheckLostOrders";
+        private const string KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS = "CheckLostOrdersStatus";
         #endregion
 
         #region methods
@@ -187,7 +196,16 @@ namespace KeithLink.Svc.Impl {
         {
             get
             {
-                return GetValue(KEY_QUEUE_SERVICE_CHECK_LOST_ORDERS, string.Empty);
+                return GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS, string.Empty);
+            }
+        }
+
+        public static List<string> CheckLostOrdersStatus
+        {
+            get
+            {
+                string val = GetValue(KEY_QUEUE_SERVICE_CHECKLOSTORDERS_STATUS, string.Empty);
+                return GetCommaSeparatedValues(val);
             }
         }
 
@@ -197,7 +215,7 @@ namespace KeithLink.Svc.Impl {
 
         private static List<string> GetCommaSeparatedValues(string val) {
             if (!String.IsNullOrEmpty(val))
-                return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList();
+                return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList(); 
             return new List<string>();
         }
 
@@ -737,7 +755,24 @@ namespace KeithLink.Svc.Impl {
             }
         }
 
-        public static string RabbitMQQueueAccess {
+        public static string RabbitMQExchangeSpecialOrderUpdateRequests
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_EXCHANGE_SPECIALORDER_UPDATES, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueSpecialOrderUpdateRequests
+        {
+            get
+            {
+                return GetValue(KEY_RABBITMQ_QUEUE_SPECIALORDER_UPDATES, string.Empty);
+            }
+        }
+
+        public static string RabbitMQQueueAccess
+        {
             get {
                 return GetValue(KEY_RABBITMQ_QUEUE_ACCESS, string.Empty);
             }
@@ -983,7 +1018,16 @@ namespace KeithLink.Svc.Impl {
             get { return GetValue(KEY_SMTP_FROMADDRESS, null); }
         }
 
-        public static string SMTPHostName {
+        public static List<string> FailureEmailAdresses
+        {
+            get
+            {
+                string val = GetValue(KEY_SMTP_FAILUREADDRESS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        public static string SMTPHostName
+        {
             get { return GetValue(KEY_SMTP_SERVERNAME, null); }
         }
 
@@ -1022,6 +1066,31 @@ namespace KeithLink.Svc.Impl {
                 } catch {
                     return true;
                 }
+            }
+        }
+
+        // UNFI Whitelisting configurations - these are temporary entries
+        public static List<string> WhiteListedUNFIDSRs
+        {
+            get {
+                string val = GetValue(KEY_UNFI_WHITELIST_DSRS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        public static List<string> WhiteListedUNFICustomers
+        {
+            get
+            {
+                string val = GetValue(KEY_UNFI_WHITELIST_CUSTOMERS, string.Empty);
+                return GetCommaSeparatedValues(val);
+            }
+        }
+        public static List<string> WhiteListedUNFIBEKUsers
+        {
+            get
+            {
+                string val = GetValue(KEY_UNFI_WHITELIST_BEKUSERS, string.Empty);
+                return GetCommaSeparatedValues(val);
             }
         }
         #endregion

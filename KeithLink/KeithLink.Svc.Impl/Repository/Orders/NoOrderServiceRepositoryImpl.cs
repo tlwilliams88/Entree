@@ -16,7 +16,7 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         {
 		}
 
-		public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
+		public string ReadLatestUpdatedDate(UserSelectedContext catalogInfo)
         {
             throw new NotImplementedException();
 		}
@@ -47,8 +47,9 @@ namespace KeithLink.Svc.Impl.Repository.Orders
         public UserActiveCartModel GetUserActiveCart(UserSelectedContext catalogInfo, Guid userId) {
             throw new NotImplementedException();
         }
-		
-        public void SaveOrderHistory(OrderHistoryFile historyFile) {
+
+        public void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder)
+        {
             throw new NotImplementedException();
         }
 
@@ -74,5 +75,20 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 		{
 			throw new NotImplementedException();
 		}
-	}
+
+        #region IOrderServiceRepository Members
+
+
+        public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+
+        public string SetLostOrder(string trackingNumber)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

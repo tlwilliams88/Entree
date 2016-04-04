@@ -155,7 +155,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// </summary>
 		/// <param name="guestInfo">Guest</param>
 		/// <returns></returns>
-        /// 
 		[Authorize]
 		[HttpPost]
 		[ApiKeyedRoute("profile/admin/user")]
@@ -203,6 +202,15 @@ namespace KeithLink.Svc.WebApi.Controllers
                     retVal.UserProfiles.First().DefaultCustomer = null;
                 } else {
                     retVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
+                }
+
+                // UNFI Whitelisting configurations - these are temporary entries
+                // if user can view unfi, we want to say this right away
+                if ((retVal.UserProfiles != null) &&
+                    (retVal.UserProfiles.Count == 1) &&
+                    (retVal.UserProfiles[0].DefaultCustomer != null))
+                {
+                    retVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, retVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
                 }
 
                 return retVal;
@@ -551,17 +559,20 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return retVal;
 		}
 
-		/// <summary>
-		/// Paged search of customers
-		/// </summary>
-		/// <param name="paging">Paging information</param>
-		/// <param name="sort">Sort object</param>
-		/// <param name="account">Account</param>
-        /// <param name="terms">Search text</param>
-        /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
-		/// <returns>search results as a paged list of customers</returns>
+        /// <summary>
+        /// Paged search of customers
+        /// Two paramaters missing in swagger, 'terms' and 'type'
+        /// terms: Search Text
+        /// type: The type of text we are searching for. Is converted to CustomerSearchType enumerator
+        /// </summary>
+        /// <param name="paging">Paging information</param>
+        /// <param name="sort">Sort object</param>
+        /// <param name="account">Account</param>
+        //       /// <param name="terms"c</param>
+        //       /// <param name="type">The type of text we are searching for. Is converted to CustomerSearchType enumerator</param>
+        /// <returns>search results as a paged list of customers</returns>
 		[Authorize]
-		[HttpGet]
+        [HttpGet]
 		[ApiKeyedRoute("profile/customer/")]
 		public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "", 
                                                                                     [FromUri] string terms = "", [FromUri] string type = "1") {
@@ -574,7 +585,16 @@ namespace KeithLink.Svc.WebApi.Controllers
                 typeVal = 1;
             }
 
-			return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType) typeVal);
+			PagedResults<Customer> retVal = _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType) typeVal);
+
+            // UNFI Whitelisting configurations - these are temporary entries
+            // if we can view unfi with this customer, we need to verify
+            foreach (Customer cust in retVal.Results)
+            {
+                cust.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, cust.CustomerNumber);
+            }
+
+            return retVal;
 		}
 
 		/// <summary>
@@ -607,7 +627,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 				_log.WriteErrorLog("Unhandled exception", ex);
 			}
 
-			return retVal;
+            // UNFI Whitelisting configurations - these are temporary entries
+            // if we can view unfi with this customer, we need to verify
+            retVal.SuccessResponse.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, retVal.SuccessResponse.CustomerNumber);
+
+            return retVal;
 		}
 
 		/// <summary>
@@ -1090,7 +1114,6 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <summary>
         /// Get a list of settings for a user
         /// </summary>
-        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute( "profile/settings" )]
@@ -1107,6 +1130,11 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+        /// <summary>
+        /// Create or update profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute( "profile/settings" )]
         public OperationReturnModel<bool> CreateOrUpdateProfileSettings( SettingsModel settings ) {
@@ -1126,6 +1154,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             return returnValue;
         }
 
+
+        /// <summary>
+        /// Delete profile settings
+        /// </summary>
+        /// <param name="settings">settings object</param>
+        /// <returns></returns>
 	    [HttpDelete]
 	    [ApiKeyedRoute("profile/settings")]
 	    public OperationReturnModel<bool> DeleteProfileSettings(SettingsModel settings)

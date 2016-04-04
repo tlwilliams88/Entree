@@ -127,7 +127,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 Par = newItem.ParLevel,
                 Position = position,
                 Quantity = newItem.Quantity,
-                Each = newItem.Each ?? false
+                Each = newItem.Each ?? false,
+                CatalogId = newItem.CatalogId
             };
 
             list.Items.Add(item);
@@ -184,8 +185,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         Label = item.Label,
                         Par = item.ParLevel,
                         Each = !item.Each.Equals(null) ? item.Each : false,
-                        Position = nextPosition,
-                        Quantity = item.Quantity
+						Position = nextPosition,
+						Quantity = item.Quantity,
+                        CatalogId = item.CatalogId
                     });
                 nextPosition++;
             }
@@ -213,7 +215,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     DisplayName = "Notes",
                     ReadOnly = false,
                     UserId = user.UserId,
-                    Items = new List<ListItem>() { new ListItem() { ItemNumber = newNote.ItemNumber, Note = newNote.Note } }
+                    Items = new List<ListItem>() { new ListItem() { ItemNumber = newNote.ItemNumber, Note = newNote.Note, CatalogId = newNote.CatalogId } }
 
                 };
                 listRepository.Create(newNotes);
@@ -225,11 +227,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 if (existingItem != null)
                 {
                     existingItem.Note = newNote.Note;
+                    existingItem.CatalogId = newNote.CatalogId;
                     listItemRepository.Update(existingItem);
                 }
                 else
                 {
-                    var createNote = new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber, ParentList = list };
+                    var createNote = new ListItem() { Note = newNote.Note, ItemNumber = newNote.ItemNumber, ParentList = list, CatalogId = newNote.CatalogId };
                     listItemRepository.Create(createNote);
                 }
             }
@@ -462,61 +465,114 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
         }
 
-        private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo)
-        {
+        private void LookupPrices(UserProfile user, List<ListItemModel> listItems, UserSelectedContext catalogInfo) {
             if (listItems == null || listItems.Count == 0 || user == null)
                 return;
-            var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
+            //var stopWatch = new System.Diagnostics.Stopwatch(); //Temp code while tweaking performance. This should be removed
 
-            stopWatch.Start();
+            //stopWatch.Start();
 
-            var prices = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), listItems.GroupBy(g => g.ItemNumber).Select(i => new Product() { ItemNumber = i.First().ItemNumber }).Distinct().ToList());
-            stopWatch.Stop();
-            var priceTime = stopWatch.ElapsedMilliseconds;
+            var prices = new PriceReturn() { Prices = new List<Price>() };
+            //var catalogList = listItems.Select(i => i.CatalogId).Distinct().ToList();
 
-            var priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
+            prices.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
+                                                 listItems.GroupBy(g => g.ItemNumber)
+                                                          .Select(i => new Product()
+                                                          {
+                                                              ItemNumber = i.First().ItemNumber,
+                                                              CatchWeight = i.First().CatchWeight,
+                                                              PackagePriceNumeric = i.First().PackagePriceNumeric,
+                                                              CasePriceNumeric = i.First().CasePriceNumeric,
+                                                              CategoryName = i.First().ItemClass,
+                                                              CatalogId = i.First().CatalogId,
+                                                              Unfi = i.First().Unfi
+                                                          })
+                                                          .Distinct()
+                                                          .ToList()
+                                                 )
+                           );
+            //if (catalogList[0] == null) {
+            //    prices.AddRange(priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), 
+            //                                         listItems.GroupBy(g => g.ItemNumber)
+            //                                                 .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
+            //                                                 .Distinct()
+            //                                                 .ToList()
+            //                                         )
+            //                    );
+            //} else {
 
-            Parallel.ForEach(listItems, listItem =>
-            {
+            //    foreach (var catalogId in catalogList) {
+            //        if (catalogLogic.IsSpecialtyCatalog(null, catalogId)) {
+            //            var source = catalogLogic.GetCatalogTypeFromCatalogId(catalogId);
+            //            prices.AddRange(priceLogic.GetNonBekItemPrices(catalogInfo.BranchId, catalogInfo.CustomerId, source, DateTime.Now.AddDays(1),
+            //                                                           listItems.Where(item => item.CatalogId == catalogId)
+            //                                                                    .GroupBy(g => g.ItemNumber)
+            //                                                                    .Select(i => new Product() {
+            //                                                                        ItemNumber = i.First().ItemNumber,
+            //                                                                        CatchWeight = i.First().CatchWeight,
+            //                                                                        PackagePriceNumeric = i.First().PackagePriceNumeric,
+            //                                                                        CasePriceNumeric = i.First().CasePriceNumeric,
+            //                                                                        CategoryName = i.First().CategoryName
+            //                                                                    })
+            //                                                                    .Distinct()
+            //                                                                    .ToList()
+            //                                                          )
+            //                            );
+            //        } else {
+            //            prices.AddRange(priceLogic.GetPrices(catalogId, catalogInfo.CustomerId, DateTime.Now.AddDays(1),
+            //                                                 listItems.Where(item => item.CatalogId == catalogId)
+            //                                                          .GroupBy(g => g.ItemNumber)
+            //                                                          .Select(i => new Product() { ItemNumber = i.First().ItemNumber })
+            //                                                          .Distinct()
+            //                                                          .ToList()
+            //                                                 )
+            //                            ); //BEK
+            //        }
+            //    }
+            //}
+
+            //stopWatch.Stop();
+            //var priceTime = stopWatch.ElapsedMilliseconds;
+
+            Dictionary<string, Price> priceHash = prices.Prices.ToDictionary(p => p.ItemNumber);
+
+            Parallel.ForEach(listItems, listItem => {
                 var price = priceHash.ContainsKey(listItem.ItemNumber) ? priceHash[listItem.ItemNumber] : null;
-                if (price != null)
-                {
+                if (price != null) {
                     listItem.PackagePrice = price.PackagePrice.ToString();
                     listItem.CasePrice = price.CasePrice.ToString();
                     listItem.DeviatedCost = price.DeviatedCost ? "Y" : "N";
                 }
             });
 
-            eventLogRepository.WriteInformationLog(string.Format("Lookup Prices for {0} Items. Price Time: {1}ms", listItems.Count, priceTime));
-
+            //eventLogRepository.WriteInformationLog(string.Format("Lookup Prices for {0} Items. Price Time: {1}ms", listItems.Count, priceTime));
         }
 
         private void LookupProductDetails(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
-        {
-            if (list.Items == null || list.Items.Count == 0)
-                return;
-            int totalProcessed = 0;
-            ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
+		{
+			if (list.Items == null || list.Items.Count == 0)
+				return;
+			int totalProcessed = 0;
+			ProductsReturn products = new ProductsReturn() { Products = new List<Product>() };
 
             while (totalProcessed < list.Items.Count)
             {
                 var batch = list.Items.Skip(totalProcessed).Take(50).Select(i => i.ItemNumber).ToList();
 
-                var tempProducts = catalogLogic.GetProductsByIds(list.BranchId, batch);
+                var tempProducts = catalogLogic.GetProductsByIds(catalogInfo.BranchId, batch);
 
                 products.Products.AddRange(tempProducts.Products);
                 totalProcessed += 50;
             }
+			
 
-            var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
-            List<ItemHistory> itemStatistics = _itemHistoryRepository.Read(f => f.BranchId.Equals(catalogInfo.BranchId) && f.CustomerNumber.Equals(catalogInfo.CustomerId)).ToList();
+			var productHash = products.Products.GroupBy(p => p.ItemNumber).Select(i => i.First()).ToDictionary(p => p.ItemNumber);
+            List<ItemHistory> itemStatistics = _itemHistoryRepository.Read( f => f.BranchId.Equals( catalogInfo.BranchId ) && f.CustomerNumber.Equals( catalogInfo.CustomerId ) ).ToList();
 
-            Parallel.ForEach(list.Items, listItem =>
-            {
+            Parallel.ForEach(list.Items, listItem => {
                 var prod = productHash.ContainsKey(listItem.ItemNumber) ? productHash[listItem.ItemNumber] : null;
 
-                if (prod != null)
-                {
+                if (prod != null) {
                     listItem.IsValid = true;
                     listItem.Name = prod.Name;
                     listItem.Pack = prod.Pack;
@@ -524,7 +580,6 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.BrandExtendedDescription = prod.BrandExtendedDescription;
                     listItem.Description = prod.Description;
                     listItem.Brand = prod.BrandExtendedDescription;
-                    listItem.StorageTemp = prod.Nutritional.StorageTemp;
                     listItem.ReplacedItem = prod.ReplacedItem;
                     listItem.ReplacementItem = prod.ReplacementItem;
                     listItem.NonStock = prod.NonStock;
@@ -542,26 +597,27 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     listItem.ManufacturerNumber = prod.ManufacturerNumber;
                     listItem.AverageWeight = prod.AverageWeight;
                     listItem.TempZone = prod.TempZone;
-                    listItem.Nutritional = new Nutritional()
-                    {
-                        CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
-                        GrossWeight = prod.Nutritional.GrossWeight,
-                        HandlingInstructions = prod.Nutritional.HandlingInstructions,
-                        Height = prod.Nutritional.Height,
-                        Length = prod.Nutritional.Length,
-                        Ingredients = prod.Nutritional.Ingredients,
-                        Width = prod.Nutritional.Width
-                    };
-                    listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel()
-                    {
+                    listItem.IsSpecialtyCatalog = prod.CatalogId.StartsWith("UNFI", StringComparison.InvariantCultureIgnoreCase);
+                    listItem.Unfi = prod.Unfi;
+                    if (prod.Nutritional != null) {
+                        listItem.StorageTemp = prod.Nutritional.StorageTemp;
+                        listItem.Nutritional = new Nutritional() {
+                            CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                            GrossWeight = prod.Nutritional.GrossWeight,
+                            HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                            Height = prod.Nutritional.Height,
+                            Length = prod.Nutritional.Length,
+                            Ingredients = prod.Nutritional.Ingredients,
+                            Width = prod.Nutritional.Width
+                        };
+                    }
+                    listItem.ItemStatistics = new KeithLink.Svc.Core.Models.Customers.ItemHistoryModel() {
                         CaseAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("C")).Select(p => p.AverageUse).FirstOrDefault(),
                         PackageAverage = itemStatistics.Where(f => f.ItemNumber.Equals(listItem.ItemNumber) && f.UnitOfMeasure.Equals("P")).Select(p => p.AverageUse).FirstOrDefault()
                     };
-
                 }
 
             });
-
         }
 
         private void MarkFavoritesAndAddNotes(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
@@ -657,6 +713,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 
             var list = listRepository.Read(l => l.Id.Equals(Id), i => i.Items).FirstOrDefault();
 
+            
             if (list == null)
                 return null;
 
@@ -774,7 +831,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                 return cachedPagedList;
             }
 
-            var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault();
+            var list = listRepository.Read(l => l.Id.Equals(Id), l => l.Items).FirstOrDefault(); // Not returned catalog ID here
 
 
             if (list == null)

@@ -10,23 +10,39 @@ namespace KeithLink.Svc.Core.Interface.SiteCatalog
 {
     public interface ICatalogLogic
     {
-        CategoriesReturn GetCategories(int from, int size);
+        CategoriesReturn GetCategories(int from, int size, string catalogType);
         
 		List<Division> GetDivisions();
         
         ProductsReturn GetHouseProductsByBranch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
 		
-        Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile);
+        Product GetProductById(UserSelectedContext catalogInfo, string id, UserProfile profile, string catalogType);
         
 		Product GetProductByIdOrUPC(UserSelectedContext catalogInfo, string idorupc, UserProfile profile);
         
-        ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile);
+        ProductsReturn GetProductsByCategory(UserSelectedContext catalogInfo, string category, SearchInputModel searchModel, UserProfile profile, string catalogType);
 
         ProductsReturn GetProductsByIds(string branch, List<string> ids);
 
         ProductsReturn GetProductsByIdsWithPricing(UserSelectedContext catalogInfo, List<string> ids);
 
         ProductsReturn GetProductsBySearch(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel, UserProfile profile);
-		
+
+
+        //Catalog Methods
+        string GetBranchId(string bekBranchId, string catalogType);
+
+        List<String> GetExternalBranchIds(string bekBranchId);
+
+        bool IsSpecialtyCatalog(string catalogType, string branchId = null);
+        
+
+        bool IsCatalogIdBEK(string catalogId);
+       
+
+        string GetCatalogTypeFromCatalogId(string catalogId);
+
+
+        Dictionary<string, int> GetHitsForCatalogs(UserSelectedContext catalogInfo, string search, SearchInputModel searchModel);
     }
 }

@@ -126,6 +126,7 @@ namespace KeithLink.Svc.Core.Models.Lists
 						CategoryName = item.CategoryName,
 						ItemClass = item.ItemClass,
                         ItemStatistics = item.ItemStatistics,
+                        CatalogId = item.CatalogId,
                         CatchWeight = item.CatchWeight,
                         AverageWeight = item.AverageWeight,
                         ChildNutrition = item.ChildNutrition,
@@ -134,7 +135,9 @@ namespace KeithLink.Svc.Core.Models.Lists
                         DeviatedCost = item.DeviatedCost,
                         SellSheet = item.SellSheet,
                         NonStock = item.NonStock,
-                        StorageTemp = item.StorageTemp
+                        StorageTemp = item.StorageTemp,
+                        IsSpecialtyCatalog = item.IsSpecialtyCatalog,
+                        Unfi = item.Unfi
 					});
 				}
 

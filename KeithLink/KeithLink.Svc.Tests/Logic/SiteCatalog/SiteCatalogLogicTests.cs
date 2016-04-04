@@ -29,7 +29,8 @@ namespace KeithLink.Svc.Test.Logic.SiteCatalog
                 new CategoryImageRepository(new KeithLink.Common.Impl.Logging.EventLogRepositoryImpl("KeithLink Tests")),
 				new NoCacheRepositoryImpl(),
 				new DivisionLogicImpl(new DivisionRepositoryImpl(), new NoDivisionServiceRepositoryImpl()),
-                new Impl.Repository.Orders.NoOrderServiceRepositoryImpl()
+                new Impl.Repository.Orders.NoOrderServiceRepositoryImpl(),
+                new Impl.Repository.Configurations.NoExternalCatalogRepositoryImpl() // may need to revisit
                 );
         }
         #endregion

@@ -106,7 +106,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         #region methods/functions
         private Core.Models.Messaging.Queue.OrderChange BuildOrderChanges(PurchaseOrder po, LineItem[] currLineItems, LineItem[] origLineItems, 
-                                                                          string originalStatus, string specialInstructions, DateTime? shipDate) {
+                                                                          string originalStatus, string specialInstructions, string shipDate) {
             Core.Models.Messaging.Queue.OrderChange orderChange = new Core.Models.Messaging.Queue.OrderChange();
             orderChange.OrderName = (string)po["DisplayName"];
             orderChange.OriginalStatus = originalStatus;
@@ -114,7 +114,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             orderChange.ItemChanges = new List<Core.Models.Messaging.Queue.OrderLineChange>();
             orderChange.Items = new List<Core.Models.Messaging.Queue.OrderLineChange>();
 			orderChange.SpecialInstructions = specialInstructions;
-            orderChange.ShipDate = shipDate.HasValue ? shipDate.Value : DateTime.MinValue;
+            orderChange.ShipDate = shipDate;
 			
             foreach (LineItem origItem in origLineItems) {
                 LineItem newItem = currLineItems.Where(i => i.ProductId == origItem.ProductId).FirstOrDefault();
@@ -123,7 +123,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                         orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
                                                         NewStatus = (string)newItem["MainFrameStatus"], 
                                                         OriginalStatus = (string)origItem["MainFrameStatus"], 
-                                                        ItemNumber = origItem.ProductId, 
+                                                        ItemNumber = origItem.ProductId,
+                                                        ItemCatalog = (string)po["BranchId"],
                                                         SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
                                                         QuantityOrdered = (int)newItem["QuantityOrdered"], 
                                                         QuantityShipped = (int)newItem["QuantityShipped"] ,
@@ -134,7 +135,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
                                                     NewStatus = "Removed", 
                                                     OriginalStatus = "", 
-                                                    ItemNumber = origItem.ProductId, 
+                                                    ItemNumber = origItem.ProductId,
+                                                    ItemCatalog = (string)po["BranchId"],
                                                     SubstitutedItemNumber = (string)origItem["SubstitutedItemNumber"], 
                                                     QuantityOrdered = (int)origItem["QuantityOrdered"], 
                                                     QuantityShipped = (int)origItem["QuantityShipped"] ,
@@ -149,7 +151,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     orderChange.ItemChanges.Add(new Core.Models.Messaging.Queue.OrderLineChange() { 
                                                     NewStatus = "Added", 
                                                     OriginalStatus = "", 
-                                                    ItemNumber = newItem.ProductId, 
+                                                    ItemNumber = newItem.ProductId,
+                                                    ItemCatalog = (string)po["BranchId"],
                                                     SubstitutedItemNumber = (string)newItem["SubstitutedItemNumber"], 
                                                     QuantityOrdered = (int)newItem["QuantityOrdered"], 
                                                     QuantityShipped = (int)newItem["QuantityShipped"] ,
@@ -159,6 +162,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
                 orderChange.Items.Add(new Core.Models.Messaging.Queue.OrderLineChange() {
                     ItemNumber = (string)newItem.ProductId,
+                    ItemCatalog = (string)po["BranchId"],
                     ItemDescription = newItem.DisplayName,
                     OriginalStatus = (string)origItem["MainFrameStatus"],
                     SubstitutedItemNumber = newItem["SubstitutedItemNumber"] == null ? string.Empty : (string)newItem["SubstitutedItemNumber"],
@@ -354,6 +358,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 if (orderChange.OriginalStatus != orderChange.CurrentStatus || orderChange.ItemChanges.Count > 0) {
                     Core.Models.Messaging.Queue.OrderConfirmationNotification orderConfNotification = new Core.Models.Messaging.Queue.OrderConfirmationNotification();
                     orderConfNotification.OrderChange = orderChange;
+                    orderConfNotification.OrderNumber = (string)po["OrderNumber"];
                     orderConfNotification.CustomerNumber = (string)po["CustomerId"];
                     orderConfNotification.BranchId = (string)po["BranchId"];
                     orderConfNotification.InvoiceNumber = confirmation.Header.InvoiceNumber;

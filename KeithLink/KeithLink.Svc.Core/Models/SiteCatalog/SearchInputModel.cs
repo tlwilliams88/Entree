@@ -24,6 +24,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
         public string SField { get; set; }
         [DataMember(Name = "sdir")]
         public string SDir { get; set; }
+        [DataMember(Name = "catalogType")]
+        public string CatalogType { get; set; }
         [DataMember(Name = "dept")]
         public string Dept { get; set; }
     }

@@ -18,5 +18,7 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
 		ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId);
 		[OperationContract]
 		void SaveUserExportSettings(Guid userId, ExportType type, ListType listType, List<ExportModelConfiguration> configuration, string exportFormat);
+        [OperationContract]
+        List<ExportExternalCatalog> ReadExternalCatalogs();
 	}
 }

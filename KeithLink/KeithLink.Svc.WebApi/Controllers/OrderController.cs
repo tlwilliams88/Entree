@@ -143,7 +143,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 		[ApiKeyedRoute("order/{orderNumber}")]
 		public Order Orders(string orderNumber)
 		{
-			//return _orderLogic.ReadOrder(this.AuthenticatedUser, this.SelectedUserContext, orderNumber);
             try {
                 return _orderLogic.UpdateOrderForEta(this.AuthenticatedUser,
                     _orderServiceRepository.GetOrder(SelectedUserContext.BranchId, orderNumber.Trim()));
@@ -182,9 +181,6 @@ namespace KeithLink.Svc.WebApi.Controllers
 			return _exportSettingRepository.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.OrderDetail, 0);
 		}
 
-        
-
-
 		/// <summary>
 		/// Request order history for customer
 		/// </summary>
@@ -211,7 +207,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 		/// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("order/{cartId}")]
-        public NewOrderReturn SaveOrder(Guid cartId) {
+        public SaveOrderReturn SaveOrder(Guid cartId) {
             return _shoppingCartLogic.SaveAsOrder(this.AuthenticatedUser, this.SelectedUserContext, cartId);
         }
 
@@ -306,6 +302,15 @@ namespace KeithLink.Svc.WebApi.Controllers
                 };
         }
 
+        [HttpGet]
+        [ApiKeyedRoute("order/admin/setlostorder")]
+        public Models.OperationReturnModel<string> SetLostOrder(string trackingNumber)
+        {
+            if(AuthenticatedUser.RoleName.Equals("beksysadmin",StringComparison.CurrentCultureIgnoreCase))
+                return new Models.OperationReturnModel<string>() { SuccessResponse = _orderServiceRepository.SetLostOrder(trackingNumber) };
+            else
+                return new Models.OperationReturnModel<string>() { ErrorMessage = "Must be a beksysadmin user" };
+        }
         #endregion
     }
 }

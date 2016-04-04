@@ -12,6 +12,8 @@ namespace KeithLink.Svc.Core.Models.Messaging.Queue
     {
         [DataMember(Name="itemnumber")]
         public string ItemNumber { get; set; }
+        [DataMember(Name = "itemcatalog")]
+        public string ItemCatalog { get; set; }
         [DataMember(Name = "itemdescription")]
         public string ItemDescription { get; set; }
         [DataMember(Name = "substituteditemnumber")]

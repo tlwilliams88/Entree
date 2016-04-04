@@ -17,14 +17,16 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 	public class InternalExportSettingsLogicImpl:IInternalExportSettingLogic
 	{
 		private readonly IExportSettingRepository exportSettingRepository;
+        private readonly IExternalCatalogRepository externalCatalogRepository;
 		private readonly IListRepository listRepository;
 		private readonly IUnitOfWork unitOfWork;
 
-		public InternalExportSettingsLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository)
+		public InternalExportSettingsLogicImpl(IUnitOfWork unitOfWork, IExportSettingRepository exportSettingRepository, IListRepository listRepository, IExternalCatalogRepository externalCatalogRepository)
 		{
 			this.unitOfWork = unitOfWork;
 			this.exportSettingRepository = exportSettingRepository;
 			this.listRepository = listRepository;
+            this.externalCatalogRepository = externalCatalogRepository;
 		}
 
 		public ExportOptionsModel ReadCustomExportOptions(Guid userId, ExportType type, long? ListId)
@@ -262,5 +264,21 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
 			}
 		}
 		#endregion
-	}
+
+
+        public List<ExportExternalCatalog> ReadExternalCatalogs()
+        {
+            List<ExportExternalCatalog> externalCatalog = new List<ExportExternalCatalog>();
+            foreach (ExternalCatalog externalCatalogItem in this.externalCatalogRepository.ReadAll().ToList())
+            {
+                ExportExternalCatalog item = new ExportExternalCatalog();
+                item.BekBranchId = externalCatalogItem.BekBranchId;
+                item.CatalogId = externalCatalogItem.ExternalBranchId;
+                item.Type = externalCatalogItem.Type.ToString();
+                externalCatalog.Add(item);
+            }
+
+            return externalCatalog;
+        }
+    }
 }

@@ -21,5 +21,9 @@ namespace KeithLink.Svc.InternalSvc.Interfaces
         bool ProcessContractAndWorksheetData();
 		[OperationContract]
 		bool ProcessElasticSearchData();
+		[OperationContract]
+		bool ProcessUNFIElasticSearchData();
+		[OperationContract]
+		bool ProcessUNFICatalogData();
     }
 }

@@ -22,6 +22,12 @@
   <wsdl:message name="IConfigurationService_SaveUserExportSettings_OutputMessage">
     <wsdl:part name="parameters" element="tns:SaveUserExportSettingsResponse" />
   </wsdl:message>
+  <wsdl:message name="IConfigurationService_ReadExternalCatalogs_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadExternalCatalogs" />
+  </wsdl:message>
+  <wsdl:message name="IConfigurationService_ReadExternalCatalogs_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadExternalCatalogsResponse" />
+  </wsdl:message>
   <wsdl:portType name="IConfigurationService">
     <wsdl:operation name="ReadCustomExportOptions">
       <wsdl:input wsaw:Action="http://tempuri.org/IConfigurationService/ReadCustomExportOptions" message="tns:IConfigurationService_ReadCustomExportOptions_InputMessage" />
@@ -30,6 +36,10 @@
     <wsdl:operation name="SaveUserExportSettings">
       <wsdl:input wsaw:Action="http://tempuri.org/IConfigurationService/SaveUserExportSettings" message="tns:IConfigurationService_SaveUserExportSettings_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IConfigurationService/SaveUserExportSettingsResponse" message="tns:IConfigurationService_SaveUserExportSettings_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadExternalCatalogs">
+      <wsdl:input wsaw:Action="http://tempuri.org/IConfigurationService/ReadExternalCatalogs" message="tns:IConfigurationService_ReadExternalCatalogs_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IConfigurationService/ReadExternalCatalogsResponse" message="tns:IConfigurationService_ReadExternalCatalogs_OutputMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_IConfigurationService" type="tns:IConfigurationService">
@@ -45,6 +55,15 @@
     </wsdl:operation>
     <wsdl:operation name="SaveUserExportSettings">
       <soap:operation soapAction="http://tempuri.org/IConfigurationService/SaveUserExportSettings" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReadExternalCatalogs">
+      <soap:operation soapAction="http://tempuri.org/IConfigurationService/ReadExternalCatalogs" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

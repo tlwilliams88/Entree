@@ -16,6 +16,20 @@
           </s:sequence>
         </s:complexType>
       </s:element>
+      <s:element name="CalculatePricingForNonBekItems">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="XmlRequest" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CalculatePricingForNonBekItemsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CalculatePricingForNonBekItemsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="CalculateSoapIn">
@@ -24,10 +38,20 @@
   <wsdl:message name="CalculateSoapOut">
     <wsdl:part name="parameters" element="tns:CalculateResponse" />
   </wsdl:message>
+  <wsdl:message name="CalculatePricingForNonBekItemsSoapIn">
+    <wsdl:part name="parameters" element="tns:CalculatePricingForNonBekItems" />
+  </wsdl:message>
+  <wsdl:message name="CalculatePricingForNonBekItemsSoapOut">
+    <wsdl:part name="parameters" element="tns:CalculatePricingForNonBekItemsResponse" />
+  </wsdl:message>
   <wsdl:portType name="PricingSoap">
     <wsdl:operation name="Calculate">
       <wsdl:input message="tns:CalculateSoapIn" />
       <wsdl:output message="tns:CalculateSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CalculatePricingForNonBekItems">
+      <wsdl:input message="tns:CalculatePricingForNonBekItemsSoapIn" />
+      <wsdl:output message="tns:CalculatePricingForNonBekItemsSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="PricingSoap" type="tns:PricingSoap">
@@ -41,11 +65,29 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="CalculatePricingForNonBekItems">
+      <soap:operation soapAction="http://tempuri.org/CalculatePricingForNonBekItems" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:binding name="PricingSoap12" type="tns:PricingSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
     <wsdl:operation name="Calculate">
       <soap12:operation soapAction="http://tempuri.org/Calculate" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CalculatePricingForNonBekItems">
+      <soap12:operation soapAction="http://tempuri.org/CalculatePricingForNonBekItems" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

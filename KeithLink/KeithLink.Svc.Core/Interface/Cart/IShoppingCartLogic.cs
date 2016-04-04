@@ -12,7 +12,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 {
 	public interface IShoppingCartLogic
 	{
-		Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart);
+		Guid CreateCart(UserProfile user, UserSelectedContext catalogInfo, ShoppingCart cart, string catalogId = null);
 		Guid? AddItem(UserProfile user, UserSelectedContext catalogInfo, Guid cartId, ShoppingCartItem newItem);
 		
 		void UpdateItem(UserProfile user,  UserSelectedContext catalogInfo,  Guid cartId, ShoppingCartItem updatedItem);
@@ -26,7 +26,7 @@ namespace KeithLink.Svc.Core.Interface.Cart
 		ShoppingCart ReadCart(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
         ShoppingCartReportModel PrintCartWithList( UserProfile user, UserSelectedContext catalogInfo, Guid cartId, long listId, Core.Models.Lists.PrintListModel options );
 
-		NewOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
+		SaveOrderReturn SaveAsOrder(UserProfile user,  UserSelectedContext catalogInfo, Guid cartId);
 
 		void SetActive(UserProfile user, UserSelectedContext catalogInfo, Guid cartId);
 

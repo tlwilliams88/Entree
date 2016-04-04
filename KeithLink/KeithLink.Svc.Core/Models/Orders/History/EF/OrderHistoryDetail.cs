@@ -44,6 +44,17 @@ namespace KeithLink.Svc.Core.Models.Orders.History.EF
 		public string ItemStatus { get; set; }
 		public decimal TotalShippedWeight { get; set; }
         public decimal SellPrice { get; set; }
+        [MaxLength(3)]
+        [Column(TypeName = "char")]
+        public string Source { get; set; }
+        [MaxLength(25)]
+        public string ManufacturerId { get; set; }
+        [MaxLength(7)]
+        [Column(TypeName = "char")]
+        public string SpecialOrderHeaderId { get; set; }
+        [MaxLength(3)]
+        [Column(TypeName = "char")]
+        public string SpecialOrderLineNumber { get; set; }
 
         public virtual OrderHistoryHeader OrderHistoryHeader { get; set; }
 	}

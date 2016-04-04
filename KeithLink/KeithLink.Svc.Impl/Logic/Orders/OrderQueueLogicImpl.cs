@@ -1,11 +1,13 @@
 ﻿using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Core;
 using KeithLink.Common.Core.Extensions;
+
+using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Order;
 using KeithLink.Svc.Core.Exceptions.Orders;
 using KeithLink.Svc.Core.Extensions.Orders;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.SpecialOrders;
 using KeithLink.Svc.Core.Models.Common;
 using KeithLink.Svc.Core.Models.Orders;
 using CS = KeithLink.Svc.Core.Models.Generated;
@@ -26,14 +28,16 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         private IEventLogRepository _log;
         private IOrderSocketConnectionRepository _mfConnection;
         private IGenericQueueRepository _orderQueue;
+		private ISpecialOrderRepository _specialOrder;
         #endregion
 
         #region ctor
-		public OrderQueueLogicImpl(IEventLogRepository eventLog, IGenericQueueRepository orderQueue, IOrderSocketConnectionRepository mfCon)
+		public OrderQueueLogicImpl(IEventLogRepository eventLog, IGenericQueueRepository orderQueue, IOrderSocketConnectionRepository mfCon, ISpecialOrderRepository specialOrder)
         {
             _log = eventLog;
             _mfConnection = mfCon;
             _orderQueue = orderQueue;
+			_specialOrder = specialOrder;
 
             AllowOrderProcessing = true;
         }
@@ -173,22 +177,30 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         private void SendToHost(OrderFile order)
         {
-            // open connection and call program
-            _mfConnection.Connect();
+			if (order.Header.OrderType == OrderType.SpecialOrder) // KSOS
+			{
+				// Insert to KSOS - RH then RI
+				_specialOrder.Create(order);
+			}
+			else // direct to main frame
+			{
+				// open connection and call program
+				_mfConnection.Connect();
 
-            SendStartTransaction(order.Header.ControlNumber.ToString());
+				SendStartTransaction(order.Header.ControlNumber.ToString());
 
-            // start the order transmission to the mainframe
-            _mfConnection.Send("OTX");
+				// start the order transmission to the mainframe
+				_mfConnection.Send("OTX");
 
-            SendHeaderRecordToHost(order.Header);
-            SendDetailRecordsToHost(order.Details, order.Header.ControlNumber);
-            SendEndOfRecordToHost();
-            
-            // stop order transmission to the mainframe
-            _mfConnection.Send("STOP");
+				SendHeaderRecordToHost(order.Header);
+				SendDetailRecordsToHost(order.Details, order.Header.ControlNumber);
+				SendEndOfRecordToHost();
 
-            _mfConnection.Close();
+				// stop order transmission to the mainframe
+				_mfConnection.Send("STOP");
+
+				_mfConnection.Close();
+			}
         }
 		
         private void WorkOrderQueue(OrderQueueLocation queue) {
@@ -223,7 +235,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             } 
         }
 
-        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType) {
+        public void WriteFileToQueue(string orderingUserEmail, string orderNumber, CS.PurchaseOrder newPurchaseOrder, OrderType orderType, string catalogType, string dsrNumber,
+            string addressStreet, string addressCity, string addressState, string addressZip) {
             var newOrderFile = new OrderFile() {
                 SenderApplicationName = Configuration.ApplicationName,
                 SenderProcessName = "Send order to queue",
@@ -232,17 +245,23 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     OrderingSystem = OrderSource.Entree,
                     Branch = newPurchaseOrder.Properties["BranchId"].ToString().ToUpper(),
                     CustomerNumber = newPurchaseOrder.Properties["CustomerId"].ToString(),
-                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString().ToDateTime().Value,
+                    DsrNumber = dsrNumber,
+                    AddressStreet = addressStreet,
+                    AddressCity = addressCity,
+                    AddressRegionCode = addressState,
+                    AddressPostalCode = addressZip,
+                    DeliveryDate = newPurchaseOrder.Properties["RequestedShipDate"].ToString(),
                     PONumber = newPurchaseOrder.Properties["PONumber"] == null ? string.Empty : newPurchaseOrder.Properties["PONumber"].ToString(),
                     Specialinstructions = string.Empty,
                     ControlNumber = int.Parse(orderNumber),
                     OrderType = orderType,
                     InvoiceNumber = orderType == OrderType.NormalOrder ? string.Empty : (string)newPurchaseOrder.Properties["MasterNumber"],
                     OrderCreateDateTime = newPurchaseOrder.Properties["DateCreated"].ToString().ToDateTime().Value,
-                    OrderSendDateTime = DateTime.Now,
+                    OrderSendDateTime = DateTime.Now.ToLongDateFormatWithTime(),
                     UserId = orderingUserEmail.ToUpper(),
                     OrderFilled = false,
-                    FutureOrder = false
+                    FutureOrder = false,
+                    CatalogType = catalogType
                 },
                 Details = new List<OrderDetail>()
             };
@@ -261,7 +280,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     Catchweight = (bool)item.CatchWeight,
                     LineNumber = Convert.ToInt16(lineItem.Target.Properties["LinePosition"]),
                     SubOriginalItemNumber = string.Empty,
-                    ReplacedOriginalItemNumber = string.Empty
+                    ReplacedOriginalItemNumber = string.Empty,
+                    Description = item.DisplayName,
+                    ManufacturerName = item.Notes,
+                    UnitCost = (decimal)item.ListPrice
                 };
 
                 if (orderType == OrderType.ChangeOrder) {
@@ -288,6 +310,8 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
 			_orderQueue.PublishToQueue(JsonConvert.SerializeObject(newOrderFile), Configuration.RabbitMQOrderServer, Configuration.RabbitMQUserNamePublisher, Configuration.RabbitMQUserPasswordPublisher, Configuration.RabbitMQVHostOrder, GetSelectedExchange(OrderQueueLocation.Normal));
       
+            //set order status ID to 5
+            
         }
         #endregion
 

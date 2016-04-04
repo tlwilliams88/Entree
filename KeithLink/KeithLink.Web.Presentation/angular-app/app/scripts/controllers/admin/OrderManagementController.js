@@ -26,7 +26,7 @@ angular.module('bekApp')
         };
 
         $scope.zeroPad = function(item, size) {
-          console.log('num: ' + item.controlNumber + ', size: ' + size);
+          // console.log('num: ' + item.controlNumber + ', size: ' + size);
           var s = item.controlNumber + '';
           while (s.length < size) {
             s = '0' + s;

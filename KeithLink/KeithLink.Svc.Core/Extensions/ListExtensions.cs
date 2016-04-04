@@ -41,7 +41,8 @@ namespace KeithLink.Svc.Core.Extensions
                     Position = i.Position,
                     Note = i.Notes,
                     Each = i.Each ?? false,
-                    Quantity = i.Quantity
+                    Quantity = i.Quantity,
+                    CatalogId = i.CatalogId
                 }).OrderBy(l => l.Position).ToArray()
             };
         }
@@ -87,8 +88,9 @@ namespace KeithLink.Svc.Core.Extensions
                         FromDate = i.FromDate,
                         ToDate = i.ToDate,
                         Each = i.Each ?? false,
-                        Quantity = i.Quantity
-                    }).OrderBy(l => l.Position).ToList()
+                        Quantity = i.Quantity,
+                        CatalogId = i.CatalogId
+                    } ).OrderBy( l => l.Position ).ToList()
             };
         }
 
@@ -150,7 +152,6 @@ namespace KeithLink.Svc.Core.Extensions
 
                 items.Add(item);
             }
-
 
             return items;
         }

@@ -8,11 +8,10 @@
  * Controller of the bekApp
  */
 angular.module('bekApp')
-  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'PricingService', 'ENV',
-    function ($scope, $modal, item, ProductService, PricingService, ENV) {
+  .controller('ItemDetailsController', ['$scope', '$modal', 'item', 'ProductService', 'AccessService', 'PricingService',
+    function ($scope, $modal, item, ProductService, AccessService, PricingService) {
     
     var originalItemNotes = item.notes;
-    $scope.isMobileApp = ENV.mobileApp;
 
     $scope.item = item;
     $scope.item.quantity = 1;
@@ -20,8 +19,7 @@ angular.module('bekApp')
     $scope.canOrderItemInd = PricingService.canOrderItem(item);
     $scope.casePriceInd = PricingService.hasCasePrice(item);
     $scope.packagePriceInd = PricingService.hasPackagePrice(item);
-    
-    ProductService.getProductDetails(item.itemnumber).then(function(item) {
+    ProductService.getProductDetails(item.itemnumber, $scope.$state.params.catalogType).then(function(item) {
       $scope.item = item;
       $scope.item.quantity = 1;
 
@@ -29,7 +27,9 @@ angular.module('bekApp')
       $scope.item.orderHistoryKeys = Object.keys(item.orderhistory);
     });
 
-    ProductService.saveRecentlyViewedItem(item.itemnumber);
+    if(!item.is_specialty_catalog){
+      ProductService.saveRecentlyViewedItem(item.itemnumber);
+    }
 
     $scope.openNotesModal = function (item) {
 

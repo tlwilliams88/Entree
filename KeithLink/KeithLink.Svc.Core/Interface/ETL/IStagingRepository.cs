@@ -14,6 +14,8 @@ namespace KeithLink.Svc.Core.Interface.ETL
         DataTable ReadItems(string branchId);
         DataTable ReadSubCategories();
         DataTable ReadParentCategories();
+		DataTable ReadUnfiCategories();
+		DataTable ReadUnfiSubCategories();
         DataTable ReadFullItemForElasticSearch();
         DataSet ReadGSDataForItems();
 		DataTable ReadProprietaryItems();
@@ -30,5 +32,9 @@ namespace KeithLink.Svc.Core.Interface.ETL
         DataTable ExecuteProfileObjectQueryReturn(string query);
         bool ExecuteProfileObjectQuery(string query);
         void ImportCustomersToCS();
+
+		DataTable ReadUNFIItems();
+		List<string> ReadDistinctUNFIWarehouses();
+		DataTable ReadUNFIItems(string warehouse);
     }
 }

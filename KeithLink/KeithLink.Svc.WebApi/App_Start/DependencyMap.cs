@@ -92,6 +92,7 @@ namespace KeithLink.Svc.WebApi
             builder.RegisterType<ShipDateRepositoryImpl>().As<IShipDateRepository>();
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
 			builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
+            builder.RegisterType<NoSpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
 
 			#if DEMO
 				builder.RegisterType<DemoExternalUserDomainRepositoryImpl>().As<ICustomerDomainRepository>();
@@ -121,10 +122,12 @@ namespace KeithLink.Svc.WebApi
 			builder.RegisterType<Repository.Orders.OrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
             builder.RegisterType<Repository.Invoices.InvoiceServiceRepositoryImpl>().As<IInvoiceServiceRepository>();
 			builder.RegisterType<Repository.Configurations.ExportSettingServiceRepositoryImpl>().As<IExportSettingServiceRepository>();
+            builder.RegisterType<Repository.Configurations.ExternalCatalogServiceRepositoryImpl>().As<IExternalCatalogServiceRepository>();
             builder.RegisterType<Repository.Reports.ReportServiceRepositoryImpl>().As<IReportServiceRepository>();
             builder.RegisterType<Repository.Profile.DsrServiceRepositoryImpl>().As<IDsrServiceRepository>();
             builder.RegisterType<ImagingRepositoryImpl>().As<IImagingRepository>();
             builder.RegisterType<ImagingLogicImpl>().As<IImagingLogic>();
+            builder.RegisterType<Svc.Impl.Repository.Configurations.ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
             builder.RegisterType<Repository.ContentManagement.ContentManagementServiceRepositoryImpl>().As<IContentManagementServiceRepository>();
             builder.RegisterType<com.benekeith.DivisionService.DivisionServiceClient>().As<com.benekeith.DivisionService.IDivisionService>();

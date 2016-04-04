@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<DTSConfiguration>
+	<DTSConfigurationHeading>
+		<DTSConfigurationFileInfo GeneratedBy="WIN2012BEK\Administrator" GeneratedFromPackageName="UNFIETLProcess_DEV" GeneratedFromPackageID="{E5041196-C8C8-44AC-B692-EAC5E6694D2F}" GeneratedDate="10/8/2015 9:39:27 AM"/>
+	</DTSConfigurationHeading>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[FF_UNFI].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>C:\UNFIFiles\bek_prods.txt</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[HTTP_ETLService].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>http://prodkeithlinkinternalservices.benekeith.com:9876/ETLService.svc?wsdl</ConfiguredValue>
+	</Configuration>
+	<Configuration ConfiguredType="Property" Path="\Package.Connections[OLE_BEK_Commerce_AppData].Properties[ConnectionString]" ValueType="String">
+		<ConfiguredValue>Data Source=bekscsql,5000;Initial Catalog=BEK_Commerce_AppData;Provider=SQLNCLI11.1;Integrated Security=SSPI;</ConfiguredValue>
+	</Configuration>
+</DTSConfiguration>

@@ -25,6 +25,9 @@ namespace KeithLink.Svc.Core
         public const string BRANCH_FSA = "FSA";
         public const string BRANCH_GOF = "GOF";
 
+        public const string CATALOG_BEK = "BEK";
+        public const string CATALOG_UNFI = "UNFI";
+
         public const string REGEX_AD_ILLEGALCHARACTERS = @"[/\\\[\]:;\|=,\+\*\?<>@']";
         public const string REGEX_BENEKEITHEMAILADDRESS = "@benekeith.com";
         public const string REGEX_PASSWORD_PATTERN = @"^.*(?=.*[a-z])(?=.*[A-Z])(?=.*[\d]).*$";
@@ -153,6 +156,7 @@ namespace KeithLink.Svc.Core
 
         // Elastic Search : Indexes
         public const string ES_INDEX_CATEGORIES = "categories";
+        public const string ES_UNFI_INDEX_CATEGORIES = "unfi_categories";
         public const string ES_INDEX_BRANDS = "brands";
 
         // Elastic Search : Types
@@ -200,6 +204,49 @@ namespace KeithLink.Svc.Core
         public const string CONFIRMATION_HEADER_CONFIRMED_WITH_CHANGES_STATUS = "Confirmed With Changes";
         public const string CONFIRMATION_HEADER_CONFIRMED_CODE = "";
         public const string CONFIRMATION_HEADER_CONFIRMED_STATUS = "Confirmed";
+
+        public const string SPECIALORDERITEM_NEW_STATUS_CODE = "00";
+        public const string SPECIALORDERITEM_NEW_STATUS_TRANSLATED_CODE = "\u00C0";
+        public const string SPECIALORDERITEM_NEW_STATUS = "New";
+        public const string SPECIALORDERITEM_ERR_STATUS_CODE = "02";
+        public const string SPECIALORDERITEM_ERR_STATUS_TRANSLATED_CODE = "\u00C1";
+        public const string SPECIALORDERITEM_ERR_STATUS = "Err";
+        public const string SPECIALORDERITEM_2MF_STATUS_CODE = "05";
+        public const string SPECIALORDERITEM_2MF_STATUS_TRANSLATED_CODE = "\u00C2";
+        public const string SPECIALORDERITEM_2MF_STATUS = "Deliver to MF";
+        public const string SPECIALORDERITEM_REQ_STATUS_CODE = "10";
+        public const string SPECIALORDERITEM_REQ_STATUS_TRANSLATED_CODE = "\u00C3";
+        public const string SPECIALORDERITEM_REQ_STATUS = "Requested";
+        public const string SPECIALORDERITEM_ACC_STATUS_CODE = "15";
+        public const string SPECIALORDERITEM_ACC_STATUS_TRANSLATED_CODE = "\u00C4";
+        public const string SPECIALORDERITEM_ACC_STATUS = "Accepted";
+        public const string SPECIALORDERITEM_APP_STATUS_CODE = "20";
+        public const string SPECIALORDERITEM_APP_STATUS_TRANSLATED_CODE = "\u00C5";
+        public const string SPECIALORDERITEM_APP_STATUS = "Approved";
+        public const string SPECIALORDERITEM_DEL_STATUS_CODE = "30";
+        public const string SPECIALORDERITEM_DEL_STATUS_TRANSLATED_CODE = "\u00C6";
+        public const string SPECIALORDERITEM_DEL_STATUS = "Deleted";
+        public const string SPECIALORDERITEM_HLD_STATUS_CODE = "40";
+        public const string SPECIALORDERITEM_HLD_STATUS_TRANSLATED_CODE = "\u00C7";
+        public const string SPECIALORDERITEM_HLD_STATUS = "Held";
+        public const string SPECIALORDERITEM_RCV_STATUS_CODE = "50";
+        public const string SPECIALORDERITEM_RCV_STATUS_TRANSLATED_CODE = "\u00C8";
+        public const string SPECIALORDERITEM_RCV_STATUS = "Received";
+        public const string SPECIALORDERITEM_R_H_STATUS_CODE = "52";
+        public const string SPECIALORDERITEM_R_H_STATUS_TRANSLATED_CODE = "\u00C9";
+        public const string SPECIALORDERITEM_R_H_STATUS = "Received/Held";
+        public const string SPECIALORDERITEM_ATT_STATUS_CODE = "55";
+        public const string SPECIALORDERITEM_ATT_STATUS_TRANSLATED_CODE = "\u00CA";
+        public const string SPECIALORDERITEM_ATT_STATUS = "Attached";
+        public const string SPECIALORDERITEM_PTL_STATUS_CODE = "57";
+        public const string SPECIALORDERITEM_PTL_STATUS_TRANSLATED_CODE = "\u00CB";
+        public const string SPECIALORDERITEM_PTL_STATUS = "Partial Ship to BEK";
+        public const string SPECIALORDERITEM_SHP_STATUS_CODE = "60";
+        public const string SPECIALORDERITEM_SHP_STATUS_TRANSLATED_CODE = "\u00CC";
+        public const string SPECIALORDERITEM_SHP_STATUS = "Shipped to BEK";
+        public const string SPECIALORDERITEM_PUR_STATUS_CODE = "70";
+        public const string SPECIALORDERITEM_PUR_STATUS_TRANSLATED_CODE = "\u00CD";
+        public const string SPECIALORDERITEM_PUR_STATUS = "Purged";
 
         public const string CS_PURCHASE_ORDER_ORIGINAL_ORDER_NUMBER = "OriginalOrderNumber";
         public const string CS_PURCHASE_ORDER_MASTER_NUMBER = "MasterNumber";

@@ -47,7 +47,7 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             return serviceClient.GetOrderTotalByMonth( customerInfo, numberOfMonths );
         }
 
-        public DateTime? ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
+        public string ReadLatestUpdatedDate(UserSelectedContext catalogInfo) {
             return serviceClient.ReadLatestOrderModifiedDateForCustomer(catalogInfo);
         }
 
@@ -56,8 +56,9 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
             serviceClient.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
 
-        public void SaveOrderHistory(OrderHistoryFile historyFile) {
-            serviceClient.SaveOrderHistory(historyFile);
+        public void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder)
+        {
+            serviceClient.SaveOrderHistory(historyFile, isSpecialOrder);
         }
 
         public List<OrderHeader> GetSubmittedUnconfirmedOrders()
@@ -69,12 +70,20 @@ namespace KeithLink.Svc.WebApi.Repository.Orders
         {
             return serviceClient.GetUserIdForControlNumber(controlNumber);
         }
-        #endregion
-
 
 		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
 		{
 			return serviceClient.GetPagedOrders(userId, customerInfo, paging);
 		}
-	}
+
+        public void UpdateRelatedOrderNumber(string childOrderNumber, string parentOrderNumber) {
+            serviceClient.UpdateRelatedControlNumber(childOrderNumber, parentOrderNumber);
+        }
+
+        public string SetLostOrder(string trackingNumber)
+        {
+            return serviceClient.SetLostOrder(trackingNumber);
+        }
+        #endregion
+    }
 }

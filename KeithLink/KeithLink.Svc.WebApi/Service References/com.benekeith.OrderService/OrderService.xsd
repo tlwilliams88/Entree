@@ -53,6 +53,7 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="catalog_id" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="catchweight" type="xs:boolean">
         <xs:annotation>
           <xs:appinfo>
@@ -103,6 +104,8 @@
         </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="favorite" type="xs:boolean" />
+      <xs:element minOccurs="0" name="is_specialty_catalog" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isvalid" type="xs:boolean" />
       <xs:element minOccurs="0" name="itemnumber" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="kosher" nillable="true" type="xs:string">
         <xs:annotation>
@@ -190,7 +193,15 @@
           </xs:appinfo>
         </xs:annotation>
       </xs:element>
+      <xs:element minOccurs="0" name="specialtyitemcost" type="xs:decimal" />
       <xs:element minOccurs="0" name="temp_zone" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="unfi" nillable="true" type="tns:unfi">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="unitprice" type="xs:decimal" />
       <xs:element minOccurs="0" name="upc" nillable="true" type="xs:string">
         <xs:annotation>
@@ -273,4 +284,35 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="nutrition" nillable="true" type="tns:nutrition" />
+  <xs:complexType name="unfi">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="caseheight" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="caselength" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="caseprice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="casequantity" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="caseupc" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="casewidth" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="catalogdept" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="contunit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flag1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flag2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flag3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="flag4" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="minorder" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="onhandqty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packageheight" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packagelength" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packageprice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="packagewidth" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="putup" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="shipminexpire" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="status" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="stockedinbranches" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="tcscode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="unitofsale" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="vendor" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="weight" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="unfi" nillable="true" type="tns:unfi" />
 </xs:schema>

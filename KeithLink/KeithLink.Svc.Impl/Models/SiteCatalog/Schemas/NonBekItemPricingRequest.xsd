@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="NonBekItemPricingRequest"
+    targetNamespace="http://tempuri.org/NonBekItemPricingRequest.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://tempuri.org/NonBekItemPricingRequest.xsd"
+    xmlns:mstns="http://tempuri.org/NonBekItemPricingRequest.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+
+  <xs:element name="PricingRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="BranchId" type="branchIdType"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="CustomerNumber" type="customerNumberType"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="ShipDate" type="xs:date"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" ref="Items"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="Items">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" minOccurs="1" ref="Item"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  
+  <xs:element name="Item">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="1" maxOccurs="1" name="Source" type="sourceNameType"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="Number" type="itemNumberType"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="Category" type="categoryNameType"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="CaseCost" type="xs:decimal"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="PackageCost" type="xs:decimal"></xs:element>
+        <xs:element minOccurs="1" maxOccurs="1" name="IsCatchWeight" type="xs:boolean"></xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <xs:simpleType name="branchIdType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z0-9\s]{3}"/>
+      <xs:whiteSpace value="preserve"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="categoryNameType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z0-9\s]*"/>
+      <xs:whiteSpace value="preserve"/>
+      <xs:minLength value="1"/>
+      <xs:maxLength value="50"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="customerNumberType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z0-9\s]{6}"/>
+      <xs:whiteSpace value="collapse"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="itemNumberType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="([A-Z0-9\-])*"/>
+      <xs:minLength value="1"/>
+      <xs:maxLength value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="sourceNameType">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[A-Z0-9\s]*"/>
+      <xs:whiteSpace value="preserve"/>
+      <xs:minLength value="1"/>
+      <xs:maxLength value="20"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+</xs:schema>

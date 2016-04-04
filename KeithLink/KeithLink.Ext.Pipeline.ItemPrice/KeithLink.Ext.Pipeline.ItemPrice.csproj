@@ -55,6 +55,13 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Dev2|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Dev2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <DebugType>full</DebugType>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
     <OutputPath>bin\Beta\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -96,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <Content Include="InstallScript.ps1">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="keyFile.snk" />
     <None Include="PipelineRegistration.reg" />
     <None Include="Service References\PipelineService\KeithLink.Ext.Pipeline.ItemPrice.PipelineService.PriceReturn.datasource">
@@ -115,17 +125,17 @@
     <None Include="Service References\PipelineService\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PipelineService\PipelineService1.wsdl" />
-    <None Include="Service References\PipelineService\PipelineService4.xsd">
+    <None Include="Service References\PipelineService\PipelineService.wsdl" />
+    <None Include="Service References\PipelineService\PipelineService.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PipelineService\PipelineService41.xsd">
+    <None Include="Service References\PipelineService\PipelineService1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PipelineService\PipelineService42.xsd">
+    <None Include="Service References\PipelineService\PipelineService2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\PipelineService\PipelineService43.xsd">
+    <None Include="Service References\PipelineService\PipelineService3.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\PipelineService\Reference.svcmap">
@@ -134,7 +144,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\PipelineService\PipelineService1.disco" />
+    <None Include="Service References\PipelineService\PipelineService.disco" />
     <Content Include="SetupInstructions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

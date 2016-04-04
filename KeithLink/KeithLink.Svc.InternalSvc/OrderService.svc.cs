@@ -36,7 +36,7 @@ namespace KeithLink.Svc.InternalSvc {
         #endregion
 
         #region methods
-        public DateTime? ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo) {
+        public string ReadLatestOrderModifiedDateForCustomer(UserSelectedContext catalogInfo) {
 			return _orderLogic.ReadLatestUpdatedDate(catalogInfo);
 		}
 
@@ -69,8 +69,9 @@ namespace KeithLink.Svc.InternalSvc {
             _orderLogic.SaveUserActiveCart(catalogInfo, userId, cartId);
         }
 
-        public void SaveOrderHistory(OrderHistoryFile historyFile) {
-            _historyLogic.SaveOrder(historyFile);
+        public void SaveOrderHistory(OrderHistoryFile historyFile, bool isSpecialOrder)
+        {
+            _historyLogic.SaveOrder(historyFile, isSpecialOrder);
         }
 
         public List<OrderHeader> GetSubmittedUnconfirmedOrders()
@@ -82,13 +83,21 @@ namespace KeithLink.Svc.InternalSvc {
         {
             return _orderLogic.GetUserIdForControlNumber(controlNumber);
         }
-		
-
 
 		public Core.Models.Paging.PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, Core.Models.Paging.PagingModel paging)
 		{
 			return _historyLogic.GetPagedOrders(userId, customerInfo, paging);
 		}
-		#endregion
-	}		
+
+
+        public void UpdateRelatedControlNumber(string childOrderNumber, string parentOrderNumber) {
+            _historyLogic.UpdateRelatedOrderNumber(childOrderNumber, parentOrderNumber);
+        }
+
+        public string SetLostOrder(string trackingNumber)
+        {
+            return _historyLogic.SetLostOrder(trackingNumber);
+        }
+        #endregion
+    }		
 }

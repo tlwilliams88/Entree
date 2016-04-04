@@ -100,6 +100,7 @@ namespace KeithLink.Svc.Test
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+            builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
 
