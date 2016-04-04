@@ -206,12 +206,51 @@ namespace KeithLink.Svc.Impl.Migrations
                     Body = resetPasswordBody.ToString()
                 } );
 
+            /**** Standard BEK header notification template ****/
+            System.Text.StringBuilder headerNotificationBody = new System.Text.StringBuilder();
+            headerNotificationBody.AppendLine("<table style=\"width: 100%;\">");
+            headerNotificationBody.AppendLine("<tr>");
+            headerNotificationBody.AppendLine("<td>|LOGO|</td>");
+            headerNotificationBody.AppendLine("<td><h3>{Subject}</h3></td>");
+            headerNotificationBody.AppendLine("<td style=\"text-align:right;\">");
+            headerNotificationBody.AppendLine("<table>");
+            headerNotificationBody.AppendLine("<tr>");
+            headerNotificationBody.AppendLine("<td>{CustomerName}</td>");
+            headerNotificationBody.AppendLine("</tr>");
+            headerNotificationBody.AppendLine("<tr>");
+            headerNotificationBody.AppendLine("<td>Customer: {CustomerNumber}</td>");
+            headerNotificationBody.AppendLine("</tr>");
+            headerNotificationBody.AppendLine("<tr>");
+            headerNotificationBody.AppendLine("<td>Branch: {BranchID}</td>");
+            headerNotificationBody.AppendLine("</tr>");
+            headerNotificationBody.AppendLine("</table>");
+            headerNotificationBody.AppendLine("</td>");
+            headerNotificationBody.AppendLine("</tr>");
+            headerNotificationBody.AppendLine("</table>");
+            headerNotificationBody.AppendLine("<hr/>");
+            context.MessageTemplates.AddOrUpdate(
+                t => t.TemplateKey,
+                new MessageTemplate
+                {
+                    TemplateKey = "NotifHeader",
+                    Subject = "",
+                    IsBodyHtml = true,
+                    Type = MessageTemplateType.Email,
+                    Body = headerNotificationBody.ToString()
+                });
+
             /**** Build ETA notification main template ****/
             System.Text.StringBuilder etaNotificationBody = new System.Text.StringBuilder();
-            etaNotificationBody.AppendLine("The following orders have been shipped or estimated for shipment.");
-            etaNotificationBody.AppendLine();
-            etaNotificationBody.AppendLine("{EtaOrderLines}");
-            etaNotificationBody.AppendLine("All times shown in {TimeZoneName}.");
+            etaNotificationBody.AppendLine("{NotifHeader}Order #: {InvoiceNumber} {ETAMessage}.");
+            etaNotificationBody.AppendLine("This order contains {ProductCount} items.<hr/>");
+            etaNotificationBody.AppendLine("<table style=\"width: 100%\">");
+            etaNotificationBody.AppendLine("<tr>");
+            etaNotificationBody.AppendLine("<th style=\"font-size:small;text-align:left;\">Item # </th>");
+            etaNotificationBody.AppendLine("<th style=\"font-size:small;text-align:left;\">Item Description </th>");
+            etaNotificationBody.AppendLine("<th colspan=\"2\" style=\"font-size:small;text-align:left;\">Quantity</th>");
+            etaNotificationBody.AppendLine("</tr>");
+            etaNotificationBody.AppendLine("{OrderEtaLines}");
+            etaNotificationBody.AppendLine("</table>");
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
                 new MessageTemplate
@@ -225,11 +264,11 @@ namespace KeithLink.Svc.Impl.Migrations
 
             /**** Build ETA line template ****/
             System.Text.StringBuilder etaOrderLine = new System.Text.StringBuilder();
-            etaOrderLine.Append("Order #: {InvoiceNumber} ");
-            etaOrderLine.AppendLine(" is scheduled for delivery on {ScheduledDeliveryDate} at {ScheduledDeliveryTime}.");
-            etaOrderLine.AppendLine("    It is currently estimated for delievery on {EstimatedDeliveryDate} at {EstimatedDeliveryTime}.");
-            etaOrderLine.AppendLine("    This order contains {ProductCount} products (total quantity: {ShippedQuantity})");
-            etaOrderLine.AppendLine();
+            etaOrderLine.Append("<tr>");
+            etaOrderLine.Append("<td style=\"font-size:small;text-align:left;\">{ProductNumber} </td>");
+            etaOrderLine.Append("<td style=\"font-size:small;text-align:left;\">{ProductDescription} </td>");
+            etaOrderLine.Append("<td colspan=\"2\" style=\"font-size:small;text-align:left;\">{Quantity}</td>");
+            etaOrderLine.Append("</tr>");
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
                 new MessageTemplate
@@ -244,27 +283,25 @@ namespace KeithLink.Svc.Impl.Migrations
 
             /**** Build Payment Confirmation main template ****/
             System.Text.StringBuilder paymentConfirmation = new System.Text.StringBuilder();
-            paymentConfirmation.AppendLine("<p>Your payments have been scheduled for processing on the next business day.<p>");
-            paymentConfirmation.AppendLine("Account: {CustomerNumber} - {CustomerName}<br/>");
-            paymentConfirmation.AppendLine("Branch: {BranchId}<br/>");
+            paymentConfirmation.AppendLine("{NotifHeader}");
             paymentConfirmation.AppendLine("Bank: {BankAccount}<br/>");
             paymentConfirmation.AppendLine("Confirmation: {ConfirmationId}<br/>");
             paymentConfirmation.AppendLine("<table style=\"width: 100%\">");
-            paymentConfirmation.AppendLine("	<tr>");
-            paymentConfirmation.AppendLine("		<th>Ref</th>");
-            paymentConfirmation.AppendLine("		<th>Number</th>");
-            paymentConfirmation.AppendLine("		<th>Ref Date</th>");
-            paymentConfirmation.AppendLine("		<th>Due Date</th>");
-            paymentConfirmation.AppendLine("		<th>Scheduled</th>");
-            paymentConfirmation.AppendLine("		<th>Amount</th>");
-            paymentConfirmation.AppendLine("	</tr>");
+            paymentConfirmation.AppendLine("<tr>");
+            paymentConfirmation.AppendLine("<th style=\"font-size:small;text-align:left;\">Type </th>");
+            paymentConfirmation.AppendLine("<th style=\"font-size:small;text-align:left;\">Number </th>");
+            paymentConfirmation.AppendLine("<th style=\"font-size:small;text-align:left;\">Ref. Date </th>");
+            paymentConfirmation.AppendLine("<th style=\"font-size:small;text-align:left;\">Due Date </th>");
+            paymentConfirmation.AppendLine("<th style=\"font-size:small;text-align:left;\">Scheduled Date </th>");
+            paymentConfirmation.AppendLine("<th style=\"font-size:small;text-align:right;\">Amount</th>");
+            paymentConfirmation.AppendLine("</tr>");
             paymentConfirmation.AppendLine("{PaymentDetailLines}");
-            paymentConfirmation.AppendLine("	<tr>");
-            paymentConfirmation.AppendLine("		<td colspan=\"5\" style=\"text-align: right\">Customer Total</td>");
-            paymentConfirmation.AppendLine("		<td style=\"text-align: right\">");
-            paymentConfirmation.AppendLine("			{TotalPayments:f2}");
-            paymentConfirmation.AppendLine("		<td>");
-            paymentConfirmation.AppendLine("	</tr>");
+            paymentConfirmation.AppendLine("<tr>");
+            paymentConfirmation.AppendLine("<td colspan=\"5\" style=\"text-align:right\">Customer Total</td>");
+            paymentConfirmation.AppendLine("<td style=\"text-align:right\">");
+            paymentConfirmation.AppendLine("${TotalPayments:f2}");
+            paymentConfirmation.AppendLine("<td>");
+            paymentConfirmation.AppendLine("</tr>");
             paymentConfirmation.AppendLine("</table>");
 
             context.MessageTemplates.AddOrUpdate(
@@ -279,14 +316,14 @@ namespace KeithLink.Svc.Impl.Migrations
 
             /**** Build Payment Confirmation Detail template ****/
             System.Text.StringBuilder paymentConfirmationDetail = new System.Text.StringBuilder();
-            paymentConfirmationDetail.AppendLine("	<tr>");
-            paymentConfirmationDetail.AppendLine("		<td>{InvoiceType}</td>");
-            paymentConfirmationDetail.AppendLine("		<td>{InvoiceNumber}</td>");
-            paymentConfirmationDetail.AppendLine("		<td>{InvoiceDate:MM/dd/yyyy}</td>");
-            paymentConfirmationDetail.AppendLine("		<td>{DueDate:MM/dd/yyyy}</td>");
-            paymentConfirmationDetail.AppendLine("		<td>{ScheduledDate:MM/dd/yyyy}</td>");
-            paymentConfirmationDetail.AppendLine("		<td style=\"text-align: right\">{PaymentAmount:f2}</td>");
-            paymentConfirmationDetail.AppendLine("	</tr>");
+            paymentConfirmationDetail.AppendLine("<tr>");
+            paymentConfirmationDetail.AppendLine("<td style=\"font-size:small;text-align:left;\">{InvoiceType} </td>");
+            paymentConfirmationDetail.AppendLine("<td style=\"font-size:small;text-align:left;\">{InvoiceNumber} </td>");
+            paymentConfirmationDetail.AppendLine("<td style=\"font-size:small;text-align:left;\">{InvoiceDate:MM/dd/yyyy} </td>");
+            paymentConfirmationDetail.AppendLine("<td style=\"font-size:small;text-align:left;\">{DueDate:MM/dd/yyyy} </td>");
+            paymentConfirmationDetail.AppendLine("<td style=\"font-size:small;text-align:left;\">{ScheduledDate:MM/dd/yyyy} </td>");
+            paymentConfirmationDetail.AppendLine("<td style=\"font-size:small;text-align:right;\">${PaymentAmount:f2}</td>");
+            paymentConfirmationDetail.AppendLine("</tr>");
 
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
@@ -335,31 +372,26 @@ namespace KeithLink.Svc.Impl.Migrations
 
 
             System.Text.StringBuilder orderConfirmationMessage = new System.Text.StringBuilder();
+            orderConfirmationMessage.AppendLine("{NotifHeader}");
             orderConfirmationMessage.AppendLine("<table style=\"width: 100%;\">");
-            orderConfirmationMessage.AppendLine("    <tr>");
-            orderConfirmationMessage.AppendLine("        <td><h3>Thank you for your order.</h3></td>");
-            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\"><h3>{CustomerName}</h3></td>");
-            orderConfirmationMessage.AppendLine("    </tr>");
-            orderConfirmationMessage.AppendLine("    <tr>");
-            orderConfirmationMessage.AppendLine("        <td>Delivery Date: {ShipDate}</td>");
-            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\">Customer # {CustomerNumber}</td>");
-            orderConfirmationMessage.AppendLine("    </tr>");
-            orderConfirmationMessage.AppendLine("    <tr>");
-            orderConfirmationMessage.AppendLine("        <td>Items: {Count}</td>");
-            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\">Invoice Number: {InvoiceNumber}</td>");
-            orderConfirmationMessage.AppendLine("    </tr>");
-            orderConfirmationMessage.AppendLine("    <tr>");
-            orderConfirmationMessage.AppendLine("        <td></td>");
-            orderConfirmationMessage.AppendLine("        <td style=\"text-align:right;\">Invoice Total: ${Total}</td>");
-            orderConfirmationMessage.AppendLine("    </tr>");
+            orderConfirmationMessage.AppendLine("   <tr>");
+            orderConfirmationMessage.AppendLine("       <td>Delivery Date: {ShipDate}</td>");
+            orderConfirmationMessage.AppendLine("       <td style='text-align:right;'>{Count} Items / {PcsCount} Pieces</td>");
+            orderConfirmationMessage.AppendLine("   </tr>");
+            orderConfirmationMessage.AppendLine("   <tr>");
+            orderConfirmationMessage.AppendLine("       <td>Invoice Number: {InvoiceNumber}</td>");
+            orderConfirmationMessage.AppendLine("       <td style=\"text-align:right;\">Invoice Total: ${Total}</td>");
+            orderConfirmationMessage.AppendLine("   </tr>");
             orderConfirmationMessage.AppendLine("</table>");
-            orderConfirmationMessage.AppendLine("<hr/>");
             orderConfirmationMessage.AppendLine("<table style=\"width: 100%;\">");
-            orderConfirmationMessage.AppendLine("	<tr>");
+            orderConfirmationMessage.AppendLine("	<tr style=\"border-bottom:1px solid gray;\">");
             orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Item # </th>");
             orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Confirmed Items </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Brand </th>");
             orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Ordered </th>");
             orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Confirmed </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Pack </th>");
+            orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Size </th>");
             orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Price </th>");
             orderConfirmationMessage.AppendLine("		<th style=\"text-align:left;\">Status</th>");
             orderConfirmationMessage.AppendLine("	</tr>");
@@ -377,15 +409,18 @@ namespace KeithLink.Svc.Impl.Migrations
                     Body = orderConfirmationMessage.ToString()
                 });
 
-            System.Text.StringBuilder orderConfirmationItemsDetailMessage = new System.Text.StringBuilder();
-            orderConfirmationItemsDetailMessage.AppendLine("    <tr>");
-            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{ProductNumber} </td>");
-            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{ProductDescription} </td>");
-            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Quantity} </td>");
-            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Sent} </td>");
-            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Price} </td>");
-            orderConfirmationItemsDetailMessage.AppendLine("        <td style=\"text-align:left;\">{Status}</td>");
-            orderConfirmationItemsDetailMessage.AppendLine("    </tr>");
+            System.Text.StringBuilder orderConfirmationItemDetailMessage = new System.Text.StringBuilder();
+            orderConfirmationItemDetailMessage.AppendLine("<tr>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{ProductNumber} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{ProductDescription} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{Brand} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{Quantity} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{Sent} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{Pack} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{Size} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{Price} </td>");
+            orderConfirmationItemDetailMessage.AppendLine("<td style=\"font-size:small;text-align:left;\">{Status}</td>");
+            orderConfirmationItemDetailMessage.AppendLine("</tr>");
 
             context.MessageTemplates.AddOrUpdate(
                 t => t.TemplateKey,
@@ -395,7 +430,7 @@ namespace KeithLink.Svc.Impl.Migrations
                     Subject = "",
                     IsBodyHtml = true,
                     Type = MessageTemplateType.Email,
-                    Body = orderConfirmationItemsDetailMessage.ToString()
+                    Body = orderConfirmationItemDetailMessage.ToString()
                 });
 
             System.Text.StringBuilder orderConfirmationItemOOSDetailMessage = new System.Text.StringBuilder();
