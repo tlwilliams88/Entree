@@ -62,7 +62,7 @@
       ng-if="selectedList.permissions.canEditList" 
       type="submit" 
       class="btn-lg btn btn-primary" 
-      ng-disabled="listForm.$invalid || listForm.$pristine" 
+      ng-disabled="listForm.$invalid" 
       ng-click="saveList(selectedList)">
       Save
     </button>
@@ -98,7 +98,7 @@
     ng-if="selectedList.permissions.canEditList" 
     type="submit" 
     class="btn-no-style page-subheader-bar__button button-left" 
-    ng-disabled="listForm.$invalid || listForm.$pristine" 
+    ng-disabled="listForm.$invalid" 
     ng-click="saveList(selectedList)">
     Save
   </button>
@@ -415,7 +415,7 @@
 
           <tbody 
               ng-class="{ 'item-selected': item.isSelected }" 
-              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}" 
+              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}"
               data-product="{{item}}" 
               data-drag="dragEnabled" 
               data-jqyoui-options="{
@@ -426,8 +426,7 @@
                 delay: 200}" 
               jqyoui-draggable="{
                 onStart: 'setIsDragging(true)', 
-                onStop: 'setIsDragging(false)'}"
-              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}" 
+                onStop: 'setIsDragging(false)'}" 
                 id="listsTableRows">                
            
             <tr >
@@ -534,10 +533,9 @@
                     id="parlevel" 
                     name="parlevel"                    
                     type="text" 
-                    ng-init="item.parlevel = item.parlevel || 0"   
-                    id="parlevel"   
-                    numeric-validation   
-                    ng-model="item.parlevel"   
+                    ng-init="item.parlevel = item.parlevel || 0"     
+                    numeric-validation
+                    ng-model="item.parlevel"     
                     ng-blur="initParLvl(item)"
                     class="text-right input-number bek-no-drag tabstop" />
                 </ng-form>
