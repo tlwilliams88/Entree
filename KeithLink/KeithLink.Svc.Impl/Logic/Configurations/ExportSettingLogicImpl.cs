@@ -47,6 +47,9 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             options.Fields = new List<ExportModelConfiguration>();
 
             switch (type) {
+                case ExportType.List:
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Position", Label = "Position" });
+                    break;
                 case ExportType.Order:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Label = "Order #" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Label = "Order Date" });
