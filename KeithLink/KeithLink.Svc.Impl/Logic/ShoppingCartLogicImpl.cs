@@ -409,7 +409,7 @@ namespace KeithLink.Svc.Impl.Logic
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
 
             //split into multiple orders
-            var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
+            var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             var returnOrders = new SaveOrderReturn();
             returnOrders.NumberOfOrders = catalogList.Count();
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
@@ -424,7 +424,9 @@ namespace KeithLink.Svc.Impl.Logic
                     Active = false,
                     PONumber = basket.PONumber,
                     CreatedDate = new DateTime(),
-                    Items = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => new ShoppingCartItem()
+                    Items = basket.LineItems
+                                  .Where(l => string.Equals(l.CatalogName, catalogId, StringComparison.CurrentCultureIgnoreCase))
+                                  .Select(l => new ShoppingCartItem()
                     {
                         
                         ItemNumber = l.ProductId,
