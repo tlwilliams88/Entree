@@ -72,7 +72,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                 tplContainer.append(rowTpl);
 
+                var activeElement;
+
                 var updateList = function(rowTpl, scope, forceUpdate) {
+                    focusActiveElement(document.activeElement);
                     if(scope.item.position == 1 && scope.item.label == ''){
                         scope.item.label = firstLabel;
                         scope.fromRenderLabels = false;
@@ -88,15 +91,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     // Generate ids if necessary and arrange in a hash map
                     var listByIds = {};
                     angular.forEach(scope.list, function(item) {
-                        // if(item.position == 1 && item.label){
-                        //     var firstLabel;
-                        //     firstLabel = item.label;
-                        //     item.label = '';
-                        //     var timeout = setInterval(function(){
-                        //     item.label = firstLabel;
-                        //     scope.$apply;
-                        //     }, 0)
-                        // }
                         if(!item.$$fastRepeatId) {
                             if(item.id) { item.$$fastRepeatId = item.id; }
                             else if(item._id) { item.$$fastRepeatId = item._id; }
@@ -163,9 +157,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         }
                         previousEl.after(row.el.last());
                         previousEl = row.el.last();
-                        // scope.isSortingList = false;
                     });
-
+                    if(activeElement){
+                        activeElement.focus();
+                    }
                 };
 
 
@@ -173,6 +168,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 // save roughly 500ms per digest in certain cases.
                 // JSONStripper is used to remove the $$fastRepeatId that we attach to the objects.
                 var busy=false;
+                if(activeElement){
+                    activeElement.focus();
+                }
                 listScope.$watch(function(scp){ return JSON.stringify(getter(scp), JSONStripper); }, function(list) {
                     tplContainer.width(elParent.width());
                     if(!scope.itemIconsActive){
@@ -199,6 +197,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             console.log("time per row: ", t/list.length);
                         }
                         busy=false;
+                        if(activeElement){
+                            activeElement.focus();
+                        }
                     });
                 }, false);
 
@@ -232,8 +233,17 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                     return newScope;
                 }
 
+                function focusActiveElement(element){
+                    if(element.nodeName == "INPUT"){
+                        activeElement = element;
+                    } else{
+                        return;
+                    }
+                }
+
                 var parentClickHandler = function parentClickHandler(evt) {
                     var $target = $(this);
+                    focusActiveElement(document.activeElement);
                     if($target.parents().filter('[fast-repeat-id]').length) {
                         return; // This event wasn't meant for us
                     }
@@ -254,9 +264,14 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         }else{
                             $target.replaceWith(clone);
                         }
+
+                        if(activeElement){
+                            setTimeout(function(){
+                                clone[0].children[0].children[12].children[0].children[0].focus();
+                            }, 1);
+                            activeElement = '';
+                        }
                         
-
-
                         currentRowEls[rowId] = {
                             compiled: true,
                             el: clone,
@@ -278,10 +293,9 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 };
 
 
-                element.parent().on('mouseenter', '[fast-repeat-id]',parentClickHandler);
+                element.parent().on('mouseenter focus', '[fast-repeat-id]',parentClickHandler);
                 
                 // Handle resizes
-                //
                 var onResize = function() {
                     tplContainer.width(elParent.width());
                 };
