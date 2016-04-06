@@ -143,11 +143,6 @@ angular.module('bekApp')
 
     $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
 
-    $scope.keyPress = function(event){
-      $scope.listform.$setDirty();
-    }
-
-
     function resetPage(list, initialPageLoad) {
       $scope.initPagingValues();
       $scope.activeElement = true;
