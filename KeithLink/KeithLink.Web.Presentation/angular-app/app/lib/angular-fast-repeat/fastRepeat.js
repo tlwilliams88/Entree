@@ -73,7 +73,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 tplContainer.append(rowTpl);
 
                 var updateList = function(rowTpl, scope, forceUpdate) {
-                    // renderLabels(scope);
                     if(scope.item.position == 1 && scope.item.label == ''){
                         scope.item.label = firstLabel;
                         scope.fromRenderLabels = false;
@@ -176,7 +175,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 var busy=false;
                 listScope.$watch(function(scp){ return JSON.stringify(getter(scp), JSONStripper); }, function(list) {
                     tplContainer.width(elParent.width());
-                    if(scope.itemIconsActive !== true){
+                    if(!scope.itemIconsActive){
                         scope.itemIconsActive = false;
                     }
 
