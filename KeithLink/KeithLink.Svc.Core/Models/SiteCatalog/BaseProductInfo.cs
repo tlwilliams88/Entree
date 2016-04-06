@@ -159,7 +159,8 @@ namespace KeithLink.Svc.Core.Models.SiteCatalog
 		public string VendorItemNumber { get; set; }
 
 		[DataMember(Name = "upc", EmitDefaultValue = false)]
-		public string UPC { get; set; }
+        [Description("GTIN")]
+        public string UPC { get; set; }
 
 		[DataMember(Name = "size", EmitDefaultValue = false)]
 		public string Size { get; set; }

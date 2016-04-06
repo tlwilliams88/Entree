@@ -148,7 +148,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 if(request.export.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
-                ret = ExportModel<InvoiceModel>(list.PagedResults.Results, request.export);
+                ret = ExportModel<InvoiceModel>(list.PagedResults.Results, request.export, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -251,7 +251,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
                 List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
 
-                ret = ExportModel<InvoiceItemModel>(items, exportRequest);
+                ret = ExportModel<InvoiceItemModel>(items, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -424,7 +424,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 if (request.export.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, request.export.Fields, request.export.SelectedType);
 
-                ret = ExportModel<PaymentTransactionModel>(transactions.Results, request.export);
+                ret = ExportModel<PaymentTransactionModel>(transactions.Results, request.export, SelectedUserContext);
             }
             catch (Exception ex)
             {

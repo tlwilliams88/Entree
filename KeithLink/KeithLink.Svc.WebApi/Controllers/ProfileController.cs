@@ -1129,7 +1129,7 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 if (exportRequest.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-                return ExportModel<MarketingPreferenceModel>(marketinginfo, exportRequest);
+                return ExportModel<MarketingPreferenceModel>(marketinginfo, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {

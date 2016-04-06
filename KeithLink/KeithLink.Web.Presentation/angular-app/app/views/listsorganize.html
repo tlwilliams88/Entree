@@ -80,7 +80,7 @@
           <th ng-if="list.permissions.canDeleteItems" ></th>
         </tr>
       </thead>
-      <tbody fast-repeat="item in list.items | filter:{listitemid: '!!', isdeleted:'!true'} " class="item_{{item.listitemid}}">
+      <tbody ng-repeat="item in list.items | filter:{listitemid: '!!', isdeleted:'!true'} " class="item_{{item.listitemid}}">
         <tr class="ui-draggable-handle" ng-class="{ odd : $odd, even: $even}">
           <td class="input-col">
             <ng-form>

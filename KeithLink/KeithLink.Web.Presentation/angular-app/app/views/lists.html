@@ -62,7 +62,7 @@
       ng-if="selectedList.permissions.canEditList" 
       type="submit" 
       class="btn-lg btn btn-primary" 
-      ng-disabled="listForm.$invalid || listForm.$pristine" 
+      ng-disabled="listForm.$invalid" 
       ng-click="saveList(selectedList)">
       Save
     </button>
@@ -98,7 +98,7 @@
     ng-if="selectedList.permissions.canEditList" 
     type="submit" 
     class="btn-no-style page-subheader-bar__button button-left" 
-    ng-disabled="listForm.$invalid || listForm.$pristine" 
+    ng-disabled="listForm.$invalid" 
     ng-click="saveList(selectedList)">
     Save
   </button>
@@ -415,7 +415,7 @@
 
           <tbody 
               ng-class="{ 'item-selected': item.isSelected }" 
-              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}" 
+              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}"
               data-product="{{item}}" 
               data-drag="dragEnabled" 
               data-jqyoui-options="{
@@ -426,8 +426,7 @@
                 delay: 200}" 
               jqyoui-draggable="{
                 onStart: 'setIsDragging(true)', 
-                onStop: 'setIsDragging(false)'}"
-              fast-repeat="item in selectedList.items.slice(startingPoint, endPoint) | filter:{listitemid: '!!', isdeleted:'!true'}" 
+                onStop: 'setIsDragging(false)'}" 
                 id="listsTableRows">                
            
             <tr >
@@ -467,19 +466,19 @@
               <td ng-if="itemIconsActive" class="hidden-mobile-visible-print" item-icons></td>
 <!--                  loading-->
               <td ng-if="!itemIconsActive" class="hidden-mobile-visible-print">
-              <a ng-if="item.is_specialty_catalog === true"><span class="text-regular icon-leaf"></span></a>
-              <a ng-if="item.notes"><span class="icon-docs text-regular"></span></a>
-              <a ng-if="item.inhistory === true"><span class="text-regular icon-history"></span></a>            
-              <a ng-if="item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>
-              <a ng-if="item.replaceditem > 0"><span class="text-green icon-cycle"></span></a>            
-              <a ng-if="item.substituteditemnumber"><span class="icon-switch text-regular"></span></a>              
-              <a ng-if="item.deviatedcost === 'Y'"><span class="text-regular icon-dollar"></span></a>            
-              <a ng-if="item.sellsheet === 'Y'"><span class="text-regular icon-sellsheet"></span></a>             
-              <a ng-if="item.childnutrition === 'Y'"><span class="text-regular icon-apple"></span></a>        
-              <a ng-if="item.nonstock === 'Y'"><span class="text-regular icon-user"></span></a>
-              <a ng-if="item.temp_zone === 'F'"><span  class="text-regular icon-snowflake"></span></a>
-              <a ng-if="item.temp_zone === 'C'"><span class="text-regular icon-thermometer"></span></a>
-              <a ng-if="item.temp_zone === 'D'"><span class="text-regular icon-air"></span></a>
+                <a ng-if="item.is_specialty_catalog === true"><span class="text-regular icon-leaf"></span></a>
+                <a ng-if="item.inhistory === true"><span class="text-regular icon-history"></span></a>
+                <a ng-if="item.notes"><span class="icon-docs text-regular"></span> </a>
+                <a ng-if="item.replacementitem > 0"><span class="text-red icon-cycle"></span></a>
+                <a ng-if="item.replaceditem > 0"><span class="text-green icon-cycle"></span></a>
+                <a ng-if="item.substituteditemnumber"><span class="icon-switch text-regular"></span></a>
+                <a ng-if="item.deviatedcost === 'Y'"><span class="text-regular icon-dollar"></span></a>
+                <a ng-if="item.sellsheet === 'Y'"><span class="text-regular icon-sellsheet"></span></a>
+                <a ng-if="item.childnutrition === 'Y'"><span class="text-regular icon-apple"></span></a>
+                <a ng-if="item.nonstock === 'Y'"><span class="text-regular icon-user"></span></a>
+                <a ng-if="item.temp_zone === 'F'"><span class="text-regular icon-snowflake"></span></a>
+                <a ng-if="item.temp_zone === 'C'"><span class="text-regular icon-thermometer"></span></a>
+                <a ng-if="item.temp_zone === 'D'"><span class="text-regular icon-air"></span></a>
               </td>
               <td ng-if="selectedList.permissions.alternativeFieldName" class="hidden-xs hidden-sm text-center">
                 {{item[selectedList.permissions.alternativeFieldName]}}
@@ -491,7 +490,7 @@
               <td class="input-col nowrap hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeLabels && selectedList.permissions.canEditLabels)">
                 <div ng-hide="item.isEditing" class="bek-no-drag label-width right-margin-10">
                   <select name="" id="" ng-model-options="{ debounce: 1000 }" ng-model="item.label" ng-options="label for label in labels track by label" class="label-width">
-                    <option style="display:none"  value="">{{item.label || 'Select A Label '}}</option>
+                    <option style="display:none"  value="">{{item.label || 'Select a label...'}}</option>
                   </select>
                   <a ng-click="item.isEditing = true" class="large-icon hidden-print inline-icon"><span class="icon-plus3"></span></a>
                 </div>
@@ -534,12 +533,12 @@
                     id="parlevel" 
                     name="parlevel"                    
                     type="text" 
-                    ng-init="item.parlevel = item.parlevel || 0"   
-                    id="parlevel"   
-                    numeric-validation   
-                    ng-model="item.parlevel"   
+                    ng-init="item.parlevel = item.parlevel || 0"     
+                    numeric-validation
+                    ng-model="item.parlevel"     
                     ng-blur="initParLvl(item)"
-                    class="text-right input-number bek-no-drag tabstop" />
+                    class="text-right input-number bek-no-drag tabstop" 
+                    ng-model-options="{debounce: 500}"/>
                 </ng-form>
               </td>
 
@@ -661,6 +660,7 @@
                             ng-model="item.parlevel" 
                             ng-blur="initParLvl(item)"
                             class="input-number input-number-mobile text-right bek-no-drag form-control"
+                            ng-model-options="{debounce: 500}"
                             />
                         </ng-form>
                       </td>

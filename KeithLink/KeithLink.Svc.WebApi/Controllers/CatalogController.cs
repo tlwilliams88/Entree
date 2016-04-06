@@ -326,7 +326,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 if (exportRequest.Fields != null)
                     _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
-                ret = ExportModel<Product>(prods.Products, exportRequest);
+                ret = ExportModel<Product>(prods.Products, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -356,7 +356,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 ProductsReturn prods = _catalogLogic.GetProductsByCategory(this.SelectedUserContext, categoryId, searchModel, this.AuthenticatedUser);
                 if (exportRequest.Fields != null)
                     _exportSettingRepository.SaveUserExportSettings(this.AuthenticatedUser.UserId, ExportType.Products, ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-                ret = ExportModel<Product>(prods.Products, exportRequest);
+                ret = ExportModel<Product>(prods.Products, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -390,7 +390,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                                                                                             exportRequest.Fields, exportRequest.SelectedType);
                 }
 
-                ret = ExportModel<Product>(prods.Products, exportRequest);
+                ret = ExportModel<Product>(prods.Products, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {

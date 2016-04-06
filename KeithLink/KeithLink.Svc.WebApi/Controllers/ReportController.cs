@@ -102,7 +102,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                     if (exportRequest.Fields != null)
                         _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.ItemUsage, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
 
-                    retVal = ExportModel<ItemUsageReportItemModel>(ret.ToList(), exportRequest);
+                    retVal = ExportModel<ItemUsageReportItemModel>(ret.ToList(), exportRequest, SelectedUserContext);
                 }
                 else
                     retVal = new HttpResponseMessage() { StatusCode = HttpStatusCode.NoContent };
@@ -152,6 +152,7 @@ namespace KeithLink.Svc.WebApi.Controllers
             HttpResponseMessage retVal;
             try
             {
+                request.context = this.SelectedUserContext;
                 var stream = _inventoryValuationReportLogic.GenerateReport(request);
 
                 HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK);
