@@ -10,7 +10,7 @@ namespace KeithLink.Svc.Core.Models.Reports
 	[DataContract]
 	public class InventoryValuationModel
 	{
-		[DataMember(Name = "itemid")]
+		[DataMember(Name = "itemnumber")]
 		public string ItemId { get; set; }
 		[DataMember(Name = "name")]
 		public string Name { get; set; }
