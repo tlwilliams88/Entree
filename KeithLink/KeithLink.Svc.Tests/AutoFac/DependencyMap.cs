@@ -123,7 +123,7 @@ namespace KeithLink.Svc.Test
 
 			//Etc
 			builder.Register(c => new EventLogRepositoryImpl("Entree Test")).As<IEventLogRepository>();
-			builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
+			builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
 			builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
@@ -206,7 +206,7 @@ namespace KeithLink.Svc.Test
 
             //Etc
             builder.Register(c => new EventLogRepositoryImpl("Entree Test")).As<IEventLogRepository>();
-            builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
+            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
             builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
             builder.RegisterType<ContentManagementExternalRepositoryImpl>().As<IContentManagementExternalRepository>();
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
