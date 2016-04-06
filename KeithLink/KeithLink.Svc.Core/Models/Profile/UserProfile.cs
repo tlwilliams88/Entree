@@ -24,6 +24,13 @@ namespace KeithLink.Svc.Core.Models.Profile
             get { return "Active Directory"; }
         }
 
+	
+        [DataMember(Name = "lastlogin")]	
+        public DateTime? LastLogin { get; set; }	
+	
+        [DataMember(Name = "lastactivity")]
+        public DateTime? LastActivity { get; set; }
+        	
         [DataMember(Name="passwordexpired")]
         public bool PasswordExpired { get; set; }
 

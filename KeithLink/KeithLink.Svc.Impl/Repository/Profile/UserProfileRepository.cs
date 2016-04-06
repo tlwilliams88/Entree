@@ -97,6 +97,8 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 			
             profileQuery.Model.Properties.Add("Id");
             profileQuery.Model.Properties.Add("Email");
+            profileQuery.Model.Properties.Add("LastLoginDate");
+            profileQuery.Model.Properties.Add("LastActivityDate");
             profileQuery.Model.Properties.Add("FirstName");
             profileQuery.Model.Properties.Add("LastName");
             profileQuery.Model.Properties.Add("DefaultBranch");
@@ -143,7 +145,9 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
 			profileQuery.Model.Properties.Add("Id");
 			profileQuery.Model.Properties.Add("Email");
-			profileQuery.Model.Properties.Add("FirstName");
+            profileQuery.Model.Properties.Add("LastLoginDate");
+            profileQuery.Model.Properties.Add("LastActivityDate");
+            profileQuery.Model.Properties.Add("FirstName");
 			profileQuery.Model.Properties.Add("LastName");
 			profileQuery.Model.Properties.Add("DefaultBranch");
 			profileQuery.Model.Properties.Add("DefaultCustomer");
@@ -179,6 +183,29 @@ namespace KeithLink.Svc.Impl.Repository.Profile
 
             var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
 			_auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, updatedBy, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
+        }
+
+
+        public void UpdateUserProfileLastLogin(Guid id)
+        {
+            var updateQuery = new CommerceUpdate<Core.Models.Generated.UserProfile>("UserProfile");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToCommerceServerFormat();
+
+            updateQuery.Model.LastLoginDate = DateTime.Now;
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+            _auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, null, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
+        }
+
+        public void UpdateUserProfileLastAccess(Guid id)
+        {
+            var updateQuery = new CommerceUpdate<Core.Models.Generated.UserProfile>("UserProfile");
+            updateQuery.SearchCriteria.Model.Properties["Id"] = id.ToCommerceServerFormat();
+
+            updateQuery.Model.LastActivityDate = DateTime.Now;
+
+            var response = FoundationService.ExecuteRequest(updateQuery.ToRequest());
+            _auditLog.WriteToAuditLog(Common.Core.Enumerations.AuditType.UserUpdate, null, Newtonsoft.Json.JsonConvert.SerializeObject(updateQuery.Model));
         }
         #endregion
     }
