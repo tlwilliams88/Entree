@@ -323,6 +323,7 @@
     <Compile Include="Models\SiteCatalog\Schemas\PricingRequest.cs">
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Repository\Cache\NoCacheRepositoryImpl.cs" />
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
     <Compile Include="Repository\BranchSupports\BranchSupportRepositoryImpl.cs" />
