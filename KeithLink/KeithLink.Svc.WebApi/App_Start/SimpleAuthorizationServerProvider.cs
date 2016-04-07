@@ -70,6 +70,7 @@ namespace KeithLink.Svc.WebApi
             if (userReturn.UserProfiles.Count == 0) {
                 context.SetError("invalid_grant", "User profile does not exist in Commerce Server");
             } else {
+                _profileLogic.SetUserProfileLastLogin(userReturn.UserProfiles[0].UserId);
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 identity.AddClaim(new Claim("name", context.UserName));

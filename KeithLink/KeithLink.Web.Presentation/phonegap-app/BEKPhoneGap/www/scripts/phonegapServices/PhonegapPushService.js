@@ -18,7 +18,7 @@ angular.module('bekApp')
       return deferred.promise;
     }
 
-    Service.register = function () {
+    Service.register = function(){
 
        var push = PushNotification.init({
             "android": {

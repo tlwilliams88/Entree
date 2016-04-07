@@ -2,8 +2,8 @@
 <widget xmlns     = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
         id        = "<%= id %>"
-        version   = "1.4.1"
-        android-versionCode="100060002"
+        version   = "1.5.0"
+        android-versionCode="100060050"
         >
 
     <name><%= name %></name>
@@ -30,7 +30,9 @@
     <allow-intent href="tel:*" />
 
     <!--Push Plugin -->
-    <gap:plugin name="phonegap-plugin-push" source="npm" />
+    <plugin name="phonegap-plugin-push" spec="1.5.3" source="npm">
+        <param name="SENDER_ID" value="1013977805145" />
+    </plugin>
 
     <!-- Used http://ticons.fokkezb.nl/ to generate icons and splash screens -->
 

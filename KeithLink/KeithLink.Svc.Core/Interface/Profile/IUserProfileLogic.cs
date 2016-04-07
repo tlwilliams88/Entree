@@ -79,9 +79,13 @@ namespace KeithLink.Svc.Core.Interface.Profile {
 
         void UpdateUserProfile(UserProfile updatedBy, Guid id, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId, bool updateCustomerListAndRole, List<Customer> customerList, string roleName);
 
+        void SetUserProfileLastLogin(Guid id);
+
+        void SetUserProfileLastAccess(Guid id);
+
         //void UpdateUserRoles(List<string> customerNames, string emailAddress, string roleName);
 
-		UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId);
+        UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actiingUser, string emailAddress, string branchId);
 
 		List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId);
 

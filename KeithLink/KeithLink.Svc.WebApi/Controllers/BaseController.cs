@@ -54,6 +54,7 @@ namespace KeithLink.Svc.WebApi.Controllers
                 {
                     UserProfileReturn retVal = _profileLogic.GetUserProfile(((ClaimsIdentity)this.ControllerContext.RequestContext.Principal.Identity).FindFirst("name").Value);
 
+                    _profileLogic.SetUserProfileLastAccess(retVal.UserProfiles[0].UserId);
                     _user = retVal.UserProfiles[0];
                     _user.IsAuthenticated = true;
 

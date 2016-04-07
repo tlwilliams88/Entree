@@ -537,8 +537,10 @@
                     numeric-validation
                     ng-model="item.parlevel"     
                     ng-blur="initParLvl(item)"
-                    class="text-right input-number bek-no-drag tabstop" 
-                    ng-model-options="{debounce: 500}"/>
+                    class="text-right input-number bek-no-drag tabstop"
+                    onfocus="this.select();" 
+                    onmouseup="return false;"
+                    />
                 </ng-form>
               </td>
 
