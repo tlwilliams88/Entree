@@ -251,12 +251,17 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                     var rowId = $target.attr('fast-repeat-id');
                     var item = currentRowEls[rowId].item;
-
+                    // if($target[0].previousElementSibling.nodeName !== "THEAD"){
+                    //     var previousParLevelValue = $target[0].previousElementSibling.children[0].children[12].children[0].children[0].value;
+                    // }
 
                     // Find index of clicked dom element in list of all children element of the row.
                     // -1 would indicate the row itself was clicked.
                     var elIndex = $target.find('*').index(evt.target);
                     var newScope = renderUnoptimized(item, function(clone) {
+                        // var cloneCopy = clone;
+                        // cloneCopy[0].previousElementSibling.children[0].children[12].children[0].children[0].value = previousParLevelValue;
+                        // clone = cloneCopy;
                         scope.itemIconsActive = true;
                         if(scope.list.indexOf(item) % 2 !== 0){
                             $target.replaceWith(clone);
@@ -265,7 +270,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                             $target.replaceWith(clone);
                         }
 
-                        if(activeElement){
+                        if(activeElement && evt.type == "focusin"){
                             setTimeout(function(){
                                 clone[0].children[0].children[12].children[0].children[0].focus();
                             }, 1);
