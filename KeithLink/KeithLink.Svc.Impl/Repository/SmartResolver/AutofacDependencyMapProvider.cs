@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
     internal static class AutofacDependencyMapProvider
     {
-        internal static void BuildBaselineDependencies(ContainerBuilder builder) {
+        internal static void BuildBaselineDependencies(ContainerBuilder builder, bool IsWeb) {
             ///////////////////////////////////////////////////////////////////////////////
             // Repositories
             ///////////////////////////////////////////////////////////////////////////////
@@ -106,11 +106,26 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // catalog
             builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
-            builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
+            if (IsWeb)
+            {
+                builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>();
+            }
+            else
+            {
+                builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
+            }
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
-            builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
+            if (IsWeb)
+            {
+                builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>();
+                builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>();
+            }
+            else
+            {
+                builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
+                builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
+            }
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
-            builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
             builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
             // customer
@@ -659,7 +674,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ListLogicImpl>().As<IListLogic>();
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
             builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
-            //2nd builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
+            builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
@@ -667,7 +682,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
             builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
-            // 2nd builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
+            builder.RegisterType<CustomerLogicImpl>().As <ICustomerLogic>();
             builder.RegisterType<BasketLogicImpl>().As<IBasketLogic>();
             builder.RegisterType<PurchaseOrderRepositoryImpl>().As<IPurchaseOrderRepository>();
 
@@ -675,17 +690,26 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<DivisionRepositoryImpl>().As<IDivisionRepository>();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
+            builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<SpecialOrderLogicImpl>().As<ISpecialOrderLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
-            //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
+            builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
             //builder.RegisterType<ContentManagementItemRepositoryImpl>().As<IContentManagementItemRepository>();
+            builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
+            builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
+            builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
+            builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
+            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 
             builder.RegisterType<ConfirmationLogicImpl>().As<IConfirmationLogic>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
 
             builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            builder.RegisterType<FavoriteLogicImpl>().As<IFavoriteLogic>();
+            builder.RegisterType<NoteLogicImpl>().As<INoteLogic>();
+            builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
             builder.RegisterType<ListRepositoryImpl>().As<IListRepository>();
             builder.RegisterType<ListItemRepositoryImpl>().As<IListItemRepository>();
 
@@ -745,6 +769,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
+            builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
             builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
 
             builder.RegisterType<OnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
@@ -766,8 +791,11 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // dsr repository
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
 
             builder.RegisterType<PasswordResetLogicImpl>().As<IPasswordResetLogic>();
+            builder.RegisterType<PasswordResetRequestRepositoryImpl>().As<IPasswordResetRequestRepository>();
             builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
 
             //profile
