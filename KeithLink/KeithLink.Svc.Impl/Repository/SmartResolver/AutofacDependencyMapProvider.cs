@@ -91,7 +91,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 {
     internal static class AutofacDependencyMapProvider
     {
-        internal static void BuildBaselineDependencies(ContainerBuilder builder, bool IsWeb) {
+        internal static void BuildBaselineDependencies(ContainerBuilder builder) {
             ///////////////////////////////////////////////////////////////////////////////
             // Repositories
             ///////////////////////////////////////////////////////////////////////////////
@@ -106,25 +106,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // catalog
             builder.RegisterType<BranchSupportRepositoryImpl>().As<IBranchSupportRepository>();
-            if (IsWeb)
-            {
-                builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>();
-            }
-            else
-            {
-                builder.Register(b => new BrandRepositoryImpl()).As<IBrandRepository>().InstancePerRequest();
-            }
+            builder.RegisterType<BrandRepositoryImpl>().As<IBrandRepository>().InstancePerRequest();
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
-            if (IsWeb)
-            {
-                builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>();
-                builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>();
-            }
-            else
-            {
-                builder.Register(c => new ElasticSearchCatalogRepositoryImpl()).As<ICatalogRepository>().InstancePerRequest();
-                builder.Register(pi => new ProductImageRepositoryImpl()).As<IProductImageRepository>().InstancePerRequest();
-            }
+            builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>().InstancePerRequest();
+            builder.RegisterType<ProductImageRepositoryImpl>().As<IProductImageRepository>().InstancePerRequest();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<ExternalCatalogRepositoryImpl>().As<IExternalCatalogRepository>();
 
@@ -140,7 +125,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // invoices
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
-            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
             builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
             builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
@@ -173,15 +157,12 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
             // other
-            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
-            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
@@ -287,6 +268,18 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 #endif
+        }
+
+        internal static void AddDatabaseDependencies(ContainerBuilder builder, bool useSingleInstance = true) {
+            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
+            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
+
+            if(useSingleInstance) {
+                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            } else {
+                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            }
         }
 
         internal static void AddOtherInternalServiceDependencies(ContainerBuilder builder)
