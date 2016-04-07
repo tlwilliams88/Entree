@@ -40,7 +40,7 @@
           <div class="order-item-value-2" ng-if="UNFIOrder.deliveryoutofsequence == true || (UNFIOrder.scheduleddeliverytime != null && UNFIOrder.estimateddeliverytime == null)">N/A</div>
         </div>
         <div class="order-item">
-          <div class="order-item-title">Total Cost</div>
+          <div class="order-item-title">Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span></div>
           <div class="order-item-value-1">{{UNFIOrder.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
           <div class="order-item-value-2">
@@ -276,7 +276,7 @@
           <div class="order-item-value-2" ng-if="order.deliveryoutofsequence == true || (order.scheduleddeliverytime != null && order.estimateddeliverytime == null)">N/A</div>
         </div>
         <div class="order-item">
-          <div class="order-item-title">Total Cost</div>
+          <div class="order-item-title">Subtotal <span tooltip="This is your order total without taxes, fees, and final catch weight prices." class="glyphicon glyphicon-info-sign ico-blue"></span></div>
           <div class="order-item-value-1">{{order.ordertotal | currency}}</div>
           <div class="order-item-title">Items</div>
           <div class="order-item-value-2">
