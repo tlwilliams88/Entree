@@ -122,7 +122,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                 row.copy = angular.copy(item);
                                 row.compiled = false;
                                 row.item = item;
-                                if(scope.list.indexOf(item) % 2 !== 0) {
+                                if(scope.list.indexOf(item) % 2 == 0) {
                                     row.el[0].children[0].className += ' even';
                                 }
                             }
@@ -135,7 +135,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                                     item: item,
                                     el: render(item)
                                 };
-                                if(scope.list.indexOf(item) % 2 !== 0) {
+                                if(scope.list.indexOf(item) % 2 == 0) {
                                     row.el[0].children[0].className += ' even';
                                 }
                             } else {
@@ -263,7 +263,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                         // cloneCopy[0].previousElementSibling.children[0].children[12].children[0].children[0].value = previousParLevelValue;
                         // clone = cloneCopy;
                         scope.itemIconsActive = true;
-                        if(scope.list.indexOf(item) % 2 !== 0){
+                        if(scope.list.indexOf(item) % 2 == 0){
                             $target.replaceWith(clone);
                             clone[0].children[0].className += ' even';
                         }else{
