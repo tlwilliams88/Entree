@@ -118,7 +118,7 @@ angular.module('bekApp')
           if (!response) {
             return $q.reject('An error occurred while saving your preferences.');
           }
-          return response;
+          return response.data.successResponse;
         });
       },
 

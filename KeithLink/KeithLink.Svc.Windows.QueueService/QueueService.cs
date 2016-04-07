@@ -1,34 +1,30 @@
-﻿using Autofac;
-using KeithLink.Common.Core.Logging;
-using KeithLink.Svc.Impl;
+﻿using KeithLink.Common.Core.Logging;
+
 using KeithLink.Svc.Core.Interface.Email;
+using KeithLink.Svc.Core.Interface.Messaging;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Orders.Confirmations;
 using KeithLink.Svc.Core.Interface.Orders.History;
-using KeithLink.Svc.Core.Interface.Profile;
-using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using KeithLink.Svc.Impl;
+using KeithLink.Svc.Impl.Repository.SmartResolver;
 
 using Autofac;
 
 using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 
 namespace KeithLink.Svc.Windows.QueueService {
     partial class QueueService : ServiceBase {
         #region attributes
         private IContainer container;
         private IConfirmationLogic _confirmationLogic;
-        private IInternalOrderHistoryLogic _orderHistoryLogic;
-        private IInternalSpecialOrderLogic _specialOrderLogic;
-        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _externalNotificationQueueConsumer;
-        private Svc.Core.Interface.Messaging.INotificationQueueConsumer _internalNotificationQueueConsumer;
+        private IOrderHistoryLogic _orderHistoryLogic;
+        private ISpecialOrderLogic _specialOrderLogic;
+        private INotificationQueueConsumer _externalNotificationQueueConsumer;
+        private INotificationQueueConsumer _internalNotificationQueueConsumer;
         private IEventLogRepository _log;
         private IEmailClient _emailClient;
 
@@ -40,7 +36,7 @@ namespace KeithLink.Svc.Windows.QueueService {
         private ILifetimeScope internalNotificationScope;
 
         private static bool _checkLostOrdersProcessing;
-        private System.Threading.Timer _checkLostOrdersTimer;
+        private Timer _checkLostOrdersTimer;
 
         const int TIMER_DURATION_TICKMINUTE = 60000;
         const int TIMER_DURATION_START = 1000;
@@ -51,15 +47,8 @@ namespace KeithLink.Svc.Windows.QueueService {
         #region ctor
         public QueueService()
         {
-            this.container = AddLocalDependencies(Impl.Repository.SmartResolver.DependencyMapFactory.GetQueueSvcContainer()).Build();
+            container = DependencyMapFactory.GetQueueSvcContainer().Build();
             InitializeComponent();
-        }
-
-        private ContainerBuilder AddLocalDependencies(ContainerBuilder builder)
-        {
-            builder.RegisterType<KeithLink.Svc.WebApi.com.benekeith.ProfileService.ProfileServiceClient>().As<KeithLink.Svc.WebApi.com.benekeith.ProfileService.IProfileService>();
-            builder.RegisterType<KeithLink.Svc.WebApi.Repository.Profile.DsrAliasServiceImpl>().As<IDsrAliasService>();
-            return builder;
         }
         #endregion
 
@@ -70,7 +59,7 @@ namespace KeithLink.Svc.Windows.QueueService {
             TimerCallback cb = new TimerCallback( ProcessCheckLostOrdersMinuteTick );
 
             if (Configuration.CheckLostOrders.Equals( "true", StringComparison.CurrentCultureIgnoreCase )) {
-                _checkLostOrdersTimer = new System.Threading.Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE );
+                _checkLostOrdersTimer = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE );
                 lostOrdersScope = container.BeginLifetimeScope();
                 _emailClient = lostOrdersScope.Resolve<IEmailClient>();
             }
@@ -108,24 +97,24 @@ namespace KeithLink.Svc.Windows.QueueService {
         private void InitializeNotificationsThread() {
             externalNotificationScope = container.BeginLifetimeScope();
 
-            _externalNotificationQueueConsumer = externalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _externalNotificationQueueConsumer = externalNotificationScope.Resolve<INotificationQueueConsumer>();
             _externalNotificationQueueConsumer.ListenForExternalNotificationMessagesOnQueue();
 
             internalNotificationScope = container.BeginLifetimeScope();
-            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<Svc.Core.Interface.Messaging.INotificationQueueConsumer>();
+            _internalNotificationQueueConsumer = internalNotificationScope.Resolve<INotificationQueueConsumer>();
             _internalNotificationQueueConsumer.ListenForInternalNotificationMessagesOnQueue();
         }
 
         private void InitializeOrderUpdateThread() {
             orderHistoryScope = container.BeginLifetimeScope();
-            _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
+            _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
             _orderHistoryLogic.ListenForQueueMessages();
         }
 
         private void InitializeSpecialOrderUpdateThread()
         {
             specialOrderScope = container.BeginLifetimeScope();
-            _specialOrderLogic = specialOrderScope.Resolve<IInternalSpecialOrderLogic>();
+            _specialOrderLogic = specialOrderScope.Resolve<ISpecialOrderLogic>();
             _specialOrderLogic.ListenForQueueMessages();
         }
 
@@ -201,7 +190,7 @@ namespace KeithLink.Svc.Windows.QueueService {
                         string body;
 
                         orderHistoryScope = container.BeginLifetimeScope();
-                        _orderHistoryLogic = orderHistoryScope.Resolve<IInternalOrderHistoryLogic>();
+                        _orderHistoryLogic = orderHistoryScope.Resolve<IOrderHistoryLogic>();
                         subject = _orderHistoryLogic.CheckForLostOrders( out body );
 
                         StringBuilder sbMsgBody = new StringBuilder();

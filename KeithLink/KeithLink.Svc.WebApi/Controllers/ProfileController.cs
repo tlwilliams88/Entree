@@ -12,9 +12,9 @@ using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.ModelExport;
 
+using KeithLink.Svc.Impl.Helpers;
+
 using KeithLink.Svc.WebApi.Models;
-// using KeithLink.Svc.WebApi.Attribute;
-using KeithLink.Svc.WebApi.com.benekeith.ProfileService;
 
 using System;
 using System.Collections.Generic;
@@ -23,46 +23,46 @@ using System.Net.Http;
 using System.Net.NetworkInformation;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Net;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// end points for working the user profile
+    /// </summary>
 	public class ProfileController : BaseController
 	{
 		#region attributes
 		private readonly IAvatarRepository _avatarRepository;
-		private readonly ICustomerContainerRepository _custRepo;
+        private readonly ICustomerRepository _custRepo;
+		private readonly ICustomerContainerRepository _custContainerRepo;
 		private readonly ICustomerDomainRepository _extAd;
 		private readonly IEventLogRepository _log;
 		private readonly IUserProfileLogic _profileLogic;
-		private readonly IPasswordResetService _passwordResetService;
-        private readonly IDsrAliasService _dsrAliasService;
-		private readonly IMarketingPreferencesServiceRepository _marketingPreferencesServicesRepository;
+		private readonly IPasswordResetLogic _passwordLogic;
+        private readonly IDsrAliasLogic _dsrAliasLogic;
+		private readonly IMarketingPreferencesLogic _marketingPreferencesLogic;
 		private readonly IExportSettingLogic _exportLogic;
-        private readonly IProfileService _profileService;
+        private readonly ISettingsLogic _settingLogic;
 		#endregion
 
 		#region ctor
-		public ProfileController(ICustomerContainerRepository customerRepo,
-                                IEventLogRepository logRepo,
-                                IUserProfileLogic profileLogic,
-                                IAvatarRepository avatarRepository,
-                                ICustomerDomainRepository customerADRepo,
-                                IPasswordResetService passwordResetService,
-                                IDsrAliasService dsrAliasService,
-                                IMarketingPreferencesServiceRepository marketingPreferencesServiceRepo,
-                                IExportSettingLogic exportSettingsLogic,
-                                com.benekeith.ProfileService.IProfileService profileService )
-			: base(profileLogic) {
-			_custRepo = customerRepo;
+		public ProfileController(ICustomerContainerRepository customerContainerRepo, IEventLogRepository logRepo, IUserProfileLogic profileLogic, 
+                                 IAvatarRepository avatarRepository, ICustomerDomainRepository customerADRepo, IPasswordResetLogic passwordResetService, 
+                                 IDsrAliasLogic dsrAliasLogic, IMarketingPreferencesLogic marketingPreferencesLogic, IExportSettingLogic exportSettingsLogic, 
+                                 ISettingsLogic settingsLogic, ICustomerRepository customerRepository) : base(profileLogic) {
+			_custContainerRepo = customerContainerRepo;
+            _custRepo = customerRepository;
 			_profileLogic = profileLogic;
 			_log = logRepo;
 			_avatarRepository = avatarRepository;
 			_extAd = customerADRepo;
-			_passwordResetService = passwordResetService;
-            _dsrAliasService = dsrAliasService;
-			_marketingPreferencesServicesRepository = marketingPreferencesServiceRepo;
+			_passwordLogic = passwordResetService;
+            _dsrAliasLogic = dsrAliasLogic;
+			_marketingPreferencesLogic = marketingPreferencesLogic;
 			_exportLogic = exportSettingsLogic;
-            _profileService = profileService;
+            _settingLogic = settingsLogic;
+
         }
 		#endregion
 
@@ -81,13 +81,14 @@ namespace KeithLink.Svc.WebApi.Controllers
                 retVal.SuccessResponse = _profileLogic.CreateUserAndProfile(this.AuthenticatedUser, userInfo.CustomerName, userInfo.Email, userInfo.Password,
                                                                             userInfo.FirstName, userInfo.LastName, userInfo.PhoneNumber,
                                                                             userInfo.Role, userInfo.BranchId);
+                retVal.IsSuccess = true;
             } catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -125,15 +126,17 @@ namespace KeithLink.Svc.WebApi.Controllers
                     RegisteredOn = DateTime.Now
                 };
 
-                _marketingPreferencesServicesRepository.CreateMarketingPref(model);
-                _profileService.SetDefaultApplicationSettings(guestInfo.Email);
-            } catch (ApplicationException axe) {
+                _marketingPreferencesLogic.CreateMarketingPreference(model);
+                _settingLogic.SetDefaultApplicationSettings(guestInfo.Email);
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -154,12 +157,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 returnValue.SuccessResponse = _profileLogic.UserCreatedGuestWithTemporaryPassword(this.AuthenticatedUser, guestInfo.Email, guestInfo.BranchId);
-                _profileService.SetDefaultApplicationSettings(guestInfo.Email);
-            } catch (ApplicationException ex) {
+                _settingLogic.SetDefaultApplicationSettings(guestInfo.Email);
+                returnValue.IsSuccess = true;
+            }
+            catch (ApplicationException ex) {
                 returnValue.ErrorMessage = ex.Message;
+                returnValue.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", ex);
             } catch (Exception ex) {
                 returnValue.ErrorMessage = String.Concat("Could not complete the request. ", ex.Message);
+                returnValue.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -174,32 +181,50 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile")]
-        public UserProfileReturn GetUser(string email = "") {
-            if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0) {
-                UserProfileReturn retVal = new UserProfileReturn();
-                retVal.UserProfiles.Add(this.AuthenticatedUser);
-
-                PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);
-
-                if (customers.Results == null) {
-                    retVal.UserProfiles.First().DefaultCustomer = null;
-                } else {
-                    retVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
-                }
-
-                // UNFI Whitelisting configurations - these are temporary entries
-                // if user can view unfi, we want to say this right away
-                if ((retVal.UserProfiles != null) &&
-                    (retVal.UserProfiles.Count == 1) &&
-                    (retVal.UserProfiles[0].DefaultCustomer != null))
+        public Models.OperationReturnModel<UserProfileReturn> GetUser(string email = "") {
+            Models.OperationReturnModel<UserProfileReturn> retVal = new Models.OperationReturnModel<UserProfileReturn>();
+            try
+            {
+                if (email == string.Empty || string.Compare(email, AuthenticatedUser.EmailAddress, true) == 0)
                 {
-                    retVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, retVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
-                }
+                    UserProfileReturn upVal = new UserProfileReturn();
+                    upVal.UserProfiles.Add(this.AuthenticatedUser);
 
-                return retVal;
-            } else {
-                return _profileLogic.GetUserProfile(email, true);
+                    PagedResults<Customer> customers = _profileLogic.CustomerSearch(this.AuthenticatedUser, string.Empty, new PagingModel() { From = 0, Size = 1 }, string.Empty, CustomerSearchType.Customer);
+
+                    if (customers.Results == null)
+                    {
+                        upVal.UserProfiles.First().DefaultCustomer = null;
+                    }
+                    else {
+                        upVal.UserProfiles.First().DefaultCustomer = customers.Results.FirstOrDefault();
+                    }
+
+                    // UNFI Whitelisting configurations - these are temporary entries
+                    // if user can view unfi, we want to say this right away
+                    if ((upVal.UserProfiles != null) &&
+                        (upVal.UserProfiles.Count == 1) &&
+                        (upVal.UserProfiles[0].DefaultCustomer != null))
+                    {
+                        upVal.UserProfiles[0].DefaultCustomer.CanViewUNFI = _profileLogic.CheckCanViewUNFI(this.AuthenticatedUser, 
+                            upVal.UserProfiles[0].DefaultCustomer.CustomerNumber);
+                    }
+
+                    retVal.SuccessResponse = upVal;
+                }
+                else {
+                    retVal.SuccessResponse = _profileLogic.GetUserProfile(email, true);
+                }
+                retVal.IsSuccess = true;
             }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("GetUser", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -210,8 +235,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ApiKeyedRoute("profile/searchcustomer/{searchText}")]
-        public CustomerContainerReturn SearchCustomers(string searchText) {
-            return _custRepo.SearchCustomerContainers(searchText);
+        public Models.OperationReturnModel<CustomerContainerReturn> SearchCustomers(string searchText) {
+            Models.OperationReturnModel<CustomerContainerReturn> retVal = new Models.OperationReturnModel<CustomerContainerReturn>();
+            try
+            {
+                retVal.SuccessResponse = _custContainerRepo.SearchCustomerContainers(searchText);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("SearchCustomers", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -221,8 +259,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ApiKeyedRoute("profile/customer/balance")]
-        public CustomerBalanceOrderUpdatedModel CustomerBalance() {
-            return _profileLogic.GetBalanceForCustomer(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
+        public Models.OperationReturnModel<CustomerBalanceOrderUpdatedModel> CustomerBalance() {
+            Models.OperationReturnModel<CustomerBalanceOrderUpdatedModel> retVal = new Models.OperationReturnModel<CustomerBalanceOrderUpdatedModel>();
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetBalanceForCustomer(this.SelectedUserContext.CustomerId, this.SelectedUserContext.BranchId);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("CustomerBalance", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -237,9 +288,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
             try {
                 returnValue.SuccessResponse = _profileLogic.UpdateUserPassword(this.AuthenticatedUser, pwInfo.Email, pwInfo.OriginalPassword, pwInfo.NewPassword);
-            } catch (Exception ex) {
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex) {
+                _log.WriteErrorLog("UpdatePassword", ex);
                 returnValue.SuccessResponse = false;
                 returnValue.ErrorMessage = ex.Message;
+                returnValue.IsSuccess = false;
             }
 
             return returnValue;
@@ -259,20 +314,22 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 if (String.IsNullOrEmpty(userInfo.UserId)) { userInfo.UserId = this.AuthenticatedUser.UserId.ToString("B"); }
 
-                if (!_profileLogic.IsInternalAddress(userInfo.Email)) {
+                if (!ProfileHelper.IsInternalAddress(userInfo.Email)) {
                     _profileLogic.UpdateUserProfile(this.AuthenticatedUser, userInfo.UserId.ToGuid(), userInfo.Email, userInfo.FirstName,
                                                   userInfo.LastName, userInfo.PhoneNumber, userInfo.BranchId,
                                                   true /* hard coded security for now */, userInfo.Customers, userInfo.Role);
                 }
 
                 retVal.SuccessResponse = _profileLogic.GetUserProfile(userInfo.Email);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -293,13 +350,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.CreateAccount(this.AuthenticatedUser, account.Name);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -320,14 +379,19 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 _profileLogic.DeleteAccount(this.AuthenticatedUser, accountId);
                 retVal.SuccessResponse = true;
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
                 retVal.SuccessResponse = false;
                 _log.WriteErrorLog("Application exception", axe);
-            } catch (Exception ex) {
+                retVal.IsSuccess = false;
+            }
+            catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
                 retVal.SuccessResponse = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
+                retVal.IsSuccess = false;
             }
 
             return retVal;
@@ -348,13 +412,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             retVal.SuccessResponse = false;
             try {
                 retVal.SuccessResponse = _profileLogic.UpdateAccount(this.AuthenticatedUser, account.Id, account.Name, account.Customers, account.AdminUsers);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -375,13 +441,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetAccount(this.AuthenticatedUser, accountid);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -403,13 +471,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 // TODO
                 retVal.SuccessResponse = true;
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -426,7 +496,26 @@ namespace KeithLink.Svc.WebApi.Controllers
         [ApiKeyedRoute("profile/account/{accountId}/users")]
         //[Authorization(new string[] { Core.Constants.ROLE_INTERNAL_DSM_FAM })] // TODO get proper roles
         public OperationReturnModel<AccountUsersReturn> GetAcountUsers(Guid accountId) {
-            return new OperationReturnModel<AccountUsersReturn>() { SuccessResponse = _profileLogic.GetAccountUsers(accountId) };
+            OperationReturnModel<AccountUsersReturn> retVal = new OperationReturnModel<AccountUsersReturn>();
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetAccountUsers(accountId);
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+                retVal.IsSuccess = false;
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+                retVal.IsSuccess = false;
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -444,13 +533,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 _profileLogic.RemoveUserFromAccount(this.AuthenticatedUser, accountId, userId);
                 retVal.SuccessResponse = true;
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -471,13 +562,15 @@ namespace KeithLink.Svc.WebApi.Controllers
             try {
                 _profileLogic.AddUserToCustomer(this.AuthenticatedUser, info.customerId, info.userId);
                 retVal.SuccessResponse = true;
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -496,18 +589,40 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile/customer/")]
-        public PagedResults<Customer> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "",
+        public OperationReturnModel<PagedResults<Customer>> SearchCustomers([FromUri] PagingModel paging, [FromUri] SortInfo sort, [FromUri] string account = "",
                                                                                     [FromUri] string terms = "", [FromUri] string type = "1") {
-            if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field)) {
-                paging.Sort = new List<SortInfo>() { sort };
+            OperationReturnModel<PagedResults<Customer>> retVal = new OperationReturnModel<PagedResults<Customer>>();
+
+            try
+            {
+                if (paging.Sort == null && sort != null && !String.IsNullOrEmpty(sort.Order) && !String.IsNullOrEmpty(sort.Field))
+                {
+                    paging.Sort = new List<SortInfo>() { sort };
+                }
+
+                int typeVal;
+                if (!int.TryParse(type, out typeVal))
+                {
+                    typeVal = 1;
+                }
+
+                retVal.SuccessResponse = _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType)typeVal);
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+                retVal.IsSuccess = false;
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+                retVal.IsSuccess = false;
+                _log.WriteErrorLog("Unhandled exception", ex);
             }
 
-            int typeVal;
-            if (!int.TryParse(type, out typeVal)) {
-                typeVal = 1;
-            }
-
-            return _profileLogic.CustomerSearch(this.AuthenticatedUser, terms, paging, account, (CustomerSearchType)typeVal);
+            return retVal;
         }
 
         /// <summary>
@@ -524,13 +639,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetCustomerByCustomerNumber(customerNumber, branchId);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -551,13 +668,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetAccounts(accountFilter);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -572,8 +691,28 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpPost]
         [ApiKeyedRoute("profile/accounts")]
-        public PagedResults<Account> Accounts(PagingModel paging) {
-            return _profileLogic.GetPagedAccounts(paging);
+        public OperationReturnModel<PagedResults<Account>> Accounts(PagingModel paging) {
+            OperationReturnModel<PagedResults<Account>> retVal = new OperationReturnModel<PagedResults<Account>>();
+
+            try
+            {
+                retVal.SuccessResponse = _profileLogic.GetPagedAccounts(paging);
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe)
+            {
+                retVal.ErrorMessage = axe.Message;
+                retVal.IsSuccess = false;
+                _log.WriteErrorLog("Application exception", axe);
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
+                retVal.IsSuccess = false;
+                _log.WriteErrorLog("Unhandled exception", ex);
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -590,13 +729,15 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetUsers(userFilter);
-            } catch (ApplicationException axe) {
+                retVal.IsSuccess = true;
+            }
+            catch (ApplicationException axe) {
                 retVal.ErrorMessage = axe.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Application exception", axe);
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not complete the request. " + ex.Message;
-
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Unhandled exception", ex);
             }
 
@@ -615,9 +756,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<CustomerReturn> customerReturn = new OperationReturnModel<CustomerReturn>();
             try {
                 customerReturn.SuccessResponse = new CustomerReturn() { Customers = _profileLogic.GetCustomersForExternalUser(userid) };
-            } catch (Exception ex) {
+                customerReturn.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 customerReturn.ErrorMessage = ex.Message;
                 _log.WriteErrorLog("Error retrieving customers for external user", ex);
+                customerReturn.IsSuccess = false;
             }
 
             return customerReturn;
@@ -661,9 +805,13 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 returnValue.SuccessResponse = _avatarRepository.SaveAvatar(this.AuthenticatedUser.UserId, fileName, base64FileString);
-            } catch (Exception e) {
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception e) {
                 returnValue.SuccessResponse = false;
                 returnValue.ErrorMessage = e.Message;
+                _log.WriteErrorLog("UploadAvatar", e);
+                returnValue.IsSuccess = false;
             }
 
             return returnValue;
@@ -697,14 +845,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 if (selectedApp == AccessRequestType.Undefined) {
                     retVal.SuccessResponse = false;
+                    retVal.IsSuccess = false;
                     retVal.ErrorMessage = "Could not grant access to unknown application.";
                 } else {
                     _profileLogic.GrantRoleAccess(this.AuthenticatedUser, email, selectedApp);
-
+                    retVal.IsSuccess = true;
                     retVal.SuccessResponse = true;
                 }
             } catch (Exception ex) {
                 retVal.SuccessResponse = false;
+                retVal.IsSuccess = false;
                 retVal.ErrorMessage = "Could not grant access";
                 _log.WriteErrorLog("Could not grant access to application.", ex);
             }
@@ -740,14 +890,16 @@ namespace KeithLink.Svc.WebApi.Controllers
 
                 if (selectedApp == AccessRequestType.Undefined) {
                     retVal.SuccessResponse = false;
+                    retVal.IsSuccess = false;
                     retVal.ErrorMessage = "Could not revoke access from unknown application.";
                 } else {
                     _profileLogic.RevokeRoleAccess(this.AuthenticatedUser, email, selectedApp);
-
+                    retVal.IsSuccess = true;
                     retVal.SuccessResponse = true;
                 }
             } catch (Exception ex) {
                 retVal.SuccessResponse = false;
+                retVal.IsSuccess = false;
                 retVal.ErrorMessage = "Could revoke access";
                 _log.WriteErrorLog("Could not revoke access to application.", ex);
             }
@@ -766,10 +918,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
 
             try {
-                _passwordResetService.GeneratePasswordResetRequest(emailAddress);
+                _passwordLogic.GenerateNewUserPasswordLink(emailAddress);
+                returnValue.IsSuccess = true;
                 returnValue.SuccessResponse = true;
             } catch (Exception ex) {
                 returnValue.SuccessResponse = false;
+                returnValue.IsSuccess = false;
                 returnValue.ErrorMessage = "There was an error processing your request. Please validate your information is correct. If the problem persists please contact support";
                 _log.WriteErrorLog("Controller reset password error", ex);
             }
@@ -784,8 +938,21 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("profile/forgotpassword/validatetoken")]
-        public string ValidateToken(ValidateTokenModel tokenModel) {
-            return _passwordResetService.IsTokenValid(tokenModel.Token);
+        public Models.OperationReturnModel<string> ValidateToken(ValidateTokenModel tokenModel) {
+            Models.OperationReturnModel<string> retVal = new Models.OperationReturnModel<string>();
+            try
+            {
+                retVal.SuccessResponse = _passwordLogic.IsTokenValid(tokenModel.Token);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                _log.WriteErrorLog("ValidateToken", ex);
+                retVal.ErrorMessage = ex.Message;
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -799,9 +966,12 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>();
 
             try {
-                returnValue.SuccessResponse = _passwordResetService.ResetPassword(resetModel);
-            } catch (Exception ex) {
+                returnValue.SuccessResponse = _passwordLogic.ResetPassword(resetModel);
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 returnValue.SuccessResponse = false;
+                returnValue.IsSuccess = false;
                 returnValue.ErrorMessage = "There was an error processing your request. If the problem persists please contact support";
                 _log.WriteErrorLog("Reset password error", ex);
             }
@@ -825,8 +995,11 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.CreateDsrAlias(model.UserId, model.Email, new Dsr() { Branch = model.BranchId, DsrNumber = model.DsrNumber });
-            } catch (Exception ex) {
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 retVal.ErrorMessage = "Could not create alias";
+                retVal.IsSuccess = false;
                 _log.WriteErrorLog("Could not create alias", ex);
             }
 
@@ -849,11 +1022,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 _profileLogic.DeleteDsrAlias(model.Id, model.Email);
-
+                retVal.IsSuccess = true;
                 retVal.SuccessResponse = true;
             } catch (Exception ex) {
                 retVal.ErrorMessage = "Could not delete alias";
                 _log.WriteErrorLog("Could not delete alias", ex);
+                retVal.IsSuccess = false;
             }
 
             return retVal;
@@ -874,9 +1048,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetAllDsrAliasesByUserId(AuthenticatedUser.UserId);
-            } catch (Exception ex) {
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 retVal.ErrorMessage = "Could not get aliases for current user";
                 _log.WriteErrorLog(retVal.ErrorMessage, ex);
+                retVal.IsSuccess = false;
             }
 
             return retVal;
@@ -898,9 +1075,12 @@ namespace KeithLink.Svc.WebApi.Controllers
 
             try {
                 retVal.SuccessResponse = _profileLogic.GetAllDsrAliasesByUserId(userId);
-            } catch (Exception ex) {
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 retVal.ErrorMessage = string.Format("Could not get aliases for speicified user {0}", userId);
                 _log.WriteErrorLog(retVal.ErrorMessage, ex);
+                retVal.IsSuccess = false;
             }
 
             return retVal;
@@ -915,8 +1095,22 @@ namespace KeithLink.Svc.WebApi.Controllers
         [Authorize]
         [HttpGet]
         [ApiKeyedRoute("profile/marketinginfo")]
-        public List<MarketingPreferenceModel> GetMarketingInfo([FromUri] DateTime from, [FromUri] DateTime to) {
-            return _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
+        public OperationReturnModel<List<MarketingPreferenceModel>> GetMarketingInfo([FromUri] DateTime from, [FromUri] DateTime to) {
+            OperationReturnModel<List<MarketingPreferenceModel>> retVal = new OperationReturnModel<List<MarketingPreferenceModel>>();
+
+            try
+            {
+                retVal.SuccessResponse = _marketingPreferencesLogic.ReadMarketingPreferences(from, to);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog(retVal.ErrorMessage, ex);
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         // <summary>
@@ -928,11 +1122,22 @@ namespace KeithLink.Svc.WebApi.Controllers
         [HttpPost]
         [ApiKeyedRoute("profile/export/marketinginfo")]
         public HttpResponseMessage ExportMarketingPrefs([FromUri] DateTime from, [FromUri] DateTime to, ExportRequestModel exportRequest) {
-            var marketinginfo = _marketingPreferencesServicesRepository.ReadMarketingPreferences(from, to);
+            HttpResponseMessage ret;
+            try
+            {
+                var marketinginfo = _marketingPreferencesLogic.ReadMarketingPreferences(from, to);
 
-            if (exportRequest.Fields != null)
-                _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
-            return ExportModel<MarketingPreferenceModel>(marketinginfo, exportRequest);
+                if (exportRequest.Fields != null)
+                    _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, Core.Enumerations.List.ListType.Custom, exportRequest.Fields, exportRequest.SelectedType);
+                return ExportModel<MarketingPreferenceModel>(marketinginfo, exportRequest, SelectedUserContext);
+            }
+            catch (Exception ex)
+            {
+                ret = Request.CreateResponse(HttpStatusCode.InternalServerError);
+                ret.ReasonPhrase = ex.Message;
+                _log.WriteErrorLog("ExportMarketingPrefs", ex);
+            }
+            return ret;
         }
 
         /// <summary>
@@ -941,8 +1146,23 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [ApiKeyedRoute("profile/export/marketinginfo")]
-        public ExportOptionsModel ExportMarketingPref() {
-            return _exportLogic.ReadCustomExportOptions(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
+        public OperationReturnModel<ExportOptionsModel> ExportMarketingPref() {
+            OperationReturnModel<ExportOptionsModel> retVal = new OperationReturnModel<ExportOptionsModel>();
+
+            try
+            {
+                retVal.SuccessResponse = _exportLogic.ReadCustomExportOptions
+                    (this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.MarketingPreferences, 0);
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
+                retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog(retVal.ErrorMessage, ex);
+                retVal.IsSuccess = false;
+            }
+
+            return retVal;
         }
 
         /// <summary>
@@ -955,10 +1175,13 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<List<SettingsModelReturn>> returnValue = new OperationReturnModel<List<SettingsModelReturn>>() { SuccessResponse = null };
 
             try {
-                returnValue.SuccessResponse = _profileService.ReadProfileSettings(AuthenticatedUser.UserId).ToList<SettingsModelReturn>();
-            } catch (Exception ex) {
-                returnValue.ErrorMessage = string.Format("Could not retrieve profile settings for specific user: {0}", AuthenticatedUser.UserId);
+                returnValue.SuccessResponse = _settingLogic.GetAllUserSettings(AuthenticatedUser.UserId);
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex) {
+                returnValue.ErrorMessage = ex.Message;
                 _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
             }
 
             return returnValue;
@@ -975,14 +1198,17 @@ namespace KeithLink.Svc.WebApi.Controllers
             OperationReturnModel<bool> returnValue = new OperationReturnModel<bool>() { SuccessResponse = false };
 
             // Set the userid
-            settings.UserId = Guid.Parse(AuthenticatedUser.UserId.ToString());
+            settings.UserId = AuthenticatedUser.UserId;
 
             try {
-                _profileService.SaveProfileSettings(settings);
+                _settingLogic.CreateOrUpdateSettings(settings);
                 returnValue.SuccessResponse = true;
-            } catch (Exception ex) {
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 returnValue.ErrorMessage = string.Format("Error saving profile settings for user: {0}", ex);
                 _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
             }
 
             return returnValue;
@@ -1001,26 +1227,40 @@ namespace KeithLink.Svc.WebApi.Controllers
             settings.UserId = AuthenticatedUser.UserId;
 
             try {
-                _profileService.DeleteProfileSetting(settings);
+                _settingLogic.DeleteSettings(settings);
                 returnValue.SuccessResponse = true;
-
-            } catch (Exception ex) {
+                returnValue.IsSuccess = true;
+            }
+            catch (Exception ex) {
                 returnValue.ErrorMessage = String.Format("Error deleting profile settings {0} for userId {1}", settings.Key, settings.UserId);
+                _log.WriteErrorLog(returnValue.ErrorMessage, ex);
+                returnValue.IsSuccess = false;
             }
 
             return returnValue;
         }
 
+        /// <summary>
+        /// changes wheter or not a customer can view pricing
+        /// </summary>
+        /// <param name="customer"></param>
+        /// <returns></returns>
         [HttpPost]
         [ApiKeyedRoute("profile/customer/viewpricing")]
         public OperationReturnModel<bool> UpdateCustomerCanViewPricing(Customer customer) {
             OperationReturnModel<bool> retVal = new OperationReturnModel<bool>();
 
             try {
-                _profileService.UpdateCustomerCanViewPricing(customer.CustomerId, customer.CanViewPricing);
+                _custRepo.UpdateCustomerCanViewPricing(customer.CustomerId, customer.CanViewPricing);
                 retVal.SuccessResponse = true;
-            } catch {
+                retVal.IsSuccess = true;
+            }
+            catch (Exception ex)
+            {
                 retVal.SuccessResponse = false;
+                retVal.ErrorMessage = ex.Message;
+                _log.WriteErrorLog(retVal.ErrorMessage, ex);
+                retVal.IsSuccess = false;
             }
 
             return retVal;

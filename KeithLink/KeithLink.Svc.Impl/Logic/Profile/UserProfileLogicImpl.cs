@@ -3,23 +3,25 @@
 using KeithLink.Common.Core.Extensions;
 using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
+
 using KeithLink.Svc.Core;
 using KeithLink.Svc.Core.Enumerations.Messaging;
 using KeithLink.Svc.Core.Enumerations.Profile;
 using KeithLink.Svc.Core.Enumerations.SingleSignOn;
+
 using KeithLink.Svc.Core.Extensions;
 using KeithLink.Svc.Core.Extensions.Messaging;
-using KeithLink.Svc.Core.Extensions.PowerMenu;
 using KeithLink.Svc.Core.Extensions.SingleSignOn;
+
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
 using KeithLink.Svc.Core.Interface.Email;
-using KeithLink.Svc.Core.Interface.Invoices;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
-using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
+
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Paging;
@@ -29,6 +31,8 @@ using KeithLink.Svc.Core.Models.Profile.EF;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 using KeithLink.Svc.Core.Models.SingleSignOn;
 
+using KeithLink.Svc.Impl.Helpers;
+
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -36,8 +40,6 @@ using System.DirectoryServices.AccountManagement;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 
 namespace KeithLink.Svc.Impl.Logic.Profile {
     public class UserProfileLogicImpl : IUserProfileLogic {
@@ -51,30 +53,30 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		protected string CACHE_PREFIX { get { return "Default"; } }
 
 
-        private ICacheRepository _cache;
-        private IUserProfileRepository _csProfile;
-        private ICustomerDomainRepository _extAd;
-        private IUserDomainRepository _intAd;
-        private IAccountRepository _accountRepo;
-        private ICustomerRepository _customerRepo;
-		private IOrderServiceRepository _orderServiceRepository;
-        private IMessagingLogic _msgLogic;
-        private IMessageTemplateLogic _msgTemplateLogic;
-		private IEmailClient _emailClient;
-		private IEventLogRepository _eventLog;
-		private IOnlinePaymentsLogic _paymentLogic;
-        private IGenericQueueRepository _queue;
-        private IDsrAliasService _dsrAliasService;
-		private IPasswordResetService _passwordService;
-        private ISettingsLogicImpl _settingsLogic;
+        private readonly ICacheRepository _cache;
+        private readonly IUserProfileRepository _csProfile;
+        private readonly ICustomerDomainRepository _extAd;
+        private readonly IUserDomainRepository _intAd;
+        private readonly IAccountRepository _accountRepo;
+        private readonly ICustomerRepository _customerRepo;
+        private readonly IMessagingLogic _msgLogic;
+        private readonly IMessageTemplateLogic _msgTemplateLogic;
+		private readonly IEmailClient _emailClient;
+		private readonly IEventLogRepository _eventLog;
+		private readonly IOnlinePaymentsLogic _paymentLogic;
+        private readonly IGenericQueueRepository _queue;
+        private readonly IDsrAliasLogic _dsrAliasLogic;
+		private readonly IPasswordResetLogic _passwordLogic;
+        private readonly ISettingsLogic _settingsLogic;
+        private readonly IOrderHistoryHeaderRepsitory _historyRepo;
         #endregion
 
         #region ctor
         public UserProfileLogicImpl(ICustomerDomainRepository externalAdRepo, IUserDomainRepository internalAdRepo, IUserProfileRepository commerceServerProfileRepo,
-									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo, 
-                                    IOrderServiceRepository orderServiceRepository, IMessagingLogic messagingLogic, IEmailClient emailClient, 
+									ICacheRepository profileCache, IAccountRepository accountRepo, ICustomerRepository customerRepo,
+                                    IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessagingLogic messagingLogic, IEmailClient emailClient, 
                                     IEventLogRepository eventLog, IOnlinePaymentsLogic paymentLogic, IGenericQueueRepository queue, 
-                                    IDsrAliasService dsrAliasService, IPasswordResetService passwordService, ISettingsLogicImpl settingsLogic, 
+                                    IDsrAliasLogic dsrAliasLogic, IPasswordResetLogic passwordResetLogic, ISettingsLogic settingsLogic, 
                                     IMessageTemplateLogic messageTemplateLogic) {
             _cache = profileCache;
             _extAd = externalAdRepo;
@@ -82,16 +84,16 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _csProfile = commerceServerProfileRepo;
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
-			_orderServiceRepository = orderServiceRepository;
             _msgLogic = messagingLogic;
             _msgTemplateLogic = messageTemplateLogic;
 			_emailClient = emailClient;
 			_eventLog = eventLog;
 			_paymentLogic = paymentLogic;
             _queue = queue;
-            _dsrAliasService = dsrAliasService;
-			_passwordService = passwordService;
+            _dsrAliasLogic = dsrAliasLogic;
+			_passwordLogic = passwordResetLogic;
             _settingsLogic = settingsLogic;
+            _historyRepo = orderHistoryRepository;
         }
         #endregion
 
@@ -330,7 +332,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public DsrAliasModel CreateDsrAlias(Guid userId, string email, Dsr dsr) {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
 
-            return _dsrAliasService.CreateDsrAlias(userId, email, dsr);
+            return _dsrAliasLogic.CreateDsrAlias(userId, email, dsr);
         }
 
 		public void DeleteAccount(UserProfile deletedBy, Guid accountId)
@@ -350,7 +352,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public void DeleteDsrAlias(long dsrAliasId, string email) {
             _cache.RemoveItem(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(email));
 
-            _dsrAliasService.DeleteDsrAlias(dsrAliasId, email);
+            _dsrAliasLogic.DeleteDsrAlias(dsrAliasId, email);
         }
 
         /// <summary>
@@ -402,7 +404,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// </remarks>
         public UserProfileReturn CreateGuestUserAndProfile(UserProfile actingUser, string emailAddress, string password, string branchId) {
             if (emailAddress == null) throw new Exception( "email address cannot be null" );
-            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
+            if (ProfileHelper.IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             if (password == null) throw new Exception( "password cannot be null" );
 
             AssertGuestProfile(emailAddress, password);
@@ -453,7 +455,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 		public UserProfileReturn CreateUserAndProfile(UserProfile actingUser, string customerName, string emailAddress, 
                                                       string password, string firstName, string lastName, 
                                                       string phone, string roleName, string branchId) {
-            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
+            if (ProfileHelper.IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             AssertUserProfile(customerName, emailAddress, password, firstName, lastName, phone, roleName);
 
             _extAd.CreateUser(customerName,
@@ -505,7 +507,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             if (!string.IsNullOrEmpty(account))
                 return _customerRepo.GetPagedCustomersForAccount(paging, searchTerms, account.ToGuid().ToCommerceServerFormat(), searchType);
 
-            if (IsInternalAddress(user.EmailAddress))
+            if (ProfileHelper.IsInternalAddress(user.EmailAddress))
             {
 
                 PagedResults<Customer> returnValue = new PagedResults<Customer>();
@@ -582,7 +584,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             string dsmRole = string.Empty;
             string userRole = string.Empty;
             string userBranch = string.Empty;
-            bool isInternalUser = IsInternalAddress(csProfile.Email);
+            bool isInternalUser = ProfileHelper.IsInternalAddress(csProfile.Email);
             UserPrincipal adUser = null;
             bool isKbitCustomer = false;
             bool isPowerMenuCustomer = false;
@@ -653,8 +655,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
 
                 retVal.UserId = Guid.Parse(csProfile.Id);
-                retVal.IsInternalUser = IsInternalAddress(csProfile.Email);
+                retVal.IsInternalUser = ProfileHelper.IsInternalAddress(csProfile.Email);
                 retVal.PasswordExpired = (isInternalUser) ? false : _extAd.IsPasswordExpired(csProfile.Email);
+                retVal.LastActivity = csProfile.LastActivityDate;
+                retVal.LastLogin = csProfile.LastLoginDate;
                 retVal.FirstName = csProfile.FirstName;
                 retVal.LastName = csProfile.LastName;
                 retVal.EmailAddress = csProfile.Email;
@@ -679,7 +683,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 #endif
                 if (isInternalUser) {
                     try {
-                        retVal.DsrAliases = _dsrAliasService.GetAllDsrAliasesByUserId(retVal.UserId);
+                        retVal.DsrAliases = _dsrAliasLogic.GetAllDsrAliasesByUserId(retVal.UserId);
                         if (retVal.DSRNumber.Length > 0) { retVal.DsrAliases.Add(new DsrAliasModel() { BranchId = retVal.BranchId, DsrNumber = retVal.DSRNumber }); }
                     } catch {
 
@@ -836,7 +840,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public CustomerBalanceOrderUpdatedModel GetBalanceForCustomer(string customerId, string branchId) {
             var returnModel = new CustomerBalanceOrderUpdatedModel();
 
-            returnModel.LastOrderUpdate = _orderServiceRepository.ReadLatestUpdatedDate(new Core.Models.SiteCatalog.UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
+            returnModel.LastOrderUpdate = _historyRepo.ReadLatestOrderDate(new UserSelectedContext() { BranchId = branchId, CustomerId = customerId });
             returnModel.balance = _paymentLogic.GetCustomerAccountBalance(customerId, branchId);
 
             return returnModel;
@@ -876,7 +880,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public List<Customer> GetCustomersForExternalUser(Guid userId) {
             Core.Models.Generated.UserProfile profile = _csProfile.GetCSProfile(userId);
 
-            if (IsInternalAddress(profile.Email)) {
+            if (ProfileHelper.IsInternalAddress(profile.Email)) {
                 throw new ApplicationException("This call is not supported for internal users.");
             } else {
                 return _customerRepo.GetCustomersForUser(userId);
@@ -888,7 +892,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         public List<DsrAliasModel> GetAllDsrAliasesByUserId(Guid userId) {
-            return _dsrAliasService.GetAllDsrAliasesByUserId(userId);
+            return _dsrAliasLogic.GetAllDsrAliasesByUserId(userId);
         }
 
         public List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId) {
@@ -993,7 +997,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             List<Customer> allCustomers = new List<Customer>();
             if (string.IsNullOrEmpty(search))
                 search = "";
-            if (IsInternalAddress(user.EmailAddress)) {
+            if (ProfileHelper.IsInternalAddress(user.EmailAddress)) {
                 if (!String.IsNullOrEmpty(user.DSRNumber)) {
                     // lookup customers by their assigned dsr number
                     //allCustomers = _customerRepo.GetCustomersForDSR(user.DSRNumber, user.BranchId);
@@ -1139,7 +1143,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             // check for cached user profile first
             Core.Models.Profile.UserProfile profile = _cache.GetItem<UserProfile>(CACHE_GROUPNAME, CACHE_PREFIX, CACHE_NAME, CacheKey(emailAddress));
 
-            if (IsInternalAddress(emailAddress).Equals(false) && profile != null) {
+            if (ProfileHelper.IsInternalAddress(emailAddress).Equals(false) && profile != null) {
                 profile.PasswordExpired = _extAd.IsPasswordExpired(emailAddress); // always check password expired status; even when cached...
             }
 
@@ -1152,7 +1156,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             Core.Models.Generated.UserProfile csUserProfile = _csProfile.GetCSProfile(emailAddress);
 
             if (csUserProfile == null) {
-                if (IsInternalAddress(emailAddress)) {
+                if (ProfileHelper.IsInternalAddress(emailAddress)) {
                     CreateBekUserProfile(emailAddress);
 
                     return GetUserProfile(emailAddress);
@@ -1224,7 +1228,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private string GetUserRole(string email) {
             string roleName = null;
 
-            if (IsInternalAddress(email)) {
+            if (ProfileHelper.IsInternalAddress(email)) {
                 //roleName = _intAd.
                 roleName = "owner";
             } else {
@@ -1233,8 +1237,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             return roleName;
         }
-
-		
 
         public UserProfileReturn GetUsers(UserFilterModel userFilters) {
             if (userFilters != null) {
@@ -1288,18 +1290,6 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 default:
                     break;
             }
-        }
-
-        /// <summary>
-        /// looks for a benekeith.com email domain
-        /// </summary>
-        /// <param name="emailAddress">the user's email address</param>
-        /// <returns>true if found</returns>
-        /// <remarks>
-        /// jwames - 10/3/2014 - documented
-        /// </remarks>
-        public bool IsInternalAddress(string emailAddress) {
-            return Regex.IsMatch(emailAddress, Core.Constants.REGEX_BENEKEITHEMAILADDRESS);
         }
 
         private string NewPassword() {
@@ -1538,12 +1528,11 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         /// <remarks>
         /// jwames - 4/2/2015 - change AD structure
         /// </remarks>
-		public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actingUser, string emailAddress, string branchId)
-		{
-            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
+        public UserProfileReturn UserCreatedGuestWithTemporaryPassword(UserProfile actingUser, string emailAddress, string branchId) {
+            if(ProfileHelper.IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot create an account in External AD for an Internal User"); }
             string generatedPassword = GenerateTemporaryPassword(); //This generated password is no longer being sent to the user, but it's still needed to create the account in AD
 
-            AssertGuestProfile( emailAddress, generatedPassword );
+            AssertGuestProfile(emailAddress, generatedPassword);
 
             _extAd.CreateUser(
                 Configuration.ActiveDirectoryExternalUserContainer,
@@ -1555,7 +1544,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 );
 
             _csProfile.CreateUserProfile(
-				actingUser.EmailAddress,
+               actingUser.EmailAddress,
                 emailAddress,
                 Core.Constants.AD_GUEST_FIRSTNAME,
                 Core.Constants.AD_GUEST_LASTNAME,
@@ -1563,10 +1552,10 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 branchId
                 );
 
-			_passwordService.GeneratePasswordForNewUser(emailAddress);
-            
+            _passwordLogic.GenerateNewUserPasswordLink(emailAddress);
 
-            return GetUserProfile( emailAddress );
+
+            return GetUserProfile(emailAddress);
         }
 
         public bool UpdateAccount(UserProfile updatedBy, Guid accountId, string name, List<Customer> customers, List<UserProfile> users) {
@@ -1637,7 +1626,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         public bool UpdateUserPassword(UserProfile updatedBy, string emailAddress, string originalPassword, string newPassword) {
             bool retVal = false;
 
-            if (IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
+            if (ProfileHelper.IsInternalAddress(emailAddress)) { throw new ApplicationException("Cannot change password for BEK user"); }
 
             UserProfile existingUser = GetUserProfile(emailAddress).UserProfiles[0];
 
@@ -1671,7 +1660,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
 
             if (string.Compare(existingUser.UserProfiles[0].EmailAddress, emailAddress, true) != 0) { AssertEmailAddressUnique(emailAddress); }
 
-            if (IsInternalAddress(emailAddress) || IsInternalAddress(existingUser.UserProfiles[0].EmailAddress)) {
+            if (ProfileHelper.IsInternalAddress(emailAddress) || ProfileHelper.IsInternalAddress(existingUser.UserProfiles[0].EmailAddress)) {
                 throw new ApplicationException("Cannot update profile information for BEK user.");
             }
 
@@ -1707,6 +1696,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _settingsLogic.DeleteSettings( model );
         }
 
+        public void SetUserProfileLastLogin(Guid id)
+        {
+            _csProfile.UpdateUserProfileLastLogin(id);
+        }
+
+        public void SetUserProfileLastAccess(Guid id)
+        {
+            _csProfile.UpdateUserProfileLastAccess(id);
+        }
         /// <summary>
         /// UNFI Whitelisting configurations - these are temporary entries
         /// </summary>

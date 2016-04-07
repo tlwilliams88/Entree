@@ -6,6 +6,8 @@ using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Models.Authentication;
 using KeithLink.Svc.Core.Models.Profile;
 
+using KeithLink.Svc.Impl.Helpers;
+
 using Microsoft.Owin.Security.OAuth;
 
 using System;
@@ -41,10 +43,8 @@ namespace KeithLink.Svc.WebApi
 
             string errMsg = null;
 
-            IUserProfileLogic _profileLogic = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserProfileLogic)) as IUserProfileLogic;
-
             // determine if we are authenticating an internal or external user
-            if (_profileLogic.IsInternalAddress(context.UserName)) {
+            if (ProfileHelper.IsInternalAddress(context.UserName)) {
                 IUserDomainRepository ADRepo = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserDomainRepository)) as IUserDomainRepository;
 
                 bool success = await Task.Run<bool>(() => ADRepo.AuthenticateUser(context.UserName, context.Password, out errMsg));
@@ -64,11 +64,13 @@ namespace KeithLink.Svc.WebApi
                 }
             }
 
+            IUserProfileLogic _profileLogic = GlobalConfiguration.Configuration.DependencyResolver.GetService(typeof(IUserProfileLogic)) as IUserProfileLogic;
             UserProfileReturn userReturn = await Task.Run<UserProfileReturn>(() => _profileLogic.GetUserProfile(context.UserName));
 
             if (userReturn.UserProfiles.Count == 0) {
                 context.SetError("invalid_grant", "User profile does not exist in Commerce Server");
             } else {
+                _profileLogic.SetUserProfileLastLogin(userReturn.UserProfiles[0].UserId);
                 var identity = new ClaimsIdentity(context.Options.AuthenticationType);
                 identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
                 identity.AddClaim(new Claim("name", context.UserName));

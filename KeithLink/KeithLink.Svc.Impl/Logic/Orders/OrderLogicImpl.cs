@@ -1,65 +1,93 @@
 ﻿using KeithLink.Common.Core.Extensions;
+using KeithLink.Common.Core.Helpers;
 using KeithLink.Common.Core.Logging;
 
+using KeithLink.Svc.Core.Enumerations;
 using KeithLink.Svc.Core.Enumerations.Order;
 
+using KeithLink.Svc.Core.Extensions;
+using KeithLink.Svc.Core.Extensions.Enumerations;
+using KeithLink.Svc.Core.Extensions.Orders;
+using KeithLink.Svc.Core.Extensions.Orders.Confirmations;
+using KeithLink.Svc.Core.Extensions.Orders.History;
+
 using KeithLink.Svc.Core.Interface.Lists;
+using KeithLink.Svc.Core.Interface.OnlinePayments.Invoice;
 using KeithLink.Svc.Core.Interface.Orders;
+using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using CS = KeithLink.Svc.Core.Models.Generated;
+using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Orders;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
+using KeithLink.Svc.Core.Models.Paging;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
+using KeithLink.Svc.Impl.Helpers;
+using KeithLink.Svc.Impl.Repository.EF.Operational;
+
+using KeithLink.Svc.Impl.com.benekeith.FoundationService;
+
+using CommerceServer.Core;
+
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 
 namespace KeithLink.Svc.Impl.Logic.Orders
 {
 	public class OrderLogicImpl: IOrderLogic {
         #region attributes
-
-        private readonly IPurchaseOrderRepository purchaseOrderRepository;
-		private readonly ICatalogLogic catalogLogic;
-		private IListServiceRepository listServiceRepository;
-        private IOrderServiceRepository orderServiceRepository;
-        private readonly IOrderQueueLogic orderQueueLogic;
-        private IPriceLogic priceLogic;
-        private IEventLogRepository eventLogRepository;
-        private IUserProfileLogic userProfileLogic;
-		private ICustomerRepository customerRepository;
-
+		private readonly ICatalogLogic _catalogLogic;
+		private readonly ICustomerRepository _customerRepository;
+        private readonly IEventLogRepository _log;
+        private readonly INoteLogic _noteLogic;
+        private readonly IOrderHistoryHeaderRepsitory _historyHeaderRepo;
+        private readonly IKPayInvoiceRepository _invoiceRepository;
+        private readonly IOrderQueueLogic _orderQueueLogic;
+        private readonly IPriceLogic _priceLogic;
+        private readonly IPurchaseOrderRepository _poRepo;
+        private readonly IUnitOfWork _uow;
+        private readonly IUserActiveCartRepository _userActiveCartRepository;
         #endregion
 
         #region ctor
-        public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, IOrderServiceRepository orderServiceRepository,
-                              IListServiceRepository listServiceRepository, IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, 
-                              IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, ICustomerRepository customerRepository) {
-			this.purchaseOrderRepository = purchaseOrderRepository;
-			this.catalogLogic = catalogLogic;
-			this.listServiceRepository = listServiceRepository;
-            this.orderServiceRepository = orderServiceRepository;
-            this.orderQueueLogic = orderQueueLogic;
-            this.priceLogic = priceLogic;
-            this.eventLogRepository = eventLogRepository;
-            this.userProfileLogic = userProfileLogic;
-            this.customerRepository = customerRepository;
+        public OrderLogicImpl(IPurchaseOrderRepository purchaseOrderRepository, ICatalogLogic catalogLogic, INoteLogic noteLogic, 
+                              IOrderQueueLogic orderQueueLogic, IPriceLogic priceLogic, IEventLogRepository eventLogRepository, 
+                              ICustomerRepository customerRepository, IOrderHistoryHeaderRepsitory orderHistoryRepository, IUnitOfWork unitOfWork, 
+                              IUserActiveCartRepository userActiveCartRepository, IKPayInvoiceRepository kpayInvoiceRepository) {
+			_catalogLogic = catalogLogic;
+            _customerRepository = customerRepository;
+            _log = eventLogRepository;
+            _noteLogic = noteLogic;
+            _historyHeaderRepo = orderHistoryRepository;
+            _invoiceRepository = kpayInvoiceRepository;
+            _orderQueueLogic = orderQueueLogic;
+            _priceLogic = priceLogic;
+			_poRepo = purchaseOrderRepository;
+            _uow = unitOfWork;
+            _userActiveCartRepository = userActiveCartRepository;
         }
         #endregion
 
         #region methods
         public NewOrderReturn CancelOrder(UserProfile userProfile, UserSelectedContext catalogInfo, Guid commerceId) {
-            var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.CancelPurchaseOrder(customer.CustomerId, commerceId);
-            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
-            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder, null);
+            CS.PurchaseOrder order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
+            _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.DeleteOrder, null);
             return new NewOrderReturn() { OrderNumber = newOrderNumber };
         }
 
@@ -67,12 +95,328 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             order.EstimatedDeliveryTime = null;
         }
 
-        private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, Order order, List<KeithLink.Svc.Core.Models.Lists.ListItemModel> notes) {
+        /// <summary>
+        /// Pulls orderhistory orders for that same customer within a few minutes (either before or after) and calls those related (stores the order number and invoice number) in the order
+        /// </summary>
+        /// <param name="po">The purchase order that the items are stored in</param>
+        /// <param name="returnOrder">The order that the items are being set on</param>
+        /// <param name="headers">The reference to order history headers if we have it</param>
+        /// <returns></returns>
+        private void FindOrdersRelatedToPurchaseOrder(CS.PurchaseOrder po, Order returnOrder, EF.OrderHistoryHeader thisOrder, List<EF.OrderHistoryHeader> headers) {
+            string customerNumber = po.Properties["CustomerId"].ToString();
+            string branchId = po.Properties["BranchId"].ToString();
+            string orderNumber = po.Properties["OrderNumber"].ToString();
+            //string controlNumber = po.Properties["OrderNumber"].ToString();
+
+            if(headers == null)
+                headers = _historyHeaderRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                       h.CustomerNumber.Equals(customerNumber) &&
+                                                       h.RelatedControlNumber == orderNumber)
+                                            .ToList();
+
+            StringBuilder sbRelatedOrders = new StringBuilder();
+            StringBuilder sbRelatedInvoices = new StringBuilder();
+
+            foreach(var item in headers) {
+                if(sbRelatedOrders.Length > 0)
+                    sbRelatedOrders.Append(",");
+                if(sbRelatedInvoices.Length > 0)
+                    sbRelatedInvoices.Append(",");
+
+                sbRelatedOrders.Append(item.ControlNumber);
+                sbRelatedInvoices.Append(item.InvoiceNumber);
+            }
+
+            returnOrder.RelatedOrderNumbers = sbRelatedOrders.ToString();
+            returnOrder.RelatedInvoiceNumbers = sbRelatedInvoices.ToString();
+        }
+
+        public Order GetOrder(string branchId, string invoiceNumber) {
+            EF.OrderHistoryHeader myOrder = _historyHeaderRepo.Read(h => h.BranchId.Equals(branchId, StringComparison.InvariantCultureIgnoreCase) &&
+                                                                        (h.InvoiceNumber.Equals(invoiceNumber) || h.ControlNumber.Equals(invoiceNumber)),
+                                                                    d => d.OrderDetails).FirstOrDefault();
+            CS.PurchaseOrder po = null;
+
+            Order returnOrder = null;
+
+            if(myOrder == null) {
+                po = _poRepo.ReadPurchaseOrderByTrackingNumber(invoiceNumber);
+                
+                if(po == null) {
+                    throw new Exception("An order with invoice #" + invoiceNumber + " is not able to be selected in this data.");
+                } else {
+                    returnOrder = po.ToOrder();
+                    PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
+                }
+            } else {
+                returnOrder = myOrder.ToOrder();
+
+                if(myOrder.OrderSystem.Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && myOrder.ControlNumber.Length > 0) {
+                    po = _poRepo.ReadPurchaseOrderByTrackingNumber(myOrder.ControlNumber);
+                    if(po != null) {
+                        returnOrder.Status = po.Status;
+                        returnOrder.CommerceId = Guid.Parse(po.Id);
+                        PullCatalogFromPurchaseOrderItemsToOrder(po, returnOrder);
+
+                        if(po.Status == "Confirmed with un-submitted changes") {
+                            returnOrder = po.ToOrder();
+                        }
+
+
+                        // needed to reconnect parent orders to special orders
+                        if(myOrder.RelatedControlNumber == null) {
+                            FindOrdersRelatedToPurchaseOrder(po, returnOrder, myOrder, null);
+                        } else {
+                            returnOrder.RelatedOrderNumbers = myOrder.RelatedControlNumber;
+                        }
+                    }
+                }
+            }
+
+            // Set the status to delivered if the Actual Delivery Time is populated
+            //if (returnOrder.ActualDeliveryTime.GetValueOrDefault() != DateTime.MinValue) {
+            if(!string.IsNullOrEmpty(returnOrder.ActualDeliveryTime)) {
+                returnOrder.Status = "Delivered";
+            }
+
+            if(myOrder != null) {
+                try {
+                    var invoice = _invoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(myOrder.BranchId), myOrder.CustomerNumber, myOrder.InvoiceNumber);
+                    if(invoice != null) {
+                        returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+                    }
+                } catch(Exception ex) {
+                    _log.WriteErrorLog("Error looking up invoice when trying to get order:  " + ex.Message + ex.StackTrace);
+
+                }
+            }
+
+            if(returnOrder.CatalogId == null) {
+                returnOrder.CatalogId = branchId;
+            }
+
+            LookupProductDetails(returnOrder.CatalogId, returnOrder);
+
+            if(po != null) {
+                returnOrder.IsChangeOrderAllowed = (po.Properties["MasterNumber"] != null && (po.Status.StartsWith("Confirmed")));
+            }
+
+            if(returnOrder.Status == "Submitted" && returnOrder.Items != null) {
+                //Set all item status' to Pending. This is kind of a hack, but the correct fix will require more effort than available at the moment. The Status/Mainframe status changes are what's causing this issue
+                foreach(var item in returnOrder.Items)
+                    item.MainFrameStatus = "Pending";
+            }
+
+            returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+
+            return returnOrder;
+        }
+
+        public List<Order> GetOrderHeaderInDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            var customer = _customerRepository.GetCustomerByCustomerNumber(customerInfo.CustomerId, customerInfo.BranchId);
+
+            var oh = GetOrderHistoryHeadersForDateRange(customerInfo, startDate, endDate);
+            var cs = _poRepo.ReadPurchaseOrderHeadersInDateRange(customer.CustomerId, customerInfo.CustomerId, startDate, endDate);
+
+            return MergeOrderLists(cs.Select(o => o.ToOrder()).ToList(), oh);
+        }
+
+        private List<Order> GetOrderHistoryHeadersForDateRange(UserSelectedContext customerInfo, DateTime startDate, DateTime endDate) {
+            int daysDiff = (endDate - startDate).Days;
+            var dateRange = Enumerable.Range(0, daysDiff + 1).Select(dt => startDate.AddDays(dt).ToLongDateFormat());
+
+            List<EF.OrderHistoryHeader> headers = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId) && 
+                                                                               dateRange.Contains(h.DeliveryDate),
+                                                                          i => i.OrderDetails).ToList();
+            return LookupControlNumberAndStatus(customerInfo, headers);
+        }
+
+        private List<Order> GetOrderHistoryOrders(UserSelectedContext customerInfo) {
+            List<EF.OrderHistoryHeader> headers = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
+                                                                          d => d.OrderDetails).ToList();
+            return LookupControlNumberAndStatus(customerInfo, headers);
+        }
+
+        public List<Order> GetOrders(Guid userId, UserSelectedContext customerInfo) {
+            return GetOrderHistoryOrders(customerInfo).OrderByDescending(o => o.InvoiceNumber).ToList<Order>();
+        }
+
+        public PagedResults<Order> GetPagedOrders(Guid userId, UserSelectedContext customerInfo, PagingModel paging) {
+            List<EF.OrderHistoryHeader> headers = _historyHeaderRepo.Read(h => h.BranchId.Equals(customerInfo.BranchId, StringComparison.InvariantCultureIgnoreCase) && 
+                                                                               h.CustomerNumber.Equals(customerInfo.CustomerId),
+                                                                          d => d.OrderDetails).ToList();
+
+            return LookupControlNumberAndStatus(customerInfo, headers).AsQueryable().GetPage(paging);
+        }
+
+        public List<OrderHeader> GetSubmittedUnconfirmedOrders() {
+            BEKFoundationServiceClient client = new BEKFoundationServiceClient();
+
+            XmlNodeList nodes = client.GetUnconfirmatedOrders().SelectNodes("/PurchaseOrder");
+
+            BlockingCollection<OrderHeader> orders = new BlockingCollection<OrderHeader>();
+
+            Parallel.ForEach(nodes.Cast<XmlNode>(), p => {
+                OrderHeader order = new OrderHeader();
+
+                order.CustomerNumber = p.SelectNodes("WeaklyTypedProperties/WeaklyTypedProperty[@Name='CustomerId']")[0].Attributes["Value"].Value;
+                order.Branch = p.SelectNodes("WeaklyTypedProperties/WeaklyTypedProperty[@Name='BranchId']")[0].Attributes["Value"].Value;
+                order.ControlNumber = Convert.ToInt32(p.Attributes["TrackingNumber"].Value);
+                order.OrderCreateDateTime = Convert.ToDateTime(p.Attributes["Created"].Value).ToUniversalTime();
+
+                orders.Add(order);
+            });
+
+            return orders.ToList();
+        }
+
+        private Guid GetUserIdForControlNumber(int controlNumber) { 
+            // todo move this to a common location; confirmation logic does the same thing
+            DataSet searchableProperties = CommerceServerCore.GetPoManager()
+                                                             .GetSearchableProperties(CultureInfo.CurrentUICulture.ToString());
+            SearchClauseFactory searchClauseFactory = CommerceServerCore.GetPoManager()
+                                                                        .GetSearchClauseFactory(searchableProperties, "PurchaseOrder");
+            SearchClause trackingNumberClause = searchClauseFactory.CreateClause(ExplicitComparisonOperator.Equal, "TrackingNumber", controlNumber.ToString("0000000.##"));
+
+            // Create search options.
+            SearchOptions options = new SearchOptions();
+            options.PropertiesToReturn = "SoldToId";
+            options.SortProperties = "SoldToId";
+            options.NumberOfRecordsToReturn = 1;
+
+            // Perform the search.
+            DataSet results = CommerceServerCore.GetPoManager()
+                                                .SearchPurchaseOrders(trackingNumberClause, options);
+
+            if(results.Tables.Count > 0 && results.Tables[0].Rows.Count > 0) {
+                return Guid.Parse(results.Tables[0]
+                                         .Rows[0]
+                                         .ItemArray[2]
+                                         .ToString());
+            } else {
+                return Guid.Empty;
+            }
+        }
+
+        private List<Order> LookupControlNumberAndStatus(UserSelectedContext userContext, List<EF.OrderHistoryHeader> headers) {
+            var customerOrders = new BlockingCollection<Order>();
+
+            // Get the customer GUID to retrieve all purchase orders from commerce server
+            var customerInfo = _customerRepository.GetCustomerByCustomerNumber(userContext.CustomerId, userContext.BranchId);
+            var POs = _poRepo.ReadPurchaseOrderHeadersByCustomerId(customerInfo.CustomerId).ToList();
+
+            foreach(var h in headers) {
+                try {
+                    Order returnOrder = null;
+
+                    returnOrder = h.ToOrder();
+
+                    if(h.OrderSystem.Trim().Equals(OrderSource.Entree.ToShortString(), StringComparison.InvariantCultureIgnoreCase) && h.ControlNumber.Length > 0) {
+                        // Check if the purchase order exists and grab it for additional information if it does
+                        if(POs != null) {
+                            CS.PurchaseOrder currentPo = null;
+                            currentPo = POs.Where(p => p.Properties["OrderNumber"].ToString() == h.ControlNumber).FirstOrDefault();
+
+                            if(currentPo != null) {
+                                returnOrder.RelatedOrderNumbers = h.RelatedControlNumber;
+                                returnOrder.Status = currentPo.Status;
+                                returnOrder.OrderNumber = h.ControlNumber;
+                                returnOrder.IsChangeOrderAllowed = (currentPo.Properties["MasterNumber"] != null && (currentPo.Status.StartsWith("Confirmed")));
+                            }
+                        }
+                    } else {
+                        returnOrder.CatalogType = h.BranchId;
+                        returnOrder.CatalogId = h.BranchId;
+                    }
+
+                    //if ((returnOrder.CatalogId != null) && (returnOrder.CatalogId.Length > 0)) LookupProductDetails(returnOrder.CatalogId, returnOrder);
+                    //else LookupProductDetails(userContext.BranchId, returnOrder);
+
+                    var invoice = _invoiceRepository.GetInvoiceHeader(DivisionHelper.GetDivisionFromBranchId(userContext.BranchId), userContext.CustomerId, returnOrder.InvoiceNumber);
+                    if(invoice != null) {
+                        returnOrder.InvoiceStatus = EnumUtils<InvoiceStatus>.GetDescription(invoice.DetermineStatus());
+                    }
+
+                    if(returnOrder.ActualDeliveryTime != null) {
+                        returnOrder.Status = "Delivered";
+                    }
+
+                    if(returnOrder.Items != null) {
+                        returnOrder.OrderTotal = returnOrder.Items.Sum(i => i.LineTotal);
+                    }
+
+                    customerOrders.Add(returnOrder);
+                } catch(Exception ex) {
+                    _log.WriteErrorLog("Error proceesing order history for order: " + h.InvoiceNumber + ".  " + ex.StackTrace);
+                }
+
+            }
+
+            return customerOrders.ToList();
+        }
+
+        private void LookupProductDetails(string branchId, Order order) {
+            if(order.Items == null) { return; }
+
+            var products = _catalogLogic.GetProductsByIds(branchId, order.Items.Select(l => l.ItemNumber.Trim()).ToList());
+
+            var productDict = products.Products.ToDictionary(p => p.ItemNumber);
+
+            Parallel.ForEach(order.Items, item => {
+                var prod = productDict.ContainsKey(item.ItemNumber.Trim()) ? productDict[item.ItemNumber.Trim()] : null;
+                if(prod != null) {
+                    item.IsValid = true;
+                    item.Name = prod.Name;
+                    item.Description = prod.Description;
+                    item.Pack = prod.Pack;
+                    item.Size = prod.Size;
+                    item.Brand = prod.Brand;
+                    item.BrandExtendedDescription = prod.BrandExtendedDescription;
+                    item.ReplacedItem = prod.ReplacedItem;
+                    item.ReplacementItem = prod.ReplacementItem;
+                    item.NonStock = prod.NonStock;
+                    item.ChildNutrition = prod.ChildNutrition;
+                    item.CatchWeight = prod.CatchWeight;
+                    item.TempZone = prod.TempZone;
+                    item.ItemClass = prod.ItemClass;
+                    item.CategoryId = prod.CategoryId;
+                    item.CategoryName = prod.CategoryName;
+                    item.UPC = prod.UPC;
+                    item.VendorItemNumber = prod.VendorItemNumber;
+                    item.Cases = prod.Cases;
+                    item.Kosher = prod.Kosher;
+                    item.ManufacturerName = prod.ManufacturerName;
+                    item.ManufacturerNumber = prod.ManufacturerNumber;
+                    item.AverageWeight = prod.AverageWeight;
+                    if(prod.Nutritional != null) {
+                        item.StorageTemp = prod.Nutritional.StorageTemp;
+                        item.Nutritional = new Nutritional() {
+                            CountryOfOrigin = prod.Nutritional.CountryOfOrigin,
+                            GrossWeight = prod.Nutritional.GrossWeight,
+                            HandlingInstructions = prod.Nutritional.HandlingInstructions,
+                            Height = prod.Nutritional.Height,
+                            Length = prod.Nutritional.Length,
+                            Ingredients = prod.Nutritional.Ingredients,
+                            Width = prod.Nutritional.Width
+                        };
+                    }
+                }
+                //if (price != null) {
+                //    item.PackagePrice = price.PackagePrice.ToString();
+                //    item.CasePrice = price.CasePrice.ToString();
+                //}
+            });
+
+        }
+
+        private void LookupProductDetails(UserProfile user, UserSelectedContext catalogInfo, Order order, List<ListItemModel> notes) {
             if (order.Items == null)
                 return;
 
-            var products = catalogLogic.GetProductsByIds(catalogInfo.BranchId, order.Items.Select(l => l.ItemNumber).ToList());
-            var pricing = priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
+            var products = _catalogLogic.GetProductsByIds(catalogInfo.BranchId, order.Items.Select(l => l.ItemNumber).ToList());
+            var pricing = _priceLogic.GetPrices(catalogInfo.BranchId, catalogInfo.CustomerId, DateTime.Now.AddDays(1), products.Products);
 
             Parallel.ForEach(order.Items, item => {
                 var prod = products.Products.Where(p => p.ItemNumber.Equals(item.ItemNumber)).FirstOrDefault();
@@ -123,11 +467,67 @@ namespace KeithLink.Svc.Impl.Logic.Orders
 
         }
 
-        public Core.Models.Orders.Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber, bool omitDeletedItems = true) {
-            var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-            var order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber);
+        private List<Order> MergeOrderLists(List<Order> commerceServerOrders, List<Order> orderHistoryOrders) {
+            BlockingCollection<Order> mergedOrdeList = new BlockingCollection<Order>();
+
+            Parallel.ForEach(orderHistoryOrders, ohOrder => {
+                mergedOrdeList.Add(ohOrder);
+            });
+
+            Parallel.ForEach(commerceServerOrders, csOrder => {
+                if(mergedOrdeList.Where(o => o.InvoiceNumber.Equals(csOrder.InvoiceNumber)).Count() == 0) {
+                    mergedOrdeList.Add(csOrder);
+                }
+            });
+
+            return mergedOrdeList.ToList();
+        }
+
+        /// <summary>
+        /// Pulls catalogname from purchase order lineitems and sets the catalogid and catalogname on order items, then bubbles those up to set them on the overall order
+        /// </summary>
+        /// <param name="po">The purchase order that the items are stored in</param>
+        /// <param name="returnOrder">The order that the items are being set on</param>
+        /// <returns></returns>
+        private void PullCatalogFromPurchaseOrderItemsToOrder(CS.PurchaseOrder po, Order returnOrder) {
+            //_log.WriteInformationLog("InternalOrderHistoryLogic.PullCatalogFromPurchaseOrderItemsToOrder() LineItems=" +
+            //    ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"]).Count);
+            if(po != null && po.Properties["LineItems"] != null) {
+                foreach(var lineItem in ((CommerceServer.Foundation.CommerceRelationshipList)po.Properties["LineItems"])) {
+                    var item = (CS.LineItem)lineItem.Target;
+                    var oitem = returnOrder.Items.Where(i => i.ItemNumber.Trim() == item.ProductId).FirstOrDefault();
+                    if(oitem != null) {
+                        oitem.CatalogId = item.CatalogName;
+                        oitem.CatalogType = _catalogLogic.GetCatalogTypeFromCatalogId(item.CatalogName);
+                        //_log.WriteInformationLog("InternalOrderHistoryLogic.LookupControlNumberAndStatus() item.CatalogName=" + item.CatalogName);
+                    }
+                }
+            }
+            var catalogIds = returnOrder.Items.Select(i => i.CatalogId).Distinct().ToList();
+            StringBuilder sbCatalogI = new StringBuilder();
+            foreach(var catalog in catalogIds) {
+                if(sbCatalogI.Length > 0)
+                    sbCatalogI.Append(",");
+                if(catalog != null)
+                    sbCatalogI.Append(catalog.ToString());
+            }
+            returnOrder.CatalogId = sbCatalogI.ToString();
+            var catalogTypes = returnOrder.Items.Select(i => i.CatalogType).Distinct().ToList();
+            StringBuilder sbCatalogT = new StringBuilder();
+            foreach(var catalog in catalogTypes) {
+                if(sbCatalogT.Length > 0)
+                    sbCatalogT.Append(",");
+                if(catalog != null)
+                    sbCatalogT.Append(catalog.ToString());
+            }
+            returnOrder.CatalogType = sbCatalogT.ToString();
+        }
+
+        public Order ReadOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber, bool omitDeletedItems = true) {
+            var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            var order = _poRepo.ReadPurchaseOrder(customer.CustomerId, orderNumber);
             var returnOrder = ToOrder(order, false);
-            var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
 
 
             LookupProductDetails(userProfile, catalogInfo, returnOrder, notes);
@@ -139,10 +539,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public List<Order> ReadOrders(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true, bool header = false) {
-            var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
-            var orders = purchaseOrderRepository.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            var orders = _poRepo.ReadPurchaseOrders(customer.CustomerId, catalogInfo.CustomerId, false);
             var returnOrders = orders.Select(p => ToOrder(p, header)).ToList();
-            var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
 
             returnOrders.ForEach(delegate(Order order) {
                 LookupProductDetails(userProfile, catalogInfo, order, notes);
@@ -154,30 +554,35 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         }
 
         public List<Order> ReadOrderHistories(UserProfile userProfile, UserSelectedContext catalogInfo, bool omitDeletedItems = true) {
-            var orders = orderServiceRepository.GetCustomerOrders(userProfile.UserId, catalogInfo);
+            List<Order> orders = GetOrders(userProfile.UserId, catalogInfo);
 
             //var returnOrders = orders.Select(p => ToOrder(p)).ToList();
-            var notes = listServiceRepository.ReadNotes(userProfile, catalogInfo);
+            var notes = _noteLogic.GetNotes(userProfile, catalogInfo);
 
             //return returnOrders;
             return orders;
         }
 
         public bool ResendUnconfirmedOrder(UserProfile userProfile, int controlNumber, UserSelectedContext catalogInfo) {
-            var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            Guid userId = GetUserIdForControlNumber(controlNumber);
+
             string controlNumberMainFrameFormat = controlNumber.ToString("0000000.##");
-            Guid userId = orderServiceRepository.GetUserIdForControlNumber(controlNumber);
-            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, controlNumberMainFrameFormat);
+            CS.PurchaseOrder order = _poRepo.ReadPurchaseOrder(customer.CustomerId, controlNumberMainFrameFormat);
+
             string originalOrderNumber = order.Properties["OriginalOrderNumber"].ToString();
+
             OrderType type = originalOrderNumber == controlNumberMainFrameFormat ? OrderType.NormalOrder : OrderType.ChangeOrder;
-            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, controlNumberMainFrameFormat, order, type, null); // TODO, logic to compare original order number and control number
+
+            _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, controlNumberMainFrameFormat, order, type, null); // TODO, logic to compare original order number and control number
+
             return true;
         }
 
         public NewOrderReturn SubmitChangeOrder(UserProfile userProfile, UserSelectedContext catalogInfo, string orderNumber) {
-            var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
-            CS.PurchaseOrder order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, orderNumber); // TODO: incorporate multi user query
+            CS.PurchaseOrder order = _poRepo.ReadPurchaseOrder(customer.CustomerId, orderNumber); // TODO: incorporate multi user query
 
             List<OrderLine> items = ((CommerceServer.Foundation.CommerceRelationshipList)order.Properties["LineItems"]).Select(l => ToOrderLine((CS.LineItem)l.Target)).ToList();
             if (items == null || items.Count == 0) {
@@ -187,9 +592,9 @@ namespace KeithLink.Svc.Impl.Logic.Orders
             com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
             string newOrderNumber = client.SaveOrderAsChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
-            order = purchaseOrderRepository.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
+            order = _poRepo.ReadPurchaseOrder(customer.CustomerId, newOrderNumber);
 
-            orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder, null);
+            _orderQueueLogic.WriteFileToQueue(userProfile.EmailAddress, newOrderNumber, order, OrderType.ChangeOrder, null);
 
             client.CleanUpChangeOrder(customer.CustomerId, Guid.Parse(order.Id));
 
@@ -284,7 +689,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                     OrderLine newLine = order.Items.Where(x => x.ItemNumber == existingLine.ItemNumber).FirstOrDefault();
                     if (newLine == null) {
                         existingLine.ChangeOrderStatus = "deleted";
-                        eventLogRepository.WriteInformationLog("Deleting line: " + existingLine.ItemNumber);
+                        _log.WriteInformationLog("Deleting line: " + existingLine.ItemNumber);
                     }
                 }
             }
@@ -296,10 +701,10 @@ namespace KeithLink.Svc.Impl.Logic.Orders
                 throw new ApplicationException("Cannot submit an order with zero line items");
             }
              * */
-            var customer = customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
+            var customer = _customerRepository.GetCustomerByCustomerNumber(catalogInfo.CustomerId, catalogInfo.BranchId);
 
             Order existingOrder = this.ReadOrder(user, catalogInfo, order.OrderNumber, false);
-            var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+            var notes = _noteLogic.GetNotes(user, catalogInfo);
 
             LookupProductDetails(user, catalogInfo, order, notes);
             UpdateExistingOrderInfo(order, existingOrder, deleteOmmitedItems);
@@ -319,7 +724,7 @@ namespace KeithLink.Svc.Impl.Logic.Orders
         public Order UpdateOrderForEta(UserProfile user, Order order) {
             if (Configuration.EnableEtaForUsers.Equals("none", StringComparison.InvariantCultureIgnoreCase)
                 || (Configuration.EnableEtaForUsers.Equals("internal_only", StringComparison.InvariantCultureIgnoreCase)
-                    && !userProfileLogic.IsInternalAddress(user.EmailAddress))
+                    && !ProfileHelper.IsInternalAddress(user.EmailAddress))
                 ) {
                 ClearEtaInformation(order);
             }

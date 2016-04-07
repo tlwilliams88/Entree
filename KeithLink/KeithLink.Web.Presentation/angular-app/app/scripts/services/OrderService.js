@@ -21,7 +21,7 @@ angular.module('bekApp')
 
       getOrders: function(params) {
         return $http.post('/order', params).then(function(response) {
-          return response.data;
+          return response.data.successResponse;
         }, function() {
           return $q.reject('Error retrieving orders.');
         });
@@ -30,18 +30,24 @@ angular.module('bekApp')
       getOrderDetails: function(orderNumber) {
         return Order.get({
           orderNumber: orderNumber
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       getOrdersByDate: function(startDate, endDate) {
         return Order.getOrdersByDate({
           from: startDate,
           to: endDate
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },      
 
       getMonthTotals: function(numberOfMonths) {
-       return $http.get('/order/totalbymonth/'+ numberOfMonths);
+       return $http.get('/order/totalbymonth/'+ numberOfMonths).then(function(resp){        
+          return resp.data.successResponse;     
+        });
       },
 
       /*************
@@ -64,15 +70,19 @@ angular.module('bekApp')
       resubmitOrder: function(orderNumber) {
         return Order.resubmitOrder({
           orderNumber: orderNumber
-        }, { message: 'Submitting changes...' }).$promise.then(function(order) {
-          return order.ordernumber;
+        }, { message: 'Submitting changes...' }).$promise.then(function(resp) {
+          return resp.successResponse.ordernumber;
         });
       },
 
       updateOrder: function(order, params) {
         order.message = 'Saving order...';
-        return Order.update(params, order).$promise.then(function(changeOrder) {
-          PricingService.updateCaculatedFields(changeOrder.items);
+        return Order.update(params, order).$promise.then(function(resp) {
+          var changeOrder = resp.successResponse;
+          if(changeOrder){
+            PricingService.updateCaculatedFields(changeOrder.items);
+          }
+          
           return changeOrder;
         });
       },
@@ -84,9 +94,9 @@ angular.module('bekApp')
       cancelOrder: function(commerceId) {
         return Order.delete({
           orderNumber: commerceId
-        }).$promise.then(function(orderNumber) {
+        }).$promise.then(function(resp) {
           // delete change order from cache
-          
+          var orderNumber = resp.successResponse.ordernumber
           var deletedChangeOrder;
           Service.changeOrderHeaders.forEach(function(changeOrder) {
             if (changeOrder.ordernumber === orderNumber) {
@@ -107,17 +117,23 @@ angular.module('bekApp')
       *************/
 
       refreshOrderHistory: function() {
-        return Order.getOrderHistory().$promise;
+        return Order.getOrderHistory().$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       getOrderHistoryDetails: function(invoiceNumber) {
         return Order.getOrderHistoryDetails({
           invoiceNumber: invoiceNumber
-        }).$promise;
+        }).$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       pollOrderHistory: function() {
-        return Order.pollOrderHistory().$promise;
+        return Order.pollOrderHistory().$promise.then(function(resp){
+          return resp.successResponse;
+        });
       },
 
       /********************
@@ -125,7 +141,9 @@ angular.module('bekApp')
       ********************/
 
       getOrderExportConfig: function() {
-        return Order.getOrderExportConfig({}).$promise;
+        return Order.getOrderExportConfig({}).$promise.then(function(response){
+          return response.successResponse;
+        });
       },
 
       exportOrders: function(config) {
@@ -135,7 +153,9 @@ angular.module('bekApp')
       getDetailExportConfig: function(orderNumber) {
         return Order.getDetailExportConfig({
           orderNumber: orderNumber
-        }).$promise;
+        }).$promise.then(function(response){
+          return response.successResponse;
+        });;
       },
 
       exportOrderDetails: function(config, orderNumber) {

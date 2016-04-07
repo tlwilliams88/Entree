@@ -47,6 +47,9 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
             options.Fields = new List<ExportModelConfiguration>();
 
             switch (type) {
+                case ExportType.List:
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Position", Label = "Position" });
+                    break;
                 case ExportType.Order:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "OrderNumber", Label = "Order #" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "CreatedDate", Label = "Order Date" });
@@ -67,18 +70,19 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Amount", Label = "Amount" });
                     return options;
                 case ExportType.ItemUsage:
-
                     options.Fields.Add(new ExportModelConfiguration() { Field = "ItemNumber", Order = 1, Label = "Item" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Name", Order = 20, Label = "Name" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "Brand", Order = 21, Label = "Brand" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Order = 21, Label = "Mfr Name" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "UPC", Order = 22, Label = "GTIN" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "VendorItemNumber", Order = 23, Label = "Vendor Item" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "AveragePrice", Order = 24, Label = "Average Price" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "TotalCost", Order = 25, Label = "Total Cost" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Class", Order = 21, Label = "Category" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Brand", Order = 22, Label = "Brand" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "ManufacturerName", Order = 23, Label = "Mfr Name" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "UPC", Order = 24, Label = "GTIN" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "VendorItemNumber", Order = 25, Label = "Vendor Item" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "AveragePrice", Order = 26, Label = "Average Price" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "TotalCost", Order = 27, Label = "Total Cost" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "TotalQuantityOrdered", Order = 30, Label = "Qty Ordered" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "TotalQuantityShipped", Order = 40, Label = "Qty Shipped" });
-                    options.Fields.Add(new ExportModelConfiguration() { Field = "PackSize", Order = 50, Label = "Pack / Size" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Pack", Order = 50, Label = "Pack" });
+                    options.Fields.Add(new ExportModelConfiguration() { Field = "Size", Order = 51, Label = "Size" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Each", Order = 60, Label = "Each" });
                     return options;
                 case ExportType.PendingTransactions:
@@ -88,7 +92,6 @@ namespace KeithLink.Svc.Impl.Logic.Configurations {
                     options.Fields.Add(new ExportModelConfiguration() { Field = "InvoiceNumber", Order = 30, Label = "Invoice #" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "PaymentAmount", Order = 40, Label = "Amount" });
                     options.Fields.Add(new ExportModelConfiguration() { Field = "AccountNumber", Order = 50, Label = "Account" });
-
                     return options;
                 case ExportType.MarketingPreferences:
                     options.Fields.Add(new ExportModelConfiguration() { Field = "Email", Order = 1, Label = "Email" });

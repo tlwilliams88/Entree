@@ -1,7 +1,10 @@
-﻿using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
+﻿using DocumentFormat.OpenXml.Spreadsheet;
+using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Reports;
+using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.Reports;
+using KeithLink.Svc.Core.Models.SiteCatalog;
+using KeithLink.Svc.Impl.Helpers;
 using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
@@ -9,165 +12,245 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Impl.Logic.Reports
 {
-	public class InventoryValuationReportLogicImpl: IInventoryValuationReportLogic
-	{
-		public MemoryStream GenerateReport(InventoryValuationRequestModel request)
-		{
-			if (request.ReportFormat.Equals("excel", StringComparison.InvariantCultureIgnoreCase))
-				return GenerateExcelReport(request.ReportData);
-			else
-				return GeneratePDFReport(request.ReportData);
-		}
+    public class InventoryValuationReportLogicImpl : IInventoryValuationReportLogic
+    {
+        private UserSelectedContext _context;
+        private ICustomerRepository _customerRepo;
+        public InventoryValuationReportLogicImpl(ICustomerRepository customerRepo)
+        {
+            _customerRepo = customerRepo;
+        }
+        public MemoryStream GenerateReport(InventoryValuationRequestModel request)
+        {
+            _context = request.context;
+            foreach (InventoryValuationModel item in request.ReportData)
+            {
+                if (item.PackSize.IndexOf('/') > -1)
+                {
+                    item.Pack = item.PackSize.Substring(0, item.PackSize.IndexOf('/')).Trim();
+                    item.Size = item.PackSize.Substring(item.PackSize.IndexOf('/') + 1).Trim();
+                }
+            }
+            if (request.ReportFormat.Equals("excel", StringComparison.InvariantCultureIgnoreCase))
+                return GenerateExcelReport(request.ReportData);
+            else if (request.ReportFormat.Equals("pdf", StringComparison.InvariantCultureIgnoreCase))
+                return GeneratePDFReport(request.ReportData);
+            else
+                return GenerateTextReport(request);
+        }
 
-		private MemoryStream GeneratePDFReport(List<InventoryValuationModel> data)
-		{
-			ReportViewer rv = new ReportViewer();
+        private MemoryStream GeneratePDFReport(List<InventoryValuationModel> data)
+        {
+            Customer customer = _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId);
+            ReportViewer rv = new ReportViewer();
 
-			rv.ProcessingMode = ProcessingMode.Local;
+            rv.ProcessingMode = ProcessingMode.Local;
 
-			Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
-			Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuation.rdlc");
-			rv.LocalReport.LoadReportDefinition(rdlcStream);
-			
-			rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", data));
+            Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+            Stream rdlcStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Reports.InventoryValuation.rdlc");
+            rv.LocalReport.LoadReportDefinition(rdlcStream);
 
-			var bytes = rv.LocalReport.Render("PDF");
+            rv.LocalReport.SetParameters(new ReportParameter("Branch", customer.CustomerBranch));
+            rv.LocalReport.SetParameters(new ReportParameter("CustomerName", customer.CustomerName));
+            rv.LocalReport.SetParameters(new ReportParameter("CustomerNumber", customer.CustomerNumber));
+            rv.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", data));
 
-			return new MemoryStream(bytes);
-		}
+            string deviceInfo = KeithLink.Svc.Core.Constants.SET_REPORT_SIZE_LANDSCAPE;
+            var bytes = rv.LocalReport.Render("PDF", deviceInfo);
 
-		#region Generate Excel Report
-		private MemoryStream GenerateExcelReport(List<InventoryValuationModel> data)
-		{
-			MemoryStream stream = new MemoryStream();
-			using (SpreadsheetDocument document = SpreadsheetDocument.Create(stream, DocumentFormat.OpenXml.SpreadsheetDocumentType.Workbook, true))
-			{
-				document.AddWorkbookPart();
-				document.WorkbookPart.Workbook = new DocumentFormat.OpenXml.Spreadsheet.Workbook();
+            return new MemoryStream(bytes);
+        }
 
-				document.WorkbookPart.Workbook.Append(new BookViews(new WorkbookView()));
+        private MemoryStream GenerateTextReport(InventoryValuationRequestModel request)
+        {
+            StringBuilder sb = GenerateInventoryValuationTextReport(request);
 
-				WorkbookStylesPart workbookStylesPart = document.WorkbookPart.AddNewPart<WorkbookStylesPart>("rIdStyles");
-				Stylesheet stylesheet = new Stylesheet();
-				workbookStylesPart.Stylesheet = stylesheet;
+            MemoryStream ms = new MemoryStream();
+            StreamWriter sw = new StreamWriter(ms);
 
-				uint worksheetNumber = 1;
+            sw.Write(sb.ToString());
+            sw.Flush();
 
-				string workSheetID = "rId" + worksheetNumber.ToString();
-				string worksheetName = "Export";
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
 
-				WorksheetPart newWorksheetPart = document.WorkbookPart.AddNewPart<WorksheetPart>();
-				newWorksheetPart.Worksheet = new DocumentFormat.OpenXml.Spreadsheet.Worksheet();
+        private StringBuilder GenerateInventoryValuationTextReport(InventoryValuationRequestModel request)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("Inventory Valuation Report\n");
+            WriteTextHeaders(request, sb);
+            WriteTextData(request, sb);
+            WriteTextSum(request, sb);
+            return sb;
+        }
 
-				newWorksheetPart.Worksheet.AppendChild(new DocumentFormat.OpenXml.Spreadsheet.SheetData());
+        private void WriteTextSum(InventoryValuationRequestModel request, StringBuilder sb)
+        {
+            WriteTextValue("Total", request, sb, true);
+            WriteTextValue(request.ReportData.Sum(x => x.ExtPrice).ToString("F2"), request, sb, false);
+            sb.Append("\n");
+        }
 
-				WriteDataTableToExcelWorksheet(newWorksheetPart, data);
-				newWorksheetPart.Worksheet.Save();
+        private void WriteTextData(InventoryValuationRequestModel request, StringBuilder sb)
+        {
+            foreach (var datarow in request.ReportData)
+            {
+                WriteTextValue(datarow.ItemId, request, sb, true);
+                WriteTextValue(datarow.Brand, request, sb, true);
+                WriteTextValue(datarow.Name, request, sb, true);
+                WriteTextValue(datarow.Description, request, sb, true);
+                WriteTextValue(datarow.Pack, request, sb, true);
+                WriteTextValue(datarow.Size, request, sb, true);
+                WriteTextValue(datarow.Label, request, sb, true);
+                WriteTextValue((datarow.Each ? "Y" : "N"), request, sb, true);
+                WriteTextValue(datarow.Price.ToString("F2"), request, sb, true);
+                WriteTextValue(datarow.Quantity.ToString("F0"), request, sb, true);
+                WriteTextValue(datarow.ExtPrice.ToString("F2"), request, sb, false);
+                sb.Append("\n");
+            }
+        }
 
-				if (worksheetNumber == 1)
-					document.WorkbookPart.Workbook.AppendChild(new DocumentFormat.OpenXml.Spreadsheet.Sheets());
+        private void WriteTextHeaders(InventoryValuationRequestModel request, StringBuilder sb)
+        {
+            WriteTextValue("Item", request, sb, true);
+            WriteTextValue("Brand", request, sb, true);
+            WriteTextValue("Name", request, sb, true);
+            WriteTextValue("Description", request, sb, true);
+            WriteTextValue("Pack", request, sb, true);
+            WriteTextValue("Size", request, sb, true);
+            WriteTextValue("Label", request, sb, true);
+            WriteTextValue("Each", request, sb, true);
+            WriteTextValue("Price", request, sb, true);
+            WriteTextValue("Quantity", request, sb, true);
+            WriteTextValue("ExtPrice", request, sb, false);
+            sb.Append("\n");
+        }
 
-				document.WorkbookPart.Workbook.GetFirstChild<DocumentFormat.OpenXml.Spreadsheet.Sheets>().AppendChild(new DocumentFormat.OpenXml.Spreadsheet.Sheet()
-				{
-					Id = document.WorkbookPart.GetIdOfPart(newWorksheetPart),
-					SheetId = (uint)worksheetNumber,
-					Name = worksheetName
-				});
-				
-				document.WorkbookPart.Workbook.Save();
+        private void WriteTextValue(string Value, InventoryValuationRequestModel request, StringBuilder sb, bool endWithDelimiter)
+        {
+            sb.Append(Value);
+            if (endWithDelimiter) UseAppropriateDelimiter(request, sb);
+        }
 
-				
-			}
+        private void UseAppropriateDelimiter(InventoryValuationRequestModel request, StringBuilder sb)
+        {
+            switch (request.ReportFormat.ToLower())
+            {
+                case "csv":
+                    sb.Append(",");
+                    break;
+                default:
+                    sb.Append("\t");
+                    break;
+            }
+        }
 
-			stream.Flush();
-			stream.Position = 0;
-			return stream;
-		}
+        #region Generate Excel Report
+        private MemoryStream GenerateExcelReport(List<InventoryValuationModel> data)
+        {
+            MemoryStream stream = OpenXmlSpreadsheetUtilities.MakeSpreadSheet
+                (SetCustomColumnWidths(new DocumentFormat.OpenXml.Spreadsheet.Worksheet()),
+                 WriteDataTableToExcelWorksheet(data),
+                 "InventoryValuationModel");
+            return stream;
+        }
 
-		private void WriteDataTableToExcelWorksheet(WorksheetPart worksheetPart, List<InventoryValuationModel> data)
-		{
-			var worksheet = worksheetPart.Worksheet;
-			var sheetData = worksheet.GetFirstChild<SheetData>();
+        private Worksheet SetCustomColumnWidths(Worksheet workSheet)
+        {
+            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 2, 20);
+            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 3, 20);
+            OpenXmlSpreadsheetUtilities.SetColumnWidth(workSheet, 4, 20);
+            return workSheet;
+        }
 
-			string[] excelColumnNames = new string[8];
-			excelColumnNames[0] = "Item";
-			excelColumnNames[1] = "Name";
-			excelColumnNames[2] = "PackSize";
-			excelColumnNames[3] = "Label";
-			excelColumnNames[4] = "Each";
-			excelColumnNames[5] = "Price";
-			excelColumnNames[6] = "Quantity";
-			excelColumnNames[7] = "ExtPrice";
+        private SheetData WriteDataTableToExcelWorksheet(List<InventoryValuationModel> data)
+        {
+            SheetData sheetData = new DocumentFormat.OpenXml.Spreadsheet.SheetData();
+            //
+            //  Create the Header row in our Excel Worksheet
+            //
+            uint rowIndex = 1;
 
-			//
-			//  Create the Header row in our Excel Worksheet
-			//
-			uint rowIndex = 1;
+            string[] excelColumnNames = new string[11];
+            excelColumnNames[0] = "Item";
+            excelColumnNames[1] = "Brand";
+            excelColumnNames[2] = "Name";
+            excelColumnNames[3] = "Description";
+            excelColumnNames[4] = "Pack";
+            excelColumnNames[5] = "Size";
+            excelColumnNames[6] = "Label";
+            excelColumnNames[7] = "Each";
+            excelColumnNames[8] = "Quantity";
+            excelColumnNames[9] = "Price";
+            excelColumnNames[10] = "ExtPrice";
 
-			var headerRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
-			sheetData.Append(headerRow);
+            rowIndex = OpenXmlSpreadsheetUtilities.AddTitleRow
+                (rowIndex, "InventoryValuationModel", excelColumnNames, "Inventory Valuation Report", sheetData);
+            rowIndex = OpenXmlSpreadsheetUtilities.AddCustomerRow
+                (rowIndex, "InventoryValuationModel", excelColumnNames, _customerRepo.GetCustomerByCustomerNumber(_context.CustomerId, _context.BranchId), sheetData);
 
-			AppendTextCell(excelColumnNames[0] + "1", "Item", headerRow);
-			AppendTextCell(excelColumnNames[1] + "1", "Name", headerRow);
-			AppendTextCell(excelColumnNames[2] + "1", "Pack/Size", headerRow);
-			AppendTextCell(excelColumnNames[3] + "1", "Label", headerRow);
-			AppendTextCell(excelColumnNames[4] + "1", "Each", headerRow);
-			AppendTextCell(excelColumnNames[5] + "1", "Price", headerRow);
-			AppendTextCell(excelColumnNames[6] + "1", "Quantity", headerRow);
-			AppendTextCell(excelColumnNames[7] + "1", "Ext. Price", headerRow);
+            var headerRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
+            sheetData.Append(headerRow);
 
-			
-			//
-			//  Now, step through each row of data in our DataTable...
-			foreach (var item in data)
-			{
-				rowIndex++;
-				var newExcelRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
-				sheetData.Append(newExcelRow);
-				if (item != null)
-				{
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), "Item", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), "Brand", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "Name", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "Description", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), "Pack", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), "Size", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "Label", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), "Each", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), "Quantity", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), "Price", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), "Ext. Price", headerRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
 
-					AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), item.ItemId, newExcelRow);
-					AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Name, newExcelRow);
-					AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.PackSize, newExcelRow);
-					AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Label, newExcelRow);
-					AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.Each ? "Y" : "N", newExcelRow);
-					AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), item.Price.ToString(), newExcelRow, CellValues.Number);
-					AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), item.Quantity.ToString(), newExcelRow, CellValues.Number);
-					AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), item.ExtPrice.ToString(), newExcelRow, CellValues.Number);
 
-				}
-			}
+            //
+            //  Now, step through each row of data in our DataTable...
+            foreach (var item in data)
+            {
+                rowIndex++;
+                var newExcelRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
+                sheetData.Append(newExcelRow);
+                if (item != null)
+                {
 
-			rowIndex++;
-			var newRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
-			sheetData.Append(newRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), item.ItemId, newExcelRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), item.Brand, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), item.Name, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), item.Description, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.TEXT_WRAP_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), item.Pack, newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), item.Size, newExcelRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), item.Label, newExcelRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), item.Each ? "Y" : "N", newExcelRow);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), item.Quantity.ToString(), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), Math.Round(item.Price, 2).ToString("F2"), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+                    OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), Math.Round(item.ExtPrice, 2).ToString("F2"), newExcelRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
 
-			AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), "", newRow);
-			AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), "", newRow);
-			AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "", newRow);
-			AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "", newRow);
-			AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), "", newRow);
-			AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), "", newRow);
-			AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "Total", newRow);
-			AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), data.Sum(s => s.ExtPrice).ToString(), newRow, CellValues.Number);
+                }
+            }
 
-		}
+            rowIndex++;
+            var newRow = new Row { RowIndex = rowIndex };  // add a row at the top of spreadsheet
+            sheetData.Append(newRow);
 
-		private void AppendTextCell(string cellReference, string cellStringValue, Row excelRow, CellValues dataType = CellValues.String)
-		{
-			//  Add a new Excel Cell to our Row 
-			Cell cell = new Cell() { CellReference = cellReference, DataType = dataType };
-			CellValue cellValue = new CellValue();
-			cellValue.Text = cellStringValue;
-			cell.Append(cellValue);
-			excelRow.Append(cell);
-		}
-
-		#endregion
-	}
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[0] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[1] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[2] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[3] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[4] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[5] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[6] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[7] + rowIndex.ToString(), "", newRow);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[8] + rowIndex.ToString(), "Total", newRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_TEXT_WRAP_BOLD_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[9] + rowIndex.ToString(), Math.Round(data.Sum(s => s.Price), 2).ToString("F2"), newRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+            OpenXmlSpreadsheetUtilities.AppendTextCell(excelColumnNames[10] + rowIndex.ToString(), Math.Round(data.Sum(s => s.ExtPrice), 2).ToString("F2"), newRow, CellValues.String, OpenXmlSpreadsheetUtilities.RIGHT_ALIGNED_CELL);
+            return sheetData;
+        }
+        #endregion
+    }
 }

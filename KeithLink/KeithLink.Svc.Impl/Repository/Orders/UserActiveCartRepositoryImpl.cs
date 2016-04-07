@@ -12,6 +12,12 @@ namespace KeithLink.Svc.Impl.Repository.Orders
 	public class UserActiveCartRepositoryImpl : EFBaseRepository<UserActiveCart>, IUserActiveCartRepository
 	{
 		public UserActiveCartRepositoryImpl(IUnitOfWork unitOfWork) : base(unitOfWork) { }
-        
-	}
+
+        public UserActiveCart GetCurrentUserCart(Guid userId, string branchId, string customerNumber) {
+            return Read(u => u.UserId == userId &&
+                             u.CustomerId.Equals(customerNumber) &&
+                             u.BranchId.Equals(branchId))
+                  .FirstOrDefault();
+        }
+    }
 }

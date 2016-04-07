@@ -103,7 +103,7 @@ angular.module('bekApp')
           });
 
           $scope.featuredBreadcrumb = {
-            click: clearFacets,
+            click: $scope.clearFacets,
             clickData: null,
             displayText: displayText
           };
@@ -119,7 +119,7 @@ angular.module('bekApp')
         });
 
         $scope.featuredBreadcrumb = {
-          click: clearFacets,
+          click: $scope.clearFacets,
           clickData: null,
           displayText: displayText
         };
@@ -206,14 +206,14 @@ angular.module('bekApp')
       // search term
       if ($scope.paramType === 'search') {
        $scope.featuredBreadcrumb = {
-          click: clearFacets,
+          click: $scope.clearFacets,
           clickData: null,
           displayText: $stateParams.deptName
         };
         breadcrumbs.unshift($scope.featuredBreadcrumb);
         
         $scope.featuredBreadcrumb = {
-          click: clearFacets,
+          click: $scope.clearFacets,
           clickData: '',
           displayText: '"' + $scope.paramId + '"'
         };
@@ -325,7 +325,7 @@ angular.module('bekApp')
     /*************
     FACETS
     *************/
-    function clearFacets() {
+    $scope.clearFacets = function() {
       $scope.facets.categories.selected = [];
       $scope.facets.brands.selected = [];
       $scope.facets.mfrname.selected = [];
@@ -333,10 +333,6 @@ angular.module('bekApp')
       $scope.facets.itemspecs.selected = [];
       loadProducts().then(refreshFacets);
       $scope.noFiltersSelected = true;
-    }
-
-    $scope.clearFacets = function() {
-      clearFacets();
     }
 
     function refreshFacets(facets) {

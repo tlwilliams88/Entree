@@ -9,14 +9,14 @@ namespace KeithLink.Svc.Test.Logic.InternalSrv {
     [TestClass]
     public class InternalMarketingPreferenceLogicImplTests {
         #region attributes
-        private readonly IInternalMarketingPreferenceLogic _logic;
+        private readonly IMarketingPreferencesLogic _logic;
         #endregion
 
         #region ctor
         public InternalMarketingPreferenceLogicImplTests() {
             IContainer diMap = DependencyMap.Build();
 
-            _logic = diMap.Resolve<IInternalMarketingPreferenceLogic>();
+            _logic = diMap.Resolve<IMarketingPreferencesLogic>();
         }
         #endregion
 

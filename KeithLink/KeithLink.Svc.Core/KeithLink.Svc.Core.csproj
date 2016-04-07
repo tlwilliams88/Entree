@@ -217,7 +217,11 @@
     <Compile Include="Interface\Invoices\IImagingRepository.cs" />
     <Compile Include="Interface\Invoices\ITermLogic.cs" />
     <Compile Include="Interface\Invoices\ITermRepository.cs" />
+    <Compile Include="Interface\Lists\IFavoriteLogic.cs" />
+    <Compile Include="Interface\Lists\IHistoryLogic.cs" />
+    <Compile Include="Interface\Lists\IListLogic.cs" />
     <Compile Include="Interface\Lists\IListShareRepository.cs" />
+    <Compile Include="Interface\Lists\INoteLogic.cs" />
     <Compile Include="Interface\Messaging\IMessagingLogic.cs" />
     <Compile Include="Interface\Messaging\IPushNotificationMessageProvider.cs" />
     <Compile Include="Interface\Messaging\IMessageProvider.cs" />
@@ -232,14 +236,14 @@
     <Compile Include="Interface\OnlinePayments\IOnlinePaymentsLogic.cs" />
     <Compile Include="Interface\OnlinePayments\Log\IKPayLogRepository.cs" />
     <Compile Include="Interface\OnlinePayments\Payment\IKPayPaymentTransactionRepository.cs" />
-    <Compile Include="Interface\Orders\History\IInternalSpecialOrderLogic.cs" />
+    <Compile Include="Interface\Orders\ISpecialOrderLogic.cs" />
     <Compile Include="Interface\Orders\ISpecialOrderRepository.cs" />
-    <Compile Include="Interface\Orders\History\IInternalOrderHistoryLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestLogic.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryRequestQueueRepository.cs" />
     <Compile Include="Interface\Orders\IOrderConversionLogic.cs" />
     <Compile Include="Interface\Orders\IOrderSocketConnectionRepository.cs" />
     <Compile Include="Interface\Orders\IOrderUpdateSocketConnectionRepository.cs" />
+    <Compile Include="Interface\Orders\IUserActiveCartLogic.cs" />
     <Compile Include="Interface\Orders\IUserActiveCartRepository.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuLogicImpl.cs" />
     <Compile Include="Interface\PowerMenu\IPowerMenuRepository.cs" />
@@ -247,18 +251,15 @@
     <Compile Include="Interface\Profile\IAvatarRepository.cs" />
     <Compile Include="Interface\Profile\IDsrAliasLogic.cs" />
     <Compile Include="Interface\Profile\IDsrAliasRepository.cs" />
-    <Compile Include="Interface\Profile\IDsrAliasService.cs" />
     <Compile Include="Interface\Profile\IDsrLogic.cs" />
     <Compile Include="Interface\Profile\IDsrRepository.cs" />
-    <Compile Include="Interface\Profile\IInternalMarketingPreferenceLogic.cs" />
     <Compile Include="Interface\Profile\IItemHistoryRepository.cs" />
+    <Compile Include="Interface\Profile\IMarketingPreferencesLogic.cs" />
     <Compile Include="Interface\Profile\IMarketingPreferencesRepository.cs" />
-    <Compile Include="Interface\Profile\IMarketingPreferencesServiceRepository.cs" />
-    <Compile Include="Interface\Profile\ISettingsLogicImpl.cs" />
+    <Compile Include="Interface\Profile\ISettingsLogic.cs" />
     <Compile Include="Interface\Profile\ISettingsRepository.cs" />
-    <Compile Include="Interface\Profile\PasswordReset\IInternalPasswordResetLogic.cs" />
+    <Compile Include="Interface\Profile\PasswordReset\IPasswordResetLogic.cs" />
     <Compile Include="Interface\Profile\PasswordReset\IPasswordResetRequestRepository.cs" />
-    <Compile Include="Interface\Profile\PasswordReset\IPasswordResetService.cs" />
     <Compile Include="Interface\Reports\IInventoryValuationReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportLogic.cs" />
     <Compile Include="Interface\Reports\IReportRepository.cs" />
@@ -333,8 +334,6 @@
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceDetailModel.cs" />
     <Compile Include="Models\Messaging\ProfileMessagingPreferenceModel.cs" />
     <Compile Include="Models\Messaging\MessagePagingModel.cs" />
-    <Compile Include="Interface\Orders\IInternalOrderLogic.cs" />
-    <Compile Include="Interface\Orders\IOrderServiceRepository.cs" />
     <Compile Include="Models\Messaging\Queue\OrderEta.cs" />
     <Compile Include="Models\Messaging\Queue\EtaNotification.cs" />
     <Compile Include="Models\Messaging\Queue\PaymentConfirmationNotification.cs" />
@@ -393,11 +392,9 @@
     <Compile Include="Interface\Orders\Confirmations\IConfirmationLogic.cs" />
     <Compile Include="Interface\Orders\Confirmations\IConfirmationQueueRepository.cs" />
     <Compile Include="Interface\IImportLogic.cs" />
-    <Compile Include="Interface\Lists\IInternalListLogic.cs" />
     <Compile Include="Interface\Lists\IListCacheRepository.cs" />
     <Compile Include="Interface\Lists\IListItemRepository.cs" />
     <Compile Include="Interface\Lists\IListRepository.cs" />
-    <Compile Include="Interface\Lists\IListServiceRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryDetailRepository.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryHeaderRepsitory.cs" />
     <Compile Include="Interface\Orders\History\IOrderHistoryLogic.cs" />
@@ -587,9 +584,6 @@
     <Folder Include="ETL\" />
     <Folder Include="Interface\Component\" />
     <Folder Include="Interface\OnlinePayments\Profile\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

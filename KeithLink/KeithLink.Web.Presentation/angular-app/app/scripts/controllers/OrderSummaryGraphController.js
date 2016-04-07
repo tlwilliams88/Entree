@@ -23,7 +23,7 @@ angular.module('bekApp')
     var months = [],
       tempDate = from;
     for (var i = 0; i < 6; i++) {
-      months.push(tempDate.format(Constants.dateFormat.minute));
+      months.push(tempDate.format(Constants.dateFormat.month));
       tempDate.add(1, 'month');
     }
 
@@ -31,7 +31,7 @@ angular.module('bekApp')
       lineData = [],
       monthData = months;
 
-    monthTotals.data.totals.forEach(function(total) {
+    monthTotals.totals.forEach(function(total) {
       barData.push(total);
       lineData.push(total);
     });

@@ -23,7 +23,7 @@ angular.module('bekApp')
     });
 
     $scope.lists = ListService.lists;
-    $scope.labels = ListService.labels;
+    $scope.labels = ListService.labels.successResponse;
 
     // used for the 'Show More' button
     $scope.showMoreListNames = true;
@@ -143,15 +143,6 @@ angular.module('bekApp')
 
     $scope.pagingPageSize = parseInt(LocalStorage.getPageSize());
 
-    function checkForEvenOrOdd(){
-      $scope.selectedList.items.forEach(function(item){
-          item.isEven = false;
-          if(item.position % 2 == 0) {
-          item.isEven = true;
-        }
-      })
-    };
-
     function resetPage(list, initialPageLoad) {
       $scope.initPagingValues();
       $scope.activeElement = true;
@@ -178,7 +169,6 @@ angular.module('bekApp')
       $scope.selectedList.items.forEach(function(item) {
         item.editPosition = item.position;
       })
-      checkForEvenOrOdd();
     };
 
     function appendListItems(list) {
@@ -481,7 +471,6 @@ angular.module('bekApp')
           newPosition += 1;
       }
       });
-      checkForEvenOrOdd();
      }
 
     /**********

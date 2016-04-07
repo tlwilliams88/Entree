@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('bekApp')
-.controller('ImportModalController', ['$scope', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders',
-  function ($scope, $modalInstance, $state, ListService, CartService, customListHeaders) {
+.controller('ImportModalController', ['$scope', '$analytics', '$modalInstance', '$state', 'ListService', 'CartService', 'customListHeaders',
+  function ($scope, $analytics, $modalInstance, $state, ListService, CartService, customListHeaders) {
 
   $scope.customListHeaders = customListHeaders;
   

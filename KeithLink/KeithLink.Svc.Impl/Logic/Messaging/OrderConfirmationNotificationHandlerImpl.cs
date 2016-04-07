@@ -44,14 +44,14 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
         private readonly IMessageTemplateLogic _messageTemplateLogic;
         private readonly IUserMessagingPreferenceRepository userMessagingPreferenceRepository;
         private readonly Func<Channel, IMessageProvider> messageProviderFactory;
-        private readonly IInternalOrderHistoryLogic _orderHistoryLogic;
+        private readonly IOrderLogic _orderLogic;
         #endregion
 
         #region ctor
         public OrderConfirmationNotificationHandlerImpl(IEventLogRepository eventLogRepository, IUserProfileLogic userProfileLogic, IUserPushNotificationDeviceRepository userPushNotificationDeviceRepository,
                                                         IMessageTemplateLogic messageTemplateLogic, ICustomerRepository customerRepository, IUserMessagingPreferenceRepository userMessagingPreferenceRepository, 
                                                         Func<Channel, IMessageProvider> messageProviderFactory, IDsrLogic dsrLogic, ICatalogRepository catalogRepository,
-                                                        IInternalOrderHistoryLogic orderHistoryLogic)
+                                                        IOrderLogic orderLogic)
             : base(userProfileLogic, userPushNotificationDeviceRepository, customerRepository,
                    userMessagingPreferenceRepository, messageProviderFactory, eventLogRepository, 
                    dsrLogic)
@@ -64,7 +64,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             this.userMessagingPreferenceRepository = userMessagingPreferenceRepository;
             _messageTemplateLogic = messageTemplateLogic;
             this.messageProviderFactory = messageProviderFactory;
-            this._orderHistoryLogic = orderHistoryLogic;
+            _orderLogic = orderLogic;
         }
         #endregion
 
@@ -244,7 +244,7 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             }
             else
             {
-                Order order = _orderHistoryLogic.GetOrder(customer.CustomerBranch, notification.OrderNumber);
+                Order order = _orderLogic.GetOrder(customer.CustomerBranch, notification.OrderNumber);
                 invoiceNumber = " INV " + order.InvoiceNumber + " #" + notification.OrderNumber;
             }
             return invoiceNumber;

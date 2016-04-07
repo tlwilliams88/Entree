@@ -4,7 +4,7 @@
 
 using KeithLink.Svc.Core.Interface.Configurations;
 using KeithLink.Svc.Core.Interface.Invoices;
-using KeithLink.Svc.Core.Interface.Orders.History;
+using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
 using KeithLink.Svc.Core.Interface.Profile;
 
@@ -34,7 +34,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
         #region attributes
         private readonly IOnlinePaymentsLogic _invLogic;
 		private readonly IExportSettingLogic _exportLogic;
-        private readonly IOrderHistoryLogic _orderLogic;
+        private readonly IOrderLogic _orderLogic;
         private readonly IImagingLogic _imgLogic;
         private readonly IEventLogRepository _log;
         #endregion
@@ -47,11 +47,12 @@ namespace KeithLink.Svc.WebApi.Controllers {
         /// <param name="invoiceLogic"></param>
         /// <param name="exportSettingsLogic"></param>
         /// <param name="invoiceImagingLogic"></param>
-        /// <param name="orderHistoryLogic"></param>
+        /// <param name="orderLogic"></param>
+        /// <param name="logRepo"></param>
 		public InvoiceController(IUserProfileLogic profileLogic, IOnlinePaymentsLogic invoiceLogic, IExportSettingLogic exportSettingsLogic,
-                                 IOrderHistoryLogic orderHistoryLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo) : base(profileLogic) {
+                                 IOrderLogic orderLogic, IImagingLogic invoiceImagingLogic, IEventLogRepository logRepo) : base(profileLogic) {
             _invLogic = invoiceLogic;
-            _orderLogic = orderHistoryLogic;
+            _orderLogic = orderLogic;
 			_exportLogic = exportSettingsLogic;
             _imgLogic = invoiceImagingLogic;
             _log = logRepo;
@@ -147,7 +148,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
 
                 if(request.export.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.Invoice, 0, request.export.Fields, request.export.SelectedType);
-                ret = ExportModel<InvoiceModel>(list.PagedResults.Results, request.export);
+                ret = ExportModel<InvoiceModel>(list.PagedResults.Results, request.export, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -250,7 +251,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 Order order = _orderLogic.GetOrder(SelectedUserContext.BranchId, invoiceNumber);
                 List<InvoiceItemModel> items = order.Items.Select(i => i.ToInvoiceItem()).ToList();
 
-                ret = ExportModel<InvoiceItemModel>(items, exportRequest);
+                ret = ExportModel<InvoiceItemModel>(items, exportRequest, SelectedUserContext);
             }
             catch (Exception ex)
             {
@@ -423,7 +424,7 @@ namespace KeithLink.Svc.WebApi.Controllers {
                 if (request.export.Fields != null)
                     _exportLogic.SaveUserExportSettings(this.AuthenticatedUser.UserId, Core.Models.Configuration.EF.ExportType.PendingTransactions, KeithLink.Svc.Core.Enumerations.List.ListType.Custom, request.export.Fields, request.export.SelectedType);
 
-                ret = ExportModel<PaymentTransactionModel>(transactions.Results, request.export);
+                ret = ExportModel<PaymentTransactionModel>(transactions.Results, request.export, SelectedUserContext);
             }
             catch (Exception ex)
             {

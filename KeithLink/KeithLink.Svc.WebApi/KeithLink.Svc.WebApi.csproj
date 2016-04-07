@@ -212,107 +212,16 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Global.asax" />
-    <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Invoices.TermModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.ListItemModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.ListModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.RecentItem.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Messaging.EF.UserMessage.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessageModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Messaging.UserMessagingPreferenceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Customer.CustomerBank.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryFile.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportOptionsModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.History.OrderHistoryHeader.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.Order.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.RecommendedItemModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.UserActiveCartModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Reports.ItemUsageReportItemModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.OnlinePayments.Payment.PaymentTransactionModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.CustomerAccountBalanceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.Dsr.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.OrderHeader.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Reports.ItemBarcodeModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.PagedListModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.ListCopyResultModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Lists.InHistoryReturnModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.EF.DsrAlias.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.DsrAliasModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.MarketingPreferenceModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.ModelExport.ExportExternalCatalog.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModel.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Profile.SettingsModelReturn.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Orders.OrderTotalByMonth.datasource" />
-    <Content Include="KeithLink.Svc.Core.Models.Customers.EF.ItemHistory.datasource" />
     <None Include="Properties\PublishProfiles\Beta.pubxml" />
     <None Include="Properties\PublishProfiles\Demo.pubxml" />
     <None Include="Properties\PublishProfiles\Dev2.pubxml" />
     <None Include="Properties\PublishProfiles\Stage.pubxml" />
-    <Content Include="KeithLink.Svc.Core.Models.Invoices.InvoiceHeaderReturnModel.datasource" />
     <None Include="Properties\PublishProfiles\Release.pubxml" />
     <Content Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </Content>
-    <None Include="Service References\com.benekeith.ListService\ListServcie.disco" />
-    <None Include="Service References\com.benekeith.ListService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ListService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ListService\ListServcie7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie71.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie9.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie91.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.disco" />
-    <None Include="Service References\com.benekeith.OrderService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.OrderService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.OrderService\OrderService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService51.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService.wsdl" />
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Services\PowerMenuPricing.asmx" />
-    <None Include="Service References\com.benekeith.ProfileService\ProfileService.disco" />
-    <None Include="Service References\com.benekeith.ProfileService\configuration91.svcinfo" />
-    <None Include="Service References\com.benekeith.ProfileService\configuration.svcinfo" />
-    <None Include="Service References\com.benekeith.ProfileService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="SqlServerTypes\readme.htm" />
     <EmbeddedResource Include="SwaggerUI.css">
       <LogicalName>SwaggerUI.css</LogicalName>
@@ -324,7 +233,6 @@
   <ItemGroup>
     <Compile Include="App_Start\ApiKeyedRoute.cs" />
     <Compile Include="App_Start\ApiKeyedRouteConstraint.cs" />
-    <Compile Include="App_Start\DependencyMap.cs" />
     <Compile Include="App_Start\SimpleAuthorizationServerProvider.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
@@ -351,6 +259,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Attribute\GlobalExceptionFilterAttribute.cs" />
+    <Compile Include="Helpers\ListPrintHelper.cs" />
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\GuestProfileModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -363,29 +272,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Repository\Lists\ListServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Orders\OrderServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\DsrAliasServiceImpl.cs" />
-    <Compile Include="Repository\Profile\MarketingPreferencesServiceRepositoryImpl.cs" />
-    <Compile Include="Repository\Profile\PasswordResetServiceImpl.cs" />
-    <Compile Include="Service References\com.benekeith.ListService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.OrderService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\com.benekeith.ProfileService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Services\PowerMenuPricing.asmx.cs">
       <DependentUpon>PowerMenuPricing.asmx</DependentUpon>
-      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Services\PowerMenuPricingHandler.ashx.cs">
       <DependentUpon>PowerMenuPricingHandler.ashx</DependentUpon>
@@ -400,44 +288,6 @@
     <Content Include="TemplateGenerationCommon\CodeGenerationIncludes.tt" />
     <None Include="Properties\PublishProfiles\Test.pubxml" />
     <None Include="Properties\PublishProfiles\Dev.pubxml" />
-    <None Include="Service References\com.benekeith.ListService\ListServcie.wsdl" />
-    <None Include="Service References\com.benekeith.ListService\ListServcie.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.ListService\ListServcie6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService.wsdl" />
-    <None Include="Service References\com.benekeith.OrderService\OrderService.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\com.benekeith.OrderService\OrderService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Services\PowerMenuPricingHandler.ashx" />
     <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -488,14 +338,6 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Service References\com.benekeith.ListService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.OrderService\" />
-    <WCFMetadataStorage Include="Service References\com.benekeith.ProfileService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

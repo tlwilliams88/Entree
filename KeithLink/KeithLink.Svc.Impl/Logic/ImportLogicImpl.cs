@@ -24,7 +24,7 @@ using System.IO;
 namespace KeithLink.Svc.Impl.Logic {
     public class ImportLogicImpl : IImportLogic {
         #region attributes
-        private IListServiceRepository listServiceRepository;
+        private IListLogic listServiceRepository;
         private ICatalogLogic catalogLogic;
         private IEventLogRepository eventLogRepository;
         private IShoppingCartLogic shoppingCartLogic;
@@ -42,7 +42,7 @@ namespace KeithLink.Svc.Impl.Logic {
         #endregion
 
         #region ctor
-        public ImportLogicImpl( IListServiceRepository listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic ) {
+        public ImportLogicImpl(IListLogic listServiceRepository, ICatalogLogic catalogLogic, IEventLogRepository eventLogRepository, IShoppingCartLogic shoppingCartLogic, IPriceLogic priceLogic ) {
             this.listServiceRepository = listServiceRepository;
             this.catalogLogic = catalogLogic;
             this.eventLogRepository = eventLogRepository;

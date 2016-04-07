@@ -141,10 +141,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CacheService.svc" />
-    <Content Include="ProfileService.svc" />
-    <Content Include="ListServcie.svc" />
-    <Content Include="OrderService.svc" />
     <Content Include="ETLService.svc" />
     <Content Include="Global.asax" />
     <Content Include="PipelineService.svc" />
@@ -155,28 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutofacContainerBuilder.cs" />
-    <Compile Include="CacheService.svc.cs">
-      <DependentUpon>CacheService.svc</DependentUpon>
-    </Compile>
     <Compile Include="GlobalErrorBehaviorAttribute.cs" />
-    <Compile Include="Interfaces\IDsrService.cs" />
-    <Compile Include="Interfaces\ICacheService.cs" />
-    <Compile Include="Interfaces\IReportService.cs" />
-    <Compile Include="Interfaces\IProfileService.cs" />
-    <Compile Include="ProfileService.svc.cs">
-      <DependentUpon>ProfileService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\IOnlinePaymentService.cs" />
-    <Compile Include="Interfaces\IInvoiceService.cs" />
-    <Compile Include="Interfaces\IListServcie.cs" />
-    <Compile Include="Interfaces\IMessagingService.cs" />
-    <Compile Include="Interfaces\IOrderService.cs" />
-    <Compile Include="ListServcie.svc.cs">
-      <DependentUpon>ListServcie.svc</DependentUpon>
-    </Compile>
-    <Compile Include="OrderService.svc.cs">
-      <DependentUpon>OrderService.svc</DependentUpon>
-    </Compile>
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="ETLService.svc.cs">
       <DependentUpon>ETLService.svc</DependentUpon>

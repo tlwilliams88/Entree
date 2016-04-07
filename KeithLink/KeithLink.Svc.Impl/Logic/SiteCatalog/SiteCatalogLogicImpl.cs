@@ -11,6 +11,7 @@ using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.ModelExport;
 using KeithLink.Svc.Core.Models.Orders.History;
+using EF = KeithLink.Svc.Core.Models.Orders.History.EF;
 using KeithLink.Svc.Core.Models.Profile;
 using KeithLink.Svc.Core.Models.SiteCatalog;
 
@@ -32,15 +33,17 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
     public class SiteCatalogLogicImpl : ICatalogLogic
     {
         #region attributes
-        private ICatalogRepository _catalogRepository;
-        private IPriceLogic _priceLogic;
-        private IProductImageRepository _imgRepository;
-        private ICategoryImageRepository _categoryImageRepository;
-        private ICacheRepository _catalogCacheRepository;
-		private IListServiceRepository _listServiceRepository;
-		private IDivisionLogic _divisionLogic;
-        private IOrderServiceRepository _orderServiceRepository;
-        private IExportSettingLogic _externalCatalogRepository;
+        private readonly ICacheRepository _catalogCacheRepository;
+        private readonly ICatalogRepository _catalogRepository;
+        private readonly ICategoryImageRepository _categoryImageRepository;
+		private readonly IDivisionLogic _divisionLogic;
+        private readonly IExportSettingLogic _externalCatalogRepository;
+        private readonly IFavoriteLogic _favoriteLogic;
+        private readonly IHistoryLogic _historyLogic;
+        private readonly IProductImageRepository _imgRepository;
+        private readonly IOrderHistoryHeaderRepsitory _orderHeaderRepo;
+        private readonly INoteLogic _noteLogic;
+        private readonly IPriceLogic _priceLogic;
 
         protected string CACHE_GROUPNAME { get { return "Catalog"; } }
         protected string CACHE_NAME { get { return "Catalog"; } }
@@ -48,19 +51,22 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
         #endregion
 
         #region constructor
-        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, IListServiceRepository listServiceRepository,
-                                                 ICategoryImageRepository categoryImageRepository, ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic,
-                                                 IOrderServiceRepository orderServiceRepository, IExportSettingLogic externalCatalogRepository)
+        public SiteCatalogLogicImpl(ICatalogRepository catalogRepository, IPriceLogic priceLogic, IProductImageRepository imgRepository, ICategoryImageRepository categoryImageRepository, 
+                                    ICacheRepository catalogCacheRepository, IDivisionLogic divisionLogic, IOrderHistoryHeaderRepsitory orderHistoryHeaderRepo, 
+                                    IExportSettingLogic externalCatalogRepository, IFavoriteLogic favoriteLogic, INoteLogic noteLogic,
+                                    IHistoryLogic historyLogic)
         {
-            _catalogRepository = catalogRepository;
-            _priceLogic = priceLogic;
-            _imgRepository = imgRepository;
-            _listServiceRepository = listServiceRepository;
-            _categoryImageRepository = categoryImageRepository;
             _catalogCacheRepository = catalogCacheRepository;
+            _catalogRepository = catalogRepository;
+            _categoryImageRepository = categoryImageRepository;
             _divisionLogic = divisionLogic;
-            _orderServiceRepository = orderServiceRepository;
             _externalCatalogRepository = externalCatalogRepository;
+            _favoriteLogic = favoriteLogic;
+            _historyLogic = historyLogic;
+            _imgRepository = imgRepository;
+            _orderHeaderRepo = orderHistoryHeaderRepo;
+            _noteLogic = noteLogic;
+            _priceLogic = priceLogic;
         }
         #endregion
 
@@ -79,20 +85,8 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             }
         }
 
-        //private void AddFavoriteProductInfo(UserProfile profile, Product ret, UserSelectedContext catalogInfo)
-        //{
-        //	if (profile != null && ret != null)
-        //	{
-        //		var list = _listServiceRepository.ReadFavorites(profile, catalogInfo);
-        //		var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
-
-        //		ret.Favorite = list.Contains(ret.ItemNumber);
-        //		ret.Notes = notes.Where(n => n.ItemNumber.Equals(ret.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
-        //	}
-        //}
-
         private void AddItemHistoryToProduct(Product returnValue, UserSelectedContext catalogInfo) {
-            List<Core.Models.Orders.History.OrderHistoryFile> history = _orderServiceRepository.GetLastFiveOrderHistory(catalogInfo, returnValue.ItemNumber);
+            List<OrderHistoryFile> history = GetLastFiveOrderHistory(catalogInfo, returnValue.ItemNumber);
 
             foreach (OrderHistoryFile h in history) {
                 foreach (OrderHistoryDetail d in h.Details) {
@@ -108,13 +102,7 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
             if (context == null || String.IsNullOrEmpty(context.CustomerId))
                 return;
 
-            PriceReturn pricingInfo = null;
-
-            //if (IsSpecialtyCatalog(searchModel.CatalogType)) {
-            //    pricingInfo = _priceLogic.GetNonBekItemPrices(context.BranchId, context.CustomerId, searchModel.CatalogType, DateTime.Now.AddDays(1), prods.Products);
-            //} else {
-                pricingInfo = _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
-            //}
+            PriceReturn pricingInfo =  _priceLogic.GetPrices(context.BranchId, context.CustomerId, DateTime.Now.AddDays(1), prods.Products);
             
             foreach (Price p in pricingInfo.Prices) {
                 Product prod = prods.Products.Find(x => x.ItemNumber == p.ItemNumber);
@@ -147,14 +135,18 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
         private void GetAdditionalProductInfo(UserProfile profile, ProductsReturn ret, UserSelectedContext catalogInfo) {
             if (profile != null) {
-                var favorites = _listServiceRepository.ReadFavorites(profile, catalogInfo);
-                var notes = _listServiceRepository.ReadNotes(profile, catalogInfo);
-                var history = _listServiceRepository.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
+                var favorites = _favoriteLogic.GetFavoritedItemNumbers(profile, catalogInfo);
+                var notes = _noteLogic.GetNotes(profile, catalogInfo);
+                var history = _historyLogic.ItemsInHistoryList(catalogInfo, ret.Products.Select(p => p.ItemNumber).ToList());
 
                 ret.Products.ForEach(delegate(Product prod) {
                     prod.Favorite = favorites.Contains(prod.ItemNumber);
-                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber)).Select(i => i.Notes).FirstOrDefault();
-                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber)).FirstOrDefault().InHistory;
+                    prod.Notes = notes.Where(n => n.ItemNumber.Equals(prod.ItemNumber))
+                                      .Select(i => i.Notes)
+                                      .FirstOrDefault();
+                    prod.InHistory = history.Where(h => h.ItemNumber.Equals(prod.ItemNumber))
+                                            .FirstOrDefault()
+                                            .InHistory;
                 });
             }
         }
@@ -272,6 +264,49 @@ namespace KeithLink.Svc.Impl.Logic.SiteCatalog
 
             AddPricingInfo(returnValue, catalogInfo, searchModel);
             GetAdditionalProductInfo(profile, returnValue, catalogInfo);
+
+            return returnValue;
+        }
+
+        private List<OrderHistoryFile> GetLastFiveOrderHistory(UserSelectedContext catalogInfo, string itemNumber) {
+            List<OrderHistoryFile> returnValue = new List<OrderHistoryFile>();
+
+            IEnumerable<EF.OrderHistoryHeader> history = _orderHeaderRepo.GetLastFiveOrdersByItem(catalogInfo.BranchId, catalogInfo.CustomerId, itemNumber);
+
+            foreach(EF.OrderHistoryHeader h in history) {
+                OrderHistoryFile root = new OrderHistoryFile() {
+                    Header = new OrderHistoryHeader() {
+                        BranchId = h.BranchId,
+                        CustomerNumber = h.CustomerNumber,
+                        InvoiceNumber = h.CustomerNumber,
+                        DeliveryDate = h.DeliveryDate,
+                        PONumber = h.PONumber,
+                        ControlNumber = h.ControlNumber,
+                        OrderStatus = h.OrderStatus,
+                        FutureItems = h.FutureItems,
+                        ErrorStatus = h.ErrorStatus,
+                        ActualDeliveryTime = h.ActualDeliveryTime,
+                        EstimatedDeliveryTime = h.EstimatedDeliveryTime,
+                        ScheduledDeliveryTime = h.ScheduledDeliveryTime,
+                        DeliveryOutOfSequence = h.DeliveryOutOfSequence,
+                        RouteNumber = h.RouteNumber,
+                        StopNumber = h.StopNumber
+                    }
+                };
+
+                foreach(EF.OrderHistoryDetail d in h.OrderDetails.Where(x => x.ItemNumber.Equals(itemNumber))) {
+                    OrderHistoryDetail detail = new OrderHistoryDetail() {
+                        LineNumber = d.LineNumber,
+                        ItemNumber = d.ItemNumber,
+                        OrderQuantity = d.OrderQuantity,
+                        ShippedQuantity = d.ShippedQuantity,
+                    };
+
+                    root.Details.Add(detail);
+                }
+
+                returnValue.Add(root);
+            }
 
             return returnValue;
         }

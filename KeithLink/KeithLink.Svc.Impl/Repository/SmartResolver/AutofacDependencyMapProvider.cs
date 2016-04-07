@@ -43,13 +43,14 @@ using KeithLink.Svc.Impl.Logic.Configurations;
 using KeithLink.Svc.Impl.Logic.ContentManagement;
 using KeithLink.Svc.Impl.Logic.ETL;
 using KeithLink.Svc.Impl.Logic.Export;
-using KeithLink.Svc.Impl.Logic.InternalSvc;
 using KeithLink.Svc.Impl.Logic.Invoices;
+using KeithLink.Svc.Impl.Logic.Lists;
 using KeithLink.Svc.Impl.Logic.Messaging;
 using KeithLink.Svc.Impl.Logic.OnlinePayments;
 using KeithLink.Svc.Impl.Logic.Orders;
 using KeithLink.Svc.Impl.Logic.PowerMenu;
 using KeithLink.Svc.Impl.Logic.Profile;
+using KeithLink.Svc.Impl.Logic.Profile.PasswordRequest;
 using KeithLink.Svc.Impl.Logic.Reports;
 using KeithLink.Svc.Impl.Logic.SingleSignOn;
 using KeithLink.Svc.Impl.Logic.SiteCatalog;
@@ -165,7 +166,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
             builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
@@ -206,7 +207,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
 
             // lists
-            builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
+            builder.RegisterType<FavoriteLogicImpl>().As<IFavoriteLogic>();
+            builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
+            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
+            builder.RegisterType<NoteLogicImpl>().As<INoteLogic>();
 
             //marketing 
             builder.RegisterType<ContentManagementLogicImpl>().As<IContentManagementLogic>();
@@ -243,18 +247,23 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
             builder.RegisterType<OrderLogicImpl>().As<IOrderLogic>();
             builder.RegisterType<OrderQueueLogicImpl>().As<IOrderQueueLogic>();
+            builder.RegisterType<UserActiveCartLogicImpl>().As<IUserActiveCartLogic>();
 
             // other
             builder.RegisterType<ImportLogicImpl>().As<IImportLogic>();
             builder.RegisterGeneric(typeof(ModelExportLogicImpl<>)).As(typeof(IModelExportLogic<>));
             builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
-            builder.RegisterType<ReportLogic>().As<IReportLogic>();
 
             // profile
-            builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<MarketingPreferencesLogicImpl>().As<IMarketingPreferencesLogic>();
+            builder.RegisterType<PasswordResetLogicImpl>().As<IPasswordResetLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
 
+            // reports
+            builder.RegisterType<InventoryValuationReportLogicImpl>().As<IInventoryValuationReportLogic>();
+            builder.RegisterType<ReportLogic>().As<IReportLogic>();
 
 #if DEMO
 			builder.RegisterType<DemoExternalUserDomainRepositoryImpl>().As<ICustomerDomainRepository>();
@@ -330,7 +339,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
-            builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalListLogic>().As<IInternalListLogic>();
+            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
             builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
             //2nd builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
@@ -350,7 +359,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
-            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
             //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
@@ -380,7 +388,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
-            builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
 
             // keyed types - notification handlers
             builder.RegisterType<OrderConfirmationNotificationHandlerImpl>()
@@ -411,10 +418,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
                     var handlers = c.Resolve<IIndex<Svc.Core.Enumerations.Messaging.Channel, IMessageProvider>>();
                     return request => handlers[request];
                 });
-
-            // no implementation (will throw notimplementedexception if called)
-            builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
 
             builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
             builder.RegisterType<TermLogicImpl>().As<ITermLogic>();
@@ -452,20 +455,17 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PowerMenuLogicImpl>().As<IPowerMenuLogic>();
 
             //Password Reset
-            builder.RegisterType<InternalPasswordResetRequestLogicImpl>().As<IInternalPasswordResetLogic>();
+            builder.RegisterType<PasswordResetLogicImpl>().As<IPasswordResetLogic>();
             builder.RegisterType<PasswordResetRequestRepositoryImpl>().As<IPasswordResetRequestRepository>();
 
             // DSR Alias
             builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
-            builder.RegisterType<NoDsrAliasServiceImpl>().As<IDsrAliasService>();
-            builder.RegisterType<InternalDsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
 
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
 
-            builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
-
             builder.RegisterType<MarketingPreferencesRepositoryImpl>().As<IMarketingPreferencesRepository>();
-            builder.RegisterType<InternalMarketingPreferenceLogicImpl>().As<IInternalMarketingPreferenceLogic>();
+            builder.RegisterType<MarketingPreferencesLogicImpl>().As<IMarketingPreferencesLogic>();
 
             // ElasticSearch ETL 
             builder.RegisterType<ItemImportLogicImpl>().As<IItemImport>();
@@ -480,7 +480,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // Profile Settings
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
 
             // messaging
             builder.RegisterType<UserMessageRepositoryImpl>().As<IUserMessageRepository>();
@@ -489,6 +489,14 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<AmazonPushNotificationMessageProvider>().As<IPushNotificationMessageProvider>();
             builder.RegisterType<MessagingLogicImpl>().As<IMessagingLogic>();
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
+
+            // lists
+            builder.RegisterType<FavoriteLogicImpl>().As<IFavoriteLogic>();
+            builder.RegisterType<HistoryLogic>().As<IHistoryLogic>();
+            builder.RegisterType<NoteLogicImpl>().As<INoteLogic>();
+
+            builder.RegisterType<OnlinePaymentLogicImpl>().As<IOnlinePaymentsLogic>();
+
         }
 
         internal static void AddOtherWebApiDependencies(ContainerBuilder builder)
@@ -567,10 +575,10 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
             builder.RegisterType<CustomerContainerRepository>().As<ICustomerContainerRepository>();
-            builder.RegisterType<NoDsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
+            builder.RegisterType<DsrAliasRepositoryImpl>().As<IDsrAliasRepository>();
             //builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();  // this is also found in the DEMO preprocessor directive later
             builder.RegisterType<InternalUserDomainRepository>().As<IUserDomainRepository>();
-            builder.RegisterType<NoSettingsRepositoryImpl>().As<ISettingsRepository>();
+            builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
             builder.RegisterType<UserMessagingPreferenceRepositoryImpl>().As<IUserMessagingPreferenceRepository>();
             builder.RegisterType<UserProfileRepository>().As<IUserProfileRepository>();
 
@@ -621,8 +629,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ReportLogic>().As<IReportLogic>();
 
             // profile
-            builder.RegisterType<NoDsrAliasLogicImpl>().As<IDsrAliasLogic>();
-            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<DsrAliasLogicImpl>().As<IDsrAliasLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<UserProfileLogicImpl>().As<IUserProfileLogic>();
 
             ///////////////////////////////////////////////////////////////////////////////
@@ -648,7 +656,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<PriceLogicImpl>().As<IPriceLogic>();
             builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
             builder.RegisterType<CustomerLogicImpl>().As<ICustomerLogic>();
-            builder.RegisterType<KeithLink.Svc.Impl.Logic.InternalSvc.InternalListLogic>().As<IInternalListLogic>();
+            builder.RegisterType<ListLogicImpl>().As<IListLogic>();
             builder.RegisterType<BasketRepositoryImpl>().As<IBasketRepository>();
             builder.RegisterType<ElasticSearchCatalogRepositoryImpl>().As<ICatalogRepository>();
             //2nd builder.RegisterType<PriceRepositoryImpl>().As<IPriceRepository>();
@@ -668,8 +676,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<CategoryImageRepository>().As<ICategoryImageRepository>();
             builder.RegisterType<SiteCatalogLogicImpl>().As<KeithLink.Svc.Core.Interface.SiteCatalog.ICatalogLogic>();
             builder.RegisterType<OrderHistoryLogicImpl>().As<IOrderHistoryLogic>();
-            builder.RegisterType<InternalOrderHistoryLogic>().As<IInternalOrderHistoryLogic>();
-            builder.RegisterType<InternalSpecialOrderLogic>().As<IInternalSpecialOrderLogic>();
+            builder.RegisterType<SpecialOrderLogicImpl>().As<ISpecialOrderLogic>();
             builder.RegisterType<OrderHistoyrHeaderRepositoryImpl>().As<IOrderHistoryHeaderRepsitory>();
             builder.RegisterType<OrderHistoryDetailRepositoryImpl>().As<IOrderHistoryDetailRepository>();
             //builder.RegisterType<InternalContentManagementLogic>().As<IInternalContentManagementLogic>();
@@ -698,7 +705,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<MessageTemplateLogicImpl>().As<IMessageTemplateLogic>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.RegisterType<MessageTemplateRepositoryImpl>().As<IMessageTemplateRepository>();
-            builder.RegisterType<InternalOrderLogicImpl>().As<IInternalOrderLogic>();
             builder.RegisterType<ExportSettingLogicImpl>().As<IExportSettingLogic>();
 
             // keyed types - notification handlers
@@ -733,11 +739,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
                     return request => handlers[request];
                 });
 
-            // no implementation (will throw notimplementedexception if called)
-            builder.RegisterType<NoOrderServiceRepositoryImpl>().As<IOrderServiceRepository>();
-            builder.RegisterType<NoListServiceRepositoryImpl>().As<IListServiceRepository>();
-            //builder.RegisterType<NoDsrServiceRepository>().As<IDsrServiceRepository>();
-
             builder.RegisterType<TermRepositoryImpl>().As<ITermRepository>();
 
             // customer bank - JA - 11/13<
@@ -757,7 +758,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // order conversion - JA - 1/8/15
             builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
 
-            builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
+            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
             builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
@@ -766,11 +767,11 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<DsrRepositoryImpl>().As<IDsrRepository>();
             builder.RegisterType<DsrLogic>().As<IDsrLogic>();
 
-            builder.RegisterType<NoPasswordResetServiceRepositoryImpl>().As<IPasswordResetService>();
-            builder.RegisterType<NoSettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<PasswordResetLogicImpl>().As<IPasswordResetLogic>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
 
             //profile
-            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogicImpl>();
+            builder.RegisterType<SettingsLogicImpl>().As<ISettingsLogic>();
             builder.RegisterType<SettingsRepositoryImpl>().As<ISettingsRepository>();
 
             // messaging
@@ -793,7 +794,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
             builder.RegisterType<OrderSocketConnectionRepositoryImpl>().As<IOrderSocketConnectionRepository>();
             builder.RegisterType<OrderUpdateRequestSocketRepositoryImpl>().As<IOrderUpdateSocketConnectionRepository>();
-            builder.RegisterType<NoOrderConversionLogicImpl>().As<IOrderConversionLogic>();
+            builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
             builder.RegisterType<SpecialOrderRepositoryImpl>().As<ISpecialOrderRepository>();
             builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
 

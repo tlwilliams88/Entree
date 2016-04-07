@@ -52,18 +52,21 @@ namespace KeithLink.Svc.Impl.Logic
 		private readonly IPurchaseOrderRepository purchaseOrderRepository;
 		private readonly IGenericQueueRepository queueRepository;
 		private readonly IBasketLogic basketLogic;
-		private readonly IListServiceRepository listServiceRepository;
+		private readonly IListLogic listServiceRepository;
+        private readonly INoteLogic _noteLogic;
         private readonly IOrderQueueLogic orderQueueLogic;
-		private readonly IOrderServiceRepository orderServiceRepository;
+        private readonly IOrderHistoryLogic _historyLogic;
 		private readonly IAuditLogRepository auditLogRepository;
         private readonly IExportSettingLogic externalServiceRepository;
+        private readonly IUserActiveCartLogic _activeCartLogic;
 		#endregion
 
         #region ctor
         public ShoppingCartLogicImpl(IBasketRepository basketRepository, ICatalogLogic catalogLogic, IPriceLogic priceLogic,
 									 IOrderQueueLogic orderQueueLogic, IPurchaseOrderRepository purchaseOrderRepository, IGenericQueueRepository queueRepository,
-									 IListServiceRepository listServiceRepository, IBasketLogic basketLogic, IOrderServiceRepository orderServiceRepository, 
-                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository)
+									 IListLogic listServiceRepository, IBasketLogic basketLogic, IOrderHistoryLogic orderHistoryLogic, 
+                                     ICustomerRepository customerRepository, IAuditLogRepository auditLogRepository, IExportSettingLogic externalServiceRepository,
+                                     INoteLogic noteLogic, IUserActiveCartLogic userActiveCartLogic)
 		{
 			this.basketRepository = basketRepository;
 			this.catalogLogic = catalogLogic;
@@ -71,12 +74,14 @@ namespace KeithLink.Svc.Impl.Logic
 			this.purchaseOrderRepository = purchaseOrderRepository;
 			this.queueRepository = queueRepository;
 			this.listServiceRepository = listServiceRepository;
+            _noteLogic = noteLogic;
 			this.basketLogic = basketLogic;
             this.orderQueueLogic = orderQueueLogic;
-			this.orderServiceRepository = orderServiceRepository;
+			_historyLogic = orderHistoryLogic;
 			this.customerRepository = customerRepository;
 			this.auditLogRepository = auditLogRepository;
             this.externalServiceRepository = externalServiceRepository;
+            _activeCartLogic = userActiveCartLogic;
 		}
         #endregion
 
@@ -291,7 +296,7 @@ namespace KeithLink.Svc.Impl.Logic
 				!string.IsNullOrEmpty(b.CustomerId) &&
 				b.CustomerId.Equals(catalogInfo.CustomerId));
 
-			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
+			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
 
 			if (headerInfoOnly)
 				return listForBranch.Select(l => new ShoppingCart() 
@@ -309,7 +314,7 @@ namespace KeithLink.Svc.Impl.Logic
 			else
 			{
 				var returnCart = listForBranch.Select(b => ToShoppingCart(b, userActiveCart)).ToList();
-				var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+				var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 				returnCart.ForEach(delegate(ShoppingCart list)
 				{
@@ -332,9 +337,9 @@ namespace KeithLink.Svc.Impl.Logic
 			var basket = basketLogic.RetrieveSharedCustomerBasket(user, catalogInfo, cartId);
 			if (basket == null)
 				return null;
-			var userActiveCart = orderServiceRepository.GetUserActiveCart(catalogInfo, user.UserId);
+			var userActiveCart = _activeCartLogic.GetUserActiveCart(catalogInfo, user.UserId);
 			var cart = ToShoppingCart(basket, userActiveCart);
-			var notes = listServiceRepository.ReadNotes(user, catalogInfo);
+			var notes = _noteLogic.GetNotes(user, catalogInfo);
 
 			LookupProductDetails(user, catalogInfo, cart, notes);
 
@@ -404,7 +409,7 @@ namespace KeithLink.Svc.Impl.Logic
 			com.benekeith.FoundationService.BEKFoundationServiceClient client = new com.benekeith.FoundationService.BEKFoundationServiceClient();
 
             //split into multiple orders
-            var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct().ToList();
+            var catalogList = basket.LineItems.Select(i => i.CatalogName).Distinct(StringComparer.CurrentCultureIgnoreCase).ToList();
             var returnOrders = new SaveOrderReturn();
             returnOrders.NumberOfOrders = catalogList.Count();
             returnOrders.OrdersReturned = new List<NewOrderReturn>();
@@ -419,7 +424,9 @@ namespace KeithLink.Svc.Impl.Logic
                     Active = false,
                     PONumber = basket.PONumber,
                     CreatedDate = new DateTime(),
-                    Items = basket.LineItems.Where(l => l.CatalogName.Equals(catalogId)).Select(l => new ShoppingCartItem()
+                    Items = basket.LineItems
+                                  .Where(l => string.Equals(l.CatalogName, catalogId, StringComparison.CurrentCultureIgnoreCase))
+                                  .Select(l => new ShoppingCartItem()
                     {
                         
                         ItemNumber = l.ProductId,
@@ -472,7 +479,7 @@ namespace KeithLink.Svc.Impl.Logic
 
                 bool isSpecialOrder = catalogLogic.IsSpecialtyCatalog(null, catalogId);
 
-                orderServiceRepository.SaveOrderHistory(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
+                _historyLogic.SaveOrder(newPurchaseOrder.ToOrderHistoryFile(catalogInfo), isSpecialOrder); // save to order history
 
                 if (isSpecialOrder)
                 {
@@ -506,7 +513,7 @@ namespace KeithLink.Svc.Impl.Logic
                 List<string> childOrderIds = returnOrders.OrdersReturned.Where(o => o.IsSpecialOrder).Select(ro => ro.OrderNumber).ToList();
 
                 foreach (string orderId in childOrderIds) {
-                    orderServiceRepository.UpdateRelatedOrderNumber(orderId, parentOrderId);
+                    _historyLogic.UpdateRelatedOrderNumber(orderId, parentOrderId);
                 }
             }
 
