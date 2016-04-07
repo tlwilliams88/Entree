@@ -182,6 +182,12 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
                 {
                     try
                     {
+                        eventLogRepository.WriteInformationLog("order confirmation int, custNum: " +
+                                                               notification.CustomerNumber +
+                                                               ", branch: " +
+                                                               notification.BranchId +
+                                                               ", recipients " +
+                                                               recipients.Count);
                         Message message = GetEmailMessageForNotification(orderConfirmation, customer);
                         base.SendMessage(recipients, message);
                     }
@@ -344,11 +350,11 @@ namespace KeithLink.Svc.Impl.Logic.Messaging
             {
                 ProductNumber = line.ItemNumber,
                 ProductDescription = line.ItemDescription,
-                Brand = currentProduct.Brand,
+                Brand = "",
                 Quantity = line.QuantityOrdered.ToString(),
                 Sent = line.QuantityShipped.ToString(),
-                Pack = currentProduct.Pack,
-                Size = currentProduct.Size,
+                Pack = "",
+                Size = "",
                 Price = priceInfo,
                 Status = line.OriginalStatus
             }));

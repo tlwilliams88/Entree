@@ -89,6 +89,19 @@ namespace KeithLink.Svc.Impl
                 IsBodyHtml = isBodyHtml
             };
 
+            if (body.IndexOf("|LOGO|") > -1) // If the logo will be in this email (most notifications) pull its stream from the embedded resource and create an alternate view on the mailmessage
+            {
+                body = body.Replace("|LOGO|", "<img src=\"cid:LOGO\" alt=\"BEK\" />");
+                message.Body = body;
+                Assembly assembly = Assembly.Load("Keithlink.Svc.Impl");
+                Stream logoStream = assembly.GetManifestResourceStream("KeithLink.Svc.Impl.Images.Logo.png");
+                var inlineLogo = new LinkedResource(logoStream);
+                inlineLogo.ContentId = "LOGO";
+                var view = AlternateView.CreateAlternateViewFromString(body, null, "text/html");
+                view.LinkedResources.Add(inlineLogo);
+                message.AlternateViews.Add(view);
+            }
+
             foreach (string toAddress in toAddresses)
                 message.To.Add(new MailAddress(toAddress));
 
