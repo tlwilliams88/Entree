@@ -49,6 +49,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             //AutofacDependencyMapProvider.AddOtherQueueServiceDependencies(builder);
 
             AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
+            AutofacDependencyMapProvider.AddDatabaseDependencies(builder);
 
             return builder;
         }
@@ -57,6 +58,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             ContainerBuilder builder = new ContainerBuilder();
 
             AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
+            AutofacDependencyMapProvider.AddDatabaseDependencies(builder);
 
             return builder;
         }

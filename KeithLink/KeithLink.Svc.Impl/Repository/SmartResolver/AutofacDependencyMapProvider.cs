@@ -125,7 +125,6 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
 
             // invoices
             builder.RegisterType<CustomerBankRepositoryImpl>().As<ICustomerBankRepository>();
-            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
             builder.RegisterType<KPayInvoiceRepositoryImpl>().As<IKPayInvoiceRepository>();
             builder.RegisterType<KPayLogRepositoryImpl>().As<IKPayLogRepository>();
             builder.RegisterType<KPayPaymentTransactionRepositoryImpl>().As<IKPayPaymentTransactionRepository>();
@@ -158,15 +157,12 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<UserActiveCartRepositoryImpl>().As<IUserActiveCartRepository>();
 
             // other
-            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
             builder.RegisterType<EmailClientImpl>().As<IEmailClient>();
             builder.Register(l => new EventLogRepositoryImpl(Configuration.ApplicationName)).As<IEventLogRepository>();
             builder.RegisterType<ExportSettingRepositoryImpl>().As<IExportSettingRepository>();
             builder.RegisterType<PowerMenuRepositoryImpl>().As<IPowerMenuRepository>();
             builder.RegisterType<ReportRepository>().As<IReportRepository>();
-            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
             builder.RegisterType<SocketListenerRepositoryImpl>().As<ISocketListenerRepository>();
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
 
             // profile 
             builder.RegisterType<AvatarRepositoryImpl>().As<IAvatarRepository>();
@@ -272,6 +268,18 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             builder.RegisterType<ExternalUserDomainRepository>().As<ICustomerDomainRepository>();
             builder.RegisterType<GenericQueueRepositoryImpl>().As<IGenericQueueRepository>();
 #endif
+        }
+
+        internal static void AddDatabaseDependencies(ContainerBuilder builder, bool useSingleInstance = true) {
+            builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();
+            builder.RegisterType<KPayDBContext>().As<IKPayDBContext>();
+            builder.RegisterType<SpecialOrderDBContext>().As<ISpecialOrderDBContext>();
+
+            if(useSingleInstance) {
+                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            } else {
+                builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
+            }
         }
 
         internal static void AddOtherInternalServiceDependencies(ContainerBuilder builder)
