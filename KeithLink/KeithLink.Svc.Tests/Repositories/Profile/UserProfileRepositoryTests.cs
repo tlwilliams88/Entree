@@ -2,9 +2,6 @@
 using KeithLink.Common.Impl.AuditLog;
 using KeithLink.Common.Impl.Logging;
 
-using KeithLink.Svc.Core.Models;
-using KeithLink.Svc.Core.Models.Profile;
-
 using KeithLink.Svc.Impl.Repository.Cache;
 using KeithLink.Svc.Impl.Repository.Profile;
 
@@ -17,7 +14,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
     [TestClass]
     public class UserProfileRepositoryTests {
         #region attributes
-		private NoCacheRepositoryImpl _cache;
+		private CacheRepositoryImpl _cache;
         private EventLogRepositoryImpl _log;
         private UserProfileRepository _profile;
         #endregion
@@ -26,7 +23,7 @@ namespace KeithLink.Svc.Test.Repositories.Profile
         public UserProfileRepositoryTests() {
             _log = new EventLogRepositoryImpl("Unit tests");
 			var _auditLog = new AuditLogRepositoryImpl();
-            _cache = new NoCacheRepositoryImpl();
+            _cache = new CacheRepositoryImpl();
             _profile = new UserProfileRepository(_log, _auditLog);
         }
         #endregion

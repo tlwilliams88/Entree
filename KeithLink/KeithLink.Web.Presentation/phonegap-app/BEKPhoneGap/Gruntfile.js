@@ -13,7 +13,6 @@ module.exports = function(grunt) {
       config: {
         plugins: [
           'https://github.com/apache/cordova-plugin-network-information.git',
-          'https://github.com/phonegap/phonegap-plugin-push.git',
           'cordova-plugin-device',
           'cordova-plugin-dialogs',
           'cordova-plugin-vibration',

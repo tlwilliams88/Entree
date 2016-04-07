@@ -10,8 +10,12 @@ namespace KeithLink.Svc.Core.Interface.Profile
     {
 		void CreateUserProfile(string createdBy, string emailAddress, string firstName, string lastName, string phoneNumber, string branchId);
 
-        void DeleteUserProfile(string userName);        
-        
+        void DeleteUserProfile(string userName);
+
+        void UpdateUserProfileLastLogin(Guid id);
+
+        void UpdateUserProfileLastAccess(Guid id);
+
         CS.UserProfile GetCSProfile(string emailAddress);  
               
         CS.UserProfile GetCSProfile(Guid userId);

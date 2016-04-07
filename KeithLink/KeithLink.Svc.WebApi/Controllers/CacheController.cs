@@ -11,19 +11,32 @@ using System.Web.Http;
 
 namespace KeithLink.Svc.WebApi.Controllers
 {
+    /// <summary>
+    /// end points for dealing with cache
+    /// </summary>
 	[AllowAnonymous]
 	[RequireHttps(true)]
 	public class CacheController: BaseController
 	{
-		private ICacheRefreshRepository cacheRepository;
+        #region attributes
+        private ICacheRefreshRepository cacheRepository;
         private readonly IEventLogRepository _elRepo;
+        #endregion
 
-        public CacheController(ICacheRefreshRepository cacheRepository, IUserProfileLogic profileLogic, IEventLogRepository elRepo) : base(profileLogic)
-		{
-			this.cacheRepository = cacheRepository;
+        #region ctor
+        /// <summary>
+        /// ctor
+        /// </summary>
+        /// <param name="cacheRepository"></param>
+        /// <param name="profileLogic"></param>
+        /// <param name="elRepo"></param>
+        public CacheController(ICacheRefreshRepository cacheRepository, IUserProfileLogic profileLogic, IEventLogRepository elRepo) : base(profileLogic) {
+            this.cacheRepository = cacheRepository;
             this._elRepo = elRepo;
         }
+        #endregion
 
+        #region methods
         /// <summary>
         /// Used for clearing an item from the WebAPI cache
         /// </summary>
@@ -32,47 +45,40 @@ namespace KeithLink.Svc.WebApi.Controllers
         /// <param name="cacheName">Cache Name</param>
         /// <param name="key">Cache Key</param>
         [Route("cache/RefreshCacheItem")]
-		[HttpGet]
-		public OperationReturnModel<bool> RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key)
-		{
+        [HttpGet]
+        public OperationReturnModel<bool> RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key) {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
-            try
-            {
+            try {
                 cacheRepository.RefreshCacheItem(cacheGroupName, cachePrefix, cacheName, key);
                 ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
-            }
-            catch (Exception ex)
-            {
+            } catch(Exception ex) {
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
                 _elRepo.WriteErrorLog("RefreshCacheItem", ex);
             }
             return ret;
-		}
+        }
 
-		/// <summary>
-		/// Clears all items from a WebAPI cache group
-		/// </summary>
-		/// <param name="cacheGroupName">Cache Group</param>
-		/// <param name="cachePrefix">Cache Prefix</param>
-		/// <param name="cacheName">Cache Name</param>
-		[Route("cache/RefreshCache")]
-		[HttpGet]
-		public OperationReturnModel<bool> RefreshCache(string cacheGroupName, string cachePrefix, string cacheName)
-		{
+        /// <summary>
+        /// Clears all items from a WebAPI cache group
+        /// </summary>
+        /// <param name="cacheGroupName">Cache Group</param>
+        /// <param name="cachePrefix">Cache Prefix</param>
+        /// <param name="cacheName">Cache Name</param>
+        [Route("cache/RefreshCache")]
+        [HttpGet]
+        public OperationReturnModel<bool> RefreshCache(string cacheGroupName, string cachePrefix, string cacheName) {
             OperationReturnModel<bool> ret = new OperationReturnModel<bool>();
-            try
-            {
+            try {
                 cacheRepository.RefreshCache(cacheGroupName, cachePrefix, cacheName);
                 ret = new OperationReturnModel<bool>() { SuccessResponse = true, IsSuccess = true };
-            }
-            catch (Exception ex)
-            {
+            } catch(Exception ex) {
                 ret.IsSuccess = false;
                 ret.ErrorMessage = ex.Message;
                 _elRepo.WriteErrorLog("RefreshCache", ex);
             }
             return ret;
         }
+        #endregion
     }
 }

@@ -657,6 +657,8 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                 retVal.UserId = Guid.Parse(csProfile.Id);
                 retVal.IsInternalUser = ProfileHelper.IsInternalAddress(csProfile.Email);
                 retVal.PasswordExpired = (isInternalUser) ? false : _extAd.IsPasswordExpired(csProfile.Email);
+                retVal.LastActivity = csProfile.LastActivityDate;
+                retVal.LastLogin = csProfile.LastLoginDate;
                 retVal.FirstName = csProfile.FirstName;
                 retVal.LastName = csProfile.LastName;
                 retVal.EmailAddress = csProfile.Email;
@@ -1694,6 +1696,15 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
             _settingsLogic.DeleteSettings( model );
         }
 
+        public void SetUserProfileLastLogin(Guid id)
+        {
+            _csProfile.UpdateUserProfileLastLogin(id);
+        }
+
+        public void SetUserProfileLastAccess(Guid id)
+        {
+            _csProfile.UpdateUserProfileLastAccess(id);
+        }
         /// <summary>
         /// UNFI Whitelisting configurations - these are temporary entries
         /// </summary>

@@ -758,7 +758,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             // order conversion - JA - 1/8/15
             builder.RegisterType<OrderConversionLogicImpl>().As<IOrderConversionLogic>();
 
-            builder.RegisterType<NoCacheRepositoryImpl>().As<ICacheRepository>();
+            builder.RegisterType<CacheRepositoryImpl>().As<ICacheRepository>();
             builder.RegisterType<CacheRefreshRepositoryImpl>().As<ICacheRefreshRepository>();
 
             builder.RegisterType<AuditLogRepositoryImpl>().As<IAuditLogRepository>();

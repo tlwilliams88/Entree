@@ -8,7 +8,8 @@ namespace KeithLink.Svc.Core.Interface.Cache
 {
 	public interface ICacheRefreshRepository
 	{
-		void RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key);
 		void RefreshCache(string cacheGroupName, string cachePrefix, string cacheName);
+
+		void RefreshCacheItem(string cacheGroupName, string cachePrefix, string cacheName, string key);
 	}
 }
