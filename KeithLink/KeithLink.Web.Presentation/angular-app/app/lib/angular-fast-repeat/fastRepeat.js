@@ -272,9 +272,10 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                         if(activeElement && evt.type == "focusin"){
                             setTimeout(function(){
-                                clone[0].children[0].children[12].children[0].children[0].focus();
+                                // clone[0].children[0].children[12].children[0].children[0].focus();
+                                clone[0].querySelector('#parlevel').focus();
+                                activeElement = '';
                             }, 1);
-                            activeElement = '';
                         }
                         
                         currentRowEls[rowId] = {
