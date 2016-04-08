@@ -234,7 +234,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 }
 
                 function focusActiveElement(element){
-                    if(element.nodeName == "INPUT"){
+                    if(element && element.nodeName == "INPUT"){
                         activeElement = element;
                     } else{
                         return;
@@ -272,7 +272,6 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
 
                         if(activeElement && evt.type == "focusin"){
                             setTimeout(function(){
-                                // clone[0].children[0].children[12].children[0].children[0].focus();
                                 clone[0].querySelector('#parlevel').focus();
                                 activeElement = '';
                             }, 1);
@@ -299,7 +298,7 @@ angular.module('gc.fastRepeat', []).directive('fastRepeat', ['$compile', '$parse
                 };
 
 
-                element.parent().on('mouseenter focus', '[fast-repeat-id]',parentClickHandler);
+                element.parent().on('mouseenter focus', '[fast-repeat-id]', parentClickHandler);
                 
                 // Handle resizes
                 var onResize = function() {

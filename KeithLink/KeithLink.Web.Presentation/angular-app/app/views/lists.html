@@ -528,20 +528,37 @@
               </td>
               <!-- Parlevel -->
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" ng-if="(selectedList.permissions.canSeeParlevel && selectedList.permissions.canEditParlevel)">
-                <ng-form name="parlevelForm">
-                   <input                    
-                    id="parlevel" 
-                    name="parlevel"                    
-                    type="text" 
-                    ng-init="item.parlevel = item.parlevel || 0"     
-                    numeric-validation
-                    ng-model="item.parlevel"     
-                    ng-blur="initParLvl(item)"
-                    class="text-right input-number bek-no-drag tabstop"
-                    onfocus="this.select();" 
-                    onmouseup="return false;"
-                    />
-                </ng-form>
+                <span ng-if="isIE">
+                  <ng-form name="parlevelForm">
+                     <input                    
+                      id="parlevel" 
+                      name="parlevel"                    
+                      type="text" 
+                      ng-init="item.parlevel = item.parlevel || 0"     
+                      numeric-validation
+                      ng-model="item.parlevel"     
+                      ng-blur="initParLvl(item)"
+                      class="text-right input-number bek-no-drag tabstop" 
+                      ng-model-options="{debounce: 500}"
+                      onfocus="this.select();" 
+                      onmouseup="return false;"/>
+                  </ng-form>
+                </span>
+                <span ng-if="!isIE">
+                  <ng-form name="parlevelForm">
+                     <input                    
+                      id="parlevel" 
+                      name="parlevel"                    
+                      type="text" 
+                      ng-init="item.parlevel = item.parlevel || 0"     
+                      numeric-validation
+                      ng-model="item.parlevel"     
+                      ng-blur="initParLvl(item)"
+                      class="text-right input-number bek-no-drag tabstop" 
+                      onfocus="this.select();" 
+                      onmouseup="return false;"/>
+                  </ng-form>
+                </span>
               </td>
 
               <td class="input-col hidden-sm hidden-xs hidden-drag bek-drag-handle" style="padding-top:12px;" ng-if="(selectedList.permissions.canSeeParlevel && !selectedList.permissions.canEditParlevel)">

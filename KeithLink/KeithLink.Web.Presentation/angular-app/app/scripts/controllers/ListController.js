@@ -31,6 +31,24 @@ angular.module('bekApp')
     $scope.indexOfSDestroyedRow = '';
     $scope.isMobileDevice = UtilityService.isMobileDevice();
     $scope.showRowOptionsDropdown = false;
+    console.log(window.navigator.useragent);
+
+    // detect IE
+    // returns $scope.isIE is true if IE or false, if browser is not IE
+    function detectIE() {
+        var ua = window.navigator.userAgent;
+
+        var msie = ua.indexOf('MSIE ');//IE <11
+        var trident = ua.indexOf('Trident/');//IE 11
+        if (msie > 0) {
+          $scope.isIE = true;
+        } else if( trident > 0) {
+          $scope.isIE = true;
+        } else {
+          $scope.isIE = false;
+        }
+    }
+    detectIE();
    
 
     if (ListService.findMandatoryList()) {
