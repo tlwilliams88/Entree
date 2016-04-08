@@ -8,13 +8,14 @@ using KeithLink.Svc.Core.Extensions.Messaging;
 
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Configuration;
 using KeithLink.Svc.Core.Interface.Lists;
 using KeithLink.Svc.Core.Interface.Orders;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.SiteCatalog;
 
 using KeithLink.Svc.Core.Models.EF;
-using KeithLink.Svc.Core.Models.Customers;
+using KeithLink.Svc.Core.Models.Configuration.EF;
 using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.Lists;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
@@ -59,6 +60,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         private readonly IEventLogRepository eventLogRepository;
         private readonly IGenericQueueRepository queueRepository;
         private readonly IItemHistoryRepository _itemHistoryRepository;
+        private readonly IExternalCatalogRepository _externalCatalogRepo;
 
         private const string CACHE_GROUPNAME = "UserList";
         private const string CACHE_NAME = "UserList";
@@ -74,7 +76,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             IProductImageRepository productImageRepository, IListShareRepository listShareRepository,
             IUserActiveCartRepository userActiveCartRepository, ICustomerRepository customerRepository,
             IEventLogRepository eventLogRepository, IGenericQueueRepository queueRepository,
-            IItemHistoryRepository itemHistoryRepository)
+            IItemHistoryRepository itemHistoryRepository, IExternalCatalogRepository externalCatalogRepository)
         {
             this.listRepository = listRepository;
             this.unitOfWork = unitOfWork;
@@ -89,6 +91,7 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
             this.eventLogRepository = eventLogRepository;
             this.queueRepository = queueRepository;
             this._itemHistoryRepository = itemHistoryRepository;
+            _externalCatalogRepo = externalCatalogRepository;
         }
 
         #endregion
@@ -292,8 +295,9 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
         public List<ListCopyResultModel> CopyList(ListCopyShareModel copyListModel)
         {
             var listToCopy = listRepository.ReadById(copyListModel.ListId);
-
             var listToCreate = new List<List>();
+            Dictionary<string, ExternalCatalog> externalCatalogDict = _externalCatalogRepo.ReadAll().ToDictionary(e => e.BekBranchId.ToLower());
+
             foreach (var customer in copyListModel.Customers)
             {
                 var newList = new List()
@@ -306,6 +310,8 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                     ReadOnly = false
                 };
 
+                ExternalCatalog currentExtCatalog = externalCatalogDict[customer.CustomerBranch.ToLower()];
+
                 newList.Items = new List<ListItem>();
                 foreach (var item in listToCopy.Items)
                 {
@@ -317,12 +323,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                         Par = item.Par,
                         Position = item.Position,
                         Each = item.Each,
-                        CatalogId = item.CatalogId
+                        CatalogId = IsBekBranch(item.CatalogId) ? customer.CustomerBranch : currentExtCatalog.ExternalBranchId
                     });
                 }
+
                 listRepository.Create(newList);
                 listToCreate.Add(newList);
-
             }
 
             unitOfWork.SaveChanges();
@@ -453,6 +459,12 @@ namespace KeithLink.Svc.Impl.Logic.InternalSvc
                                                    .Where(f => itemNumbers.Contains(f.ItemNumber))
                                                    .ToArray();
             return itemStatistics;
+        }
+
+        private bool IsBekBranch(string catalogId) {
+            return catalogId != null &&
+                   catalogId.Length == 3 &&
+                   catalogId.StartsWith("f", true, System.Globalization.CultureInfo.CurrentCulture);
         }
 
         private void LookupNameAndPackSize(UserProfile user, ListModel list, UserSelectedContext catalogInfo)
