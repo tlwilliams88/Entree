@@ -1,5 +1,5 @@
 ﻿using Autofac;
-
+using KeithLink.Svc.Core.Enumerations.Dependencies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,11 +43,8 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
         public static ContainerBuilder GetQueueSvcContainer() {
             ContainerBuilder builder = new ContainerBuilder();
 
-            AutofacDependencyMapProvider.AddEventLogDependency(builder);
-            AutofacDependencyMapProvider.AddStagingDependency(builder);
-            AutofacDependencyMapProvider.AddElasticSearchDependency(builder);
+            AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
             AutofacDependencyMapProvider.AddOtherQueueServiceDependencies(builder);
-            AutofacDependencyMapProvider.AddDatabaseDependencies(builder);
 
             return builder;
         }
@@ -56,7 +53,7 @@ namespace KeithLink.Svc.Impl.Repository.SmartResolver
             ContainerBuilder builder = new ContainerBuilder();
 
             AutofacDependencyMapProvider.BuildBaselineDependencies(builder);
-            AutofacDependencyMapProvider.AddDatabaseDependencies(builder);
+            AutofacDependencyMapProvider.AddOtherWebApiDependencies(builder);
 
             return builder;
         }
