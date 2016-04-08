@@ -100,7 +100,7 @@ angular.module('bekApp')
       }
     }
     
-        // combine cart and list items and total their quantities
+    // combine cart and list items and total their quantities
     function getCombinedCartAndListItems(cartItems, listItems) {    
       var items = angular.copy(cartItems.concat(listItems));
       // combine quantities if itemnumber is a duplicate
@@ -130,6 +130,7 @@ angular.module('bekApp')
         newCartItems = $filter('filter')(newCartItems, function(item) {
         return item.quantity > 0;
       });
+      removeInitialQuantity();
       return newCartItems;
     }
 
@@ -192,6 +193,7 @@ angular.module('bekApp')
       });
         $scope.appendedItems = [];           
         refreshSubtotal($scope.selectedCart.items, $scope.selectedList.items);
+        removeInitialQuantity();
     }
 
     $scope.blockUIAndChangePage = function(page){
@@ -404,6 +406,16 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
       })
     }
 
+    function removeInitialQuantity(){
+      selectedList.items.forEach(function(item){
+        if(item.quantity < 1){
+          item.quantity = ''
+        } else {
+          return;
+        }
+      })
+    }
+
     if($stateParams.sortingParams && $stateParams.sortingParams.sort.length > 0){
       $scope.sort = $stateParams.sortingParams.sort;
     }
@@ -426,6 +438,11 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
     /**********
     PAGING
     **********/
+    function applyFocusToFirstQtyField(){
+      $timeout(function() {
+        $('#rowForFocus').find('input:first').focus();
+      }, 2000);
+    }
 
     $scope.refreshQuantities = function(){
       $scope.clearedWhilePristine = false;
@@ -439,18 +456,14 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         }
         $scope.visitedPages = [];
         listPagingModel.filterListItems(searchTerm)
-        $timeout(function() {
-          $('#rowForFocus').find('input:first').focus();
-        }, 2000);
+        applyFocusToFirstQtyField();
         $stateParams.searchTerm = '';
         clearItemWatches(watches);       
       }
       else{
         $scope.fromFilterItems = true;
           $scope.saveAndRetainQuantity().then(function(resp){
-            $timeout(function() {
-              $('#rowForFocus').find('input:first').focus();
-            }, 2000);
+            applyFocusToFirstQtyField();
             if($scope.isRedirecting(resp)){
               //do nothing
             }
@@ -488,10 +501,9 @@ $scope.setCurrentPageAfterRedirect = function(pageToSet){
         })
       }
       $scope.setCurrentPageAfterRedirect(1);
-      angular.element(orderSearchForm.searchBar).focus();
-      $timeout(function() {
-        $('#rowForFocus').find('input:first').focus();
-      }, 2000);
+      // angular.element(orderSearchForm.searchBar).focus();
+      $scope.orderSearchForm.$setPristine();
+      applyFocusToFirstQtyField();
     };
   
 

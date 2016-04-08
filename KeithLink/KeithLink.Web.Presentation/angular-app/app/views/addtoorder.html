@@ -131,8 +131,8 @@
         class="form-control mousetrap" 
         placeholder="Search current list by keyword, item # or label" />
       <span class="input-group-btn">
-        <button type="submit" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
-        <button type="button"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
+        <button type="submit" ng-disabled="orderSearchForm.$pristine" ng-click="filterItems(orderSearchTerm)" class="btn btn-default"><span class="icon-search"></span></button>
+        <button type="button" ng-disabled="orderSearchForm.$pristine"  ng-click="clearFilter()" class="btn btn-default"><span class="glyphicon glyphicon-remove"></span></button>
       </span>
     </div>
   </form>
@@ -255,7 +255,6 @@
                   numeric-validation                                
                   ng-model="item.onhand"
                   name="onhand"
-                  ng-init = "item.onhand = item.onhand + 0;"
                   row-highlight
                   />
               <button type="button" class="btn btn-warning icon-plus3 hidden-lg" ng-click="item.onhand = item.onhand + 1; onItemOnHandAmountChanged(item)"></button>                  
