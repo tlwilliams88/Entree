@@ -197,7 +197,7 @@ namespace KeithLink.Svc.Impl {
            RoleNameCorporateAdmin, Constants.ROLE_CORPORATE_SECURITY 
         };
 
-        private static List<string> GetCommaSeparatedValues(string val) {
+        public static List<string> GetCommaSeparatedValues(string val) {
             if (!String.IsNullOrEmpty(val))
                 return (val.Split(new string[] { "," }, StringSplitOptions.None)).ToList(); 
             return new List<string>();

@@ -12,6 +12,7 @@ using KeithLink.Svc.Impl.Repository.SmartResolver;
 using Autofac;
 
 using System;
+using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
@@ -58,10 +59,25 @@ namespace KeithLink.Svc.Windows.QueueService {
             AutoResetEvent auto = new AutoResetEvent( false );
             TimerCallback cb = new TimerCallback( ProcessCheckLostOrdersMinuteTick );
 
-            if (Configuration.CheckLostOrders.Equals( "true", StringComparison.CurrentCultureIgnoreCase )) {
+            string checksetting = Configuration.CheckLostOrders;
+            List<string> excluded = new List<string>();
+            if (checksetting.IndexOf('|') > -1)
+            {
+                string exclusions = checksetting.Substring(checksetting.IndexOf('|') + 1);
+                checksetting = checksetting.Substring(0, checksetting.IndexOf('|'));
+                excluded = Configuration.GetCommaSeparatedValues(exclusions.ToUpper());
+            }
+
+            if (checksetting.Equals( "true", StringComparison.CurrentCultureIgnoreCase ) && 
+                excluded.Contains(System.Environment.MachineName) == false) {
+                _log.WriteInformationLog("CheckLostOrders started");
                 _checkLostOrdersTimer = new Timer( cb, auto, TIMER_DURATION_START, TIMER_DURATION_TICKMINUTE );
                 lostOrdersScope = container.BeginLifetimeScope();
                 _emailClient = lostOrdersScope.Resolve<IEmailClient>();
+            }
+            else
+            {
+                _log.WriteInformationLog("CheckLostOrders not started");
             }
         }
 
