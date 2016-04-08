@@ -15,6 +15,7 @@ using KeithLink.Svc.Core.Extensions.SingleSignOn;
 
 using KeithLink.Svc.Core.Interface.Cache;
 using KeithLink.Svc.Core.Interface.Common;
+using KeithLink.Svc.Core.Interface.Customers;
 using KeithLink.Svc.Core.Interface.Email;
 using KeithLink.Svc.Core.Interface.Messaging;
 using KeithLink.Svc.Core.Interface.OnlinePayments;
@@ -22,6 +23,7 @@ using KeithLink.Svc.Core.Interface.Orders.History;
 using KeithLink.Svc.Core.Interface.Profile;
 using KeithLink.Svc.Core.Interface.Profile.PasswordReset;
 
+using KeithLink.Svc.Core.Models.Customers.EF;
 using KeithLink.Svc.Core.Models.Messaging;
 using KeithLink.Svc.Core.Models.Messaging.Queue;
 using KeithLink.Svc.Core.Models.Paging;
@@ -59,6 +61,7 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         private readonly IUserDomainRepository _intAd;
         private readonly IAccountRepository _accountRepo;
         private readonly ICustomerRepository _customerRepo;
+        private readonly IInternalUserAccessRepository _internalUserAccessRepo;
         private readonly IMessagingLogic _msgLogic;
         private readonly IMessageTemplateLogic _msgTemplateLogic;
 		private readonly IEmailClient _emailClient;
@@ -77,13 +80,14 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
                                     IOrderHistoryHeaderRepsitory orderHistoryRepository, IMessagingLogic messagingLogic, IEmailClient emailClient, 
                                     IEventLogRepository eventLog, IOnlinePaymentsLogic paymentLogic, IGenericQueueRepository queue, 
                                     IDsrAliasLogic dsrAliasLogic, IPasswordResetLogic passwordResetLogic, ISettingsLogic settingsLogic, 
-                                    IMessageTemplateLogic messageTemplateLogic) {
+                                    IMessageTemplateLogic messageTemplateLogic, IInternalUserAccessRepository internalUserAccessRepo) {
             _cache = profileCache;
             _extAd = externalAdRepo;
             _intAd = internalAdRepo;
             _csProfile = commerceServerProfileRepo;
             _accountRepo = accountRepo;
             _customerRepo = customerRepo;
+            _internalUserAccessRepo = internalUserAccessRepo;
             _msgLogic = messagingLogic;
             _msgTemplateLogic = messageTemplateLogic;
 			_emailClient = emailClient;
@@ -896,25 +900,21 @@ namespace KeithLink.Svc.Impl.Logic.Profile {
         }
 
         public List<UserProfile> GetInternalUsersWithAccessToCustomer(string customerNumber, string branchId) {
-            //Retrieve all CS internal users
-            var internalUsers = _csProfile.GetCSProfileForInternalUsers();
+            List<UserProfile> usersWithAccess = new List<UserProfile>();
 
-            var usersWithAccess = new List<UserProfile>();
+            try {
+                List<InternalUserAccess> allUsersForCustomer = _internalUserAccessRepo.GetAllUsersWithAccessToCustomer( new UserSelectedContext() { BranchId = branchId, CustomerId = customerNumber } );
 
-			try {
-				foreach (var user in internalUsers) {
-					var userProfile = FillUserProfile(user);
-					if (userProfile == null) continue; //User not found
-					
-                    var cust = this.CustomerSearch(userProfile, customerNumber, new PagingModel() { }, null, CustomerSearchType.Customer);
-					if (cust.Results != null && cust.Results.Any() && cust.Results.Where(c => c.CustomerNumber.Equals(customerNumber) && c.CustomerBranch.Equals(branchId, StringComparison.InvariantCultureIgnoreCase)).Any())
-					{
-						usersWithAccess.Add(userProfile);
-					}
-				}
-			} catch (Exception ex) {
-				_eventLog.WriteErrorLog(string.Format("Error retrieving internal users for {0}-{1}", customerNumber, branchId), ex);
-			}
+                foreach (InternalUserAccess user in allUsersForCustomer) {
+                    UserProfileReturn upToAddToList = GetUserProfile( user.EmailAddress );
+
+                    if (upToAddToList.UserProfiles != null && upToAddToList.UserProfiles.Count > 0) {
+                        usersWithAccess.Add( upToAddToList.UserProfiles[0] );
+                    }
+                }
+            } catch (Exception ex) {
+                _eventLog.WriteErrorLog( string.Format( "Error retrieving internal users for {0} - {1}", customerNumber, branchId ) );
+            }
 
             return usersWithAccess;
         }

@@ -10,5 +10,6 @@ namespace KeithLink.Svc.Core.Interface.ETL
         void ImportCustomerItemHistory();
         void ImportCustomersToOrganizationProfile();
         void ImportDsrInfo();
+        void ImportUsersWithAccess();
     }
 }

@@ -177,7 +177,7 @@ namespace KeithLink.Svc.Impl.ETL
         /// <summary>
         /// Import user customer access matrix
         /// </summary>
-        private void ImportUsersWithAccess() {
+        public void ImportUsersWithAccess() {
             try {
                 List<Core.Models.Profile.Customer> customers = _customerRepo.GetCustomers();
 

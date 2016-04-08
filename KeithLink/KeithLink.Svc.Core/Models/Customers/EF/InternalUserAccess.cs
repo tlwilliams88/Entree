@@ -25,7 +25,6 @@ namespace KeithLink.Svc.Core.Models.Customers.EF {
         public string CustomerNumber { get; set; }
 
         [Required]
-        [Index( "IdxByUserId")]
         public Guid UserId { get; set; }
 
         [Required]
@@ -39,6 +38,7 @@ namespace KeithLink.Svc.Core.Models.Customers.EF {
         [Required]
         [MaxLength( 200 )]
         [Column( TypeName = "varchar" )]
+        [Index( "IdxByEmailAddress")]
         public string EmailAddress { get; set; }
 
     }

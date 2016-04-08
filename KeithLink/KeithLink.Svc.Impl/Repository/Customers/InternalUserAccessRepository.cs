@@ -16,13 +16,13 @@ namespace KeithLink.Svc.Impl.Repository.Customers {
         #endregion
 
         #region methods
-        public IEnumerable<InternalUserAccess> GetAllCustomersForUser( string emailAddress ) {
-            return this.Entities.Where( i => i.EmailAddress.Equals( emailAddress, StringComparison.InvariantCultureIgnoreCase ) );
+        public List<InternalUserAccess> GetAllCustomersForUser( string emailAddress ) {
+            return this.Entities.Where( i => i.EmailAddress.Equals( emailAddress, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
         }
 
-        public IEnumerable<InternalUserAccess> GetAllUsersWithAccessToCustomer( UserSelectedContext customer ) {
+        public List<InternalUserAccess> GetAllUsersWithAccessToCustomer( UserSelectedContext customer ) {
             return this.Entities.Where( i => i.BranchId.Equals( customer.BranchId, StringComparison.InvariantCultureIgnoreCase ) &&
-                                             i.CustomerNumber.Equals( customer.CustomerId, StringComparison.InvariantCultureIgnoreCase ) );
+                                             i.CustomerNumber.Equals( customer.CustomerId, StringComparison.InvariantCultureIgnoreCase ) ).ToList();
         }
 
         public void Save( InternalUserAccess model ) {

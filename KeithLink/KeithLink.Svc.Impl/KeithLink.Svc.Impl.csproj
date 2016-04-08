@@ -324,9 +324,14 @@
       <DependentUpon>PricingRequest.xsd</DependentUpon>
     </Compile>
     <Compile Include="Repository\Customers\InternalUserAccessRepository.cs" />
-    <Compile Include="Repository\EF\Migrations\201603301341011_Create User Access Model.cs" />
-    <Compile Include="Repository\EF\Migrations\201603301341011_Create User Access Model.Designer.cs">
-      <DependentUpon>201603301341011_Create User Access Model.cs</DependentUpon>
+    <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.cs" />
+    <Compile Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.Designer.cs">
+      <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
     </Compile>
     <Compile Include="Repository\SmartResolver\AutofacDependencyMapProvider.cs" />
     <Compile Include="Repository\SmartResolver\DependencyMapFactory.cs" />
@@ -700,7 +705,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Repository\Cache\CacheRepositoryBase.cs" />
-    <Compile Include="Repository\EF\Operational\BEKDBContext.Views.cs" />
     <Compile Include="Repository\EF\Operational\SpecialOrderDBContext.cs" />
     <Compile Include="Repository\EF\Operational\KPayDBContext.cs" />
     <Compile Include="Repository\Email\MessageTemplateRepositoryImpl.cs" />
@@ -807,6 +811,9 @@
     <Compile Include="SqlServerTypes\Loader.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Repository\EF\Migrations\201604072024418_Create_Internal_User_Access_Migration.resx">
+      <DependentUpon>201604072024418_Create_Internal_User_Access_Migration.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
@@ -1296,15 +1303,19 @@
     <EmbeddedResource Include="Repository\EF\Migrations\201603162117290_remove content items table after 1_5 merge.resx">
       <DependentUpon>201603162117290_remove content items table after 1_5 merge.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Repository\EF\Migrations\201603301341011_Create User Access Model.resx">
-      <DependentUpon>201603301341011_Create User Access Model.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\com.benekeith.FoundationService\FoundationService.disco" />
     <Content Include="Dependencies\BarcodeLib.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Repository\EF\Operational\BEKDBContext.Views.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>BEKDBContext.Views.cs</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="Repository\EF\Operational\BEKDBContext.Views.xml">
+      <DependentUpon>BEKDBContext.Views.tt</DependentUpon>
+    </EmbeddedResource>
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

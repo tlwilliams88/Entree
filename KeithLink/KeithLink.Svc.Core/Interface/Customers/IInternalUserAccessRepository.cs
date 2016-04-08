@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 
 namespace KeithLink.Svc.Core.Interface.Customers {
     public interface IInternalUserAccessRepository : IBaseEFREpository<InternalUserAccess> {
-        IEnumerable<InternalUserAccess> GetAllCustomersForUser( string emailAddress );
-        IEnumerable<InternalUserAccess> GetAllUsersWithAccessToCustomer( UserSelectedContext context );
+        List<InternalUserAccess> GetAllCustomersForUser( string emailAddress );
+        List<InternalUserAccess> GetAllUsersWithAccessToCustomer( UserSelectedContext context );
         void Save( InternalUserAccess model );
     }
 }
